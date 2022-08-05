@@ -1,0 +1,9 @@
+.git
+.vscode
+.idea
+build
+node_modules
+.docker
+.env.example
+.env
+.github

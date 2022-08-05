@@ -1,0 +1,64 @@
+env:
+  es2021: true
+
+parserOptions:
+  ecmaVersion: 2021
+  sourceType: module
+
+extends:
+  - eslint:recommended
+  - plugin:import/recommended
+  - plugin:import/typescript
+  - plugin:@typescript-eslint/recommended
+
+rules:
+  no-tabs:
+    - error
+    - allowIndentationTabs: true
+  no-multiple-empty-lines:
+    - error
+    - max: 1
+  no-var:
+    - error
+  no-console:
+    - error
+  arrow-parens:
+    - error
+    - always
+  no-else-return:
+    - error
+    - allowElseIf: false
+  jsx-quotes:
+    - error
+    - prefer-double
+  max-params:
+    - error
+    - 4
+  '@typescript-eslint/explicit-function-return-type':
+    - error
+    - allowTypedFunctionExpressions: true
+  '@typescript-eslint/quotes':
+    - error
+    - single
+  '@typescript-eslint/object-curly-spacing':
+    - error
+    - always
+  '@typescript-eslint/semi':
+    - error
+    - always
+  '@typescript-eslint/comma-dangle':
+    - error
+    - always-multiline
+  '@typescript-eslint/no-unused-vars':
+    - error
+    - vars: all
+      args: after-used
+      argsIgnorePattern: ^_
+      caughtErrors: all
+  '@typescript-eslint/no-empty-interface':
+    - error
+    - allowSingleExtends: true
+  import/no-unresolved:
+    - off
+  import/no-default-export:
+    - error

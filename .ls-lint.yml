@@ -1,0 +1,20 @@
+ls:
+  .dir: regex:([.a-z0-9]*)([-.][a-z0-9]+)*
+  .scss: regex:([.a-z0-9]*)([-.][a-z0-9]+)*
+  .ts: regex:([.a-z0-9]*)([-.][a-z0-9]+)*
+  .tsx: regex:([.a-z0-9]*)([-.][a-z0-9]+)*
+  backend/prisma/migrations:
+    .ts: snake_case
+
+ignore:
+  - .git
+  - .idea
+  - .vscode
+  - node_modules
+  - build
+  - shared/build
+  - shared/node_modules
+  - frontend/build
+  - frontend/node_modules
+  - backend/build
+  - backend/node_modules
