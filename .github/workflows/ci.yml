@@ -8,6 +8,7 @@ on:
 
 jobs:
   lint:
+    name: streamlet build test
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +22,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          npm run install
+          npm install
 
       - name: Code Linting
         run: |
