@@ -8,11 +8,11 @@ This is the repository responsible for Streamlet's apps.
 
 - [Backend](./backend) — Streamlet's application backend.
 
-  _To work properly, fill in the **`.env`** file. Use the **`.env.example`** file as an example._
+  _To work properly, fill in the `.env` file. Use the `.env.example` file as an example._
 
 - [Frontend](./frontend) — Streamlet's application frontend.
 
-  _To work properly, fill in the **`.env`** file. Use the **`.env.example`** file as an example._
+  _To work properly, fill in the `.env` file. Use the `.env.example` file as an example._
 
 - [Shared](./shared) — Streamlet's application common modules for reuse.
 
@@ -21,14 +21,27 @@ This is the repository responsible for Streamlet's apps.
 - [NodeJS](https://nodejs.org/en/) (16.x.x);
 - [NPM](https://www.npmjs.com/) (8.x.x);
 - [PostgreSQL](https://www.postgresql.org/) (14.0)
-- run **`npx simple-git-hooks`** at the root of the project, before the start (it will set the [pre-commit hook](https://www.npmjs.com/package/simple-git-hooks) for any commits).
+- [Docker](https://www.docker.com)
+- run `npx simple-git-hooks` at the root of the project, before the start (it will set the [pre-commit hook](https://www.npmjs.com/package/simple-git-hooks) for any commits).
 
 ## 🏃‍♂️ Simple Start
 
-1. Fill ENVs
-2. **`npm install`** at the root
-3. **`npx simple-git-hooks`** at the root
-4. Enjoy <3
+### Setup database
+1. Create `.env` folder at the root project and add `api-db.env` file according to `.env.example`
+
+### Setup apps
+1. Fill ENVs in each project
+2. `npm install` at the root
+3. `npx simple-git-hooks` at the root
+
+### Run project
+
+_Each project run in the separate terminal_
+
+1. Go to `.docker` folder and run: `docker compose up -d`
+2. Apply first migration to DB: `npm run migrate`
+3. Run: `npm run start:backend`
+4. Run: `npm run start:frontend`
 
 ## Code Quality
 
@@ -36,19 +49,15 @@ Static analyzers are used for both frontend and backend projects to ensure basic
 
 ## Architecture
 
-### 🏗 Application Schema
-
-**TODO**
-
 ### 💽 DB Schema
 
 ```mermaid
 erDiagram
   users {
-      int id
+      string id
       string email
-      text  password_hash
-      text password_salt
+      string  password
+      boolean isActivated
       dateTime created_at
       dateTime updated_at
   }

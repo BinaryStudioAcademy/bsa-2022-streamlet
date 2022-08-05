@@ -14,7 +14,10 @@
     "build:shared": "npm run build -w shared",
     "build:frontend": "npm run build -w frontend",
     "build:backend": "npm run build -w backend",
-    "build": "npm run build -w shared -w frontend -w backend"
+    "build": "npm run build -w shared -w frontend -w backend",
+    "migrate": "npm run migrate -w backend",
+    "start:frontend": "npm start -w frontend",
+    "start:backend": "npm run start:dev -w backend"
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "1.11.2",

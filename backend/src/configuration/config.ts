@@ -31,7 +31,7 @@ const isDevEnvironment = (nodeEnv = ''): boolean => nodeEnv === AppEnvironment.D
 const configuration = (): ConfigInterface => {
   config();
 
-  const { NODE_ENV, HOST, PORT, DATABASE_URL } = process.env;
+  const { NODE_ENV, HOST, PORT, DATABASE_URL, API_BASE_PREFIX } = process.env;
 
   const host = HOST || 'localhost';
   const port = Number(PORT) || 5000;
@@ -55,7 +55,7 @@ const configuration = (): ConfigInterface => {
       DATABASE_URL: DATABASE_URL || '',
     },
     API: {
-      PREFIX: '/api/v1/',
+      PREFIX: API_BASE_PREFIX || '',
     },
   };
 };

@@ -1,10 +1,7 @@
 import { ApiError } from './data/api-error';
 import { Request, Response, NextFunction } from 'express';
-import { Unauthorized } from '../../../shared/exceptions/unauthorized';
-import { BadRequest } from '../../../shared/exceptions/bad-request';
-import { Forbidden } from '../../../shared/exceptions/forbidden';
-import { NotFound } from '../../../shared/exceptions/not-found';
-import { logger } from '../../../configuration/logger';
+import { Unauthorized, BadRequest, Forbidden, NotFound } from '~/shared/exceptions/exceptions';
+import { logger } from '~/configuration/logger';
 
 interface HandlerResult {
   errors: ApiError[];
