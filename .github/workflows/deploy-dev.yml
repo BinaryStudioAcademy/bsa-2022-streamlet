@@ -17,7 +17,7 @@ jobs:
       - name: Build image
         uses: whoan/docker-build-with-cache-action@v5
         with:
-          username: ${{ github.event.repository.owner }}
+          username: $GITHUB_REPOSITORY_OWNER
           password: ${{ secrets.GITHUB_TOKEN }}
           image_name: streamlet-backend-dev
           registry: ghcr.io
@@ -35,7 +35,7 @@ jobs:
       - name: Build image
         uses: whoan/docker-build-with-cache-action@v5
         with:
-          username: ${{ github.event.repository.owner }}
+          username: $GITHUB_REPOSITORY_OWNER
           password: ${{ secrets.GITHUB_TOKEN }}
           image_name: streamlet-frontend-dev
           registry: ghcr.io
