@@ -17,13 +17,14 @@ jobs:
       - name: Build image
         uses: whoan/docker-build-with-cache-action@v5
         with:
-          username: ${{ github.actor }}
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
           image_name: streamlet-backend-dev
           registry: ghcr.io
           image_tag: latest
           context: ./
           dockerfile: ./.docker/backend.Dockerfile
+          push_image_and_stages: false
 
   build-frontend:
     runs-on: ubuntu-latest
@@ -35,13 +36,14 @@ jobs:
       - name: Build image
         uses: whoan/docker-build-with-cache-action@v5
         with:
-          username: ${{ github.actor }}
+          username: ${{ secrets.CONTAINER_REGISTRY_USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
           image_name: streamlet-frontend-dev
           registry: ghcr.io
           image_tag: latest
           context: ./
           dockerfile: ./.docker/frontend.Dockerfile
+          push_image_and_stages: false
 
   deploy:
     needs: [build-backend, build-frontend]
