@@ -24,7 +24,6 @@ jobs:
           image_tag: latest
           context: ./
           dockerfile: ./.docker/backend.Dockerfile
-          push_image_and_stages: false
 
   build-frontend:
     runs-on: ubuntu-latest
@@ -43,7 +42,6 @@ jobs:
           image_tag: latest
           context: ./
           dockerfile: ./.docker/frontend.Dockerfile
-          push_image_and_stages: false
 
   deploy:
     needs: [build-backend, build-frontend]
