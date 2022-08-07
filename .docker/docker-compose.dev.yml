@@ -19,7 +19,7 @@ services:
         max-size: "10m"
         max-file: "3"
   backend:
-    image: ghcr.io/binarystudioacademy/streamlet-backend-dev:latest
+    image: ghcr.io/binarystudioacademy/bsa-2022-streamlet/streamlet-backend-dev:latest
     container_name: backend
     depends_on:
       - api-db
@@ -36,7 +36,7 @@ services:
         max-size: "10m"
         max-file: "5"
   frontend:
-    image: ghcr.io/binarystudioacademy/streamlet-frontend-dev:latest
+    image: ghcr.io/binarystudioacademy/bsa-2022-streamlet/streamlet-frontend-dev:latest
     container_name: frontend
     depends_on:
       - backend
