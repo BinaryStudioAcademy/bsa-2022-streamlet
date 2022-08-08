@@ -1,6 +1,6 @@
 import { Channel } from 'amqplib';
 import { inject, injectable } from 'inversify';
-import { AmqpChannelPort } from '~/core/user/port/amqp-channel';
+import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { AmqpConsumeDto, AmqpSendToQueueDto } from '~/shared/types/types';
 
