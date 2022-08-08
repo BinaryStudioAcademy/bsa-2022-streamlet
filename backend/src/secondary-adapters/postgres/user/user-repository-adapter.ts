@@ -12,10 +12,51 @@ export class UserRepositoryAdapter implements UserRepository {
     this.prismaClient = prismaClient;
   }
 
+  /**
+   * @swagger
+   * definitions:
+   *   User:
+   *     type: object
+   *     properties:
+   *       id:
+   *         type: string
+   *         format: uuid
+   *       email:
+   *         type: string
+   *         format: email
+   *       password:
+   *         type: string
+   *       isActivated:
+   *         type: boolean
+   *       createdAt:
+   *         type: string
+   *         format: date-time
+   */
   async getAll(): Promise<User[]> {
     return this.prismaClient.user.findMany();
   }
 
+  /**
+   * @swagger
+   * definitions:
+   *    UserSignUpRequest:
+   *      type: object
+   *      properties:
+   *        email:
+   *          type: string
+   *          format: email
+   *        password:
+   *          type: string
+   *    UserSignUpResponse:
+   *      type: object
+   *      properties:
+   *        id:
+   *          type: string
+   *          format: uuid
+   *        email:
+   *          type: string
+   *          format: email
+   */
   async createUser(userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
     const user = await this.prismaClient.user.create({
       data: userRequestDto,
