@@ -20,7 +20,7 @@ export class MailService {
       juice: true,
       juiceResources: {
         webResources: {
-          relativeTo: '~shared/mail-templates',
+          relativeTo: '~/shared/mail-templates',
         },
       },
     });
