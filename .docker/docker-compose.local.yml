@@ -1,0 +1,76 @@
+version: '3.9'
+services:
+  api-db:
+    image: postgres:14
+    container_name: api-db
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata_api:/var/lib/postgresql/data
+      - pgconf_api:/etc/postgresql
+      - pglog_api:/var/log/postgresql
+    env_file:
+      - ../.env/api-db.env
+    networks:
+      - backend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  backend:
+    image: backend
+    container_name: backend
+    depends_on:
+      - api-db
+    ports:
+      - '5001:5001'
+    env_file:
+      - ../.env/api.env
+    networks:
+      - backend_network
+      - frontend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+  frontend:
+    image: backend
+    container_name: frontend
+    depends_on:
+      - backend
+    ports:
+      - '80:80'
+      - '443:443'
+    env_file:
+      - ../.env/client.env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    volumes:
+      - /etc/letsencrypt/live/dev.streamlet.tk/fullchain.pem:/etc/letsencrypt/live/dev.streamlet.tk/fullchain.pem
+      - /etc/letsencrypt/live/dev.streamlet.tk/privkey.pem:/etc/letsencrypt/live/dev.streamlet.tk/privkey.pem
+      - /etc/letsencrypt/options-ssl-nginx.conf:/etc/letsencrypt/options-ssl-nginx.conf
+      - /etc/letsencrypt/ssl-dhparams.pem:/etc/letsencrypt/ssl-dhparams.pem
+    networks:
+      - backend_network
+      - frontend_network
+
+volumes:
+  pgdata_api:
+    driver: local
+  pgconf_api:
+    driver: local
+  pglog_api:
+    driver: local
+  shared:
+    driver: local
+
+networks:
+  backend_network:
+    driver: bridge
+  frontend_network:
+    driver: bridge
