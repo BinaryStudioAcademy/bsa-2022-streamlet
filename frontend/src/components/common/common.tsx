@@ -7,3 +7,4 @@ export { Link } from './link/link';
 
 export { Sidebar } from './sidebar/sidebar';
 export { Image } from './image/image';
+export { Icon } from './icon/icon';

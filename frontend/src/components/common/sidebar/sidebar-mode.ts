@@ -1,9 +1,9 @@
-import { AppRoute } from 'common/enums/enums';
+import { AppRoute, IconName } from 'common/enums/enums';
 
 const SidebarMode = [
-  { name: 'Home', path: AppRoute.ROOT },
-  { name: 'Browse', path: AppRoute.BROWSE },
-  { name: 'Following', path: AppRoute.FOLLOWING },
-  { name: 'History', path: AppRoute.HISTORY },
+  { mode: 'Home', path: AppRoute.ROOT, icon: IconName.HOUSE },
+  { mode: 'Browse', path: AppRoute.BROWSE, icon: IconName.COMPASS },
+  { mode: 'Following', path: AppRoute.FOLLOWING, icon: IconName.HOUSE },
+  { mode: 'History', path: AppRoute.HISTORY, icon: IconName.CLOCK },
 ];
 export { SidebarMode };

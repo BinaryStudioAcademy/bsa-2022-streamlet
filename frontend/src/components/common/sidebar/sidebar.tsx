@@ -70,6 +70,7 @@ const Sidebar: FC = () => {
 
   return (
     <>
+      <div className={styles.logo}>STREAMLET</div>
       <ul className={styles.modes}>
         {SidebarMode.map((el) => (
           <MenuMode data={el} />
