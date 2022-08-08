@@ -1,37 +1,22 @@
-import { Channel, Options } from 'amqplib';
+import { Channel } from 'amqplib';
 import { inject, injectable } from 'inversify';
-import { AmqpChannel } from '../../../shared/enums/amqp/amqp';
+import { AmqpChannel } from '~/core/user/port/amqp-channel';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
+import { AmqpConsumeDto, AmqpSendToQueueDto } from '~/shared/types/types';
 
 @injectable()
-export class AmqpChannelAdapter {
+export class AmqpChannelAdapter implements AmqpChannel {
   private amqpChannel: Channel;
 
   constructor(@inject(CONTAINER_TYPES.AmqpChannel) amqpChannel: Channel) {
     this.amqpChannel = amqpChannel;
   }
 
-  async sendToQueue({
-    channel,
-    content,
-    options,
-  }: {
-    channel: AmqpChannel;
-    content: Buffer;
-    options?: Options.Publish | undefined; //TODO: create dto for method
-  }): Promise<boolean> {
+  async sendToQueue({ channel, content, options }: AmqpSendToQueueDto): Promise<boolean> {
     return this.amqpChannel.sendToQueue(channel, content, options);
   }
 
-  async consume({
-    channel,
-    onMessage,
-    options,
-  }: {
-    channel: AmqpChannel;
-    onMessage: (data: Buffer | null) => void;
-    options?: Options.Publish | undefined;
-  }): Promise<void> {
+  async consume({ channel, onMessage, options }: AmqpConsumeDto): Promise<void> {
     await this.amqpChannel.consume(
       channel,
       (msg) => {
