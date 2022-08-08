@@ -1,5 +1,4 @@
 .active {
-  color: var(--white-text-color);
   background-color: var(--brand-green-color);
 }
 
@@ -7,10 +6,26 @@
   color: var(--white-text-color);
 }
 
+.inactive > a {
+  color: var(--text-gray-color);
+}
+
+.inactive:hover a {
+  color: var(--brand-green-color);
+}
+
 .image {
   width: auto;
   max-width: 40px;
   max-height: 40px;
+}
+
+.icon {
+  width: auto;
+  max-width: 40px;
+  max-height: 40px;
+  margin-right: 5px;
+  padding-top: 2px;
 }
 
 .name {

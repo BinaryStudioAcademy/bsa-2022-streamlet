@@ -1,12 +1,25 @@
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: var(--header-height);
+  color: var(--white-text-color);
+}
+
 .channel {
   display: flex;
   flex-direction: column;
-  height: 400px;
+  height: 420px;
   margin: 0;
   padding: 0;
   overflow-y: auto;
   scrollbar-width: none;
   list-style-type: none;
+}
+
+.channel::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .channel > li {
@@ -37,16 +50,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  color: var(--text-gray-color);
   text-decoration: none;
-}
-
-.modes > li > a :hover {
-  background-color: var(--brand-green-color);
-}
-
-.modes > li > a :hover a {
-  color: var(--white-text-color);
 }
 
 .subscriptions {

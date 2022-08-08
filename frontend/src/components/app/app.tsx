@@ -8,12 +8,12 @@ import styles from './styles.module.scss';
 const App: FC = () => {
   return (
     <>
-      <header></header>
       <main>
         <div className={styles.sidebar}>
           <Sidebar />
         </div>
         <div className={styles.content}>
+          <header></header>
           <Routes>
             <Route path={AppRoute.ROOT} element="Root page" />
             <Route path={AppRoute.BROWSE} element="Browse page" />

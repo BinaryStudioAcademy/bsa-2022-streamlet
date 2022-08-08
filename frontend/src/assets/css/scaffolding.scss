@@ -166,7 +166,7 @@ h6 {
 main {
   display: flex;
   flex-wrap: wrap;
-  height: calc(100vh - var(--header-height));
+  height: 100vh;
 }
 
 header {
