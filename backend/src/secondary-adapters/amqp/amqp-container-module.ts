@@ -3,11 +3,12 @@ import { CONTAINER_TYPES } from '../../shared/types/types';
 import amqp from 'amqplib';
 import { Channel } from 'amqplib';
 import { CONFIG } from '~/configuration/config';
+import { AmqpChannel } from '../../shared/enums/amqp/amqp';
 
 const amqpContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const amqpServer = CONFIG.APP.RABBITMQ_URL;
   const amqpChannel = await amqp.connect(amqpServer).then((connection) => connection.createChannel());
-  await amqpChannel.assertQueue('streamlet'); //TODO: add enum for channel type
+  await amqpChannel.assertQueue(AmqpChannel.STREAMLET);
   bind<Channel>(CONTAINER_TYPES.AmqpChannel).toConstantValue(amqpChannel);
 });
 
