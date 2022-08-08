@@ -130,6 +130,15 @@ erDiagram
 - `design-12: * filter markup`
 - `blog-16: - require prop for nickname field`
 
+## Build app in Docker locally
+
+Specify `api.env` `api-db.env` files in `.env` folder
+Run commands from root:
+````
+docker build --build-arg REACT_APP_API_ORIGIN_URL=/api/v1 -f .docker/frontend.Dockerfile -t frontend .
+docker build -f .docker/backend.Dockerfile -t backend .
+docker compose -f .docker/docker-compose.local.yml up -d
+````
 ## 📦 CD
 
 [Handled](.github/workflows/cd.yml) by [GitHub Actions](https://docs.github.com/en/actions).
