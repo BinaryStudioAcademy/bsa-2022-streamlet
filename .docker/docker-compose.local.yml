@@ -36,12 +36,12 @@ services:
         max-size: "10m"
         max-file: "5"
   frontend:
-    image: backend
+    image: frontend
     container_name: frontend
     depends_on:
       - backend
     ports:
-      - '80:80'
+      - '8080:80'
       - '443:443'
     env_file:
       - ../.env/client.env
@@ -51,10 +51,7 @@ services:
         max-size: "10m"
         max-file: "5"
     volumes:
-      - /etc/letsencrypt/live/dev.streamlet.tk/fullchain.pem:/etc/letsencrypt/live/dev.streamlet.tk/fullchain.pem
-      - /etc/letsencrypt/live/dev.streamlet.tk/privkey.pem:/etc/letsencrypt/live/dev.streamlet.tk/privkey.pem
-      - /etc/letsencrypt/options-ssl-nginx.conf:/etc/letsencrypt/options-ssl-nginx.conf
-      - /etc/letsencrypt/ssl-dhparams.pem:/etc/letsencrypt/ssl-dhparams.pem
+      - ../nginx/nginx.local.conf:/etc/nginx/nginx.conf
     networks:
       - backend_network
       - frontend_network
