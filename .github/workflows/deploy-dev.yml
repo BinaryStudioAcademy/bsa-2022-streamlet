@@ -42,6 +42,7 @@ jobs:
           image_tag: latest
           context: ./
           dockerfile: ./.docker/frontend.Dockerfile
+          build_extra_args: "--build-arg=REACT_APP_API_ORIGIN_URL=${{ secrets.REACT_APP_API_ORIGIN_URL }}"
 
   deploy:
     needs: [build-backend, build-frontend]
