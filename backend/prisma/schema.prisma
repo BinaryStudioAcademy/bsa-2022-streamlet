@@ -46,11 +46,13 @@ model UserProfile {
 }
 
 model RefreshToken {
-  id     String @id @default(uuid())
-  token  String
+  id        String   @id @default(uuid())
+  token     String
   // assuming there should be at most one token for a user at any given time
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Video {
@@ -124,6 +126,8 @@ model Subscription {
   notify    Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, channelId])
 }
 
 model ChatMessage {
@@ -147,6 +151,8 @@ model Notification {
   viewed    Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, videoId])
 }
 
 model History {
@@ -168,4 +174,6 @@ model Reaction {
   isLike    Boolean
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([userId, videoId])
 }
