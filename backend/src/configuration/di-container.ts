@@ -28,7 +28,10 @@ export const importContainerModuleInstancesFromDirectories = (
     return allLoaded;
   };
 
-  const allFiles = directories.reduce((allDirs, dir) => allDirs.concat(glob.sync(path.normalize(dir))), [] as string[]);
+  const allFiles = directories.reduce(
+    (allDirs, dir) => allDirs.concat(glob.sync(path.normalize(dir).replace(/\\/g, '/'))),
+    [] as string[],
+  );
 
   const dirs = allFiles
     .filter(
