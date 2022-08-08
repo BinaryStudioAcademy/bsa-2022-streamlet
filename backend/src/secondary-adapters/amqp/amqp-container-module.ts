@@ -1,0 +1,14 @@
+import { AsyncContainerModule, interfaces } from 'inversify';
+import { CONTAINER_TYPES } from '../../shared/types/types';
+import amqp from 'amqplib';
+import { Channel } from 'amqplib';
+import { CONFIG } from '~/configuration/config';
+
+const amqpContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
+  const amqpServer = CONFIG.APP.RABBITMQ_URL;
+  const amqpChannel = await amqp.connect(amqpServer).then((connection) => connection.createChannel());
+  await amqpChannel.assertQueue('streamlet'); //TODO: add enum for channel type
+  bind<Channel>(CONTAINER_TYPES.AmqpChannel).toConstantValue(amqpChannel);
+});
+
+export { amqpContainerModule };
