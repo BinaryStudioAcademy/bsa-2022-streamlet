@@ -1,5 +1,5 @@
 type RestorePasswordMail = {
-  token: string;
+  resetLink: string;
 };
 
 export { type RestorePasswordMail };

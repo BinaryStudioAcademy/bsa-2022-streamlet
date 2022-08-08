@@ -1,5 +1,5 @@
 type VerifyAccountMail = {
-  token: string;
+  verificationLink: string;
 };
 
 export { type VerifyAccountMail };

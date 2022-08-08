@@ -1,18 +1,38 @@
 import { createMailTransport } from '~/configuration/mail-transport';
 import { CONFIG } from '~/configuration/config';
 import { injectable } from 'inversify';
-import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import Email from 'email-templates';
+import { MailType } from '~/shared/enums/enums';
+import { MailProps } from '~/shared/types/types';
 
 @injectable()
 export class MailService {
-  async sendEmail(receiver: string): Promise<SMTPTransport.SentMessageInfo> {
+  async sendEmail(receiver: string, mailType: MailType, props: MailProps): Promise<void> {
     const transport = await createMailTransport();
-    return transport.sendMail({
-      from: `Streamlet <${CONFIG.MAIL_SERVICE.ADDRESS}>`,
-      to: receiver,
-      subject: 'Confirm your account on Streamlet',
-      text: 'Test message',
-      html: '<h1>Test message</h1>',
+    const email = new Email({
+      views: { root: '~/shared/mail-templates' },
+      message: {
+        from: `Streamlet <${CONFIG.MAIL_SERVICE.ADDRESS}>`,
+      },
+      preview: false,
+      send: true,
+      transport,
+      juice: true,
+      juiceResources: {
+        webResources: {
+          relativeTo: '~shared/mail-templates',
+        },
+      },
+    });
+
+    return email.send({
+      template: mailType,
+      message: {
+        to: receiver,
+      },
+      locals: {
+        ...props,
+      },
     });
   }
 }
