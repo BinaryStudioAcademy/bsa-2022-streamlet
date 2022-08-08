@@ -10,6 +10,7 @@ const amqpContainerModule = new AsyncContainerModule(async (bind: interfaces.Bin
   const amqpServer = CONFIG.APP.RABBITMQ_URL;
   const amqpChannel = await amqp.connect(amqpServer).then((connection) => connection.createChannel());
   await amqpChannel.assertQueue(AmqpChannel.STREAMLET);
+
   bind<Channel>(CONTAINER_TYPES.AmqpChannel).toConstantValue(amqpChannel);
 });
 
