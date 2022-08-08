@@ -1,0 +1,25 @@
+.active {
+  color: var(--white-text-color);
+  background-color: var(--brand-green-color);
+}
+
+.active > a {
+  color: var(--white-text-color);
+}
+
+.image {
+  width: auto;
+  max-width: 40px;
+  max-height: 40px;
+}
+
+.name {
+  display: inline;
+  align-items: center;
+  width: 70%;
+  margin-left: 10px;
+  padding-top: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
