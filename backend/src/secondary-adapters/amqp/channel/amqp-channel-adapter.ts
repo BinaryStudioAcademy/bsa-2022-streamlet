@@ -1,11 +1,11 @@
 import { Channel } from 'amqplib';
 import { inject, injectable } from 'inversify';
-import { AmqpChannel } from '~/core/user/port/amqp-channel';
+import { AmqpChannelPort } from '~/core/user/port/amqp-channel';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { AmqpConsumeDto, AmqpSendToQueueDto } from '~/shared/types/types';
 
 @injectable()
-export class AmqpChannelAdapter implements AmqpChannel {
+export class AmqpChannelAdapter implements AmqpChannelPort {
   private amqpChannel: Channel;
 
   constructor(@inject(CONTAINER_TYPES.AmqpChannel) amqpChannel: Channel) {
