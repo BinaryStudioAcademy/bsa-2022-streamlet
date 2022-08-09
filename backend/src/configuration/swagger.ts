@@ -14,7 +14,7 @@ function initSwagger(): object {
       basePath: CONFIG.API.PREFIX,
       schemes: ['https', 'http'],
     },
-    apis: ['./primary-adapters/**/**.js'],
+    apis: ['./build/primary-adapters/**/**.js'],
   };
 
   return swaggerJSDoc(options);
