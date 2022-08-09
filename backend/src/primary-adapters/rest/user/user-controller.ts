@@ -9,6 +9,23 @@ import { User } from '@prisma/client';
  * tags:
  *   name: user
  *   description: User management
+ * definitions:
+ *    User:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: string
+ *          format: uuid
+ *        email:
+ *          type: string
+ *          format: email
+ *        password:
+ *          type: string
+ *        isActivated:
+ *          type: boolean
+ *        createdAt:
+ *          type: string
+ *          format: date-time
  */
 @controller('/user')
 export class UserController extends BaseHttpController {

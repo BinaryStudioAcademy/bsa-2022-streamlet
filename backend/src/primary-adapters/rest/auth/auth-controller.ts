@@ -9,6 +9,24 @@ import { UserService } from '~/core/user/application/user-service';
  * tags:
  *   name: auth
  *   description: Authorization
+ * definitions:
+ *    UserSignUpRequest:
+ *      type: object
+ *      properties:
+ *        email:
+ *          type: string
+ *          format: email
+ *        password:
+ *          type: string
+ *    UserSignUpResponse:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: string
+ *          format: uuid
+ *        email:
+ *          type: string
+ *          format: email
  */
 @controller(ApiPath.AUTH)
 export class AuthController extends BaseHttpController {
