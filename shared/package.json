@@ -16,7 +16,6 @@
     "tsc-alias": "1.6.11"
   },
   "dependencies": {
-    "amqplib": "^0.10.2",
     "joi": "17.6.0"
   }
 }
