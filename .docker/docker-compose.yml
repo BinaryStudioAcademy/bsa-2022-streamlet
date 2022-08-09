@@ -1,5 +1,12 @@
 version: '3'
 services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      # AMQP protocol port
+      - "5672:5672"
+      # HTTP management UI
+      - "15672:15672"
   api-db:
     image: postgres:14
     hostname: postgres
