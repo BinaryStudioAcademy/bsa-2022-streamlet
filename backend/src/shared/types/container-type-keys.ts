@@ -6,7 +6,7 @@ const CONTAINER_TYPES = {
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),
-  CLoudinaryAdapter: Symbol.for('CloudinaryAdapter'),
+  CloudinaryAdapter: Symbol.for('CloudinaryAdapter'),
 };
 
 export { CONTAINER_TYPES };

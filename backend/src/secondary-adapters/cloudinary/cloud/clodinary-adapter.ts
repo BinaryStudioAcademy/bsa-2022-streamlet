@@ -1,6 +1,6 @@
 import { UploadApiResponse } from 'cloudinary';
 import { inject, injectable } from 'inversify';
-import { CloudinaryPort } from '~/core/common/cloudinary/port/cloudinary';
+import { CloudinaryPort } from '~/core/common/port/cloudinary';
 import { CloudinaryApi, CloudinaryGetImageDto, CloudinaryUploadDto, CONTAINER_TYPES } from '~/shared/types/types';
 
 @injectable()

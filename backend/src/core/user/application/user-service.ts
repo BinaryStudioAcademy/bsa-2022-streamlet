@@ -19,4 +19,8 @@ export class UserService {
   createUser(userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
     return this.userRepository.createUser(userRequestDto);
   }
+
+  // uploadImage(base64Str: string): Promise<UploadApiResponse> {
+  //   return this.cloudinary.upload({ base64Str, type: CloudinaryPresetType.AVATAR })
+  // }
 }
