@@ -1,5 +1,5 @@
 import { ContainerModule, interfaces } from 'inversify';
-import { UserController } from './user/user-controller';
+import { UserController } from '~/primary-adapters/rest/user/user-controller';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { AuthController } from '~/primary-adapters/rest/auth/auth-controller';
 

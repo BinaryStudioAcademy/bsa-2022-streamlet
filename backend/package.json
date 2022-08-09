@@ -33,6 +33,8 @@
   },
   "dependencies": {
     "@prisma/client": "4.1.1",
+    "@types/swagger-jsdoc": "6.0.1",
+    "@types/swagger-ui-express": "4.1.3",
     "body-parser": "1.20.0",
     "dotenv": "16.0.1",
     "email-templates": "10.0.1",
@@ -44,6 +46,8 @@
     "nodemailer": "6.7.7",
     "pino-http": "8.2.0",
     "pug": "3.0.2",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "0.1.13",
+    "swagger-jsdoc": "6.2.5",
+    "swagger-ui-express": "4.5.0"
   }
 }
