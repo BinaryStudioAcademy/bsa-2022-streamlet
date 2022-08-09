@@ -5,6 +5,7 @@ import { AppEnvironment, LogLevel } from '../shared/enums/enums';
 interface AppConfig {
   PORT: number;
   HOST: string;
+  RABBITMQ_URL: string;
   NODE_ENV: AppEnvironment;
   LOGGER: {
     level: Level;
@@ -46,17 +47,20 @@ const configuration = (): ConfigInterface => {
     CLOUDINARY_API_KEY,
     CLOUDINARY_API_SECRET,
     CLOUDINARY_NAME,
+    RABBITMQ_PORT,
     API_BASE_PREFIX,
   } = process.env;
 
   const host = HOST || 'localhost';
   const port = Number(PORT) || 5000;
+  const rabbitMqPort = Number(RABBITMQ_PORT) || 5672;
   const extension = isDevEnvironment(NODE_ENV) ? '.ts' : '.js';
 
   return {
     APP: {
       PORT: port,
       HOST: `http://${host}:${port}`,
+      RABBITMQ_URL: `amqp://${host}:${rabbitMqPort}`,
       NODE_ENV: <AppEnvironment>NODE_ENV || AppEnvironment.DEVELOPMENT,
       LOGGER: {
         level: isDevEnvironment(NODE_ENV) ? LogLevel.DEBUG : LogLevel.INFO,
