@@ -3,4 +3,5 @@ export { type FormControl, type FormControlErrors, type FormControlPath, type Fo
 export { type HttpOptions } from './http/http';
 export { type FC } from './react/react';
 export { type UserSignUpRequestDto, type UserSignUpResponseDto } from './user/user';
+export { type SearchRequestDto } from './search/search';
 export { type ValidationSchema } from './validation/validation';
