@@ -29,31 +29,31 @@ const Icon = ({ name, color, size }: { name: string; color: string; size: string
       return <Alarm className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.CAMERA:
-      return <Camera className={getColor(color)} />;
+      return <Camera className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.COMPAS:
-      return <Compas className={getColor(color)} />;
+      return <Compas className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.FOLLOW:
-      return <Follow className={getColor(color)} />;
+      return <Follow className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.HISTORY:
-      return <History className={getColor(color)} />;
+      return <History className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.HOME:
-      return <Home className={getColor(color)} />;
+      return <Home className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.SEARCH:
-      return <Search className={getColor(color)} />;
+      return <Search className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.SIGNOUT:
-      return <Signout className={getColor(color)} />;
+      return <Signout className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.SMILE:
-      return <Smile className={getColor(color)} />;
+      return <Smile className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     default:
-      return <Timeago className={getColor(color)} />;
+      return <Timeago className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
   }
 };
 

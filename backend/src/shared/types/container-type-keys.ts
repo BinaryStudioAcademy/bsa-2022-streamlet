@@ -8,6 +8,8 @@ const CONTAINER_TYPES = {
 
   PrismaClient: Symbol.for('PrismaClient'),
   MailTransporter: Symbol.for('MailTransporter'),
+  AmqpChannel: Symbol.for('AmqpChannel'),
+  AmqpChannelAdapter: Symbol.for('AmqpChannelAdapter'),
 };
 
 export { CONTAINER_TYPES };
