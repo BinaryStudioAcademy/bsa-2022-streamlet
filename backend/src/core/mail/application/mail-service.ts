@@ -1,38 +1,17 @@
-import { createMailTransport } from '~/configuration/mail-transport';
-import { CONFIG } from '~/configuration/config';
-import { injectable } from 'inversify';
-import Email from 'email-templates';
+import { inject, injectable } from 'inversify';
 import { MailType } from '~/shared/enums/enums';
-import { MailProps } from '~/shared/types/types';
+import { CONTAINER_TYPES, MailProps } from '~/shared/types/types';
+import { MailRepository } from '~/core/mail/port/mail-repository';
 
 @injectable()
 export class MailService {
-  async sendEmail(receiver: string, mailType: MailType, props: MailProps): Promise<void> {
-    const transport = await createMailTransport();
-    const email = new Email({
-      views: { root: '~/shared/mail-templates' },
-      message: {
-        from: `Streamlet <${CONFIG.MAIL_SERVICE.ADDRESS}>`,
-      },
-      preview: false,
-      send: true,
-      transport,
-      juice: true,
-      juiceResources: {
-        webResources: {
-          relativeTo: '~/shared/mail-templates',
-        },
-      },
-    });
+  private mailRepository: MailRepository;
 
-    return email.send({
-      template: mailType,
-      message: {
-        to: receiver,
-      },
-      locals: {
-        ...props,
-      },
-    });
+  constructor(@inject(CONTAINER_TYPES.MailRepository) mailRepository: MailRepository) {
+    this.mailRepository = mailRepository;
+  }
+
+  async sendEmail(receiver: string, mailType: MailType, props: MailProps): Promise<void> {
+    return this.mailRepository.sendEmail(receiver, mailType, props);
   }
 }
