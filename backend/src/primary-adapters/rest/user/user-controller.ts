@@ -1,8 +1,9 @@
-import { BaseHttpController, controller, httpGet } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, httpPost, requestBody } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
+import { UploadApiResponse } from 'cloudinary';
 
 /**
  * @swagger
@@ -61,5 +62,12 @@ export class UserController extends BaseHttpController {
   @httpGet('/')
   public register(): Promise<User[]> {
     return this.userService.getAllUsers();
+  }
+
+  //NOTE: this route should be private and moved to user profile controller in future to set user avatar in db
+  @httpPost('/upload')
+  public upload(@requestBody() body: { base64Str: string }): Promise<UploadApiResponse> {
+    const { base64Str } = body;
+    return this.userService.uploadAvatar(base64Str);
   }
 }

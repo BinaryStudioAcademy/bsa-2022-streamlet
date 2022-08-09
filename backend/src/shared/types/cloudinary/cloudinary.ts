@@ -1,1 +1,1 @@
-export { CloudinaryUploadDto, CloudinaryGetImageDto, CloudinaryApi } from 'shared/build';
+export { CloudinaryUploadDto, CloudinaryApi } from 'shared/build';

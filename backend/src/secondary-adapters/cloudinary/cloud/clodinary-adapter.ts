@@ -1,7 +1,7 @@
 import { UploadApiResponse } from 'cloudinary';
 import { inject, injectable } from 'inversify';
 import { CloudinaryPort } from '~/core/common/port/cloudinary';
-import { CloudinaryApi, CloudinaryGetImageDto, CloudinaryUploadDto, CONTAINER_TYPES } from '~/shared/types/types';
+import { CloudinaryApi, CloudinaryUploadDto, CONTAINER_TYPES } from '~/shared/types/types';
 
 @injectable()
 export class CloudinaryAdapter implements CloudinaryPort {
@@ -9,10 +9,6 @@ export class CloudinaryAdapter implements CloudinaryPort {
 
   constructor(@inject(CONTAINER_TYPES.Cloudinary) cloudinary: CloudinaryApi) {
     this.cloudinary = cloudinary;
-  }
-
-  async getImage({ imageId, type }: CloudinaryGetImageDto): Promise<string> {
-    return await this.cloudinary.search.expression(`folder:${type}`).expression(`asset_id:${imageId}`).execute();
   }
 
   async upload({ base64Str, type }: CloudinaryUploadDto): Promise<UploadApiResponse> {

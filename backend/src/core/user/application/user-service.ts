@@ -3,6 +3,7 @@ import { User } from '@prisma/client';
 import { CONTAINER_TYPES, UserSignUpRequestDto } from '~/shared/types/types';
 import { UserRepository } from '~/core/user/port/user-repository';
 import { UserSignUpResponseDto } from 'shared/build';
+import { UploadApiResponse } from 'cloudinary';
 
 @injectable()
 export class UserService {
@@ -20,7 +21,7 @@ export class UserService {
     return this.userRepository.createUser(userRequestDto);
   }
 
-  // uploadImage(base64Str: string): Promise<UploadApiResponse> {
-  //   return this.cloudinary.upload({ base64Str, type: CloudinaryPresetType.AVATAR })
-  // }
+  uploadAvatar(base64Str: string): Promise<UploadApiResponse> {
+    return this.userRepository.uploadAvatar(base64Str);
+  }
 }
