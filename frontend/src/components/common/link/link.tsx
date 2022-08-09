@@ -4,8 +4,13 @@ import { AppRoute } from 'common/enums/enums';
 
 type Props = {
   to: AppRoute;
+  className: string;
 };
 
-const Link: FC<Props> = ({ children, to }) => <NavLink to={to}>{children}</NavLink>;
+const Link: FC<Props> = ({ children, to, className }) => (
+  <NavLink className={className} to={to}>
+    {children}
+  </NavLink>
+);
 
 export { Link };
