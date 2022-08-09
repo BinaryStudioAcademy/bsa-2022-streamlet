@@ -20,9 +20,16 @@ interface ApiConfig {
   PREFIX: string;
 }
 
+interface CloudConfig {
+  CLOUD_NAME: string;
+  API_KEY: string;
+  API_SECRET: string;
+}
+
 export interface ConfigInterface {
   APP: AppConfig;
   DATABASE: DatabaseConfig;
+  CLOUD: CloudConfig;
   API: ApiConfig;
 }
 
@@ -31,7 +38,16 @@ const isDevEnvironment = (nodeEnv = ''): boolean => nodeEnv === AppEnvironment.D
 const configuration = (): ConfigInterface => {
   config();
 
-  const { NODE_ENV, HOST, PORT, DATABASE_URL, API_BASE_PREFIX } = process.env;
+  const {
+    NODE_ENV,
+    HOST,
+    PORT,
+    DATABASE_URL,
+    CLOUDINARY_API_KEY,
+    CLOUDINARY_API_SECRET,
+    CLOUDINARY_NAME,
+    API_BASE_PREFIX,
+  } = process.env;
 
   const host = HOST || 'localhost';
   const port = Number(PORT) || 5000;
@@ -53,6 +69,11 @@ const configuration = (): ConfigInterface => {
     },
     DATABASE: {
       DATABASE_URL: DATABASE_URL || '',
+    },
+    CLOUD: {
+      CLOUD_NAME: CLOUDINARY_NAME || '',
+      API_KEY: CLOUDINARY_API_KEY || '',
+      API_SECRET: CLOUDINARY_API_SECRET || '',
     },
     API: {
       PREFIX: API_BASE_PREFIX || '',
