@@ -21,7 +21,7 @@ interface ApiConfig {
 }
 
 interface CloudConfig {
-  CLOUD_NAME: string;
+  NAME: string;
   API_KEY: string;
   API_SECRET: string;
 }
@@ -71,7 +71,7 @@ const configuration = (): ConfigInterface => {
       DATABASE_URL: DATABASE_URL || '',
     },
     CLOUD: {
-      CLOUD_NAME: CLOUDINARY_NAME || '',
+      NAME: CLOUDINARY_NAME || '',
       API_KEY: CLOUDINARY_API_KEY || '',
       API_SECRET: CLOUDINARY_API_SECRET || '',
     },
