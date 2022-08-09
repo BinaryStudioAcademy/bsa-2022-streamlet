@@ -1,7 +1,9 @@
 import { AsyncContainerModule, interfaces } from 'inversify';
-import { CONTAINER_TYPES } from '../../shared/types/types';
+import { CloudinaryApi, CONTAINER_TYPES } from '~/shared/types/types';
 import { v2 as cloudinary } from 'cloudinary';
 import { CONFIG } from '~/configuration/config';
+import { CloudinaryPort } from '~/core/common/cloudinary/port/cloudinary';
+import { CloudinaryAdapter } from './cloud/clodinary-adapter';
 
 const cloudinaryContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const { CLOUD } = CONFIG;
@@ -12,11 +14,12 @@ const cloudinaryContainerModule = new AsyncContainerModule(async (bind: interfac
   });
   cloudinary.api.create_upload_preset({
     name: 'avatar',
-    folder: 'avatars',
+    folder: 'avatar',
     allowed_formats: 'jpg, png',
   });
 
-  bind<typeof cloudinary>(CONTAINER_TYPES.Cloudinary).toConstantValue(cloudinary);
+  bind<CloudinaryPort>(CONTAINER_TYPES.CLoudinaryAdapter).to(CloudinaryAdapter);
+  bind<CloudinaryApi>(CONTAINER_TYPES.Cloudinary).toConstantValue(cloudinary);
 });
 
 export { cloudinaryContainerModule };
