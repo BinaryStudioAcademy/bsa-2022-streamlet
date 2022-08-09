@@ -4,7 +4,10 @@ import { faker } from '@faker-js/faker';
 import { users, userProfiles, refreshTokens, channels, videos } from './seed-data';
 const prisma = new PrismaClient();
 
-async function main(): Promise<void> {
+async function seedSampleData(): Promise<void> {
+  if (!(await canSeed())) {
+    return;
+  }
   await seedUsers();
   await seedUserProfiles();
   await seedRefreshTokens();
@@ -18,6 +21,10 @@ async function main(): Promise<void> {
   await seedNotifications();
   await seedHistory();
   await seedReactions();
+}
+
+async function canSeed(): Promise<boolean> {
+  return (await prisma.user.count()) === 0;
 }
 
 async function seedUsers(): Promise<void> {
@@ -212,6 +219,6 @@ function getRandomSample<T>(arr: T[], sampleSize: number): T[] {
   return [...arr].sort(() => 0.5 - Math.random()).slice(0, sampleSize);
 }
 
-main().finally(async () => {
+seedSampleData().finally(async () => {
   await prisma.$disconnect();
 });

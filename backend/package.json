@@ -7,13 +7,14 @@
   },
   "scripts": {
     "migrate": "prisma migrate dev",
-    "seed": "prisma migrate reset",
+    "seed:hard": "prisma migrate reset",
+    "seed:soft": "prisma db seed",
     "migrate:prod": "prisma migrate deploy",
     "lint:js": "eslint \"src/**/*.ts\"",
     "lint": "npm run lint:js",
     "start:dev": "nodemon --exec ts-node --files -r tsconfig-paths/register ./src/server.ts",
     "postinstall": "prisma generate",
-    "prestart": "npm run migrate:prod",
+    "prestart": "npm run migrate:prod && npm run seed:soft",
     "start": "node ./build/server.js",
     "build:ts": "tsc && tsc-alias -p tsconfig.json",
     "build": "npm run build:ts"
