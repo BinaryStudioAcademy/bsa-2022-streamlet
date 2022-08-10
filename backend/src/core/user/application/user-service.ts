@@ -16,6 +16,10 @@ export class UserService {
     return this.userRepository.getAll();
   }
 
+  getUserByEmail(email: string): Promise<User | null> {
+    return this.userRepository.getByEmail(email);
+  }
+
   createUser(userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
     return this.userRepository.createUser(userRequestDto);
   }

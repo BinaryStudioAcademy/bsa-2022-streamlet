@@ -3,6 +3,7 @@ import { UserRepository } from '~/core/user/port/user-repository';
 import { PrismaClient, User } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { UserSignUpRequestDto, UserSignUpResponseDto } from 'shared/build';
+import { trimUser } from '~/shared/helpers';
 
 @injectable()
 export class UserRepositoryAdapter implements UserRepository {
@@ -10,6 +11,14 @@ export class UserRepositoryAdapter implements UserRepository {
 
   constructor(@inject(CONTAINER_TYPES.PrismaClient) prismaClient: PrismaClient) {
     this.prismaClient = prismaClient;
+  }
+
+  async getByEmail(email: string): Promise<User | null> {
+    return this.prismaClient.user.findFirst({
+      where: {
+        email: email,
+      },
+    });
   }
 
   async getAll(): Promise<User[]> {
@@ -22,9 +31,6 @@ export class UserRepositoryAdapter implements UserRepository {
       data: userRequestDto,
     });
 
-    return {
-      id: user.id,
-      email: user.email,
-    };
+    return trimUser(user);
   }
 }

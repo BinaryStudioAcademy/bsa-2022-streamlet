@@ -1,9 +1,17 @@
 import { inject } from 'inversify';
 import { BaseHttpController, controller, httpPost, requestBody } from 'inversify-express-utils';
 import { ApiPath, AuthApiPath } from '~/shared/enums/api/api';
-import { CONTAINER_TYPES, TokenPair, UserSignUpRequestDto, UserSignUpResponseDto } from '~/shared/types/types';
+import {
+  CONTAINER_TYPES,
+  TokenPair,
+  UserSignUpRequestDto,
+  UserSignUpResponseDto,
+  UserSignInRequestDto,
+  UserSignInResponseDto,
+} from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
-import { generateJwt } from './utils';
+import { compareHash, generateJwt } from './utils';
+import { trimUser } from '~/shared/helpers';
 
 /**
  * @swagger
@@ -39,6 +47,7 @@ export class AuthController extends BaseHttpController {
     this.userService = userService;
   }
 
+  // TODO: edit docs
   /**
    * @swagger
    * /auth/sign-up:
@@ -76,6 +85,32 @@ export class AuthController extends BaseHttpController {
     const accessToken = await generateJwt(user);
     return {
       user,
+      tokens: {
+        accessToken,
+        // TODO: add real token
+        refreshToken: 'dummy',
+      },
+    };
+  }
+
+  // TODO: add docs
+  @httpPost(AuthApiPath.SIGN_IN)
+  public async signIn(
+    @requestBody() userRequestDto: UserSignInRequestDto,
+  ): Promise<{ user: UserSignInResponseDto; tokens: TokenPair }> {
+    // TODO: add validation
+    const user = await this.userService.getUserByEmail(userRequestDto.email);
+    if (!user) {
+      // TODO: throw correct error
+      throw new Error('not found');
+    }
+    if (!(await compareHash(userRequestDto.password, user.password))) {
+      // TODO: throw correct error
+      throw new Error('incorrect password');
+    }
+    const accessToken = await generateJwt(user);
+    return {
+      user: trimUser(user),
       tokens: {
         accessToken,
         // TODO: add real token
