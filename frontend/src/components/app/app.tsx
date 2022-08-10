@@ -31,7 +31,7 @@ const App: FC = () => {
           <Route path={AppRoute.ROOT} element="Root" />
           <Route path={AppRoute.SIGN_UP} element={<Auth />} />
           <Route path={AppRoute.SIGN_IN} element={<Auth />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path={AppRoute.ANY} element={<NotFound />} />
         </Routes>
       </div>
     </>
