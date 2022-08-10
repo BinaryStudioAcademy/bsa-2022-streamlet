@@ -1,1 +1,1 @@
-export { MailType } from './mail-type.enum';
+export { MailType } from 'shared/build';
