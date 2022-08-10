@@ -4,6 +4,7 @@ import { Routes, Route, Link } from 'components/common/common';
 import { useLocation } from 'hooks/hooks';
 import { Auth } from 'components/auth/auth';
 import logo from 'assets/img/logo.svg';
+import { NotFound } from '../not-found-page/not-found';
 
 const App: FC = () => {
   const { pathname } = useLocation();
@@ -30,6 +31,7 @@ const App: FC = () => {
           <Route path={AppRoute.ROOT} element="Root" />
           <Route path={AppRoute.SIGN_UP} element={<Auth />} />
           <Route path={AppRoute.SIGN_IN} element={<Auth />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </>
