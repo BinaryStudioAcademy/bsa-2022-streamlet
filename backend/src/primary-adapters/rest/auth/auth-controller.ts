@@ -1,8 +1,9 @@
 import { inject } from 'inversify';
 import { BaseHttpController, controller, httpPost, requestBody } from 'inversify-express-utils';
 import { ApiPath, AuthApiPath } from '~/shared/enums/api/api';
-import { CONTAINER_TYPES, UserSignUpRequestDto, UserSignUpResponseDto } from '~/shared/types/types';
+import { CONTAINER_TYPES, TokenPair, UserSignUpRequestDto, UserSignUpResponseDto } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
+import { generateJwt } from './utils';
 
 /**
  * @swagger
@@ -67,7 +68,19 @@ export class AuthController extends BaseHttpController {
    *          description: Email is already taken.
    */
   @httpPost(AuthApiPath.SIGN_UP)
-  public signUp(@requestBody() userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
-    return this.userService.createUser(userRequestDto);
+  public async signUp(
+    @requestBody() userRequestDto: UserSignUpRequestDto,
+  ): Promise<{ user: UserSignUpResponseDto; tokens: TokenPair }> {
+    // TODO: add validation
+    const user = await this.userService.createUser(userRequestDto);
+    const accessToken = await generateJwt(user);
+    return {
+      user,
+      tokens: {
+        accessToken,
+        // TODO: add real token
+        refreshToken: 'dummy',
+      },
+    };
   }
 }

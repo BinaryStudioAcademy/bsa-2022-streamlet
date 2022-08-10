@@ -1,2 +1,1 @@
-export { type UserSignUpRequestDto } from 'shared/build';
-export { type UserSignUpResponseDto } from 'shared/build';
+export { type UserSignUpRequestDto, type UserSignUpResponseDto, type UserBaseResponseDto } from 'shared/build';

@@ -59,7 +59,7 @@ export class UserController extends BaseHttpController {
    *              $ref: '#/definitions/User'
    */
   @httpGet('/')
-  public register(): Promise<User[]> {
+  public getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
   }
 }
