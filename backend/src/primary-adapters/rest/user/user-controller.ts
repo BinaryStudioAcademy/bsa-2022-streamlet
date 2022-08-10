@@ -93,7 +93,6 @@ export class UserController extends BaseHttpController {
    */
   @httpPost('/upload')
   public upload(@requestBody() body: UserUploadRequestDto): Promise<UserUploadResponseDto> {
-    const { base64Str } = body;
-    return this.userService.uploadAvatar(base64Str);
+    return this.userService.uploadAvatar(body);
   }
 }

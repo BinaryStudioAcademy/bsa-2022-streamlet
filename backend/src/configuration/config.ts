@@ -30,7 +30,7 @@ interface CloudConfig {
 export interface ConfigInterface {
   APP: AppConfig;
   DATABASE: DatabaseConfig;
-  CLOUD: CloudConfig;
+  IMAGE_CLOUD_STORAGE: CloudConfig;
   API: ApiConfig;
 }
 
@@ -76,7 +76,7 @@ const configuration = (): ConfigInterface => {
     DATABASE: {
       DATABASE_URL: DATABASE_URL || '',
     },
-    CLOUD: {
+    IMAGE_CLOUD_STORAGE: {
       NAME: CLOUDINARY_NAME || '',
       API_KEY: CLOUDINARY_API_KEY || '',
       API_SECRET: CLOUDINARY_API_SECRET || '',

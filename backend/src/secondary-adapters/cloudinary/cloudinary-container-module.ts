@@ -6,11 +6,11 @@ import { CloudinaryPort } from '~/core/common/port/cloudinary';
 import { CloudinaryAdapter } from './cloud/clodinary-adapter';
 
 const cloudinaryContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
-  const { CLOUD } = CONFIG;
+  const { IMAGE_CLOUD_STORAGE } = CONFIG;
   cloudinary.config({
-    cloud_name: CLOUD.NAME,
-    api_key: CLOUD.API_KEY,
-    api_secret: CLOUD.API_SECRET,
+    cloud_name: IMAGE_CLOUD_STORAGE.NAME,
+    api_key: IMAGE_CLOUD_STORAGE.API_KEY,
+    api_secret: IMAGE_CLOUD_STORAGE.API_SECRET,
   });
   cloudinary.api.create_upload_preset({
     name: 'avatar',
