@@ -2,7 +2,7 @@ import { FC } from '../../../common/types/react/fc.type';
 import style from './styles.module.scss';
 import DefaultUserAvatar from '../../../assets/img/default-user-avatar.jpg';
 import { useNavigate } from 'react-router-dom';
-import { AppRoute, IconName } from 'common/enums/enums';
+import { IconName } from 'common/enums/enums';
 import { Icon } from '../icon';
 
 import { getHowLongAgoString } from '../../../helpers/helpers';
@@ -32,10 +32,10 @@ const VideoCard: FC<Props> = ({
 }) => {
   const navigate = useNavigate();
   const redirectToVideoPage = (): void => {
-    navigate(`${AppRoute.VIDEO}/${id}`, { replace: true });
+    navigate(`video/${id}`, { replace: true });
   };
   const redirectToChanelPage = (): void => {
-    navigate(`${AppRoute.CHANNEL}/${chanelId}`, { replace: true });
+    navigate(`channel/${chanelId}`, { replace: true });
   };
   const viewerNumStringWithSpace: string = String(viewerNum).replace(/(\d)(?=(\d\d\d)+(\D|$))/g, '$1 ');
   return (
