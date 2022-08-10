@@ -4,8 +4,7 @@ import { Transporter } from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { CONFIG } from '~/configuration/config';
 import { MailRepository } from '~/core/mail/port/mail-repository';
-import { MailType } from '~/shared/enums/enums';
-import { CONTAINER_TYPES, MailProps } from '~/shared/types/types';
+import { CONTAINER_TYPES, MailRequestDto, MailResponseDto } from '~/shared/types/types';
 
 @injectable()
 export class MailRepositoryAdapter implements MailRepository {
@@ -15,7 +14,7 @@ export class MailRepositoryAdapter implements MailRepository {
     this.transport = transport;
   }
 
-  async sendEmail(receiver: string, mailType: MailType, props: MailProps): Promise<void> {
+  async sendEmail(mailRequestDto: MailRequestDto): Promise<MailResponseDto> {
     const email = new Email({
       views: { root: '~/shared/mail-templates' },
       message: {
@@ -33,12 +32,12 @@ export class MailRepositoryAdapter implements MailRepository {
     });
 
     return email.send({
-      template: mailType,
+      template: mailRequestDto.type,
       message: {
-        to: receiver,
+        to: mailRequestDto.receiver,
       },
       locals: {
-        ...props,
+        ...mailRequestDto.props,
       },
     });
   }

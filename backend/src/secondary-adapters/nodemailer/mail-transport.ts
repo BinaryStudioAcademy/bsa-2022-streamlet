@@ -5,7 +5,7 @@ import SMTPConnection from 'nodemailer/lib/smtp-connection';
 import { AsyncContainerModule, interfaces } from 'inversify';
 import { MailRepository } from '~/core/mail/port/mail-repository';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
-import { MailRepositoryAdapter } from './mail-repository-adapter';
+import { MailRepositoryAdapter } from './mail/mail-repository-adapter';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 const mailTransport = new AsyncContainerModule(async (bind: interfaces.Bind) => {

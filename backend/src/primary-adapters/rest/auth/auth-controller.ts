@@ -1,8 +1,13 @@
 import { inject } from 'inversify';
 import { BaseHttpController, controller, httpPost, requestBody } from 'inversify-express-utils';
 import { ApiPath, AuthApiPath } from '~/shared/enums/api/api';
-import { CONTAINER_TYPES, UserSignUpRequestDto, UserSignUpResponseDto } from '~/shared/types/types';
+import { CONTAINER_TYPES, UserSignUpRequestDto, UserSignUpResponseDto, MailResponseDto } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
+
+type MailTestRequestDto = {
+  email: string;
+  name: string;
+};
 
 /**
  * @swagger
@@ -69,5 +74,11 @@ export class AuthController extends BaseHttpController {
   @httpPost(AuthApiPath.SIGN_UP)
   public signUp(@requestBody() userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
     return this.userService.createUser(userRequestDto);
+  }
+
+  // Test route
+  @httpPost('/mail-test')
+  public testMail(@requestBody() mailTestRequestDto: MailTestRequestDto): Promise<MailResponseDto> {
+    return this.userService.testSendingEmail(mailTestRequestDto);
   }
 }
