@@ -29,9 +29,9 @@ label {
   z-index: 1;
   width: 100vw;
   margin: auto;
-  background-color: rgba(52 79 62 47%);
+  background-color: rgba(52 79 62 / 47%);
   border: solid 3px transparent;
-  border-image-source: linear-gradient(to left, rgba(34 240 0 47%), rgba(146 255 229 47%));
+  border-image-source: linear-gradient(to left, rgba(34 240 0 / 47%), rgba(146 255 229 / 47%));
   border-image-slice: 1;
 }
 
