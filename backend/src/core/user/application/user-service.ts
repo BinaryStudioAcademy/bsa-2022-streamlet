@@ -2,8 +2,8 @@ import { inject, injectable } from 'inversify';
 import { User } from '@prisma/client';
 import { CONTAINER_TYPES, UserSignUpRequestDto } from '~/shared/types/types';
 import { UserRepository } from '~/core/user/port/user-repository';
-import { UserSignUpResponseDto } from 'shared/build';
-import { UploadApiResponse } from 'cloudinary';
+import { UserSignUpResponseDto, UserUploadResponseDto } from 'shared/build';
+import { UploadApiResponseDto } from '~/shared/dtos/cloudinary/upload-api-response-dto';
 
 @injectable()
 export class UserService {
@@ -21,7 +21,7 @@ export class UserService {
     return this.userRepository.createUser(userRequestDto);
   }
 
-  uploadAvatar(base64Str: string): Promise<UploadApiResponse> {
-    return this.userRepository.uploadAvatar(base64Str);
+  async uploadAvatar(base64Str: string): Promise<UserUploadResponseDto> {
+    return UploadApiResponseDto(await this.userRepository.uploadAvatar(base64Str));
   }
 }

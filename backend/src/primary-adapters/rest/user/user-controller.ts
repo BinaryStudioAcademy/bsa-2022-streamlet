@@ -1,9 +1,8 @@
 import { BaseHttpController, controller, httpGet, httpPost, requestBody } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES } from '~/shared/types/types';
+import { CONTAINER_TYPES, UserUploadResponseDto, UserUploadRequestDto } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
-import { UploadApiResponse } from 'cloudinary';
 
 /**
  * @swagger
@@ -65,8 +64,35 @@ export class UserController extends BaseHttpController {
   }
 
   //NOTE: this route should be private and moved to user profile controller in future to set user avatar in db
+  /**
+   * @swagger
+   * /upload:
+   *    post:
+   *      tags:
+   *      - user
+   *      operationId: upload
+   *      consumes:
+   *      - application/json
+   *      produces:
+   *      - application/json
+   *      description: Returns Cloudinary Upload Response
+   *      parameters:
+   *        - in: body
+   *          base64Str: body
+   *          description: Image in base64 format
+   *          required: true
+   *          schema:
+   *            $ref: '#/definitions/UserUploadRequestDto'
+   *      responses:
+   *        200:
+   *          description: successful operation
+   *          schema:
+   *            type: object
+   *            items:
+   *              $ref: '#/definitions/UserUploadResponseDto'
+   */
   @httpPost('/upload')
-  public upload(@requestBody() body: { base64Str: string }): Promise<UploadApiResponse> {
+  public upload(@requestBody() body: UserUploadRequestDto): Promise<UserUploadResponseDto> {
     const { base64Str } = body;
     return this.userService.uploadAvatar(base64Str);
   }
