@@ -47,11 +47,13 @@ const configuration = (): ConfigInterface => {
     CLOUDINARY_API_KEY,
     CLOUDINARY_API_SECRET,
     CLOUDINARY_NAME,
+    RABBITMQ_HOST,
     RABBITMQ_PORT,
     API_BASE_PREFIX,
   } = process.env;
 
   const host = HOST || 'localhost';
+  const rabbitMqHost = RABBITMQ_HOST || 'localhost';
   const port = Number(PORT) || 5000;
   const rabbitMqPort = Number(RABBITMQ_PORT) || 5672;
   const extension = isDevEnvironment(NODE_ENV) ? '.ts' : '.js';
@@ -60,7 +62,7 @@ const configuration = (): ConfigInterface => {
     APP: {
       PORT: port,
       HOST: `http://${host}:${port}`,
-      RABBITMQ_URL: `amqp://${host}:${rabbitMqPort}`,
+      RABBITMQ_URL: `amqp://${rabbitMqHost}:${rabbitMqPort}`,
       NODE_ENV: <AppEnvironment>NODE_ENV || AppEnvironment.DEVELOPMENT,
       LOGGER: {
         level: isDevEnvironment(NODE_ENV) ? LogLevel.DEBUG : LogLevel.INFO,
