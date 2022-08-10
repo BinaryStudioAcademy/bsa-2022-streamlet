@@ -1,19 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
-:root {
-  --accent-color: #06c149;
-  --background: #f2f7ef;
-  --text-color: #6a726d;
-}
-
 body {
   margin: 0;
-  color: var(--text-color);
+  color: #6a726d;
   font-family: 'Inter', sans-serif;
 }
 
 .message-container {
-  background-color: var(--background);
+  background-color: #f2f7ef;
   margin: 0 auto;
   padding: 2em;
   width: 60%;
@@ -24,7 +18,7 @@ td {
 }
 
 h1 {
-  color: var(--accent-color);
+  color: #06c149;
 }
 
 p {
@@ -32,7 +26,7 @@ p {
 }
 
 .button {
-  background-color: var(--accent-color);
+  background-color: #06c149;
   border: none;
   color: white;
   width: 30%;
@@ -46,7 +40,7 @@ p {
 
 hr {
   border: none;
-  border-top: 1px solid var(--text-color);
+  border-top: 1px solid #6a726d;
   width: 70%;
 }
 

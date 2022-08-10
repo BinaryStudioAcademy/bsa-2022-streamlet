@@ -8,7 +8,7 @@ import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { MailRepositoryAdapter } from './mail/mail-repository-adapter';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
-const mailTransport = new AsyncContainerModule(async (bind: interfaces.Bind) => {
+const mailContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const mailServiceOAuth2Client = new google.auth.OAuth2(
     CONFIG.MAIL_SERVICE.CLIENT_ID,
     CONFIG.MAIL_SERVICE.CLIENT_SECRET,
@@ -34,4 +34,4 @@ const mailTransport = new AsyncContainerModule(async (bind: interfaces.Bind) => 
   bind<Transporter<SMTPTransport.SentMessageInfo>>(CONTAINER_TYPES.MailTransporter).toConstantValue(transport);
 });
 
-export { mailTransport };
+export { mailContainerModule };

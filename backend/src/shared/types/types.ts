@@ -9,3 +9,4 @@ export {
   WelcomeMail,
   MailPropsType,
 } from './mail/mail';
+export { MailTestRequestDto } from './mail-test/mail-test';
