@@ -1,10 +1,10 @@
 import { UploadApiResponse } from 'cloudinary';
 import { inject, injectable } from 'inversify';
-import { CloudinaryPort } from '~/core/common/port/cloudinary';
+import { ImageStorePort } from '~/core/common/port/image-store';
 import { CloudinaryApi, CloudinaryUploadDto, CONTAINER_TYPES } from '~/shared/types/types';
 
 @injectable()
-export class CloudinaryAdapter implements CloudinaryPort {
+export class CloudinaryAdapter implements ImageStorePort {
   private cloudinary: CloudinaryApi;
 
   constructor(@inject(CONTAINER_TYPES.Cloudinary) cloudinary: CloudinaryApi) {
