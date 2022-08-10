@@ -12,6 +12,7 @@
     "build": "npm run build:ts && cp package.json build"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.8.2",
     "tsc-alias": "1.6.11"
   },
   "dependencies": {

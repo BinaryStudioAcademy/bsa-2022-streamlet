@@ -2,6 +2,7 @@ import express from 'express';
 import PinoHttp from 'pino-http';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
+import swaggerUi from 'swagger-ui-express';
 
 import 'reflect-metadata';
 
@@ -10,6 +11,7 @@ import { createDIContainer } from './configuration/di-container';
 import { InversifyExpressServer, RoutingConfig } from 'inversify-express-utils';
 import { CONFIG } from './configuration/config';
 import { logger } from './configuration/logger';
+import { swagger as swaggerSpecification } from './configuration/swagger';
 
 class Application {
   public app: InversifyExpressServer | undefined;
@@ -31,6 +33,7 @@ class Application {
   private initMiddlewares(): void {
     this.app?.setConfig((app) => {
       app.use(helmet());
+      app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
       app.use(bodyParser.urlencoded({ 'extended': true }));
       app.use(bodyParser.json());
       app.use(PinoHttp({ logger }));
