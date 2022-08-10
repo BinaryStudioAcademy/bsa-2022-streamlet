@@ -53,9 +53,11 @@ const configuration = (): ConfigInterface => {
     MAIL_REDIRECT_URI,
     MAIL_REFRESH_TOKEN,
     RABBITMQ_PORT,
+    RABBITMQ_HOST,
   } = process.env;
 
   const host = HOST || 'localhost';
+  const rabbitMqHost = RABBITMQ_HOST || 'localhost';
   const port = Number(PORT) || 5000;
   const rabbitMqPort = Number(RABBITMQ_PORT) || 5672;
   const extension = isDevEnvironment(NODE_ENV) ? '.ts' : '.js';
@@ -64,7 +66,7 @@ const configuration = (): ConfigInterface => {
     APP: {
       PORT: port,
       HOST: `http://${host}:${port}`,
-      RABBITMQ_URL: `amqp://${host}:${rabbitMqPort}`,
+      RABBITMQ_URL: `amqp://${rabbitMqHost}:${rabbitMqPort}`,
       NODE_ENV: <AppEnvironment>NODE_ENV || AppEnvironment.DEVELOPMENT,
       LOGGER: {
         level: isDevEnvironment(NODE_ENV) ? LogLevel.DEBUG : LogLevel.INFO,
