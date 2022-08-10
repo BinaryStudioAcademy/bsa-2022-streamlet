@@ -3,7 +3,7 @@ enum AppRoute {
   SIGN_IN = '/sign-in',
   SIGN_UP = '/sign-up',
   VIDEO = '/video',
-  CHANEL = '/chanel',
+  CHANNEL = '/chanel',
 }
 
 export { AppRoute };

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppRoute, IconName } from 'common/enums/enums';
 import { Icon } from '../icon';
 
-import { getHowLongAgoString } from '../../../helpers/date/get-how-long-ago-string.helper';
+import { getHowLongAgoString } from '../../../helpers/helpers';
 
 type Props = {
   id: string;
@@ -35,7 +35,7 @@ const VideoCard: FC<Props> = ({
     navigate(`${AppRoute.VIDEO}/${id}`, { replace: true });
   };
   const redirectToChanelPage = (): void => {
-    navigate(`${AppRoute.CHANEL}/${chanelId}`, { replace: true });
+    navigate(`${AppRoute.CHANNEL}/${chanelId}`, { replace: true });
   };
   const viewerNumStringWithSpace: string = String(viewerNum).replace(/(\d)(?=(\d\d\d)+(\D|$))/g, '$1 ');
   return (
