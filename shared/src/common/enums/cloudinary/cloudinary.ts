@@ -1,1 +1,1 @@
-export { CloudinaryPresetType } from './cloudinary-preset.enum';
+export { ImageStorePresetType } from './image-store-preset.enum';

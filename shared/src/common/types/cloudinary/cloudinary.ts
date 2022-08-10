@@ -1,2 +1,3 @@
 export { type CloudinaryApi } from './cloudinary-api.type';
-export { type CloudinaryUploadDto } from './cloudinary-upload-dto.type';
+export { type ImageUploadRequestDto } from './image-store-upload-dto-request.type';
+export { type ImageUploadResponseDto } from './image-store-upload-response-dto';

@@ -6,7 +6,7 @@ const CONTAINER_TYPES = {
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),
-  CloudinaryAdapter: Symbol.for('CloudinaryAdapter'),
+  ImageStoreAdapter: Symbol.for('CloudinaryAdapter'),
   AmqpChannel: Symbol.for('AmqpChannel'),
   AmqpChannelAdapter: Symbol.for('AmqpChannelAdapter'),
 };

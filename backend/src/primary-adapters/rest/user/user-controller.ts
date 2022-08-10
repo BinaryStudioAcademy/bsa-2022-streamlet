@@ -1,6 +1,6 @@
 import { BaseHttpController, controller, httpGet, httpPost, requestBody } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES, UserUploadResponseDto, UserUploadRequestDto } from '~/shared/types/types';
+import { CONTAINER_TYPES, ImageUploadResponseDto, UserUploadRequestDto } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
 
@@ -10,6 +10,24 @@ import { User } from '@prisma/client';
  *   name: user
  *   description: User management
  * definitions:
+ *    UserUploadRequestDto:
+ *      type: object
+ *      properties:
+ *        base64Str:
+ *          type: string
+ *          format: base64
+ *    ImageUploadResponseDto:
+ *      type: object
+ *      properties:
+ *        url:
+ *          type: string
+ *          format: uri
+ *        format:
+ *          type: string
+ *        width:
+ *          type: number
+ *        height:
+ *          type: number
  *    User:
  *      type: object
  *      properties:
@@ -75,7 +93,7 @@ export class UserController extends BaseHttpController {
    *      - application/json
    *      produces:
    *      - application/json
-   *      description: Returns Cloudinary Upload Response
+   *      description: Returns Image Store API Upload Response
    *      parameters:
    *        - in: body
    *          base64Str: body
@@ -87,12 +105,10 @@ export class UserController extends BaseHttpController {
    *        200:
    *          description: successful operation
    *          schema:
-   *            type: object
-   *            items:
-   *              $ref: '#/definitions/UserUploadResponseDto'
+   *            $ref: '#/definitions/ImageUploadResponseDto'
    */
   @httpPost('/upload')
-  public upload(@requestBody() body: UserUploadRequestDto): Promise<UserUploadResponseDto> {
+  public upload(@requestBody() body: UserUploadRequestDto): Promise<ImageUploadResponseDto> {
     return this.userService.uploadAvatar(body);
   }
 }

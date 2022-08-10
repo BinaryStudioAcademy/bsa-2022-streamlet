@@ -3,7 +3,7 @@ import { CloudinaryApi, CONTAINER_TYPES } from '~/shared/types/types';
 import { v2 as cloudinary } from 'cloudinary';
 import { CONFIG } from '~/configuration/config';
 import { ImageStorePort } from '~/core/common/port/image-store';
-import { CloudinaryAdapter } from './cloud/clodinary-adapter';
+import { ImageStoreAdapter } from './cloud/clodinary-adapter';
 
 const cloudinaryContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const { IMAGE_CLOUD_STORAGE } = CONFIG;
@@ -18,7 +18,7 @@ const cloudinaryContainerModule = new AsyncContainerModule(async (bind: interfac
     allowed_formats: 'jpg, png',
   });
 
-  bind<ImageStorePort>(CONTAINER_TYPES.CloudinaryAdapter).to(CloudinaryAdapter);
+  bind<ImageStorePort>(CONTAINER_TYPES.ImageStoreAdapter).to(ImageStoreAdapter);
   bind<CloudinaryApi>(CONTAINER_TYPES.Cloudinary).toConstantValue(cloudinary);
 });
 
