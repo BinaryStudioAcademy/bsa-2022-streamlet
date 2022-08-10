@@ -8,11 +8,12 @@ import element from 'assets/img/auth/auth-element.svg';
 type Props = {
   pageTitle: 'Login' | 'Sign up' | 'Restore password';
   children: React.ReactNode;
+  className: string;
 };
 
-const AuthContainer: FC<Props> = ({ children, pageTitle }) => {
+const AuthContainer: FC<Props> = ({ children, pageTitle, className }) => {
   return (
-    <div className="auth-background">
+    <div className={`auth-background ${className}`}>
       <img src={zigzag} className="background-zigzag" alt="zigzag" />
       <img src={zigzag} className="background-zigzag-2" alt="zigzag" />
       <img src={element} className="background-element" alt="element" />

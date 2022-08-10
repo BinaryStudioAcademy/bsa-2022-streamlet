@@ -21,8 +21,16 @@ label {
   display: flex;
   align-items: center;
   width: 100vw;
-  height: 100%;
   background: var(--gray-400-primary-background);
+}
+
+.restore-password {
+  height: 100vh;
+}
+
+.sign-in,
+.sign-up {
+  height: 100%;
 }
 
 .auth-modal {
@@ -128,6 +136,10 @@ label {
   outline: inherit;
 }
 
+#restore-email-input {
+  margin-bottom: 20px;
+}
+
 .continue-with-paragraph {
   display: flex;
   justify-content: center;
@@ -181,7 +193,7 @@ label {
   z-index: -1;
 }
 
-@media screen and (min-height: 750px) {
+@media screen and (min-height: 820px) {
   .auth-background {
     width: 100vw;
     height: 100vh;
