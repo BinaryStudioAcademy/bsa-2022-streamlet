@@ -13,6 +13,9 @@ import { ReactComponent as Timeago } from 'assets/img/timeago.svg';
 import { ReactComponent as Logo } from 'assets/img/logo.svg';
 import { ReactComponent as Moon } from 'assets/img/moon.svg';
 import { ReactComponent as Sun } from 'assets/img/sun.svg';
+import { ReactComponent as Gear } from 'assets/img/gear.svg';
+import { ReactComponent as Glob } from 'assets/img/globe.svg';
+import { ReactComponent as LogOut } from 'assets/img/logout.svg';
 
 const getColor = (color: string): string => styles[`fill${color}`];
 
@@ -32,37 +35,46 @@ const Icon = ({ name, color, size }: { name: string; color: string; size: string
       return <Alarm className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.CAMERA:
-      return <Camera className={getColor(color)} />;
+      return <Camera className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.COMPAS:
-      return <Compas className={getColor(color)} />;
+      return <Compas className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.FOLLOW:
-      return <Follow className={getColor(color)} />;
+      return <Follow className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.HISTORY:
-      return <History className={getColor(color)} />;
+      return <History className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.HOME:
-      return <Home className={getColor(color)} />;
+      return <Home className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.SEARCH:
-      return <Search className={getColor(color)} />;
+      return <Search className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.SIGNOUT:
-      return <Signout className={getColor(color)} />;
+      return <Signout className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.SMILE:
-      return <Smile className={getColor(color)} />;
+      return <Smile className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.LOGO:
-      return <Logo />;
+      return <Logo width={`${size}px`} height={`${size}px`} />;
 
     case IconName.MOON:
-      return <Moon className={getColor(color)} />;
+      return <Moon className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.SUN:
-      return <Sun className={getColor(color)} />;
+      return <Sun className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+
+    case IconName.GEAR:
+      return <Gear className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+
+    case IconName.GLOB:
+      return <Glob className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+
+    case IconName.LOGOUT:
+      return <LogOut className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     default:
       return <Timeago className={getColor(color)} />;

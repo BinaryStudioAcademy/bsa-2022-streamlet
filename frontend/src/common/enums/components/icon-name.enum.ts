@@ -12,6 +12,9 @@ enum IconName {
   LOGO = 'logo',
   MOON = 'moon',
   SUN = 'sun',
+  GEAR = 'gear',
+  GLOB = 'glob',
+  LOGOUT = 'logout',
 }
 
 export { IconName };

@@ -30,7 +30,18 @@
   --brand-green-color: #06c149;
   --brand-yellow-color: #f6c648;
   --support-info-color: #03d8ff;
-  --supprot-error-color: #f76519;
+  --support-error-color: #f76519;
+  --header-height: 82px;
+  --sidebar-width-lg: 270px;
+  --sidebar-width-sm: 54px;
+  --sidebar-width: var(--sidebar-width-lg);
+  --header-background: var(--gray-300-header-menu-background);
+  --header-search-background: var(--gray-400-primary-background);
+  --header-logo-color: var(--white-text-color);
+  --logo-displayed: inline-flex;
+  --header-search-displayed: inline-flex;
+  --header-margin-step: 30px;
+  --user-dropdown-color: var(--white-text-color);
 }
 
 body {
@@ -47,7 +58,7 @@ body {
 
 img {
   display: block;
-  max-width: 100%;
+  min-width: 100%;
   height: auto;
 }
 
@@ -160,4 +171,57 @@ h6 {
   font-family: Gilroy, sans-serif;
   font-style: italic;
   line-height: 24px;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  height: calc(100vh - var(--header-height));
+}
+
+@media only screen and (max-width: 960px) {
+  :root {
+    --header-margin-step: 5px;
+  }
+}
+
+@media only screen and (max-width: 870px) {
+  :root {
+    --sidebar-width: var(--sidebar-width-sm);
+    --logo-displayed: none;
+  }
+}
+
+@media only screen and (max-width: 470px) {
+  :root {
+    --header-search-displayed: none;
+  }
+}
+
+@mixin dark-mode {
+  --header-background: var(--gray-300-header-menu-background);
+  --header-search-background: var(--gray-400-primary-background);
+  --header-logo-color: var(--white-text-color);
+  --user-dropdown-color: var(--white-text-color);
+}
+
+@mixin light-mode {
+  --header-background: var(--green-100-header-menu-background);
+  --header-search-background: var(--white-text-color);
+  --header-logo-color: var(--primary-text-color);
+  --user-dropdown-color: var(--primary-text-color);
+}
+
+.dark-mode {
+  @include dark-mode;
+}
+
+.light-mode {
+  @include light-mode;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    @include dark-mode;
+  }
 }

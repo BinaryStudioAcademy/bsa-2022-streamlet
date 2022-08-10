@@ -7,6 +7,7 @@ enum AppRoute {
   HISTORY = '/history',
   CHANNEL = '/channel',
   CHANNEL_ID = '/channel/:id',
+  STREAM = '/stream',
 }
 
 export { AppRoute };

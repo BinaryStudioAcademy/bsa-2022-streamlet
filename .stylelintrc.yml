@@ -8,6 +8,8 @@ rules:
   color-hex-length: long
   declaration-no-important: true
   max-nesting-depth: 0
+  at-rule-no-unknown: null
+  scss/at-rule-no-unknown: true
   no-descending-specificity: true
   scss/at-import-partial-extension: always
   string-quotes: single

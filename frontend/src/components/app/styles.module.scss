@@ -1,0 +1,19 @@
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100%;
+  background-color: var(--header-background);
+}
+
+.content {
+  flex: 1 0 auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  height: var(--header-height);
+  background-color: var(--header-background);
+  border-bottom: 2px solid var(--header-search-background);
+}
