@@ -1,11 +1,11 @@
-import { AsyncContainerModule, interfaces } from 'inversify';
+import { ContainerModule, interfaces } from 'inversify';
 import { CloudinaryApi, CONTAINER_TYPES } from '~/shared/types/types';
 import { v2 as cloudinary } from 'cloudinary';
 import { CONFIG } from '~/configuration/config';
 import { ImageStorePort } from '~/core/common/port/image-store';
 import { ImageStoreAdapter } from './cloud/clodinary-adapter';
 
-const cloudinaryContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
+const cloudinaryContainerModule = new ContainerModule((bind: interfaces.Bind) => {
   const { IMAGE_CLOUD_STORAGE } = CONFIG;
   cloudinary.config({
     cloud_name: IMAGE_CLOUD_STORAGE.NAME,
