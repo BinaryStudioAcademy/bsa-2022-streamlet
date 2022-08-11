@@ -1,0 +1,46 @@
+.video-comment {
+  margin-bottom: 20px;
+}
+
+.video-comment .main-part-comment {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.video-comment .main-part-comment .commentators-avatar {
+  width: 34px;
+  height: 34px;
+  margin-right: 12px;
+  background-size: cover;
+  border-radius: 50%;
+}
+
+.video-comment .main-part-comment .commentators-name {
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.video-comment .main-part-comment .dispatch-time {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  color: #9597a1;
+  font-weight: 400;
+  font-size: 12px;
+  font-style: normal;
+  line-height: 14px;
+}
+
+.video-comment .content-part-comment {
+  margin: 5px 0 0 46px;
+}
+
+.video-comment .content-part-comment .text-comment {
+  color: var(--text-gray-color);
+  font-weight: 400;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 19px;
+}
