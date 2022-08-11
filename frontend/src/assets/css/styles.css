@@ -3,6 +3,37 @@
           box-sizing: border-box;
 }
 
+@font-face {
+  font-family: Gilroy-SemiBold;
+  src: url("../font/Gilroy-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: Gilroy;
+  src: url("../font/Gilroy-Regular.ttf");
+}
+
+@font-face {
+  font-family: Gilroy-SemiBold;
+  src: url("../font/Gilroy-Medium.ttf");
+}
+
+:root {
+  --gray-400-primary-background: #181a20;
+  --gray-300-header-menu-background: #1f222a;
+  --gray-200-input-background: #363c3a;
+  --green-300-primary-background: #213428;
+  --green-200-header-menu-background: #344f3e;
+  --green-100-header-menu-background: #ebefe8;
+  --primary-text-color: #181a20;
+  --text-gray-color: #6a726d;
+  --white-text-color: #ffffff;
+  --brand-green-color: #06c149;
+  --brand-yellow-color: #f6c648;
+  --support-info-color: #03d8ff;
+  --supprot-error-color: #f76519;
+}
+
 body {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -14,9 +45,10 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  font-size: 14px;
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
+  color: #505565;
+  font-size: 16px;
+  font-family: Gilroy-SemiBold, sans-serif;
+  line-height: 28px;
 }
 
 img {
@@ -57,5 +89,90 @@ select {
   clip: rect(0 0 0 0);
   -webkit-clip-path: inset(100%);
           clip-path: inset(100%);
+}
+
+h1 {
+  color: #232735;
+  font-size: 44px;
+  font-family: Gilroy-SemiBold, sans-serif;
+  line-height: 64px;
+}
+
+h2 {
+  color: #232735;
+  font-size: 30px;
+  font-family: Gilroy-SemiBold, sans-serif;
+  line-height: 48px;
+}
+
+h3 {
+  color: #232735;
+  font-size: 20px;
+  font-family: Gilroy-SemiBold, sans-serif;
+  line-height: 32px;
+}
+
+h4 {
+  color: #232735;
+  font-size: 18px;
+  font-family: Gilroy-SemiBold, sans-serif;
+  line-height: 24px;
+}
+
+h5 {
+  color: #232735;
+  font-size: 16px;
+  font-family: Gilroy-Medium, sans-serif;
+  line-height: 18px;
+}
+
+h6 {
+  color: #232735;
+  font-size: 14px;
+  font-family: Gilroy-SemiBold, sans-serif;
+  line-height: 24px;
+}
+
+.sub-heading {
+  color: #232735;
+  font-size: 24px;
+  font-family: Gilroy-SemiBold, sans-serif;
+  line-height: 48px;
+}
+
+.caption {
+  color: #505565;
+  font-weight: 400;
+  font-size: 12px;
+  font-family: Gilroy, sans-serif;
+  font-style: normal;
+  line-height: 16px;
+}
+
+.small-text {
+  color: #505565;
+  font-weight: 400;
+  font-size: 14px;
+  font-family: Gilroy, sans-serif;
+  font-style: normal;
+  line-height: 19px;
+}
+
+.semi-bold {
+  color: #505565;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: Gilroy, sans-serif;
+  font-style: normal;
+  line-height: 20px;
+}
+
+.quotation {
+  color: #505565;
+  font-weight: 400;
+  font-size: 16px;
+  font-family: Gilroy, sans-serif;
+  font-style: italic;
+  line-height: 24px;
 }
 /*# sourceMappingURL=styles.css.map */
