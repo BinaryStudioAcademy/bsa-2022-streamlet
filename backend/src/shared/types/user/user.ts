@@ -4,4 +4,5 @@ export {
   type UserBaseResponseDto,
   type UserSignInResponseDto,
   type UserSignInRequestDto,
+  type UserUploadRequestDto,
 } from 'shared/build';

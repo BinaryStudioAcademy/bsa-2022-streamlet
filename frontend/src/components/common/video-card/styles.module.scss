@@ -1,0 +1,145 @@
+.video-card {
+  width: 262px;
+  min-height: 235px;
+  padding-bottom: 5px;
+  background-color: var(--gray-300-header-menu-background);
+}
+
+.video-preview-container {
+  position: relative;
+  width: 262px;
+  height: 121px;
+  cursor: pointer;
+}
+
+.video-preview-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.video-duration-label {
+  position: absolute;
+  right: 20px;
+  bottom: 12px;
+  min-width: 47px;
+  color: white;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+  text-align: center;
+  background-color: var(--gray-300-header-menu-background);
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.video-card-author-avatar {
+  width: 21px;
+  height: 20px;
+  margin: 6px 7px 0 0;
+  background-color: white;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.video-information-container {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px black solid;
+}
+
+.video-description-container {
+  max-width: 197.56px;
+}
+
+.video-card-title {
+  max-height: 40px;
+  margin: 7px 0 9px;
+  overflow: hidden;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  text-align: left;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+svg {
+  width: 15px;
+  height: 12px;
+  margin: 0 6px;
+}
+
+.video-card-author-name {
+  max-width: 198px;
+  max-height: 16px;
+  margin: 0 0 10px;
+  overflow: hidden;
+  color: var(--text-gray-color);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+  text-align: left;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.video-card-hr {
+  margin: 0 0 5px;
+  color: var(--gray-400-primary-background);
+  background-color: var(--gray-400-primary-background);
+  border-color: var(--gray-400-primary-background);
+}
+
+.video-card-statistic-container {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  width: 100%;
+  min-height: 29px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0;
+  text-align: right;
+}
+
+.video-card-statistic-container > div {
+  display: flex;
+  align-items: center;
+}
+
+.video-card-statistic-container > div:first-child {
+  max-width: 131px;
+  margin: 0 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-card-statistic-container > div:first-child svg {
+  width: 20px;
+  height: 20px;
+  color: #363c3a;
+}
+
+.video-card-statistic-container > div:last-child svg {
+  width: 17px;
+  height: 17px;
+}
+
+.video-card-statistic-container > div:last-child {
+  max-width: 131px;
+  margin: 0 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewer-container p {
+  margin: 0;
+  text-align: center;
+}
