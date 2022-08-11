@@ -1,5 +1,5 @@
 extends:
-  - ../.eslintrc.yml
+  - ../../.eslintrc.yml
 
 env:
   node: true

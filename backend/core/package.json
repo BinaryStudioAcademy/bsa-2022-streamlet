@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "backend-core",
   "private": "true",
   "engines": {
     "node": ">=16 <17",
@@ -16,7 +16,7 @@
     "postinstall": "prisma generate",
     "prestart": "npm run migrate:prod && npm run seed:soft",
     "start": "node ./build/server.js",
-    "build:ts": "tsc && tsc-alias -p tsconfig.json",
+    "build:ts": "tsc && tsc-alias -p ./tsconfig.json",
     "build": "npm run build:ts"
   },
   "devDependencies": {
