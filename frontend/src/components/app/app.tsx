@@ -5,6 +5,7 @@ import { useLocation } from 'hooks/hooks';
 import { Auth } from 'components/auth/auth';
 import logo from 'assets/img/logo.svg';
 import { Studio } from '../auth/components/components';
+import { NotFound } from '../not-found-page/not-found';
 
 const App: FC = () => {
   const { pathname } = useLocation();
@@ -35,6 +36,8 @@ const App: FC = () => {
           <Route path={AppRoute.SIGN_UP} element={<Auth />} />
           <Route path={AppRoute.SIGN_IN} element={<Auth />} />
           <Route path={AppRoute.STUDIO} element={<Studio />} />
+          <Route path={AppRoute.RESTORE_PASSWORD} element={<Auth />} />
+          <Route path={AppRoute.ANY} element={<NotFound />} />
         </Routes>
       </div>
     </>
