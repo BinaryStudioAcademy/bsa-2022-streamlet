@@ -43,6 +43,7 @@
     "amqplib": "0.10.2",
     "bcrypt": "5.0.1",
     "body-parser": "1.20.0",
+    "cloudinary": "1.30.1",
     "dotenv": "16.0.1",
     "email-templates": "10.0.1",
     "glob": "8.0.3",

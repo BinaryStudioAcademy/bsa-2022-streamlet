@@ -21,6 +21,12 @@ interface ApiConfig {
   PREFIX: string;
 }
 
+interface CloudConfig {
+  NAME: string;
+  API_KEY: string;
+  API_SECRET: string;
+}
+
 interface MailServiceConfig {
   ADDRESS: string;
   CLIENT_ID: string;
@@ -32,6 +38,7 @@ interface MailServiceConfig {
 export interface ConfigInterface {
   APP: AppConfig;
   DATABASE: DatabaseConfig;
+  IMAGE_CLOUD_STORAGE: CloudConfig;
   API: ApiConfig;
   MAIL_SERVICE: MailServiceConfig;
 }
@@ -46,6 +53,9 @@ const configuration = (): ConfigInterface => {
     HOST,
     PORT,
     DATABASE_URL,
+    CLOUDINARY_API_KEY,
+    CLOUDINARY_API_SECRET,
+    CLOUDINARY_NAME,
     API_BASE_PREFIX,
     MAIL_ADDRESS,
     MAIL_CLIENT_ID,
@@ -79,6 +89,11 @@ const configuration = (): ConfigInterface => {
     },
     DATABASE: {
       DATABASE_URL: DATABASE_URL || '',
+    },
+    IMAGE_CLOUD_STORAGE: {
+      NAME: CLOUDINARY_NAME || '',
+      API_KEY: CLOUDINARY_API_KEY || '',
+      API_SECRET: CLOUDINARY_API_SECRET || '',
     },
     API: {
       PREFIX: API_BASE_PREFIX || '',
