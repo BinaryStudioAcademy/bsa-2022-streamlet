@@ -1,0 +1,72 @@
+@import './../../../../assets/css/breakpoint.scss';
+
+.filter-bar {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 20px;
+  padding: 12px;
+  border-bottom: 1px solid var(--gray-200-input-background);
+}
+
+.filter-bar-select {
+  position: relative;
+}
+
+.filter-bar-select svg {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 12px;
+  height: auto;
+  cursor: pointer;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.filter-bar select {
+  width: 100%;
+  min-width: 110px;
+  padding: 6px 30px 6px 12px;
+  color: var(--white-text-color);
+  text-transform: capitalize;
+  background-color: var(--gray-400-primary-background);
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 5px 5px rgb(0 0 0 / 20%);
+  cursor: pointer;
+  appearance: none;
+}
+
+.filter-bar select:focus {
+  outline: none;
+}
+
+.filter-bar select:focus + svg path {
+  fill: var(--white-text-color);
+}
+
+.filter-bar select::-ms-expand {
+  display: none;
+}
+
+.filter-bar option {
+  text-transform: capitalize;
+  background-color: var(--gray-300-header-menu-background);
+}
+
+.filter-bar option:checked {
+  background-color: var(--brand-green-color);
+}
+
+@media #{$mobile-middle} {
+  .filter-bar {
+    padding: 12px 18px;
+  }
+}
+
+@media #{$tablet-middle} {
+  .filter-bar {
+    display: none;
+  }
+}
