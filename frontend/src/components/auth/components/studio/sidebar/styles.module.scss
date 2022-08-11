@@ -1,0 +1,24 @@
+@import '../../../../../assets/css/styles.scss';
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: 794px;
+  background: $green-200-header-menu-background;
+  border-right: 1px solid;
+}
+
+.button {
+  padding: 15px;
+}
+
+.active:hover {
+  background-color: $brand-green-color;
+  cursor: pointer;
+}
+
+.buttons {
+  background: $green-200-header-menu-background;
+}
+
+/*# sourceMappingURL=styles.module.css.map */

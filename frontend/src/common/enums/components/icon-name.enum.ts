@@ -9,6 +9,8 @@ enum IconName {
   SIGNOUT = 'signout',
   SMILE = 'smile',
   TIMEAGO = 'timeago',
+  LOGO = 'logo',
+  ANALYSTICS = 'analystics',
 }
 
 export { IconName };

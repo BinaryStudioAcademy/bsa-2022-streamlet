@@ -10,6 +10,8 @@ import { ReactComponent as Search } from '../../../assets/img/search.svg';
 import { ReactComponent as Signout } from '../../../assets/img/signout.svg';
 import { ReactComponent as Smile } from '../../../assets/img/smile.svg';
 import { ReactComponent as Timeago } from '../../../assets/img/timeago.svg';
+import { ReactComponent as Logo } from '../../../assets/img/logo.svg';
+import { ReactComponent as Analystics } from '../../../assets/img/analystics.svg';
 
 const getColor = (color: string): string => styles[`fill${color}`];
 
@@ -52,8 +54,14 @@ const Icon = ({ name, color, size }: { name: string; color: string; size: string
     case IconName.SMILE:
       return <Smile className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
-    default:
+    case IconName.TIMEAGO:
       return <Timeago className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+
+    case IconName.ANALYSTICS:
+      return <Analystics className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+
+    default:
+      return <Logo width={`${size}px`} height={`${size}px`} />;
   }
 };
 
