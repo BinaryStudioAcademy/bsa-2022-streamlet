@@ -8,10 +8,12 @@ import {
   UserSignUpResponseDto,
   UserSignInRequestDto,
   UserSignInResponseDto,
+  RefreshTokenRequestDto,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { compareHash, generateJwt } from './utils';
 import { trimUser } from '~/shared/helpers';
+import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
 
 /**
  * @swagger
@@ -40,11 +42,16 @@ import { trimUser } from '~/shared/helpers';
 @controller(ApiPath.AUTH)
 export class AuthController extends BaseHttpController {
   private userService: UserService;
+  private refreshTokenService: RefreshTokenService;
 
-  constructor(@inject(CONTAINER_TYPES.UserService) userService: UserService) {
+  constructor(
+    @inject(CONTAINER_TYPES.UserService) userService: UserService,
+    @inject(CONTAINER_TYPES.RefreshTokenService) refreshTokenService: RefreshTokenService,
+  ) {
     super();
 
     this.userService = userService;
+    this.refreshTokenService = refreshTokenService;
   }
 
   // TODO: edit docs
@@ -87,8 +94,7 @@ export class AuthController extends BaseHttpController {
       user,
       tokens: {
         accessToken,
-        // TODO: add real token
-        refreshToken: 'dummy',
+        refreshToken: await this.userService.createRefreshToken(user.id),
       },
     };
   }
@@ -108,13 +114,41 @@ export class AuthController extends BaseHttpController {
       // TODO: throw correct error
       throw new Error('incorrect password');
     }
-    const accessToken = await generateJwt(user);
+    const accessToken = await generateJwt(trimUser(user));
     return {
       user: trimUser(user),
       tokens: {
         accessToken,
+        refreshToken: await this.userService.createRefreshToken(user.id),
+      },
+    };
+  }
+
+  @httpPost(AuthApiPath.REFRESH_TOKENS)
+  public async refreshTokens(
+    @requestBody() refreshTokenRequestDto: RefreshTokenRequestDto,
+  ): Promise<{ tokens: TokenPair }> {
+    // TODO: add validation
+    const user = await this.userService.getUserById(refreshTokenRequestDto.userId);
+    if (!user) {
+      // TODO: throw correct error
+      throw new Error('user doesnt exist');
+    }
+    const hasToken = await this.refreshTokenService.checkForExistence(
+      refreshTokenRequestDto.userId,
+      refreshTokenRequestDto.refreshToken,
+    );
+    if (!hasToken) {
+      // TODO: throw correct error
+      throw new Error('token doesnt exist');
+    }
+    const newRefreshToken = await this.userService.createRefreshToken(refreshTokenRequestDto.userId);
+    const newAccessToken = await generateJwt(trimUser(user));
+    return {
+      tokens: {
+        accessToken: newAccessToken,
         // TODO: add real token
-        refreshToken: 'dummy',
+        refreshToken: newRefreshToken,
       },
     };
   }

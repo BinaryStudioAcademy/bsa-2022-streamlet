@@ -1,1 +1,1 @@
-export { TokenPair } from 'shared/build';
+export { TokenPair, RefreshTokenRequestDto } from 'shared/build';

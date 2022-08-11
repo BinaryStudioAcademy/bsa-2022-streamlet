@@ -13,7 +13,15 @@ export class UserRepositoryAdapter implements UserRepository {
     this.prismaClient = prismaClient;
   }
 
-  async getByEmail(email: string): Promise<User | null> {
+  getById(id: string): Promise<User | null> {
+    return this.prismaClient.user.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
+
+  getByEmail(email: string): Promise<User | null> {
     return this.prismaClient.user.findFirst({
       where: {
         email: email,
@@ -21,7 +29,7 @@ export class UserRepositoryAdapter implements UserRepository {
     });
   }
 
-  async getAll(): Promise<User[]> {
+  getAll(): Promise<User[]> {
     return this.prismaClient.user.findMany();
   }
 
