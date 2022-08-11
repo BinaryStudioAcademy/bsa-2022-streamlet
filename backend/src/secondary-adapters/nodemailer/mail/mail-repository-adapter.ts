@@ -16,7 +16,7 @@ export class MailRepositoryAdapter implements MailRepository {
 
   async sendMail(mailRequestDto: MailRequestDto): Promise<MailResponseDto> {
     const email = new Email({
-      views: { root: './src/shared/mail-templates' },
+      views: { root: 'build/shared/mail-templates' },
       message: {
         from: `Streamlet <${CONFIG.MAIL_SERVICE.ADDRESS}>`,
       },
@@ -26,7 +26,7 @@ export class MailRepositoryAdapter implements MailRepository {
       juice: true,
       juiceResources: {
         webResources: {
-          relativeTo: 'src/shared/mail-templates',
+          relativeTo: 'build/shared/mail-templates',
         },
       },
     });

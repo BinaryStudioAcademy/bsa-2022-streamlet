@@ -17,7 +17,7 @@
     "prestart": "npm run migrate:prod && npm run seed:soft",
     "start": "node ./build/server.js",
     "build:ts": "tsc && tsc-alias -p tsconfig.json",
-    "build": "npm run build:ts"
+    "build": "npm run build:ts && cp -r src/shared/mail-templates build/shared/mail-templates"
   },
   "devDependencies": {
     "@faker-js/faker": "7.3.0",
