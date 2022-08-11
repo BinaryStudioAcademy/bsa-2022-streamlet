@@ -21,9 +21,11 @@
     "docker:up:d": "docker-compose -f .docker/docker-compose.local.yml up -d",
     "docker:up:debug": "docker-compose -f .docker/docker-compose.local.yml up -d api-db rabbitmq",
     "docker:up": "docker-compose -f .docker/docker-compose.local.yml up",
+    "docker:down": "docker-compose -f .docker/docker-compose.local.yml down",
     "migrate": "npm run migrate -w backend/core",
     "start:frontend": "npm start -w frontend",
-    "start:backend": "npm run start:dev -w backend/core"
+    "start:backend": "npm run start:dev -w backend/core",
+    "start:socket": "npm run start:dev -w backend/push"
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "1.11.2",
@@ -40,6 +42,7 @@
   },
   "workspaces": [
     "backend/core",
+    "backend/push",
     "frontend",
     "shared"
   ],
@@ -49,7 +52,7 @@
   "lint-staged": {
     "*": "npm run lint:fs",
     "*.{ts,tsx,json,scss}": "prettier --write",
-    "{shared,backend/core,frontend}/**/*.{ts,tsx}": "npm run lint:js",
+    "{shared,backend/core,backend/push/frontend}/**/*.{ts,tsx}": "npm run lint:js",
     "frontend/**/*.scss": "npm run lint:css"
   }
 }

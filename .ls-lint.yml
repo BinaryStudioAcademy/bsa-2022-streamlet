@@ -18,3 +18,5 @@ ignore:
   - frontend/node_modules
   - backend/core/build
   - backend/core/node_modules
+  - backend/push/node_modules
+  - backend/push/build
