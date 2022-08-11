@@ -15,6 +15,12 @@
     "build:frontend": "npm run build -w frontend",
     "build:backend": "npm run build -w backend",
     "build": "npm run build -w shared -w frontend -w backend",
+    "docker:build:backend": "docker build -f .docker/backend.Dockerfile -t backend .",
+    "docker:build:frontend": "docker build --build-arg REACT_APP_API_ORIGIN_URL=/api/v1 -f .docker/frontend.Dockerfile -t frontend .",
+    "docker:build": "npm run docker:build:backend && npm run docker:build:frontend",
+    "docker:up:d": "docker-compose -f .docker/docker-compose.local.yml up -d",
+    "docker:up:debug": "docker-compose -f .docker/docker-compose.local.yml up -d api-db rabbitmq",
+    "docker:up": "docker-compose -f .docker/docker-compose.local.yml up",
     "migrate": "npm run migrate -w backend",
     "start:frontend": "npm start -w frontend",
     "start:backend": "npm run start:dev -w backend"

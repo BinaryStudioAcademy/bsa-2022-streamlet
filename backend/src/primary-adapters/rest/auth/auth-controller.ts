@@ -1,7 +1,13 @@
 import { inject } from 'inversify';
 import { BaseHttpController, controller, httpPost, requestBody } from 'inversify-express-utils';
 import { ApiPath, AuthApiPath } from '~/shared/enums/api/api';
-import { CONTAINER_TYPES, UserSignUpRequestDto, UserSignUpResponseDto } from '~/shared/types/types';
+import {
+  CONTAINER_TYPES,
+  UserSignUpRequestDto,
+  UserSignUpResponseDto,
+  MailResponseDto,
+  MailTestRequestDto,
+} from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 
 /**
@@ -69,5 +75,36 @@ export class AuthController extends BaseHttpController {
   @httpPost(AuthApiPath.SIGN_UP)
   public signUp(@requestBody() userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
     return this.userService.createUser(userRequestDto);
+  }
+
+  /**
+   * /auth/mail-test:
+   *   post:
+   *     tags:
+   *       - auth
+   *     summary: Test the mail service
+   *     security: []
+   *     operationId: testMailService
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - in: body
+   *         name: body
+   *         description: Email and name for test
+   *         required: true
+   *         schema:
+   *           $ref: '#/definitions/MailTestRequest'
+   *     responses:
+   *       default:
+   *         description: Confirmation that email was sent successfully or error message
+   *         schema:
+   *           $ref: '#/definitions/MailTestResponse'
+   */
+  // This route is created only for testing purposes.
+  @httpPost('/mail-test')
+  public testMail(@requestBody() mailTestRequestDto: MailTestRequestDto): Promise<MailResponseDto> {
+    return this.userService.testSendingEmail(mailTestRequestDto);
   }
 }
