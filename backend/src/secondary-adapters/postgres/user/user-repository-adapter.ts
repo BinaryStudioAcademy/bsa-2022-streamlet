@@ -34,7 +34,6 @@ export class UserRepositoryAdapter implements UserRepository {
   }
 
   async createUser(userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
-    // TODO: handle duplication
     const user = await this.prismaClient.user.create({
       data: userRequestDto,
     });

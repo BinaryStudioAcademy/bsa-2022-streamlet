@@ -17,6 +17,10 @@ import { RefreshTokenService } from '~/core/refresh-token/application/refresh-to
 import { validationMiddleware } from '../common/middleware';
 import { userSignIn, userSignUp } from '~/validation-schemas/user/user';
 import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-token';
+import { NotFound } from '~/shared/exceptions/not-found';
+import { Unauthorized } from '~/shared/exceptions/unauthorized';
+import { exceptionMessages } from '~/shared/enums/exceptions';
+import { DuplicationError } from '~/shared/exceptions/duplication-error';
 
 /**
  * @swagger
@@ -24,6 +28,22 @@ import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-
  *   name: auth
  *   description: Authorization
  * definitions:
+ *    UserBaseResponse:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: string
+ *          format: uuid
+ *        email:
+ *          type: string
+ *          format: email
+ *    TokenPair:
+ *      type: object
+ *      properties:
+ *        accessToken:
+ *          type: string
+ *        refreshToken:
+ *          type: string
  *    UserSignUpRequest:
  *      type: object
  *      properties:
@@ -35,12 +55,25 @@ import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-
  *    UserSignUpResponse:
  *      type: object
  *      properties:
- *        id:
- *          type: string
- *          format: uuid
+ *        user:
+ *          $ref: '#/definitions/UserBaseResponse'
+ *        tokens:
+ *          $ref: '#/definitions/TokenPair'
+ *    UserSignInRequest:
+ *      type: object
+ *      properties:
  *        email:
  *          type: string
  *          format: email
+ *        password:
+ *          type: string
+ *    UserSignInResponse:
+ *      type: object
+ *      properties:
+ *        user:
+ *          $ref: '#/definitions/UserBaseResponse'
+ *        tokens:
+ *          $ref: '#/definitions/TokenPair'
  */
 @controller(ApiPath.AUTH)
 export class AuthController extends BaseHttpController {
@@ -57,7 +90,6 @@ export class AuthController extends BaseHttpController {
     this.refreshTokenService = refreshTokenService;
   }
 
-  // TODO: edit docs
   /**
    * @swagger
    * /auth/sign-up:
@@ -90,6 +122,10 @@ export class AuthController extends BaseHttpController {
   public async signUp(
     @requestBody() userRequestDto: UserSignUpRequestDto,
   ): Promise<{ user: UserSignUpResponseDto; tokens: TokenPair }> {
+    const userAlreadyExists = (await this.userService.getUserByEmail(userRequestDto.email)) !== null;
+    if (userAlreadyExists) {
+      throw new DuplicationError(exceptionMessages.auth.USER_EMAIL_ALREADY_EXISTS);
+    }
     const user = await this.userService.createUser(userRequestDto);
     const accessToken = await generateJwt(user);
     return {
@@ -101,19 +137,46 @@ export class AuthController extends BaseHttpController {
     };
   }
 
-  // TODO: add docs
+  /**
+   * @swagger
+   * /auth/sign-in:
+   *    post:
+   *      tags:
+   *      - auth
+   *      security: []
+   *      operationId: signInUser
+   *      consumes:
+   *      - application/json
+   *      produces:
+   *      - application/json
+   *      description: Sign in user into the system
+   *      parameters:
+   *      - in: body
+   *        name: body
+   *        description: User auth data
+   *        required: true
+   *        schema:
+   *          $ref: '#/definitions/UserSignInRequest'
+   *      responses:
+   *        200:
+   *          description: successful operation
+   *          schema:
+   *            $ref: '#/definitions/UserSignInResponse'
+   *        401:
+   *          description: Incorrect credentials.
+   *        400:
+   *          description: Invalid request format.
+   */
   @httpPost(AuthApiPath.SIGN_IN, validationMiddleware(userSignIn))
   public async signIn(
     @requestBody() userRequestDto: UserSignInRequestDto,
   ): Promise<{ user: UserSignInResponseDto; tokens: TokenPair }> {
     const user = await this.userService.getUserByEmail(userRequestDto.email);
     if (!user) {
-      // TODO: throw correct error
-      throw new Error('not found');
+      throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
     }
     if (!(await compareHash(userRequestDto.password, user.password))) {
-      // TODO: throw correct error
-      throw new Error('incorrect password');
+      throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
     }
     const accessToken = await generateJwt(trimUser(user));
     return {
@@ -125,29 +188,63 @@ export class AuthController extends BaseHttpController {
     };
   }
 
+  /**
+   * @swagger
+   * /auth/refresh-tokens:
+   *    post:
+   *      tags:
+   *      - auth
+   *      security: []
+   *      operationId: refreshTokens
+   *      consumes:
+   *      - application/json
+   *      produces:
+   *      - application/json
+   *      description: Refresh user's access token
+   *      parameters:
+   *      - in: body
+   *        name: body
+   *        description: User's id and refresh token
+   *        required: true
+   *        schema:
+   *          type: object
+   *          properties:
+   *            userId:
+   *              type: string
+   *              format: uuid
+   *            refreshToken:
+   *              type: string
+   *      responses:
+   *        200:
+   *          description: successful operation
+   *          schema:
+   *            type: object
+   *            properties:
+   *              tokens:
+   *                $ref: '#/definitions/TokenPair'
+   *        404:
+   *          description: Such user-token pair was not found
+   */
   @httpPost(AuthApiPath.REFRESH_TOKENS, validationMiddleware(refreshTokenRequest))
   public async refreshTokens(
     @requestBody() refreshTokenRequestDto: RefreshTokenRequestDto,
   ): Promise<{ tokens: TokenPair }> {
     const user = await this.userService.getUserById(refreshTokenRequestDto.userId);
     if (!user) {
-      // TODO: throw correct error
-      throw new Error('user doesnt exist');
+      throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
     }
     const hasToken = await this.refreshTokenService.checkForExistence(
       refreshTokenRequestDto.userId,
       refreshTokenRequestDto.refreshToken,
     );
     if (!hasToken) {
-      // TODO: throw correct error
-      throw new Error('token doesnt exist');
+      throw new NotFound(exceptionMessages.auth.TOKEN_NOT_FOUND);
     }
     const newRefreshToken = await this.userService.createRefreshToken(refreshTokenRequestDto.userId);
     const newAccessToken = await generateJwt(trimUser(user));
     return {
       tokens: {
         accessToken: newAccessToken,
-        // TODO: add real token
         refreshToken: newRefreshToken,
       },
     };

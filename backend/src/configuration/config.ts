@@ -21,10 +21,17 @@ interface ApiConfig {
   PREFIX: string;
 }
 
+interface EncryptionConfig {
+  REFRESH_TOKEN_BYTES: number;
+  JWT_SECRET: string;
+  JWT_LIFETIME: string;
+}
+
 export interface ConfigInterface {
   APP: AppConfig;
   DATABASE: DatabaseConfig;
   API: ApiConfig;
+  ENCRYPTION: EncryptionConfig;
 }
 
 const isDevEnvironment = (nodeEnv = ''): boolean => nodeEnv === AppEnvironment.DEVELOPMENT;
@@ -60,6 +67,20 @@ const configuration = (): ConfigInterface => {
     API: {
       PREFIX: API_BASE_PREFIX || '',
     },
+    ENCRYPTION: getEncryptionConfig(),
+  };
+};
+
+const getEncryptionConfig = (): EncryptionConfig => {
+  const { REFRESH_TOKEN_BYTES, JWT_SECRET, JWT_LIFETIME } = process.env;
+
+  if (!JWT_SECRET) {
+    throw new Error('Missing JWT_SECRET in env');
+  }
+  return {
+    REFRESH_TOKEN_BYTES: REFRESH_TOKEN_BYTES ? Number(REFRESH_TOKEN_BYTES) : 64,
+    JWT_SECRET,
+    JWT_LIFETIME: JWT_LIFETIME || '5m',
   };
 };
 

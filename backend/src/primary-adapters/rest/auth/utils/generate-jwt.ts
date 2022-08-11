@@ -1,14 +1,14 @@
 import * as jose from 'jose';
 import { createSecretKey } from 'node:crypto';
+import { CONFIG } from '~/configuration/config';
 
 export async function generateJwt<T extends jose.JWTPayload>(payload: T): Promise<string> {
-  // TODO: add real secret and exp
-  const secretKey = createSecretKey('ShVmYq3t6w9z$C&F)J@NcRfTjWnZr4u7x!A%D*G-KaPdSgVkXp2s5v8y/B?E(H+M', 'utf-8');
+  const secretKey = createSecretKey(CONFIG.ENCRYPTION.JWT_SECRET, 'utf-8');
 
   const jwt = await new jose.SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
-    .setExpirationTime('5m')
+    .setExpirationTime(CONFIG.ENCRYPTION.JWT_LIFETIME)
     .sign(secretKey);
   return jwt;
 }
