@@ -14,7 +14,7 @@ import { UserService } from '~/core/user/application/user-service';
 import { compareHash, generateJwt } from './utils';
 import { trimUser } from '~/shared/helpers';
 import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
-import { validationMiddleware } from '../common/middleware';
+import { validationMiddleware } from '../../../secondary-adapters/middleware';
 import { userSignIn, userSignUp } from '~/validation-schemas/user/user';
 import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-token';
 import { NotFound } from '~/shared/exceptions/not-found';

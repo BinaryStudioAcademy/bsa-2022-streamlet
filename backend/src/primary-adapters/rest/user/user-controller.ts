@@ -3,6 +3,7 @@ import { inject } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
+import { authenticationMiddleware } from '../../../secondary-adapters/middleware';
 
 /**
  * @swagger
@@ -27,7 +28,7 @@ import { User } from '@prisma/client';
  *          type: string
  *          format: date-time
  */
-@controller('/user')
+@controller('/users')
 export class UserController extends BaseHttpController {
   private userService: UserService;
 
@@ -39,10 +40,10 @@ export class UserController extends BaseHttpController {
 
   /**
    * @swagger
-   * /user:
+   * /users:
    *    get:
    *      tags:
-   *      - user
+   *      - users
    *      operationId: getAllUsers
    *      consumes:
    *      - application/json
@@ -58,7 +59,7 @@ export class UserController extends BaseHttpController {
    *            items:
    *              $ref: '#/definitions/User'
    */
-  @httpGet('/')
+  @httpGet('/', authenticationMiddleware())
   public getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
   }
