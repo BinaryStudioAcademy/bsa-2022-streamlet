@@ -14,6 +14,9 @@ import { UserService } from '~/core/user/application/user-service';
 import { compareHash, generateJwt } from './utils';
 import { trimUser } from '~/shared/helpers';
 import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
+import { validationMiddleware } from '../common/middleware';
+import { userSignIn, userSignUp } from '~/validation-schemas/user/user';
+import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-token';
 
 /**
  * @swagger
@@ -83,11 +86,10 @@ export class AuthController extends BaseHttpController {
    *        400:
    *          description: Email is already taken.
    */
-  @httpPost(AuthApiPath.SIGN_UP)
+  @httpPost(AuthApiPath.SIGN_UP, validationMiddleware(userSignUp))
   public async signUp(
     @requestBody() userRequestDto: UserSignUpRequestDto,
   ): Promise<{ user: UserSignUpResponseDto; tokens: TokenPair }> {
-    // TODO: add validation
     const user = await this.userService.createUser(userRequestDto);
     const accessToken = await generateJwt(user);
     return {
@@ -100,11 +102,10 @@ export class AuthController extends BaseHttpController {
   }
 
   // TODO: add docs
-  @httpPost(AuthApiPath.SIGN_IN)
+  @httpPost(AuthApiPath.SIGN_IN, validationMiddleware(userSignIn))
   public async signIn(
     @requestBody() userRequestDto: UserSignInRequestDto,
   ): Promise<{ user: UserSignInResponseDto; tokens: TokenPair }> {
-    // TODO: add validation
     const user = await this.userService.getUserByEmail(userRequestDto.email);
     if (!user) {
       // TODO: throw correct error
@@ -124,11 +125,10 @@ export class AuthController extends BaseHttpController {
     };
   }
 
-  @httpPost(AuthApiPath.REFRESH_TOKENS)
+  @httpPost(AuthApiPath.REFRESH_TOKENS, validationMiddleware(refreshTokenRequest))
   public async refreshTokens(
     @requestBody() refreshTokenRequestDto: RefreshTokenRequestDto,
   ): Promise<{ tokens: TokenPair }> {
-    // TODO: add validation
     const user = await this.userService.getUserById(refreshTokenRequestDto.userId);
     if (!user) {
       // TODO: throw correct error

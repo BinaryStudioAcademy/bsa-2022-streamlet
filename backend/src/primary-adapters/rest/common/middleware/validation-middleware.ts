@@ -1,18 +1,16 @@
-// import express from 'express';
-// import { inject, injectable } from 'inversify';
-// import { BaseMiddleware } from 'inversify-express-utils';
+import express from 'express';
+import * as Joi from 'joi';
+import { BadRequest } from '~/shared/exceptions/bad-request';
 
-// @injectable()
-// class LoggerMiddleware extends BaseMiddleware {
-//   @inject(TYPES.Logger) private readonly _logger: Logger;
-//   public handler(req: express.Request, res: express.Response, next: express.NextFunction) {
-//     if (this.httpContext.user.isAuthenticated()) {
-//       this._logger.info(`${this.httpContext.user.details.email} => ${req.url}`);
-//     } else {
-//       this._logger.info(`Anonymous => ${req.url}`);
-//     }
-//     next();
-//   }
-// }
+const validationMiddleware = (schema: Joi.AnySchema) => {
+  return (req: express.Request, _res: express.Response, next: express.NextFunction): void => {
+    const result = schema.validate(req.body);
+    if (result.error) {
+      throw new BadRequest(result.error.message);
+    }
+    req.body = result.value;
+    next();
+  };
+};
 
-// export { LoggerMiddleware };
+export { validationMiddleware };
