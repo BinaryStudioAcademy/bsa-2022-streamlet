@@ -1,14 +1,14 @@
 import { AppRoute } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Routes, Route, Link } from 'components/common/common';
-import { useLocation } from 'hooks/hooks';
+import { Routes, Route } from 'components/common/common';
 import { Auth } from 'components/auth/auth';
 import logo from 'assets/img/logo.svg';
 import { Studio } from '../auth/components/components';
 
-const App: FC = () => {
-  const { pathname } = useLocation();
+import { NotFound } from '../not-found-page/not-found';
 
+
+const App: FC = () => {
   return (
     <>
       <img src={logo} className="App-logo" width="30" alt="logo" />
@@ -35,8 +35,9 @@ const App: FC = () => {
           <Route path={AppRoute.SIGN_UP} element={<Auth />} />
           <Route path={AppRoute.SIGN_IN} element={<Auth />} />
           <Route path={AppRoute.STUDIO} element={<Studio />} />
-        </Routes>
-      </div>
+          <Route path={AppRoute.RESTORE_PASSWORD} element={<Auth />} />
+          <Route path={AppRoute.ANY} element={<NotFound />} />
+      </Routes>
     </>
   );
 };
