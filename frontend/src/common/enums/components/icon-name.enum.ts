@@ -1,5 +1,7 @@
 enum IconName {
   ALARM = 'alarm',
+  ARROW_DOWN = 'arrow-down',
+  ARROW_UP = 'arrow-up',
   CAMERA = 'camera',
   COMPAS = 'compas',
   FOLLOW = 'follow',

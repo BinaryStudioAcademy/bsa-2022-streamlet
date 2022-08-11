@@ -1,6 +1,8 @@
 import styles from './styles.module.scss';
 import { IconName, IconColor } from '../../../common/enums/enums';
 import { ReactComponent as Alarm } from '../../../assets/img/alarm.svg';
+import { ReactComponent as ArrowDown } from '../../../assets/img/arrow-down.svg';
+import { ReactComponent as ArrowUp } from '../../../assets/img/arrow-up.svg';
 import { ReactComponent as Camera } from '../../../assets/img/camera.svg';
 import { ReactComponent as Compas } from '../../../assets/img/compas.svg';
 import { ReactComponent as Follow } from '../../../assets/img/follow.svg';
@@ -28,6 +30,12 @@ const Icon = ({ name, color, size }: { name: string; color: string; size: string
   switch (name) {
     case IconName.ALARM:
       return <Alarm className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+
+    case IconName.ARROW_DOWN:
+      return <ArrowDown className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+
+    case IconName.ARROW_UP:
+      return <ArrowUp className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.CAMERA:
       return <Camera className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
