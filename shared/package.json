@@ -9,7 +9,7 @@
     "lint:js": "npx eslint \"src/**/*.ts\"",
     "lint": "npm run lint:js",
     "build:ts": "tsc && tsc-alias -p tsconfig.json",
-    "build": "npm run build:ts && cp package.json build"
+    "build": "npm run build:ts"
   },
   "devDependencies": {
     "@types/amqplib": "^0.8.2",
