@@ -4,7 +4,7 @@ import { AppRoute } from 'common/enums/enums';
 
 type Props = {
   to: AppRoute;
-  className: string;
+  className?: string;
 };
 
 const Link: FC<Props> = ({ children, to, className }) => (
