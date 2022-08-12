@@ -4,6 +4,8 @@ import { Button, Icon } from 'components/common/common';
 import { useState } from 'react';
 import { Notification } from './components/components';
 
+import styles from './styles.module.scss';
+
 const NotificationDropdown: FC = () => {
   const [isNotificationsDropdownOpen, setIsNotificationsDropdownOpen] = useState<boolean>(false);
 
@@ -109,14 +111,14 @@ const NotificationDropdown: FC = () => {
   const haveUnreadNotifications = notifications.some((notification) => notification.isViewed);
 
   return (
-    <div className="notification-dropdown__wrapper">
+    <div className={styles.wrapper}>
       <Button
-        className="notification-dropdown__bell"
+        className={styles.bell}
         label={<Icon color={IconColor.GRAY} name={IconName.ALARM} size="25" />}
         onClick={handleNotificationDropdownTrigger}
       />
       {haveUnreadNotifications && <span className="notification-dropdown__unread"></span>}
-      <div className="notification-dropdown__block">
+      <div className={styles.dropdown}>
         <div className="notification-dropdown__header">
           <p className="notification__dropdown__title">Notifications</p>
           <Button

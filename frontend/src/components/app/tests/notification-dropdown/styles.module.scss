@@ -1,5 +1,9 @@
 .header {
   display: flex;
-  justify-content: flex-end;
-  height: 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  height: 60px;
+  padding: 0 30px;
+  border-bottom: 3px solid black;
 }
