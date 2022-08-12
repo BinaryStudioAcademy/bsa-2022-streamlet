@@ -1,1 +1,1 @@
-export { userSignUp } from 'shared/build/validation-schemas/user/user';
+export { userSignUp, userSignIn } from 'shared/build/validation-schemas/user/user';

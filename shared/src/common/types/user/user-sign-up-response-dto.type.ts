@@ -1,6 +1,5 @@
-type UserSignUpResponseDto = {
-  id: string;
-  email: string;
-};
+import { UserBaseResponseDto } from './user';
+
+type UserSignUpResponseDto = UserBaseResponseDto;
 
 export { type UserSignUpResponseDto };
