@@ -1,1 +1,0 @@
-export { StudioHome } from './home';

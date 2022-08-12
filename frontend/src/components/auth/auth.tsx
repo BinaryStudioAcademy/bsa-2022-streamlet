@@ -2,7 +2,7 @@ import { AppRoute } from 'common/enums/enums';
 import { UserSignUpRequestDto, FC } from 'common/types/types';
 import { useAppDispatch, useLocation } from 'hooks/hooks';
 import { authActions } from 'store/actions';
-import { SignUpForm, SignInForm, Studio } from './components/components';
+import { SignUpForm, SignInForm } from './components/components';
 
 const Auth: FC = () => {
   const dispatch = useAppDispatch();
@@ -23,9 +23,6 @@ const Auth: FC = () => {
       }
       case AppRoute.SIGN_UP: {
         return <SignUpForm onSubmit={handleSignUpSubmit} />;
-      }
-      case AppRoute.STUDIO: {
-        return <Studio />;
       }
     }
 
