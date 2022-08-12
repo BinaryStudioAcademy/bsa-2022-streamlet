@@ -34,8 +34,8 @@ class Application {
     this.app?.setConfig((app) => {
       app.use(helmet());
       app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
-      app.use(bodyParser.urlencoded({ 'extended': true }));
-      app.use(bodyParser.json());
+      app.use(bodyParser.urlencoded({ 'limit': '50mb', 'extended': true }));
+      app.use(bodyParser.json({ limit: '50mb' }));
       app.use(PinoHttp({ logger }));
     });
   }

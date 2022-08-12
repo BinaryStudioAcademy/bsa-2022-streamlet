@@ -53,15 +53,144 @@ Static analyzers are used for both frontend and backend projects to ensure basic
 
 ```mermaid
 erDiagram
-  users {
-      string id
-      string email
-      string  password
-      boolean isActivated
-      dateTime created_at
-      dateTime updated_at
-  }
+
+  User {
+    String id PK
+    String email
+    String password
+    Boolean isActivated
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  UserProfile {
+    String id PK
+    String firstName
+    String lastName
+    String avatar
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  RefreshToken {
+    String id PK
+    String token
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  Video {
+    String id PK
+    String name
+    String description
+    Boolean isLive
+    String videoPath
+    Int liveViews
+    Int videoViews
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  Tag {
+    String id PK
+    String name
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  Category {
+    String id PK
+    String name
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  VideoComment {
+    String id PK
+    String text
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  Channel {
+    String id PK
+    String name
+    String description
+    String contactEmail
+    String bannerImage
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  Subscription {
+    String id PK
+    Boolean notify
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  ChatMessage {
+    String id PK
+    String text
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  Notification {
+    String id PK
+    String text
+    Boolean viewed
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  History {
+    String id PK
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  Reaction {
+    String id PK
+    Boolean isLike
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+    UserProfile o|--|| User : "user"
+    RefreshToken o|--|| User : "user"
+    Video o{--}o Tag : ""
+    Video o{--}o Category : ""
+    Video o{--|| Channel : "channel"
+    Tag o{--}o Video : ""
+    Category o{--}o Video : ""
+    VideoComment o{--|| Video : "video"
+    VideoComment o{--|| User : "author"
+    Channel o{--|| User : "author"
+    Subscription o{--|| User : "user"
+    Subscription o{--|| Channel : "channel"
+    ChatMessage o{--|| Video : "video"
+    ChatMessage o{--|| User : "author"
+    Notification o{--|| User : "user"
+    Notification o{--|| Video : "video"
+    History o{--|| User : "user"
+    History o{--|| Video : "video"
+    Reaction o{--|| User : "user"
+    Reaction o{--|| Video : "video"
 ```
+
 
 ## 🧑‍💻 CI
 

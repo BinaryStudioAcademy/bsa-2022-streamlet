@@ -11,6 +11,7 @@ enum IconName {
   TIMEAGO = 'timeago',
   LOGO = 'logo',
   ANALYSTICS = 'analystics',
+  WATCH = 'watch',
 }
 
 export { IconName };
