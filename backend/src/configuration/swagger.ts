@@ -1,6 +1,8 @@
 import { CONFIG } from './config';
 import swaggerJSDoc from 'swagger-jsdoc';
 
+const { HOST, PORT } = process.env;
+
 function initSwagger(): object {
   const options = {
     definition: {
@@ -10,7 +12,7 @@ function initSwagger(): object {
         version: '1.0.0',
         description: 'This is BSA project.',
       },
-      host: CONFIG.APP.HOST,
+      host: `${HOST || 'localhost'}:${PORT}`,
       basePath: CONFIG.API.PREFIX,
       schemes: ['https', 'http'],
     },
