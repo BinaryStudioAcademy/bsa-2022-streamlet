@@ -1,0 +1,55 @@
+:root {
+  --notification-unread-color: rgb(221 7 7);
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  padding: 15px 8px;
+  border-bottom: 1px solid var(--gray-400-primary-background);
+}
+
+.notification:hover {
+  background-color: var(--gray-200-input-background);
+}
+
+.status {
+  display: block;
+  width: 6px;
+  height: 6px;
+  margin: 0 3px;
+  background-color: transparent;
+  border-radius: 50%;
+}
+
+.status-unread {
+  background-color: var(--notification-unread-color);
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  margin: 0 5px;
+  border-radius: 50%;
+}
+
+.info {
+  width: 70%;
+  padding: 5px;
+  line-height: 16px;
+}
+
+.message {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 80%;
+}
+
+.timestamp {
+  color: var(--text-gray-color);
+  font-size: 70%;
+}
+
+.thumbnail {
+  margin: 0 10px;
+}

@@ -16,9 +16,9 @@ const NotificationDropdown: FC = () => {
       'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'boutibridge0',
       'videoName': 'lofi hip hop radio - beats to sleep/chill to',
-      'createdAt': '2022-08-10T19:51:32Z',
+      'createdAt': new Date('2022-08-10T19:51:32Z'),
       'isViewed': true,
-      'channelAvatar': 'https://robohash.org/aliquidquiassumenda.png?size=128x128&set=set1',
+      'channelAvatar': 'https://randomuser.me/api/portraits/men/93.jpg',
       'videoPreview': 'http://dummyimage.com/1920x1080.png/ff4444/ffffff',
     },
     {
@@ -27,9 +27,9 @@ const NotificationDropdown: FC = () => {
       'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'abambrick1',
       'videoName': '[Valheim] Trying not to die',
-      'createdAt': '2022-08-11T22:32:52Z',
+      'createdAt': new Date('2022-08-11T22:32:52Z'),
       'isViewed': false,
-      'channelAvatar': 'https://robohash.org/perspiciatislaboredolorum.png?size=128x128&set=set1',
+      'channelAvatar': 'https://randomuser.me/api/portraits/men/93.jpg',
       'videoPreview': 'http://dummyimage.com/1920x1080.png/5fa2dd/ffffff',
     },
     {
@@ -38,9 +38,9 @@ const NotificationDropdown: FC = () => {
       'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'clillyman2',
       'videoName': 'Streaming Portal 2 speedrunning until I beat my record',
-      'createdAt': '2022-08-10T06:54:40Z',
-      'isViewed': false,
-      'channelAvatar': 'https://robohash.org/voluptatibusdoloresnecessitatibus.png?size=128x128&set=set1',
+      'createdAt': new Date('2022-08-10T06:54:40Z'),
+      'isViewed': true,
+      'channelAvatar': 'https://randomuser.me/api/portraits/men/93.jpg',
       'videoPreview': 'http://dummyimage.com/1920x1080.png/5fa2dd/ffffff',
     },
     {
@@ -49,9 +49,9 @@ const NotificationDropdown: FC = () => {
       'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'scovely3',
       'videoName': 'lofi hip hop radio - beats to sleep/chill to',
-      'createdAt': '2022-08-10T11:10:54Z',
+      'createdAt': new Date('2022-08-10T11:10:54Z'),
       'isViewed': false,
-      'channelAvatar': 'https://robohash.org/debitisquitemporibus.png?size=128x128&set=set1',
+      'channelAvatar': 'https://randomuser.me/api/portraits/men/93.jpg',
       'videoPreview': 'http://dummyimage.com/1920x1080.png/5fa2dd/ffffff',
     },
     {
@@ -60,9 +60,9 @@ const NotificationDropdown: FC = () => {
       'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'brolfini4',
       'videoName': 'Streaming Portal 2 speedrunning until I beat my record',
-      'createdAt': '2022-08-10T11:17:05Z',
-      'isViewed': false,
-      'channelAvatar': 'https://robohash.org/dignissimosexercitationemea.png?size=128x128&set=set1',
+      'createdAt': new Date('2022-08-10T11:17:05Z'),
+      'isViewed': true,
+      'channelAvatar': 'https://randomuser.me/api/portraits/men/93.jpg',
       'videoPreview': 'http://dummyimage.com/1920x1080.png/dddddd/000000',
     },
     {
@@ -71,9 +71,9 @@ const NotificationDropdown: FC = () => {
       'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'astollwerck5',
       'videoName': 'Streaming Portal 2 speedrunning until I beat my record',
-      'createdAt': '2022-08-11T12:36:10Z',
+      'createdAt': new Date('2022-08-11T12:36:10Z'),
       'isViewed': false,
-      'channelAvatar': 'https://robohash.org/liberoquasdignissimos.png?size=128x128&set=set1',
+      'channelAvatar': 'https://randomuser.me/api/portraits/men/93.jpg',
       'videoPreview': 'http://dummyimage.com/1920x1080.png/5fa2dd/ffffff',
     },
     {
@@ -82,9 +82,9 @@ const NotificationDropdown: FC = () => {
       'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'wdaveridge6',
       'videoName': 'lofi hip hop radio - beats to sleep/chill to',
-      'createdAt': '2022-08-10T17:32:31Z',
+      'createdAt': new Date('2022-08-10T17:32:31Z'),
       'isViewed': false,
-      'channelAvatar': 'https://robohash.org/fugitquisenim.png?size=128x128&set=set1',
+      'channelAvatar': 'https://randomuser.me/api/portraits/men/93.jpg',
       'videoPreview': 'http://dummyimage.com/1920x1080.png/ff4444/ffffff',
     },
   ];
@@ -97,6 +97,13 @@ const NotificationDropdown: FC = () => {
     notifications.map((notification) => {
       notification.isViewed = false;
     });
+    // eslint-disable-next-line no-console
+    console.log('all read');
+  };
+
+  const handleLoadMoreNotifications = (): void => {
+    // eslint-disable-next-line no-console
+    console.log('load more');
   };
 
   const handleNotificationRead = (id: string): void => {
@@ -105,36 +112,48 @@ const NotificationDropdown: FC = () => {
         notification.isViewed = false;
       }
     });
+    // eslint-disable-next-line no-console
+    console.log(`${id} has been read`);
   };
 
   const haveNotifications = Boolean(notifications.length);
   const haveUnreadNotifications = notifications.some((notification) => notification.isViewed);
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles['wrapper']}>
       <Button
-        className={styles.bell}
-        label={<Icon color={IconColor.GRAY} name={IconName.ALARM} size="25" />}
+        className={styles['bell']}
+        label={
+          <>
+            <Icon color={IconColor.GRAY} name={IconName.ALARM} size="25" />
+            {haveUnreadNotifications && <div className={styles['unread-mark']}></div>}
+          </>
+        }
         onClick={handleNotificationDropdownTrigger}
       />
-      {haveUnreadNotifications && <span className="notification-dropdown__unread"></span>}
-      <div className={styles.dropdown}>
-        <div className={styles.header}>
-          <p className="notification__dropdown__title">Notifications</p>
+
+      <div className={`${styles['dropdown']} ${isNotificationsDropdownOpen ? styles['open'] : ''}`}>
+        <div className={styles['header']}>
+          <p className={styles['title']}>Notifications</p>
           <Button
-            className="notification-dropdown__mark_as_read"
-            label={<Icon color={IconColor.GRAY} name={IconName.MARK_AS_READ} size="20" />}
+            className={styles['mark-as-read']}
+            label={<Icon color={IconColor.WHITE} name={IconName.MARK_AS_READ} size="25" />}
             onClick={handleMarkAsRead}
           />
         </div>
-        <div className="notification-dropdown__body">
-          {haveNotifications ? (
-            notifications.map((notification) => {
-              return <Notification notification={notification} onRead={handleNotificationRead} />;
-            })
-          ) : (
-            <p className="notification-dropdown__placeholder">no notifs</p>
-          )}
+        <div className={styles['dropdown-body']}>
+          <div className={styles['notification-list']}>
+            {haveNotifications ? (
+              notifications.map((notification) => {
+                return <Notification notification={notification} onRead={handleNotificationRead} />;
+              })
+            ) : (
+              <p className="notification-dropdown__placeholder">no notifs</p>
+            )}
+            {notifications.length > 10 && (
+              <Button className={styles['load-more']} label="Load more" onClick={handleLoadMoreNotifications} />
+            )}
+          </div>
         </div>
       </div>
     </div>

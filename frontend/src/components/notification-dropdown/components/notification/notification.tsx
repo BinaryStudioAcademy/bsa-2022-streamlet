@@ -3,13 +3,16 @@ import React from 'react';
 import DefaultUserAvatar from 'assets/img/default-user-avatar.jpg';
 import { Link } from 'react-router-dom';
 
+import styles from './styles.module.scss';
+import { getHowLongAgoString } from 'helpers/helpers';
+
 type NotificationData = {
   id: string;
   videoId: string;
   channelId: string;
   username: string;
   videoName: string;
-  createdAt: string;
+  createdAt: Date;
   isViewed: boolean;
   channelAvatar: string;
   videoPreview: string;
@@ -26,18 +29,25 @@ const Notification: FC<NotificationProps> = ({ notification, onRead }) => {
   };
 
   return (
-    <div className="notification" onClick={handleNotificationRead}>
-      <div className={`notification__status--${notification.isViewed ? 'read' : 'unread'}`}></div>
-      <Link to={`/channel/${notification.channelId}`}>
+    <Link to={`/video/${notification.videoId}`}>
+      <div className={styles['notification']} onClick={handleNotificationRead}>
+        <div className={`${styles['status']} ${!notification.isViewed && styles['status-unread']}`}></div>
         <img
           src={notification.channelAvatar ?? DefaultUserAvatar}
-          className="notification__avatar"
+          className={styles['avatar']}
           alt="channel-avatar"
           height="20"
           width="21"
         />
-      </Link>
-    </div>
+        <div className={styles['info']}>
+          <p className={styles['message']}>
+            {notification.username} has started streaming: {notification.videoName}
+          </p>
+          <p className={styles['timestamp']}>{getHowLongAgoString(notification.createdAt)}</p>
+        </div>
+        <img src={notification.videoPreview} className={styles['thumbnail']} alt="channel-avatar" width="60" />
+      </div>
+    </Link>
   );
 };
 
