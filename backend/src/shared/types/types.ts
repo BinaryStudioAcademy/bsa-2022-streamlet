@@ -1,7 +1,9 @@
 export { CONTAINER_TYPES } from './container-type-keys';
-export { UserSignUpRequestDto, UserSignUpResponseDto, UserUploadRequestDto } from './user/user';
-export { ImageUploadRequestDto, ImageUploadResponseDto, CloudinaryApi } from './cloudinary/image-store';
+export * from './user/user';
 export { AmqpSendToQueueDto, AmqpConsumeDto } from './amqp/amqp';
+export * from './auth/auth';
+export * from './express';
+export { ImageUploadRequestDto, ImageUploadResponseDto, CloudinaryApi } from './cloudinary/image-store';
 export {
   MailRequestDto,
   MailResponseDto,
