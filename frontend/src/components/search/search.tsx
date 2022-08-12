@@ -57,14 +57,14 @@ const Search: FC = () => {
     <>
       <span onClick={onOpenFilterHandler}> {isFilterShown ? 'close' : 'open'} FilterBar</span>
       <div className={styles['search-page']}>
-        {isFilterShown ? (
+        {isFilterShown && (
           <FilterBar
             filterType={filterTypeValue}
             onChangeFilterType={onHandleChangeFilterType}
             filterDate={filterDateValue}
             onChangeFilterDate={onHandleChangeFilterDate}
           />
-        ) : null}
+        )}
         <div className={styles['search-page-wrapper']}>
           <FilterSidebar
             filterType={filterTypeValue}

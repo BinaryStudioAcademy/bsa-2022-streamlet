@@ -65,7 +65,7 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
               <img className={styles['avatar']} src={channel.avatar} alt="Channels avatar" />
               <span>{channel.name}</span>
             </a>
-            <div className={styles['video-card-tag-list']}>{isNew() ? <VideoTag name="new" /> : null}</div>
+            <div className={styles['video-card-tag-list']}>{isNew() && <VideoTag name="new" />}</div>
           </div>
           <div className={styles['video-card-meta-footer']}>
             <div className={styles['video-card-meta-data']}>

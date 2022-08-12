@@ -28,7 +28,7 @@ const FilterDropdown: FC<Props> = ({ filter, onChangeFilter, title, options }) =
           {title}
           <Icon name={toggleDropdown ? IconName.ARROW_UP : IconName.ARROW_DOWN} color="gray" />
         </div>
-        {toggleDropdown ? (
+        {toggleDropdown && (
           <ul className={styles['filter-dropdown-list']}>
             {options.map((o) => (
               <li key={o.value} className={styles['filter-dropdown-item']}>
@@ -44,7 +44,7 @@ const FilterDropdown: FC<Props> = ({ filter, onChangeFilter, title, options }) =
               </li>
             ))}
           </ul>
-        ) : null}
+        )}
       </div>
     </>
   );
