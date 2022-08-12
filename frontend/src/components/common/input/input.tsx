@@ -1,18 +1,28 @@
-import { FC, FormControl, FormControlErrors, FormControlPath } from 'common/types/types';
+import { FormControl, FormControlErrors, FormControlPath } from 'common/types/types';
 import { useFormControl } from 'hooks/hooks';
 import { ErrorMessage } from 'components/common/common';
+import { FieldValues } from 'react-hook-form';
+import { ReactElement } from 'react';
 
-type Props = {
-  control: FormControl;
+type Props<T> = {
+  control: FormControl<T>;
   errors: FormControlErrors;
   label: string;
-  name: FormControlPath;
+  name: FormControlPath<T>;
   placeholder?: string;
   type?: 'text' | 'email' | 'date' | 'password';
   className?: string;
 };
 
-const Input: FC<Props> = ({ control, errors, label, name, placeholder = '', type = 'text', className }) => {
+const Input = <T extends FieldValues>({
+  control,
+  errors,
+  label,
+  name,
+  placeholder = '',
+  type = 'text',
+  className,
+}: Props<T>): ReactElement | null => {
   const { field } = useFormControl({ name, control });
 
   return (

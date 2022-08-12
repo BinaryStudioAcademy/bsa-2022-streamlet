@@ -1,10 +1,11 @@
 import { AppRoute } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Button, Link } from 'components/common/common';
+import { Button, ErrorMessage, Input, Link } from 'components/common/common';
 import { useState } from 'react';
 import googleLogo from '../../../../assets/img/google.svg';
 import passwordEye from '../../../../assets/img/password-eye.svg';
 import '../../../../assets/css/auth.scss';
+import { useAppForm } from 'hooks/hooks';
 
 type Props = {
   onSubmit: () => void;
@@ -12,8 +13,14 @@ type Props = {
 
 type PasswordType = 'password' | 'text';
 
+interface FormValues {
+  email: string;
+  password: string;
+}
+
 const SignInForm: FC<Props> = () => {
   const [inputPasswordType, setInputPasswordType] = useState<PasswordType>('password');
+  const { control, errors, register } = useAppForm<FormValues>({ defaultValues: { email: '', password: '' } });
   const handleChangeInputPasswordType = (): void => {
     if (inputPasswordType === 'password') {
       setInputPasswordType('text');
@@ -24,19 +31,34 @@ const SignInForm: FC<Props> = () => {
   return (
     <>
       <form className="form-container">
-        <label htmlFor="sign-in-email-input">Email</label>
-        <input id="sign-in-email-input" type="email" placeholder="username@gmail.com" />
+        <Input
+          control={control}
+          errors={errors}
+          name="email"
+          label="Email"
+          type="email"
+          className="sign-in-password-label"
+          placeholder="username@gmail.com"
+        />
         <label htmlFor="sign-in-password-input" className="sign-in-password-label">
           Password
         </label>
         <div className="sign-in-password-container">
-          <input id="sign-in-password-input" type={inputPasswordType} placeholder="Password" />
+          <input
+            id="sign-in-password-input"
+            type={inputPasswordType}
+            placeholder="Password"
+            {...register('password')}
+          />
           <Button
             onClick={handleChangeInputPasswordType}
             className="check-password-btn"
             label={<img src={passwordEye} alt="check" />}
           />
         </div>
+        <span>
+          <ErrorMessage errors={errors} name="password" />
+        </span>
         <Link to={AppRoute.RESTORE_PASSWORD} className="forgot-password">
           Forgot Password?
         </Link>
