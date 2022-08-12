@@ -1,7 +1,7 @@
 import { ApiPath, AuthApiPath, ContentType, HttpMethod } from 'common/enums/enums';
 import {
   RefreshTokenRequestDto,
-  TokenPair,
+  RefreshTokenResponseDto,
   UserSignInRequestDto,
   UserSignInResponseDto,
   UserSignUpRequestDto,
@@ -39,7 +39,7 @@ class AuthApi {
     });
   }
 
-  public refreshTokens(payload: RefreshTokenRequestDto): Promise<TokenPair> {
+  public refreshTokens(payload: RefreshTokenRequestDto): Promise<RefreshTokenResponseDto> {
     return this.#http.load(`${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.REFRESH_TOKENS}`, {
       method: HttpMethod.POST,
       contentType: ContentType.JSON,

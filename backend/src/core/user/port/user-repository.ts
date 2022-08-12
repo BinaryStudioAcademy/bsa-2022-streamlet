@@ -1,10 +1,10 @@
 import { User } from '@prisma/client';
-import { UserSignUpRequestDto, UserSignUpResponseDto } from 'shared/build';
+import { UserSignUpRequestDto, UserBaseResponseDto } from '~/shared/types/types';
 
 export interface UserRepository {
   getAll(): Promise<User[]>;
   getByEmail(email: string): Promise<User | null>;
   getById(id: string): Promise<User | null>;
 
-  createUser(userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto>;
+  createUser(userRequestDto: UserSignUpRequestDto): Promise<UserBaseResponseDto>;
 }

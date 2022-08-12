@@ -3,6 +3,5 @@ export {
   type UserSignUpResponseDto,
   type UserSignInRequestDto,
   type UserSignInResponseDto,
-  type RefreshTokenRequestDto,
-  type TokenPair,
+  type UserBaseResponseDto,
 } from 'shared/build/common/types/types';

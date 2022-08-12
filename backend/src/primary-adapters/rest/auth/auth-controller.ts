@@ -121,9 +121,7 @@ export class AuthController extends BaseHttpController {
    *          description: Email is already taken.
    */
   @httpPost(AuthApiPath.SIGN_UP, validationMiddleware(userSignUp))
-  public async signUp(
-    @requestBody() userRequestDto: UserSignUpRequestDto,
-  ): Promise<{ user: UserSignUpResponseDto; tokens: TokenPair }> {
+  public async signUp(@requestBody() userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
     const userAlreadyExists = (await this.userService.getUserByEmail(userRequestDto.email)) !== null;
     if (userAlreadyExists) {
       throw new DuplicationError(exceptionMessages.auth.USER_EMAIL_ALREADY_EXISTS);
@@ -170,9 +168,7 @@ export class AuthController extends BaseHttpController {
    *          description: Invalid request format.
    */
   @httpPost(AuthApiPath.SIGN_IN, validationMiddleware(userSignIn))
-  public async signIn(
-    @requestBody() userRequestDto: UserSignInRequestDto,
-  ): Promise<{ user: UserSignInResponseDto; tokens: TokenPair }> {
+  public async signIn(@requestBody() userRequestDto: UserSignInRequestDto): Promise<UserSignInResponseDto> {
     const user = await this.userService.getUserByEmail(userRequestDto.email);
     if (!user) {
       throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);

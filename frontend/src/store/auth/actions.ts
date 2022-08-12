@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
   UserSignUpRequestDto,
@@ -7,7 +7,7 @@ import {
   UserSignInResponseDto,
   UserSignInRequestDto,
   RefreshTokenRequestDto,
-  TokenPair,
+  RefreshTokenResponseDto,
 } from 'common/types/types';
 import { ActionType } from './common';
 
@@ -29,7 +29,7 @@ const signIn = createAsyncThunk<UserSignInResponseDto, UserSignInRequestDto, Asy
   },
 );
 
-const refreshTokens = createAsyncThunk<TokenPair, RefreshTokenRequestDto, AsyncThunkConfig>(
+const refreshTokens = createAsyncThunk<RefreshTokenResponseDto, RefreshTokenRequestDto, AsyncThunkConfig>(
   ActionType.REFRESH_TOKENS,
   async (refreshPayload, { extra }) => {
     const { authApi } = extra;
@@ -38,4 +38,6 @@ const refreshTokens = createAsyncThunk<TokenPair, RefreshTokenRequestDto, AsyncT
   },
 );
 
-export { signUp, signIn, refreshTokens };
+const logout = createAction(ActionType.LOGOUT);
+
+export { signUp, signIn, refreshTokens, logout };
