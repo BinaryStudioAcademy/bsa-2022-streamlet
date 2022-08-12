@@ -119,7 +119,7 @@ const NotificationDropdown: FC = () => {
       />
       {haveUnreadNotifications && <span className="notification-dropdown__unread"></span>}
       <div className={styles.dropdown}>
-        <div className="notification-dropdown__header">
+        <div className={styles.header}>
           <p className="notification__dropdown__title">Notifications</p>
           <Button
             className="notification-dropdown__mark_as_read"

@@ -12,7 +12,15 @@
   position: absolute;
   right: 0;
   display: flex;
+  flex-direction: column;
   width: 350px;
   height: 300px;
-  background-color: black;
+  padding: 16px;
+  background-color: var(--gray-300-header-menu-background);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid white;
 }
