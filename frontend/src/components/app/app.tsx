@@ -4,6 +4,7 @@ import { Routes, Route } from 'components/common/common';
 import { Auth } from 'components/auth/auth';
 import { NotFound } from '../not-found-page/not-found';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
+import { NotificationDropdownTest } from './tests/notification-dropdown/notification-dropdown';
 
 const App: FC = () => {
   return (
@@ -15,6 +16,7 @@ const App: FC = () => {
         <Route path={AppRoute.RESTORE_PASSWORD} element={<Auth />} />
         <Route path={AppRoute.ANY} element={<NotFound />} />
         <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
+        <Route path={'test/notification-dropdown/'} element={<NotificationDropdownTest />} />
       </Routes>
     </>
   );
