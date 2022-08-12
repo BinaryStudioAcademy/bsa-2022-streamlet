@@ -82,7 +82,7 @@ const configuration = (): ConfigInterface => {
   return {
     APP: {
       PORT: port,
-      HOST: `http://${host}:${port}`,
+      HOST: isDevEnvironment(NODE_ENV) ? `${host}:${port}` : host,
       RABBITMQ_URL: `amqp://${rabbitMqHost}:${rabbitMqPort}`,
       NODE_ENV: <AppEnvironment>NODE_ENV || AppEnvironment.DEVELOPMENT,
       LOGGER: {
