@@ -3,19 +3,19 @@ import { amqpConnect } from '~/config/amqp-connection';
 import { AmqpConsumeDto, AmqpSendToQueueDto } from '~/shared/types/ampq/ampq';
 
 class AmqpService {
-  private amqpChannel!: Channel;
+  public amqpChannel!: Channel;
 
   async connect(): Promise<void> {
     this.amqpChannel = await amqpConnect();
   }
 
-  async sendToQueue({ channel, content, options }: AmqpSendToQueueDto): Promise<boolean> {
-    return this.amqpChannel.sendToQueue(channel, content, options);
+  async sendToQueue({ queue, content, options }: AmqpSendToQueueDto): Promise<boolean> {
+    return this.amqpChannel.sendToQueue(queue, content, options);
   }
 
-  async consume({ channel, onMessage, options }: AmqpConsumeDto): Promise<void> {
+  async consume({ queue, onMessage, options }: AmqpConsumeDto): Promise<void> {
     await this.amqpChannel.consume(
-      channel,
+      queue,
       (msg) => {
         if (msg) {
           this.amqpChannel.ack(msg);
@@ -27,4 +27,4 @@ class AmqpService {
   }
 }
 
-export { AmqpService };
+export const amqpService = new AmqpService();

@@ -9,8 +9,6 @@
     "lint:js": "eslint \"src/**/*.ts\"",
     "lint": "npm run lint:js",
     "start:dev": "nodemon --exec ts-node --files -r tsconfig-paths/register ./src/server.ts",
-    "postinstall": "prisma generate",
-    "prestart": "npm run migrate:prod && npm run seed:soft",
     "start": "node ./build/server.js",
     "build:ts": "tsc && tsc-alias -p ./tsconfig.json",
     "build": "npm run build:ts"
@@ -33,6 +31,8 @@
     "express": "^4.18.1",
     "glob": "8.0.3",
     "helmet": "5.1.1",
+    "pino": "^8.4.0",
+    "pino-pretty": "^9.0.0",
     "socket.io": "^4.5.1"
   },
   "version": "1.0.0",

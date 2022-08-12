@@ -12,6 +12,7 @@ COPY ./shared ./shared/
 COPY ./backend/core ./backend/core
 
 RUN npm ci -w shared -w backend/core
+RUN npm run postinstall:backend
 
 RUN npm run build:backend
 RUN rm -rf ./backend/core/src

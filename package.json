@@ -10,12 +10,14 @@
     "lint:css": "npm run lint:css --workspaces --if-present",
     "lint:js": "npm run lint:js --workspaces --if-present",
     "lint": "npm run lint:fs && npm run lint --workspaces --if-present",
-    "postinstall": "npm run build:shared && npm run postinstall -w backend/core",
+    "postinstall:backend": "npm run build:shared && npm run postinstall -w backend/core",
     "build:shared": "npm run build -w shared",
     "build:frontend": "npm run build -w frontend",
     "build:backend": "npm run build -w backend/core",
-    "build": "npm run build -w shared -w frontend -w backend/core",
+    "build:socket": "npm run build -w backend/push",
+    "build": "npm run build -w shared -w frontend -w backend/core -w backend/push",
     "docker:build:backend": "docker build -f .docker/backend.Dockerfile -t backend .",
+    "docker:build:socket": "docker build -f .docker/socket.Dockerfile -t socket .",
     "docker:build:frontend": "docker build --build-arg REACT_APP_API_ORIGIN_URL=/api/v1 -f .docker/frontend.Dockerfile -t frontend .",
     "docker:build": "npm run docker:build:backend && npm run docker:build:frontend",
     "docker:up:d": "docker-compose -f .docker/docker-compose.local.yml up -d",
@@ -52,7 +54,7 @@
   "lint-staged": {
     "*": "npm run lint:fs",
     "*.{ts,tsx,json,scss}": "prettier --write",
-    "{shared,backend/core,backend/push/frontend}/**/*.{ts,tsx}": "npm run lint:js",
+    "{shared,backend/core,backend/push,frontend}/**/*.{ts,tsx}": "npm run lint:js",
     "frontend/**/*.scss": "npm run lint:css"
   }
 }

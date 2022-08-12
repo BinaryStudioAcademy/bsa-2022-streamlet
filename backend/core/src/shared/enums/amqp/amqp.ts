@@ -1,1 +1,1 @@
-export { AmqpChannel } from 'shared/build';
+export { AmqpQueue } from 'shared/build';

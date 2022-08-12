@@ -1,1 +1,1 @@
-export { AmqpChannel } from './amqp/amqp';
+export { AmqpQueue } from './amqp/amqp';

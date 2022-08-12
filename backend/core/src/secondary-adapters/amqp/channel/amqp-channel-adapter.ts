@@ -12,13 +12,13 @@ export class AmqpChannelAdapter implements AmqpChannelPort {
     this.amqpChannel = amqpChannel;
   }
 
-  async sendToQueue({ channel, content, options }: AmqpSendToQueueDto): Promise<boolean> {
-    return this.amqpChannel.sendToQueue(channel, content, options);
+  async sendToQueue({ queue, content, options }: AmqpSendToQueueDto): Promise<boolean> {
+    return this.amqpChannel.sendToQueue(queue, content, options);
   }
 
-  async consume({ channel, onMessage, options }: AmqpConsumeDto): Promise<void> {
+  async consume({ queue, onMessage, options }: AmqpConsumeDto): Promise<void> {
     await this.amqpChannel.consume(
-      channel,
+      queue,
       (msg) => {
         if (msg) {
           this.amqpChannel.ack(msg);

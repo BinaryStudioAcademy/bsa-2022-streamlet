@@ -111,4 +111,14 @@ export class UserController extends BaseHttpController {
   public upload(@requestBody() body: UserUploadRequestDto): Promise<ImageUploadResponseDto> {
     return this.userService.uploadAvatar(body);
   }
+
+  @httpGet('/sayHello')
+  public sayHello(): Promise<boolean> {
+    return this.userService.sayHello();
+  }
+
+  @httpGet('/sayHelloAll')
+  public sayHelloAll(): Promise<boolean> {
+    return this.userService.sayHelloAll();
+  }
 }

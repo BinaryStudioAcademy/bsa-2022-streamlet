@@ -1,16 +1,13 @@
 import { app } from './app';
 import { CONFIG } from './config/config';
 import * as http from 'http';
-import { services } from './services/services';
-
-const { socketService, amqpService } = services;
+import { amqpService, socketService } from './services/services';
+import { logger } from './config/logger';
 
 const server: http.Server = http.createServer(app);
 socketService.subscribe(server);
 amqpService.connect();
 
-/*eslint-disable */
-server.listen(CONFIG.port, async () => {
-  console.log(`Server started on ${CONFIG.port}`);
+server.listen(CONFIG.port, () => {
+  logger.info(`Server started on ${CONFIG.port} PORT`);
 });
-/*eslint-enable */
