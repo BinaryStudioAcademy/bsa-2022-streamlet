@@ -1,4 +1,4 @@
-import { FC } from 'common/types/types';
+import { FC, VideoCard as VideoCardType } from 'common/types/types';
 import { IconName } from 'common/enums/components';
 import { Icon } from 'components/common/common';
 import { useNavigate } from 'hooks/hooks';
@@ -7,20 +7,10 @@ import { VideoTag } from '../common/common';
 import styles from './styles.module.scss';
 
 type Props = {
-  id: string;
-  name: string;
-  duration: number;
-  videoViews: number;
-  createdAt: string;
-  preview: string;
-  channel: {
-    id: string;
-    name: string;
-    avatar: string;
-  };
+  video: VideoCardType;
 };
 
-const VideoCard: FC<Props> = ({ id, name, duration, videoViews, createdAt, preview, channel }) => {
+const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, createdAt, preview, channel } }) => {
   const navigate = useNavigate();
 
   const redirectToVideoPage = (): void => navigate(`/video/${id}`, { replace: true });
@@ -58,7 +48,7 @@ const VideoCard: FC<Props> = ({ id, name, duration, videoViews, createdAt, previ
             <img className={styles['avatar']} src={channel.avatar} alt="Channels avatar" />
           </a>
           <div className={styles['video-card-desc']}>
-            <a className={styles['video-card-title']} onClick={redirectToChannelPage}>
+            <a className={styles['video-card-title']} onClick={redirectToVideoPage}>
               {name}
             </a>
             <div className={styles['video-card-meta']}>
