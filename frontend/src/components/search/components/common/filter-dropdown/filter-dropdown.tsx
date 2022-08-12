@@ -25,7 +25,7 @@ const FilterDropdown: FC<Props> = ({ filter, onChangeFilter, title, options }) =
     <div className={styles['filter-dropdown']}>
       <div className={styles['filter-dropdown-title']} onClick={onHandleToggleDropdown}>
         {title}
-        <Icon name={toggleDropdown ? IconName.ARROW_UP : IconName.ARROW_DOWN} color="gray" />
+        <Icon name={toggleDropdown ? IconName.ARROW_UP : IconName.ARROW_DOWN} />
       </div>
       {toggleDropdown && (
         <ul className={styles['filter-dropdown-list']}>

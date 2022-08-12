@@ -22,6 +22,10 @@
   text-transform: uppercase;
 }
 
+.filter-sidebar-title svg path {
+  fill: var(--text-gray-color);
+}
+
 .filter-sidebar-wrapper {
   display: flex;
   flex-flow: column nowrap;

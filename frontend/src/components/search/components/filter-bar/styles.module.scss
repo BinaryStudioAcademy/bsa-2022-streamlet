@@ -23,6 +23,10 @@
   pointer-events: none;
 }
 
+.filter-bar-select svg path {
+  fill: var(--text-gray-color);
+}
+
 .filter-bar select {
   width: 100%;
   min-width: 110px;

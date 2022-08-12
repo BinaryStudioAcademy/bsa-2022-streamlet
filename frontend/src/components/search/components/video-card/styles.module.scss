@@ -41,6 +41,10 @@
   display: none;
 }
 
+.video-card-play-btn svg path {
+  fill: var(--white-text-color);
+}
+
 .video-card-badge-duration {
   position: absolute;
   right: 10px;
@@ -109,6 +113,10 @@
   align-items: center;
   gap: 5px;
   color: var(--text-gray-color);
+}
+
+.video-card-meta-data svg path {
+  fill: var(--text-gray-color);
 }
 
 .video-card-author {

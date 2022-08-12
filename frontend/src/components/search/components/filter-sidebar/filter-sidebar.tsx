@@ -28,7 +28,7 @@ const FilterSidebar: FC<Props> = ({
   return (
     <div className={styles['filter-sidebar']}>
       <div className={styles['filter-sidebar-title']}>
-        <Icon name={IconName.FILTER} color="gray" />
+        <Icon name={IconName.FILTER} />
         <span>filters</span>
       </div>
       <div className={styles['filter-sidebar-wrapper']}>

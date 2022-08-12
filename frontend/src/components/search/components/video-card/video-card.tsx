@@ -37,7 +37,7 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
         <img src={preview} alt="Preview video img" />
         <div className={styles['video-card-play']}>
           <div className={styles['video-card-play-btn']}>
-            <Icon name={IconName.PLAY} color="white" />
+            <Icon name={IconName.PLAY} />
           </div>
           <span className={styles['video-card-badge-duration']}>{getDurationString(duration)}</span>
         </div>
@@ -52,11 +52,11 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
           </a>
           <div className={styles['video-card-meta']}>
             <div className={styles['video-card-meta-data']}>
-              <Icon name={IconName.WATCH} color="gray" />
+              <Icon name={IconName.WATCH} />
               {getDividedViewString(videoViews)}
             </div>
             <div className={styles['video-card-meta-data']}>
-              <Icon name={IconName.TIMEAGO} color="gray" />
+              <Icon name={IconName.TIMEAGO} />
               {getHowLongAgoString(new Date(createdAt))}
             </div>
           </div>
@@ -68,11 +68,11 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
         </div>
         <div className={styles['video-card-meta-footer']}>
           <div className={styles['video-card-meta-data']}>
-            <Icon name={IconName.WATCH} color="gray" />
+            <Icon name={IconName.WATCH} />
             {getDividedViewString(videoViews)}
           </div>
           <div className={styles['video-card-meta-data']}>
-            <Icon name={IconName.TIMEAGO} color="gray" />
+            <Icon name={IconName.TIMEAGO} />
             {getHowLongAgoString(new Date(createdAt))}
           </div>
         </div>

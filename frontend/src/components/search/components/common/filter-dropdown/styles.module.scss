@@ -21,6 +21,10 @@
   width: 11px;
 }
 
+.filter-dropdown-title svg path {
+  fill: var(--text-gray-color);
+}
+
 .filter-dropdown-title:hover svg path {
   fill: var(--white-text-color);
 }

@@ -27,7 +27,7 @@ const FilterSelect: FC<Props> = ({ filter, onChangeFilter, title, options }) => 
     <div className={styles['filter-select']}>
       <div className={styles['filter-select-title']} tabIndex={13}>
         {filterTitle}
-        <Icon name={IconName.ARROW_DOWN} color="gray" />
+        <Icon name={IconName.ARROW_DOWN} />
       </div>
       <div className={styles['filter-select-list']}>
         {options.map((o) => {

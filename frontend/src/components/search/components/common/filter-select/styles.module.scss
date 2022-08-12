@@ -25,6 +25,10 @@
   width: 11px;
 }
 
+.filter-select-title svg path {
+  fill: var(--text-gray-color);
+}
+
 .filter-select-title:hover svg path {
   fill: var(--white-text-color);
 }

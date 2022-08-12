@@ -30,7 +30,7 @@ const FilterBar: FC<Props> = ({ filterType: fType, onChangeFilterType, filterDat
               </option>
             ))}
           </select>
-          <Icon name={IconName.ARROW_DOWN} color="gray" />
+          <Icon name={IconName.ARROW_DOWN} />
         </label>
       </div>
       <div className={styles['filter-bar-date']}>
@@ -43,7 +43,7 @@ const FilterBar: FC<Props> = ({ filterType: fType, onChangeFilterType, filterDat
               </option>
             ))}
           </select>
-          <Icon name={IconName.ARROW_DOWN} color="gray" />
+          <Icon name={IconName.ARROW_DOWN} />
         </label>
       </div>
     </div>
