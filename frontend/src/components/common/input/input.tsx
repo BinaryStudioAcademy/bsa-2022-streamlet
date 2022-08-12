@@ -2,7 +2,7 @@ import { FormControl, FormControlErrors, FormControlPath } from 'common/types/ty
 import { useFormControl } from 'hooks/hooks';
 import { ErrorMessage } from 'components/common/common';
 import { FieldValues } from 'react-hook-form';
-import { ReactElement } from 'react';
+import { ReactElement, useId } from 'react';
 
 type Props<T> = {
   control: FormControl<T>;
@@ -11,7 +11,9 @@ type Props<T> = {
   name: FormControlPath<T>;
   placeholder?: string;
   type?: 'text' | 'email' | 'date' | 'password';
-  className?: string;
+  inputClassName?: string;
+  labelClassName?: string;
+  wrapperClassName?: string;
 };
 
 const Input = <T extends FieldValues>({
@@ -21,18 +23,23 @@ const Input = <T extends FieldValues>({
   name,
   placeholder = '',
   type = 'text',
-  className,
+  inputClassName,
+  labelClassName,
+  wrapperClassName,
 }: Props<T>): ReactElement | null => {
   const { field } = useFormControl({ name, control });
+  const id = useId();
 
   return (
-    <label className={className}>
-      <span>{label}</span>
-      <input {...field} type={type} placeholder={placeholder} />
+    <div className={wrapperClassName}>
+      <label className={labelClassName} htmlFor={id}>
+        <span>{label}</span>
+      </label>
+      <input {...field} type={type} placeholder={placeholder} className={inputClassName} id={id} />
       <span>
         <ErrorMessage errors={errors} name={name} />
       </span>
-    </label>
+    </div>
   );
 };
 

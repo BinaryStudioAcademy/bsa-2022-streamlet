@@ -114,7 +114,7 @@ label {
   cursor: pointer;
 }
 
-#sign-in-email-input {
+.sign-in-email-input {
   border: none;
   border-radius: 3px;
   outline: inherit;
@@ -129,14 +129,14 @@ label {
   width: 100%;
 }
 
-#sign-in-password-input {
+.sign-in-password-input {
   width: 100%;
   border: none;
   border-radius: 3px 0 0 3px;
   outline: inherit;
 }
 
-#restore-email-input {
+.restore-email-input {
   margin-bottom: 20px;
 }
 

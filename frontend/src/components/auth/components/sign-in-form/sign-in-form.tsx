@@ -6,21 +6,25 @@ import googleLogo from '../../../../assets/img/google.svg';
 import passwordEye from '../../../../assets/img/password-eye.svg';
 import '../../../../assets/css/auth.scss';
 import { useAppForm } from 'hooks/hooks';
+import { userSignIn } from 'validation-schemas/validation-schemas';
 
 type Props = {
-  onSubmit: () => void;
+  onSubmit: (formValues: SignInFormValues) => void;
 };
 
 type PasswordType = 'password' | 'text';
 
-interface FormValues {
+export interface SignInFormValues {
   email: string;
   password: string;
 }
 
-const SignInForm: FC<Props> = () => {
+const SignInForm: FC<Props> = ({ onSubmit }) => {
   const [inputPasswordType, setInputPasswordType] = useState<PasswordType>('password');
-  const { control, errors, register } = useAppForm<FormValues>({ defaultValues: { email: '', password: '' } });
+  const { control, errors, register, handleSubmit } = useAppForm<SignInFormValues>({
+    defaultValues: { email: '', password: '' },
+    validationSchema: userSignIn,
+  });
   const handleChangeInputPasswordType = (): void => {
     if (inputPasswordType === 'password') {
       setInputPasswordType('text');
@@ -30,14 +34,16 @@ const SignInForm: FC<Props> = () => {
   };
   return (
     <>
-      <form className="form-container">
+      <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
         <Input
           control={control}
           errors={errors}
           name="email"
           label="Email"
           type="email"
-          className="sign-in-password-label"
+          wrapperClassName="form"
+          inputClassName="sign-in-email-input"
+          labelClassName="sign-in-email-label"
           placeholder="username@gmail.com"
         />
         <label htmlFor="sign-in-password-input" className="sign-in-password-label">
@@ -47,6 +53,7 @@ const SignInForm: FC<Props> = () => {
           <input
             id="sign-in-password-input"
             type={inputPasswordType}
+            className="sign-in-password-input"
             placeholder="Password"
             {...register('password')}
           />

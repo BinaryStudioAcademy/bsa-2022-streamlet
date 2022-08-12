@@ -2,7 +2,9 @@ import { AppRoute } from 'common/enums/enums';
 import { UserSignUpRequestDto, FC } from 'common/types/types';
 import { useAppDispatch, useLocation } from 'hooks/hooks';
 import { authActions } from 'store/actions';
+import { signIn } from 'store/auth/actions';
 import { SignUpForm, SignInForm, AuthContainer, RestorePasswordForm } from './components/components';
+import { SignInFormValues } from './components/sign-in-form/sign-in-form';
 
 const Auth: FC = () => {
   const dispatch = useAppDispatch();
@@ -11,8 +13,8 @@ const Auth: FC = () => {
     // handle restore password
   };
 
-  const handleSignInSubmit = (): void => {
-    // handle sign in
+  const handleSignInSubmit = (formValues: SignInFormValues): void => {
+    dispatch(signIn(formValues));
   };
 
   const handleSignUpSubmit = (payload: UserSignUpRequestDto): void => {
