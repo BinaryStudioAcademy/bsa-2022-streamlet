@@ -10,6 +10,7 @@ enum IconName {
   SMILE = 'smile',
   TIMEAGO = 'timeago',
   WATCH = 'watch',
+  MARK_AS_READ = 'markasread',
 }
 
 export { IconName };

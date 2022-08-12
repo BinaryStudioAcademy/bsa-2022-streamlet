@@ -11,6 +11,7 @@ import { ReactComponent as Signout } from '../../../assets/img/signout.svg';
 import { ReactComponent as Smile } from '../../../assets/img/smile.svg';
 import { ReactComponent as Timeago } from '../../../assets/img/timeago.svg';
 import { ReactComponent as Watch } from '../../../assets/img/watch.svg';
+import { ReactComponent as MarkAsRead } from '../../../assets/img/markasread.svg';
 
 const getColor = (color: string): string => styles[`fill${color}`];
 
@@ -55,6 +56,9 @@ const Icon = ({ name, color, size }: { name: string; color: string; size: string
 
     case IconName.WATCH:
       return <Watch className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+
+    case IconName.MARK_AS_READ:
+      return <MarkAsRead className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     default:
       return <Timeago className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
