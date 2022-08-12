@@ -1,5 +1,5 @@
 import { SearchQueryParam } from 'common/enums/enums';
-import { FC } from 'common/types/types';
+import { FC, VideoCard as VideoCardType } from 'common/types/types';
 import { useAppDispatch, useAppSelector, useState, useCallback, useEffect, useSearchParams } from 'hooks/hooks';
 import { searchActions } from 'store/actions';
 import { FilterBar, FilterSidebar, VideoCard } from './components/components';
@@ -20,24 +20,28 @@ const Search: FC = () => {
   const [filterDurationValue, setFilterDurationValue] = useState('');
   const [sortByValue, setSortByValue] = useState('');
 
+  const onHandleSetSearchParams = (prop: string, value: string): void => {
+    setSearchParams({ ...Object.fromEntries([...searchParams]), [prop]: value });
+  };
+
   const onHandleChangeFilterType = (v: string): void => {
     setFilterTypeValue(v);
-    setSearchParams({ ...Object.fromEntries([...searchParams]), [SearchQueryParam.TYPE]: v });
+    onHandleSetSearchParams(SearchQueryParam.TYPE, v);
   };
 
   const onHandleChangeFilterDate = (v: string): void => {
     setFilterDateValue(v);
-    setSearchParams({ ...Object.fromEntries([...searchParams]), [SearchQueryParam.DATE]: v });
+    onHandleSetSearchParams(SearchQueryParam.DATE, v);
   };
 
   const onHandleChangeFilterDuration = (v: string): void => {
     setFilterDurationValue(v);
-    setSearchParams({ ...Object.fromEntries([...searchParams]), [SearchQueryParam.DURATION]: v });
+    onHandleSetSearchParams(SearchQueryParam.DURATION, v);
   };
 
   const onHandleChangeSortBy = (v: string): void => {
     setSortByValue(v);
-    setSearchParams({ ...Object.fromEntries([...searchParams]), [SearchQueryParam.SORT_BY]: v });
+    onHandleSetSearchParams(SearchQueryParam.SORT_BY, v);
   };
 
   const onOpenFilterHandler = useCallback(() => dispatch(searchActions.toggleShowFilter()), [dispatch]);
@@ -73,17 +77,8 @@ const Search: FC = () => {
             onChangeSortBy={onHandleChangeSortBy}
           />
           <div className={styles['search-page-video-list']}>
-            {[].map((c) => (
-              <VideoCard
-                key={c.id}
-                id={c.id}
-                name={c.name}
-                duration={c.duration}
-                createdAt={c.createdAt}
-                preview={c.preview}
-                videoViews={c.videoViews}
-                channel={c.channel}
-              />
+            {[].map((c: VideoCardType) => (
+              <VideoCard key={c.id} video={c} />
             ))}
           </div>
         </div>
