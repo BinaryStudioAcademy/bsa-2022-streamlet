@@ -26,25 +26,23 @@ const FilterSidebar: FC<Props> = ({
   onChangeFilterDuration,
 }) => {
   return (
-    <>
-      <div className={styles['filter-sidebar']}>
-        <div className={styles['filter-sidebar-title']}>
-          <Icon name={IconName.FILTER} color="gray" />
-          <span>filters</span>
-        </div>
-        <div className={styles['filter-sidebar-wrapper']}>
-          <FilterDropdown title="date" options={FilterDate} filter={fDate} onChangeFilter={onChangeFilterDate} />
-          <FilterDropdown title="type" options={FilterType} filter={fType} onChangeFilter={onChangeFilterType} />
-          <FilterDropdown
-            title="duration"
-            options={FilterDuration}
-            filter={fDuration}
-            onChangeFilter={onChangeFilterDuration}
-          />
-          <FilterSelect title="Sort by" options={SortBy} filter={sBy} onChangeFilter={onChangeSortBy} />
-        </div>
+    <div className={styles['filter-sidebar']}>
+      <div className={styles['filter-sidebar-title']}>
+        <Icon name={IconName.FILTER} color="gray" />
+        <span>filters</span>
       </div>
-    </>
+      <div className={styles['filter-sidebar-wrapper']}>
+        <FilterDropdown title="date" options={FilterDate} filter={fDate} onChangeFilter={onChangeFilterDate} />
+        <FilterDropdown title="type" options={FilterType} filter={fType} onChangeFilter={onChangeFilterType} />
+        <FilterDropdown
+          title="duration"
+          options={FilterDuration}
+          filter={fDuration}
+          onChangeFilter={onChangeFilterDuration}
+        />
+        <FilterSelect title="Sort by" options={SortBy} filter={sBy} onChangeFilter={onChangeSortBy} />
+      </div>
+    </div>
   );
 };
 

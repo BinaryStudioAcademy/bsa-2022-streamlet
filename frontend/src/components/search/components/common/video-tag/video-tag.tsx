@@ -5,10 +5,6 @@ type Props = {
   name: string;
 };
 
-const VideoTag: FC<Props> = ({ name }) => (
-  <>
-    <div className={styles['video-tag']}>{name}</div>
-  </>
-);
+const VideoTag: FC<Props> = ({ name }) => <div className={styles['video-tag']}>{name}</div>;
 
 export { VideoTag };
