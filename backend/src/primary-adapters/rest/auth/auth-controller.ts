@@ -282,35 +282,4 @@ export class AuthController extends BaseHttpController {
   public testMail(@requestBody() mailTestRequestDto: MailTestRequestDto): Promise<MailResponseDto> {
     return this.userService.testSendingEmail(mailTestRequestDto);
   }
-
-  /**
-   * /auth/mail-test:
-   *   post:
-   *     tags:
-   *       - auth
-   *     summary: Test the mail service
-   *     security: []
-   *     operationId: testMailService
-   *     consumes:
-   *       - application/json
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *       - in: body
-   *         name: body
-   *         description: Email and name for test
-   *         required: true
-   *         schema:
-   *           $ref: '#/definitions/MailTestRequest'
-   *     responses:
-   *       default:
-   *         description: Confirmation that email was sent successfully or error message
-   *         schema:
-   *           $ref: '#/definitions/MailTestResponse'
-   */
-  // This route is created only for testing purposes.
-  @httpPost('/mail-test')
-  public testMail(@requestBody() mailTestRequestDto: MailTestRequestDto): Promise<MailResponseDto> {
-    return this.userService.testSendingEmail(mailTestRequestDto);
-  }
 }
