@@ -10,7 +10,7 @@ function initSwagger(): object {
         version: '1.0.0',
         description: 'This is BSA project.',
       },
-      host: CONFIG.APP.HOST === 'localhost' ? `localhost:${CONFIG.APP.PORT}` : CONFIG.APP.HOST,
+      host: CONFIG.APP.HOST,
       basePath: CONFIG.API.PREFIX,
       schemes: ['https', 'http'],
     },
