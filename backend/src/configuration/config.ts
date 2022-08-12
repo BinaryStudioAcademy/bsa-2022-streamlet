@@ -21,6 +21,12 @@ interface ApiConfig {
   PREFIX: string;
 }
 
+interface EncryptionConfig {
+  REFRESH_TOKEN_BYTES: number;
+  JWT_SECRET: string;
+  JWT_LIFETIME: string;
+}
+
 interface CloudConfig {
   NAME: string;
   API_KEY: string;
@@ -40,6 +46,7 @@ export interface ConfigInterface {
   DATABASE: DatabaseConfig;
   IMAGE_CLOUD_STORAGE: CloudConfig;
   API: ApiConfig;
+  ENCRYPTION: EncryptionConfig;
   MAIL_SERVICE: MailServiceConfig;
 }
 
@@ -98,6 +105,7 @@ const configuration = (): ConfigInterface => {
     API: {
       PREFIX: API_BASE_PREFIX || '',
     },
+    ENCRYPTION: getEncryptionConfig(),
     MAIL_SERVICE: {
       ADDRESS: MAIL_ADDRESS || '',
       CLIENT_ID: MAIL_CLIENT_ID || '',
@@ -106,6 +114,26 @@ const configuration = (): ConfigInterface => {
       REFRESH_TOKEN: MAIL_REFRESH_TOKEN || '',
     },
   };
+};
+
+const getEncryptionConfig = (): EncryptionConfig => {
+  const { REFRESH_TOKEN_BYTES, JWT_SECRET, JWT_LIFETIME } = process.env;
+
+  if (!JWT_SECRET) {
+    throw new Error('Missing JWT_SECRET in env');
+  }
+  return {
+    REFRESH_TOKEN_BYTES: REFRESH_TOKEN_BYTES
+      ? Number(REFRESH_TOKEN_BYTES)
+      : encryptionConfigDefault.REFRESH_TOKEN_BYTES,
+    JWT_SECRET,
+    JWT_LIFETIME: JWT_LIFETIME || encryptionConfigDefault.JWT_LIFETIME,
+  };
+};
+
+const encryptionConfigDefault = {
+  JWT_LIFETIME: '5m',
+  REFRESH_TOKEN_BYTES: 64,
 };
 
 const CONFIG = configuration();
