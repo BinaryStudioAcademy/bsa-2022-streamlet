@@ -2,7 +2,7 @@ import { AppRoute } from 'common/enums/enums';
 import { UserSignUpRequestDto, FC } from 'common/types/types';
 import { useAppDispatch, useLocation } from 'hooks/hooks';
 import { authActions } from 'store/actions';
-import { SignUpForm, SignInForm, Studio, AuthContainer, RestorePasswordForm } from './components/components';
+import { SignUpForm, SignInForm, AuthContainer, RestorePasswordForm } from './components/components';
 
 const Auth: FC = () => {
   const dispatch = useAppDispatch();
@@ -47,9 +47,6 @@ const Auth: FC = () => {
             children={<RestorePasswordForm onSubmit={handleRestorePasswordSubmit} />}
           />
         );
-      }
-      case AppRoute.STUDIO: {
-        return <Studio />;
       }
     }
 
