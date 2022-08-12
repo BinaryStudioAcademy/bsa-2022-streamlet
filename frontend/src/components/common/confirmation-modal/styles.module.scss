@@ -1,0 +1,31 @@
+.confirmation-text {
+  display: block;
+  max-width: 100%;
+  padding: 10px;
+  color: var(--white-text-color);
+  font-size: 16px;
+  text-align: left;
+}
+
+.content-container {
+  max-width: 400px;
+  margin-top: 24px;
+  border: none;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 8px 8px 8px 24px;
+  border-top: 1px var(--text-gray-color) solid;
+}
+
+.button-container > button {
+  display: inline-block;
+  height: 40px;
+  padding: 10px 16px;
+  color: var(--brand-green-color);
+  background: none;
+  border: none;
+}

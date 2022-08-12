@@ -4,6 +4,8 @@ const CONTAINER_TYPES = {
   UserService: Symbol.for('UserService'),
   MailService: Symbol.for('MailService'),
   UserRepository: Symbol.for('UserRepository'),
+  RefreshTokenService: Symbol.for('RefreshTokenService'),
+  RefreshTokenRepository: Symbol.for('RefreshTokenRepository'),
   MailRepository: Symbol.for('MailRepository'),
 
   PrismaClient: Symbol.for('PrismaClient'),
