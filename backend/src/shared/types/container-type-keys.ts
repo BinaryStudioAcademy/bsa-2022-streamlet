@@ -7,6 +7,8 @@ const CONTAINER_TYPES = {
   MailRepository: Symbol.for('MailRepository'),
 
   PrismaClient: Symbol.for('PrismaClient'),
+  Cloudinary: Symbol.for('Cloudinary'),
+  ImageStoreAdapter: Symbol.for('CloudinaryAdapter'),
   MailTransporter: Symbol.for('MailTransporter'),
   AmqpChannel: Symbol.for('AmqpChannel'),
   AmqpChannelAdapter: Symbol.for('AmqpChannelAdapter'),
