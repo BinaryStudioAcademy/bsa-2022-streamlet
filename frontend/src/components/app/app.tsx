@@ -11,9 +11,9 @@ const App: FC = () => {
       <Route path={AppRoute.ROOT} element="Root" />
       <Route path={AppRoute.SIGN_UP} element={<Auth />} />
       <Route path={AppRoute.SIGN_IN} element={<Auth />} />
+      <Route path={AppRoute.RESTORE_PASSWORD} element={<Auth />} />
       <Route path={AppRoute.STUDIO} element={<Studio />} />
       <Route path={AppRoute.ANALYTICS} element={<StudioAnalytics />} />
-      <Route path={AppRoute.RESTORE_PASSWORD} element={<Auth />} />
       <Route path={AppRoute.ANY} element={<NotFound />} />
     </Routes>
   );
