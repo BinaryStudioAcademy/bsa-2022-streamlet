@@ -1,9 +1,9 @@
 import { AppRoute } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Routes, Route, ConfirmationModal } from 'components/common/common';
+import { Routes, Route } from 'components/common/common';
 import { Auth } from 'components/auth/auth';
 import { NotFound } from '../not-found-page/not-found';
-import { ReactElement, useState } from 'react';
+import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
 
 const App: FC = () => {
   return (
@@ -14,40 +14,7 @@ const App: FC = () => {
         <Route path={AppRoute.SIGN_IN} element={<Auth />} />
         <Route path={AppRoute.RESTORE_PASSWORD} element={<Auth />} />
         <Route path={AppRoute.ANY} element={<NotFound />} />
-        <Route
-          path={'test/confirmationModal/'}
-          element={((): ReactElement => {
-            const [isNeedModal, setIsNeedModal] = useState(false);
-            const [modalText, setModalText] = useState('');
-            return (
-              <div style={{ height: '10000000000px' }}>
-                <label htmlFor="config-modal-text" style={{ color: 'black' }}>
-                  {' '}
-                  Enter modal text
-                </label>
-                <input
-                  type="text"
-                  onChange={(e): void => {
-                    setModalText(e.target.value);
-                  }}
-                ></input>
-                <button
-                  onClick={(): void => {
-                    setIsNeedModal(true);
-                  }}
-                >
-                  show modal
-                </button>
-                <ConfirmationModal
-                  isOpen={isNeedModal}
-                  confirmationText={modalText}
-                  onCancel={(): void => setIsNeedModal(!isNeedModal)}
-                  onOk={(): void => setIsNeedModal(!isNeedModal)}
-                />
-              </div>
-            );
-          })()}
-        />
+        <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
       </Routes>
     </>
   );
