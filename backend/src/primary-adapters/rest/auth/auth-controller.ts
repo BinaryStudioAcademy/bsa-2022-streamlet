@@ -78,6 +78,7 @@ export class AuthController extends BaseHttpController {
   }
 
   /**
+   * @swagger
    * /auth/mail-test:
    *   post:
    *     tags:
