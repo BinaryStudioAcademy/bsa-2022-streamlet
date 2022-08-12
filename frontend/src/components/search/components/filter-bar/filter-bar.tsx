@@ -7,13 +7,13 @@ import { filterDate, filterType, IFilter } from 'components/search/common/consta
 import styles from './styles.module.scss';
 
 type Props = {
-  fType: string;
+  filterType: string;
   onChangeFilterType: (value: string) => void;
-  fDate: string;
+  filterDate: string;
   onChangeFilterDate: (value: string) => void;
 };
 
-const FilterBar: FC<Props> = ({ fType, onChangeFilterType, fDate, onChangeFilterDate }) => {
+const FilterBar: FC<Props> = ({ filterType: fType, onChangeFilterType, filterDate: fDate, onChangeFilterDate }) => {
   const onHandleChangeFilterType = (e: React.FormEvent<HTMLSelectElement>): void =>
     onChangeFilterType(e.currentTarget.value);
   const onHandleChangeFilterDate = (e: React.FormEvent<HTMLSelectElement>): void =>
