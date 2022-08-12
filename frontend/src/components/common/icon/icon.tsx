@@ -14,7 +14,6 @@ import { ReactComponent as Logo } from '../../../assets/img/logo.svg';
 import { ReactComponent as Analystics } from '../../../assets/img/analystics.svg';
 import { ReactComponent as Watch } from '../../../assets/img/watch.svg';
 
-
 const getColor = (color: string): string => styles[`fill${color}`];
 
 interface ISVGProps {
