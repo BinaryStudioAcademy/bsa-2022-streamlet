@@ -24,4 +24,17 @@ const filterDuration = [
   { name: 'OVER_20_MINUTES', text: 'over 20 minutes', value: 'f20m' },
 ];
 
-export { IFilter, filterType, filterDate, filterDuration };
+interface ISort {
+  name: string;
+  text: string;
+  value: string;
+}
+
+const sortBy = [
+  { name: 'RELEVANCE', text: 'relevance', value: 'rel' },
+  { name: 'UPLOAD_DATE', text: 'upload date', value: 'upld' },
+  { name: 'VIEW_COUNT', text: 'view count', value: 'vct' },
+  { name: 'RATING', text: 'rating', value: 'rtg' },
+];
+
+export { IFilter, filterType, filterDate, filterDuration, ISort, sortBy };
