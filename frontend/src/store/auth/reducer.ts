@@ -1,7 +1,7 @@
-import { createReducer } from '@reduxjs/toolkit';
+import { createReducer, isAnyOf } from '@reduxjs/toolkit';
 
 import { DataStatus } from 'common/enums/enums';
-import { signUp } from './actions';
+import { refreshTokens, signIn, signUp } from './actions';
 
 type State = {
   dataStatus: DataStatus;
@@ -12,13 +12,13 @@ const initialState: State = {
 };
 
 const reducer = createReducer(initialState, (builder) => {
-  builder.addCase(signUp.pending, (state) => {
+  builder.addMatcher(isAnyOf(signUp.pending, signIn.pending, refreshTokens.pending), (state) => {
     state.dataStatus = DataStatus.PENDING;
   });
-  builder.addCase(signUp.fulfilled, (state) => {
+  builder.addMatcher(isAnyOf(signUp.fulfilled, signIn.fulfilled, refreshTokens.fulfilled), (state) => {
     state.dataStatus = DataStatus.FULFILLED;
   });
-  builder.addCase(signUp.rejected, (state) => {
+  builder.addMatcher(isAnyOf(signUp.rejected, signIn.rejected, refreshTokens.rejected), (state) => {
     state.dataStatus = DataStatus.REJECTED;
   });
 });

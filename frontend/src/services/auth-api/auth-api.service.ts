@@ -1,5 +1,12 @@
 import { ApiPath, AuthApiPath, ContentType, HttpMethod } from 'common/enums/enums';
-import { UserSignUpRequestDto, UserSignUpResponseDto } from 'common/types/user/user';
+import {
+  RefreshTokenRequestDto,
+  TokenPair,
+  UserSignInRequestDto,
+  UserSignInResponseDto,
+  UserSignUpRequestDto,
+  UserSignUpResponseDto,
+} from 'common/types/types';
 import { Http } from '../http/http.service';
 
 type Constructor = {
@@ -18,6 +25,22 @@ class AuthApi {
 
   public signUp(payload: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
     return this.#http.load(`${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.SIGN_UP}`, {
+      method: HttpMethod.POST,
+      contentType: ContentType.JSON,
+      payload: JSON.stringify(payload),
+    });
+  }
+
+  public signIn(payload: UserSignInRequestDto): Promise<UserSignInResponseDto> {
+    return this.#http.load(`${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.SIGN_IN}`, {
+      method: HttpMethod.POST,
+      contentType: ContentType.JSON,
+      payload: JSON.stringify(payload),
+    });
+  }
+
+  public refreshTokens(payload: RefreshTokenRequestDto): Promise<TokenPair> {
+    return this.#http.load(`${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.REFRESH_TOKENS}`, {
       method: HttpMethod.POST,
       contentType: ContentType.JSON,
       payload: JSON.stringify(payload),
