@@ -31,20 +31,23 @@ const FilterSelect: FC<Props> = ({ filter, onChangeFilter, title, options }) => 
           <Icon name={IconName.ARROW_DOWN} color="gray" />
         </div>
         <div className={styles['filter-select-list']}>
-          {options.map((o) => (
-            <div key={o.value} className={styles['filter-select-item']}>
-              <input
-                id={`radS-${o.value}`}
-                type="radio"
-                name={title}
-                value={o.value}
-                data-name={o.text}
-                checked={filter === o.value}
-                onChange={onHandleChangeFilter}
-              />
-              <label htmlFor={`radS-${o.value}`}>{o.text}</label>
-            </div>
-          ))}
+          {options.map((o) => {
+            const id = `radS-${o.value}`;
+            return (
+              <div key={o.value} className={styles['filter-select-item']}>
+                <input
+                  id={id}
+                  type="radio"
+                  name={title}
+                  value={o.value}
+                  data-name={o.text}
+                  checked={filter === o.value}
+                  onChange={onHandleChangeFilter}
+                />
+                <label htmlFor={id}>{o.text}</label>
+              </div>
+            );
+          })}
         </div>
       </div>
     </>

@@ -30,19 +30,22 @@ const FilterDropdown: FC<Props> = ({ filter, onChangeFilter, title, options }) =
         </div>
         {toggleDropdown && (
           <ul className={styles['filter-dropdown-list']}>
-            {options.map((o) => (
-              <li key={o.value} className={styles['filter-dropdown-item']}>
-                <input
-                  id={`rad-${o.value}`}
-                  type="radio"
-                  name={title}
-                  value={o.value}
-                  checked={filter === o.value}
-                  onChange={onHandleChangeFilter}
-                />
-                <label htmlFor={`rad-${o.value}`}>{o.text}</label>
-              </li>
-            ))}
+            {options.map((o) => {
+              const id = `rad-${o.value}`;
+              return (
+                <li key={o.value} className={styles['filter-dropdown-item']}>
+                  <input
+                    id={id}
+                    type="radio"
+                    name={title}
+                    value={o.value}
+                    checked={filter === o.value}
+                    onChange={onHandleChangeFilter}
+                  />
+                  <label htmlFor={id}>{o.text}</label>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>
