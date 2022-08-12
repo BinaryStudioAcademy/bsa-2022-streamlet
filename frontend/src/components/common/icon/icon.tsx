@@ -11,7 +11,7 @@ import { ReactComponent as Signout } from '../../../assets/img/signout.svg';
 import { ReactComponent as Smile } from '../../../assets/img/smile.svg';
 import { ReactComponent as Timeago } from '../../../assets/img/timeago.svg';
 import { ReactComponent as Logo } from '../../../assets/img/logo.svg';
-import { ReactComponent as Analystics } from '../../../assets/img/analystics.svg';
+import { ReactComponent as Analytics } from '../../../assets/img/analytics.svg';
 import { ReactComponent as Watch } from '../../../assets/img/watch.svg';
 
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -56,13 +56,13 @@ const Icon = ({ name, color, size }: { name: string; color: string; size: string
       return <Smile className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.TIMEAGO:
-       return <Timeago className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Timeago className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     case IconName.WATCH:
       return <Watch className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
-    case IconName.ANALYSTICS:
-      return <Analystics className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+    case IconName.ANALYTICS:
+      return <Analytics className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
 
     default:
       return <Logo width={`${size}px`} height={`${size}px`} />;

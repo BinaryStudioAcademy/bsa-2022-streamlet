@@ -3,7 +3,7 @@ enum AppRoute {
   SIGN_IN = '/sign-in',
   SIGN_UP = '/sign-up',
   STUDIO = '/studio',
-  ANALYSTICS = '/analystics',
+  ANALYTICS = '/analytics',
   RESTORE_PASSWORD = '/restore-password',
   ANY = '*',
   VIDEO_$ID = '/video/:videoId',

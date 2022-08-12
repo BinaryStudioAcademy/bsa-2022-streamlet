@@ -10,7 +10,7 @@ enum IconName {
   SMILE = 'smile',
   TIMEAGO = 'timeago',
   LOGO = 'logo',
-  ANALYSTICS = 'analystics',
+  ANALYTICS = 'analytics',
   WATCH = 'watch',
 }
 

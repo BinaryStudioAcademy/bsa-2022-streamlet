@@ -1,15 +1,15 @@
 import { FC } from 'common/types/types';
-import { StudioSidebar } from '../';
+import { StudioSidebar } from '..';
 
 import styles from './styles.module.scss';
 
 type Props = Record<string, unknown>;
 
-const StudioAnalystics: FC<Props> = () => {
+const StudioAnalytics: FC<Props> = () => {
   return (
-    <div className={styles.analystics}>
+    <div className={styles.analytics}>
       <StudioSidebar />
     </div>
   );
 };
-export { StudioAnalystics };
+export { StudioAnalytics };

@@ -9,7 +9,7 @@ import styles from './styles.module.scss';
 
 type Props = Record<string, unknown>;
 
-const arrayButtons = [IconName.HOME, IconName.ANALYSTICS];
+const arrayButtons = [IconName.HOME, IconName.ANALYTICS];
 
 const StudioSidebar: FC<Props> = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const StudioSidebar: FC<Props> = () => {
 
   const handleClick = (item: string): void => {
     setActive(item);
-    navigate(`${item === IconName.HOME ? AppRoute.STUDIO : AppRoute.ANALYSTICS}`);
+    navigate(`${item === IconName.HOME ? AppRoute.STUDIO : AppRoute.ANALYTICS}`);
   };
 
   return (
