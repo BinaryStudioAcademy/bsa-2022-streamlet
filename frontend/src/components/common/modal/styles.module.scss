@@ -1,0 +1,15 @@
+.modal-content-container {
+  min-width: 374px;
+  min-height: 105px;
+  background-color: var(--gray-400-primary-background);
+}
+
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background: none;
+}
