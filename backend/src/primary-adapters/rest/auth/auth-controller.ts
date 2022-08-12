@@ -177,7 +177,8 @@ export class AuthController extends BaseHttpController {
     if (!user) {
       throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
     }
-    if (!(await compareHash(userRequestDto.password, user.password))) {
+    const isSameHash = await compareHash(userRequestDto.password, user.password);
+    if (!isSameHash) {
       throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
     }
     const accessToken = await generateJwt(trimUser(user));

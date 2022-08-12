@@ -123,10 +123,17 @@ const getEncryptionConfig = (): EncryptionConfig => {
     throw new Error('Missing JWT_SECRET in env');
   }
   return {
-    REFRESH_TOKEN_BYTES: REFRESH_TOKEN_BYTES ? Number(REFRESH_TOKEN_BYTES) : 64,
+    REFRESH_TOKEN_BYTES: REFRESH_TOKEN_BYTES
+      ? Number(REFRESH_TOKEN_BYTES)
+      : encryptionConfigDefault.REFRESH_TOKEN_BYTES,
     JWT_SECRET,
-    JWT_LIFETIME: JWT_LIFETIME || '5m',
+    JWT_LIFETIME: JWT_LIFETIME || encryptionConfigDefault.JWT_LIFETIME,
   };
+};
+
+const encryptionConfigDefault = {
+  JWT_LIFETIME: '5m',
+  REFRESH_TOKEN_BYTES: 64,
 };
 
 const CONFIG = configuration();

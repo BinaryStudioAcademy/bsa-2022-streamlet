@@ -77,7 +77,7 @@ export class UserController extends BaseHttpController {
    *            items:
    *              $ref: '#/definitions/User'
    */
-  @httpGet('/', authenticationMiddleware())
+  @httpGet('/', authenticationMiddleware)
   public getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
   }

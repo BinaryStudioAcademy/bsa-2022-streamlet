@@ -7,34 +7,30 @@ import { UserBaseResponseDto } from '~/shared/types/types';
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
 import { exceptionMessages } from '~/shared/enums/exceptions';
 
-export const authenticationMiddleware =
-  (isAuthRequred = true) =>
-  async (req: ExtendedRequest, _res: express.Response, next: express.NextFunction): Promise<void> => {
-    req.user = null;
-    const authHeader = req.headers['authorization'];
-    if (!authHeader) {
-      if (isAuthRequred) {
-        return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_NO_TOKEN));
-      }
-      return next();
-    }
-    const token = (authHeader as string).split(' ')[1];
-    if (!token) {
-      if (isAuthRequred) {
-        return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_NO_TOKEN));
-      }
-      return next();
-    }
-    const secretKey = createSecretKey(CONFIG.ENCRYPTION.JWT_SECRET, 'utf-8');
-    let payload;
-    try {
-      payload = (await jwtVerify(token, secretKey)).payload;
-    } catch {
-      if (isAuthRequred) {
-        return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN));
-      }
-      return next();
-    }
+export const authenticationMiddleware = async (
+  req: ExtendedRequest,
+  _res: express.Response,
+  next: express.NextFunction,
+): Promise<void> => {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) {
+    return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_NO_TOKEN));
+  }
+  const token = getBearerTokenFromAuthHeader(authHeader);
+  if (!token) {
+    return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_NO_TOKEN));
+  }
+  const secretKey = createSecretKey(CONFIG.ENCRYPTION.JWT_SECRET, 'utf-8');
+  try {
+    const payload = (await jwtVerify(token, secretKey)).payload;
     req.user = payload as UserBaseResponseDto;
-    next();
-  };
+  } catch {
+    return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN));
+  }
+  next();
+};
+
+const getBearerTokenFromAuthHeader = (authHeader: string): string => {
+  const bearerToken: string | undefined = authHeader.split(' ')[1];
+  return bearerToken || '';
+};

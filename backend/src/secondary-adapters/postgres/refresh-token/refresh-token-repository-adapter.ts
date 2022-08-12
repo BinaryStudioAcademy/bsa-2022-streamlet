@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { PrismaClient } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
-import { generateRefreshToken } from '~/shared/helpers';
+import { generateRefreshToken, hashValue } from '~/shared/helpers';
 import bcrypt from 'bcrypt';
 import { RefreshTokenRepository } from '~/core/refresh-token/port/refresh-token-repository';
 
@@ -22,8 +22,7 @@ export class RefreshTokenRepositoryAdapter implements RefreshTokenRepository {
       return false;
     }
 
-    const isTokenCorrect = await bcrypt.compare(refreshToken, token.token);
-    return isTokenCorrect;
+    return bcrypt.compare(refreshToken, token.token);
   }
 
   async createForUser(userId: string): Promise<string> {
@@ -35,7 +34,7 @@ export class RefreshTokenRepositoryAdapter implements RefreshTokenRepository {
     const token = await generateRefreshToken();
     await this.prismaClient.refreshToken.create({
       data: {
-        token,
+        token: await hashValue(token),
         userId,
       },
     });
