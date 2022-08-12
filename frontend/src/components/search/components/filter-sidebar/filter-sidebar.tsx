@@ -1,8 +1,7 @@
 import { FC } from 'common/types/types';
-import { IconName } from 'common/enums/components';
+import { IconName, FilterDate, FilterType, FilterDuration, SortBy } from 'common/enums/enums';
 import { Icon } from 'components/common/icon';
 import { FilterDropdown, FilterSelect } from '../common/common';
-import { filterDate, filterType, filterDuration, sortBy } from '../../common/constants';
 import styles from './styles.module.scss';
 
 type Props = {
@@ -34,15 +33,15 @@ const FilterSidebar: FC<Props> = ({
           <span>filters</span>
         </div>
         <div className={styles['filter-sidebar-wrapper']}>
-          <FilterDropdown title="date" options={filterDate} filter={fDate} onChangeFilter={onChangeFilterDate} />
-          <FilterDropdown title="type" options={filterType} filter={fType} onChangeFilter={onChangeFilterType} />
+          <FilterDropdown title="date" options={FilterDate} filter={fDate} onChangeFilter={onChangeFilterDate} />
+          <FilterDropdown title="type" options={FilterType} filter={fType} onChangeFilter={onChangeFilterType} />
           <FilterDropdown
             title="duration"
-            options={filterDuration}
+            options={FilterDuration}
             filter={fDuration}
             onChangeFilter={onChangeFilterDuration}
           />
-          <FilterSelect title="Sort by" options={sortBy} filter={sBy} onChangeFilter={onChangeSortBy} />
+          <FilterSelect title="Sort by" options={SortBy} filter={sBy} onChangeFilter={onChangeSortBy} />
         </div>
       </div>
     </>

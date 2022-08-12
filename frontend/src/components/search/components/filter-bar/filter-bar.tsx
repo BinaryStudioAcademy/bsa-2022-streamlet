@@ -1,8 +1,7 @@
 import React from 'react';
 import { FC } from 'common/types/types';
-import { IconName } from 'common/enums/components';
+import { IconName, FilterDate, FilterType } from 'common/enums/enums';
 import { Icon } from 'components/common/common';
-import { filterDate, filterType } from 'components/search/common/constants';
 
 import styles from './styles.module.scss';
 
@@ -26,7 +25,7 @@ const FilterBar: FC<Props> = ({ filterType: fType, onChangeFilterType, filterDat
           <label htmlFor="filterBarType" className={styles['filter-bar-select']}>
             <select id="filterBarType" onChange={onHandleChangeFilterType} value={fType}>
               <option value="">all</option>
-              {filterType.map((f) => (
+              {FilterType.map((f) => (
                 <option key={f.name} value={f.value}>
                   {f.text}
                 </option>
@@ -39,7 +38,7 @@ const FilterBar: FC<Props> = ({ filterType: fType, onChangeFilterType, filterDat
           <label htmlFor="filterBarDate" className={styles['filter-bar-select']}>
             <select id="filterBarDate" onChange={onHandleChangeFilterDate} value={fDate}>
               <option value="">anytime</option>
-              {filterDate.map((f) => (
+              {FilterDate.map((f) => (
                 <option key={f.name} value={f.value}>
                   {f.text}
                 </option>
