@@ -13,23 +13,23 @@ export class SocketService {
     this.io.on('connection', (socket) => {
       logger.info(`CLient ${socket.id} connected`);
       amqpService.consume({
-        queue: AmqpQueue.SOCKET,
+        queue: AmqpQueue.NOTIFY_USER,
         onMessage: (data) => {
           if (data) {
-            const message = data.toString('utf-8');
-            logger.info(`Rabbitmq -> data: ${message}`);
-            socket.emit('say-hello-done', message);
+            const message = JSON.parse(data.toString('utf-8'));
+            logger.info(`Rabbitmq -> ${JSON.stringify(message)}`);
+            socket.emit('notify-done', message);
           }
         },
       });
 
       amqpService.consume({
-        queue: AmqpQueue.SOCKET_ALL,
+        queue: AmqpQueue.NOTIFY_USER_BROADCAST,
         onMessage: (data) => {
           if (data && this.io) {
-            const message = data.toString('utf-8');
-            logger.info(`Rabbitmq -> data: ${message}`);
-            this.io.emit('say-hello-all-done', message);
+            const message = JSON.parse(data.toString('utf-8'));
+            logger.info(`Rabbitmq -> ${JSON.stringify(message)}`);
+            this.io.emit('notify-broadcast-done', message);
           }
         },
       });

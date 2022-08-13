@@ -75,17 +75,17 @@ export class UserService {
     });
   }
 
-  sayHello(): Promise<boolean> {
+  notify(body: { data: { message: string } }): Promise<boolean> {
     return this.amqpChannel.sendToQueue({
-      queue: AmqpQueue.SOCKET,
-      content: Buffer.from('hello!'),
+      queue: AmqpQueue.NOTIFY_USER,
+      content: Buffer.from(JSON.stringify(body)),
     });
   }
 
-  sayHelloAll(): Promise<boolean> {
+  notifyBroadcast(body: { data: { message: string } }): Promise<boolean> {
     return this.amqpChannel.sendToQueue({
-      queue: AmqpQueue.SOCKET_ALL,
-      content: Buffer.from('Hello all!'),
+      queue: AmqpQueue.NOTIFY_USER_BROADCAST,
+      content: Buffer.from(JSON.stringify(body)),
     });
   }
 }

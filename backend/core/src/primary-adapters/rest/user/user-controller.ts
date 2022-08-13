@@ -113,13 +113,14 @@ export class UserController extends BaseHttpController {
     return this.userService.uploadAvatar(body);
   }
 
-  @httpGet('/sayHello')
-  public sayHello(): Promise<boolean> {
-    return this.userService.sayHello();
+  //NOTE: this routes only for testing and in future should removed or modified
+  @httpPost('/notify')
+  public notify(@requestBody() body: { data: { message: string } }): Promise<boolean> {
+    return this.userService.notify(body);
   }
 
-  @httpGet('/sayHelloAll')
-  public sayHelloAll(): Promise<boolean> {
-    return this.userService.sayHelloAll();
+  @httpPost('/notify-broadcast')
+  public notifyBroadcast(@requestBody() body: { data: { message: string } }): Promise<boolean> {
+    return this.userService.notifyBroadcast(body);
   }
 }
