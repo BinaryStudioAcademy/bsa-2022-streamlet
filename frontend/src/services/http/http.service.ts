@@ -31,8 +31,6 @@ class Http {
         .json()
         .then((parsed) => {
           if (Array.isArray(parsed) && parsed.length > 0) {
-            // eslint-disable-next-line no-console
-            console.log(parsed[0]);
             return parsed[0];
           }
           return parsed;
