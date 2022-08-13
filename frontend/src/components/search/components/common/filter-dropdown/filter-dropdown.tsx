@@ -1,5 +1,5 @@
 import { FC } from 'common/types/types';
-import { useState } from 'hooks/hooks';
+import { useId, useState } from 'hooks/hooks';
 import { IconName } from 'common/enums/components';
 import { Icon } from 'components/common/common';
 
@@ -18,6 +18,8 @@ type Props = {
 const FilterDropdown: FC<Props> = ({ activeFilterId, onChangeFilterId, title, options }) => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
+  const id = useId();
+
   const handleToggleDropdown = (): void => setToggleDropdown(!toggleDropdown);
 
   const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => onChangeFilterId(e.currentTarget.value);
@@ -32,18 +34,18 @@ const FilterDropdown: FC<Props> = ({ activeFilterId, onChangeFilterId, title, op
         {toggleDropdown && (
           <ul className={styles['filter-dropdown-list']}>
             {options.map((o) => {
-              const id = `rad-${o.value}`;
+              const optionId = `${id}-${o.value}`;
               return (
-                <li key={o.value} className={styles['filter-dropdown-item']}>
+                <li key={optionId} className={styles['filter-dropdown-item']}>
                   <input
-                    id={id}
+                    id={optionId}
                     type="radio"
                     name={title}
                     value={o.value}
                     checked={activeFilterId === o.value}
                     onChange={onHandleChangeFilter}
                   />
-                  <label htmlFor={id}>{o.text}</label>
+                  <label htmlFor={optionId}>{o.text}</label>
                 </li>
               );
             })}

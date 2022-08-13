@@ -1,5 +1,5 @@
 import { FC } from 'common/types/types';
-import { useState } from 'hooks/hooks';
+import { useId, useState } from 'hooks/hooks';
 import { IconName } from 'common/enums/components';
 import { Icon } from 'components/common/common';
 
@@ -18,6 +18,8 @@ type Props = {
 const FilterSelect: FC<Props> = ({ activeFilterId, onChangeFilterId, title, options }) => {
   const [filterTitle, setFilterTitle] = useState(title);
 
+  const id = useId();
+
   const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => {
     onChangeFilterId(e.currentTarget.value);
     setFilterTitle(e.currentTarget.dataset.name as string);
@@ -32,11 +34,11 @@ const FilterSelect: FC<Props> = ({ activeFilterId, onChangeFilterId, title, opti
         </div>
         <div className={styles['filter-select-list']}>
           {options.map((o) => {
-            const id = `radS-${o.value}`;
+            const optionId = `${id}-${o.value}`;
             return (
-              <div key={o.value} className={styles['filter-select-item']}>
+              <div key={optionId} className={styles['filter-select-item']}>
                 <input
-                  id={id}
+                  id={optionId}
                   type="radio"
                   name={title}
                   value={o.value}
@@ -44,7 +46,7 @@ const FilterSelect: FC<Props> = ({ activeFilterId, onChangeFilterId, title, opti
                   checked={activeFilterId === o.value}
                   onChange={onHandleChangeFilter}
                 />
-                <label htmlFor={id}>{o.text}</label>
+                <label htmlFor={optionId}>{o.text}</label>
               </div>
             );
           })}
