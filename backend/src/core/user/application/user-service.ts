@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { User, Prisma } from '@prisma/client';
+import { User } from '@prisma/client';
 import { CONTAINER_TYPES, MailTestRequestDto, UserSignUpRequestDto } from '~/shared/types/types';
 import { UserRepository } from '~/core/user/port/user-repository';
 import { RefreshTokenRepository } from '~/core/refresh-token/port/refresh-token-repository';
@@ -47,8 +47,8 @@ export class UserService {
     return this.userRepository.getById(id);
   }
 
-  getUserByQuery(query: Prisma.UserWhereInput): Promise<User | null> {
-    return this.userRepository.getUserByQuery(query);
+  getUserByUsernameOrEmail(email: string, username: string): Promise<User | null> {
+    return this.userRepository.getUserByUsernameOrEmail(email, username);
   }
 
   createUser(userRequestDto: UserSignUpRequestDto): Promise<UserBaseResponseDto> {

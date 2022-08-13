@@ -11,6 +11,16 @@ export class UserRepositoryAdapter implements UserRepository {
   constructor(@inject(CONTAINER_TYPES.PrismaClient) prismaClient: PrismaClient) {
     this.prismaClient = prismaClient;
   }
+  getUserByUsernameOrEmail(email: string, username: string): Promise<User | null> {
+    return this.prismaClient.user.findFirst({
+      where: {
+        OR: {
+          email,
+          username,
+        },
+      },
+    });
+  }
 
   getUserByQuery(query: Prisma.UserWhereInput): Promise<User | null> {
     return this.prismaClient.user.findFirst({

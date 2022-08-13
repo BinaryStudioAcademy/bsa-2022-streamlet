@@ -122,9 +122,11 @@ export class AuthController extends BaseHttpController {
    */
   @httpPost(AuthApiPath.SIGN_UP, validationMiddleware(userSignUp))
   public async signUp(@requestBody() userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
-    const duplicateUser = await this.userService.getUserByQuery({
-      OR: [{ email: userRequestDto.email }, { username: userRequestDto.username }],
-    });
+    const duplicateUser = await this.userService.getUserByUsernameOrEmail(
+      userRequestDto.email,
+      userRequestDto.username,
+    );
+
     if (duplicateUser) {
       if (duplicateUser.username === userRequestDto.username) {
         throw new DuplicationError(exceptionMessages.auth.USER_USERNAME_ALREADY_EXISTS);
