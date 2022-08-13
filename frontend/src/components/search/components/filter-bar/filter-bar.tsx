@@ -6,23 +6,28 @@ import { Icon } from 'components/common/common';
 import styles from './styles.module.scss';
 
 type Props = {
-  filterType: string;
-  onChangeFilterType: (value: string) => void;
-  filterDate: string;
-  onChangeFilterDate: (value: string) => void;
+  activeFilterTypeId: string;
+  onChangeFilterTypeId: (value: string) => void;
+  activeFilterDateId: string;
+  onChangeFilterDateId: (value: string) => void;
 };
 
-const FilterBar: FC<Props> = ({ filterType: fType, onChangeFilterType, filterDate: fDate, onChangeFilterDate }) => {
+const FilterBar: FC<Props> = ({
+  activeFilterTypeId,
+  onChangeFilterTypeId,
+  activeFilterDateId,
+  onChangeFilterDateId,
+}) => {
   const onHandleChangeFilterType = (e: React.FormEvent<HTMLSelectElement>): void =>
-    onChangeFilterType(e.currentTarget.value);
+    onChangeFilterTypeId(e.currentTarget.value);
   const onHandleChangeFilterDate = (e: React.FormEvent<HTMLSelectElement>): void =>
-    onChangeFilterDate(e.currentTarget.value);
+    onChangeFilterDateId(e.currentTarget.value);
 
   return (
     <div className={styles['filter-bar']}>
       <div className={styles['filter-bar-type']}>
         <label htmlFor="filterBarType" className={styles['filter-bar-select']}>
-          <select id="filterBarType" onChange={onHandleChangeFilterType} value={fType}>
+          <select id="filterBarType" onChange={onHandleChangeFilterType} value={activeFilterTypeId}>
             <option value="">all</option>
             {FilterType.map((o) => (
               <option key={`opt-${o.value}`} value={o.value}>
@@ -35,7 +40,7 @@ const FilterBar: FC<Props> = ({ filterType: fType, onChangeFilterType, filterDat
       </div>
       <div className={styles['filter-bar-date']}>
         <label htmlFor="filterBarDate" className={styles['filter-bar-select']}>
-          <select id="filterBarDate" onChange={onHandleChangeFilterDate} value={fDate}>
+          <select id="filterBarDate" onChange={onHandleChangeFilterDate} value={activeFilterDateId}>
             <option value="">anytime</option>
             {FilterDate.map((o) => (
               <option key={`opt-${o.value}`} value={o.value}>

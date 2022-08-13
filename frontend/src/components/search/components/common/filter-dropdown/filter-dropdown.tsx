@@ -6,8 +6,8 @@ import { Icon } from 'components/common/common';
 import styles from './styles.module.scss';
 
 type Props = {
-  filter: string;
-  onChangeFilter: (value: string) => void;
+  activeFilterId: string;
+  onChangeFilterId: (value: string) => void;
   title: string;
   options: {
     text: string;
@@ -15,12 +15,12 @@ type Props = {
   }[];
 };
 
-const FilterDropdown: FC<Props> = ({ filter, onChangeFilter, title, options }) => {
+const FilterDropdown: FC<Props> = ({ activeFilterId, onChangeFilterId, title, options }) => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   const handleToggleDropdown = (): void => setToggleDropdown(!toggleDropdown);
 
-  const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => onChangeFilter(e.currentTarget.value);
+  const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => onChangeFilterId(e.currentTarget.value);
 
   return (
     <div>
@@ -40,7 +40,7 @@ const FilterDropdown: FC<Props> = ({ filter, onChangeFilter, title, options }) =
                     type="radio"
                     name={title}
                     value={o.value}
-                    checked={filter === o.value}
+                    checked={activeFilterId === o.value}
                     onChange={onHandleChangeFilter}
                   />
                   <label htmlFor={id}>{o.text}</label>

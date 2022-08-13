@@ -6,8 +6,8 @@ import { Icon } from 'components/common/common';
 import styles from './styles.module.scss';
 
 type Props = {
-  filter: string;
-  onChangeFilter: (value: string) => void;
+  activeFilterId: string;
+  onChangeFilterId: (value: string) => void;
   title: string;
   options: {
     text: string;
@@ -15,11 +15,11 @@ type Props = {
   }[];
 };
 
-const FilterSelect: FC<Props> = ({ filter, onChangeFilter, title, options }) => {
+const FilterSelect: FC<Props> = ({ activeFilterId, onChangeFilterId, title, options }) => {
   const [filterTitle, setFilterTitle] = useState(title);
 
   const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => {
-    onChangeFilter(e.currentTarget.value);
+    onChangeFilterId(e.currentTarget.value);
     setFilterTitle(e.currentTarget.dataset.name as string);
   };
 
@@ -41,7 +41,7 @@ const FilterSelect: FC<Props> = ({ filter, onChangeFilter, title, options }) => 
                   name={title}
                   value={o.value}
                   data-name={o.text}
-                  checked={filter === o.value}
+                  checked={activeFilterId === o.value}
                   onChange={onHandleChangeFilter}
                 />
                 <label htmlFor={id}>{o.text}</label>

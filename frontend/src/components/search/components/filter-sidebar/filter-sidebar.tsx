@@ -5,25 +5,25 @@ import { FilterDropdown, FilterSelect } from '../common/common';
 import styles from './styles.module.scss';
 
 type Props = {
-  sortBy: string;
-  onChangeSortBy: (value: string) => void;
-  filterType: string;
-  onChangeFilterType: (value: string) => void;
-  filterDate: string;
-  onChangeFilterDate: (value: string) => void;
-  filterDuration: string;
-  onChangeFilterDuration: (value: string) => void;
+  activeSortById: string;
+  onChangeSortById: (value: string) => void;
+  activeFilterTypeId: string;
+  onChangeFilterTypeId: (value: string) => void;
+  activeFilterDateId: string;
+  onChangeFilterDateId: (value: string) => void;
+  activeFilterDurationId: string;
+  onChangeFilterDurationId: (value: string) => void;
 };
 
 const FilterSidebar: FC<Props> = ({
-  sortBy: sBy,
-  onChangeSortBy,
-  filterType: fType,
-  onChangeFilterType,
-  filterDate: fDate,
-  onChangeFilterDate,
-  filterDuration: fDuration,
-  onChangeFilterDuration,
+  activeSortById,
+  onChangeSortById,
+  activeFilterTypeId,
+  onChangeFilterTypeId,
+  activeFilterDateId,
+  onChangeFilterDateId,
+  activeFilterDurationId,
+  onChangeFilterDurationId,
 }) => {
   return (
     <div className={styles['filter-sidebar']}>
@@ -32,15 +32,30 @@ const FilterSidebar: FC<Props> = ({
         <span>filters</span>
       </div>
       <div className={styles['filter-sidebar-wrapper']}>
-        <FilterDropdown title="date" options={FilterDate} filter={fDate} onChangeFilter={onChangeFilterDate} />
-        <FilterDropdown title="type" options={FilterType} filter={fType} onChangeFilter={onChangeFilterType} />
+        <FilterDropdown
+          title="date"
+          options={FilterDate}
+          activeFilterId={activeFilterDateId}
+          onChangeFilterId={onChangeFilterDateId}
+        />
+        <FilterDropdown
+          title="type"
+          options={FilterType}
+          activeFilterId={activeFilterTypeId}
+          onChangeFilterId={onChangeFilterTypeId}
+        />
         <FilterDropdown
           title="duration"
           options={FilterDuration}
-          filter={fDuration}
-          onChangeFilter={onChangeFilterDuration}
+          activeFilterId={activeFilterDurationId}
+          onChangeFilterId={onChangeFilterDurationId}
         />
-        <FilterSelect title="Sort by" options={SortBy} filter={sBy} onChangeFilter={onChangeSortBy} />
+        <FilterSelect
+          title="Sort by"
+          options={SortBy}
+          activeFilterId={activeSortById}
+          onChangeFilterId={onChangeSortById}
+        />
       </div>
     </div>
   );

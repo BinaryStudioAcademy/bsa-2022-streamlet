@@ -49,22 +49,22 @@ const Search: FC = () => {
       <div className={styles['search-page']}>
         {isFilterShown && (
           <FilterBar
-            filterType={filterTypeValue}
-            onChangeFilterType={setFilterTypeValue}
-            filterDate={filterDateValue}
-            onChangeFilterDate={setFilterDateValue}
+            activeFilterTypeId={filterTypeValue}
+            onChangeFilterTypeId={setFilterTypeValue}
+            activeFilterDateId={filterDateValue}
+            onChangeFilterDateId={setFilterDateValue}
           />
         )}
         <div className={styles['search-page-wrapper']}>
           <FilterSidebar
-            filterType={filterTypeValue}
-            onChangeFilterType={setFilterTypeValue}
-            filterDate={filterDateValue}
-            onChangeFilterDate={setFilterDateValue}
-            filterDuration={filterDurationValue}
-            onChangeFilterDuration={setFilterDurationValue}
-            sortBy={sortByValue}
-            onChangeSortBy={setSortByValue}
+            activeFilterTypeId={filterTypeValue}
+            onChangeFilterTypeId={setFilterTypeValue}
+            activeFilterDateId={filterDateValue}
+            onChangeFilterDateId={setFilterDateValue}
+            activeFilterDurationId={filterDurationValue}
+            onChangeFilterDurationId={setFilterDurationValue}
+            activeSortById={sortByValue}
+            onChangeSortById={setSortByValue}
           />
           <div className={styles['search-page-video-list']}>
             {[].map((c: VideoCardType) => (
