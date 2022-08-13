@@ -1,0 +1,17 @@
+$submit-top-margin: 20px;
+
+.auth-submit-btn {
+  margin-top: $submit-top-margin;
+  padding: 15px 0;
+  color: var(--white-text-color);
+  font: inherit;
+  background-color: var(--brand-green-color);
+  border: none;
+  border-radius: 3px;
+  outline: inherit;
+  cursor: pointer;
+}
+
+.auth-submit-btn:hover {
+  background-color: var(--brand-green-hover-color);
+}

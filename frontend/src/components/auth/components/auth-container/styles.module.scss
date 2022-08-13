@@ -1,7 +1,3 @@
-p {
-  color: var(--white-text-color);
-}
-
 .auth-logo {
   max-height: 40px;
 }
@@ -18,9 +14,14 @@ p {
   z-index: 1;
   width: 100vw;
   margin: auto;
-  background-color: rgba(52 79 62 / 47%);
+  background-color: var(--auth-modal-background);
   border: solid 3px transparent;
-  border-image-source: linear-gradient(to left, rgba(34 240 0 / 47%), rgba(146 255 229 / 47%));
+  border-image-source:
+    linear-gradient
+    ( to left,
+    var(--green-300-primary-background),
+    var(--green-200-header-menu-background)
+  );
   border-image-slice: 1;
 }
 
@@ -32,87 +33,6 @@ p {
   margin-top: 0;
   color: var(--white-text-color);
   font-size: 44px;
-}
-
-$submit-top-margin: 20px;
-
-.submit-btn-loader {
-  margin-top: $submit-top-margin;
-}
-
-.auth-submit-btn {
-  margin-top: $submit-top-margin;
-  padding: 15px 0;
-  color: var(--white-text-color);
-  font: inherit;
-  background-color: var(--brand-green-color);
-  border: none;
-  border-radius: 3px;
-  outline: inherit;
-  cursor: pointer;
-}
-
-.auth-submit-btn:hover {
-  background-color: #0b9e3f;
-}
-
-.form-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-input {
-  margin-top: 13px;
-  margin-bottom: 22px;
-}
-
-.auth-link {
-  margin-left: 5px;
-  color: var(--white-text-color);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.forgot-password {
-  margin: 19px 0 22px;
-  color: var(--white-text-color);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.restore-email-input {
-  margin-bottom: 20px;
-}
-
-.continue-with-paragraph {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 34px;
-  margin-bottom: 29px;
-}
-
-.google-btn {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding: 15px 0;
-  color: inherit;
-  background-color: var(--white-text-color);
-  border: none;
-  border-radius: 3px;
-  outline: inherit;
-  cursor: pointer;
-}
-
-.google-btn:hover,
-.check-password-btn:hover {
-  background-color: #d8dedb;
-}
-
-.auth-link:hover,
-.forgot-password:hover {
-  color: #d8dedb;
 }
 
 .background-zigzag {

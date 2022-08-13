@@ -1,10 +1,13 @@
 import { AppRoute } from 'common/enums/enums';
 import { FC, UserSignUpRequestDto } from 'common/types/types';
-import { Button, Input, Link, Loader, PasswordInput } from 'components/common/common';
+import { Input, PasswordInput } from 'components/common/common';
 import { useAppForm } from 'hooks/hooks';
 
 import { userSignUp as userSignUpValidationSchema } from 'validation-schemas/validation-schemas';
+import { AuthSubmitButton, ContonueWithParagraph, GoogleButton } from '../common';
 import { DEFAULT_SIGN_UP_PAYLOAD } from './common';
+
+import formStyles from '../form-controls.module.scss';
 
 type Props = {
   onSubmit: (formValues: UserSignUpRequestDto) => void;
@@ -19,9 +22,9 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="form-container">
+      <form onSubmit={handleSubmit(onSubmit)} className={formStyles['form-container']}>
         <Input
-          wrapperClassName="form-input"
+          wrapperClassName={formStyles['form-input']}
           type="email"
           label="Email"
           placeholder="Enter your email"
@@ -30,7 +33,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
         />
         <Input
-          wrapperClassName="form-input"
+          wrapperClassName={formStyles['form-input']}
           type="text"
           label="Username"
           placeholder="Enter your username"
@@ -39,26 +42,18 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
         />
         <PasswordInput
-          wrapperClassName="form-input"
+          wrapperClassName={formStyles['form-input']}
           placeholder="Password"
           control={control}
           name="password"
           errors={errors}
           label="Password"
         />
-
-        {isLoading ? (
-          <Loader className="submit-btn-loader" />
-        ) : (
-          <Button className="auth-submit-btn" type="submit" label="Sign in" />
-        )}
-        <p className="continue-with-paragraph">
-          Do you have already an account ?
-          <Link to={AppRoute.SIGN_IN} className="auth-link">
-            Login
-          </Link>
-        </p>
+        <ContonueWithParagraph prompt="Already have an account?" linkTitle="Login" route={AppRoute.SIGN_IN} />
+        <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign up" />
       </form>
+      <p>or continue with</p>
+      <GoogleButton disabled={isLoading} />
     </>
   );
 };

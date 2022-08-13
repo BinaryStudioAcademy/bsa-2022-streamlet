@@ -1,10 +1,11 @@
 import { AppRoute } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Button, Input, Link, Loader, PasswordInput } from 'components/common/common';
-import googleLogo from 'assets/img/google.svg';
-import 'assets/css/auth.scss';
+import { Input, Link, PasswordInput } from 'components/common/common';
+import formStyles from '../form-controls.module.scss';
+import styles from './styles.module.scss';
 import { useAppForm } from 'hooks/hooks';
 import { userSignIn } from 'validation-schemas/validation-schemas';
+import { AuthSubmitButton, ContonueWithParagraph, GoogleButton } from '../common';
 
 type Props = {
   onSubmit: (formValues: SignInFormValues) => void;
@@ -24,42 +25,37 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
 
   return (
     <>
-      <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
+      <form className={formStyles['form-container']} onSubmit={handleSubmit(onSubmit)}>
         <Input
           control={control}
           errors={errors}
           name="email"
           label="Email"
           type="email"
-          wrapperClassName="form-input"
+          wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
         <PasswordInput
-          wrapperClassName="form-input"
+          wrapperClassName={formStyles['form-input']}
           placeholder="Password"
           control={control}
           name="password"
           errors={errors}
           label="Password"
         />
-        <Link to={AppRoute.RESTORE_PASSWORD} className="forgot-password">
+        <Link to={AppRoute.RESTORE_PASSWORD} className={styles['forgot-password']}>
           Forgot Password?
         </Link>
-        {isLoading ? (
-          <Loader className="submit-btn-loader" />
-        ) : (
-          <Button className="auth-submit-btn" type="submit" label="Sign in" />
-        )}
+        <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign in" />
       </form>
-      <p className="continue-with-paragraph">or continue with</p>
+      <p>or continue with</p>
+      <GoogleButton disabled={isLoading} />
 
-      <Button className="google-btn" type="button" label={<img src={googleLogo} alt="Google" />} />
-      <p className="continue-with-paragraph">
-        Don't have an account yet?{' '}
-        <Link to={AppRoute.SIGN_UP} className="auth-link">
-          Register for free
-        </Link>
-      </p>
+      <ContonueWithParagraph
+        prompt="Don't have an account yet?"
+        linkTitle="Register for free"
+        route={AppRoute.SIGN_UP}
+      />
     </>
   );
 };

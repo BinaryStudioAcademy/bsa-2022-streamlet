@@ -48,7 +48,7 @@
   },
   "lint-staged": {
     "*": "npm run lint:fs",
-    "*.{ts,tsx,json,scss}": "prettier --write",
+    "*.{ts,tsx,json}": "prettier --write",
     "{shared,backend,frontend}/**/*.{ts,tsx}": "npm run lint:js",
     "frontend/**/*.scss": "npm run lint:css"
   }

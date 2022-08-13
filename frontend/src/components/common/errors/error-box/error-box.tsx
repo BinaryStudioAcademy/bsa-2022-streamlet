@@ -6,7 +6,7 @@ type Props = {
 };
 
 const ErrorBox: FC<Props> = ({ message }) => {
-  return <div className={styles.errorText}>{message}</div>;
+  return <div className={styles['error-text']}>{message}</div>;
 };
 
 export { ErrorBox };

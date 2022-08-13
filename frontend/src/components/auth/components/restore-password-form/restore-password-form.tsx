@@ -1,10 +1,10 @@
 import { AppRoute } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Button, Input, Link } from 'components/common/common';
+import { Input } from 'components/common/common';
 import { useAppForm } from 'hooks/hooks';
 import { refreshPassword } from 'validation-schemas/validation-schemas';
-
-import '../../../../assets/css/auth.scss';
+import { AuthSubmitButton, ContonueWithParagraph } from '../common';
+import formStyles from '../form-controls.module.scss';
 
 type Props = {
   onSubmit: () => void;
@@ -22,23 +22,19 @@ const RestorePasswordForm: FC<Props> = ({ onSubmit }) => {
 
   return (
     <>
-      <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
+      <form className={formStyles['form-container']} onSubmit={handleSubmit(onSubmit)}>
         <Input
           control={control}
           errors={errors}
           name="email"
           label="Email"
           type="email"
-          wrapperClassName="form-input"
+          wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
-        <Button className="auth-submit-btn" type="submit" label="Send" />
+        <AuthSubmitButton isLoading={false} disabled={true} name="Send" />
       </form>
-      <p className="continue-with-paragraph">
-        <Link to={AppRoute.SIGN_IN} className="auth-link">
-          Back to login
-        </Link>
-      </p>
+      <ContonueWithParagraph linkTitle="Back to login" prompt="Changed your mind?" route={AppRoute.SIGN_IN} />
     </>
   );
 };

@@ -5,6 +5,7 @@ import { FieldValues } from 'react-hook-form';
 import { ReactElement, useId } from 'react';
 import { ErrorBox } from '../errors';
 import styles from './styles.module.scss';
+import classNames from 'classnames';
 
 type Props<T> = {
   control: FormControl<T>;
@@ -33,12 +34,18 @@ const Input = <T extends FieldValues>({
   const id = useId();
 
   return (
-    <div className={`${styles.inputWrapper} ${wrapperClassName}`}>
-      <label className={`${styles.label} ${labelClassName}`} htmlFor={id}>
+    <div className={classNames(styles['input-wrapper'], wrapperClassName)}>
+      <label className={classNames(styles.label, labelClassName)} htmlFor={id}>
         <span>{label}</span>
       </label>
-      <input {...field} type={type} placeholder={placeholder} className={`${styles.input} ${inputClassName}`} id={id} />
-      <div className={styles.errorBlock}>
+      <input
+        {...field}
+        type={type}
+        placeholder={placeholder}
+        className={classNames(styles.input, inputClassName)}
+        id={id}
+      />
+      <div className={styles['error-block']}>
         <ErrorMessage
           errors={errors}
           name={name}
