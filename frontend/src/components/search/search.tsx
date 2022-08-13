@@ -20,31 +20,17 @@ const Search: FC = () => {
   const [filterDurationValue, setFilterDurationValue] = useState('');
   const [sortByValue, setSortByValue] = useState('');
 
-  const onHandleSetSearchParams = (prop: string, value: string): void => {
-    setSearchParams({ ...Object.fromEntries([...searchParams]), [prop]: value });
-  };
-
-  const onHandleChangeFilterType = (v: string): void => {
-    setFilterTypeValue(v);
-    onHandleSetSearchParams(SearchQueryParam.TYPE, v);
-  };
-
-  const onHandleChangeFilterDate = (v: string): void => {
-    setFilterDateValue(v);
-    onHandleSetSearchParams(SearchQueryParam.DATE, v);
-  };
-
-  const onHandleChangeFilterDuration = (v: string): void => {
-    setFilterDurationValue(v);
-    onHandleSetSearchParams(SearchQueryParam.DURATION, v);
-  };
-
-  const onHandleChangeSortBy = (v: string): void => {
-    setSortByValue(v);
-    onHandleSetSearchParams(SearchQueryParam.SORT_BY, v);
-  };
-
   const onOpenFilterHandler = useCallback(() => dispatch(searchActions.toggleShowFilter()), [dispatch]);
+
+  const handleSetSearchParams = (): void => {
+    const videoFilter = {
+      ...(filterTypeValue && { [SearchQueryParam.TYPE]: filterTypeValue }),
+      ...(filterDateValue && { [SearchQueryParam.DATE]: filterDateValue }),
+      ...(filterDurationValue && { [SearchQueryParam.DURATION]: filterDurationValue }),
+      ...(sortByValue && { [SearchQueryParam.SORT_BY]: sortByValue }),
+    };
+    setSearchParams({ ...Object.fromEntries([...searchParams]), ...videoFilter });
+  };
 
   useEffect(() => {
     setFilterTypeValue(searchParams.get(SearchQueryParam.TYPE) || '');
@@ -53,6 +39,10 @@ const Search: FC = () => {
     setSortByValue(searchParams.get(SearchQueryParam.SORT_BY) || '');
   }, []);
 
+  useEffect(() => {
+    handleSetSearchParams();
+  }, [filterTypeValue, filterDateValue, filterDurationValue, sortByValue]);
+
   return (
     <>
       <span onClick={onOpenFilterHandler}> {isFilterShown ? 'close' : 'open'} FilterBar</span>
@@ -60,21 +50,21 @@ const Search: FC = () => {
         {isFilterShown && (
           <FilterBar
             filterType={filterTypeValue}
-            onChangeFilterType={onHandleChangeFilterType}
+            onChangeFilterType={setFilterTypeValue}
             filterDate={filterDateValue}
-            onChangeFilterDate={onHandleChangeFilterDate}
+            onChangeFilterDate={setFilterDateValue}
           />
         )}
         <div className={styles['search-page-wrapper']}>
           <FilterSidebar
             filterType={filterTypeValue}
-            onChangeFilterType={onHandleChangeFilterType}
+            onChangeFilterType={setFilterTypeValue}
             filterDate={filterDateValue}
-            onChangeFilterDate={onHandleChangeFilterDate}
+            onChangeFilterDate={setFilterDateValue}
             filterDuration={filterDurationValue}
-            onChangeFilterDuration={onHandleChangeFilterDuration}
+            onChangeFilterDuration={setFilterDurationValue}
             sortBy={sortByValue}
-            onChangeSortBy={onHandleChangeSortBy}
+            onChangeSortBy={setSortByValue}
           />
           <div className={styles['search-page-video-list']}>
             {[].map((c: VideoCardType) => (
