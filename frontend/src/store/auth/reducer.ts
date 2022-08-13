@@ -28,9 +28,11 @@ const reducer = createReducer(initialState, (builder) => {
   });
   builder.addMatcher(isAnyOf(signUp.pending, signIn.pending, refreshTokens.pending), (state) => {
     state.dataStatus = DataStatus.PENDING;
+    state.error = undefined;
   });
   builder.addMatcher(isAnyOf(signUp.fulfilled, signIn.fulfilled, refreshTokens.fulfilled), (state, { payload }) => {
     state.dataStatus = DataStatus.FULFILLED;
+    state.error = undefined;
     state.tokens = payload.tokens;
   });
   builder.addMatcher(isAnyOf(signUp.rejected, signIn.rejected, refreshTokens.rejected), (state, { error }) => {

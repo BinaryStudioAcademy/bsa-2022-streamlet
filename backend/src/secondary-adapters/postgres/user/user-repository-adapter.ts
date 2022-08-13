@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { UserRepository } from '~/core/user/port/user-repository';
-import { PrismaClient, User } from '@prisma/client';
+import { Prisma, PrismaClient, User } from '@prisma/client';
 import { CONTAINER_TYPES, UserBaseResponseDto, UserSignUpRequestDto } from '~/shared/types/types';
 import { trimUser, hashValue } from '~/shared/helpers';
 
@@ -10,6 +10,12 @@ export class UserRepositoryAdapter implements UserRepository {
 
   constructor(@inject(CONTAINER_TYPES.PrismaClient) prismaClient: PrismaClient) {
     this.prismaClient = prismaClient;
+  }
+
+  getUserByQuery(query: Prisma.UserWhereInput): Promise<User | null> {
+    return this.prismaClient.user.findFirst({
+      where: query,
+    });
   }
 
   getById(id: string): Promise<User | null> {

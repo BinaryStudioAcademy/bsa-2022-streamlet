@@ -1,17 +1,17 @@
 import { AppRoute } from 'common/enums/enums';
 import { FC, UserSignUpRequestDto } from 'common/types/types';
-import { Button, Input, Link } from 'components/common/common';
-import { getNameOf } from 'helpers/helpers';
+import { Button, Input, Link, Loader, PasswordInput } from 'components/common/common';
 import { useAppForm } from 'hooks/hooks';
 
 import { userSignUp as userSignUpValidationSchema } from 'validation-schemas/validation-schemas';
 import { DEFAULT_SIGN_UP_PAYLOAD } from './common';
 
 type Props = {
-  onSubmit: (payload: UserSignUpRequestDto) => void;
+  onSubmit: (formValues: UserSignUpRequestDto) => void;
+  isLoading: boolean;
 };
 
-const SignUpForm: FC<Props> = ({ onSubmit }) => {
+const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit } = useAppForm<UserSignUpRequestDto>({
     defaultValues: DEFAULT_SIGN_UP_PAYLOAD,
     validationSchema: userSignUpValidationSchema,
@@ -21,38 +21,39 @@ const SignUpForm: FC<Props> = ({ onSubmit }) => {
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="form-container">
         <Input
+          wrapperClassName="form-input"
           type="email"
           label="Email"
           placeholder="Enter your email"
-          name={getNameOf<UserSignUpRequestDto>('email')}
+          name="email"
           control={control}
           errors={errors}
-          wrapperClassName="form"
         />
         <Input
+          wrapperClassName="form-input"
           type="text"
           label="Username"
           placeholder="Enter your username"
-          name={getNameOf<UserSignUpRequestDto>('username')}
+          name="username"
           control={control}
           errors={errors}
-          wrapperClassName="form"
         />
-        <Input
-          type="password"
+        <PasswordInput
+          wrapperClassName="form-input"
+          placeholder="Password"
+          control={control}
+          name="password"
+          errors={errors}
           label="Password"
-          placeholder="Enter your password"
-          name={getNameOf<UserSignUpRequestDto>('password')}
-          control={control}
-          errors={errors}
-          wrapperClassName="form"
         />
-        <label htmlFor="password-input">Password</label>
-        <input id="password-input" className="form" type="password" placeholder="Password" />
 
-        <Button className="auth-submit-btn" type="submit" label="Sign up" />
+        {isLoading ? (
+          <Loader className="submit-btn-loader" />
+        ) : (
+          <Button className="auth-submit-btn" type="submit" label="Sign in" />
+        )}
         <p className="continue-with-paragraph">
-          Do you have already an account ?{' '}
+          Do you have already an account ?
           <Link to={AppRoute.SIGN_IN} className="auth-link">
             Login
           </Link>

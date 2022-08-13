@@ -8,15 +8,10 @@ p {
 
 .auth-background {
   display: flex;
+  flex-grow: 1;
   align-items: center;
   width: 100vw;
   background: var(--gray-400-primary-background);
-}
-
-.restore-password,
-.sign-in,
-.sign-up {
-  height: 100%;
 }
 
 .auth-modal {
@@ -30,7 +25,6 @@ p {
 }
 
 .auth-container {
-  height: 100%;
   margin: 38px 20px;
 }
 
@@ -146,12 +140,10 @@ $submit-top-margin: 20px;
 @media screen and (min-height: 820px) {
   .auth-background {
     width: 100vw;
-    height: 100vh;
   }
 
   .auth-modal {
     width: 100vw;
-    height: 100%;
   }
 }
 
