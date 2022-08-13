@@ -4,7 +4,6 @@ services:
     image: rabbitmq:3-management-alpine
     hostname: rabbit
     networks:
-      - socket_network
       - backend_network
     ports:
       # AMQP protocol port
@@ -39,7 +38,6 @@ services:
     env_file:
       - ../.env/api.env
     networks:
-      - socket_network
       - backend_network
       - frontend_network
     logging:
@@ -47,20 +45,17 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
-  socket:
-    image: socket
-    container_name: socket
+  push:
+    image: push
+    container_name: push
     restart: on-failure:5
     depends_on:
       - rabbitmq
-    links: 
-        - rabbitmq
     ports:
       - '5002:5002'
     env_file:
-      - ../.env/socket.env
+      - ../.env/push.env
     networks:
-      - socket_network
       - backend_network
       - frontend_network
     logging:
@@ -86,7 +81,6 @@ services:
     volumes:
       - ../nginx/nginx.local.conf:/etc/nginx/nginx.conf
     networks:
-      - socket_network
       - backend_network
       - frontend_network
 
@@ -101,8 +95,6 @@ volumes:
     driver: local
 
 networks:
-  socket_network:
-    driver: bridge
   backend_network:
     driver: bridge
   frontend_network:

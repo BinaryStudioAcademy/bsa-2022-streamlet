@@ -1,7 +1,4 @@
-FROM node:16.16.0-slim as socket-build
-
-RUN apt-get update
-RUN apt-get install -y openssl
+FROM node:16.16.0-alpine as push-build
 
 WORKDIR /app
 
@@ -11,9 +8,10 @@ COPY ./.eslintrc.yml ./
 COPY ./shared ./shared/
 COPY ./backend/push ./backend/push
 
+RUN npm pkg set scripts.postinstall="npm run build:shared"
 RUN npm ci -w shared -w backend/push
 
-RUN npm run build:socket
+RUN npm run build:push
 RUN rm -rf ./backend/push/src
 RUN rm -rf ./shared/src
 

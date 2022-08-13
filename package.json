@@ -14,10 +14,10 @@
     "build:shared": "npm run build -w shared",
     "build:frontend": "npm run build -w frontend",
     "build:backend": "npm run build -w backend/core",
-    "build:socket": "npm run build -w backend/push",
+    "build:push": "npm run build -w backend/push",
     "build": "npm run build -w shared -w frontend -w backend/core -w backend/push",
     "docker:build:backend": "docker build -f .docker/backend.Dockerfile -t backend .",
-    "docker:build:socket": "docker build -f .docker/socket.Dockerfile -t socket .",
+    "docker:build:push": "docker build -f .docker/push.Dockerfile -t push .",
     "docker:build:frontend": "docker build --build-arg REACT_APP_API_ORIGIN_URL=/api/v1 -f .docker/frontend.Dockerfile -t frontend .",
     "docker:build": "npm run docker:build:backend && npm run docker:build:frontend",
     "docker:up:d": "docker-compose -f .docker/docker-compose.local.yml up -d",
@@ -27,7 +27,7 @@
     "migrate": "npm run migrate -w backend/core",
     "start:frontend": "npm start -w frontend",
     "start:backend": "npm run start:dev -w backend/core",
-    "start:socket": "npm run start:dev -w backend/push"
+    "start:push": "npm run start:dev -w backend/push"
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "1.11.2",
