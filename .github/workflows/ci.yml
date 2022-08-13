@@ -1,10 +1,13 @@
 name: Continuous Integration
 
 on:
-  pull_request:
+  push:
     branches:
+      - feature/deployment-pipeline
       - development
       - production
+
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -31,3 +34,24 @@ jobs:
       - name: Code Building
         run: |
           npm run build
+
+  build-backend:
+    name: streamlet build backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Build backend Dockerfile
+        run: docker build -f .docker/backend.Dockerfile -t backend .
+
+  build-frontend:
+    name: streamlet build frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Build backend Dockerfile
+        run: docker build -f .docker/backend.Dockerfile -t backend .
+
