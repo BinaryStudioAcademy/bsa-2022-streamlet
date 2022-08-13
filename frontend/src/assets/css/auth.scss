@@ -13,10 +13,7 @@ p {
   background: var(--gray-400-primary-background);
 }
 
-.restore-password {
-  height: 100vh;
-}
-
+.restore-password,
 .sign-in,
 .sign-up {
   height: 100%;
@@ -43,8 +40,14 @@ p {
   font-size: 44px;
 }
 
+$submit-top-margin: 20px;
+
+.submit-btn-loader {
+  margin-top: $submit-top-margin;
+}
+
 .auth-submit-btn {
-  margin-top: 20px;
+  margin-top: $submit-top-margin;
   padding: 15px 0;
   color: var(--white-text-color);
   font: inherit;

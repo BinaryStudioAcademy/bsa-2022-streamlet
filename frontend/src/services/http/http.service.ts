@@ -27,9 +27,19 @@ class Http {
 
   private async checkStatus(response: Response): Promise<Response> {
     if (!response.ok) {
-      const parsedException = await response.json().catch(() => ({
-        message: response.statusText,
-      }));
+      const parsedException = await response
+        .json()
+        .then((parsed) => {
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            // eslint-disable-next-line no-console
+            console.log(parsed[0]);
+            return parsed[0];
+          }
+          return parsed;
+        })
+        .catch(() => ({
+          message: response.statusText,
+        }));
 
       throw new HttpError({
         status: response.status,

@@ -1,6 +1,6 @@
 import { AppRoute } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Button, Input, Link, PasswordInput } from 'components/common/common';
+import { Button, Input, Link, Loader, PasswordInput } from 'components/common/common';
 import googleLogo from 'assets/img/google.svg';
 import 'assets/css/auth.scss';
 import { useAppForm } from 'hooks/hooks';
@@ -8,6 +8,7 @@ import { userSignIn } from 'validation-schemas/validation-schemas';
 
 type Props = {
   onSubmit: (formValues: SignInFormValues) => void;
+  isLoading: boolean;
 };
 
 export interface SignInFormValues {
@@ -15,7 +16,7 @@ export interface SignInFormValues {
   password: string;
 }
 
-const SignInForm: FC<Props> = ({ onSubmit }) => {
+const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit } = useAppForm<SignInFormValues>({
     defaultValues: { email: '', password: '' },
     validationSchema: userSignIn,
@@ -44,9 +45,14 @@ const SignInForm: FC<Props> = ({ onSubmit }) => {
         <Link to={AppRoute.RESTORE_PASSWORD} className="forgot-password">
           Forgot Password?
         </Link>
-        <Button className="auth-submit-btn" type="submit" label="Sign in" />
+        {isLoading ? (
+          <Loader className="submit-btn-loader" />
+        ) : (
+          <Button className="auth-submit-btn" type="submit" label="Sign in" />
+        )}
       </form>
       <p className="continue-with-paragraph">or continue with</p>
+
       <Button className="google-btn" type="button" label={<img src={googleLogo} alt="Google" />} />
       <p className="continue-with-paragraph">
         Don't have an account yet?{' '}
