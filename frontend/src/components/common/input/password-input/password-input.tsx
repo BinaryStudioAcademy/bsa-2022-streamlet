@@ -66,7 +66,7 @@ const PasswordInput = <T extends FieldValues>({
           label={<img src={passwordEye} alt="check" />}
         />
       </div>
-      <span>
+      <div className={styles.errorBlock}>
         <ErrorMessage
           errors={errors}
           name={name}
@@ -74,7 +74,7 @@ const PasswordInput = <T extends FieldValues>({
             return <ErrorBox message={message} />;
           }}
         />
-      </span>
+      </div>
     </div>
   );
 };

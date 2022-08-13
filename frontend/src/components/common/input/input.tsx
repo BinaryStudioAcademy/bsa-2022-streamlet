@@ -38,7 +38,7 @@ const Input = <T extends FieldValues>({
         <span>{label}</span>
       </label>
       <input {...field} type={type} placeholder={placeholder} className={`${styles.input} ${inputClassName}`} id={id} />
-      <span>
+      <div className={styles.errorBlock}>
         <ErrorMessage
           errors={errors}
           name={name}
@@ -46,7 +46,7 @@ const Input = <T extends FieldValues>({
             return <ErrorBox message={message} />;
           }}
         />
-      </span>
+      </div>
     </div>
   );
 };
