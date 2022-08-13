@@ -1,28 +1,39 @@
+import {
+  FilterTypeTitle,
+  FilterTypeValue,
+  FilterDateTitle,
+  FilterDateValue,
+  FilterDurationTitle,
+  FilterDurationValue,
+  SortByTitle,
+  SortByValue,
+} from './filter/filter';
+
 const FilterType = [
-  { text: 'channel', value: 'chnl' },
-  { text: 'stream', value: 'strm' },
-  { text: 'video', value: 'v' },
+  { text: FilterTypeTitle.CHANNEL, value: FilterTypeValue.CHANNEL },
+  { text: FilterTypeTitle.STREAM, value: FilterTypeValue.STREAM },
+  { text: FilterTypeTitle.VIDEO, value: FilterTypeValue.VIDEO },
 ];
 
 const FilterDate = [
-  { text: 'last hour', value: 'lh' },
-  { text: 'today', value: 'td' },
-  { text: 'this week', value: 'tw' },
-  { text: 'this month', value: 'tm' },
-  { text: 'this year', value: 'ty' },
+  { text: FilterDateTitle.LAST_HOUR, value: FilterDateValue.LAST_HOUR },
+  { text: FilterDateTitle.TODAY, value: FilterDateValue.TODAY },
+  { text: FilterDateTitle.THIS_WEEK, value: FilterDateValue.THIS_WEEK },
+  { text: FilterDateTitle.THIS_MONTH, value: FilterDateValue.THIS_MONTH },
+  { text: FilterDateTitle.THIS_YEAR, value: FilterDateValue.THIS_YEAR },
 ];
 
 const FilterDuration = [
-  { text: 'under 4 minutes', value: 't4m' },
-  { text: '4 - 20 minutes', value: 'f4t20m' },
-  { text: 'over 20 minutes', value: 'f20m' },
+  { text: FilterDurationTitle.UNDER_4_MINUTES, value: FilterDurationValue.UNDER_4_MINUTES },
+  { text: FilterDurationTitle.FROM_4_TO_20_MINUTES, value: FilterDurationValue.FROM_4_TO_20_MINUTES },
+  { text: FilterDurationTitle.OVER_20_MINUTES, value: FilterDurationValue.OVER_20_MINUTES },
 ];
 
 const SortBy = [
-  { text: 'relevance', value: 'rel' },
-  { text: 'upload date', value: 'upld' },
-  { text: 'view count', value: 'vct' },
-  { text: 'rating', value: 'rtg' },
+  { text: SortByTitle.RELEVANCE, value: SortByValue.RELEVANCE },
+  { text: SortByTitle.UPLOAD_DATE, value: SortByValue.UPLOAD_DATE },
+  { text: SortByTitle.VIEW_COUNT, value: SortByValue.VIEW_COUNT },
+  { text: SortByTitle.RATING, value: SortByValue.RATING },
 ];
 
 export { FilterType, FilterDate, FilterDuration, SortBy };
