@@ -25,7 +25,7 @@ const FilterDropdown: FC<Props> = ({ activeFilterId, onChangeFilterId, title, op
   const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => onChangeFilterId(e.currentTarget.value);
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles['filter-dropdown']}>
         <div className={styles['filter-dropdown-title']} onClick={handleToggleDropdown}>
           <span>{title}</span>

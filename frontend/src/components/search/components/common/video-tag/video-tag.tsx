@@ -6,8 +6,10 @@ type Props = {
 };
 
 const VideoTag: FC<Props> = ({ name }) => (
-  <div className={styles['video-tag']}>
-    <span>{name}</span>
+  <div className={styles.container}>
+    <div className={styles['video-tag']}>
+      <span>{name}</span>
+    </div>
   </div>
 );
 

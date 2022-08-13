@@ -26,7 +26,7 @@ const FilterSelect: FC<Props> = ({ activeFilterId, onChangeFilterId, title, opti
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles['filter-select']}>
         <div className={styles['filter-select-title']} tabIndex={13}>
           <span>{filterTitle}</span>
