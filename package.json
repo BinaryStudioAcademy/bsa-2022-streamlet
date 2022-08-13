@@ -10,7 +10,7 @@
     "lint:css": "npm run lint:css --workspaces --if-present",
     "lint:js": "npm run lint:js --workspaces --if-present",
     "lint": "npm run lint:fs && npm run lint --workspaces --if-present",
-    "postinstall:backend": "npm run build:shared && npm run postinstall -w backend/core",
+    "postinstall": "npm run build:shared && npm run postinstall -w backend/core",
     "build:shared": "npm run build -w shared",
     "build:frontend": "npm run build -w frontend",
     "build:backend": "npm run build -w backend/core",

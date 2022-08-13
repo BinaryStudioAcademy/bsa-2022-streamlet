@@ -11,7 +11,7 @@ COPY ./.eslintrc.yml ./
 COPY ./shared ./shared/
 COPY ./backend/push ./backend/push
 
-RUN npm i -w shared -w backend/push
+RUN npm ci -w shared -w backend/push
 
 RUN npm run build:socket
 RUN rm -rf ./backend/push/src
