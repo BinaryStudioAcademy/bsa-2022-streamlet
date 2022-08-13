@@ -3,7 +3,6 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - feature/deployment-pipeline
       - development
       - production
 
@@ -36,7 +35,7 @@ jobs:
           npm run build
 
   build-backend:
-    name: streamlet build backend
+    name: streamlet build backend.Dockerfile
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
@@ -46,12 +45,12 @@ jobs:
         run: docker build -f .docker/backend.Dockerfile -t backend .
 
   build-frontend:
-    name: streamlet build frontend
+    name: streamlet build frontend.Dockerfile
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
 
-      - name: Build backend Dockerfile
-        run: docker build -f .docker/backend.Dockerfile -t backend .
+      - name: Build backend Dockerfile Dockerfile
+        run: docker build --build-arg REACT_APP_API_ORIGIN_URL=/api/v1 -f .docker/frontend.Dockerfile -t frontend .
 
