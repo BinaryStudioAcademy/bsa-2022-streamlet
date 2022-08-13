@@ -3,6 +3,8 @@ import { useFormControl } from 'hooks/hooks';
 import { ErrorMessage } from 'components/common/common';
 import { FieldValues } from 'react-hook-form';
 import { ReactElement, useId } from 'react';
+import { ErrorBox } from '../errors';
+import styles from './styles.module.scss';
 
 type Props<T> = {
   control: FormControl<T>;
@@ -31,13 +33,19 @@ const Input = <T extends FieldValues>({
   const id = useId();
 
   return (
-    <div className={wrapperClassName}>
-      <label className={labelClassName} htmlFor={id}>
+    <div className={`${styles.inputWrapper} ${wrapperClassName}`}>
+      <label className={`${styles.label} ${labelClassName}`} htmlFor={id}>
         <span>{label}</span>
       </label>
-      <input {...field} type={type} placeholder={placeholder} className={inputClassName} id={id} />
+      <input {...field} type={type} placeholder={placeholder} className={`${styles.input} ${inputClassName}`} id={id} />
       <span>
-        <ErrorMessage errors={errors} name={name} />
+        <ErrorMessage
+          errors={errors}
+          name={name}
+          render={({ message }): ReactElement => {
+            return <ErrorBox message={message} />;
+          }}
+        />
       </span>
     </div>
   );

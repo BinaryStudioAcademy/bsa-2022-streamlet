@@ -14,7 +14,7 @@ rules:
   unit-disallowed-list:
     - em
     - rem
-
+  selector-class-pattern: '[a-zA-Z0-9_]+'
   order/order:
     - custom-properties
     - declarations

@@ -1,16 +1,5 @@
-p,
-label {
+p {
   color: var(--white-text-color);
-}
-
-input {
-  height: 47px;
-  padding-left: 23px;
-}
-
-label {
-  padding-bottom: 8px;
-  cursor: pointer;
 }
 
 .auth-logo {
@@ -70,34 +59,14 @@ label {
   background-color: #0b9e3f;
 }
 
-.check-password-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  margin: 0;
-  color: inherit;
-  background-color: var(--white-text-color);
-  border: none;
-  border-radius: 0 3px 3px 0;
-  outline: inherit;
-  cursor: pointer;
-}
-
 .form-container {
   display: flex;
   flex-direction: column;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
+.form-input {
+  margin-top: 13px;
   margin-bottom: 22px;
-}
-
-.form input {
-  width: 100%;
-  margin-top: 5px;
 }
 
 .auth-link {
@@ -112,28 +81,6 @@ label {
   color: var(--white-text-color);
   text-decoration: none;
   cursor: pointer;
-}
-
-.sign-in-email-input {
-  border: none;
-  border-radius: 3px;
-  outline: inherit;
-}
-
-.sign-in-password-label {
-  margin-top: 35px;
-}
-
-.sign-in-password-container {
-  display: flex;
-  width: 100%;
-}
-
-.sign-in-password-input {
-  width: 100%;
-  border: none;
-  border-radius: 3px 0 0 3px;
-  outline: inherit;
 }
 
 .restore-email-input {
