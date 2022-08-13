@@ -38,6 +38,10 @@
     display: block;
   }
 
+  .search-icon path {
+    fill: var(--text-gray-color);
+  }
+
   .block-user .search-mobile:hover svg path {
     fill: var(--brand-green-color);
   }
@@ -89,6 +93,7 @@
     height: 46px;
     margin-left: 46px;
     background-color: aliceblue;
+    background-size: contain;
     border-radius: 50%;
     cursor: pointer;
 
@@ -118,6 +123,10 @@
     display: block;
   }
 
+  .block-user .block-auth-user .btn-go-stream svg {
+    fill: var(--brand-green-color-hover);
+  }
+
   .block-user .block-auth-user .btn-notification svg:hover {
     opacity: 0.8;
   }
@@ -140,7 +149,8 @@
     }
 
     .option:hover {
-      background-color: #999999;
+      color: var(--primary-text-color);
+      background-color: var(--text-gray-color);
     }
 
     .option svg {
@@ -206,8 +216,6 @@
     font-size: 15px;
     line-height: 20px;
     background-color: transparent;
-    border: none;
-    outline: none;
   }
 
   .wrapper-first-part .logo-block {
@@ -232,11 +240,8 @@
     text-decoration: none;
   }
 
-  .wrapper-first-part .logo-link .logo-icon {
-    margin-right: 5px;
-  }
-
   .wrapper-first-part .logo-link .main-name {
+    margin-left: 5px;
     color: var(--white-text-color);
     font-weight: 700;
     font-size: 20px;

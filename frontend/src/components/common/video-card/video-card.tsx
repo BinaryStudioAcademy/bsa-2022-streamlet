@@ -65,11 +65,11 @@ const VideoCard: FC<Props> = ({
       <hr className={style['video-card-hr']} />
       <div className={style['video-card-statistic-container']}>
         <div className={style['viewer-container']}>
-          {Icon({ name: IconName.WATCH, color: '#363C3A', size: '12' })}
+          {Icon({ name: IconName.WATCH, color: '#363C3A', width: '12', height: '12' })}
           <p>{viewerNumStringWithSpace}</p>
         </div>
         <div className={style['viewer-container']}>
-          {Icon({ name: IconName.TIMEAGO, color: '#363C3A', size: '12' })}
+          {Icon({ name: IconName.TIMEAGO, color: '#363C3A', width: '12', height: '12' })}
           <p>{getHowLongAgoString(creationDate)}</p>
         </div>
       </div>

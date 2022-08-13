@@ -59,6 +59,8 @@ button,
 textarea,
 select {
   font: inherit;
+  border: none;
+  outline: none;
 }
 
 #root {

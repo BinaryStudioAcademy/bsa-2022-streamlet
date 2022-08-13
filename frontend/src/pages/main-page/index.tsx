@@ -1,5 +1,5 @@
 import { FC } from 'common/types/types';
-import { Header } from 'components/common/header';
+import { Header } from 'components/common/header/header';
 
 import './main-page.scss';
 
