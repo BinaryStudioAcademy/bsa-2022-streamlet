@@ -1,4 +1,5 @@
 enum FilterDateTitle {
+  ANYTIME = 'anytime',
   LAST_HOUR = 'last hour',
   TODAY = 'today',
   THIS_WEEK = 'this week',
@@ -7,6 +8,7 @@ enum FilterDateTitle {
 }
 
 enum FilterDateValue {
+  ANYTIME = 'anytime',
   LAST_HOUR = 'lh',
   TODAY = 'td',
   THIS_WEEK = 'tw',
