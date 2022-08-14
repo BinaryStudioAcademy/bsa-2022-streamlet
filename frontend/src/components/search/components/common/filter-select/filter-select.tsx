@@ -8,6 +8,7 @@ import styles from './styles.module.scss';
 type Props = {
   activeFilterId: string;
   onChangeFilterId: (value: string) => void;
+  defaultFilterId: string;
   title: string;
   options: {
     text: string;
@@ -15,7 +16,7 @@ type Props = {
   }[];
 };
 
-const FilterSelect: FC<Props> = ({ activeFilterId, onChangeFilterId, title, options }) => {
+const FilterSelect: FC<Props> = ({ activeFilterId, onChangeFilterId, defaultFilterId, title, options }) => {
   const [filterTitle, setFilterTitle] = useState(title);
 
   const id = useId();
@@ -26,7 +27,7 @@ const FilterSelect: FC<Props> = ({ activeFilterId, onChangeFilterId, title, opti
   };
 
   const handleClearFilter = (): void => {
-    onChangeFilterId('');
+    onChangeFilterId(defaultFilterId);
     setFilterTitle(title);
   };
 

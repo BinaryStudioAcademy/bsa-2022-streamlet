@@ -8,6 +8,7 @@ import styles from './styles.module.scss';
 type Props = {
   activeFilterId: string;
   onChangeFilterId: (value: string) => void;
+  defaultFilterId: string;
   title: string;
   options: {
     text: string;
@@ -15,7 +16,7 @@ type Props = {
   }[];
 };
 
-const FilterDropdown: FC<Props> = ({ activeFilterId, onChangeFilterId, title, options }) => {
+const FilterDropdown: FC<Props> = ({ activeFilterId, onChangeFilterId, defaultFilterId, title, options }) => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   const id = useId();
@@ -24,7 +25,7 @@ const FilterDropdown: FC<Props> = ({ activeFilterId, onChangeFilterId, title, op
 
   const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => onChangeFilterId(e.currentTarget.value);
 
-  const handleClearFilter = (): void => onChangeFilterId('');
+  const handleClearFilter = (): void => onChangeFilterId(defaultFilterId);
 
   return (
     <div className={styles.container}>

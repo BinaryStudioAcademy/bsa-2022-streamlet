@@ -32,7 +32,6 @@ const FilterBar: FC<Props> = ({
       <div className={styles['filter-bar-type']}>
         <label htmlFor="filterBarType" className={styles['filter-bar-select']}>
           <select id="filterBarType" onChange={onHandleChangeFilterType} value={activeFilterTypeId}>
-            <option value="">all</option>
             {FilterType.map((o) => (
               <option key={`${ftId}-${o.value}`} value={o.value}>
                 {o.text}
@@ -45,7 +44,6 @@ const FilterBar: FC<Props> = ({
       <div className={styles['filter-bar-date']}>
         <label htmlFor="filterBarDate" className={styles['filter-bar-select']}>
           <select id="filterBarDate" onChange={onHandleChangeFilterDate} value={activeFilterDateId}>
-            <option value="">anytime</option>
             {FilterDate.map((o) => (
               <option key={`${fdId}-${o.value}`} value={o.value}>
                 {o.text}
