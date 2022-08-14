@@ -10,6 +10,12 @@ enum IconName {
   SMILE = 'smile',
   TIMEAGO = 'timeago',
   WATCH = 'watch',
+  BURGERMENU = 'burger-menu',
+  LOGOTIP = 'main-logo',
+  BELL = 'bell',
+  SETTINGS = 'settings',
+  MOON = 'moon',
+  LOGOUT = 'logout',
   MARK_AS_READ = 'markasread',
 }
 
