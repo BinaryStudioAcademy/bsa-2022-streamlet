@@ -67,7 +67,7 @@ const PasswordInput = <T extends FieldValues>({
           content={<img src={passwordEye} alt="check" />}
         />
       </div>
-      <div className={styles.errorBlock}>
+      <div className={styles['error-block']}>
         <ErrorMessage
           errors={errors}
           name={name}
