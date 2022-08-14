@@ -42,7 +42,9 @@ const FilterSidebar: FC<Props> = ({
 
   const onHandleClickOutsideFilters = (e: MouseEvent): void => {
     const sidebar = document.getElementById(filterSidebarId);
-    if (!sidebar?.contains(e.target as HTMLElement)) setToggleAllFilters(false);
+    if (!sidebar?.contains(e.target as HTMLElement)) {
+      setToggleAllFilters(false);
+    }
   };
 
   const onHandleScroll = (): void => setToggleAllFilters(false);

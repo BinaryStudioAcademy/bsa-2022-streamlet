@@ -29,12 +29,18 @@ const Search: FC = () => {
   const handleSetSearchParams = (): void => setSearchParams({ ...handleGetVideoFilter() });
 
   useEffect(() => {
-    if (searchParams.has(SearchQueryParam.TYPE)) setFilterTypeValue(searchParams.get(SearchQueryParam.TYPE) as string);
-    if (searchParams.has(SearchQueryParam.DATE)) setFilterTypeValue(searchParams.get(SearchQueryParam.DATE) as string);
-    if (searchParams.has(SearchQueryParam.DURATION))
+    if (searchParams.has(SearchQueryParam.TYPE)) {
+      setFilterTypeValue(searchParams.get(SearchQueryParam.TYPE) as string);
+    }
+    if (searchParams.has(SearchQueryParam.DATE)) {
+      setFilterTypeValue(searchParams.get(SearchQueryParam.DATE) as string);
+    }
+    if (searchParams.has(SearchQueryParam.DURATION)) {
       setFilterTypeValue(searchParams.get(SearchQueryParam.DURATION) as string);
-    if (searchParams.has(SearchQueryParam.SORT_BY))
+    }
+    if (searchParams.has(SearchQueryParam.SORT_BY)) {
       setFilterTypeValue(searchParams.get(SearchQueryParam.SORT_BY) as string);
+    }
   }, []);
 
   useEffect(() => {

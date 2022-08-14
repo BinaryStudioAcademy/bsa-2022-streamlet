@@ -34,7 +34,9 @@ const FilterDropdown: FC<Props> = ({
   const handleToggleDropdown = (): void => {
     const toggle = !toggleDropdown;
     setToggleDropdown(toggle);
-    if (toggle) onChangeToggleAllFilters(toggle);
+    if (toggle) {
+      onChangeToggleAllFilters(toggle);
+    }
   };
 
   const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => onChangeFilterId(e.currentTarget.value);
@@ -42,7 +44,9 @@ const FilterDropdown: FC<Props> = ({
   const handleClearFilter = (): void => onChangeFilterId(defaultFilterId);
 
   useEffect(() => {
-    if (!toggleAllFilters) setToggleDropdown(false);
+    if (!toggleAllFilters) {
+      setToggleDropdown(false);
+    }
   }, [toggleAllFilters]);
 
   return (
