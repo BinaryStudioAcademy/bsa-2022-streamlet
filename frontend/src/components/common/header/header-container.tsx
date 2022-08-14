@@ -1,109 +1,73 @@
 import { FC } from 'common/types/types';
-import { Link } from 'react-router-dom';
-import { FormEvent, MouseEvent, RefObject } from 'react';
+import { useOutsideClick } from 'hooks/hooks';
+import { useState, MouseEvent, FormEvent } from 'react';
+import { Header } from './header';
+import { MenuOptions, IconName } from 'common/enums/components';
 
-import { AppRoute, IconName } from 'common/enums/enums';
-import { MenuOptions } from 'common/enums/components';
+const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
 
-import styles from './header.module.scss';
-import { Icon } from '../icon';
+const HeaderContainer: FC = () => {
+  const [isLogged, setIsLogged] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const { isOpened: isMenuOpen, close, open, ref: menuRef } = useOutsideClick<HTMLDivElement>();
 
-interface MenuOption {
-  type: MenuOptions;
-  text?: string;
-  icon: string;
-  onClick?: (e: MouseEvent) => void;
-}
+  const options = [
+    {
+      type: MenuOptions.Settings,
+      text: 'Settings',
+      icon: IconName.SETTINGS,
+      onClick: (): void => {
+        void 1;
+      },
+    },
+    {
+      type: MenuOptions.Theme,
+      text: 'Theme',
+      icon: IconName.MOON,
+      onClick: (): void => {
+        void 1;
+      },
+    },
+    {
+      type: MenuOptions.Logout,
+      text: 'Log Out',
+      icon: IconName.LOGOUT,
+      onClick: (e: MouseEvent): void => {
+        handleClickLogin(e);
+      },
+    },
+  ];
 
-interface HeaderProps {
-  isLogged: boolean;
-  isMenuOpen: boolean;
-  searchValue: string;
-  handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
-  handleClickLogin(e: MouseEvent<HTMLElement>): void;
-  handleInputSearch(e: FormEvent<HTMLInputElement>): void;
-  options: MenuOption[];
-  userAvatar: string;
-  menuRef: RefObject<HTMLDivElement>;
-}
+  function handleClickLogin(e: MouseEvent): void {
+    e.preventDefault();
 
-const HeaderContainer: FC<HeaderProps> = ({
-  isLogged,
-  isMenuOpen,
-  searchValue,
-  handleClickLogin,
-  handleClickUserMenu,
-  handleInputSearch,
-  options,
-  userAvatar,
-  menuRef,
-}) => {
+    close();
+    setIsLogged(!isLogged);
+  }
+
+  function handleClickUserMenu(e: MouseEvent): void {
+    if (!isMenuOpen) {
+      e.preventDefault();
+      open();
+    }
+  }
+
+  function handleInputSearch({ currentTarget }: FormEvent<HTMLInputElement>): void {
+    setSearchValue(currentTarget.value);
+  }
+
   return (
-    <header className={styles['header']}>
-      <div className={styles['wrapper-first-part']}>
-        <div className={styles['logo-block']}>
-          <button className={styles['burger-menu']}>
-            <Icon name={IconName.BURGERMENU} width="30" height="30" />
-          </button>
-          <Link className={styles['logo-link']} to={AppRoute.ROOT}>
-            <Icon name={IconName.LOGOTIP} width="23" height="23" />
-            <p className={styles['main-name']}>streamlet</p>
-          </Link>
-        </div>
-        <div className={styles['block-search']}>
-          <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
-          <input
-            className={styles['search-input']}
-            type="text"
-            value={searchValue}
-            onChange={handleInputSearch}
-            placeholder="Search or type"
-          />
-        </div>
-      </div>
-      <div className={styles['block-user']}>
-        {!isLogged && (
-          <>
-            <button className={styles['search-mobile']}>
-              <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
-            </button>
-            <button onClick={handleClickLogin} className={styles['sign-in-btn']}>
-              Sign In
-            </button>
-          </>
-        )}
-        {isLogged && (
-          <div className={styles['block-auth-user']}>
-            <button className={styles['search-mobile']}>
-              <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
-            </button>
-            <button className={styles['btn-go-stream']}>
-              <Icon name={IconName.CAMERA} width="30" height="24" />
-            </button>
-            <button className={styles['btn-notification']}>
-              <Icon name={IconName.BELL} width="24" height="27" />
-            </button>
-            <button
-              onClick={handleClickUserMenu}
-              style={{ backgroundImage: `url(${userAvatar})` }}
-              className={styles['user-avatar']}
-            ></button>
-            {isMenuOpen && (
-              <div ref={menuRef} className={styles['user-menu']}>
-                <ul className={styles['option-list']}>
-                  {options.map((option) => (
-                    <li key={option.type} className={styles['option']} onClick={option.onClick}>
-                      <Icon name={option.icon} />
-                      <span>{option.text || option.type}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    </header>
+    <Header
+      menuRef={menuRef}
+      isLogged={isLogged}
+      isMenuOpen={isMenuOpen}
+      searchValue={searchValue}
+      handleClickUserMenu={handleClickUserMenu}
+      handleClickLogin={handleClickLogin}
+      handleInputSearch={handleInputSearch}
+      userAvatar={FAKE_USER_AVATAR}
+      options={options}
+    />
   );
 };
 

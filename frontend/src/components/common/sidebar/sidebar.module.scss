@@ -6,8 +6,12 @@
   overflow: auto;
   background-color: var(--gray-300-header-menu-background);
 
-  @media screen and (max-width: 1100px) {
-    width: 54px;
+  @media screen and (max-width: 1300px) {
+    width: 64px;
+  }
+
+  @media screen and (max-width: 560px) {
+    display: none;
   }
 }
 
@@ -25,7 +29,7 @@
   font-size: 16px;
   line-height: 28px;
 
-  @media screen and (max-width: 1100px) {
+  @media screen and (max-width: 1300px) {
     display: none;
   }
 }
@@ -45,12 +49,11 @@
 .navigate-menu ul li {
   display: flex;
   align-items: center;
-  padding-top: 13px;
-  padding-bottom: 13px;
-  padding-left: 55px;
+  padding: 13px 20px;
 
-  @media screen and (max-width: 1100px) {
-    padding-left: 15px;
+  @media screen and(max-width: 1300px) {
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
 }
 
@@ -71,9 +74,9 @@
 }
 
 .navigate-menu ul li svg {
-  margin-right: 12px;
+  margin-right: 20px;
 
-  @media screen and (max-width: 1100px) {
+  @media screen and (max-width: 1300px) {
     margin: 0;
   }
 }
@@ -92,7 +95,11 @@
 
 .subscription-list {
   padding-top: 25px;
-  padding-left: 55px;
+  padding-left: 20px;
+
+  @media screen and(max-width: 1300px) {
+    display: none;
+  }
 }
 
 .subscription-title {
@@ -101,7 +108,7 @@
   font-size: 16px;
   line-height: 28px;
 
-  @media screen and (max-width: 1100px) {
+  @media screen and (max-width: 1300px) {
     display: none;
   }
 }
@@ -118,7 +125,7 @@
 .chanel-avatar {
   width: 36px;
   height: 36px;
-  margin-right: 7px;
+  margin-right: 12px;
   background-color: aliceblue;
   background-size: contain;
   border-radius: 50%;
