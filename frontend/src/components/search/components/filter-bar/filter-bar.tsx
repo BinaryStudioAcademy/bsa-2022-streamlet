@@ -19,6 +19,7 @@ const FilterBar: FC<Props> = ({
   activeFilterDateId,
   onChangeFilterDateId,
 }) => {
+  const toggleId = useId();
   const ftId = useId();
   const fdId = useId();
 
@@ -29,29 +30,36 @@ const FilterBar: FC<Props> = ({
 
   return (
     <div className={styles['filter-bar']}>
-      <div className={styles['filter-bar-type']}>
-        <label htmlFor="filterBarType" className={styles['filter-bar-select']}>
-          <select id="filterBarType" onChange={onHandleChangeFilterType} value={activeFilterTypeId}>
-            {FilterType.map((o) => (
-              <option key={`${ftId}-${o.value}`} value={o.value}>
-                {o.text}
-              </option>
-            ))}
-          </select>
-          <Icon name={IconName.ARROW_DOWN} />
-        </label>
-      </div>
-      <div className={styles['filter-bar-date']}>
-        <label htmlFor="filterBarDate" className={styles['filter-bar-select']}>
-          <select id="filterBarDate" onChange={onHandleChangeFilterDate} value={activeFilterDateId}>
-            {FilterDate.map((o) => (
-              <option key={`${fdId}-${o.value}`} value={o.value}>
-                {o.text}
-              </option>
-            ))}
-          </select>
-          <Icon name={IconName.ARROW_DOWN} />
-        </label>
+      <input type="checkbox" className={styles['filter-bar-toggle']} id={toggleId} />
+      <label className={styles['filter-bar-title']} htmlFor={toggleId}>
+        <Icon name={IconName.FILTER} />
+        <span>filters</span>
+      </label>
+      <div className={styles['filter-bar-wrapper']}>
+        <div className={styles['filter-bar-type']}>
+          <label htmlFor="filterBarType" className={styles['filter-bar-select']}>
+            <select id="filterBarType" onChange={onHandleChangeFilterType} value={activeFilterTypeId}>
+              {FilterType.map((o) => (
+                <option key={`${ftId}-${o.value}`} value={o.value}>
+                  {o.text}
+                </option>
+              ))}
+            </select>
+            <Icon name={IconName.ARROW_DOWN} />
+          </label>
+        </div>
+        <div className={styles['filter-bar-date']}>
+          <label htmlFor="filterBarDate" className={styles['filter-bar-select']}>
+            <select id="filterBarDate" onChange={onHandleChangeFilterDate} value={activeFilterDateId}>
+              {FilterDate.map((o) => (
+                <option key={`${fdId}-${o.value}`} value={o.value}>
+                  {o.text}
+                </option>
+              ))}
+            </select>
+            <Icon name={IconName.ARROW_DOWN} />
+          </label>
+        </div>
       </div>
     </div>
   );
