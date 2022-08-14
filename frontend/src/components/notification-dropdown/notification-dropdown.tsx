@@ -66,7 +66,7 @@ const NotificationDropdown: FC = () => {
       'videoPreview': 'http://dummyimage.com/1920x1080.png/dddddd/000000',
     },
     {
-      'id': '281f1c2f-a54e-435b-a55f-ff868f5a6a5e',
+      'id': '281f1c2f-a54e-435b-355f-ff868f5a6a5e',
       'videoId': '25391635-8dd2-4298-99a3-c79e741ab79b',
       'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'astollwerck5',
@@ -77,7 +77,7 @@ const NotificationDropdown: FC = () => {
       'videoPreview': 'http://dummyimage.com/1920x1080.png/5fa2dd/ffffff',
     },
     {
-      'id': '281f1c2f-a54e-435b-a55f-ff868f5a6a5e',
+      'id': '281f1c2f-a54e-435b-a55f-ff868f5c6a5e',
       'videoId': '25391635-8dd2-42b8-9943-c79e741ab79b',
       'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'wdaveridge6',
@@ -117,7 +117,7 @@ const NotificationDropdown: FC = () => {
   };
 
   const haveNotifications = Boolean(notifications.length);
-  const haveUnreadNotifications = notifications.some((notification) => notification.isViewed);
+  const haveUnreadNotifications = notifications.some((notification) => !notification.isViewed);
 
   return (
     <div className={styles['wrapper']}>
@@ -145,12 +145,14 @@ const NotificationDropdown: FC = () => {
           <div className={styles['notification-list']}>
             {haveNotifications ? (
               notifications.map((notification) => {
-                return <Notification notification={notification} onRead={handleNotificationRead} />;
+                return (
+                  <Notification notification={notification} onRead={handleNotificationRead} key={notification.id} />
+                );
               })
             ) : (
               <p className="notification-dropdown__placeholder">no notifs</p>
             )}
-            {notifications.length > 10 && (
+            {notifications.length > 3 && (
               <Button className={styles['load-more']} label="Load more" onClick={handleLoadMoreNotifications} />
             )}
           </div>

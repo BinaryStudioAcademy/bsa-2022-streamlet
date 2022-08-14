@@ -29,7 +29,7 @@ const Notification: FC<NotificationProps> = ({ notification, onRead }) => {
   };
 
   return (
-    <Link to={`/video/${notification.videoId}`}>
+    <Link className={styles['link']} to={`/video/${notification.videoId}`}>
       <div className={styles['notification']} onClick={handleNotificationRead}>
         <div className={`${styles['status']} ${!notification.isViewed && styles['status-unread']}`}></div>
         <img
