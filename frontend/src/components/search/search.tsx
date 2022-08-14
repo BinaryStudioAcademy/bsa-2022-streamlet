@@ -1,5 +1,11 @@
-import { SearchQueryParam } from 'common/enums/enums';
-import { FC, VideoCard as VideoCardType } from 'common/types/types';
+import {
+  SearchQueryParam,
+  FilterDateValue,
+  FilterTypeValue,
+  FilterDurationValue,
+  SortByValue,
+} from 'common/enums/enums';
+import { FC, VideoCard as VideoCardType, SearchQueryParamDto } from 'common/types/types';
 import { useAppDispatch, useAppSelector, useState, useCallback, useEffect, useSearchParams } from 'hooks/hooks';
 import { searchActions } from 'store/actions';
 import { FilterBar, FilterSidebar, VideoCard } from './components/components';
@@ -15,28 +21,29 @@ const Search: FC = () => {
   }));
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [filterTypeValue, setFilterTypeValue] = useState('');
-  const [filterDateValue, setFilterDateValue] = useState('');
-  const [filterDurationValue, setFilterDurationValue] = useState('');
-  const [sortByValue, setSortByValue] = useState('');
+  const [filterTypeValue, setFilterTypeValue] = useState(FilterTypeValue.ALL as string);
+  const [filterDateValue, setFilterDateValue] = useState(FilterDateValue.ANYTIME as string);
+  const [filterDurationValue, setFilterDurationValue] = useState(FilterDurationValue.ANY as string);
+  const [sortByValue, setSortByValue] = useState(SortByValue.DEFAULT as string);
 
   const onOpenFilterHandler = useCallback(() => dispatch(searchActions.toggleShowFilter()), [dispatch]);
 
-  const handleSetSearchParams = (): void => {
-    const videoFilter = {
-      ...(filterTypeValue && { [SearchQueryParam.TYPE]: filterTypeValue }),
-      ...(filterDateValue && { [SearchQueryParam.DATE]: filterDateValue }),
-      ...(filterDurationValue && { [SearchQueryParam.DURATION]: filterDurationValue }),
-      ...(sortByValue && { [SearchQueryParam.SORT_BY]: sortByValue }),
-    };
-    setSearchParams({ ...Object.fromEntries([...searchParams]), ...videoFilter });
-  };
+  const handleGetVideoFilter = (): SearchQueryParamDto => ({
+    ...(filterTypeValue !== FilterTypeValue.ALL && { [SearchQueryParam.TYPE]: filterTypeValue }),
+    ...(filterDateValue !== FilterDateValue.ANYTIME && { [SearchQueryParam.DATE]: filterDateValue }),
+    ...(filterDurationValue !== FilterDurationValue.ANY && { [SearchQueryParam.DURATION]: filterDurationValue }),
+    ...(sortByValue !== SortByValue.DEFAULT && { [SearchQueryParam.SORT_BY]: sortByValue }),
+  });
+
+  const handleSetSearchParams = (): void => setSearchParams({ ...handleGetVideoFilter() });
 
   useEffect(() => {
-    setFilterTypeValue(searchParams.get(SearchQueryParam.TYPE) || '');
-    setFilterDateValue(searchParams.get(SearchQueryParam.DATE) || '');
-    setFilterDurationValue(searchParams.get(SearchQueryParam.DURATION) || '');
-    setSortByValue(searchParams.get(SearchQueryParam.SORT_BY) || '');
+    if (searchParams.has(SearchQueryParam.TYPE)) setFilterTypeValue(searchParams.get(SearchQueryParam.TYPE) as string);
+    if (searchParams.has(SearchQueryParam.DATE)) setFilterTypeValue(searchParams.get(SearchQueryParam.DATE) as string);
+    if (searchParams.has(SearchQueryParam.DURATION))
+      setFilterTypeValue(searchParams.get(SearchQueryParam.DURATION) as string);
+    if (searchParams.has(SearchQueryParam.SORT_BY))
+      setFilterTypeValue(searchParams.get(SearchQueryParam.SORT_BY) as string);
   }, []);
 
   useEffect(() => {
