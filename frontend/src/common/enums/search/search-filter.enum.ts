@@ -7,7 +7,7 @@ import {
   FilterDurationValue,
   SortByTitle,
   SortByValue,
-} from './filter/filter';
+} from './video-filter/video-filter';
 
 const FilterType = [
   { text: FilterTypeTitle.ALL, value: FilterTypeValue.ALL },
