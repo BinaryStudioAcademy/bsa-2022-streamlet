@@ -1,5 +1,5 @@
 enum SortByTitle {
-  DEFAULT = 'default',
+  DEFAULT = 'sort by',
   RELEVANCE = 'relevance',
   UPLOAD_DATE = 'upload date',
   VIEW_COUNT = 'view count',

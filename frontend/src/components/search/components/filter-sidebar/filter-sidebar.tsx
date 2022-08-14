@@ -50,11 +50,7 @@ const FilterSidebar: FC<Props> = ({
   const onHandleScroll = (): void => setToggleAllFilters(false);
 
   const getSortByTitle = (): string => {
-    const defaultTitle = 'sort by';
-    if (activeSortById === SortByValue.DEFAULT) {
-      return defaultTitle;
-    }
-    return SortBy.find((f) => f.value === activeSortById)?.text || defaultTitle;
+    return SortBy.find((f) => f.value === activeSortById)?.text || 'sort by';
   };
 
   useEffect(() => {
