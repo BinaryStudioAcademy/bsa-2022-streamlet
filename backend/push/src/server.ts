@@ -9,6 +9,5 @@ socketService.subscribe(server);
 
 server.listen(CONFIG.port, () => {
   logger.info(`Server started on ${CONFIG.port} PORT`);
+  amqpService.connect();
 });
-
-amqpService.connect();

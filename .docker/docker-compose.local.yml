@@ -48,7 +48,6 @@ services:
   push:
     image: push
     container_name: push
-    restart: on-failure:5
     depends_on:
       - rabbitmq
     ports:
