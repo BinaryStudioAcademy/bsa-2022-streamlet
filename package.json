@@ -34,6 +34,7 @@
     "prettier": "2.7.1",
     "simple-git-hooks": "2.8.0",
     "stylelint": "14.9.1",
+    "stylelint-config-prettier": "9.0.3",
     "stylelint-config-standard": "26.0.0",
     "stylelint-order": "5.0.0",
     "typescript": "4.7.4"
@@ -48,7 +49,7 @@
   },
   "lint-staged": {
     "*": "npm run lint:fs",
-    "*.{ts,tsx,json}": "prettier --write",
+    "*.{ts,tsx,json,scss}": "prettier --write",
     "{shared,backend,frontend}/**/*.{ts,tsx}": "npm run lint:js",
     "frontend/**/*.scss": "npm run lint:css"
   }

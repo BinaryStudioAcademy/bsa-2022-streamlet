@@ -3,7 +3,7 @@ import { useFormControl } from 'hooks/hooks';
 import { Button, ErrorMessage } from 'components/common/common';
 import { FieldValues } from 'react-hook-form';
 import { ReactElement, useId, useState } from 'react';
-import { ErrorBox } from 'components/common/errors';
+import { ErrorBox } from 'components/common/errors/errors';
 import passwordEye from 'assets/img/password-eye.svg';
 import styles from '../styles.module.scss';
 import passwordStyles from './password-input.module.scss';

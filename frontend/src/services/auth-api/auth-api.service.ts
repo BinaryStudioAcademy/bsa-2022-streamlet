@@ -31,6 +31,7 @@ class AuthApi {
         contentType: ContentType.JSON,
         payload: JSON.stringify(payload),
       },
+      preInterceptors: [],
       postInterceptors: [],
     });
   }
@@ -43,6 +44,7 @@ class AuthApi {
         contentType: ContentType.JSON,
         payload: JSON.stringify(payload),
       },
+      preInterceptors: [],
       postInterceptors: [],
     });
   }
@@ -55,6 +57,7 @@ class AuthApi {
         contentType: ContentType.JSON,
         payload: JSON.stringify(payload),
       },
+      preInterceptors: [],
       postInterceptors: [],
     });
   }

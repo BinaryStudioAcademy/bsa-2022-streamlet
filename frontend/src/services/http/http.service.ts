@@ -3,14 +3,13 @@ import { HttpHeader, HttpMethod } from 'common/enums/enums';
 import { HttpOptions } from 'common/types/types';
 import { PostInterceptor, PreInterceptor } from './interceptors/interceptor';
 import { refreshTokenInterceptor } from './interceptors/refresh-token-interceptor';
+import { attachAuthTokenInterceptor } from './interceptors/attach-auth-token-interceptor';
 
 class Http {
-  private readonly refreshTokenHitStatusCode = 401;
-
   async load<T = unknown>({
     url,
     options = {},
-    preInterceptors = [],
+    preInterceptors = [attachAuthTokenInterceptor],
     postInterceptors = [refreshTokenInterceptor],
   }: {
     url: string;

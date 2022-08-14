@@ -3,7 +3,7 @@ import { FC } from 'common/types/types';
 import { Routes, Route } from 'components/common/common';
 import { NotFound } from '../not-found-page/not-found';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
-import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth';
+import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 
 const App: FC = () => {
   return (

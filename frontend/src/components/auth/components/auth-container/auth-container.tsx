@@ -4,7 +4,7 @@ import React from 'react';
 import logo from 'assets/img/logo.svg';
 import zigzag from 'assets/img/auth/auth-zigzag.svg';
 import element from 'assets/img/auth/auth-element.svg';
-import { ErrorBox } from 'components/common/errors';
+import { ErrorBox } from 'components/common/errors/errors';
 import classNames from 'classnames';
 
 type Props = {

@@ -4,7 +4,7 @@ import { Input, PasswordInput } from 'components/common/common';
 import { useAppForm } from 'hooks/hooks';
 
 import { userSignUp as userSignUpValidationSchema } from 'validation-schemas/validation-schemas';
-import { AuthSubmitButton, ContonueWithParagraph, GoogleButton } from '../common';
+import { AuthSubmitButton, ContonueWithParagraph, GoogleButton } from '../common/common';
 import { DEFAULT_SIGN_UP_PAYLOAD } from './common';
 
 import formStyles from '../form-controls.module.scss';
