@@ -5,9 +5,14 @@
   width: calc(var(--spinner-height) * 1.2);
 }
 
-.centered {
+.h-centered {
   margin-right: auto;
   margin-left: auto;
+}
+
+.v-centered {
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .xl {
