@@ -47,6 +47,11 @@ const FilterSidebar: FC<Props> = ({
 
   const onHandleScroll = (): void => setToggleAllFilters(false);
 
+  const getSortByTitle = (): string => {
+    if (activeSortById === SortByValue.DEFAULT) return 'sort by';
+    return SortBy.filter((f) => f.value === activeSortById)[0].text;
+  };
+
   useEffect(() => {
     if (toggleAllFilters) {
       window.addEventListener('click', onHandleClickOutsideFilters);
@@ -93,7 +98,7 @@ const FilterSidebar: FC<Props> = ({
           onChangeToggleAllFilters={setToggleAllFilters}
         />
         <FilterSelect
-          title="Sort by"
+          title={getSortByTitle()}
           options={SortBy.filter((f) => f.value !== SortByValue.DEFAULT)}
           activeFilterId={activeSortById}
           onChangeFilterId={onChangeSortById}

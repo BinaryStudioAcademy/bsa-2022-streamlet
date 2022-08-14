@@ -1,5 +1,5 @@
 import { FC } from 'common/types/types';
-import { useId, useState, useEffect } from 'hooks/hooks';
+import { useId, useEffect } from 'hooks/hooks';
 import { IconName } from 'common/enums/components';
 import { Icon } from 'components/common/common';
 
@@ -27,20 +27,12 @@ const FilterSelect: FC<Props> = ({
   toggleAllFilters,
   onChangeToggleAllFilters,
 }) => {
-  const [filterTitle, setFilterTitle] = useState(title);
-
   const id = useId();
   const filterTitleId = useId();
 
-  const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => {
-    onChangeFilterId(e.currentTarget.value);
-    setFilterTitle(e.currentTarget.dataset.name as string);
-  };
+  const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => onChangeFilterId(e.currentTarget.value);
 
-  const handleClearFilter = (): void => {
-    onChangeFilterId(defaultFilterId);
-    setFilterTitle(title);
-  };
+  const handleClearFilter = (): void => onChangeFilterId(defaultFilterId);
 
   const onHandleFocusFilter = (): void => onChangeToggleAllFilters(true);
 
@@ -55,7 +47,7 @@ const FilterSelect: FC<Props> = ({
     <div className={styles.container}>
       <div className={styles['filter-select']}>
         <div className={styles['filter-select-title']} tabIndex={13} id={filterTitleId} onFocus={onHandleFocusFilter}>
-          <span>{filterTitle}</span>
+          <span>{title}</span>
           <Icon name={IconName.ARROW_DOWN} />
         </div>
         <div className={styles['filter-select-list']}>
@@ -68,7 +60,6 @@ const FilterSelect: FC<Props> = ({
                   type="radio"
                   name={title}
                   value={o.value}
-                  data-name={o.text}
                   checked={activeFilterId === o.value}
                   onChange={onHandleChangeFilter}
                 />
