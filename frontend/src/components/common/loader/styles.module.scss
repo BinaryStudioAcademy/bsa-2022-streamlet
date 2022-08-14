@@ -37,7 +37,7 @@
   width: calc(var(--spinner-height) * 0.12);
   height: calc(var(--spinner-height) * 0.12);
   margin: calc(var(--spinner-height) * 0.5) auto;
-  color: #ffffff;
+  color: var(--white-text-color);
   background: currentcolor;
   border-radius: calc(var(--spinner-height) * 0.1);
   animation: animloader 0.3s 0.3s linear infinite alternate;
@@ -52,7 +52,7 @@
   width: calc(var(--spinner-height) * 0.12);
   height: calc(var(--spinner-height) * 0.12);
   background: currentcolor;
-  border-radius: calc(var(--spinnesr-height) * 0.1);
+  border-radius: calc(var(--spinner-height) * 0.1);
   transform: translateX(-50%);
   animation: animloader 0.3s 0.45s linear infinite alternate;
   content: '';
