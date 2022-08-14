@@ -1,5 +1,12 @@
 version: '3'
 services:
+  rtmp:
+    image: tiangolo/nginx-rtmp
+    ports:
+      - "1935:1935"
+    container_name: rtmp_server
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:

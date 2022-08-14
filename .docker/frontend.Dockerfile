@@ -18,6 +18,7 @@ COPY ./frontend ./frontend/
 RUN npm run build:frontend
 
 FROM nginx:1.22.0-alpine
+FROM tiangolo/nginx-rtmp
 
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 RUN rm -rf /usr/share/nginx/html/*
