@@ -6,6 +6,7 @@ import { timeout } from '../helpers/timeout';
 import { AMQP_CONNECTION_TRIES } from '~/shared/constants/amqp/connection-tries';
 import { geometricProgressionByIndex } from '~/helpers/geometric-progression';
 import { AmqpConnectionError } from 'shared/build';
+import { amqpService } from '~/services/services';
 
 const tryConnect = async (tries = 1): Promise<Connection | undefined> => {
   const amqpServer = CONFIG.rabbitmqUrl;
@@ -14,6 +15,12 @@ const tryConnect = async (tries = 1): Promise<Connection | undefined> => {
   }
   try {
     const connection = await connect(amqpServer);
+
+    connection.on('close', () => {
+      logger.warn('Rabbitmq connection lost');
+      amqpReconnect();
+    });
+
     logger.info('Connect to RabbitMQ success!');
     return connection;
   } catch {
@@ -21,6 +28,10 @@ const tryConnect = async (tries = 1): Promise<Connection | undefined> => {
     await timeout(geometricProgressionByIndex(2, tries, 0.5) * 1000);
     return tryConnect(++tries);
   }
+};
+
+const amqpReconnect = async (): Promise<void> => {
+  amqpService.connect(await amqpConnect());
 };
 
 const amqpConnect = async (): Promise<Channel> => {
