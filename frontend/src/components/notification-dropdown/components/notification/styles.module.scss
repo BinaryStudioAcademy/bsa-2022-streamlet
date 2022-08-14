@@ -1,16 +1,18 @@
 :root {
-  --notification-unread-color: rgb(221 7 7);
+  --notifications-border: var(--gray-400-primary-background);
+  --notifications-hover: var(--gray-200-input-background);
+  --notifications-timestamp: var(--text-gray-color);
 }
 
 .notification {
   display: flex;
   align-items: center;
   padding: 15px 8px;
-  border-bottom: 1px solid var(--gray-400-primary-background);
+  border-bottom: 1px solid var(--notifications-border);
 }
 
 .notification:hover {
-  background-color: var(--gray-200-input-background);
+  background-color: var(--notifications-hover);
 }
 
 .status {
@@ -23,7 +25,7 @@
 }
 
 .status-unread {
-  background-color: var(--notification-unread-color);
+  background-color: var(--notifications-unread-mark);
 }
 
 .avatar {
@@ -46,7 +48,7 @@
 }
 
 .timestamp {
-  color: var(--text-gray-color);
+  color: var(--notifications-timestamp);
   font-size: 70%;
 }
 

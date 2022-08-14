@@ -9,11 +9,21 @@ import styles from './styles.module.scss';
 const NotificationDropdown: FC = () => {
   const [isNotificationsDropdownOpen, setIsNotificationsDropdownOpen] = useState<boolean>(false);
 
-  const notifications = [
+  type NotificationData = {
+    id: string;
+    videoId: string;
+    username: string;
+    videoName: string;
+    createdAt: Date;
+    isViewed: boolean;
+    channelAvatar: string;
+    videoPreview: string;
+  };
+
+  const notifications: NotificationData[] = [
     {
       'id': '281f1c2f-a54e-435b-a55f-ff868f5a6a5e',
       'videoId': '25391635-8dd2-4298-9943-c79e741ab79b',
-      'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'boutibridge0',
       'videoName': 'lofi hip hop radio - beats to sleep/chill to',
       'createdAt': new Date('2022-08-10T19:51:32Z'),
@@ -24,7 +34,6 @@ const NotificationDropdown: FC = () => {
     {
       'id': '281f1c2f-a546-435b-a55f-ff868f5a6a5e',
       'videoId': '25391635-8dd2-4298-9943-c79e741ab79b',
-      'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'abambrick1',
       'videoName': '[Valheim] Trying not to die',
       'createdAt': new Date('2022-08-11T22:32:52Z'),
@@ -35,7 +44,6 @@ const NotificationDropdown: FC = () => {
     {
       'id': '281f1c2f-a54e-445b-a55f-ff868f5a6a5e',
       'videoId': '25391635-8dd2-4298-9943-c79e741ab79b',
-      'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'clillyman2',
       'videoName': 'Streaming Portal 2 speedrunning until I beat my record',
       'createdAt': new Date('2022-08-10T06:54:40Z'),
@@ -46,7 +54,6 @@ const NotificationDropdown: FC = () => {
     {
       'id': '221f1c2f-a54e-435b-a55f-ff868f5a6a5e',
       'videoId': '25391635-8dd2-4298-9943-c79e741ab79b',
-      'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'scovely3',
       'videoName': 'lofi hip hop radio - beats to sleep/chill to',
       'createdAt': new Date('2022-08-10T11:10:54Z'),
@@ -57,7 +64,6 @@ const NotificationDropdown: FC = () => {
     {
       'id': '281f1c2f-a54e-435b-a55f-ff868faa6a5e',
       'videoId': '25391635-8dd2-4298-9943-c79e741ab79b',
-      'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'brolfini4',
       'videoName': 'Streaming Portal 2 speedrunning until I beat my record',
       'createdAt': new Date('2022-08-10T11:17:05Z'),
@@ -68,7 +74,6 @@ const NotificationDropdown: FC = () => {
     {
       'id': '281f1c2f-a54e-435b-355f-ff868f5a6a5e',
       'videoId': '25391635-8dd2-4298-99a3-c79e741ab79b',
-      'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'astollwerck5',
       'videoName': 'Streaming Portal 2 speedrunning until I beat my record',
       'createdAt': new Date('2022-08-11T12:36:10Z'),
@@ -79,7 +84,6 @@ const NotificationDropdown: FC = () => {
     {
       'id': '281f1c2f-a54e-435b-a55f-ff868f5c6a5e',
       'videoId': '25391635-8dd2-42b8-9943-c79e741ab79b',
-      'channelId': '39ad2e71-b4bc-4c79-bc7e-8e68ceb92b7c',
       'username': 'wdaveridge6',
       'videoName': 'lofi hip hop radio - beats to sleep/chill to',
       'createdAt': new Date('2022-08-10T17:32:31Z'),
@@ -97,13 +101,11 @@ const NotificationDropdown: FC = () => {
     notifications.map((notification) => {
       notification.isViewed = false;
     });
-    // eslint-disable-next-line no-console
-    console.log('all read');
+    // Will be replaced with store action when backend part is ready
   };
 
   const handleLoadMoreNotifications = (): void => {
-    // eslint-disable-next-line no-console
-    console.log('load more');
+    // Will be replaced with store action when backend part is ready
   };
 
   const handleNotificationRead = (id: string): void => {
@@ -112,8 +114,7 @@ const NotificationDropdown: FC = () => {
         notification.isViewed = false;
       }
     });
-    // eslint-disable-next-line no-console
-    console.log(`${id} has been read`);
+    // Will be replaced with store action when backend part is ready
   };
 
   const haveNotifications = Boolean(notifications.length);
@@ -150,9 +151,9 @@ const NotificationDropdown: FC = () => {
                 );
               })
             ) : (
-              <p className="notification-dropdown__placeholder">no notifs</p>
+              <p className={styles['placeholder']}>No notifications</p>
             )}
-            {notifications.length > 3 && (
+            {notifications.length > 10 && (
               <Button className={styles['load-more']} label="Load more" onClick={handleLoadMoreNotifications} />
             )}
           </div>

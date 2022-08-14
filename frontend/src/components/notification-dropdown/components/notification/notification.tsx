@@ -1,15 +1,13 @@
 import { FC } from 'common/types/types';
-import React from 'react';
 import DefaultUserAvatar from 'assets/img/default-user-avatar.jpg';
 import { Link } from 'react-router-dom';
+import { getHowLongAgoString } from 'helpers/helpers';
 
 import styles from './styles.module.scss';
-import { getHowLongAgoString } from 'helpers/helpers';
 
 type NotificationData = {
   id: string;
   videoId: string;
-  channelId: string;
   username: string;
   videoName: string;
   createdAt: Date;
