@@ -24,6 +24,8 @@ const FilterDropdown: FC<Props> = ({ activeFilterId, onChangeFilterId, title, op
 
   const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => onChangeFilterId(e.currentTarget.value);
 
+  const handleClearFilter = (): void => onChangeFilterId('');
+
   return (
     <div className={styles.container}>
       <div className={styles['filter-dropdown']}>
@@ -46,6 +48,9 @@ const FilterDropdown: FC<Props> = ({ activeFilterId, onChangeFilterId, title, op
                     onChange={onHandleChangeFilter}
                   />
                   <label htmlFor={optionId}>{o.text}</label>
+                  <div className={styles['filter-dropdown-item-close-icon']} onClick={handleClearFilter}>
+                    <Icon name={IconName.XMARK} />
+                  </div>
                 </li>
               );
             })}
