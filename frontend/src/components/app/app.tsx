@@ -5,12 +5,13 @@ import { Auth } from 'components/auth/auth';
 import { Search } from 'components/search/search';
 import { NotFound } from '../not-found-page/not-found';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
+import { MainPage } from 'pages/main-page';
 
 const App: FC = () => {
   return (
     <>
       <Routes>
-        <Route path={AppRoute.ROOT} element="Root" />
+        <Route path={AppRoute.ROOT} element={<MainPage />} />
         <Route path={AppRoute.SIGN_UP} element={<Auth />} />
         <Route path={AppRoute.SIGN_IN} element={<Auth />} />
         <Route path={AppRoute.SEARCH} element={<Search />} />

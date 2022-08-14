@@ -15,6 +15,12 @@ enum IconName {
   TIMEAGO = 'timeago',
   WATCH = 'watch',
   XMARK = 'xmark',
+  BURGERMENU = 'burger-menu',
+  LOGOTIP = 'main-logo',
+  BELL = 'bell',
+  SETTINGS = 'settings',
+  MOON = 'moon',
+  LOGOUT = 'logout',
 }
 
 export { IconName };
