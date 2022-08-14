@@ -1,12 +1,12 @@
 import { FC } from 'common/types/types';
-import { Header } from 'components/common/header/header';
+import { HeaderContainer } from 'components/common/header/header-container';
 
-import './main-page.scss';
+import styles from './main-page.module.scss';
 
 const MainPage: FC = () => {
   return (
-    <main className="main">
-      <Header />
+    <main className={styles.main}>
+      <HeaderContainer />
     </main>
   );
 };
