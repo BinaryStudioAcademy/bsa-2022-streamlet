@@ -1,29 +1,24 @@
-import {
-  SearchQueryParam,
-  FilterDateValue,
-  FilterTypeValue,
-  FilterDurationValue,
-  SortByValue,
-} from 'common/enums/enums';
+import { SearchQueryParam } from 'common/enums/enums';
 import { FC, VideoCard as VideoCardType, SearchQueryParamDto } from 'common/types/types';
 import { useState, useEffect, useSearchParams } from 'hooks/hooks';
 import { FilterBar, FilterSidebar, VideoCard } from './components/components';
+import { TypeFilterId, DateFilterId, DurationFilterId, SortByFilterId } from './config/config';
 
 import styles from './styles.module.scss';
 
 const Search: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [filterTypeValue, setFilterTypeValue] = useState(FilterTypeValue.ALL as string);
-  const [filterDateValue, setFilterDateValue] = useState(FilterDateValue.ANYTIME as string);
-  const [filterDurationValue, setFilterDurationValue] = useState(FilterDurationValue.ANY as string);
-  const [sortByValue, setSortByValue] = useState(SortByValue.DEFAULT as string);
+  const [filterTypeValue, setFilterTypeValue] = useState(TypeFilterId.ALL as string);
+  const [filterDateValue, setFilterDateValue] = useState(DateFilterId.ANYTIME as string);
+  const [filterDurationValue, setFilterDurationValue] = useState(DurationFilterId.ANY as string);
+  const [sortByValue, setSortByValue] = useState(SortByFilterId.DEFAULT as string);
 
   const handleGetVideoFilter = (): SearchQueryParamDto => ({
-    ...(filterTypeValue !== FilterTypeValue.ALL && { [SearchQueryParam.TYPE]: filterTypeValue }),
-    ...(filterDateValue !== FilterDateValue.ANYTIME && { [SearchQueryParam.DATE]: filterDateValue }),
-    ...(filterDurationValue !== FilterDurationValue.ANY && { [SearchQueryParam.DURATION]: filterDurationValue }),
-    ...(sortByValue !== SortByValue.DEFAULT && { [SearchQueryParam.SORT_BY]: sortByValue }),
+    ...(filterTypeValue !== TypeFilterId.ALL && { [SearchQueryParam.TYPE]: filterTypeValue }),
+    ...(filterDateValue !== DateFilterId.ANYTIME && { [SearchQueryParam.DATE]: filterDateValue }),
+    ...(filterDurationValue !== DurationFilterId.ANY && { [SearchQueryParam.DURATION]: filterDurationValue }),
+    ...(sortByValue !== SortByFilterId.DEFAULT && { [SearchQueryParam.SORT_BY]: sortByValue }),
   });
 
   const handleSetSearchParams = (): void => setSearchParams({ ...handleGetVideoFilter() });
@@ -33,13 +28,13 @@ const Search: FC = () => {
       setFilterTypeValue(searchParams.get(SearchQueryParam.TYPE) as string);
     }
     if (searchParams.has(SearchQueryParam.DATE)) {
-      setFilterTypeValue(searchParams.get(SearchQueryParam.DATE) as string);
+      setFilterDateValue(searchParams.get(SearchQueryParam.DATE) as string);
     }
     if (searchParams.has(SearchQueryParam.DURATION)) {
-      setFilterTypeValue(searchParams.get(SearchQueryParam.DURATION) as string);
+      setFilterDurationValue(searchParams.get(SearchQueryParam.DURATION) as string);
     }
     if (searchParams.has(SearchQueryParam.SORT_BY)) {
-      setFilterTypeValue(searchParams.get(SearchQueryParam.SORT_BY) as string);
+      setSortByValue(searchParams.get(SearchQueryParam.SORT_BY) as string);
     }
   }, []);
 

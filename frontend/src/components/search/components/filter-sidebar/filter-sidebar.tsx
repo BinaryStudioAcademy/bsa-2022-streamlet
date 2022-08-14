@@ -1,18 +1,19 @@
 import { FC } from 'common/types/types';
-import {
-  IconName,
-  FilterDate,
-  FilterType,
-  FilterDuration,
-  SortBy,
-  FilterDateValue,
-  FilterTypeValue,
-  FilterDurationValue,
-  SortByValue,
-} from 'common/enums/enums';
+import { IconName } from 'common/enums/enums';
 import { useEffect, useState, useId } from 'hooks/hooks';
 import { Icon } from 'components/common/icon';
+import {
+  TypeFilterId,
+  allTypeFilters,
+  DateFilterId,
+  allDateFilters,
+  DurationFilterId,
+  allDurationFilters,
+  SortByFilterId,
+  allSortByFilters,
+} from 'components/search/config/config';
 import { FilterDropdown, FilterSelect } from '../common/common';
+
 import styles from './styles.module.scss';
 
 type Props = {
@@ -50,7 +51,7 @@ const FilterSidebar: FC<Props> = ({
   const onHandleScroll = (): void => setToggleAllFilters(false);
 
   const getSortByTitle = (): string => {
-    return SortBy.find((f) => f.value === activeSortById)?.text || 'sort by';
+    return allSortByFilters.find((f) => f.id === activeSortById)?.text || 'sort by';
   };
 
   useEffect(() => {
@@ -73,37 +74,37 @@ const FilterSidebar: FC<Props> = ({
       <div className={styles['filter-sidebar-wrapper']}>
         <FilterDropdown
           title="date"
-          options={FilterDate.filter((f) => f.value !== FilterDateValue.ANYTIME)}
+          options={allDateFilters.filter((f) => f.id !== DateFilterId.ANYTIME)}
           activeFilterId={activeFilterDateId}
           onChangeFilterId={onChangeFilterDateId}
-          defaultFilterId={FilterDateValue.ANYTIME}
+          defaultFilterId={DateFilterId.ANYTIME}
           toggleAllFilters={toggleAllFilters}
           onChangeToggleAllFilters={setToggleAllFilters}
         />
         <FilterDropdown
           title="type"
-          options={FilterType.filter((f) => f.value !== FilterTypeValue.ALL)}
+          options={allTypeFilters.filter((f) => f.id !== TypeFilterId.ALL)}
           activeFilterId={activeFilterTypeId}
           onChangeFilterId={onChangeFilterTypeId}
-          defaultFilterId={FilterTypeValue.ALL}
+          defaultFilterId={TypeFilterId.ALL}
           toggleAllFilters={toggleAllFilters}
           onChangeToggleAllFilters={setToggleAllFilters}
         />
         <FilterDropdown
           title="duration"
-          options={FilterDuration.filter((f) => f.value !== FilterDurationValue.ANY)}
+          options={allDurationFilters.filter((f) => f.id !== DurationFilterId.ANY)}
           activeFilterId={activeFilterDurationId}
           onChangeFilterId={onChangeFilterDurationId}
-          defaultFilterId={FilterDurationValue.ANY}
+          defaultFilterId={DurationFilterId.ANY}
           toggleAllFilters={toggleAllFilters}
           onChangeToggleAllFilters={setToggleAllFilters}
         />
         <FilterSelect
           title={getSortByTitle()}
-          options={SortBy.filter((f) => f.value !== SortByValue.DEFAULT)}
+          options={allSortByFilters.filter((f) => f.id !== SortByFilterId.DEFAULT)}
           activeFilterId={activeSortById}
           onChangeFilterId={onChangeSortById}
-          defaultFilterId={SortByValue.DEFAULT}
+          defaultFilterId={SortByFilterId.DEFAULT}
           toggleAllFilters={toggleAllFilters}
           onChangeToggleAllFilters={setToggleAllFilters}
         />
