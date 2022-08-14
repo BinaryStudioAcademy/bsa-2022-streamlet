@@ -58,10 +58,10 @@ const Icon = ({ name, color, width, height, className }: IconProps): JSX.Element
       return <Alarm {...commonProps} />;
 
     case IconName.ARROW_DOWN:
-      return <ArrowDown className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <ArrowDown {...commonProps} />;
 
     case IconName.ARROW_UP:
-      return <ArrowUp className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <ArrowUp {...commonProps} />;
 
     case IconName.CAMERA:
       return <Camera {...commonProps} />;
@@ -70,7 +70,7 @@ const Icon = ({ name, color, width, height, className }: IconProps): JSX.Element
       return <Compas {...commonProps} />;
 
     case IconName.FILTER:
-      return <Filter className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Filter {...commonProps} />;
 
     case IconName.FOLLOW:
       return <Follow {...commonProps} />;
@@ -82,7 +82,7 @@ const Icon = ({ name, color, width, height, className }: IconProps): JSX.Element
       return <Home {...commonProps} />;
 
     case IconName.PLAY:
-      return <Play className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Play {...commonProps} />;
 
     case IconName.SEARCH:
       return <Search {...commonProps} />;
@@ -115,7 +115,7 @@ const Icon = ({ name, color, width, height, className }: IconProps): JSX.Element
       return <LogOut {...commonProps} />;
 
     case IconName.XMARK:
-      return <Xmark className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Xmark {...commonProps} />;
 
     default:
       return <Timeago {...commonProps} />;
