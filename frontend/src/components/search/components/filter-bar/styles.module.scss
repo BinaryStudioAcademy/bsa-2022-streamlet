@@ -31,20 +31,12 @@
   text-transform: uppercase;
 }
 
-.filter-bar-select svg path {
-  fill: var(--text-gray-color);
-}
-
 .filter-bar-toggle:checked ~ .filter-bar-title span {
   display: none;
 }
 
 .filter-bar-title svg path {
   fill: var(--text-gray-color);
-}
-
-.filter-bar select:focus + svg path {
-  fill: var(--white-text-color);
 }
 
 .filter-bar-toggle:checked ~ .filter-bar-title svg path {
@@ -60,53 +52,6 @@
 
 .filter-bar-toggle:checked ~ .filter-bar-wrapper {
   display: flex;
-}
-
-.filter-bar-select {
-  position: relative;
-}
-
-.filter-bar-select svg {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  width: 12px;
-  height: auto;
-  cursor: pointer;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.filter-bar select {
-  width: 100%;
-  min-width: 110px;
-  padding: 6px 30px 6px 12px;
-  color: var(--white-text-color);
-  text-transform: capitalize;
-  background-color: var(--gray-400-primary-background);
-  border: none;
-  border-radius: 4px;
-  outline: none;
-  box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 5px 5px rgb(0 0 0 / 20%);
-  cursor: pointer;
-  appearance: none;
-}
-
-.filter-bar select:focus {
-  outline: none;
-}
-
-.filter-bar select::-ms-expand {
-  display: none;
-}
-
-.filter-bar option {
-  text-transform: capitalize;
-  background-color: var(--gray-300-header-menu-background);
-}
-
-.filter-bar option:checked {
-  background-color: var(--brand-green-color);
 }
 
 @media #{$mobile-middle} {
