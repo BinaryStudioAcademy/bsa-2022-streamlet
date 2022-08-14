@@ -1,18 +1,42 @@
 import { HttpError } from 'exceptions/exceptions';
 import { HttpHeader, HttpMethod } from 'common/enums/enums';
 import { HttpOptions } from 'common/types/types';
+import { PostInterceptor, PreInterceptor } from './interceptors/interceptor';
+import { refreshTokenInterceptor } from './interceptors/refresh-token-interceptor';
 
 class Http {
-  async load<T = unknown>(url: string, options: Partial<HttpOptions> = {}): Promise<T> {
+  private readonly refreshTokenHitStatusCode = 401;
+
+  async load<T = unknown>({
+    url,
+    options = {},
+    preInterceptors = [],
+    postInterceptors = [refreshTokenInterceptor],
+  }: {
+    url: string;
+    options?: Partial<HttpOptions>;
+    preInterceptors?: PreInterceptor[];
+    postInterceptors?: PostInterceptor[];
+  }): Promise<T> {
     const { method = HttpMethod.GET, payload = null } = options;
     const headers = this.getHeaders();
-
-    return fetch(url, {
+    let requestInit: RequestInit = {
       method,
       headers,
       body: payload,
-    })
-      .then(this.checkStatus)
+    };
+    for (const preInterceptor of preInterceptors) {
+      [url, requestInit] = await preInterceptor(url, options);
+    }
+
+    const makeRequest = (): Promise<Response> => fetch(url, requestInit);
+
+    let response = await makeRequest();
+    for (const postInterceptor of postInterceptors) {
+      response = await postInterceptor({ initialRequestFn: makeRequest, response });
+    }
+
+    return this.checkStatus(response)
       .then((res) => this.parseJSON<T>(res))
       .catch(this.throwError);
   }

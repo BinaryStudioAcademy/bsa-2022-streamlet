@@ -24,26 +24,38 @@ class AuthApi {
   }
 
   public signUp(payload: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
-    return this.#http.load(`${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.SIGN_UP}`, {
-      method: HttpMethod.POST,
-      contentType: ContentType.JSON,
-      payload: JSON.stringify(payload),
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.SIGN_UP}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+      },
+      postInterceptors: [],
     });
   }
 
   public signIn(payload: UserSignInRequestDto): Promise<UserSignInResponseDto> {
-    return this.#http.load(`${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.SIGN_IN}`, {
-      method: HttpMethod.POST,
-      contentType: ContentType.JSON,
-      payload: JSON.stringify(payload),
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.SIGN_IN}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+      },
+      postInterceptors: [],
     });
   }
 
   public refreshTokens(payload: RefreshTokenRequestDto): Promise<RefreshTokenResponseDto> {
-    return this.#http.load(`${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.REFRESH_TOKENS}`, {
-      method: HttpMethod.POST,
-      contentType: ContentType.JSON,
-      payload: JSON.stringify(payload),
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.REFRESH_TOKENS}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+      },
+      postInterceptors: [],
     });
   }
 }
