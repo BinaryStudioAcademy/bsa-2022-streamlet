@@ -13,7 +13,7 @@ const FilterBar: FC = () => {
   const dispatch = useAppDispatch();
   const {
     search: {
-      activeFilterId: { type: activeFilterTypeId, date: activeFilterDateId },
+      activeFilterId: { type: activeTypeFilterId, date: activeDateFilterId },
     },
   } = useAppSelector((state) => ({
     search: state.search,
@@ -21,8 +21,8 @@ const FilterBar: FC = () => {
 
   const toggleId = useId();
 
-  const onChangeFilterTypeId = useCallback((v: string) => dispatch(searchActions.setActiveTypeFilterId(v)), [dispatch]);
-  const onChangeFilterDateId = useCallback((v: string) => dispatch(searchActions.setActiveDateFilterId(v)), [dispatch]);
+  const onChangeTypeFilterId = useCallback((v: string) => dispatch(searchActions.setActiveTypeFilterId(v)), [dispatch]);
+  const onChangeDateFilterId = useCallback((v: string) => dispatch(searchActions.setActiveDateFilterId(v)), [dispatch]);
 
   return (
     <div className={styles['filter-bar']}>
@@ -33,13 +33,13 @@ const FilterBar: FC = () => {
       </label>
       <div className={styles['filter-bar-wrapper']}>
         <FilterBarSelect
-          activeFilterId={activeFilterTypeId}
-          onChangeFilterId={onChangeFilterTypeId}
+          activeFilterId={activeTypeFilterId}
+          onChangeFilterId={onChangeTypeFilterId}
           options={allTypeFilters}
         />
         <FilterBarSelect
-          activeFilterId={activeFilterDateId}
-          onChangeFilterId={onChangeFilterDateId}
+          activeFilterId={activeDateFilterId}
+          onChangeFilterId={onChangeDateFilterId}
           options={allDateFilters}
         />
       </div>

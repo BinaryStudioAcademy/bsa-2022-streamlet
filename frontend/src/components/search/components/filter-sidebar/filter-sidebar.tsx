@@ -22,10 +22,10 @@ const FilterSidebar: FC = () => {
   const {
     search: {
       activeFilterId: {
-        type: activeFilterTypeId,
-        date: activeFilterDateId,
-        duration: activeFilterDurationId,
-        sortBy: activeSortById,
+        type: activeTypeFilterId,
+        date: activeDateFilterId,
+        duration: activeDurationFilterId,
+        sortBy: activeSortByFilterId,
       },
     },
   } = useAppSelector((state) => ({
@@ -36,13 +36,16 @@ const FilterSidebar: FC = () => {
 
   const filterSidebarId = useId();
 
-  const onChangeFilterTypeId = useCallback((v: string) => dispatch(searchActions.setActiveTypeFilterId(v)), [dispatch]);
-  const onChangeFilterDateId = useCallback((v: string) => dispatch(searchActions.setActiveDateFilterId(v)), [dispatch]);
-  const onChangeFilterDurationId = useCallback(
+  const onChangeTypeFilterId = useCallback((v: string) => dispatch(searchActions.setActiveTypeFilterId(v)), [dispatch]);
+  const onChangeDateFilterId = useCallback((v: string) => dispatch(searchActions.setActiveDateFilterId(v)), [dispatch]);
+  const onChangeDurationFilterId = useCallback(
     (v: string) => dispatch(searchActions.setActiveDurationFilterId(v)),
     [dispatch],
   );
-  const onChangeSortById = useCallback((v: string) => dispatch(searchActions.setActiveSortByFilterId(v)), [dispatch]);
+  const onChangeSortByFilterId = useCallback(
+    (v: string) => dispatch(searchActions.setActiveSortByFilterId(v)),
+    [dispatch],
+  );
 
   const onHandleClickOutsideFilters = (e: MouseEvent): void => {
     const sidebar = document.getElementById(filterSidebarId);
@@ -54,7 +57,7 @@ const FilterSidebar: FC = () => {
   const onHandleScroll = (): void => setToggleAllFilters(false);
 
   const getSortByTitle = (): string => {
-    return allSortByFilters.find((f) => f.id === activeSortById)?.text || 'sort by';
+    return allSortByFilters.find((f) => f.id === activeSortByFilterId)?.text || 'sort by';
   };
 
   useEffect(() => {
@@ -78,8 +81,8 @@ const FilterSidebar: FC = () => {
         <FilterDropdown
           title="date"
           options={allDateFilters.filter((f) => f.id !== DateFilterId.ANYTIME)}
-          activeFilterId={activeFilterDateId}
-          onChangeFilterId={onChangeFilterDateId}
+          activeFilterId={activeDateFilterId}
+          onChangeFilterId={onChangeDateFilterId}
           defaultFilterId={DateFilterId.ANYTIME}
           toggleAllFilters={toggleAllFilters}
           onChangeToggleAllFilters={setToggleAllFilters}
@@ -87,8 +90,8 @@ const FilterSidebar: FC = () => {
         <FilterDropdown
           title="type"
           options={allTypeFilters.filter((f) => f.id !== TypeFilterId.ALL)}
-          activeFilterId={activeFilterTypeId}
-          onChangeFilterId={onChangeFilterTypeId}
+          activeFilterId={activeTypeFilterId}
+          onChangeFilterId={onChangeTypeFilterId}
           defaultFilterId={TypeFilterId.ALL}
           toggleAllFilters={toggleAllFilters}
           onChangeToggleAllFilters={setToggleAllFilters}
@@ -96,8 +99,8 @@ const FilterSidebar: FC = () => {
         <FilterDropdown
           title="duration"
           options={allDurationFilters.filter((f) => f.id !== DurationFilterId.ANY)}
-          activeFilterId={activeFilterDurationId}
-          onChangeFilterId={onChangeFilterDurationId}
+          activeFilterId={activeDurationFilterId}
+          onChangeFilterId={onChangeDurationFilterId}
           defaultFilterId={DurationFilterId.ANY}
           toggleAllFilters={toggleAllFilters}
           onChangeToggleAllFilters={setToggleAllFilters}
@@ -105,8 +108,8 @@ const FilterSidebar: FC = () => {
         <FilterSelect
           title={getSortByTitle()}
           options={allSortByFilters.filter((f) => f.id !== SortByFilterId.DEFAULT)}
-          activeFilterId={activeSortById}
-          onChangeFilterId={onChangeSortById}
+          activeFilterId={activeSortByFilterId}
+          onChangeFilterId={onChangeSortByFilterId}
           defaultFilterId={SortByFilterId.DEFAULT}
           toggleAllFilters={toggleAllFilters}
           onChangeToggleAllFilters={setToggleAllFilters}

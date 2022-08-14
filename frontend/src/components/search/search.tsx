@@ -12,10 +12,10 @@ const Search: FC = () => {
     search: {
       searchText,
       activeFilterId: {
-        type: activeFilterTypeId,
-        date: activeFilterDateId,
-        duration: activeFilterDurationId,
-        sortBy: activeSortById,
+        type: activeTypeFilterId,
+        date: activeDateFilterId,
+        duration: activeDurationFilterId,
+        sortBy: activeSortByFilterId,
       },
     },
   } = useAppSelector((state) => ({
@@ -43,10 +43,10 @@ const Search: FC = () => {
   );
 
   const handleGetVideoFilter = (): SearchQueryParamDto => ({
-    ...(activeFilterTypeId !== TypeFilterId.ALL && { [SearchQueryParam.TYPE]: activeFilterTypeId }),
-    ...(activeFilterDateId !== DateFilterId.ANYTIME && { [SearchQueryParam.DATE]: activeFilterDateId }),
-    ...(activeFilterDurationId !== DurationFilterId.ANY && { [SearchQueryParam.DURATION]: activeFilterDurationId }),
-    ...(activeSortById !== SortByFilterId.DEFAULT && { [SearchQueryParam.SORT_BY]: activeSortById }),
+    ...(activeTypeFilterId !== TypeFilterId.ALL && { [SearchQueryParam.TYPE]: activeTypeFilterId }),
+    ...(activeDateFilterId !== DateFilterId.ANYTIME && { [SearchQueryParam.DATE]: activeDateFilterId }),
+    ...(activeDurationFilterId !== DurationFilterId.ANY && { [SearchQueryParam.DURATION]: activeDurationFilterId }),
+    ...(activeSortByFilterId !== SortByFilterId.DEFAULT && { [SearchQueryParam.SORT_BY]: activeSortByFilterId }),
     ...(searchText && { [SearchQueryParam.SEARCH_TEXT]: searchText }),
   });
 
@@ -72,7 +72,7 @@ const Search: FC = () => {
 
   useEffect(() => {
     handleSetSearchParams();
-  }, [searchText, activeFilterTypeId, activeFilterDateId, activeFilterDurationId, activeSortById]);
+  }, [searchText, activeTypeFilterId, activeDateFilterId, activeDurationFilterId, activeSortByFilterId]);
 
   return (
     <>
