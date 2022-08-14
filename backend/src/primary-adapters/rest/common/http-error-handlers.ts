@@ -80,6 +80,7 @@ const getErrorHandler = (error: Error): ErrorHandler => {
 
 const handleHttpError = (error: Error, request: Request, response: Response, next: NextFunction): void => {
   const handler = getErrorHandler(error);
+
   const { code, errors } = handler.handle(error, request);
   response.status(code).json(errors);
   next();
