@@ -72,22 +72,20 @@ const Search: FC = () => {
 
   useEffect(() => {
     handleSetSearchParams();
-  }, [searchText, activeTypeFilterId, activeDateFilterId, activeDurationFilterId, activeSortByFilterId]);
+  }, [activeTypeFilterId, activeDateFilterId, activeDurationFilterId, activeSortByFilterId]);
 
   return (
-    <>
-      <div className={styles['search-page']}>
-        <FilterBar />
-        <div className={styles['search-page-wrapper']}>
-          <FilterSidebar />
-          <div className={styles['search-page-video-list']}>
-            {[].map((c: VideoCardType) => (
-              <VideoCard key={c.id} video={c} />
-            ))}
-          </div>
+    <div className={styles['search-page']}>
+      <FilterBar />
+      <div className={styles['search-page-wrapper']}>
+        <FilterSidebar />
+        <div className={styles['search-page-video-list']}>
+          {[].map((c: VideoCardType) => (
+            <VideoCard key={c.id} video={c} />
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
