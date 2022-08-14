@@ -5,3 +5,4 @@ export { type FC } from './react/react';
 export { type UserSignUpRequestDto, type UserSignUpResponseDto } from './user/user';
 export { type ValidationSchema } from './validation/validation';
 export { type VideoCard } from './components/components';
+export { type SearchQueryParamDto } from './search/search';
