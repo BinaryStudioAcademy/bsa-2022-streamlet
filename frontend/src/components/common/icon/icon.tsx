@@ -54,71 +54,93 @@ const Icon = ({ name, color, width, height, className }: IconProps): JSX.Element
   };
 
   switch (name) {
-    case IconName.ALARM:
+    case IconName.ALARM: {
       return <Alarm {...commonProps} />;
+    }
 
-    case IconName.ARROW_DOWN:
+    case IconName.ARROW_DOWN: {
       return <ArrowDown {...commonProps} />;
+    }
 
-    case IconName.ARROW_UP:
+    case IconName.ARROW_UP: {
       return <ArrowUp {...commonProps} />;
+    }
 
-    case IconName.CAMERA:
+    case IconName.CAMERA: {
       return <Camera {...commonProps} />;
+    }
 
-    case IconName.COMPAS:
+    case IconName.COMPAS: {
       return <Compas {...commonProps} />;
+    }
 
-    case IconName.FILTER:
+    case IconName.FILTER: {
       return <Filter {...commonProps} />;
+    }
 
-    case IconName.FOLLOW:
+    case IconName.FOLLOW: {
       return <Follow {...commonProps} />;
+    }
 
-    case IconName.HISTORY:
+    case IconName.HISTORY: {
       return <History {...commonProps} />;
+    }
 
-    case IconName.HOME:
+    case IconName.HOME: {
       return <Home {...commonProps} />;
+    }
 
-    case IconName.PLAY:
+    case IconName.PLAY: {
       return <Play {...commonProps} />;
+    }
 
-    case IconName.SEARCH:
+    case IconName.SEARCH: {
       return <Search {...commonProps} />;
+    }
 
-    case IconName.SIGNOUT:
+    case IconName.SIGNOUT: {
       return <Signout {...commonProps} />;
+    }
 
-    case IconName.SMILE:
+    case IconName.SMILE: {
       return <Smile {...commonProps} />;
+    }
 
-    case IconName.WATCH:
+    case IconName.WATCH: {
       return <Watch {...commonProps} />;
+    }
 
-    case IconName.BURGERMENU:
+    case IconName.BURGERMENU: {
       return <BurgerMenu {...commonProps} />;
+    }
 
-    case IconName.LOGOTIP:
+    case IconName.LOGOTIP: {
       return <MainLogo {...commonProps} />;
+    }
 
-    case IconName.BELL:
+    case IconName.BELL: {
       return <Bell {...commonProps} />;
+    }
 
-    case IconName.SETTINGS:
+    case IconName.SETTINGS: {
       return <Settings {...commonProps} />;
+    }
 
-    case IconName.MOON:
+    case IconName.MOON: {
       return <Moon {...commonProps} />;
+    }
 
-    case IconName.LOGOUT:
+    case IconName.LOGOUT: {
       return <LogOut {...commonProps} />;
+    }
 
-    case IconName.XMARK:
+    case IconName.XMARK: {
       return <Xmark {...commonProps} />;
+    }
 
-    default:
+    default: {
       return <Timeago {...commonProps} />;
+    }
   }
 };
 
