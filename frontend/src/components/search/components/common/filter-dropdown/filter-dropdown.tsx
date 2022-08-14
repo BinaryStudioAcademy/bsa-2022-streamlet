@@ -1,5 +1,5 @@
 import { FC } from 'common/types/types';
-import { useId, useState } from 'hooks/hooks';
+import { useId, useState, useEffect } from 'hooks/hooks';
 import { IconName } from 'common/enums/components';
 import { Icon } from 'components/common/common';
 
@@ -14,18 +14,36 @@ type Props = {
     text: string;
     value: string;
   }[];
+  toggleAllFilters: boolean;
+  onChangeToggleAllFilters: (toggle: boolean) => void;
 };
 
-const FilterDropdown: FC<Props> = ({ activeFilterId, onChangeFilterId, defaultFilterId, title, options }) => {
+const FilterDropdown: FC<Props> = ({
+  activeFilterId,
+  onChangeFilterId,
+  defaultFilterId,
+  title,
+  options,
+  toggleAllFilters,
+  onChangeToggleAllFilters,
+}) => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   const id = useId();
 
-  const handleToggleDropdown = (): void => setToggleDropdown(!toggleDropdown);
+  const handleToggleDropdown = (): void => {
+    const toggle = !toggleDropdown;
+    setToggleDropdown(toggle);
+    if (toggle) onChangeToggleAllFilters(toggle);
+  };
 
   const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => onChangeFilterId(e.currentTarget.value);
 
   const handleClearFilter = (): void => onChangeFilterId(defaultFilterId);
+
+  useEffect(() => {
+    if (!toggleAllFilters) setToggleDropdown(false);
+  }, [toggleAllFilters]);
 
   return (
     <div className={styles.container}>

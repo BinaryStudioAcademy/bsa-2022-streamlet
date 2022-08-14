@@ -1,5 +1,5 @@
 import { FC } from 'common/types/types';
-import { useId, useState } from 'hooks/hooks';
+import { useId, useState, useEffect } from 'hooks/hooks';
 import { IconName } from 'common/enums/components';
 import { Icon } from 'components/common/common';
 
@@ -14,12 +14,23 @@ type Props = {
     text: string;
     value: string;
   }[];
+  toggleAllFilters: boolean;
+  onChangeToggleAllFilters: (toggle: boolean) => void;
 };
 
-const FilterSelect: FC<Props> = ({ activeFilterId, onChangeFilterId, defaultFilterId, title, options }) => {
+const FilterSelect: FC<Props> = ({
+  activeFilterId,
+  onChangeFilterId,
+  defaultFilterId,
+  title,
+  options,
+  toggleAllFilters,
+  onChangeToggleAllFilters,
+}) => {
   const [filterTitle, setFilterTitle] = useState(title);
 
   const id = useId();
+  const filterTitleId = useId();
 
   const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => {
     onChangeFilterId(e.currentTarget.value);
@@ -31,10 +42,19 @@ const FilterSelect: FC<Props> = ({ activeFilterId, onChangeFilterId, defaultFilt
     setFilterTitle(title);
   };
 
+  const onHandleFocusFilter = (): void => onChangeToggleAllFilters(true);
+
+  useEffect(() => {
+    if (!toggleAllFilters) {
+      const filterSelectTitle = document.getElementById(filterTitleId);
+      filterSelectTitle?.blur();
+    }
+  }, [toggleAllFilters]);
+
   return (
     <div className={styles.container}>
       <div className={styles['filter-select']}>
-        <div className={styles['filter-select-title']} tabIndex={13}>
+        <div className={styles['filter-select-title']} tabIndex={13} id={filterTitleId} onFocus={onHandleFocusFilter}>
           <span>{filterTitle}</span>
           <Icon name={IconName.ARROW_DOWN} />
         </div>
