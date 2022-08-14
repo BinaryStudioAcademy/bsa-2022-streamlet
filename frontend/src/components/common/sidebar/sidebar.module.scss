@@ -1,0 +1,137 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--gray-300-header-menu-background);
+
+  @media screen and (max-width: 1100px) {
+    width: 54px;
+  }
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.navigate-menu ul a {
+  display: block;
+  text-decoration: none;
+}
+
+.navigate-menu ul li .link-name {
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+
+  @media screen and (max-width: 1100px) {
+    display: none;
+  }
+}
+
+.navigate-menu ul a:hover .link-name {
+  color: var(--white-text-color);
+}
+
+.navigate-menu ul li svg path {
+  fill: var(--text-gray-color);
+}
+
+.navigate-menu ul a:hover svg path {
+  fill: var(--white-text-color);
+}
+
+.navigate-menu ul li {
+  display: flex;
+  align-items: center;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  padding-left: 55px;
+
+  @media screen and (max-width: 1100px) {
+    padding-left: 15px;
+  }
+}
+
+.navigate-menu ul a:not(:last-child) {
+  margin-bottom: 12px;
+}
+
+.navigate-menu ul a.active {
+  background-color: var(--brand-green-color);
+}
+
+.navigate-menu ul a.active svg path {
+  fill: var(--white-text-color);
+}
+
+.navigate-menu ul a.active span {
+  color: var(--white-text-color);
+}
+
+.navigate-menu ul li svg {
+  margin-right: 12px;
+
+  @media screen and (max-width: 1100px) {
+    margin: 0;
+  }
+}
+
+.block-subscriptions {
+  margin-top: 25px;
+  padding-bottom: 24px;
+}
+
+.horizontal-line {
+  width: 70%;
+  height: 2px;
+  margin: 0 auto;
+  background-color: var(--primary-text-color);
+}
+
+.subscription-list {
+  padding-top: 25px;
+  padding-left: 55px;
+}
+
+.subscription-title {
+  margin-bottom: 18px;
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+
+  @media screen and (max-width: 1100px) {
+    display: none;
+  }
+}
+
+.subscription-item {
+  display: flex;
+  align-items: center;
+}
+
+.subscription-item:not(:last-child) {
+  margin-bottom: 32px;
+}
+
+.chanel-avatar {
+  width: 36px;
+  height: 36px;
+  margin-right: 7px;
+  background-color: aliceblue;
+  background-size: contain;
+  border-radius: 50%;
+}
+
+.chanel-name {
+  display: block;
+  flex: 1;
+  padding-right: 12px;
+  overflow: hidden;
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
