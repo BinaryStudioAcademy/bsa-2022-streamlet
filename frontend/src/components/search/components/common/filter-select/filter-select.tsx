@@ -25,6 +25,11 @@ const FilterSelect: FC<Props> = ({ activeFilterId, onChangeFilterId, title, opti
     setFilterTitle(e.currentTarget.dataset.name as string);
   };
 
+  const handleClearFilter = (): void => {
+    onChangeFilterId('');
+    setFilterTitle(title);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles['filter-select']}>
@@ -47,6 +52,9 @@ const FilterSelect: FC<Props> = ({ activeFilterId, onChangeFilterId, title, opti
                   onChange={onHandleChangeFilter}
                 />
                 <label htmlFor={optionId}>{o.text}</label>
+                <div className={styles['filter-select-item-close-icon']} onClick={handleClearFilter}>
+                  <Icon name={IconName.XMARK} />
+                </div>
               </div>
             );
           })}

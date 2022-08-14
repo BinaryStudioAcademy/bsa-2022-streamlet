@@ -32,6 +32,10 @@
   fill: var(--text-gray-color);
 }
 
+.filter-select-item-close-icon svg path {
+  fill: var(--text-gray-color);
+}
+
 .filter-select-title:hover svg path {
   fill: var(--white-text-color);
 }
@@ -55,6 +59,7 @@
   display: flex;
   align-items: center;
   height: 30px;
+  padding: 0 15px 0 8px;
   background-color: var(--gray-300-header-menu-background);
 }
 
@@ -70,10 +75,25 @@
 .filter-select-item label {
   display: block;
   width: 100%;
-  padding: 0 8px;
+  margin: 0;
+  padding: 0;
   color: var(--text-gray-color);
   font-size: 15px;
   line-height: 24px;
+}
+
+.filter-select-item-close-icon {
+  display: none;
+  align-items: center;
+  cursor: pointer;
+}
+
+.filter-select-item-close-icon svg {
+  width: 10px;
+}
+
+.filter-select-item-close-icon:hover svg path {
+  fill: var(--white-text-color);
 }
 
 .filter-select-item:hover label {
@@ -82,6 +102,10 @@
 
 .filter-select-item input:checked ~ label {
   color: var(--white-text-color);
+}
+
+.filter-select-item input:checked ~ .filter-select-item-close-icon {
+  display: flex;
 }
 
 .filter-select-item:hover {
