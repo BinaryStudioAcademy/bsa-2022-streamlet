@@ -61,7 +61,7 @@ jobs:
           build_extra_args: "--build-arg=REACT_APP_API_ORIGIN_URL=${{ secrets.REACT_APP_API_ORIGIN_URL }}"
 
   deploy:
-    needs: [build-backend, build-frontend]
+    needs: [build-backend, build-frontend, build-push-server]
     runs-on: ubuntu-latest
     environment: development
     steps:
