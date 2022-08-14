@@ -2,7 +2,7 @@ import { FC, VideoCard as VideoCardType } from 'common/types/types';
 import { IconName } from 'common/enums/components';
 import { Icon } from 'components/common/common';
 import { useNavigate } from 'hooks/hooks';
-import { getHowLongAgoString } from 'helpers/helpers';
+import { getHowLongAgoString, joinExistingValues } from 'helpers/helpers';
 import { VideoTag } from '../common/common';
 import styles from './styles.module.scss';
 
@@ -26,7 +26,8 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
     const min = Math.floor((durationInSeconds % 3600) / 60);
     const sec = Math.floor(durationInSeconds % 60);
 
-    return `${hr > 0 ? hr + ':' : ''}${hr && min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
+    const result = [`${hr > 0 ? hr + ':' : ''}`, `${hr && min < 10 ? '0' : ''}${min}:`, `${sec < 10 ? '0' : ''}${sec}`];
+    return joinExistingValues(result, '');
   };
 
   const getDividedViewString = (view: number): string => view.toLocaleString();
