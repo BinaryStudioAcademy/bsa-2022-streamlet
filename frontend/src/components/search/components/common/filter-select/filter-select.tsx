@@ -11,8 +11,8 @@ type Props = {
   defaultFilterId: string;
   title: string;
   options: {
+    id: string;
     text: string;
-    value: string;
   }[];
   toggleAllFilters: boolean;
   onChangeToggleAllFilters: (toggle: boolean) => void;
@@ -52,15 +52,15 @@ const FilterSelect: FC<Props> = ({
         </div>
         <div className={styles['filter-select-list']}>
           {options.map((o) => {
-            const optionId = `${id}-${o.value}`;
+            const optionId = `${id}-${o.id}`;
             return (
               <div key={optionId} className={styles['filter-select-item']}>
                 <input
                   id={optionId}
                   type="radio"
                   name={title}
-                  value={o.value}
-                  checked={activeFilterId === o.value}
+                  value={o.id}
+                  checked={activeFilterId === o.id}
                   onChange={onHandleChangeFilter}
                 />
                 <label htmlFor={optionId}>{o.text}</label>

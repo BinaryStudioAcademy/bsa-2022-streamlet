@@ -11,8 +11,8 @@ type Props = {
   defaultFilterId: string;
   title: string;
   options: {
+    id: string;
     text: string;
-    value: string;
   }[];
   toggleAllFilters: boolean;
   onChangeToggleAllFilters: (toggle: boolean) => void;
@@ -59,15 +59,15 @@ const FilterDropdown: FC<Props> = ({
         {toggleDropdown && (
           <ul className={styles['filter-dropdown-list']}>
             {options.map((o) => {
-              const optionId = `${id}-${o.value}`;
+              const optionId = `${id}-${o.id}`;
               return (
                 <li key={optionId} className={styles['filter-dropdown-item']}>
                   <input
                     id={optionId}
                     type="radio"
                     name={title}
-                    value={o.value}
-                    checked={activeFilterId === o.value}
+                    value={o.id}
+                    checked={activeFilterId === o.id}
                     onChange={onHandleChangeFilter}
                   />
                   <label htmlFor={optionId}>{o.text}</label>
