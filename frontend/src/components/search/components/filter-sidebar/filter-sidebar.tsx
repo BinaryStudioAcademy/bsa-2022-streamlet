@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { IconName } from 'common/enums/enums';
-import { useEffect, useState, useId } from 'hooks/hooks';
+import { useEffect, useState, useId, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
 import { Icon } from 'components/common/icon';
 import {
   TypeFilterId,
@@ -13,33 +13,36 @@ import {
   allSortByFilters,
 } from 'components/search/config/config';
 import { FilterDropdown, FilterSelect } from '../common/common';
+import { searchActions } from 'store/actions';
 
 import styles from './styles.module.scss';
 
-type Props = {
-  activeSortById: string;
-  onChangeSortById: (value: string) => void;
-  activeFilterTypeId: string;
-  onChangeFilterTypeId: (value: string) => void;
-  activeFilterDateId: string;
-  onChangeFilterDateId: (value: string) => void;
-  activeFilterDurationId: string;
-  onChangeFilterDurationId: (value: string) => void;
-};
+const FilterSidebar: FC = () => {
+  const dispatch = useAppDispatch();
+  const {
+    search: {
+      activeFilterId: {
+        type: activeFilterTypeId,
+        date: activeFilterDateId,
+        duration: activeFilterDurationId,
+        sortBy: activeSortById,
+      },
+    },
+  } = useAppSelector((state) => ({
+    search: state.search,
+  }));
 
-const FilterSidebar: FC<Props> = ({
-  activeSortById,
-  onChangeSortById,
-  activeFilterTypeId,
-  onChangeFilterTypeId,
-  activeFilterDateId,
-  onChangeFilterDateId,
-  activeFilterDurationId,
-  onChangeFilterDurationId,
-}) => {
   const [toggleAllFilters, setToggleAllFilters] = useState(false);
 
   const filterSidebarId = useId();
+
+  const onChangeFilterTypeId = useCallback((v: string) => dispatch(searchActions.setActiveTypeFilterId(v)), [dispatch]);
+  const onChangeFilterDateId = useCallback((v: string) => dispatch(searchActions.setActiveDateFilterId(v)), [dispatch]);
+  const onChangeFilterDurationId = useCallback(
+    (v: string) => dispatch(searchActions.setActiveDurationFilterId(v)),
+    [dispatch],
+  );
+  const onChangeSortById = useCallback((v: string) => dispatch(searchActions.setActiveSortByFilterId(v)), [dispatch]);
 
   const onHandleClickOutsideFilters = (e: MouseEvent): void => {
     const sidebar = document.getElementById(filterSidebarId);

@@ -1,27 +1,28 @@
 import React from 'react';
 import { FC } from 'common/types/types';
 import { IconName } from 'common/enums/enums';
-import { useId } from 'hooks/hooks';
+import { useId, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
 import { Icon } from 'components/common/common';
 import { allTypeFilters, allDateFilters } from 'components/search/config/config';
 import { FilterBarSelect } from '../common/common';
+import { searchActions } from 'store/actions';
 
 import styles from './styles.module.scss';
 
-type Props = {
-  activeFilterTypeId: string;
-  onChangeFilterTypeId: (value: string) => void;
-  activeFilterDateId: string;
-  onChangeFilterDateId: (value: string) => void;
-};
+const FilterBar: FC = () => {
+  const dispatch = useAppDispatch();
+  const {
+    search: {
+      activeFilterId: { type: activeFilterTypeId, date: activeFilterDateId },
+    },
+  } = useAppSelector((state) => ({
+    search: state.search,
+  }));
 
-const FilterBar: FC<Props> = ({
-  activeFilterTypeId,
-  onChangeFilterTypeId,
-  activeFilterDateId,
-  onChangeFilterDateId,
-}) => {
   const toggleId = useId();
+
+  const onChangeFilterTypeId = useCallback((v: string) => dispatch(searchActions.setActiveTypeFilterId(v)), [dispatch]);
+  const onChangeFilterDateId = useCallback((v: string) => dispatch(searchActions.setActiveDateFilterId(v)), [dispatch]);
 
   return (
     <div className={styles['filter-bar']}>
