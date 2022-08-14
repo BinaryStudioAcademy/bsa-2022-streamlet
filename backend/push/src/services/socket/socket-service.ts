@@ -5,7 +5,7 @@ import { amqpService } from '../services';
 import { AmqpQueue } from 'shared/build';
 import { logger } from '~/config/logger';
 
-export class SocketService {
+class SocketService {
   private io: SocketIo | undefined;
 
   subscribe(httpServer: http.Server): void {

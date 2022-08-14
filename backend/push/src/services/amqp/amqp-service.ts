@@ -1,19 +1,14 @@
 import { Channel } from 'amqplib';
-import { amqpConnect } from '~/config/amqp-connection';
-import { logger } from '~/config/logger';
 import { AmqpConsumeDto, AmqpSendToQueueDto } from '~/shared/types/ampq/ampq';
 
 class AmqpService {
   public amqpChannel!: Channel;
 
-  async connect(): Promise<void> {
-    this.amqpChannel = (await amqpConnect()) as Channel;
+  async connect(channel: Channel): Promise<void> {
+    this.amqpChannel = channel;
   }
 
   async sendToQueue({ queue, content, options }: AmqpSendToQueueDto): Promise<boolean> {
-    if (!this.amqpChannel) {
-      logger.warn('Channel closed');
-    }
     return this.amqpChannel.sendToQueue(queue, content, options);
   }
 
