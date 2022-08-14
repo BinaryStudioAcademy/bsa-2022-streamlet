@@ -1,4 +1,4 @@
-import { SearchQueryParam } from 'common/enums/enums';
+import { SearchQueryParam } from 'store/search/models';
 
 type SearchQueryParamDto = {
   [key in SearchQueryParam]?: string;

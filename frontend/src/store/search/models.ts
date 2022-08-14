@@ -29,4 +29,12 @@ enum SortByFilterId {
   RATING = 'rtg',
 }
 
-export { TypeFilterId, DateFilterId, DurationFilterId, SortByFilterId };
+enum SearchQueryParam {
+  DATE = 'date',
+  DURATION = 'duration',
+  TYPE = 'type',
+  SORT_BY = 'sortBy',
+  SEARCH_TEXT = 'search_query',
+}
+
+export { TypeFilterId, DateFilterId, DurationFilterId, SortByFilterId, SearchQueryParam };
