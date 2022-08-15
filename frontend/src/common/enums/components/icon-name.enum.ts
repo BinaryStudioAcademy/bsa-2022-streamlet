@@ -17,6 +17,7 @@ enum IconName {
   MOON = 'moon',
   LOGOUT = 'logout',
   MARK_AS_READ = 'markasread',
+  CLOSE = 'close',
 }
 
 export { IconName };
