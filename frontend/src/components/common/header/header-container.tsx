@@ -1,14 +1,20 @@
 import { FC } from 'common/types/types';
-import { useOutsideClick } from 'hooks/hooks';
+import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate } from 'hooks/hooks';
 import { useState, MouseEvent, FormEvent } from 'react';
 import { Header } from './header';
 import { MenuOptions, IconName } from 'common/enums/components';
+import { searchActions } from 'store/actions';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
 
 const HeaderContainer: FC = () => {
+  const dispatch = useAppDispatch();
+  const {
+    search: { searchText, searchUrlParams },
+  } = useAppSelector((state) => ({ search: state.search }));
+  const navigate = useNavigate();
+
   const [isLogged, setIsLogged] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
   const { isOpened: isMenuOpen, close, open, ref: menuRef } = useOutsideClick<HTMLDivElement>();
 
   const options = [
@@ -52,19 +58,26 @@ const HeaderContainer: FC = () => {
     }
   }
 
-  function handleInputSearch({ currentTarget }: FormEvent<HTMLInputElement>): void {
-    setSearchValue(currentTarget.value);
-  }
+  const handleInputSearch = useCallback(
+    ({ currentTarget }: FormEvent<HTMLInputElement>) => dispatch(searchActions.setSearchText(currentTarget.value)),
+    [dispatch],
+  );
+
+  const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    navigate(`/search?${searchUrlParams}`, { replace: true });
+  };
 
   return (
     <Header
       menuRef={menuRef}
       isLogged={isLogged}
       isMenuOpen={isMenuOpen}
-      searchValue={searchValue}
+      searchValue={searchText}
       handleClickUserMenu={handleClickUserMenu}
       handleClickLogin={handleClickLogin}
       handleInputSearch={handleInputSearch}
+      handleSubmitSearch={handleSubmitSearch}
       userAvatar={FAKE_USER_AVATAR}
       options={options}
     />

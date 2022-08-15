@@ -21,6 +21,7 @@ interface HeaderProps {
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
   handleClickLogin(e: MouseEvent<HTMLElement>): void;
   handleInputSearch(e: FormEvent<HTMLInputElement>): void;
+  handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
   options: MenuOption[];
   userAvatar: string;
   menuRef: RefObject<HTMLDivElement>;
@@ -33,6 +34,7 @@ const Header: FC<HeaderProps> = ({
   handleClickLogin,
   handleClickUserMenu,
   handleInputSearch,
+  handleSubmitSearch,
   options,
   userAvatar,
   menuRef,
@@ -49,7 +51,7 @@ const Header: FC<HeaderProps> = ({
             <p className={styles['main-name']}>streamlet</p>
           </Link>
         </div>
-        <div className={styles['block-search']}>
+        <form className={styles['block-search']} onSubmit={handleSubmitSearch}>
           <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
           <input
             className={styles['search-input']}
@@ -58,7 +60,7 @@ const Header: FC<HeaderProps> = ({
             onChange={handleInputSearch}
             placeholder="Search or type"
           />
-        </div>
+        </form>
       </div>
       <div className={styles['block-user']}>
         {!isLogged && (
