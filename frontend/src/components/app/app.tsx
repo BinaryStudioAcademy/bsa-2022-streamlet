@@ -5,6 +5,7 @@ import { Auth } from 'components/auth/auth';
 import { NotFound } from '../not-found-page/not-found';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
 import { MainPage } from 'pages/main-page';
+import { Studio, StudioAnalytics } from '../studio';
 
 const App: FC = () => {
   return (
@@ -16,6 +17,8 @@ const App: FC = () => {
         <Route path={AppRoute.RESTORE_PASSWORD} element={<Auth />} />
         <Route path={AppRoute.ANY} element={<NotFound />} />
         <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
+        <Route path={AppRoute.STUDIO} element={<Studio />} />
+        <Route path={AppRoute.ANALYTICS} element={<StudioAnalytics />} />
       </Routes>
     </>
   );

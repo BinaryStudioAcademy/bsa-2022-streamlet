@@ -6,6 +6,8 @@ enum AppRoute {
   ANY = '*',
   VIDEO_$ID = '/video/:videoId',
   CHANNEL_$ID = '/channel/:channelId',
+  STUDIO = '/studio',
+  ANALYTICS = '/analytics',
 }
 
 export { AppRoute };

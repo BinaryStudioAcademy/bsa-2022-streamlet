@@ -16,6 +16,8 @@ enum IconName {
   SETTINGS = 'settings',
   MOON = 'moon',
   LOGOUT = 'logout',
+  ANALYTICS = 'analytics',
+  LOGO = 'logo',
 }
 
 export { IconName };
