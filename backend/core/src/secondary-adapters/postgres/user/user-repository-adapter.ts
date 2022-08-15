@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { UserRepository } from '~/core/user/port/user-repository';
-import { Prisma, PrismaClient, User } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 import { CONTAINER_TYPES, UserBaseResponseDto, UserSignUpRequestDto } from '~/shared/types/types';
 import { trimUser, hashValue } from '~/shared/helpers';
 
@@ -16,12 +16,6 @@ export class UserRepositoryAdapter implements UserRepository {
       where: {
         OR: [{ email }, { username }],
       },
-    });
-  }
-
-  getUserByQuery(query: Prisma.UserWhereInput): Promise<User | null> {
-    return this.prismaClient.user.findFirst({
-      where: query,
     });
   }
 
