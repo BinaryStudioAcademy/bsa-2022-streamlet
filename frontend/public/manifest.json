@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Streamlet",
+  "name": "Streamlet is an interactive livestreaming service",
   "icons": [
     {
       "src": "favicon.ico",

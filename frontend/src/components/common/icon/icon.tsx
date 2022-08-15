@@ -1,5 +1,5 @@
 import styles from './styles.module.scss';
-import { IconName, IconColor } from '../../../common/enums/enums';
+import { IconName } from '../../../common/enums/enums';
 import { ReactComponent as Alarm } from '../../../assets/img/alarm.svg';
 import { ReactComponent as Camera } from '../../../assets/img/camera.svg';
 import { ReactComponent as Compas } from '../../../assets/img/compas.svg';
@@ -11,53 +11,94 @@ import { ReactComponent as Signout } from '../../../assets/img/signout.svg';
 import { ReactComponent as Smile } from '../../../assets/img/smile.svg';
 import { ReactComponent as Timeago } from '../../../assets/img/timeago.svg';
 import { ReactComponent as Watch } from '../../../assets/img/watch.svg';
+import { ReactComponent as BurgerMenu } from '../../../assets/img/burger-menu.svg';
+import { ReactComponent as MainLogo } from '../../../assets/img/main-logo.svg';
+import { ReactComponent as Bell } from '../../../assets/img/bell.svg';
+import { ReactComponent as Settings } from '../../../assets/img/settings.svg';
+import { ReactComponent as Moon } from '../../../assets/img/moon.svg';
+import { ReactComponent as LogOut } from '../../../assets/img/logout.svg';
+import clsx from 'clsx';
 
 const getColor = (color: string): string => styles[`fill${color}`];
 
 interface ISVGProps {
   color?: string;
-  size?: string;
+  width?: string;
+  height?: string;
+}
+
+interface IconProps {
+  name: string;
+  color: string;
+  width: string;
+  height: string;
+  className?: string;
 }
 
 const defaultProps: ISVGProps = {
-  color: IconColor.WHITE,
-  size: '20',
+  color: '',
+  width: '20',
+  height: '20',
 };
 
-const Icon = ({ name, color, size }: { name: string; color: string; size: string }): JSX.Element => {
+const Icon = ({ name, color, width, height, className }: IconProps): JSX.Element => {
+  const commonProps = {
+    className: clsx(getColor(color), className),
+    width: width,
+    height: height,
+  };
+
   switch (name) {
     case IconName.ALARM:
-      return <Alarm className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Alarm {...commonProps} />;
 
     case IconName.CAMERA:
-      return <Camera className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Camera {...commonProps} />;
 
     case IconName.COMPAS:
-      return <Compas className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Compas {...commonProps} />;
 
     case IconName.FOLLOW:
-      return <Follow className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Follow {...commonProps} />;
 
     case IconName.HISTORY:
-      return <History className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <History {...commonProps} />;
 
     case IconName.HOME:
-      return <Home className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Home {...commonProps} />;
 
     case IconName.SEARCH:
-      return <Search className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Search {...commonProps} />;
 
     case IconName.SIGNOUT:
-      return <Signout className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Signout {...commonProps} />;
 
     case IconName.SMILE:
-      return <Smile className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Smile {...commonProps} />;
 
     case IconName.WATCH:
-      return <Watch className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Watch {...commonProps} />;
+
+    case IconName.BURGERMENU:
+      return <BurgerMenu {...commonProps} />;
+
+    case IconName.LOGOTIP:
+      return <MainLogo {...commonProps} />;
+
+    case IconName.BELL:
+      return <Bell {...commonProps} />;
+
+    case IconName.SETTINGS:
+      return <Settings {...commonProps} />;
+
+    case IconName.MOON:
+      return <Moon {...commonProps} />;
+
+    case IconName.LOGOUT:
+      return <LogOut {...commonProps} />;
 
     default:
-      return <Timeago className={getColor(color)} width={`${size}px`} height={`${size}px`} />;
+      return <Timeago {...commonProps} />;
   }
 };
 
