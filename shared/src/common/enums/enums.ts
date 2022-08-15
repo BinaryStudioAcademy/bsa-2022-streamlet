@@ -5,5 +5,5 @@ export { HttpCode, HttpHeader, HttpMethod } from './http/http';
 export { UserValidationMessage } from './user/user';
 export { RefreshTokenValidationMessage } from './refresh-token/refresh-token';
 export { ImageStorePresetType } from './cloudinary/cloudinary';
-export { AmqpChannel } from './amqp/amqp';
+export { AmqpQueue } from './amqp/amqp';
 export { MailType } from './mail/mail';

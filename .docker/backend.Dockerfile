@@ -9,13 +9,13 @@ COPY ./package*.json ./
 COPY ./tsconfig.json ./
 COPY ./.eslintrc.yml ./
 COPY ./shared ./shared/
-COPY ./backend ./backend/
+COPY ./backend/core ./backend/core
 
-RUN npm ci -w shared -w backend
+RUN npm ci -w shared -w backend/core
 
 RUN npm run build:backend
-RUN rm -rf ./backend/src
+RUN rm -rf ./backend/core/src
 RUN rm -rf ./shared/src
 
 EXPOSE 5001
-CMD npm start -w backend
+CMD npm start -w backend/core

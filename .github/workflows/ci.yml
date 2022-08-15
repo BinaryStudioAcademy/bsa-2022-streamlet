@@ -43,7 +43,15 @@ jobs:
 
       - name: Build backend Dockerfile
         run: docker build -f .docker/backend.Dockerfile -t backend .
+  build-push-server:
+    name: streamlet build push.Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
 
+      - name: Build push Dockerfile
+        run: docker build -f .docker/push.Dockerfile -t push .
   build-frontend:
     name: streamlet build frontend.Dockerfile
     runs-on: ubuntu-latest
