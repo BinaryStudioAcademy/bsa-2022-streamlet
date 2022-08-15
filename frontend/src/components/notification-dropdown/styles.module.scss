@@ -22,33 +22,12 @@
   cursor: pointer;
 }
 
-.unread-mark {
-  position: absolute;
-  top: 10%;
-  right: 15%;
-  display: block;
-  width: 10px;
-  height: 10px;
-  background-color: var(--notifications-unread-mark);
-  border: 2px solid var(--unread-mark-border);
-  border-radius: 50%;
-}
-
 .dropdown {
-  position: absolute;
-  top: 40px;
-  right: 0;
-  display: none;
-  flex-direction: column;
-  width: 400px;
-  height: 300px;
-  background-color: var(--dropdown-background);
-  border: 1px solid var(--notifications-dropdown-border);
-  border-radius: 5px;
-}
-
-.open {
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
 }
 
 .header {
@@ -62,6 +41,19 @@
 .title {
   margin: 0;
   font-size: 130%;
+}
+
+.buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.back-button-mobile {
+  display: none;
+
+  @media screen and (max-width: 560px) {
+    display: block;
+  }
 }
 
 .dropdown-body {

@@ -1,11 +1,12 @@
-import { FC } from 'common/types/types';
+import { FC, NotificationsResponseDto } from 'common/types/types';
 import { Link } from 'react-router-dom';
 import { FormEvent, MouseEvent, RefObject } from 'react';
 import { AppRoute, IconName } from 'common/enums/enums';
-import { MenuOptions } from 'common/enums/components';
+import { IconColor, MenuOptions } from 'common/enums/components';
 import { Icon } from '../icon';
 
 import styles from './header.module.scss';
+import { NotificationDropdown } from 'components/notification-dropdown/notification-dropdown';
 
 interface MenuOption {
   type: MenuOptions;
@@ -19,11 +20,16 @@ interface HeaderProps {
   isMenuOpen: boolean;
   searchValue: string;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
+  handleClickNotificationsMenu: (e: MouseEvent<HTMLButtonElement>) => void;
+  handleCloseNotificationsMenu: () => void;
   handleClickLogin(e: MouseEvent<HTMLElement>): void;
   handleInputSearch(e: FormEvent<HTMLInputElement>): void;
   options: MenuOption[];
   userAvatar: string;
   menuRef: RefObject<HTMLDivElement>;
+  notificationsMenuRef: RefObject<HTMLDivElement>;
+  notifications: NotificationsResponseDto;
+  isNotificationsMenuOpen: boolean;
 }
 
 const Header: FC<HeaderProps> = ({
@@ -32,11 +38,18 @@ const Header: FC<HeaderProps> = ({
   searchValue,
   handleClickLogin,
   handleClickUserMenu,
+  handleClickNotificationsMenu,
+  handleCloseNotificationsMenu,
   handleInputSearch,
   options,
   userAvatar,
   menuRef,
+  notificationsMenuRef,
+  notifications,
+  isNotificationsMenuOpen,
 }) => {
+  const haveUnreadNotifications = notifications.notifications.some((notification) => !notification.isViewed);
+
   return (
     <header className={styles['header']}>
       <div className={styles['wrapper-first-part']}>
@@ -79,8 +92,21 @@ const Header: FC<HeaderProps> = ({
             <button className={styles['btn-go-stream']}>
               <Icon name={IconName.CAMERA} width="30" height="24" />
             </button>
-            <button className={styles['btn-notification']}>
-              <Icon name={IconName.BELL} width="24" height="27" />
+            <button className={styles['btn-notification']} onClick={handleClickNotificationsMenu}>
+              <>
+                <Icon color={IconColor.GRAY} name={IconName.ALARM} width="24" height="27" />
+                {haveUnreadNotifications && <div className={styles['unread-mark']}></div>}
+                {isNotificationsMenuOpen && (
+                  <div
+                    ref={notificationsMenuRef}
+                    className={`${styles['notifications-wrapper']} ${
+                      isNotificationsMenuOpen && styles['notifications-dropdown-open']
+                    }`}
+                  >
+                    <NotificationDropdown notifications={notifications} onClose={handleCloseNotificationsMenu} />
+                  </div>
+                )}
+              </>
             </button>
             <button
               onClick={handleClickUserMenu}

@@ -158,12 +158,53 @@
     }
   }
 
+  .btn-notification {
+    position: relative;
+  }
+
   .block-user .block-auth-user .btn-notification {
     margin-left: 34px;
 
     @media screen and (max-width: 560px) {
       margin-left: 20px;
     }
+  }
+
+  .unread-mark {
+    position: absolute;
+    top: 0%;
+    right: 0%;
+    display: block;
+    width: 12px;
+    height: 12px;
+    background-color: var(--notifications-unread-mark);
+    border: 2px solid var(--unread-mark-border);
+    border-radius: 50%;
+  }
+
+  .notifications-wrapper {
+    position: absolute;
+    top: 40px;
+    right: 0%;
+    width: 400px;
+    height: 300px;
+    background-color: var(--dropdown-background);
+    border: 1px solid var(--notifications-dropdown-border);
+    cursor: default;
+
+    @media screen and (max-width: 560px) {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 90vw;
+      height: 100vh;
+      border: none;
+      transform: translate(-100%, 0);
+    }
+  }
+
+  .notifications-dropdown-open {
+    transform: translate(0%, 0);
   }
 
   .block-user .block-auth-user .btn-go-stream svg:hover path {
