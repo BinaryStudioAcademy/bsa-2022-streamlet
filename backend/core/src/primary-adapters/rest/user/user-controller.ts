@@ -112,4 +112,15 @@ export class UserController extends BaseHttpController {
   public upload(@requestBody() body: UserUploadRequestDto): Promise<ImageUploadResponseDto> {
     return this.userService.uploadAvatar(body);
   }
+
+  //NOTE: this routes only for testing and in future should removed or modified
+  @httpPost('/notify')
+  public notify(@requestBody() body: { data: { message: string } }): Promise<boolean> {
+    return this.userService.notify(body);
+  }
+
+  @httpPost('/notify-broadcast')
+  public notifyBroadcast(@requestBody() body: { data: { message: string } }): Promise<boolean> {
+    return this.userService.notifyBroadcast(body);
+  }
 }

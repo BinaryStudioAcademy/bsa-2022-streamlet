@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "backend-core",
   "private": "true",
   "engines": {
     "node": ">=16 <17",

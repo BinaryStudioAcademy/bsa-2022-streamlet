@@ -16,5 +16,7 @@ ignore:
   - shared/node_modules
   - frontend/build
   - frontend/node_modules
-  - backend/build
-  - backend/node_modules
+  - backend/core/build
+  - backend/core/node_modules
+  - backend/push/node_modules
+  - backend/push/build

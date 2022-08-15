@@ -46,6 +46,23 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
+  push:
+    image: ghcr.io/binarystudioacademy/streamlet-push-dev:latest
+    container_name: push
+    depends_on:
+      - rabbitmq
+    ports:
+      - '5002:5002'
+    env_file:
+      - ../.env/push.env
+    networks:
+      - backend_network
+      - frontend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"            
   frontend:
     image: ghcr.io/binarystudioacademy/streamlet-frontend-dev:latest
     container_name: frontend
