@@ -50,7 +50,21 @@ const Search: FC = () => {
     ...(searchText && { [SearchQueryParam.SEARCH_TEXT]: searchText }),
   });
 
-  const handleSetSearchParams = (): void => setSearchParams({ ...handleGetVideoFilter() });
+  const handleSetSearchParams = (): void => {
+    if (activeTypeFilterId === TypeFilterId.ALL) {
+      searchParams.delete(SearchQueryParam.TYPE);
+    }
+    if (activeDateFilterId === DateFilterId.ANYTIME) {
+      searchParams.delete(SearchQueryParam.DATE);
+    }
+    if (activeDurationFilterId === DurationFilterId.ANY) {
+      searchParams.delete(SearchQueryParam.DURATION);
+    }
+    if (activeSortByFilterId === SortByFilterId.DEFAULT) {
+      searchParams.delete(SearchQueryParam.SORT_BY);
+    }
+    setSearchParams({ ...Object.fromEntries([...searchParams]), ...handleGetVideoFilter() });
+  };
 
   useEffect(() => {
     if (searchParams.has(SearchQueryParam.SEARCH_TEXT)) {
