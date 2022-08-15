@@ -61,10 +61,14 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
               {getHowLongAgoString(new Date(createdAt))}
             </div>
           </div>
-          <a className={styles['video-card-author']} onClick={redirectToChannelPage}>
-            <img className={styles['avatar']} src={channel.avatar} alt="Channels avatar" />
-            <span>{channel.name}</span>
-          </a>
+          <div className={styles['video-card-author']}>
+            <a className={styles['video-card-author-avatar']} onClick={redirectToChannelPage}>
+              <img className={styles['avatar']} src={channel.avatar} alt="Channels avatar" />
+            </a>
+            <a className={styles['video-card-author-name']} onClick={redirectToChannelPage}>
+              <span>{channel.name}</span>
+            </a>
+          </div>
           <div className={styles['video-card-tag-list']}>{isNew() && <VideoTag name="new" />}</div>
         </div>
         <div className={styles['video-card-meta-footer']}>

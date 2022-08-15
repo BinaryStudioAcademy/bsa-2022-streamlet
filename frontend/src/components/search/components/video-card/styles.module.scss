@@ -120,6 +120,12 @@
 }
 
 .video-card-author {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.video-card-author a {
   color: var(--text-gray-color);
   font-weight: 400;
   font-size: 12px;
@@ -208,9 +214,6 @@
   }
 
   .video-card-author {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
     gap: 10px;
     margin-top: 15px;
     color: var(--white-text-color);
