@@ -5,7 +5,7 @@
   flex-direction: column;
   min-height: 794px;
   background: $green-200-header-menu-background;
-  border-right: 1px solid;
+  border-right: 1px solid $text-gray-color;
 }
 
 .button {
@@ -20,5 +20,3 @@
 .buttons {
   background: $green-200-header-menu-background;
 }
-
-/*# sourceMappingURL=styles.module.css.map */

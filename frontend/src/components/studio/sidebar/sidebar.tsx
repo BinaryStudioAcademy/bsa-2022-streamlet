@@ -1,37 +1,30 @@
 import { FC } from 'common/types/types';
-import { Icon } from '../../common/icon';
-import { IconName, IconColor, AppRoute } from '../../../common/enums/enums';
-import { Link } from '../../common/common';
-import { useState } from 'react';
-import { useNavigate } from 'hooks/hooks';
+import { Icon, Link } from 'frontend/src/components/common/common';
+import { IconName, IconColor, AppRoute } from 'common/enums/enums';
+import cn from 'clsx';
+import { ISideBarItem, sideBarItems } from './config';
+import { useLocation } from 'hooks/hooks';
 
 import styles from './styles.module.scss';
 
-type Props = Record<string, unknown>;
-
-const arrayButtons = [IconName.HOME, IconName.ANALYTICS];
-
-const StudioSidebar: FC<Props> = () => {
-  const navigate = useNavigate();
-  const [activeButton, setActive] = useState<string>(IconName.HOME);
-  const getColor = (item: string): string => (activeButton === item ? IconColor.GREEN : IconColor.WHITE);
-
-  const handleClick = (item: string): void => {
-    setActive(item);
-    navigate(`${item === IconName.HOME ? AppRoute.STUDIO : AppRoute.ANALYTICS}`);
-  };
+const StudioSidebar: FC = () => {
+  const { pathname } = useLocation();
+  const getColor = (item: string): string => (pathname === item ? IconColor.GREEN : IconColor.WHITE);
 
   return (
     <aside className={styles.sidebar}>
-      <div className={styles.button}>
-        <Link to={AppRoute.ROOT}>
+      <Link to={AppRoute.ROOT}>
+        <div className={styles.button}>
           <Icon name={IconName.LOGO} />
-        </Link>
-      </div>
-      {arrayButtons.map((item) => (
-        <div className={`${styles.button} ${styles.active}`} onClick={(): void => handleClick(item)}>
-          <Icon name={item} color={getColor(item)} />
         </div>
+      </Link>
+
+      {sideBarItems.map((item: ISideBarItem) => (
+        <Link to={item.routeName as AppRoute}>
+          <div className={cn(styles.button, styles.active)}>
+            <Icon name={item.itemName} color={getColor(item.routeName)} />
+          </div>
+        </Link>
       ))}
     </aside>
   );
