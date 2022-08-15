@@ -13,6 +13,14 @@ export class RefreshTokenRepositoryAdapter implements RefreshTokenRepository {
     this.prismaClient = prismaClient;
   }
 
+  async removeForUser(userId: string): Promise<void> {
+    await this.prismaClient.refreshToken.deleteMany({
+      where: {
+        userId,
+      },
+    });
+  }
+
   async getRefreshTokenUser(refreshToken: string): Promise<User | null> {
     try {
       const refreshTokenPayload = await verifyJwt<RefreshTokenJwtPayload>(refreshToken);

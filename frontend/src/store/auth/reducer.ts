@@ -23,18 +23,24 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addMatcher(isAnyOf(signUp.fulfilled, signIn.fulfilled), (state, { payload }) => {
     state.user = payload;
   });
-  builder.addMatcher(isAnyOf(signUp.pending, signIn.pending, refreshTokens.pending), (state) => {
+  builder.addMatcher(isAnyOf(signUp.pending, signIn.pending, refreshTokens.pending, logout.pending), (state) => {
     state.dataStatus = DataStatus.PENDING;
     state.error = undefined;
   });
-  builder.addMatcher(isAnyOf(signUp.fulfilled, signIn.fulfilled, refreshTokens.fulfilled), (state) => {
-    state.dataStatus = DataStatus.FULFILLED;
-    state.error = undefined;
-  });
-  builder.addMatcher(isAnyOf(signUp.rejected, signIn.rejected, refreshTokens.rejected), (state, { error }) => {
-    state.dataStatus = DataStatus.REJECTED;
-    state.error = error.message;
-  });
+  builder.addMatcher(
+    isAnyOf(signUp.fulfilled, signIn.fulfilled, refreshTokens.fulfilled, logout.fulfilled),
+    (state) => {
+      state.dataStatus = DataStatus.FULFILLED;
+      state.error = undefined;
+    },
+  );
+  builder.addMatcher(
+    isAnyOf(signUp.rejected, signIn.rejected, refreshTokens.rejected, logout.rejected),
+    (state, { error }) => {
+      state.dataStatus = DataStatus.REJECTED;
+      state.error = error.message;
+    },
+  );
 });
 
 export { reducer };

@@ -14,4 +14,8 @@ export class RefreshTokenService {
   async getRefreshTokenUser(refreshToken: string): Promise<User | null> {
     return this.refreshTokenRepository.getRefreshTokenUser(refreshToken);
   }
+
+  async removeForUser(userId: string): Promise<void> {
+    return this.refreshTokenRepository.removeForUser(userId);
+  }
 }

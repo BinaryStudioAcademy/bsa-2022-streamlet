@@ -1,7 +1,7 @@
 import { PostInterceptor } from './interceptor';
 import { store } from 'store/store';
 import { logout, refreshTokens } from 'store/auth/actions';
-import { getRefreshToken } from 'helpers/helpers';
+import { tokensStorageService } from 'services/services';
 import { attachAuthTokenInterceptor } from './attach-auth-token-interceptor';
 
 const REFRESH_STATUS_CODE = 401;
@@ -14,9 +14,8 @@ export const refreshTokenInterceptor: PostInterceptor = async ({
   if (response.status !== REFRESH_STATUS_CODE) {
     return Promise.resolve(response);
   }
-  const refreshToken = getRefreshToken();
-  const userId = store.getState().auth.user?.id;
-  if (!userId || !refreshToken) {
+  const { refreshToken } = tokensStorageService.getTokens();
+  if (!refreshToken) {
     return Promise.resolve(response);
   }
   try {
@@ -33,7 +32,10 @@ export const refreshTokenInterceptor: PostInterceptor = async ({
     const newResponsePromise = makeRequestFn(url, newOptions);
     return newResponsePromise;
   } catch (e: unknown) {
-    store.dispatch(logout());
+    // in the above try block the only thing that could go wrong is refreshing token
+    // which can go wrong if the refresh token is invalid
+    // in this case it's pointless to hit api to log out on backend, since it'll only create an endless loop of refreshing
+    await store.dispatch(logout({ hitApi: false })).unwrap();
     throw e;
   }
 };

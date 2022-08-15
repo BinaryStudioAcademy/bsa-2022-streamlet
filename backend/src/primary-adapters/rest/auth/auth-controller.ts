@@ -1,5 +1,5 @@
 import { inject } from 'inversify';
-import { BaseHttpController, controller, httpPost, requestBody } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpPost, request, requestBody } from 'inversify-express-utils';
 import { ApiPath, AuthApiPath } from '~/shared/enums/api/api';
 import {
   CONTAINER_TYPES,
@@ -11,11 +11,12 @@ import {
   UserSignUpResponseDto,
   MailResponseDto,
   MailTestRequestDto,
+  ExtendedAuthenticatedRequest,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { compareHash, generateJwt, trimUser } from '~/shared/helpers';
 import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
-import { validationMiddleware } from '../middleware';
+import { authenticationMiddleware, validationMiddleware } from '../middleware';
 import { userSignIn, userSignUp } from '~/validation-schemas/user/user';
 import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-token';
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
@@ -245,6 +246,25 @@ export class AuthController extends BaseHttpController {
         refreshToken: newRefreshToken,
       },
     };
+  }
+
+  /**
+   * @swagger
+   * /auth/log-out:
+   *    post:
+   *      tags:
+   *      - auth
+   *      security: []
+   *      operationId: logOut
+   *      description: Logout the user (will delete all refresh tokens)
+   *      responses:
+   *        200:
+   *          description: successful operation
+   */
+  @httpPost(AuthApiPath.LOG_OUT, authenticationMiddleware)
+  public async logout(@request() req: ExtendedAuthenticatedRequest): Promise<void> {
+    const user = req.user;
+    return this.refreshTokenService.removeForUser(user.id);
   }
 
   /**

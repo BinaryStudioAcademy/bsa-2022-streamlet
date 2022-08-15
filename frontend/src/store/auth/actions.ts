@@ -8,7 +8,7 @@ import {
   UserBaseResponseDto,
   RefreshTokenResponseDto,
 } from 'common/types/types';
-import { removeAccessToken, removeRefreshToken, saveAccessToken, saveRefreshToken } from 'helpers/helpers';
+import { authApi, tokensStorageService } from 'services/services';
 import { ActionType } from './common';
 
 const signUp = createAsyncThunk<UserBaseResponseDto, UserSignUpRequestDto, AsyncThunkConfig>(
@@ -17,8 +17,7 @@ const signUp = createAsyncThunk<UserBaseResponseDto, UserSignUpRequestDto, Async
     const { authApi } = extra;
 
     const { tokens, user } = await authApi.signUp(registerPayload);
-    saveAccessToken(tokens.accessToken);
-    saveRefreshToken(tokens.refreshToken);
+    tokensStorageService.saveTokens(tokens);
     return user;
   },
 );
@@ -29,8 +28,7 @@ const signIn = createAsyncThunk<UserBaseResponseDto, UserSignInRequestDto, Async
     const { authApi } = extra;
 
     const { tokens, user } = await authApi.signIn(signinPayload);
-    saveAccessToken(tokens.accessToken);
-    saveRefreshToken(tokens.refreshToken);
+    tokensStorageService.saveTokens(tokens);
     return user;
   },
 );
@@ -41,15 +39,20 @@ const refreshTokens = createAsyncThunk<RefreshTokenResponseDto, RefreshTokenRequ
     const { authApi } = extra;
 
     const newTokens = await authApi.refreshTokens(refreshPayload);
-    saveAccessToken(newTokens.tokens.accessToken);
-    saveRefreshToken(newTokens.tokens.refreshToken);
+    tokensStorageService.saveTokens(newTokens.tokens);
     return newTokens;
   },
 );
 
-const logout = createAsyncThunk(ActionType.LOGOUT, () => {
-  removeAccessToken();
-  removeRefreshToken();
-});
+// in some cases there is a need only to log out on client, while usually it's also needed to logout on backend
+const logout = createAsyncThunk<void, { hitApi: boolean } | undefined>(
+  ActionType.LOGOUT,
+  async ({ hitApi } = { hitApi: true }) => {
+    if (hitApi) {
+      await authApi.logout();
+    }
+    tokensStorageService.clearTokens();
+  },
+);
 
 export { signUp, signIn, refreshTokens, logout };

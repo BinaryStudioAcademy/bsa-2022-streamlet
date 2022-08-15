@@ -61,6 +61,15 @@ class AuthApi {
       postInterceptors: [],
     });
   }
+
+  public logout(): Promise<void> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.LOG_OUT}`,
+      options: {
+        method: HttpMethod.POST,
+      },
+    });
+  }
 }
 
 export { AuthApi };
