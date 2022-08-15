@@ -3,7 +3,7 @@ import { inject } from 'inversify';
 import { CONTAINER_TYPES, ImageUploadResponseDto, UserUploadRequestDto } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
-import { authenticationMiddleware } from '../../../secondary-adapters/middleware';
+import { authenticationMiddleware } from '../middleware';
 
 /**
  * @swagger

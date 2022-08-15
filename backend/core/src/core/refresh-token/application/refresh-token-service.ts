@@ -1,6 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { RefreshTokenRepository } from '~/core/refresh-token/port/refresh-token-repository';
+import { User } from '@prisma/client';
 
 @injectable()
 export class RefreshTokenService {
@@ -10,7 +11,11 @@ export class RefreshTokenService {
     this.refreshTokenRepository = refreshTokenRepository;
   }
 
-  async checkForExistence(userId: string, refreshToken: string): Promise<boolean> {
-    return this.refreshTokenRepository.checkForExistence(userId, refreshToken);
+  async getRefreshTokenUser(refreshToken: string): Promise<User | null> {
+    return this.refreshTokenRepository.getRefreshTokenUser(refreshToken);
+  }
+
+  async removeForUser(userId: string): Promise<void> {
+    return this.refreshTokenRepository.removeForUser(userId);
   }
 }

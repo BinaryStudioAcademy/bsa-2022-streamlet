@@ -1,4 +1,7 @@
+import { User } from '@prisma/client';
+
 export interface RefreshTokenRepository {
   createForUser(userId: string): Promise<string>;
-  checkForExistence(userId: string, refreshToken: string): Promise<boolean>;
+  removeForUser(userId: string): Promise<void>;
+  getRefreshTokenUser(refreshToken: string): Promise<User | null>;
 }

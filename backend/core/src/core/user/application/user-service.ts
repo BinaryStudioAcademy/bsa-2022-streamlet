@@ -9,8 +9,8 @@ import {
   MailType,
   ImageStorePresetType,
   ImageUploadResponseDto,
-  UserSignUpResponseDto,
   UserUploadRequestDto,
+  UserBaseResponseDto,
   AmqpQueue,
 } from 'shared/build';
 import { ImageStorePort } from '~/core/common/port/image-store';
@@ -52,7 +52,11 @@ export class UserService {
     return this.userRepository.getById(id);
   }
 
-  createUser(userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
+  getUserByUsernameOrEmail(email: string, username: string): Promise<User | null> {
+    return this.userRepository.getUserByUsernameOrEmail(email, username);
+  }
+
+  createUser(userRequestDto: UserSignUpRequestDto): Promise<UserBaseResponseDto> {
     return this.userRepository.createUser(userRequestDto);
   }
 

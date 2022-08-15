@@ -3,7 +3,9 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import { ValidationSchema } from 'common/types/types';
 
-const getFormValidationResolver = (validationSchema: ValidationSchema): Resolver => {
+const getFormValidationResolver = <SchemaObjectType>(
+  validationSchema: ValidationSchema<SchemaObjectType>,
+): Resolver<SchemaObjectType> => {
   return joiResolver(validationSchema);
 };
 

@@ -1,5 +1,5 @@
 import { Video } from '@prisma/client';
-import { channels } from '.';
+import { channels } from '../seed-data';
 
 const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId'>[] = [
   {

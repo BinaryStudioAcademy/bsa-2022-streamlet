@@ -1,4 +1,5 @@
 import { User } from '@prisma/client';
+import { faker } from '@faker-js/faker';
 
 export const users: Omit<User, 'createdAt' | 'updatedAt'>[] = [
   {
@@ -601,4 +602,7 @@ export const users: Omit<User, 'createdAt' | 'updatedAt'>[] = [
     'password': 'VCUKdWy2p',
     'isActivated': false,
   },
-];
+].map((user) => ({
+  ...user,
+  username: faker.internet.userName(),
+}));

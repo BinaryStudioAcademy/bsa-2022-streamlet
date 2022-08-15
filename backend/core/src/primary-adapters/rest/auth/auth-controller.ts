@@ -1,5 +1,5 @@
 import { inject } from 'inversify';
-import { BaseHttpController, controller, httpPost, requestBody } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpPost, request, requestBody } from 'inversify-express-utils';
 import { ApiPath, AuthApiPath } from '~/shared/enums/api/api';
 import {
   CONTAINER_TYPES,
@@ -11,15 +11,14 @@ import {
   UserSignUpResponseDto,
   MailResponseDto,
   MailTestRequestDto,
+  ExtendedAuthenticatedRequest,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
-import { compareHash, generateJwt } from './utils';
-import { trimUser } from '~/shared/helpers';
+import { compareHash, generateJwt, trimUser } from '~/shared/helpers';
 import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
-import { validationMiddleware } from '../../../secondary-adapters/middleware';
+import { authenticationMiddleware, validationMiddleware } from '../middleware';
 import { userSignIn, userSignUp } from '~/validation-schemas/user/user';
 import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-token';
-import { NotFound } from '~/shared/exceptions/not-found';
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
 import { exceptionMessages } from '~/shared/enums/exceptions';
 import { DuplicationError } from '~/shared/exceptions/duplication-error';
@@ -121,15 +120,22 @@ export class AuthController extends BaseHttpController {
    *          description: Email is already taken.
    */
   @httpPost(AuthApiPath.SIGN_UP, validationMiddleware(userSignUp))
-  public async signUp(
-    @requestBody() userRequestDto: UserSignUpRequestDto,
-  ): Promise<{ user: UserSignUpResponseDto; tokens: TokenPair }> {
-    const userAlreadyExists = (await this.userService.getUserByEmail(userRequestDto.email)) !== null;
-    if (userAlreadyExists) {
-      throw new DuplicationError(exceptionMessages.auth.USER_EMAIL_ALREADY_EXISTS);
+  public async signUp(@requestBody() userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
+    const duplicateUser = await this.userService.getUserByUsernameOrEmail(
+      userRequestDto.email,
+      userRequestDto.username,
+    );
+
+    if (duplicateUser) {
+      if (duplicateUser.username === userRequestDto.username) {
+        throw new DuplicationError(exceptionMessages.auth.USER_USERNAME_ALREADY_EXISTS);
+      }
+      if (duplicateUser.email === userRequestDto.email) {
+        throw new DuplicationError(exceptionMessages.auth.USER_EMAIL_ALREADY_EXISTS);
+      }
     }
     const user = await this.userService.createUser(userRequestDto);
-    const accessToken = await generateJwt(user);
+    const accessToken = await generateJwt({ payload: user });
     return {
       user,
       tokens: {
@@ -170,9 +176,7 @@ export class AuthController extends BaseHttpController {
    *          description: Invalid request format.
    */
   @httpPost(AuthApiPath.SIGN_IN, validationMiddleware(userSignIn))
-  public async signIn(
-    @requestBody() userRequestDto: UserSignInRequestDto,
-  ): Promise<{ user: UserSignInResponseDto; tokens: TokenPair }> {
+  public async signIn(@requestBody() userRequestDto: UserSignInRequestDto): Promise<UserSignInResponseDto> {
     const user = await this.userService.getUserByEmail(userRequestDto.email);
     if (!user) {
       throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
@@ -181,7 +185,7 @@ export class AuthController extends BaseHttpController {
     if (!isSameHash) {
       throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
     }
-    const accessToken = await generateJwt(trimUser(user));
+    const accessToken = await generateJwt({ payload: trimUser(user) });
     return {
       user: trimUser(user),
       tokens: {
@@ -207,14 +211,11 @@ export class AuthController extends BaseHttpController {
    *      parameters:
    *      - in: body
    *        name: body
-   *        description: User's id and refresh token
+   *        description: refresh token
    *        required: true
    *        schema:
    *          type: object
    *          properties:
-   *            userId:
-   *              type: string
-   *              format: uuid
    *            refreshToken:
    *              type: string
    *      responses:
@@ -225,32 +226,45 @@ export class AuthController extends BaseHttpController {
    *            properties:
    *              tokens:
    *                $ref: '#/definitions/TokenPair'
-   *        404:
-   *          description: Such user-token pair was not found
+   *        401:
+   *          description: Such user-token pair was not found or inspired
    */
   @httpPost(AuthApiPath.REFRESH_TOKENS, validationMiddleware(refreshTokenRequest))
   public async refreshTokens(
     @requestBody() refreshTokenRequestDto: RefreshTokenRequestDto,
   ): Promise<{ tokens: TokenPair }> {
-    const user = await this.userService.getUserById(refreshTokenRequestDto.userId);
-    if (!user) {
-      throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
+    const tokenUser = await this.refreshTokenService.getRefreshTokenUser(refreshTokenRequestDto.refreshToken);
+
+    if (!tokenUser) {
+      throw new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN);
     }
-    const hasToken = await this.refreshTokenService.checkForExistence(
-      refreshTokenRequestDto.userId,
-      refreshTokenRequestDto.refreshToken,
-    );
-    if (!hasToken) {
-      throw new NotFound(exceptionMessages.auth.TOKEN_NOT_FOUND);
-    }
-    const newRefreshToken = await this.userService.createRefreshToken(refreshTokenRequestDto.userId);
-    const newAccessToken = await generateJwt(trimUser(user));
+    const newRefreshToken = await this.userService.createRefreshToken(tokenUser.id);
+    const newAccessToken = await generateJwt({ payload: trimUser(tokenUser) });
     return {
       tokens: {
         accessToken: newAccessToken,
         refreshToken: newRefreshToken,
       },
     };
+  }
+
+  /**
+   * @swagger
+   * /auth/log-out:
+   *    post:
+   *      tags:
+   *      - auth
+   *      security: []
+   *      operationId: logOut
+   *      description: Logout the user (will delete all refresh tokens)
+   *      responses:
+   *        200:
+   *          description: successful operation
+   */
+  @httpPost(AuthApiPath.LOG_OUT, authenticationMiddleware)
+  public async logout(@request() req: ExtendedAuthenticatedRequest): Promise<void> {
+    const user = req.user;
+    return this.refreshTokenService.removeForUser(user.id);
   }
 
   /**

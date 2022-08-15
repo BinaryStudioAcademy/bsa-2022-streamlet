@@ -57,6 +57,7 @@ erDiagram
   User {
     String id PK
     String email
+    String username
     String password
     Boolean isActivated
     DateTime createdAt
