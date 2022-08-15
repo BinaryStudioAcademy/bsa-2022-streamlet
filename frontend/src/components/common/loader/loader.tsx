@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styles from './styles.module.scss';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 type Props = {
   hCentered?: boolean;
@@ -12,12 +12,12 @@ type Props = {
 const Loader: FC<Props> = ({ hCentered = true, vCentered = true, className, spinnerSize = 'md' }) => {
   return (
     <div
-      className={classNames(styles['loader-wrapper'], className, {
+      className={clsx(styles['loader-wrapper'], className, {
         [styles['h-centered']]: hCentered,
         [styles['v-centered']]: vCentered,
       })}
     >
-      <span className={classNames(styles['loader'], styles[spinnerSize])}></span>
+      <span className={clsx(styles['loader'], styles[spinnerSize])}></span>
     </div>
   );
 };

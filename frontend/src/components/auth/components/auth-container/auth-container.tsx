@@ -5,7 +5,7 @@ import logo from 'assets/img/logo.svg';
 import zigzag from 'assets/img/auth/auth-zigzag.svg';
 import element from 'assets/img/auth/auth-element.svg';
 import { ErrorBox } from 'components/common/errors/errors';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 type Props = {
   pageTitle: 'Login' | 'Sign up' | 'Restore password';
@@ -16,7 +16,7 @@ type Props = {
 
 const AuthContainer: FC<Props> = ({ children, pageTitle, className, topLevelError }) => {
   return (
-    <div className={classNames(styles['auth-background'], className)}>
+    <div className={clsx(styles['auth-background'], className)}>
       <img src={zigzag} className={styles['background-zigzag']} alt="zigzag" />
       <img src={zigzag} className={styles['background-zigzag-2']} alt="zigzag" />
       <img src={element} className={styles['background-element']} alt="element" />

@@ -7,7 +7,7 @@ import { ErrorBox } from 'components/common/errors/errors';
 import passwordEye from 'assets/img/password-eye.svg';
 import styles from '../styles.module.scss';
 import passwordStyles from './password-input.module.scss';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 type Props<T> = {
   control: FormControl<T>;
@@ -49,21 +49,21 @@ const PasswordInput = <T extends FieldValues>({
   };
 
   return (
-    <div className={classNames(styles['input-wrapper'], wrapperClassName)}>
-      <label className={classNames(styles['label'], labelClassName)} htmlFor={id}>
+    <div className={clsx(styles['input-wrapper'], wrapperClassName)}>
+      <label className={clsx(styles['label'], labelClassName)} htmlFor={id}>
         <span>{label}</span>
       </label>
-      <div className={classNames(passwordStyles['password-container'], inputWrapperClassName)}>
+      <div className={clsx(passwordStyles['password-container'], inputWrapperClassName)}>
         <input
           {...field}
           type={inputPasswordType}
           placeholder={placeholder}
-          className={classNames(styles['input'], inputClassName)}
+          className={clsx(styles['input'], inputClassName)}
           id={id}
         />
         <Button
           onClick={handleChangeInputPasswordType}
-          className={classNames(passwordStyles['check-password-btn'], changeVisibilityBtnClassName)}
+          className={clsx(passwordStyles['check-password-btn'], changeVisibilityBtnClassName)}
           content={<img src={passwordEye} alt="check" />}
         />
       </div>
