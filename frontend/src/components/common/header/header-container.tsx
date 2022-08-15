@@ -1,8 +1,8 @@
 import { FC } from 'common/types/types';
-import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate } from 'hooks/hooks';
+import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate, useLocation } from 'hooks/hooks';
 import { useState, MouseEvent, FormEvent } from 'react';
 import { Header } from './header';
-import { MenuOptions, IconName } from 'common/enums/components';
+import { MenuOptions, IconName, AppRoute } from 'common/enums/enums';
 import { searchActions } from 'store/actions';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
@@ -13,6 +13,7 @@ const HeaderContainer: FC = () => {
     search: { searchText, searchUrlParams },
   } = useAppSelector((state) => ({ search: state.search }));
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const [isLogged, setIsLogged] = useState(false);
   const { isOpened: isMenuOpen, close, open, ref: menuRef } = useOutsideClick<HTMLDivElement>();
@@ -67,6 +68,10 @@ const HeaderContainer: FC = () => {
     e.preventDefault();
     navigate(`/search?${searchUrlParams}`, { replace: true });
   };
+
+  if (pathname === AppRoute.SIGN_IN || pathname === AppRoute.SIGN_UP || pathname === AppRoute.RESTORE_PASSWORD) {
+    return null;
+  }
 
   return (
     <Header
