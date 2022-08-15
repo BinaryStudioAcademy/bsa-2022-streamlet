@@ -13,13 +13,11 @@ import {
   MailTestRequestDto,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
-import { compareHash, generateJwt } from './utils';
-import { trimUser } from '~/shared/helpers';
+import { compareHash, generateJwt, trimUser } from '~/shared/helpers';
 import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
-import { validationMiddleware } from '../../../secondary-adapters/middleware';
+import { validationMiddleware } from '../middleware';
 import { userSignIn, userSignUp } from '~/validation-schemas/user/user';
 import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-token';
-import { NotFound } from '~/shared/exceptions/not-found';
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
 import { exceptionMessages } from '~/shared/enums/exceptions';
 import { DuplicationError } from '~/shared/exceptions/duplication-error';
@@ -136,7 +134,7 @@ export class AuthController extends BaseHttpController {
       }
     }
     const user = await this.userService.createUser(userRequestDto);
-    const accessToken = await generateJwt(user);
+    const accessToken = await generateJwt({ payload: user });
     return {
       user,
       tokens: {
@@ -186,7 +184,7 @@ export class AuthController extends BaseHttpController {
     if (!isSameHash) {
       throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
     }
-    const accessToken = await generateJwt(trimUser(user));
+    const accessToken = await generateJwt({ payload: trimUser(user) });
     return {
       user: trimUser(user),
       tokens: {
@@ -212,14 +210,11 @@ export class AuthController extends BaseHttpController {
    *      parameters:
    *      - in: body
    *        name: body
-   *        description: User's id and refresh token
+   *        description: refresh token
    *        required: true
    *        schema:
    *          type: object
    *          properties:
-   *            userId:
-   *              type: string
-   *              format: uuid
    *            refreshToken:
    *              type: string
    *      responses:
@@ -230,26 +225,20 @@ export class AuthController extends BaseHttpController {
    *            properties:
    *              tokens:
    *                $ref: '#/definitions/TokenPair'
-   *        404:
-   *          description: Such user-token pair was not found
+   *        401:
+   *          description: Such user-token pair was not found or inspired
    */
   @httpPost(AuthApiPath.REFRESH_TOKENS, validationMiddleware(refreshTokenRequest))
   public async refreshTokens(
     @requestBody() refreshTokenRequestDto: RefreshTokenRequestDto,
   ): Promise<{ tokens: TokenPair }> {
-    const user = await this.userService.getUserById(refreshTokenRequestDto.userId);
-    if (!user) {
-      throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
+    const tokenUser = await this.refreshTokenService.getRefreshTokenUser(refreshTokenRequestDto.refreshToken);
+
+    if (!tokenUser) {
+      throw new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN);
     }
-    const hasToken = await this.refreshTokenService.checkForExistence(
-      refreshTokenRequestDto.userId,
-      refreshTokenRequestDto.refreshToken,
-    );
-    if (!hasToken) {
-      throw new NotFound(exceptionMessages.auth.TOKEN_NOT_FOUND);
-    }
-    const newRefreshToken = await this.userService.createRefreshToken(refreshTokenRequestDto.userId);
-    const newAccessToken = await generateJwt(trimUser(user));
+    const newRefreshToken = await this.userService.createRefreshToken(tokenUser.id);
+    const newAccessToken = await generateJwt({ payload: trimUser(tokenUser) });
     return {
       tokens: {
         accessToken: newAccessToken,

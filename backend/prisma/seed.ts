@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { faker } from '@faker-js/faker';
-import { users, userProfiles, refreshTokens, channels, videos } from './seed-data';
+import { users, userProfiles, channels, videos } from './seed-data';
 const prisma = new PrismaClient();
 
 async function seedSampleData(): Promise<void> {
@@ -10,7 +10,6 @@ async function seedSampleData(): Promise<void> {
   }
   await seedUsers();
   await seedUserProfiles();
-  await seedRefreshTokens();
   await seedChannels();
   await seedVideos();
   await seedSubscriptions();
@@ -44,17 +43,6 @@ async function seedUserProfiles(): Promise<void> {
       ...profile,
       userId: users[index].id,
     })),
-  });
-}
-
-async function seedRefreshTokens(): Promise<void> {
-  await prisma.refreshToken.createMany({
-    data: await Promise.all(
-      refreshTokens.map(async (refreshToken) => ({
-        ...refreshToken,
-        token: await bcrypt.hash(refreshToken.token, 12),
-      })),
-    ),
   });
 }
 

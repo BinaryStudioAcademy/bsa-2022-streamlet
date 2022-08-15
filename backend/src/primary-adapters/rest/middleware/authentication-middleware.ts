@@ -1,11 +1,9 @@
 import express from 'express';
 import { ExtendedRequest } from '~/shared/types/express';
-import { jwtVerify } from 'jose';
-import { createSecretKey } from 'node:crypto';
-import { CONFIG } from '~/configuration/config';
 import { UserBaseResponseDto } from '~/shared/types/types';
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
 import { exceptionMessages } from '~/shared/enums/exceptions';
+import { verifyJwt } from '~/shared/helpers';
 
 export const authenticationMiddleware = async (
   req: ExtendedRequest,
@@ -20,10 +18,9 @@ export const authenticationMiddleware = async (
   if (!token) {
     return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_NO_TOKEN));
   }
-  const secretKey = createSecretKey(CONFIG.ENCRYPTION.JWT_SECRET, 'utf-8');
   try {
-    const payload = (await jwtVerify(token, secretKey)).payload;
-    req.user = payload as UserBaseResponseDto;
+    const payload = await verifyJwt<UserBaseResponseDto>(token);
+    req.user = payload;
   } catch {
     return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN));
   }
