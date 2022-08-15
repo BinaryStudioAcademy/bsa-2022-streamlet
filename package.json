@@ -10,20 +10,24 @@
     "lint:css": "npm run lint:css --workspaces --if-present",
     "lint:js": "npm run lint:js --workspaces --if-present",
     "lint": "npm run lint:fs && npm run lint --workspaces --if-present",
-    "postinstall": "npm run build:shared && npm run postinstall -w backend",
+    "postinstall": "npm run build:shared && npm run postinstall -w backend/core",
     "build:shared": "npm run build -w shared",
     "build:frontend": "npm run build -w frontend",
-    "build:backend": "npm run build -w backend",
-    "build": "npm run build -w shared -w frontend -w backend",
+    "build:backend": "npm run build -w backend/core",
+    "build:push": "npm run build -w backend/push",
+    "build": "npm run build -w shared -w frontend -w backend/core -w backend/push",
     "docker:build:backend": "docker build -f .docker/backend.Dockerfile -t backend .",
+    "docker:build:push": "docker build -f .docker/push.Dockerfile -t push .",
     "docker:build:frontend": "docker build --build-arg REACT_APP_API_ORIGIN_URL=/api/v1 -f .docker/frontend.Dockerfile -t frontend .",
     "docker:build": "npm run docker:build:backend && npm run docker:build:frontend",
     "docker:up:d": "docker-compose -f .docker/docker-compose.local.yml up -d",
     "docker:up:debug": "docker-compose -f .docker/docker-compose.local.yml up -d api-db rabbitmq",
     "docker:up": "docker-compose -f .docker/docker-compose.local.yml up",
-    "migrate": "npm run migrate -w backend",
+    "docker:down": "docker-compose -f .docker/docker-compose.local.yml down",
+    "migrate": "npm run migrate -w backend/core",
     "start:frontend": "npm start -w frontend",
-    "start:backend": "npm run start:dev -w backend"
+    "start:backend": "npm run start:dev -w backend/core",
+    "start:push": "npm run start:dev -w backend/push"
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "1.11.2",
@@ -39,7 +43,8 @@
     "typescript": "4.7.4"
   },
   "workspaces": [
-    "backend",
+    "backend/core",
+    "backend/push",
     "frontend",
     "shared"
   ],
@@ -49,7 +54,7 @@
   "lint-staged": {
     "*": "npm run lint:fs",
     "*.{ts,tsx,json,scss}": "prettier --write",
-    "{shared,backend,frontend}/**/*.{ts,tsx}": "npm run lint:js",
+    "{shared,backend/core,backend/push,frontend}/**/*.{ts,tsx}": "npm run lint:js",
     "frontend/**/*.scss": "npm run lint:css"
   }
 }
