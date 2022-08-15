@@ -1,6 +1,6 @@
 import { AppRoute } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Routes, Route } from 'components/common/common';
+import { Routes, Route, HeaderContainer } from 'components/common/common';
 import { Auth } from 'components/auth/auth';
 import { Search } from 'components/search/search';
 import { NotFound } from '../not-found-page/not-found';
@@ -10,6 +10,7 @@ import { MainPage } from 'pages/main-page';
 const App: FC = () => {
   return (
     <>
+      <HeaderContainer />
       <Routes>
         <Route path={AppRoute.ROOT} element={<MainPage />} />
         <Route path={AppRoute.SIGN_UP} element={<Auth />} />
