@@ -1,7 +1,7 @@
 import { FC } from 'common/types/types';
-import { SubscribeChanel } from 'components/common/sidebar/sidebar-container';
+import { SubscribeChanel } from 'common/types/sidebar/subscribe-chanel';
 
-import styles from '../../common/sidebar/sidebar.module.scss';
+import styles from './chanel.module.scss';
 
 interface ChanelProps {
   chanelInfo: SubscribeChanel;
@@ -10,7 +10,7 @@ interface ChanelProps {
 const Chanel: FC<ChanelProps> = ({ chanelInfo: chanel }) => {
   return (
     <div key={chanel.id} className={styles['subscription-item']}>
-      <div style={{ backgroundImage: `url(${chanel.chanelAvatar})` }} className={styles['chanel-avatar']}></div>
+      <img src={chanel.chanelAvatar} alt={chanel.title} className={styles['chanel-avatar']} />
       <p className={styles['chanel-name']}>{chanel.title}</p>
     </div>
   );

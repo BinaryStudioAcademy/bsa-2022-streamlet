@@ -1,55 +1,35 @@
 import { FC } from 'common/types/types';
 import { Icon } from '../icon';
-import { IconName } from 'common/enums/components';
-import { SubscribeChanel } from './sidebar-container';
+import { SubscribeChanel } from 'common/types/sidebar/subscribe-chanel';
 import { Chanel } from 'components/sidebar/chanel';
 import { Link } from '../common';
-import { AppRoute } from 'common/enums/enums';
+import { RoutePage } from './route-pages.config';
+import clsx from 'clsx';
 
 import styles from './sidebar.module.scss';
 
 interface SidebarProps {
   subscribesList: SubscribeChanel[];
+  configRoutePages: RoutePage[];
+  activeRouteId: number;
 }
 
-type ActiveClass = {
-  isActive: boolean;
-};
-
-const returnActiveClass = ({ isActive }: ActiveClass): string => (isActive ? styles['active'] : '');
-
-const Sidebar: FC<SidebarProps> = ({ subscribesList }) => (
+const Sidebar: FC<SidebarProps> = ({ subscribesList, configRoutePages, activeRouteId }) => (
   <div className={styles.sidebar}>
     <nav className={styles['navigate-menu']}>
       <ul>
-        <Link to={AppRoute.ROOT} className={returnActiveClass}>
-          <li>
-            <Icon name={IconName.HOME} width="24" height="24" />
-            <span className={styles['link-name']}>Home</span>
-          </li>
-        </Link>
-        <Link to={AppRoute.BROWSE} className={returnActiveClass}>
-          <li>
-            <Icon name={IconName.COMPAS} width="24" height="24" />
-            <span className={styles['link-name']}>Browse</span>
-          </li>
-        </Link>
-        <Link to={AppRoute.FOLLOWING} className={returnActiveClass}>
-          <li>
-            <Icon name={IconName.FOLLOW} width="24" height="24" />
-            <span className={styles['link-name']}>Following</span>
-          </li>
-        </Link>
-        <Link to={AppRoute.HISTORY} className={returnActiveClass}>
-          <li>
-            <Icon name={IconName.TIMEAGO} width="24" height="24" />
-            <span className={styles['link-name']}>History</span>
-          </li>
-        </Link>
+        {configRoutePages.map((page) => (
+          <Link key={page.linkTo} to={page.linkTo} className={clsx({ [styles.active]: page.id === activeRouteId })}>
+            <li>
+              <Icon name={page.IconName} width="24" height="24" />
+              <span className={styles['link-name']}>{page.textLink}</span>
+            </li>
+          </Link>
+        ))}
       </ul>
     </nav>
     <div className={styles['block-subscriptions']}>
-      <div className={styles['horizontal-line']}></div>
+      <div className={styles['horizontal-line']} />
       <div className={styles['subscription-list']}>
         <p className={styles['subscription-title']}>Subscriptions</p>
         {subscribesList.map((chanel) => (

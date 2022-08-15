@@ -1,5 +1,5 @@
-import { ROUTES_WITHOUT_HEADER } from 'common/enums/app/routes-without-header';
+import { RoutesWithoutHeader } from 'common/enums/app/app-route.enum';
 
 export const isRouteHaveHeader = (currentRoute: string): boolean => {
-  return ROUTES_WITHOUT_HEADER.includes(currentRoute);
+  return (Object.values(RoutesWithoutHeader) as string[]).includes(currentRoute);
 };

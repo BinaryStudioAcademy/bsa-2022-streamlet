@@ -14,17 +14,18 @@ import styles from './app.module.scss';
 
 const App: FC = () => {
   const { pathname } = useLocation();
+  const isHaveHeader = isRouteHaveHeader(pathname);
 
   return (
     <>
-      {isRouteHaveHeader(pathname) && (
+      {isHaveHeader && (
         <Routes>
           <Route path={AppRoute.SIGN_UP} element={<Auth />} />
           <Route path={AppRoute.SIGN_IN} element={<Auth />} />
           <Route path={AppRoute.RESTORE_PASSWORD} element={<Auth />} />
         </Routes>
       )}
-      {!isRouteHaveHeader(pathname) && (
+      {!isHaveHeader && (
         <div className={styles['layout-wrapper']}>
           <HeaderContainer />
           <section className={styles['content-section']}>
