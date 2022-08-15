@@ -17,7 +17,7 @@ server.listen(CONFIG.port, async () => {
   try {
     amqpService.connect(await amqpConnect());
   } catch (err) {
-    logger.error(err, 'Application initialization error: ');
+    logger.error(err, 'Amqp connection initialization error: ');
     process.exit(1);
   }
 });

@@ -8,10 +8,10 @@ import { geometricProgressionByIndex } from '~/helpers/geometric-progression';
 import { AmqpConnectionError } from 'shared/build';
 import { amqpService } from '~/services/services';
 
-const tryConnect = async (tries = 1): Promise<Connection | undefined> => {
+const tryConnect = async (tries = 1): Promise<Connection> => {
   const amqpServer = CONFIG.rabbitmqUrl;
   if (tries >= AMQP_CONNECTION_TRIES) {
-    return;
+    throw new AmqpConnectionError();
   }
   try {
     const connection = await connect(amqpServer);
@@ -36,10 +36,7 @@ const amqpReconnect = async (): Promise<void> => {
 
 const amqpConnect = async (): Promise<Channel> => {
   logger.info('Connecting to Rabbitmq...');
-  const connection: Connection | undefined = await tryConnect();
-  if (!connection) {
-    throw new AmqpConnectionError();
-  }
+  const connection: Connection = await tryConnect();
 
   const amqpChannel = await connection.createChannel();
   amqpChannel.assertQueue(AmqpQueue.NOTIFY_USER);
