@@ -17,6 +17,7 @@ import { ReactComponent as Bell } from '../../../assets/img/bell.svg';
 import { ReactComponent as Settings } from '../../../assets/img/settings.svg';
 import { ReactComponent as Moon } from '../../../assets/img/moon.svg';
 import { ReactComponent as LogOut } from '../../../assets/img/logout.svg';
+import { ReactComponent as Analystic } from '../../../assets/img/analytics.svg';
 import clsx from 'clsx';
 
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -96,6 +97,9 @@ const Icon = ({ name, color, width, height, className }: IconProps): JSX.Element
 
     case IconName.LOGOUT:
       return <LogOut {...commonProps} />;
+
+    case IconName.ANALYTICS:
+      return <Analystic {...commonProps} />;
 
     default:
       return <Timeago {...commonProps} />;

@@ -4,8 +4,8 @@
   display: flex;
   flex-direction: column;
   min-height: 794px;
-  background: $green-200-header-menu-background;
-  border-right: 1px solid $text-gray-color;
+  background: var(--green-200-header-menu-background);
+  border-right: 1px solid var(--text-gray-color);
 }
 
 .button {
@@ -13,10 +13,10 @@
 }
 
 .active:hover {
-  background-color: $brand-green-color;
+  background-color: var(--brand-green-color);
   cursor: pointer;
 }
 
 .buttons {
-  background: $green-200-header-menu-background;
+  background: var(--green-200-header-menu-background);
 }

@@ -15,7 +15,7 @@ const StudioSidebar: FC = () => {
     <aside className={styles.sidebar}>
       <Link to={AppRoute.ROOT}>
         <div className={styles.button}>
-          <Icon name={IconName.LOGO} />
+          <Icon name={IconName.LOGOTIP} />
         </div>
       </Link>
 
