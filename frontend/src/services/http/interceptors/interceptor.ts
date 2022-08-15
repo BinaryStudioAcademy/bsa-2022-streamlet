@@ -1,6 +1,15 @@
 type PostIntercepterParameters = {
   response: Response;
-  initialRequestFn: () => Promise<Response>;
+  initialRequest: {
+    url: string;
+    options: RequestInit;
+  };
+  makeRequestFn: (url: string, options: RequestInit) => Promise<Response>;
+};
+
+type PreInterceptorParamters = {
+  options: RequestInit;
+  url: string;
 };
 
 export type PostInterceptor = {
@@ -8,5 +17,5 @@ export type PostInterceptor = {
 };
 
 export type PreInterceptor = {
-  (url: string, options: RequestInit): Promise<[string, RequestInit]>;
+  (parameters: PreInterceptorParamters): Promise<[string, RequestInit]>;
 };

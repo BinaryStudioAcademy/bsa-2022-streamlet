@@ -1,12 +1,7 @@
-import { ENV } from 'common/enums/enums';
 import { Http } from './http/http.service';
 import { AuthApi } from './auth-api/auth-api.service';
+import { StorageService } from './storage/local-storage.service';
 
-const http = new Http();
+const storageService = new StorageService();
 
-const authApi = new AuthApi({
-  apiPrefix: ENV.API_PATH,
-  http,
-});
-
-export { authApi };
+export { Http, AuthApi, storageService };

@@ -1,8 +1,8 @@
 import { PreInterceptor } from './interceptor';
-import { store } from 'store/store';
+import { getAccessToken } from 'helpers/helpers';
 
-export const attachAuthTokenInterceptor: PreInterceptor = (url, options) => {
-  const accessToken = store.getState().auth.tokens?.accessToken;
+export const attachAuthTokenInterceptor: PreInterceptor = ({ url, options }) => {
+  const accessToken = getAccessToken();
   if (accessToken) {
     options.headers = { ...options.headers, 'Authorization': accessToken };
   }

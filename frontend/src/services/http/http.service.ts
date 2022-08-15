@@ -2,15 +2,15 @@ import { HttpError } from 'exceptions/exceptions';
 import { HttpHeader, HttpMethod } from 'common/enums/enums';
 import { HttpOptions } from 'common/types/types';
 import { PostInterceptor, PreInterceptor } from './interceptors/interceptor';
-import { refreshTokenInterceptor } from './interceptors/refresh-token-interceptor';
-import { attachAuthTokenInterceptor } from './interceptors/attach-auth-token-interceptor';
 
 class Http {
+  constructor(private defaultPreInterceptors: PreInterceptor[], private defaultPostInterceptors: PostInterceptor[]) {}
+
   async load<T = unknown>({
     url,
     options = {},
-    preInterceptors = [attachAuthTokenInterceptor],
-    postInterceptors = [refreshTokenInterceptor],
+    preInterceptors = this.defaultPreInterceptors,
+    postInterceptors = this.defaultPostInterceptors,
   }: {
     url: string;
     options?: Partial<HttpOptions>;
@@ -25,14 +25,18 @@ class Http {
       body: payload,
     };
     for (const preInterceptor of preInterceptors) {
-      [url, requestInit] = await preInterceptor(url, options);
+      [url, requestInit] = await preInterceptor({ url, options: requestInit });
     }
 
-    const makeRequest = (): Promise<Response> => fetch(url, requestInit);
+    const makeRequest = (url: string, options: RequestInit): Promise<Response> => fetch(url, options);
 
-    let response = await makeRequest();
+    let response = await makeRequest(url, requestInit);
     for (const postInterceptor of postInterceptors) {
-      response = await postInterceptor({ initialRequestFn: makeRequest, response });
+      response = await postInterceptor({
+        initialRequest: { options: requestInit, url },
+        makeRequestFn: makeRequest,
+        response,
+      });
     }
 
     return this.checkStatus(response)
