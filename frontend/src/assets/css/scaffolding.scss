@@ -2,6 +2,8 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 @font-face {
@@ -44,6 +46,7 @@ $supprot-error-color: #f76519;
   --text-gray-color: #6a726d;
   --white-text-color: #ffffff;
   --brand-green-color: #06c149;
+  --brand-green-color-hover: #03a03a;
   --brand-yellow-color: #f6c648;
   --support-info-color: #03d8ff;
   --supprot-error-color: #f76519;
@@ -98,6 +101,8 @@ button,
 textarea,
 select {
   font: inherit;
+  border: none;
+  outline: none;
 }
 
 #root {
