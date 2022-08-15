@@ -59,6 +59,8 @@ const HeaderContainer: FC = () => {
     }
   }
 
+  const handleClearActiveFilterIds = useCallback(() => dispatch(searchActions.clearActiveFilterIds()), [dispatch]);
+
   const handleInputSearch = useCallback(
     ({ currentTarget }: FormEvent<HTMLInputElement>) => dispatch(searchActions.setSearchText(currentTarget.value)),
     [dispatch],
@@ -66,6 +68,7 @@ const HeaderContainer: FC = () => {
 
   const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    handleClearActiveFilterIds();
     navigate(`/search?${searchUrlParams}`, { replace: true });
   };
 
