@@ -68,8 +68,10 @@ const HeaderContainer: FC = () => {
 
   const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    handleClearActiveFilterIds();
-    navigate(`/search?${searchUrlParams}`, { replace: true });
+    if (searchText) {
+      handleClearActiveFilterIds();
+      navigate(`/search?${searchUrlParams}`, { replace: true });
+    }
   };
 
   if (pathname === AppRoute.SIGN_IN || pathname === AppRoute.SIGN_UP || pathname === AppRoute.RESTORE_PASSWORD) {
