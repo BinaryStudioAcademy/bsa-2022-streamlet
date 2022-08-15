@@ -12,10 +12,13 @@ const setActiveDurationFilterId = createAction<string>(ActionType.SET_ACTIVE_DUR
 
 const setActiveSortByFilterId = createAction<string>(ActionType.SET_ACTIVE_SORT_BY_FILTER_ID);
 
+const clearActiveFilterIds = createAction(ActionType.CLEAR_ACTIVE_FILTER_IDS);
+
 export {
   setSearchText,
   setActiveTypeFilterId,
   setActiveDateFilterId,
   setActiveDurationFilterId,
   setActiveSortByFilterId,
+  clearActiveFilterIds,
 };

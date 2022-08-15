@@ -7,6 +7,7 @@ import {
   setActiveDateFilterId,
   setActiveDurationFilterId,
   setActiveSortByFilterId,
+  clearActiveFilterIds,
 } from './actions';
 
 type State = {
@@ -50,6 +51,14 @@ const reducer = createReducer(initialState, (builder) => {
   });
   builder.addCase(setActiveSortByFilterId, (state: State, action) => {
     state.activeFilterId.sortBy = action.payload;
+  });
+  builder.addCase(clearActiveFilterIds, (state: State) => {
+    state.activeFilterId = {
+      type: TypeFilterId.ALL,
+      date: DateFilterId.ANYTIME,
+      duration: DurationFilterId.ANY,
+      sortBy: SortByFilterId.DEFAULT,
+    };
   });
 });
 
