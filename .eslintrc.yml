@@ -62,3 +62,5 @@ rules:
     - off
   import/no-default-export:
     - error
+  at-rule-no-unknown: null
+  scss/at-rule-no-unknown: true

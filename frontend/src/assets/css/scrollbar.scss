@@ -1,0 +1,12 @@
+@mixin scrollbar-background($color) {
+  background: $color;
+}
+
+@mixin scrollbar-color($track, $thumb) {
+  scrollbar-color: $track, $thumb;
+}
+
+@mixin scrollbar-shadow($color) {
+  // -webkit-box-shadow: inset 0 0 6px $color;
+  box-shadow: inset 0 0 6px $color;
+}
