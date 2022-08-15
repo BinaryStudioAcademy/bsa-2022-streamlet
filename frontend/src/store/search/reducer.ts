@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { TypeFilterId, DateFilterId, DurationFilterId, SortByFilterId } from './models';
+import { TypeFilterId, DateFilterId, DurationFilterId, SortByFilterId, SearchQueryParam } from './models';
 import {
   setSearchText,
   setActiveTypeFilterId,
@@ -11,6 +11,7 @@ import {
 
 type State = {
   searchText: string;
+  searchUrlParams: string;
   activeFilterId: {
     type: string;
     date: string;
@@ -21,6 +22,7 @@ type State = {
 
 const initialState: State = {
   searchText: '',
+  searchUrlParams: '',
   activeFilterId: {
     type: TypeFilterId.ALL,
     date: DateFilterId.ANYTIME,
@@ -31,7 +33,11 @@ const initialState: State = {
 
 const reducer = createReducer(initialState, (builder) => {
   builder.addCase(setSearchText, (state: State, action) => {
+    const newSearchUrlParams = new URLSearchParams(state.searchUrlParams);
+    newSearchUrlParams.set(SearchQueryParam.SEARCH_TEXT, action.payload);
+
     state.searchText = action.payload;
+    state.searchUrlParams = newSearchUrlParams.toString();
   });
   builder.addCase(setActiveTypeFilterId, (state: State, action) => {
     state.activeFilterId.type = action.payload;
