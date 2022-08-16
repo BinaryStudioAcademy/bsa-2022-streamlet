@@ -1,10 +1,14 @@
+import dayjs from 'dayjs';
+import * as dayjsDuration from 'dayjs/plugin/duration';
 import { FC, VideoCard as VideoCardType } from 'common/types/types';
 import { IconName } from 'common/enums/components';
 import { Icon } from 'components/common/common';
 import { useNavigate } from 'hooks/hooks';
-import { getHowLongAgoString, joinExistingValues } from 'helpers/helpers';
+import { getHowLongAgoString } from 'helpers/helpers';
 import { VideoTag } from '../common/common';
 import styles from './styles.module.scss';
+
+dayjs.extend(dayjsDuration.default);
 
 type Props = {
   video: VideoCardType;
@@ -17,17 +21,22 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
   const redirectToChannelPage = (): void => navigate(`/channel/${channel.id}`, { replace: true });
 
   const isNew = (): boolean => {
-    const date = new Date(createdAt);
-    return Date.now() - date.getTime() <= 4 * 60 * 60 * 1000;
+    const maxTimeFromNowIsNew = 4 * 60 * 60 * 1000; // 4 hours
+    return dayjs().diff(dayjs(createdAt)) <= maxTimeFromNowIsNew;
   };
 
   const getDurationString = (durationInSeconds: number): string => {
-    const hr = Math.floor(durationInSeconds / 3600);
-    const min = Math.floor((durationInSeconds % 3600) / 60);
-    const sec = Math.floor(durationInSeconds % 60);
-
-    const result = [`${hr > 0 ? hr + ':' : ''}`, `${hr && min < 10 ? '0' : ''}${min}:`, `${sec < 10 ? '0' : ''}${sec}`];
-    return joinExistingValues(result, '');
+    const d = dayjs.duration(durationInSeconds * 1000);
+    if (d.hours() > 9) {
+      return d.format('HH:mm:ss');
+    }
+    if (d.hours()) {
+      return d.format('H:mm:ss');
+    }
+    if (d.minutes() > 9) {
+      return d.format('mm:ss');
+    }
+    return d.format('m:ss');
   };
 
   const getDividedViewString = (view: number): string => view.toLocaleString();
