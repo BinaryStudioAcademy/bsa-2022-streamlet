@@ -10,41 +10,42 @@ import { authenticationMiddleware } from '../middleware';
  * tags:
  *   name: user
  *   description: User management
- * definitions:
- *    UserUploadRequestDto:
- *      type: object
- *      properties:
- *        base64Str:
- *          type: string
- *          format: base64
- *    ImageUploadResponseDto:
- *      type: object
- *      properties:
- *        url:
- *          type: string
- *          format: uri
- *        format:
- *          type: string
- *        width:
- *          type: number
- *        height:
- *          type: number
- *    User:
- *      type: object
- *      properties:
- *        id:
- *          type: string
- *          format: uuid
- *        email:
- *          type: string
- *          format: email
- *        password:
- *          type: string
- *        isActivated:
- *          type: boolean
- *        createdAt:
- *          type: string
- *          format: date-time
+ * components:
+ *    schemas:
+ *      UserUploadRequestDto:
+ *        type: object
+ *        properties:
+ *          base64Str:
+ *            type: string
+ *            format: base64
+ *      ImageUploadResponseDto:
+ *        type: object
+ *        properties:
+ *          url:
+ *            type: string
+ *            format: uri
+ *          format:
+ *            type: string
+ *          width:
+ *            type: number
+ *          height:
+ *            type: number
+ *      User:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: string
+ *            format: uuid
+ *          email:
+ *            type: string
+ *            format: email
+ *          password:
+ *            type: string
+ *          isActivated:
+ *            type: boolean
+ *          createdAt:
+ *            type: string
+ *            format: date-time
  */
 @controller('/users')
 export class UserController extends BaseHttpController {
@@ -63,19 +64,18 @@ export class UserController extends BaseHttpController {
    *      tags:
    *      - users
    *      operationId: getAllUsers
-   *      consumes:
-   *      - application/json
-   *      produces:
-   *      - application/json
    *      description: Returns an array of users
-   *      parameters: []
+   *      security:
+   *      - bearerAuth: []
    *      responses:
    *        200:
-   *          description: successful operation
+   *          description: Successful operation
    *          schema:
    *            type: array
    *            items:
-   *              $ref: '#/definitions/User'
+   *              $ref: '#/components/schemas/User'
+   *        401:
+   *          $ref: '#/components/responses/NotFound'
    */
   @httpGet('/', authenticationMiddleware)
   public getAllUsers(): Promise<User[]> {
@@ -90,23 +90,23 @@ export class UserController extends BaseHttpController {
    *      tags:
    *      - user
    *      operationId: upload
-   *      consumes:
-   *      - application/json
-   *      produces:
-   *      - application/json
    *      description: Returns Image Store API Upload Response
-   *      parameters:
-   *        - in: body
-   *          base64Str: body
-   *          description: Image in base64 format
-   *          required: true
-   *          schema:
-   *            $ref: '#/definitions/UserUploadRequestDto'
+   *      security:
+   *      - bearerAuth: []
+   *      requestBody:
+   *        description: Image in base64 format
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              $ref: '#/components/schemas/UserUploadRequestDto'
    *      responses:
    *        200:
-   *          description: successful operation
-   *          schema:
-   *            $ref: '#/definitions/ImageUploadResponseDto'
+   *          content:
+   *            application/json:
+   *              description: Successful operation
+   *              schema:
+   *                $ref: '#/components/schemas/ImageUploadResponseDto'
    */
   @httpPost('/upload')
   public upload(@requestBody() body: UserUploadRequestDto): Promise<ImageUploadResponseDto> {
