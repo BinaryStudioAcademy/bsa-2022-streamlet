@@ -7,4 +7,7 @@ export { Link } from './link/link';
 export { Icon } from './icon';
 export { ConfirmationModal } from './confirmation-modal/confirmation-modal';
 export { Modal } from './modal/modal';
+
+export { HeaderContainer } from './header/header-container';
+
 export { Loader } from './loader/loader';

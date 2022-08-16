@@ -5,3 +5,4 @@ export { type FC } from './react/react';
 export * from './user/user';
 export * from './auth/auth';
 export { type ValidationSchema } from './validation/validation';
+export { type VideoCard } from './components/components';
