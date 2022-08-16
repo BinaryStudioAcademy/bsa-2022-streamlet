@@ -1,5 +1,13 @@
 import { FC } from 'common/types/types';
-import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate, useLocation } from 'hooks/hooks';
+import {
+  useOutsideClick,
+  useAppDispatch,
+  useAppSelector,
+  useCallback,
+  useNavigate,
+  useLocation,
+  useId,
+} from 'hooks/hooks';
 import { useState, MouseEvent, FormEvent } from 'react';
 import { Header } from './header';
 import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
@@ -59,12 +67,20 @@ const HeaderContainer: FC = () => {
     }
   }
 
+  const searchInputId = useId();
+
   const handleClearActiveFilterIds = useCallback(() => dispatch(searchActions.clearActiveFilterIds()), [dispatch]);
 
-  const handleInputSearch = useCallback(
-    ({ currentTarget }: FormEvent<HTMLInputElement>) => dispatch(searchActions.setSearchText(currentTarget.value)),
-    [dispatch],
-  );
+  const handleInputSearch = useCallback((value: string) => dispatch(searchActions.setSearchText(value)), [dispatch]);
+
+  const handleChangeInputSearch = ({ currentTarget }: FormEvent<HTMLInputElement>): void => {
+    handleInputSearch(currentTarget.value);
+  };
+
+  const handleClearInputSearch = (): void => {
+    handleInputSearch('');
+    document.getElementById(searchInputId)?.focus();
+  };
 
   const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -85,9 +101,11 @@ const HeaderContainer: FC = () => {
       isLogged={isLogged}
       isMenuOpen={isMenuOpen}
       searchValue={searchText}
+      searchInputId={searchInputId}
       handleClickUserMenu={handleClickUserMenu}
       handleClickLogin={handleClickLogin}
-      handleInputSearch={handleInputSearch}
+      handleChangeInputSearch={handleChangeInputSearch}
+      handleClearInputSearch={handleClearInputSearch}
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={FAKE_USER_AVATAR}
       options={options}

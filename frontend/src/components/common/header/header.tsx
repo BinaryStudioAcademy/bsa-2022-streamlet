@@ -18,9 +18,11 @@ interface HeaderProps {
   isLogged: boolean;
   isMenuOpen: boolean;
   searchValue: string;
+  searchInputId: string;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
   handleClickLogin(e: MouseEvent<HTMLElement>): void;
-  handleInputSearch(e: FormEvent<HTMLInputElement>): void;
+  handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
+  handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
   options: MenuOption[];
   userAvatar: string;
@@ -31,9 +33,11 @@ const Header: FC<HeaderProps> = ({
   isLogged,
   isMenuOpen,
   searchValue,
+  searchInputId,
   handleClickLogin,
   handleClickUserMenu,
-  handleInputSearch,
+  handleChangeInputSearch,
+  handleClearInputSearch,
   handleSubmitSearch,
   options,
   userAvatar,
@@ -55,11 +59,15 @@ const Header: FC<HeaderProps> = ({
           <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
           <input
             className={styles['search-input']}
+            id={searchInputId}
             type="text"
             value={searchValue}
-            onChange={handleInputSearch}
+            onChange={handleChangeInputSearch}
             placeholder="Search or type"
           />
+          <div className={styles['search-input-clear']} aria-label="Clear search" onClick={handleClearInputSearch}>
+            <Icon name={IconName.XMARK} />
+          </div>
         </form>
       </div>
       <div className={styles['block-user']}>
