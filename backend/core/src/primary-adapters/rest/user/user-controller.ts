@@ -12,24 +12,6 @@ import { authenticationMiddleware } from '../middleware';
  *   description: User management
  * components:
  *    schemas:
- *      UserUploadRequestDto:
- *        type: object
- *        properties:
- *          base64Str:
- *            type: string
- *            format: base64
- *      ImageUploadResponseDto:
- *        type: object
- *        properties:
- *          url:
- *            type: string
- *            format: uri
- *          format:
- *            type: string
- *          width:
- *            type: number
- *          height:
- *            type: number
  *      User:
  *        type: object
  *        properties:
@@ -99,14 +81,28 @@ export class UserController extends BaseHttpController {
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: '#/components/schemas/UserUploadRequestDto'
+   *              type: object
+   *              properties:
+   *                base64Str:
+   *                  type: string
+   *                  format: base64
    *      responses:
    *        200:
    *          content:
    *            application/json:
    *              description: Successful operation
    *              schema:
-   *                $ref: '#/components/schemas/ImageUploadResponseDto'
+   *                type: object
+   *                properties:
+   *                  url:
+   *                    type: string
+   *                    format: uri
+   *                  format:
+   *                    type: string
+   *                  width:
+   *                    type: number
+   *                  height:
+   *                    type: number
    */
   @httpPost('/upload')
   public upload(@requestBody() body: UserUploadRequestDto): Promise<ImageUploadResponseDto> {

@@ -51,51 +51,6 @@ import { DuplicationError } from '~/shared/exceptions/duplication-error';
  *            type: string
  *          refreshToken:
  *            type: string
- *      UserSignUpRequest:
- *        type: object
- *        properties:
- *          email:
- *            type: string
- *            format: email
- *          username:
- *            type: string
- *          password:
- *            type: string
- *      UserSignUpResponse:
- *        type: object
- *        properties:
- *          user:
- *            $ref: '#/components/schemas/UserBaseResponse'
- *          tokens:
- *            $ref: '#/components/schemas/TokenPair'
- *      UserSignInRequest:
- *        type: object
- *        properties:
- *          email:
- *            type: string
- *            format: email
- *          password:
- *            type: string
- *      UserSignInResponse:
- *        type: object
- *        properties:
- *          user:
- *            $ref: '#/components/schemas/UserBaseResponse'
- *          tokens:
- *            $ref: '#/components/schemas/TokenPair'
- *      MailTestRequest:
- *        type: object
- *        properties:
- *          email:
- *            type: string
- *            format: email
- *          name:
- *            type: string
- *      MailTestResponse:
- *        type: object
- *        properties:
- *          message:
- *            type: string
  *      Error:
  *        type: object
  *        properties:
@@ -147,14 +102,27 @@ export class AuthController extends BaseHttpController {
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: '#/components/schemas/UserSignUpRequest'
+   *              type: object
+   *              properties:
+   *                email:
+   *                  type: string
+   *                  format: email
+   *                username:
+   *                  type: string
+   *                password:
+   *                  type: string
    *      responses:
    *        200:
    *          description: Successful operation
    *          content:
    *            application/json:
    *              schema:
-   *                $ref: '#/components/schemas/UserSignUpResponse'
+   *                type: object
+   *                properties:
+   *                  user:
+   *                    $ref: '#/components/schemas/UserBaseResponse'
+   *                  tokens:
+   *                    $ref: '#/components/schemas/TokenPair'
    *        400:
    *          description: Email is already taken.
    *          content:
@@ -205,14 +173,25 @@ export class AuthController extends BaseHttpController {
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: '#/components/schemas/UserSignInRequest'
+   *              type: object
+   *              properties:
+   *                email:
+   *                  type: string
+   *                  format: email
+   *                password:
+   *                  type: string
    *      responses:
    *        200:
    *          description: Successful operation
    *          content:
    *            application/json:
    *              schema:
-   *                $ref: '#/components/schemas/UserSignInResponse'
+   *                type: object
+   *                properties:
+   *                  user:
+   *                    $ref: '#/components/schemas/UserBaseResponse'
+   *                  tokens:
+   *                    $ref: '#/components/schemas/TokenPair'
    *        400:
    *          description: Invalid request format.
    *          content:
@@ -350,14 +329,23 @@ export class AuthController extends BaseHttpController {
    *        content:
    *          application/json:
    *            schema:
-   *              $ref: '#/components/schemas/MailTestRequest'
+   *              type: object
+   *              properties:
+   *                email:
+   *                  type: string
+   *                  format: email
+   *                name:
+   *                  type: string
    *      responses:
    *        default:
    *          description: Confirmation that email was sent successfully or error message
    *          content:
    *            application/json:
    *              schema:
-   *                $ref: '#/components/schemas/MailTestResponse'
+   *                type: object
+   *                properties:
+   *                  message:
+   *                    type: string
    */
   // This route is created only for testing purposes.
   @httpPost('/mail-test')
