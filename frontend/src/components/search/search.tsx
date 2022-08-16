@@ -1,6 +1,6 @@
 import { FC, VideoCard as VideoCardType } from 'common/types/types';
 import { useEffect, useSearchParams, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
-import { FilterBar, FilterSidebar, VideoCard } from './components/components';
+import { FilterBar, FilterSidebar, ResultNotFound, VideoCard } from './components/components';
 import { SearchQueryParam, FilterType, SearchState } from './config/config';
 import { searchActions } from 'store/actions';
 import { matchSearchQueryParamWithFilterType, matchSearchQueryParamWithDefaultFilterId } from './helpers';
@@ -10,7 +10,11 @@ import styles from './styles.module.scss';
 const Search: FC = () => {
   const dispatch = useAppDispatch();
   const {
-    search: { searchText, activeFilterId, results },
+    search: {
+      searchText,
+      activeFilterId,
+      results: { results },
+    },
   } = useAppSelector((state) => ({
     search: state.search,
   }));
@@ -73,6 +77,7 @@ const Search: FC = () => {
       <div className={styles['search-page-wrapper']}>
         <FilterSidebar />
         <div className={styles['search-page-video-list']}>
+          {results.length === 0 && <ResultNotFound />}
           {results.map((c: VideoCardType) => (
             <VideoCard key={c.id} video={c} />
           ))}

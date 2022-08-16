@@ -12,7 +12,10 @@ type State = {
     [FilterType.DURATION]: DurationFilterId;
     [FilterType.SORT_BY]: SortByFilterId;
   };
-  results: VideoCardType[];
+  results: {
+    results: VideoCardType[];
+    hasMoreResults: boolean;
+  };
 };
 
 const initialState: State = {
@@ -23,7 +26,10 @@ const initialState: State = {
     [FilterType.DURATION]: DurationFilterId.ANY,
     [FilterType.SORT_BY]: SortByFilterId.DEFAULT,
   },
-  results: [],
+  results: {
+    results: [],
+    hasMoreResults: true,
+  },
 };
 
 const reducer = createReducer(initialState, (builder) => {
