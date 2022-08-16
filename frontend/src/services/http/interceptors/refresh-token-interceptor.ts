@@ -1,8 +1,14 @@
 import { PostInterceptor } from './interceptor';
-import { store } from 'store/store';
+import { type storeType } from 'store/store';
 import { logout, refreshTokens } from 'store/auth/actions';
 import { tokensStorageService } from 'services/services';
 import { attachAuthTokenInterceptor } from './attach-auth-token-interceptor';
+
+let injectedStore: storeType | undefined;
+
+export const injectStore = (store: storeType): void => {
+  injectedStore = store;
+};
 
 const REFRESH_STATUS_CODE = 401;
 
@@ -11,6 +17,9 @@ export const refreshTokenInterceptor: PostInterceptor = async ({
   response,
   makeRequestFn,
 }): Promise<Response> => {
+  if (!injectedStore) {
+    throw Error('Please inject redux-store in refresh-token-interceptor');
+  }
   if (response.status !== REFRESH_STATUS_CODE) {
     return Promise.resolve(response);
   }
@@ -19,7 +28,7 @@ export const refreshTokenInterceptor: PostInterceptor = async ({
     return Promise.resolve(response);
   }
   try {
-    await store
+    await injectedStore
       .dispatch(
         refreshTokens({
           refreshToken,
@@ -35,7 +44,7 @@ export const refreshTokenInterceptor: PostInterceptor = async ({
     // in the above try block the only thing that could go wrong is refreshing token
     // which can go wrong if the refresh token is invalid
     // in this case it's pointless to hit api to log out on backend, since it'll only create an endless loop of refreshing
-    await store.dispatch(logout({ hitApi: false })).unwrap();
+    await injectedStore.dispatch(logout({ hitApi: false })).unwrap();
     throw e;
   }
 };
