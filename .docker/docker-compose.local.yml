@@ -9,7 +9,7 @@ services:
       # AMQP protocol port
       - "5672:5672"
       # HTTP management UI
-      - "15672:15672"
+      - "15672:15672" 
   api-db:
     image: postgres:14
     container_name: api-db
@@ -45,6 +45,23 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
+  push:
+    image: push
+    container_name: push
+    depends_on:
+      - rabbitmq
+    ports:
+      - '5002:5002'
+    env_file:
+      - ../.env/push.env
+    networks:
+      - backend_network
+      - frontend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"      
   frontend:
     image: frontend
     container_name: frontend

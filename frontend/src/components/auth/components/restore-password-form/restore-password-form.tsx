@@ -1,26 +1,40 @@
 import { AppRoute } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Button, Link } from 'components/common/common';
-
-import '../../../../assets/css/auth.scss';
+import { Input } from 'components/common/common';
+import { useAppForm } from 'hooks/hooks';
+import { refreshPassword } from 'validation-schemas/validation-schemas';
+import { AuthSubmitButton, ContonueWithParagraph } from '../common/common';
+import formStyles from '../form-controls.module.scss';
 
 type Props = {
   onSubmit: () => void;
 };
 
-const RestorePasswordForm: FC<Props> = () => {
+export interface RestorePasswordFormValues {
+  email: string;
+}
+
+const RestorePasswordForm: FC<Props> = ({ onSubmit }) => {
+  const { control, errors, handleSubmit } = useAppForm<RestorePasswordFormValues>({
+    defaultValues: { email: '' },
+    validationSchema: refreshPassword,
+  });
+
   return (
     <>
-      <form className="form-container">
-        <label htmlFor="restore-email-input">Email</label>
-        <input id="restore-email-input" type="email" placeholder="username@gmail.com" />
-        <Button className="auth-submit-btn" type="submit" label="Send" />
+      <form className={formStyles['form-container']} onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          control={control}
+          errors={errors}
+          name="email"
+          label="Email"
+          type="email"
+          wrapperClassName={formStyles['form-input']}
+          placeholder="username@gmail.com"
+        />
+        <AuthSubmitButton isLoading={false} disabled={true} name="Send" />
       </form>
-      <p className="continue-with-paragraph">
-        <Link to={AppRoute.SIGN_IN} className="auth-link">
-          Back to login
-        </Link>
-      </p>
+      <ContonueWithParagraph linkTitle="Back to login" prompt="Changed your mind?" route={AppRoute.SIGN_IN} />
     </>
   );
 };
