@@ -22,6 +22,7 @@ import { ReactComponent as Bell } from '../../../assets/img/bell.svg';
 import { ReactComponent as Settings } from '../../../assets/img/settings.svg';
 import { ReactComponent as Moon } from '../../../assets/img/moon.svg';
 import { ReactComponent as LogOut } from '../../../assets/img/logout.svg';
+import { ReactComponent as Close } from '../../../assets/img/close.svg';
 import clsx from 'clsx';
 
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -38,6 +39,7 @@ interface IconProps {
   width: string;
   height: string;
   className?: string;
+  onClick?: { (): void };
 }
 
 const defaultProps: ISVGProps = {
@@ -46,11 +48,12 @@ const defaultProps: ISVGProps = {
   height: '20',
 };
 
-const Icon = ({ name, color, width, height, className }: IconProps): JSX.Element => {
+const Icon = ({ name, color, width, height, className, onClick }: IconProps): JSX.Element => {
   const commonProps = {
     className: clsx(getColor(color), className),
     width: width,
     height: height,
+    onClick,
   };
 
   switch (name) {
@@ -136,6 +139,10 @@ const Icon = ({ name, color, width, height, className }: IconProps): JSX.Element
 
     case IconName.XMARK: {
       return <Xmark {...commonProps} />;
+    }
+
+    case IconName.CLOSE: {
+      return <Close {...commonProps} />;
     }
 
     default: {
