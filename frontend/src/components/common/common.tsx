@@ -8,3 +8,4 @@ export { Icon } from './icon';
 export { ConfirmationModal } from './confirmation-modal/confirmation-modal';
 export { Modal } from './modal/modal';
 export { Loader } from './loader/loader';
+export { VideoPlayer } from './video-player/video-player';
