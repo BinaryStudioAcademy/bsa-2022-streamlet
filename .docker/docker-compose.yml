@@ -6,7 +6,7 @@ services:
       - "1935:1935"
     container_name: rtmp_server
     volumes:
-      - ../nginx/nginx.rtmp.local.conf:/etc/nginx/nginx.conf
+      - ../nginx/nginx.rtmp.conf:/etc/nginx/nginx.conf
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:
