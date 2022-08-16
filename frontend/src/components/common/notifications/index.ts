@@ -1,1 +1,1 @@
-export { Notifications, createNotification, setNotification } from './notifications';
+export { setNotification } from './notifications';
