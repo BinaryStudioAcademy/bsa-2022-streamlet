@@ -2,7 +2,7 @@ import { FC } from 'common/types/types';
 import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate, useLocation } from 'hooks/hooks';
 import { useState, MouseEvent, FormEvent } from 'react';
 import { Header } from './header';
-import { MenuOptions, IconName, AppRoute } from 'common/enums/enums';
+import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
 import { searchActions } from 'store/actions';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
@@ -10,7 +10,7 @@ const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x
 const HeaderContainer: FC = () => {
   const dispatch = useAppDispatch();
   const {
-    search: { searchText, searchUrlParams },
+    search: { searchText },
   } = useAppSelector((state) => ({ search: state.search }));
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -70,7 +70,8 @@ const HeaderContainer: FC = () => {
     e.preventDefault();
     if (searchText) {
       handleClearActiveFilterIds();
-      navigate(`/search?${searchUrlParams}`, { replace: true });
+      const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
+      navigate(`/search?${searchUrlParams.toString()}`, { replace: true });
     }
   };
 
