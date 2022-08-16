@@ -1,5 +1,6 @@
 extends:
   - stylelint-config-standard
+  - stylelint-config-standard-scss
 
 plugins:
   - stylelint-order
@@ -13,8 +14,6 @@ rules:
   unit-disallowed-list:
     - em
     - rem
-  at-rule-no-unknown: null
-  scss/at-rule-no-unknown: true
 
   order/order:
     - custom-properties

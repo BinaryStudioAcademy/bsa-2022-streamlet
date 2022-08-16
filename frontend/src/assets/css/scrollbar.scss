@@ -1,12 +1,24 @@
-@mixin scrollbar-background($color) {
-  background: $color;
-}
+$custom-scrollbar-size: 10px;
 
-@mixin scrollbar-color($track, $thumb) {
-  scrollbar-color: $track, $thumb;
-}
+@mixin custom-scrollbar {
+  scrollbar-color: $white-text-color, $brand-green-color;
 
-@mixin scrollbar-shadow($color) {
-  // -webkit-box-shadow: inset 0 0 6px $color;
-  box-shadow: inset 0 0 6px $color;
+  ::-webkit-scrollbar {
+    width: $custom-scrollbar-size;
+    height: $custom-scrollbar-size;
+    background-color: $white-text-color;
+    box-shadow: inset 0 0 6px $text-gray-color;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: $brand-green-color;
+
+    &:hover {
+      background-color: $brand-green-color-hover;
+    }
+
+    &:window-inactive {
+      background-color: $brand-green-color-hover;
+    }
+  }
 }
