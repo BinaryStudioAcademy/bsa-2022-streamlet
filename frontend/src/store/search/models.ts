@@ -37,4 +37,12 @@ enum SearchQueryParam {
   SEARCH_TEXT = 'search_query',
 }
 
-export { TypeFilterId, DateFilterId, DurationFilterId, SortByFilterId, SearchQueryParam };
+enum FilterType {
+  TYPE = 'type',
+  DATE = 'date',
+  DURATION = 'duration',
+  SORT_BY = 'sortBy',
+  SEARCH_TEXT = 'searchText',
+}
+
+export { TypeFilterId, DateFilterId, DurationFilterId, SortByFilterId, SearchQueryParam, FilterType };
