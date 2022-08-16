@@ -10,7 +10,7 @@ import styles from './styles.module.scss';
 const Search: FC = () => {
   const dispatch = useAppDispatch();
   const {
-    search: { searchText, activeFilterId },
+    search: { searchText, activeFilterId, results },
   } = useAppSelector((state) => ({
     search: state.search,
   }));
@@ -73,7 +73,7 @@ const Search: FC = () => {
       <div className={styles['search-page-wrapper']}>
         <FilterSidebar />
         <div className={styles['search-page-video-list']}>
-          {[].map((c: VideoCardType) => (
+          {results.map((c: VideoCardType) => (
             <VideoCard key={c.id} video={c} />
           ))}
         </div>

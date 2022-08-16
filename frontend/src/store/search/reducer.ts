@@ -1,4 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { VideoCard as VideoCardType } from 'common/types/types';
 
 import { TypeFilterId, DateFilterId, DurationFilterId, SortByFilterId, FilterType } from './models';
 import { setSearchText, setActiveFilterIds, clearActiveFilterIds } from './actions';
@@ -11,6 +12,7 @@ type State = {
     [FilterType.DURATION]: DurationFilterId;
     [FilterType.SORT_BY]: SortByFilterId;
   };
+  results: VideoCardType[];
 };
 
 const initialState: State = {
@@ -21,6 +23,7 @@ const initialState: State = {
     [FilterType.DURATION]: DurationFilterId.ANY,
     [FilterType.SORT_BY]: SortByFilterId.DEFAULT,
   },
+  results: [],
 };
 
 const reducer = createReducer(initialState, (builder) => {
