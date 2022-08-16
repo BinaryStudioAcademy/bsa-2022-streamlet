@@ -1,9 +1,15 @@
-import React from 'react';
 import { FC } from 'common/types/types';
 import { IconName } from 'common/enums/enums';
 import { useId, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
 import { Icon } from 'components/common/common';
-import { allTypeFilters, allDateFilters } from 'components/search/config/config';
+import {
+  allTypeFilters,
+  allDateFilters,
+  SearchState,
+  FilterType,
+  TypeFilterId,
+  DateFilterId,
+} from 'components/search/config/config';
 import { FilterBarSelect } from '../common/common';
 import { searchActions } from 'store/actions';
 
@@ -13,7 +19,7 @@ const FilterBar: FC = () => {
   const dispatch = useAppDispatch();
   const {
     search: {
-      activeFilterId: { type: activeTypeFilterId, date: activeDateFilterId },
+      activeFilterId: { [FilterType.TYPE]: activeTypeFilterId, [FilterType.DATE]: activeDateFilterId },
     },
   } = useAppSelector((state) => ({
     search: state.search,
@@ -21,8 +27,19 @@ const FilterBar: FC = () => {
 
   const toggleId = useId();
 
-  const onChangeTypeFilterId = useCallback((v: string) => dispatch(searchActions.setActiveTypeFilterId(v)), [dispatch]);
-  const onChangeDateFilterId = useCallback((v: string) => dispatch(searchActions.setActiveDateFilterId(v)), [dispatch]);
+  const onChangeActiveFilterIds = useCallback(
+    (filterIds: Partial<SearchState['activeFilterId']>) => dispatch(searchActions.setActiveFilterIds(filterIds)),
+    [dispatch],
+  );
+
+  const onChangeTypeFilterId = useCallback(
+    (id: string) => onChangeActiveFilterIds({ [FilterType.TYPE]: id as TypeFilterId }),
+    [onChangeActiveFilterIds],
+  );
+  const onChangeDateFilterId = useCallback(
+    (id: string) => onChangeActiveFilterIds({ [FilterType.DATE]: id as DateFilterId }),
+    [onChangeActiveFilterIds],
+  );
 
   return (
     <div className={styles['filter-bar']}>

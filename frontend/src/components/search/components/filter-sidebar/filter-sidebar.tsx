@@ -11,6 +11,8 @@ import {
   allDurationFilters,
   SortByFilterId,
   allSortByFilters,
+  SearchState,
+  FilterType,
 } from 'components/search/config/config';
 import { FilterDropdown, FilterSelect } from '../common/common';
 import { searchActions } from 'store/actions';
@@ -22,10 +24,10 @@ const FilterSidebar: FC = () => {
   const {
     search: {
       activeFilterId: {
-        type: activeTypeFilterId,
-        date: activeDateFilterId,
-        duration: activeDurationFilterId,
-        sortBy: activeSortByFilterId,
+        [FilterType.TYPE]: activeTypeFilterId,
+        [FilterType.DATE]: activeDateFilterId,
+        [FilterType.DURATION]: activeDurationFilterId,
+        [FilterType.SORT_BY]: activeSortByFilterId,
       },
     },
   } = useAppSelector((state) => ({
@@ -36,15 +38,26 @@ const FilterSidebar: FC = () => {
 
   const filterSidebarId = useId();
 
-  const onChangeTypeFilterId = useCallback((v: string) => dispatch(searchActions.setActiveTypeFilterId(v)), [dispatch]);
-  const onChangeDateFilterId = useCallback((v: string) => dispatch(searchActions.setActiveDateFilterId(v)), [dispatch]);
-  const onChangeDurationFilterId = useCallback(
-    (v: string) => dispatch(searchActions.setActiveDurationFilterId(v)),
+  const onChangeActiveFilterIds = useCallback(
+    (filterIds: Partial<SearchState['activeFilterId']>) => dispatch(searchActions.setActiveFilterIds(filterIds)),
     [dispatch],
   );
+
+  const onChangeTypeFilterId = useCallback(
+    (id: string) => onChangeActiveFilterIds({ [FilterType.TYPE]: id as TypeFilterId }),
+    [onChangeActiveFilterIds],
+  );
+  const onChangeDateFilterId = useCallback(
+    (id: string) => onChangeActiveFilterIds({ [FilterType.DATE]: id as DateFilterId }),
+    [onChangeActiveFilterIds],
+  );
+  const onChangeDurationFilterId = useCallback(
+    (id: string) => onChangeActiveFilterIds({ [FilterType.DURATION]: id as DurationFilterId }),
+    [onChangeActiveFilterIds],
+  );
   const onChangeSortByFilterId = useCallback(
-    (v: string) => dispatch(searchActions.setActiveSortByFilterId(v)),
-    [dispatch],
+    (id: string) => onChangeActiveFilterIds({ [FilterType.SORT_BY]: id as SortByFilterId }),
+    [onChangeActiveFilterIds],
   );
 
   const onHandleClickOutsideFilters = (e: MouseEvent): void => {
