@@ -75,6 +75,19 @@ import { DuplicationError } from '~/shared/exceptions/duplication-error';
  *          $ref: '#/definitions/UserBaseResponse'
  *        tokens:
  *          $ref: '#/definitions/TokenPair'
+ *    MailTestRequest:
+ *      type: object
+ *      properties:
+ *        email:
+ *          type: string
+ *          format: email
+ *        name:
+ *          type: string
+ *    MailTestResponse:
+ *      type: object
+ *      properties:
+ *        message:
+ *          type: string
  */
 @controller(ApiPath.AUTH)
 export class AuthController extends BaseHttpController {
