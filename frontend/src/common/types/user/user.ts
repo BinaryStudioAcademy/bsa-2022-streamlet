@@ -1,1 +1,7 @@
-export { type UserSignUpRequestDto, type UserSignUpResponseDto } from 'shared/build/common/types/types';
+export {
+  type UserSignUpRequestDto,
+  type UserSignUpResponseDto,
+  type UserSignInRequestDto,
+  type UserSignInResponseDto,
+  type UserBaseResponseDto,
+} from 'shared/build/common/types/types';

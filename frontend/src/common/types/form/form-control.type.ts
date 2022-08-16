@@ -1,5 +1,5 @@
 import { Control } from 'react-hook-form';
 
-type FormControl = Control;
+type FormControl<T> = Control<T>;
 
 export { type FormControl };

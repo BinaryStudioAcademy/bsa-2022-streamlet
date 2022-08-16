@@ -10,6 +10,13 @@ enum IconName {
   SMILE = 'smile',
   TIMEAGO = 'timeago',
   WATCH = 'watch',
+  BURGERMENU = 'burger-menu',
+  LOGOTIP = 'main-logo',
+  BELL = 'bell',
+  SETTINGS = 'settings',
+  MOON = 'moon',
+  LOGOUT = 'logout',
+  CLOSE = 'close',
 }
 
 export { IconName };

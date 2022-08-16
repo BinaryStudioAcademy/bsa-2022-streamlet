@@ -3,7 +3,7 @@ ls:
   .scss: regex:([.a-z0-9]*)([-.][a-z0-9]+)*
   .ts: regex:([.a-z0-9]*)([-.][a-z0-9]+)*
   .tsx: regex:([.a-z0-9]*)([-.][a-z0-9]+)*
-  backend/prisma/migrations:
+  backend/core/prisma/migrations:
     .ts: snake_case
 
 ignore:
@@ -16,5 +16,7 @@ ignore:
   - shared/node_modules
   - frontend/build
   - frontend/node_modules
-  - backend/build
-  - backend/node_modules
+  - backend/core/build
+  - backend/core/node_modules
+  - backend/push/node_modules
+  - backend/push/build

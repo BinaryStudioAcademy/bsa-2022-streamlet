@@ -1,3 +1,3 @@
-const getNameOf = <T>(name: keyof T): string => name.toString();
+const getNameOf = <T>(name: keyof T): keyof T => name;
 
 export { getNameOf };

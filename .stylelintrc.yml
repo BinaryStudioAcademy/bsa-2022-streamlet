@@ -1,5 +1,6 @@
 extends:
   - stylelint-config-standard
+  - stylelint-config-prettier
 
 plugins:
   - stylelint-order
@@ -7,14 +8,12 @@ plugins:
 rules:
   color-hex-length: long
   declaration-no-important: true
-  max-nesting-depth: 0
   no-descending-specificity: true
   scss/at-import-partial-extension: always
   string-quotes: single
   unit-disallowed-list:
     - em
     - rem
-
   order/order:
     - custom-properties
     - declarations
