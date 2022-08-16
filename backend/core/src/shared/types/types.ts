@@ -4,6 +4,7 @@ export { AmqpSendToQueueDto, AmqpConsumeDto } from './amqp/amqp';
 export * from './auth/auth';
 export * from './express';
 export { ImageUploadRequestDto, ImageUploadResponseDto, CloudinaryApi } from './cloudinary/image-store';
+export { type ProfileUpdateResponseDto, type ProfileUpdateRequestDto } from './profile/profile';
 export {
   MailRequestDto,
   MailResponseDto,
