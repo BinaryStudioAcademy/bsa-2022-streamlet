@@ -4,3 +4,4 @@ export { type HttpOptions } from './http/http';
 export { type FC } from './react/react';
 export { type UserSignUpRequestDto, type UserSignUpResponseDto } from './user/user';
 export { type ValidationSchema } from './validation/validation';
+declare module 'react-notifications-component';
