@@ -77,6 +77,7 @@ const Header: FC<HeaderProps> = ({
             value={searchValue}
             onChange={handleChangeInputSearch}
             placeholder="Search or type"
+            autoComplete="off"
           />
           <div className={styles['search-input-clear']} aria-label="Clear search" onClick={handleClearInputSearch}>
             <Icon name={IconName.XMARK} />
