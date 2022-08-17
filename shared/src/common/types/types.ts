@@ -7,6 +7,7 @@ export {
   type ProfileUpdateResponseDto,
   type ProfileUpdateRequestDto,
   type UpdateProfileValue,
+  type getProfileByUserIdRequestDto,
 } from './profile/profile';
 
 export {
