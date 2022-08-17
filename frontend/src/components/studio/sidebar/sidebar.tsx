@@ -20,7 +20,7 @@ const StudioSidebar: FC = () => {
       </Link>
 
       {sideBarItems.map((item: ISideBarItem) => (
-        <Link to={item.routeName as AppRoute}>
+        <Link key={item.itemName} to={item.routeName as AppRoute}>
           <div className={cn(styles.button, styles.active)}>
             <Icon name={item.itemName} color={getColor(item.routeName)} />
           </div>
