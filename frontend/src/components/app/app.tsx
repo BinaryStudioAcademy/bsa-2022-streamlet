@@ -10,7 +10,7 @@ import { NotFound } from '../not-found-page/not-found';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
 import { Studio, StudioAnalytics } from '../studio';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
-
+import { ProfilePreferencesPage } from '../profile-preferences-page/profile-preferences-page';
 import styles from './app.module.scss';
 
 const App: FC = () => {
@@ -43,6 +43,7 @@ const App: FC = () => {
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
                 <Route path={AppRoute.STUDIO} element={<Studio />} />
                 <Route path={AppRoute.ANALYTICS} element={<StudioAnalytics />} />
+                <Route path={AppRoute.PROFILE_PREFERENCE} element={<ProfilePreferencesPage />} />
               </Routes>
             </div>
           </section>

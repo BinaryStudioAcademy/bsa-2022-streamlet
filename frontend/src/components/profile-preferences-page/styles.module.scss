@@ -1,8 +1,14 @@
 @import 'assets/css/breakpoint.scss';
 
+.preference-page-content-container {
+  width: 100%;
+}
+
 .profile-preferences-container {
   max-width: 1250px;
+  height: calc(100vh - 82px);
   padding: 0 30px;
+  overflow-y: scroll;
   background-color: var(--gray-400-primary-background);
 }
 
@@ -104,6 +110,10 @@
   outline: 3px green solid;
 }
 
+.channel-avatar-container {
+  width: auto;
+}
+
 .profile-setting-input-block {
   width: 100%;
 }
@@ -126,11 +136,12 @@
   border-top-right-radius: 7px;
 }
 
-.save-change-button-container {
+.preference-page-content-container .profile-settings-block .save-change-button-container {
   display: flex;
   justify-content: flex-end;
   padding: 20px;
   background-color: var(--gray-200-input-background);
+  border-bottom: none;
   border-bottom-right-radius: 7px;
   border-bottom-left-radius: 7px;
 }
@@ -171,6 +182,7 @@
     display: block;
     width: 96px;
     height: 96px;
+    margin-right: 20px;
   }
 
   .profile-banner-preview {
@@ -192,13 +204,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-left: 10px;
   }
 
   .image-upload-control-container span {
     text-align: center;
   }
 
-  .avatar-container {
+  .avatar-container,
+  .channel-avatar-container {
     display: flex;
     justify-content: center;
     width: 100%;

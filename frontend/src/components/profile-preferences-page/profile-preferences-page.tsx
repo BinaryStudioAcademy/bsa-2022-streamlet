@@ -75,9 +75,9 @@ const ProfilePreferencesPage: FC = () => {
     [dispatch],
   );
 
-  const onImageSave = (base64Str: string): void => {
+  const onImageSave = async (base64Str: string): Promise<void> => {
     setIsNeedImageEditor(!isNeedImageEditor);
-    handleImageSave({ base64Str, userId: user?.id as string });
+    await handleImageSave({ base64Str, userId: user?.id as string });
   };
 
   if (!user || !profile) {
@@ -85,7 +85,7 @@ const ProfilePreferencesPage: FC = () => {
   }
 
   return (
-    <>
+    <div className={style['preference-page-content-container']}>
       {isNeedUpload ? <UploadImage images={images} onUpload={onChange} onClose={onUploadImageClose} /> : null}
       {isNeedImageEditor ? (
         <ImageEditor
@@ -124,16 +124,19 @@ const ProfilePreferencesPage: FC = () => {
                   Upload profile image
                 </button>
                 <span>
-                  Must be JPEG, PNG, or GIF and cannot exceed 10MB.
-                  {error ? <span className={style['error-message']}>{error}</span> : null}
+                  {error ? (
+                    <span className={style['error-message']}>{error}</span>
+                  ) : (
+                    'Must be JPEG, PNG and cannot exceed 10MB.'
+                  )}
                 </span>
               </div>
             </div>
           </div>
           <div className={style['image-setting-container']}>
-            <h2 className={style['profile-image-header']}>Profile Banner</h2>
+            <h2 className={style['profile-image-header']}>Channel Banner</h2>
             <div className={style['profile-image-upload-container']}>
-              <div className={style['avatar-container']}>
+              <div className={style['channel-avatar-container']}>
                 <img
                   className={style['profile-banner-preview']}
                   height={'96'}
@@ -154,7 +157,7 @@ const ProfilePreferencesPage: FC = () => {
           <ProfilePreferencesPageForm profile={profile} user={user} />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -12,6 +12,7 @@ enum AppRoute {
   STUDIO = '/studio',
   ANALYTICS = '/analytics',
   SEARCH = '/search',
+  PROFILE_PREFERENCE = '/profile-preference',
 }
 
 enum RoutesWithoutHeader {
