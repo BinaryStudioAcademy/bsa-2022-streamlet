@@ -2,6 +2,6 @@ export type Comment = {
   id: number;
   avatar: string;
   name: string;
-  date_added: string;
+  dateAdded: string;
   text: string;
 };

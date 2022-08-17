@@ -1,7 +1,7 @@
 import { FC } from 'common/types/types';
 import { Comment } from 'shared/src/common/types/comment';
 
-import './video-comment.scss';
+import styles from './video-comment.module.scss';
 
 type Props = {
   comment: Comment;
@@ -9,14 +9,14 @@ type Props = {
 
 const VideoComment: FC<Props> = ({ comment }) => {
   return (
-    <div className="video-comment">
-      <div className="main-part-comment">
-        <div className="commentators-avatar" style={{ backgroundImage: `url(${comment.avatar})` }}></div>
-        <p className="commentators-name">{comment.name}</p>
-        <span className="dispatch-time">{comment.date_added}</span>
+    <div className={styles['video-comment']}>
+      <div className={styles['main-part-comment']}>
+        <img className={styles['commentators-avatar']} src={comment.avatar} alt={comment.name} />
+        <p className={styles['commentators-name']}>{comment.name}</p>
+        <span className={styles['dispatch-time']}>{comment.dateAdded}</span>
       </div>
-      <div className="content-part-comment">
-        <p className="text-comment">{comment.text}</p>
+      <div className={styles['content-part-comment']}>
+        <p className={styles['text-comment']}>{comment.text}</p>
       </div>
     </div>
   );

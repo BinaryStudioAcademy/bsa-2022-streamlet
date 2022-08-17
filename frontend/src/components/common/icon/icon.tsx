@@ -23,6 +23,8 @@ import { ReactComponent as Settings } from '../../../assets/img/settings.svg';
 import { ReactComponent as Moon } from '../../../assets/img/moon.svg';
 import { ReactComponent as LogOut } from '../../../assets/img/logout.svg';
 import { ReactComponent as Close } from '../../../assets/img/close.svg';
+import { ReactComponent as SendMessage } from '../../../assets/img/send-message.svg';
+import { ReactComponent as Emoji } from '../../../assets/img/emoji.svg';
 import clsx from 'clsx';
 
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -143,6 +145,14 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.CLOSE: {
       return <Close {...commonProps} />;
+    }
+
+    case IconName.SENDMESSAGE: {
+      return <SendMessage {...commonProps} />;
+    }
+
+    case IconName.EMOJI: {
+      return <Emoji {...commonProps} />;
     }
 
     default: {

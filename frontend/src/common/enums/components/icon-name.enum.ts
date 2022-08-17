@@ -22,6 +22,8 @@ enum IconName {
   MOON = 'moon',
   LOGOUT = 'logout',
   CLOSE = 'close',
+  SENDMESSAGE = 'send-message',
+  EMOJI = 'emoji',
 }
 
 export { IconName };

@@ -12,10 +12,17 @@
   margin-bottom: 3px;
   padding: 20px 20px 0;
   overflow: auto;
+  overflow-y: scroll;
   background-color: var(--gray-300-header-menu-background);
   border-radius: 3px;
 }
 
 .video-chat-wrapper .video-chat::-webkit-scrollbar {
   display: none;
+}
+
+.video-chat:hover {
+  &::-webkit-scrollbar {
+    display: block;
+  }
 }
