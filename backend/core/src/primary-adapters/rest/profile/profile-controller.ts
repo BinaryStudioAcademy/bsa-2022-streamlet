@@ -1,8 +1,15 @@
-import { BaseHttpController, controller, httpPut, httpPost, requestBody } from 'inversify-express-utils';
+import {
+  BaseHttpController,
+  controller,
+  httpPut,
+  httpPost,
+  requestBody,
+  httpGet,
+  requestParam,
+} from 'inversify-express-utils';
 import { inject } from 'inversify';
 import {
   CONTAINER_TYPES,
-  ImageUploadResponseDto,
   ProfileUpdateRequestDto,
   ProfileUpdateResponseDto,
   UserUploadRequestDto,
@@ -103,13 +110,13 @@ export class ProfileController extends BaseHttpController {
    * /upload:
    *    post:
    *      tags:
-   *      - user
+   *      - profile
    *      operationId: upload
    *      consumes:
    *      - application/json
    *      produces:
    *      - application/json
-   *      description: Returns Image Store API Upload Response
+   *      description: Upload user avatar
    *      parameters:
    *        - in: body
    *          base64Str: body
@@ -124,7 +131,16 @@ export class ProfileController extends BaseHttpController {
    *            $ref: '#/definitions/ImageUploadResponseDto'
    */
   @httpPost('/upload', authenticationMiddleware)
-  public upload(@requestBody() body: UserUploadRequestDto): Promise<ImageUploadResponseDto> {
+  public upload(@requestBody() body: UserUploadRequestDto): Promise<ProfileUpdateResponseDto> {
     return this.profileService.uploadAvatar(body);
+  }
+  @httpGet('/get/:id', authenticationMiddleware)
+  public async get(@requestParam('id') id: string): Promise<ProfileUpdateResponseDto> {
+    const isUserExist = await this.userService.getUserById(id);
+    if (!isUserExist) {
+      throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
+    }
+    const { username } = isUserExist;
+    return this.profileService.getByUserId(id, username);
   }
 }

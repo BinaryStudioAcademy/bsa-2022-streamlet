@@ -2,4 +2,6 @@ import { type ProfileUpdateRequestDto, type ProfileUpdateResponseDto } from '~/s
 
 export interface ProfileRepository {
   update(updateData: ProfileUpdateRequestDto): Promise<ProfileUpdateResponseDto>;
+  getByUserId(userId: string, username: string): Promise<ProfileUpdateResponseDto>;
+  updateAvatar(url: string, userId: string): Promise<ProfileUpdateResponseDto>;
 }
