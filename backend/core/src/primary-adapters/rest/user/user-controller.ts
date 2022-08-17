@@ -3,47 +3,31 @@ import { inject } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
+import { authenticationMiddleware } from '../middleware';
 
 /**
  * @swagger
  * tags:
  *   name: user
  *   description: User management
- * definitions:
- *    UserUploadRequestDto:
- *      type: object
- *      properties:
- *        base64Str:
- *          type: string
- *          format: base64
- *    ImageUploadResponseDto:
- *      type: object
- *      properties:
- *        url:
- *          type: string
- *          format: uri
- *        format:
- *          type: string
- *        width:
- *          type: number
- *        height:
- *          type: number
- *    User:
- *      type: object
- *      properties:
- *        id:
- *          type: string
- *          format: uuid
- *        email:
- *          type: string
- *          format: email
- *        password:
- *          type: string
- *        isActivated:
- *          type: boolean
- *        createdAt:
- *          type: string
- *          format: date-time
+ * components:
+ *    schemas:
+ *      User:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: string
+ *            format: uuid
+ *          email:
+ *            type: string
+ *            format: email
+ *          password:
+ *            type: string
+ *          isActivated:
+ *            type: boolean
+ *          createdAt:
+ *            type: string
+ *            format: date-time
  */
 @controller('/users')
 export class UserController extends BaseHttpController {
@@ -62,21 +46,22 @@ export class UserController extends BaseHttpController {
    *      tags:
    *      - users
    *      operationId: getAllUsers
-   *      consumes:
-   *      - application/json
-   *      produces:
-   *      - application/json
    *      description: Returns an array of users
-   *      parameters: []
+   *      security:
+   *      - bearerAuth: []
    *      responses:
    *        200:
-   *          description: successful operation
-   *          schema:
-   *            type: array
-   *            items:
-   *              $ref: '#/definitions/User'
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/User'
+   *        401:
+   *          $ref: '#/components/responses/NotFound'
    */
-  @httpGet('/')
+  @httpGet('/', authenticationMiddleware)
   public getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
   }

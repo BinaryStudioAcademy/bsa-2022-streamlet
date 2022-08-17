@@ -22,6 +22,7 @@ import { ReactComponent as Bell } from '../../../assets/img/bell.svg';
 import { ReactComponent as Settings } from '../../../assets/img/settings.svg';
 import { ReactComponent as Moon } from '../../../assets/img/moon.svg';
 import { ReactComponent as LogOut } from '../../../assets/img/logout.svg';
+import { ReactComponent as Analystic } from '../../../assets/img/analytics.svg';
 import { ReactComponent as Close } from '../../../assets/img/close.svg';
 import { ReactComponent as Rotate } from '../../../assets/img/rotate.svg';
 import { ReactComponent as ZoomIn } from '../../../assets/img/zoom-in.svg';
@@ -154,6 +155,9 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
     case IconName.ROTATE: {
       return <Rotate {...commonProps} />;
     }
+    case IconName.ANALYTICS:
+      return <Analystic {...commonProps} />;
+
     default: {
       return <Timeago {...commonProps} />;
     }
