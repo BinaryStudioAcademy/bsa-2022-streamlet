@@ -1,24 +1,24 @@
-$custom-scrollbar-size: 10px;
-
 @mixin custom-scrollbar {
-  scrollbar-color: $white-text-color, $brand-green-color;
+  @media screen and (min-width: 425px) {
+    scrollbar-color: var(--white-text-color), var(--brand-green-color);
 
-  ::-webkit-scrollbar {
-    width: $custom-scrollbar-size;
-    height: $custom-scrollbar-size;
-    background-color: $white-text-color;
-    box-shadow: inset 0 0 6px $text-gray-color;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: $brand-green-color;
-
-    &:hover {
-      background-color: $brand-green-color-hover;
+    ::-webkit-scrollbar {
+      width: var(--custom-scrollbar-size);
+      height: var(--custom-scrollbar-size);
+      background-color: var(--white-text-color);
+      box-shadow: inset 0 0 6px var(--text-gray-color);
     }
 
-    &:window-inactive {
-      background-color: $brand-green-color-hover;
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--brand-green-color);
+
+      &:hover {
+        background-color: var(--brand-green-color-hover);
+      }
+
+      &:window-inactive {
+        background-color: var(--brand-green-color-hover);
+      }
     }
   }
 }
