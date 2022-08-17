@@ -1,6 +1,17 @@
+@import 'assets/css/breakpoint.scss';
+
 .profile-preferences-container {
   max-width: 1250px;
   padding: 0 30px;
+  background-color: var(--gray-400-primary-background);
+}
+
+.profile-preferences-container h2 {
+  color: var(--white-text-color);
+}
+
+.profile-preferences-container h3 {
+  color: var(--white-text-color);
 }
 
 .profile-preferences-container label {
@@ -33,6 +44,18 @@
   text-transform: none;
 }
 
+.avatar-container {
+  display: block;
+  width: 96px;
+  height: 96px;
+}
+
+.profile-banner-preview {
+  max-width: 500px;
+  height: 96px;
+  margin-right: 20px;
+}
+
 .profile-image-preview {
   width: 96px;
   height: 96px;
@@ -47,12 +70,6 @@
   background-color: var(--text-gray-color);
   border: none;
   border-radius: 3px;
-}
-
-.profile-banner-preview {
-  max-width: 500px;
-  height: 96px;
-  margin-right: 20px;
 }
 
 .profile-settings-header {
@@ -126,4 +143,78 @@
   background-color: var(--brand-green-color);
   border: none;
   border-radius: 3px;
+}
+
+.error-message {
+  display: block;
+  width: 100%;
+  color: var(--brand-yellow-color);
+  font-size: 16px;
+  text-align: center;
+}
+
+@media #{$tablet-large} {
+  .profile-image-upload-container {
+    flex-direction: row;
+  }
+
+  .image-upload-control-container {
+    display: block;
+    height: 96px;
+  }
+
+  .image-upload-control-container span {
+    text-transform: none;
+  }
+
+  .avatar-container {
+    display: block;
+    width: 96px;
+    height: 96px;
+  }
+
+  .profile-banner-preview {
+    margin-right: 20px;
+  }
+
+  .profile-image-preview {
+    margin-right: 20px;
+  }
+}
+
+@media #{$mobile-small} and (max-width: 768px) {
+  .profile-image-upload-container {
+    flex-direction: column;
+  }
+
+  .image-upload-control-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .image-upload-control-container span {
+    text-align: center;
+  }
+
+  .avatar-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .profile-banner-preview {
+    margin: 0;
+  }
+
+  .profile-image-preview {
+    margin: 0;
+  }
+
+  .profile-preferences-container {
+    padding: 5px;
+    overflow-x: hidden;
+  }
 }
