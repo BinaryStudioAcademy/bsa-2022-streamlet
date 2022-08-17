@@ -22,6 +22,10 @@ enum IconName {
   MOON = 'moon',
   LOGOUT = 'logout',
   CLOSE = 'close',
+  EXCLAMATION = 'exclamation',
+  INFO = 'info',
+  WARNING = 'warning',
+  SUCCESS = 'success',
 }
 
 export { IconName };
