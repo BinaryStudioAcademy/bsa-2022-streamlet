@@ -1,0 +1,31 @@
+.result-not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 50px;
+}
+
+.result-not-found-wrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 450px;
+  padding: 0 15px;
+}
+
+.result-not-found-title span {
+  color: var(--text-gray-color);
+  font-size: 20px;
+  line-height: 40px;
+  text-align: center;
+  text-transform: none;
+}
+
+.result-not-found-sub span {
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
+  text-transform: none;
+}

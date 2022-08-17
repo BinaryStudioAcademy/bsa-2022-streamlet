@@ -5,3 +5,5 @@ export * from './auth/auth';
 export * from './cloudinary/cloudinary';
 export * from './mail/mail';
 export * from './notifications/notifications';
+
+export { type VideoCard } from './components/components';

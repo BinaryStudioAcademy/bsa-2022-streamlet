@@ -1,14 +1,29 @@
 import { FC, NotificationsResponseDto } from 'common/types/types';
-import { useOutsideClick } from 'hooks/hooks';
+import {
+  useOutsideClick,
+  useAppDispatch,
+  useAppSelector,
+  useCallback,
+  useNavigate,
+  useLocation,
+  useId,
+} from 'hooks/hooks';
 import { useState, MouseEvent, FormEvent } from 'react';
 import { Header } from './header';
-import { MenuOptions, IconName } from 'common/enums/components';
+import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
+import { searchActions } from 'store/actions';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
 
 const HeaderContainer: FC = () => {
+  const dispatch = useAppDispatch();
+  const {
+    search: { searchText },
+  } = useAppSelector((state) => ({ search: state.search }));
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   const [isLogged, setIsLogged] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
   const { isOpened: isMenuOpen, close: closeMenu, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
   const {
     isOpened: isNotificationsMenuOpen,
@@ -105,8 +120,32 @@ const HeaderContainer: FC = () => {
     closeNotificationsMenu();
   }
 
-  function handleInputSearch({ currentTarget }: FormEvent<HTMLInputElement>): void {
-    setSearchValue(currentTarget.value);
+  const searchInputId = useId();
+
+  const handleClearActiveFilterIds = useCallback(() => dispatch(searchActions.clearActiveFilterIds()), [dispatch]);
+
+  const handleInputSearch = useCallback((value: string) => dispatch(searchActions.setSearchText(value)), [dispatch]);
+
+  const handleChangeInputSearch = ({ currentTarget }: FormEvent<HTMLInputElement>): void => {
+    handleInputSearch(currentTarget.value);
+  };
+
+  const handleClearInputSearch = (): void => {
+    handleInputSearch('');
+    document.getElementById(searchInputId)?.focus();
+  };
+
+  const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    if (searchText) {
+      handleClearActiveFilterIds();
+      const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
+      navigate(`/search?${searchUrlParams.toString()}`, { replace: true });
+    }
+  };
+
+  if (pathname === AppRoute.SIGN_IN || pathname === AppRoute.SIGN_UP || pathname === AppRoute.RESTORE_PASSWORD) {
+    return null;
   }
 
   return (
@@ -114,10 +153,13 @@ const HeaderContainer: FC = () => {
       menuRef={menuRef}
       isLogged={isLogged}
       isMenuOpen={isMenuOpen}
-      searchValue={searchValue}
+      searchValue={searchText}
+      searchInputId={searchInputId}
       handleClickUserMenu={handleClickUserMenu}
       handleClickLogin={handleClickLogin}
-      handleInputSearch={handleInputSearch}
+      handleChangeInputSearch={handleChangeInputSearch}
+      handleClearInputSearch={handleClearInputSearch}
+      handleSubmitSearch={handleSubmitSearch}
       userAvatar={FAKE_USER_AVATAR}
       options={options}
       notifications={notifications}
