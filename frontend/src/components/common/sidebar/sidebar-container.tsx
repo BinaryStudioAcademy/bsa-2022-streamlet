@@ -1,16 +1,27 @@
 import { FC } from 'common/types/types';
 import { Sidebar } from './sidebar';
 import { subscribesList } from './subscription-list.mock';
-import { configRoutePages } from './route-pages.config';
+import { configRoutePages, RoutePage } from './route-pages.config';
 import { useLocation } from 'react-router-dom';
 import { useAppSelector, useAppDispatch, useEffect } from 'hooks/hooks';
 import { openSidebar } from 'store/layout/actions';
 import { MobileSidebarProps } from '../mobile-sidebar/mobile-sidebar';
 
 function returnIdActiveRoute(currentRoute: string): number {
-  const currentLink = configRoutePages.find((link) => link.linkTo === currentRoute);
+  let currentLink: RoutePage | undefined;
+  let matchLengths: number;
 
-  return currentLink?.id || 0;
+  configRoutePages.forEach((link) => {
+    if (currentRoute.startsWith(link.linkTo)) {
+      matchLengths = currentRoute.length - link.linkTo.length;
+
+      if (matchLengths < currentRoute.length) {
+        currentLink = link;
+      }
+    }
+  });
+
+  return currentLink ? currentLink.id : 0;
 }
 
 const SidebarContainer: FC = () => {
