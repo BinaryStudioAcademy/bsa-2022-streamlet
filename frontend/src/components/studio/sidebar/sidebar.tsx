@@ -1,30 +1,32 @@
 import { FC } from 'common/types/types';
-import { Icon, Link } from 'frontend/src/components/common/common';
+import { Icon } from 'frontend/src/components/common/common';
 import { IconName, IconColor, AppRoute } from 'common/enums/enums';
 import cn from 'clsx';
 import { ISideBarItem, sideBarItems } from './config';
-import { useLocation } from 'hooks/hooks';
+import { NavLink } from 'react-router-dom';
+import { ReactNode } from 'react';
 
 import styles from './styles.module.scss';
 
 const StudioSidebar: FC = () => {
-  const { pathname } = useLocation();
-  const getColor = (item: string): string => (pathname === item ? IconColor.GREEN : IconColor.WHITE);
-
   return (
     <aside className={styles.sidebar}>
-      <Link to={AppRoute.ROOT}>
+      <NavLink to={AppRoute.ROOT}>
         <div className={styles.button}>
           <Icon name={IconName.LOGOTIP} />
         </div>
-      </Link>
+      </NavLink>
 
       {sideBarItems.map((item: ISideBarItem) => (
-        <Link key={item.itemName} to={item.routeName as AppRoute}>
-          <div className={cn(styles.button, styles.active)}>
-            <Icon name={item.itemName} color={getColor(item.routeName)} />
-          </div>
-        </Link>
+        <NavLink key={item.itemName} to={item.routeName as AppRoute}>
+          {({ isActive }): ReactNode => {
+            return (
+              <div className={cn(styles.button, styles['hover-item'])}>
+                <Icon name={item.itemName} color={isActive ? IconColor.GREEN : IconColor.WHITE} />
+              </div>
+            );
+          }}
+        </NavLink>
       ))}
     </aside>
   );
