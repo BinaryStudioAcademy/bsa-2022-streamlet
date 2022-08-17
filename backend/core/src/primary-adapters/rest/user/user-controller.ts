@@ -52,10 +52,12 @@ export class UserController extends BaseHttpController {
    *      responses:
    *        200:
    *          description: Successful operation
-   *          schema:
-   *            type: array
-   *            items:
-   *              $ref: '#/components/schemas/User'
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/User'
    *        401:
    *          $ref: '#/components/responses/NotFound'
    */
