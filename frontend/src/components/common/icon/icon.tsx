@@ -1,16 +1,21 @@
 import styles from './styles.module.scss';
 import { IconName } from '../../../common/enums/enums';
 import { ReactComponent as Alarm } from '../../../assets/img/alarm.svg';
+import { ReactComponent as ArrowDown } from '../../../assets/img/arrow-down.svg';
+import { ReactComponent as ArrowUp } from '../../../assets/img/arrow-up.svg';
 import { ReactComponent as Camera } from '../../../assets/img/camera.svg';
 import { ReactComponent as Compas } from '../../../assets/img/compas.svg';
+import { ReactComponent as Filter } from '../../../assets/img/filter.svg';
 import { ReactComponent as Follow } from '../../../assets/img/follow.svg';
 import { ReactComponent as History } from '../../../assets/img/history.svg';
 import { ReactComponent as Home } from '../../../assets/img/home.svg';
+import { ReactComponent as Play } from '../../../assets/img/play.svg';
 import { ReactComponent as Search } from '../../../assets/img/search.svg';
 import { ReactComponent as Signout } from '../../../assets/img/signout.svg';
 import { ReactComponent as Smile } from '../../../assets/img/smile.svg';
 import { ReactComponent as Timeago } from '../../../assets/img/timeago.svg';
 import { ReactComponent as Watch } from '../../../assets/img/watch.svg';
+import { ReactComponent as Xmark } from '../../../assets/img/xmark.svg';
 import { ReactComponent as BurgerMenu } from '../../../assets/img/burger-menu.svg';
 import { ReactComponent as MainLogo } from '../../../assets/img/main-logo.svg';
 import { ReactComponent as Bell } from '../../../assets/img/bell.svg';
@@ -52,59 +57,97 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
   };
 
   switch (name) {
-    case IconName.ALARM:
+    case IconName.ALARM: {
       return <Alarm {...commonProps} />;
+    }
 
-    case IconName.CAMERA:
+    case IconName.ARROW_DOWN: {
+      return <ArrowDown {...commonProps} />;
+    }
+
+    case IconName.ARROW_UP: {
+      return <ArrowUp {...commonProps} />;
+    }
+
+    case IconName.CAMERA: {
       return <Camera {...commonProps} />;
+    }
 
-    case IconName.COMPAS:
+    case IconName.COMPAS: {
       return <Compas {...commonProps} />;
+    }
 
-    case IconName.FOLLOW:
+    case IconName.FILTER: {
+      return <Filter {...commonProps} />;
+    }
+
+    case IconName.FOLLOW: {
       return <Follow {...commonProps} />;
+    }
 
-    case IconName.HISTORY:
+    case IconName.HISTORY: {
       return <History {...commonProps} />;
+    }
 
-    case IconName.HOME:
+    case IconName.HOME: {
       return <Home {...commonProps} />;
+    }
 
-    case IconName.SEARCH:
+    case IconName.PLAY: {
+      return <Play {...commonProps} />;
+    }
+
+    case IconName.SEARCH: {
       return <Search {...commonProps} />;
+    }
 
-    case IconName.SIGNOUT:
+    case IconName.SIGNOUT: {
       return <Signout {...commonProps} />;
+    }
 
-    case IconName.SMILE:
+    case IconName.SMILE: {
       return <Smile {...commonProps} />;
+    }
 
-    case IconName.WATCH:
+    case IconName.WATCH: {
       return <Watch {...commonProps} />;
+    }
 
-    case IconName.BURGERMENU:
+    case IconName.BURGERMENU: {
       return <BurgerMenu {...commonProps} />;
+    }
 
-    case IconName.LOGOTIP:
+    case IconName.LOGOTIP: {
       return <MainLogo {...commonProps} />;
+    }
 
-    case IconName.BELL:
+    case IconName.BELL: {
       return <Bell {...commonProps} />;
+    }
 
-    case IconName.SETTINGS:
+    case IconName.SETTINGS: {
       return <Settings {...commonProps} />;
+    }
 
-    case IconName.MOON:
+    case IconName.MOON: {
       return <Moon {...commonProps} />;
+    }
 
-    case IconName.LOGOUT:
+    case IconName.LOGOUT: {
       return <LogOut {...commonProps} />;
+    }
 
-    case IconName.CLOSE:
+    case IconName.XMARK: {
+      return <Xmark {...commonProps} />;
+    }
+
+    case IconName.CLOSE: {
       return <Close {...commonProps} />;
+    }
 
-    default:
+    default: {
       return <Timeago {...commonProps} />;
+    }
   }
 };
 
