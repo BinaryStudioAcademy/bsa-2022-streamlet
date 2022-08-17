@@ -16,12 +16,8 @@
   margin: auto;
   background-color: var(--auth-modal-background);
   border: solid 3px transparent;
-  border-image-source:
-    linear-gradient
-    ( to left,
-    var(--green-300-primary-background),
-    var(--green-200-header-menu-background)
-  );
+  border-image-source: linear-gradient
+    (to left, var(--green-300-primary-background), var(--green-200-header-menu-background));
   border-image-slice: 1;
 }
 
