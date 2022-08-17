@@ -6,4 +6,3 @@ export * from './user/user';
 export * from './auth/auth';
 export { type ValidationSchema } from './validation/validation';
 export { type VideoCard } from './components/components';
-declare module 'react-notifications-component';
