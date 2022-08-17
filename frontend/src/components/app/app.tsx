@@ -8,7 +8,6 @@ import { SidebarContainer } from 'components/common/sidebar/sidebar-container';
 import { isRouteHaveHeader } from 'helpers/routes/is-route-have-header';
 import { NotFound } from '../not-found-page/not-found';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
-import { MainPage } from 'pages/main-page';
 import { Studio, StudioAnalytics } from '../studio';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 
