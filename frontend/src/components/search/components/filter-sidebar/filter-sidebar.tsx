@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { IconName } from 'common/enums/enums';
-import { useEffect, useState, useId, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
+import { useEffect, useState, useRef, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
 import { Icon } from 'components/common/icon';
 import {
   TypeFilterId,
@@ -36,7 +36,7 @@ const FilterSidebar: FC = () => {
 
   const [toggleAllFilters, setToggleAllFilters] = useState(false);
 
-  const filterSidebarId = useId();
+  const filterSidebarEl = useRef<HTMLDivElement>(null);
 
   const onChangeActiveFilterIds = useCallback(
     (filterIds: Partial<SearchState['activeFilterId']>) => dispatch(searchActions.setActiveFilterIds(filterIds)),
@@ -61,8 +61,7 @@ const FilterSidebar: FC = () => {
   );
 
   const onHandleClickOutsideFilters = (e: MouseEvent): void => {
-    const sidebar = document.getElementById(filterSidebarId);
-    if (!sidebar?.contains(e.target as HTMLElement)) {
+    if (!filterSidebarEl.current?.contains(e.target as HTMLElement)) {
       setToggleAllFilters(false);
     }
   };
@@ -85,7 +84,7 @@ const FilterSidebar: FC = () => {
   }, [toggleAllFilters]);
 
   return (
-    <div className={styles['filter-sidebar']} id={filterSidebarId}>
+    <div className={styles['filter-sidebar']} ref={filterSidebarEl}>
       <div className={styles['filter-sidebar-title']}>
         <Icon name={IconName.FILTER} />
         <span>filters</span>
