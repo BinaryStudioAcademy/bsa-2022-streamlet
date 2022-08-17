@@ -1,5 +1,8 @@
 enum AppRoute {
   ROOT = '/',
+  BROWSE = '/browse',
+  FOLLOWING = '/following',
+  HISTORY = '/history',
   SIGN_IN = '/sign-in',
   SIGN_UP = '/sign-up',
   RESTORE_PASSWORD = '/restore-password',
@@ -9,4 +12,10 @@ enum AppRoute {
   SEARCH = '/search',
 }
 
-export { AppRoute };
+enum RoutesWithoutHeader {
+  SIGN_IN = '/sign-in',
+  SIGN_UP = '/sign-up',
+  RESTORE_PASSWORD = '/restore-password',
+}
+
+export { AppRoute, RoutesWithoutHeader };
