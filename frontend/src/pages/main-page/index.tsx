@@ -5,7 +5,7 @@ import styles from './main-page.module.scss';
 const MainPage: FC = () => {
   return (
     <main className={styles.main}>
-      <h1 className={styles.title}>Hello in content page</h1>
+      <h1 className={styles.title}>Main page</h1>
     </main>
   );
 };

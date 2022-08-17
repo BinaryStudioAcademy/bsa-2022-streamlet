@@ -2,12 +2,14 @@ import { FC } from 'common/types/types';
 import { Link } from 'react-router-dom';
 import { FormEvent, MouseEvent, RefObject } from 'react';
 import { AppRoute, IconName } from 'common/enums/enums';
-import { MenuOptions } from 'common/enums/components';
+import { MenuOptions } from 'common/enums/components/';
 import { Icon } from '../icon';
+import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 
 import styles from './header.module.scss';
+import { closeSidebar, openSidebar } from 'store/layout/actions';
 
-interface MenuOption {
+interface menuOption {
   type: MenuOptions;
   text: string;
   icon: string;
@@ -21,7 +23,7 @@ interface HeaderProps {
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
   handleClickLogin(e: MouseEvent<HTMLElement>): void;
   handleInputSearch(e: FormEvent<HTMLInputElement>): void;
-  options: MenuOption[];
+  options: menuOption[];
   userAvatar: string;
   menuRef: RefObject<HTMLDivElement>;
 }
@@ -37,11 +39,22 @@ const Header: FC<HeaderProps> = ({
   userAvatar,
   menuRef,
 }) => {
+  const isSidebarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
+  const dispatch = useAppDispatch();
+
+  function handleClickBurgerMenu(): void {
+    if (isSidebarOpen) {
+      dispatch(closeSidebar());
+    } else {
+      dispatch(openSidebar());
+    }
+  }
+
   return (
     <header className={styles['header']}>
       <div className={styles['wrapper-first-part']}>
         <div className={styles['logo-block']}>
-          <button className={styles['burger-menu']}>
+          <button onClick={handleClickBurgerMenu} className={styles['burger-menu']}>
             <Icon name={IconName.BURGERMENU} width="30" height="30" />
           </button>
           <Link className={styles['logo-link']} to={AppRoute.ROOT}>

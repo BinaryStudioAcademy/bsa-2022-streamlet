@@ -4,6 +4,7 @@
   width: 300px;
   height: 100%;
   overflow: auto;
+  overflow-y: overlay;
   background-color: var(--gray-300-header-menu-background);
 
   @media screen and (max-width: 1300px) {
@@ -15,8 +16,24 @@
   }
 }
 
+.sidebar.close {
+  width: 64px;
+}
+
 .sidebar::-webkit-scrollbar {
   display: none;
+  width: 7px;
+}
+
+.sidebar:hover {
+  &::-webkit-scrollbar {
+    display: block;
+  }
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: var(--gray-200-input-background);
+  border-radius: 2px;
 }
 
 .navigate-menu ul a {
@@ -38,6 +55,10 @@
   color: var(--white-text-color);
 }
 
+.sidebar.close .navigate-menu ul li .link-name {
+  display: none;
+}
+
 .navigate-menu ul li svg path {
   fill: var(--text-gray-color);
 }
@@ -55,6 +76,11 @@
     padding-top: 15px;
     padding-bottom: 15px;
   }
+}
+
+.sidebar.close .navigate-menu ul li {
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .navigate-menu ul a:not(:last-child) {
@@ -81,6 +107,10 @@
   }
 }
 
+.sidebar.close .navigate-menu ul li svg {
+  margin: 0;
+}
+
 .block-subscriptions {
   margin-top: 25px;
   padding-bottom: 24px;
@@ -102,6 +132,10 @@
   }
 }
 
+.sidebar.close .subscription-list {
+  display: none;
+}
+
 .subscription-title {
   margin-bottom: 18px;
   color: var(--text-gray-color);
@@ -111,4 +145,8 @@
   @media screen and (max-width: 1300px) {
     display: none;
   }
+}
+
+.sidebar.close .subscription-title {
+  display: none;
 }

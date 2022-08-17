@@ -96,6 +96,10 @@
     @media screen and (max-width: 560px) {
       margin-left: 26px;
     }
+
+    @media screen and (max-width: 375px) {
+      margin-left: 16px;
+    }
   }
 
   .block-user .block-auth-user .user-menu {
@@ -221,8 +225,6 @@
   .wrapper-first-part .logo-block .burger-menu {
     margin-right: 14px;
     background-color: transparent;
-    border: none;
-    outline: none;
     cursor: pointer;
   }
 
