@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 import * as dayjsDuration from 'dayjs/plugin/duration';
+import { Link } from 'react-router-dom';
 import { FC, VideoCard as VideoCardType } from 'common/types/types';
-import { IconName } from 'common/enums/components';
+import { AppRoute, IconName } from 'common/enums/enums';
 import { Icon } from 'components/common/common';
-import { useNavigate } from 'hooks/hooks';
 import { getHowLongAgoString } from 'helpers/helpers';
 import { VideoTag } from '../common/common';
 import styles from './styles.module.scss';
@@ -15,10 +15,8 @@ type Props = {
 };
 
 const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, createdAt, preview, channel } }) => {
-  const navigate = useNavigate();
-
-  const redirectToVideoPage = (): void => navigate(`/video/${id}`, { replace: true });
-  const redirectToChannelPage = (): void => navigate(`/channel/${channel.id}`, { replace: true });
+  const linkToVideoPage = `${AppRoute.VIDEO}/${id}`;
+  const linkToChannelPage = `${AppRoute.CHANNEL}/${id}`;
 
   const isNew = (): boolean => {
     const maxTimeFromNowIsNew = 4 * 60 * 60 * 1000; // 4 hours
@@ -43,7 +41,7 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
 
   return (
     <div className={styles['video-card']}>
-      <div className={styles['video-card-preview']} onClick={redirectToVideoPage}>
+      <Link to={linkToVideoPage} className={styles['video-card-preview']}>
         <img src={preview} alt="Preview video img" />
         <div className={styles['video-card-play']}>
           <div className={styles['video-card-play-btn']}>
@@ -51,15 +49,15 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
           </div>
           <span className={styles['video-card-badge-duration']}>{getDurationString(duration)}</span>
         </div>
-      </div>
+      </Link>
       <div className={styles['video-card-info']}>
-        <a className={styles['video-card-channel']} onClick={redirectToChannelPage}>
+        <Link to={linkToChannelPage} className={styles['video-card-channel']}>
           <img className={styles['avatar']} src={channel.avatar} alt="Channels avatar" />
-        </a>
+        </Link>
         <div className={styles['video-card-desc']}>
-          <a className={styles['video-card-title']} onClick={redirectToVideoPage}>
+          <Link to={linkToVideoPage} className={styles['video-card-title']}>
             {name}
-          </a>
+          </Link>
           <div className={styles['video-card-meta']}>
             <div className={styles['video-card-meta-data']}>
               <Icon name={IconName.WATCH} />
@@ -71,12 +69,12 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
             </div>
           </div>
           <div className={styles['video-card-author']}>
-            <a className={styles['video-card-author-avatar']} onClick={redirectToChannelPage}>
+            <Link to={linkToChannelPage} className={styles['video-card-author-avatar']}>
               <img className={styles['avatar']} src={channel.avatar} alt="Channels avatar" />
-            </a>
-            <a className={styles['video-card-author-name']} onClick={redirectToChannelPage}>
+            </Link>
+            <Link to={linkToChannelPage} className={styles['video-card-author-name']}>
               <span>{channel.name}</span>
-            </a>
+            </Link>
           </div>
           <div className={styles['video-card-tag-list']}>{isNew() && <VideoTag name="new" />}</div>
         </div>

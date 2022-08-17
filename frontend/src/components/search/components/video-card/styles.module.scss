@@ -41,6 +41,10 @@
   display: none;
 }
 
+.video-card-preview:focus .video-card-play-btn {
+  display: flex;
+}
+
 .video-card-play-btn svg path {
   fill: var(--white-text-color);
 }
@@ -174,6 +178,7 @@
     background: none;
   }
 
+  .video-card:focus-within,
   .video-card:hover {
     background-color: var(--gray-300-header-menu-background);
   }
