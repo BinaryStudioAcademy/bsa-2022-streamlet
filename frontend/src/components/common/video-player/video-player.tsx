@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { VideoPlayerControls } from './video-player-controls/video-player-controls';
 
 type VideoPlayerProps = {
-  videoAttributes: {
+  videoAttributes?: {
     height?: number | string;
     width?: number | string;
     poster?: string;
@@ -13,18 +13,19 @@ type VideoPlayerProps = {
 
 const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url }) => {
   const [videoContainer, setVideoContainer] = useState<HTMLVideoElement | null>(null);
+  const [videoContainerWrapper, setVideoContainerWrapper] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!videoContainer) {
       return;
     }
     if (Hls.isSupported()) {
-      const hls = new Hls({ debug: process.env.NODE_ENV === 'development' });
+      const hls = new Hls();
 
       hls.loadSource(url);
       hls.attachMedia(videoContainer);
 
-      hls.on(Hls.Events.ERROR, function (event, data) {
+      hls.on(Hls.Events.ERROR, function (_, data) {
         if (data.fatal) {
           switch (data.type) {
             case Hls.ErrorTypes.NETWORK_ERROR:
@@ -48,11 +49,13 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url }) => {
   }, [videoContainer]);
 
   return (
-    <figure>
+    <figure ref={(element): void => setVideoContainerWrapper(element)}>
       <video ref={(element): void => setVideoContainer(element)} {...videoAttributes}>
         <p>Your browser doesn't support playing video. Please upgrade to a new one.</p>
       </video>
-      {videoContainer && <VideoPlayerControls videoContainer={videoContainer} />}
+      {videoContainer && videoContainerWrapper && (
+        <VideoPlayerControls videoContainer={videoContainer} videoContainerWrapper={videoContainerWrapper} />
+      )}
     </figure>
   );
 };
