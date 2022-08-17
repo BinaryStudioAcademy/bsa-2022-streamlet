@@ -1,0 +1,1 @@
+export { StudioSidebar } from './sidebar';
