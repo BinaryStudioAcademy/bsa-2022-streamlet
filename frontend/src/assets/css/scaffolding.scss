@@ -47,10 +47,17 @@ $supprot-error-color: #f76519;
   --text-gray-color: #6a726d;
   --white-text-color: #ffffff;
   --brand-green-color: #06c149;
-  --brand-green-color-hover: #03a03a;
+  --brand-green-color-hover: #00802d;
   --brand-yellow-color: #f6c648;
   --support-info-color: #03d8ff;
   --supprot-error-color: #f76519;
+
+  /* auth forms */
+  --auth-modal-background: rgba(52 79 62 / 47%);
+}
+
+html {
+  height: 100%;
 }
 
 html {
@@ -61,7 +68,7 @@ body {
   display: flex;
   flex-direction: column;
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100%;
   margin: 0;
   color: #505565;
   font-size: 16px;

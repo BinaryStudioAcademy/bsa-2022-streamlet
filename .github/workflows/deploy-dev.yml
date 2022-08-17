@@ -24,7 +24,23 @@ jobs:
           image_tag: latest
           context: ./
           dockerfile: ./.docker/backend.Dockerfile
+  build-push-server:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
 
+      - name: Build image
+        uses: whoan/docker-build-with-cache-action@v5
+        with:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          image_name: streamlet-push-dev
+          registry: ghcr.io
+          image_tag: latest
+          context: ./
+          dockerfile: ./.docker/push.Dockerfile
   build-frontend:
     runs-on: ubuntu-latest
     environment: development
@@ -45,7 +61,7 @@ jobs:
           build_extra_args: "--build-arg=REACT_APP_API_ORIGIN_URL=${{ secrets.REACT_APP_API_ORIGIN_URL }}"
 
   deploy:
-    needs: [build-backend, build-frontend]
+    needs: [build-backend, build-frontend, build-push-server]
     runs-on: ubuntu-latest
     environment: development
     steps:

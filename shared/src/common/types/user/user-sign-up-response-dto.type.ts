@@ -1,5 +1,6 @@
+import { TokenPair } from '../types';
 import { UserBaseResponseDto } from './user';
 
-type UserSignUpResponseDto = UserBaseResponseDto;
+type UserSignUpResponseDto = { user: UserBaseResponseDto; tokens: TokenPair };
 
 export { type UserSignUpResponseDto };

@@ -1,55 +1,61 @@
 import { AppRoute } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Button, Link } from 'components/common/common';
-import { useState } from 'react';
-import googleLogo from '../../../../assets/img/google.svg';
-import passwordEye from '../../../../assets/img/password-eye.svg';
-import '../../../../assets/css/auth.scss';
+import { Input, Link, PasswordInput } from 'components/common/common';
+import formStyles from '../form-controls.module.scss';
+import styles from './styles.module.scss';
+import { useAppForm } from 'hooks/hooks';
+import { userSignIn } from 'validation-schemas/validation-schemas';
+import { AuthSubmitButton, ContonueWithParagraph, GoogleButton } from '../common/common';
 
 type Props = {
-  onSubmit: () => void;
+  onSubmit: (formValues: SignInFormValues) => void;
+  isLoading: boolean;
 };
 
-type PasswordType = 'password' | 'text';
+export interface SignInFormValues {
+  email: string;
+  password: string;
+}
 
-const SignInForm: FC<Props> = () => {
-  const [inputPasswordType, setInputPasswordType] = useState<PasswordType>('password');
-  const handleChangeInputPasswordType = (): void => {
-    if (inputPasswordType === 'password') {
-      setInputPasswordType('text');
-    } else {
-      setInputPasswordType('password');
-    }
-  };
+const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
+  const { control, errors, handleSubmit } = useAppForm<SignInFormValues>({
+    defaultValues: { email: '', password: '' },
+    validationSchema: userSignIn,
+  });
+
   return (
     <>
-      <form className="form-container">
-        <label htmlFor="sign-in-email-input">Email</label>
-        <input id="sign-in-email-input" type="email" placeholder="username@gmail.com" />
-        <label htmlFor="sign-in-password-input" className="sign-in-password-label">
-          Password
-        </label>
-        <div className="sign-in-password-container">
-          <input id="sign-in-password-input" type={inputPasswordType} placeholder="Password" />
-          <Button
-            onClick={handleChangeInputPasswordType}
-            className="check-password-btn"
-            label={<img src={passwordEye} alt="check" />}
-          />
-        </div>
-        <Link to={AppRoute.RESTORE_PASSWORD} className="forgot-password">
+      <form className={formStyles['form-container']} onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          control={control}
+          errors={errors}
+          name="email"
+          label="Email"
+          type="email"
+          wrapperClassName={formStyles['form-input']}
+          placeholder="username@gmail.com"
+        />
+        <PasswordInput
+          wrapperClassName={formStyles['form-input']}
+          placeholder="Password"
+          control={control}
+          name="password"
+          errors={errors}
+          label="Password"
+        />
+        <Link to={AppRoute.RESTORE_PASSWORD} className={styles['forgot-password']}>
           Forgot Password?
         </Link>
-        <Button className="auth-submit-btn" type="submit" label="Sign in" />
+        <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign in" />
       </form>
-      <p className="continue-with-paragraph">or continue with</p>
-      <Button className="google-btn" type="button" label={<img src={googleLogo} alt="Google" />} />
-      <p className="continue-with-paragraph">
-        Don't have an account yet?{' '}
-        <Link to={AppRoute.SIGN_UP} className="auth-link">
-          Register for free
-        </Link>
-      </p>
+      <p>or continue with</p>
+      <GoogleButton disabled={isLoading} />
+
+      <ContonueWithParagraph
+        prompt="Don't have an account yet?"
+        linkTitle="Register for free"
+        route={AppRoute.SIGN_UP}
+      />
     </>
   );
 };
