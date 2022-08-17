@@ -7,3 +7,4 @@ export { RefreshTokenValidationMessage } from './refresh-token/refresh-token';
 export { ImageStorePresetType } from './cloudinary/cloudinary';
 export { AmqpQueue } from './amqp/amqp';
 export { MailType } from './mail/mail';
+export { NotificationType } from './notification/notification';
