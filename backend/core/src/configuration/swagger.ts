@@ -4,15 +4,16 @@ import swaggerJSDoc from 'swagger-jsdoc';
 function initSwagger(): object {
   const options = {
     definition: {
-      swagger: '2.0',
+      openapi: '3.0.0',
       info: {
         title: 'BSA 2022 | Streamlet',
         version: '1.0.0',
         description: 'This is BSA project.',
       },
-      host: CONFIG.APP.HOST,
-      basePath: CONFIG.API.PREFIX,
-      schemes: ['https', 'http'],
+      servers: [
+        { url: `http://${CONFIG.APP.HOST}${CONFIG.API.PREFIX}` },
+        { url: `https://${CONFIG.APP.HOST}${CONFIG.API.PREFIX}` },
+      ],
     },
     apis: ['./build/primary-adapters/**/**.js'],
   };
