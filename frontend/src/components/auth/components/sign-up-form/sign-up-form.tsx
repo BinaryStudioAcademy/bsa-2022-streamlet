@@ -1,15 +1,20 @@
+import { AppRoute } from 'common/enums/enums';
 import { FC, UserSignUpRequestDto } from 'common/types/types';
-import { Button, Input } from 'components/common/common';
-import { getNameOf } from 'helpers/helpers';
+import { Input, PasswordInput } from 'components/common/common';
 import { useAppForm } from 'hooks/hooks';
+
 import { userSignUp as userSignUpValidationSchema } from 'validation-schemas/validation-schemas';
+import { AuthSubmitButton, ContonueWithParagraph, GoogleButton } from '../common/common';
 import { DEFAULT_SIGN_UP_PAYLOAD } from './common';
 
+import formStyles from '../form-controls.module.scss';
+
 type Props = {
-  onSubmit: (payload: UserSignUpRequestDto) => void;
+  onSubmit: (formValues: UserSignUpRequestDto) => void;
+  isLoading: boolean;
 };
 
-const SignUpForm: FC<Props> = ({ onSubmit }) => {
+const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit } = useAppForm<UserSignUpRequestDto>({
     defaultValues: DEFAULT_SIGN_UP_PAYLOAD,
     validationSchema: userSignUpValidationSchema,
@@ -17,30 +22,38 @@ const SignUpForm: FC<Props> = ({ onSubmit }) => {
 
   return (
     <>
-      <h3>Sign Up</h3>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <p>
-          <Input
-            type="text"
-            label="Email"
-            placeholder="Enter your email"
-            name={getNameOf<UserSignUpRequestDto>('email')}
-            control={control}
-            errors={errors}
-          />
-        </p>
-        <p>
-          <Input
-            type="text"
-            label="Password"
-            placeholder="Enter your password"
-            name={getNameOf<UserSignUpRequestDto>('password')}
-            control={control}
-            errors={errors}
-          />
-        </p>
-        <Button type="submit" label="Sign up" />
+      <form onSubmit={handleSubmit(onSubmit)} className={formStyles['form-container']}>
+        <Input
+          wrapperClassName={formStyles['form-input']}
+          type="email"
+          label="Email"
+          placeholder="Enter your email"
+          name="email"
+          control={control}
+          errors={errors}
+        />
+        <Input
+          wrapperClassName={formStyles['form-input']}
+          type="text"
+          label="Username"
+          placeholder="Enter your username"
+          name="username"
+          control={control}
+          errors={errors}
+        />
+        <PasswordInput
+          wrapperClassName={formStyles['form-input']}
+          placeholder="Password"
+          control={control}
+          name="password"
+          errors={errors}
+          label="Password"
+        />
+        <ContonueWithParagraph prompt="Already have an account?" linkTitle="Login" route={AppRoute.SIGN_IN} />
+        <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign up" />
       </form>
+      <p>or continue with</p>
+      <GoogleButton disabled={isLoading} />
     </>
   );
 };
