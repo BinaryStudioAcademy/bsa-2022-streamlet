@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { FC, useEffect, useRef } from 'react';
 import styles from './styles.module.scss';
 
@@ -6,7 +7,7 @@ type Props = {
   className?: string;
 };
 
-const ProgressBar: FC<Props> = ({ videoContainer }) => {
+const ProgressBar: FC<Props> = ({ videoContainer, className }) => {
   const progressBar = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const ProgressBar: FC<Props> = ({ videoContainer }) => {
         }
         videoContainer.currentTime = pos * videoContainer.duration;
       }}
-      className={styles['progress-bar-wrapper']}
+      className={clsx(styles['progress-bar-wrapper'], className)}
     >
       <div ref={progressBar} className={styles['progress-bar']}></div>
     </div>

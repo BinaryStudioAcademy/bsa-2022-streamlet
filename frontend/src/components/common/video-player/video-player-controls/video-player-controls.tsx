@@ -5,6 +5,8 @@ import { PlayPauseButton } from './play-pause-button/play-pause-button';
 import { ProgressBar } from './progress-bar/progress-bar';
 import { VolumeInput } from './volume-input/volume-input';
 
+import styles from './styles.module.scss';
+
 type Props = {
   videoContainer: HTMLVideoElement;
   videoContainerWrapper: HTMLElement;
@@ -12,7 +14,7 @@ type Props = {
 
 const VideoPlayerControls: FC<Props> = ({ videoContainer, videoContainerWrapper }) => {
   return (
-    <div>
+    <div className={styles['video-controls-wrapper']}>
       <PlayPauseButton videoContainer={videoContainer} />
       <ProgressBar videoContainer={videoContainer} />
       <MuteButton videoContainer={videoContainer} />

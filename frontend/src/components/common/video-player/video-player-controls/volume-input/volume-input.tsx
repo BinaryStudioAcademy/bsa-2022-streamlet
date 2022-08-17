@@ -2,9 +2,10 @@ import React, { FC, useEffect, useState } from 'react';
 
 type Props = {
   videoContainer: HTMLVideoElement;
+  className?: string;
 };
 
-const VolumeInput: FC<Props> = ({ videoContainer }) => {
+const VolumeInput: FC<Props> = ({ videoContainer, className }) => {
   const [volume, setVolume] = useState<number>(1);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ const VolumeInput: FC<Props> = ({ videoContainer }) => {
       onChange={(e): void => {
         setVolume(Number(e.target.value));
       }}
+      className={className}
     />
   );
 };
