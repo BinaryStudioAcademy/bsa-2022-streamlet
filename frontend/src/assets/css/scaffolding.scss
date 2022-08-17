@@ -1,3 +1,5 @@
+@import 'scrollbar.scss';
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -40,6 +42,8 @@
 }
 
 html {
+  @include custom-scrollbar;
+  
   height: 100%;
 }
 
