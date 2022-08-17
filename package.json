@@ -57,9 +57,5 @@
     "*.{ts,tsx,json,scss}": "prettier --write",
     "{shared,backend/core,backend/push,frontend}/**/*.{ts,tsx}": "npm run lint:js",
     "frontend/**/*.scss": "npm run lint:css"
-  },
-  "dependencies": {
-    "@types/react-notifications-component": "^3.1.1",
-    "react-notifications-component": "^4.0.1"
   }
 }
