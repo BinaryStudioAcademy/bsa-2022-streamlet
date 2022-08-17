@@ -69,7 +69,7 @@ export class UserController extends BaseHttpController {
   //NOTE: this route should be private and moved to user profile controller in future to set user avatar in db
   /**
    * @swagger
-   * /upload:
+   * /users/upload:
    *    post:
    *      tags:
    *      - user
