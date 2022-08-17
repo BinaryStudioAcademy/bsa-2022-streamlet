@@ -1,3 +1,4 @@
+import React from 'react';
 import { FC } from 'common/types/types';
 import { useId, useState, useEffect } from 'hooks/hooks';
 import { IconName } from 'common/enums/components';
@@ -31,7 +32,8 @@ const FilterDropdown: FC<Props> = ({
 
   const id = useId();
 
-  const handleToggleDropdown = (): void => {
+  const handleToggleDropdown = (e: React.MouseEvent<HTMLElement>): void => {
+    e.stopPropagation();
     const toggle = !toggleDropdown;
     setToggleDropdown(toggle);
     if (toggle) {
