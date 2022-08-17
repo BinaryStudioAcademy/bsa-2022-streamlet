@@ -2,11 +2,22 @@
   position: relative;
   display: flex;
   justify-content: center;
-  width: fit-content;
-  margin-inline: auto;
   background-color: blueviolet;
 }
 
 /* .video-container {
 
 } */
+
+.video-controls {
+  opacity: 0;
+  transition: opacity 150ms ease-in-out;
+}
+
+.video-container-wrapper:hover,
+.video-container-wrapper:focus-within,
+.video-container-wrapper[data-paused='true'] {
+  .video-controls {
+    opacity: 1;
+  }
+}

@@ -51,7 +51,12 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url }) => {
   }, [videoContainer]);
 
   return (
-    <div ref={(element): void => setVideoContainerWrapper(element)} className={styles['video-container-wrapper']}>
+    <div
+      ref={(element): void => setVideoContainerWrapper(element)}
+      className={styles['video-container-wrapper']}
+      style={{ height: videoAttributes?.height, width: videoAttributes?.width }}
+      data-paused="true"
+    >
       <video
         ref={(element): void => setVideoContainer(element)}
         {...videoAttributes}
@@ -60,7 +65,11 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url }) => {
         <p>Your browser doesn't support playing video. Please upgrade to a new one.</p>
       </video>
       {videoContainer && videoContainerWrapper && (
-        <VideoPlayerControls videoContainer={videoContainer} videoContainerWrapper={videoContainerWrapper} />
+        <VideoPlayerControls
+          videoContainer={videoContainer}
+          videoContainerWrapper={videoContainerWrapper}
+          className={styles['video-controls']}
+        />
       )}
     </div>
   );
