@@ -23,6 +23,8 @@ import { ReactComponent as Settings } from '../../../assets/img/settings.svg';
 import { ReactComponent as Moon } from '../../../assets/img/moon.svg';
 import { ReactComponent as LogOut } from '../../../assets/img/logout.svg';
 import { ReactComponent as Close } from '../../../assets/img/close.svg';
+import { ReactComponent as Rotate } from '../../../assets/img/rotate.svg';
+import { ReactComponent as ZoomIn } from '../../../assets/img/zoom-in.svg';
 import clsx from 'clsx';
 
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -145,6 +147,13 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
       return <Close {...commonProps} />;
     }
 
+    case IconName.ZOOM_IN: {
+      return <ZoomIn {...commonProps} />;
+    }
+
+    case IconName.ROTATE: {
+      return <Rotate {...commonProps} />;
+    }
     default: {
       return <Timeago {...commonProps} />;
     }

@@ -6,4 +6,5 @@ export { IconName, IconColor, MenuOptions } from './components';
 export { SearchQueryParam } from './search/search';
 export { ProfileApiPath } from './api/api';
 export { StorageKeys } from './storage/storage';
+export { ImageUploadErrorMessage } from './image/image';
 export * from './messages';

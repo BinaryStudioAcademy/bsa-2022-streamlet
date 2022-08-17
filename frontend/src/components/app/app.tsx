@@ -20,8 +20,8 @@ const App: FC = () => {
         <Route path={AppRoute.SEARCH} element={<Search />} />
         <Route path={AppRoute.ANY} element={<NotFound />} />
         <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
+        <Route path={'preference_page'} element={<ProfilePreferencesPage />} />
       </Routes>
-      <ProfilePreferencesPage />
     </>
   );
 };

@@ -7,12 +7,11 @@ import { getImageUploadError } from '../../../helpers/helpers';
 
 type UploadImageProps = {
   images: never[];
-  maxNumber?: number;
   onUpload: { (imageList: ImageListType, addUpdateIndex: number[] | undefined): void };
   onClose: { (): void };
 };
 
-const UploadImage: FC<UploadImageProps> = ({ images, maxNumber = 1, onUpload, onClose }) => {
+const UploadImage: FC<UploadImageProps> = ({ images, onUpload, onClose }) => {
   const [error, setError] = useState<string | undefined>();
   const handleError = (errors: ErrorsType, files: ImageListType | undefined): void => {
     const uploadErrorString: string = getImageUploadError(errors);
@@ -25,20 +24,24 @@ const UploadImage: FC<UploadImageProps> = ({ images, maxNumber = 1, onUpload, on
         multiple
         value={images}
         onChange={onUpload}
-        maxNumber={maxNumber}
         acceptType={['jpg', 'png']}
+        maxFileSize={10000000}
         onError={handleError}
       >
         {({ onImageUpload, isDragging, dragProps }): ReactNode => (
           <div className={style['upload-image-wrapper']}>
-            <div style={isDragging ? { color: 'red' } : undefined} onClick={onImageUpload} {...dragProps}>
-              <p>Click or Drop here</p>
+            <div
+              style={isDragging ? { color: 'red' } : undefined}
+              className={style['upload-image-field']}
+              onClick={onImageUpload}
+              {...dragProps}
+            >
+              <label className={style['drag-an-drop-text']}>
+                <input className={style['image-input']} accept="*" />
+              </label>
+              Click or Drop here
+              {error ? <p className={style['error-message']}>{error}</p> : null}
             </div>
-            {error ? (
-              <div className={'error-box'}>
-                <p className={'error-message'}>{error}</p>
-              </div>
-            ) : null}
           </div>
         )}
       </ImageUploading>
