@@ -72,7 +72,7 @@ export class UserController extends BaseHttpController {
    * /users/upload:
    *    post:
    *      tags:
-   *      - user
+   *      - users
    *      operationId: upload
    *      description: Returns Image Store API Upload Response
    *      security:
