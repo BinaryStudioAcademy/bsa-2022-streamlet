@@ -17,7 +17,6 @@
     "@hookform/error-message": "2.0.0",
     "@hookform/resolvers": "2.9.6",
     "@reduxjs/toolkit": "1.8.3",
-    "@types/react-notifications-component": "^3.1.1",
     "clsx": "1.2.1",
     "dayjs": "1.11.4",
     "react": "18.2.0",
@@ -34,6 +33,7 @@
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
     "@types/redux-persist": "4.3.1",
+    "@types/react-notifications-component": "^3.1.1",
     "sass": "1.53.0",
     "stylelint-config-standard-scss": "5.0.0"
   },
