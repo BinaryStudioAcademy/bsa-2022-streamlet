@@ -1,0 +1,127 @@
+.auth-logo {
+  max-height: 40px;
+}
+
+.auth-background {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  width: 100vw;
+  background: var(--gray-400-primary-background);
+}
+
+.auth-modal {
+  z-index: 1;
+  width: 100vw;
+  margin: auto;
+  background-color: var(--auth-modal-background);
+  border: solid 3px transparent;
+  border-image-source: linear-gradient
+    (to left, var(--green-300-primary-background), var(--green-200-header-menu-background));
+  border-image-slice: 1;
+}
+
+.auth-container {
+  margin: 38px 20px;
+}
+
+.auth-title {
+  margin-top: 0;
+  color: var(--white-text-color);
+  font-size: 44px;
+}
+
+.background-zigzag {
+  position: absolute;
+  top: 20vh;
+  left: 5vw;
+  z-index: 0;
+}
+
+.background-zigzag-2 {
+  position: absolute;
+  top: 44vh;
+  left: 0;
+  z-index: 0;
+  width: 155px;
+}
+
+.background-element {
+  position: absolute;
+  top: -2vh;
+  right: 1vw;
+  z-index: -1;
+}
+
+@media screen and (min-height: 820px) {
+  .auth-background {
+    width: 100vw;
+  }
+
+  .auth-modal {
+    width: 100vw;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .auth-modal {
+    width: 80vw;
+    height: auto;
+  }
+
+  .auth-container {
+    margin: 38px 46px;
+  }
+
+  .background-zigzag {
+    left: -30vw;
+    z-index: 2;
+  }
+
+  .background-zigzag-2 {
+    left: -20vw;
+    z-index: 2;
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .auth-modal {
+    width: 60vw;
+  }
+
+  .auth-container {
+    margin: 38px 96px;
+  }
+
+  .background-zigzag {
+    left: -3vw;
+  }
+
+  .background-zigzag-2 {
+    left: 0;
+  }
+}
+
+@media screen and (min-width: 980px) {
+  .background-zigzag {
+    left: 2vw;
+  }
+
+  .background-element {
+    z-index: 0;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .auth-modal {
+    width: 50vw;
+  }
+
+  .background-zigzag {
+    left: 10vw;
+  }
+
+  .background-zigzag-2 {
+    left: 10vw;
+  }
+}

@@ -1,0 +1,45 @@
+@import 'assets/css/breakpoint.scss';
+
+.filter-sidebar {
+  display: none;
+  flex-flow: column nowrap;
+  width: 100%;
+  max-width: 210px;
+  padding: 15px;
+}
+
+.filter-sidebar-title {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.filter-sidebar-title span {
+  margin-left: 10px;
+  color: var(--white-text-color);
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+}
+
+.filter-sidebar-title svg path {
+  fill: var(--text-gray-color);
+}
+
+.filter-sidebar-wrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  margin-top: 15px;
+}
+
+@media #{$tablet-middle} {
+  .filter-sidebar {
+    display: flex;
+  }
+}
+
+@media #{$tablet-large} {
+  .filter-sidebar {
+    padding: 20px;
+  }
+}

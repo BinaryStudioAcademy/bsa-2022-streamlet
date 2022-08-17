@@ -9,6 +9,7 @@ enum AppRoute {
   ANY = '*',
   VIDEO_$ID = '/video/:videoId',
   CHANNEL_$ID = '/channel/:channelId',
+  SEARCH = '/search',
 }
 
 enum RoutesWithoutHeader {

@@ -9,7 +9,7 @@ import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import styles from './header.module.scss';
 import { closeSidebar, openSidebar } from 'store/layout/actions';
 
-interface menuOption {
+interface MenuOption {
   type: MenuOptions;
   text: string;
   icon: string;
@@ -20,10 +20,13 @@ interface HeaderProps {
   isLogged: boolean;
   isMenuOpen: boolean;
   searchValue: string;
+  searchInputId: string;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
   handleClickLogin(e: MouseEvent<HTMLElement>): void;
-  handleInputSearch(e: FormEvent<HTMLInputElement>): void;
-  options: menuOption[];
+  handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
+  handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
+  handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
+  options: MenuOption[];
   userAvatar: string;
   menuRef: RefObject<HTMLDivElement>;
 }
@@ -32,9 +35,12 @@ const Header: FC<HeaderProps> = ({
   isLogged,
   isMenuOpen,
   searchValue,
+  searchInputId,
   handleClickLogin,
   handleClickUserMenu,
-  handleInputSearch,
+  handleChangeInputSearch,
+  handleClearInputSearch,
+  handleSubmitSearch,
   options,
   userAvatar,
   menuRef,
@@ -62,16 +68,20 @@ const Header: FC<HeaderProps> = ({
             <p className={styles['main-name']}>streamlet</p>
           </Link>
         </div>
-        <div className={styles['block-search']}>
+        <form className={styles['block-search']} onSubmit={handleSubmitSearch}>
           <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
           <input
             className={styles['search-input']}
+            id={searchInputId}
             type="text"
             value={searchValue}
-            onChange={handleInputSearch}
+            onChange={handleChangeInputSearch}
             placeholder="Search or type"
           />
-        </div>
+          <div className={styles['search-input-clear']} aria-label="Clear search" onClick={handleClearInputSearch}>
+            <Icon name={IconName.XMARK} />
+          </div>
+        </form>
       </div>
       <div className={styles['block-user']}>
         {!isLogged && (

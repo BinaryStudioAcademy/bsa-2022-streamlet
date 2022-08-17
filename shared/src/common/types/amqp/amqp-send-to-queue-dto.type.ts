@@ -1,8 +1,8 @@
-import { AmqpChannel } from '~/common/enums/enums';
+import { AmqpQueue } from '~/common/enums/enums';
 import { Options } from 'amqplib';
 
 type AmqpSendToQueueDto = {
-  channel: AmqpChannel;
+  queue: AmqpQueue;
   content: Buffer;
   options?: Options.Publish | undefined;
 };

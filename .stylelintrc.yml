@@ -1,5 +1,7 @@
 extends:
   - stylelint-config-standard
+  - stylelint-config-standard-scss
+  - stylelint-config-prettier
 
 plugins:
   - stylelint-order
@@ -13,7 +15,6 @@ rules:
   unit-disallowed-list:
     - em
     - rem
-
   order/order:
     - custom-properties
     - declarations

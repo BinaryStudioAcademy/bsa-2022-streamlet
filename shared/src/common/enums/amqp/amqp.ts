@@ -1,1 +1,1 @@
-export { AmqpChannel } from './amqp-channel.enum';
+export { AmqpQueue } from './amqp-channel.enum';
