@@ -1,5 +1,6 @@
+import React from 'react';
 import { FC } from 'common/types/types';
-import { useId, useEffect } from 'hooks/hooks';
+import { useId, useEffect, useState } from 'hooks/hooks';
 import { IconName } from 'common/enums/components';
 import { Icon } from 'components/common/common';
 
@@ -27,50 +28,62 @@ const FilterSelect: FC<Props> = ({
   toggleAllFilters,
   onChangeToggleAllFilters,
 }) => {
-  const id = useId();
-  const filterTitleId = useId();
+  const [toggleSelect, setToggleSelect] = useState(false);
 
-  const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => onChangeFilterId(e.currentTarget.value);
+  const id = useId();
+
+  const handleToggleSelect = (e: React.MouseEvent<HTMLElement>): void => {
+    e.stopPropagation();
+    const toggle = !toggleSelect;
+    setToggleSelect(toggle);
+    if (toggle) {
+      onChangeToggleAllFilters(toggle);
+    }
+  };
+
+  const onHandleChangeFilter = (e: React.FormEvent<HTMLInputElement>): void => {
+    onChangeFilterId(e.currentTarget.value);
+    setTimeout(setToggleSelect, 0, false);
+  };
 
   const handleClearFilter = (): void => onChangeFilterId(defaultFilterId);
 
-  const onHandleFocusFilter = (): void => onChangeToggleAllFilters(true);
-
   useEffect(() => {
     if (!toggleAllFilters) {
-      const filterSelectTitle = document.getElementById(filterTitleId);
-      filterSelectTitle?.blur();
+      setToggleSelect(false);
     }
   }, [toggleAllFilters]);
 
   return (
     <div className={styles.container}>
       <div className={styles['filter-select']}>
-        <div className={styles['filter-select-title']} tabIndex={13} id={filterTitleId} onFocus={onHandleFocusFilter}>
+        <div className={styles['filter-select-title']} onClick={handleToggleSelect}>
           <span>{title}</span>
-          <Icon name={IconName.ARROW_DOWN} />
+          <Icon name={toggleSelect ? IconName.ARROW_UP : IconName.ARROW_DOWN} />
         </div>
-        <div className={styles['filter-select-list']}>
-          {options.map((o) => {
-            const optionId = `${id}-${o.id}`;
-            return (
-              <div key={optionId} className={styles['filter-select-item']}>
-                <input
-                  id={optionId}
-                  type="radio"
-                  name={title}
-                  value={o.id}
-                  checked={activeFilterId === o.id}
-                  onChange={onHandleChangeFilter}
-                />
-                <label htmlFor={optionId}>{o.text}</label>
-                <div className={styles['filter-select-item-close-icon']} onClick={handleClearFilter}>
-                  <Icon name={IconName.XMARK} />
+        {toggleSelect && (
+          <div className={styles['filter-select-list']}>
+            {options.map((o) => {
+              const optionId = `${id}-${o.id}`;
+              return (
+                <div key={optionId} className={styles['filter-select-item']}>
+                  <input
+                    id={optionId}
+                    type="radio"
+                    name={title}
+                    value={o.id}
+                    checked={activeFilterId === o.id}
+                    onChange={onHandleChangeFilter}
+                  />
+                  <label htmlFor={optionId}>{o.text}</label>
+                  <div className={styles['filter-select-item-close-icon']} onClick={handleClearFilter}>
+                    <Icon name={IconName.XMARK} />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
