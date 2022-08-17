@@ -3,17 +3,18 @@ import React, { FC, useEffect, useState } from 'react';
 import { VideoPlayerControls } from './video-player-controls/video-player-controls';
 
 import styles from './styles.module.scss';
+import { toggleVideoPlay } from './helpers/toggle-video-play';
 
 type VideoPlayerProps = {
+  height?: number | string;
+  width?: number | string;
   videoAttributes?: {
-    height?: number | string;
-    width?: number | string;
     poster?: string;
   };
   url: string;
 };
 
-const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url }) => {
+const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, height, width }) => {
   const [videoContainer, setVideoContainer] = useState<HTMLVideoElement | null>(null);
   const [videoContainerWrapper, setVideoContainerWrapper] = useState<HTMLElement | null>(null);
 
@@ -54,13 +55,16 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url }) => {
     <div
       ref={(element): void => setVideoContainerWrapper(element)}
       className={styles['video-container-wrapper']}
-      style={{ height: videoAttributes?.height, width: videoAttributes?.width }}
+      style={{ height: height, width: width }}
       data-paused="true"
     >
       <video
         ref={(element): void => setVideoContainer(element)}
         {...videoAttributes}
         className={styles['video-container']}
+        onClick={(e): void => {
+          toggleVideoPlay(e.currentTarget);
+        }}
       >
         <p>Your browser doesn't support playing video. Please upgrade to a new one.</p>
       </video>

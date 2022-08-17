@@ -5,4 +5,14 @@
   background: none;
   border: none;
   cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 150ms ease-in-out;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:focus {
+    outline: 2px solid #1195ff;
+  }
 }

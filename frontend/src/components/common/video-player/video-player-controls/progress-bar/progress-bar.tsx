@@ -33,6 +33,7 @@ const ProgressBar: FC<Props> = ({ videoContainer, className }) => {
         videoContainer.currentTime = pos * videoContainer.duration;
       }}
       className={clsx(styles['progress-bar-wrapper'], className)}
+      tabIndex={0}
     >
       <div ref={progressBar} className={styles['progress-bar']}></div>
     </div>

@@ -9,8 +9,9 @@ const MainPage: FC = () => {
     <main className={styles.main}>
       <HeaderContainer />
       <VideoPlayer
-        videoAttributes={{ height: 400, poster: 'https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg' }}
+        videoAttributes={{ poster: 'https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg' }}
         url={'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'}
+        height={400}
       />
     </main>
   );

@@ -3,23 +3,17 @@ import { ControlButton } from '../control-button/control-button';
 
 import { ReactComponent as PlayIcon } from 'assets/img/play.svg';
 import { ReactComponent as PauseIcon } from 'assets/img/pause.svg';
+import { toggleVideoPlay } from '../../helpers/toggle-video-play';
 
 type Props = {
   videoContainer: HTMLVideoElement;
-  onPauseChange?: (isPaused: boolean) => void;
   className?: string;
 };
 
-const PlayPauseButton: FC<Props> = ({ videoContainer, className, onPauseChange }) => {
+const PlayPauseButton: FC<Props> = ({ videoContainer, className }) => {
   const [isPaused, setIsPaused] = useState<boolean>(true);
   const handleClick = (): void => {
-    if (videoContainer.paused || videoContainer.ended) {
-      videoContainer.play();
-      onPauseChange && onPauseChange(false);
-    } else {
-      videoContainer.pause();
-      onPauseChange && onPauseChange(true);
-    }
+    toggleVideoPlay(videoContainer);
   };
 
   useEffect(() => {

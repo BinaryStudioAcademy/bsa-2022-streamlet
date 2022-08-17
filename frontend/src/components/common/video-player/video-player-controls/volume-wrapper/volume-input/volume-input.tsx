@@ -1,4 +1,6 @@
+import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
+import styles from './styles.module.scss';
 
 type Props = {
   videoContainer: HTMLVideoElement;
@@ -23,7 +25,7 @@ const VolumeInput: FC<Props> = ({ videoContainer, className }) => {
       onChange={(e): void => {
         setVolume(Number(e.target.value));
       }}
-      className={className}
+      className={clsx(className, styles['volume-input'])}
     />
   );
 };

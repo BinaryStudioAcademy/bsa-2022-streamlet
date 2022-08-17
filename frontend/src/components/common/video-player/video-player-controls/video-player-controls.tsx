@@ -1,9 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { FullScreenButton } from './fullscreen-button/fullscreen-button';
-import { MuteButton } from './mute-button/mute-button';
 import { PlayPauseButton } from './play-pause-button/play-pause-button';
 import { ProgressBar } from './progress-bar/progress-bar';
-import { VolumeInput } from './volume-input/volume-input';
+import { VolumeWrapper } from './volume-wrapper/volume-wrapper';
 
 import styles from './styles.module.scss';
 import clsx from 'clsx';
@@ -15,17 +14,26 @@ type Props = {
 };
 
 const VideoPlayerControls: FC<Props> = ({ videoContainer, videoContainerWrapper, className }) => {
+  useEffect(() => {
+    const handlePause = (): void => {
+      videoContainerWrapper.dataset.paused = 'true';
+    };
+    const handlePlay = (): void => {
+      videoContainerWrapper.dataset.paused = 'false';
+    };
+    videoContainer.addEventListener('pause', handlePause);
+    videoContainer.addEventListener('play', handlePlay);
+    return () => {
+      videoContainer.removeEventListener('pause', handlePause);
+      videoContainer.removeEventListener('play', handlePlay);
+    };
+  }, []);
+
   return (
     <div className={clsx(styles['video-controls-wrapper'], className)}>
-      <PlayPauseButton
-        videoContainer={videoContainer}
-        onPauseChange={(isPaused): void => {
-          videoContainerWrapper.dataset.paused = String(isPaused);
-        }}
-      />
+      <PlayPauseButton videoContainer={videoContainer} />
+      <VolumeWrapper videoContainer={videoContainer} />
       <ProgressBar videoContainer={videoContainer} className={styles['progress-bar']} />
-      <MuteButton videoContainer={videoContainer} />
-      <VolumeInput videoContainer={videoContainer} />
       {document.fullscreenEnabled && <FullScreenButton videoContainerWrapper={videoContainerWrapper} />}
     </div>
   );
