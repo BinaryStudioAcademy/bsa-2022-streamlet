@@ -1,5 +1,12 @@
 import { ApiPath, AuthApiPath, ContentType, HttpMethod } from 'common/enums/enums';
-import { UserSignUpRequestDto, UserSignUpResponseDto } from 'common/types/user/user';
+import {
+  RefreshTokenRequestDto,
+  RefreshTokenResponseDto,
+  UserSignInRequestDto,
+  UserSignInResponseDto,
+  UserSignUpRequestDto,
+  UserSignUpResponseDto,
+} from 'common/types/types';
 import { Http } from '../http/http.service';
 
 type Constructor = {
@@ -17,10 +24,50 @@ class AuthApi {
   }
 
   public signUp(payload: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
-    return this.#http.load(`${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.SIGN_UP}`, {
-      method: HttpMethod.POST,
-      contentType: ContentType.JSON,
-      payload: JSON.stringify(payload),
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.SIGN_UP}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+      },
+      preInterceptors: [],
+      postInterceptors: [],
+    });
+  }
+
+  public signIn(payload: UserSignInRequestDto): Promise<UserSignInResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.SIGN_IN}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+      },
+      preInterceptors: [],
+      postInterceptors: [],
+    });
+  }
+
+  public refreshTokens(payload: RefreshTokenRequestDto): Promise<RefreshTokenResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.REFRESH_TOKENS}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+      },
+      preInterceptors: [],
+      postInterceptors: [],
+    });
+  }
+
+  public logout(): Promise<void> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.LOG_OUT}`,
+      options: {
+        method: HttpMethod.POST,
+      },
     });
   }
 }

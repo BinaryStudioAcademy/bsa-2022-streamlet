@@ -12,3 +12,5 @@ export {
   type VerifyAccountMail,
   type WelcomeMail,
 } from './mail/mail';
+
+export { type VideoCard } from './components/components';

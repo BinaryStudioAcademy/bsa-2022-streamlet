@@ -1,18 +1,45 @@
 import { HttpError } from 'exceptions/exceptions';
 import { HttpHeader, HttpMethod } from 'common/enums/enums';
 import { HttpOptions } from 'common/types/types';
+import { PostInterceptor, PreInterceptor } from './interceptors/interceptor';
 
 class Http {
-  async load<T = unknown>(url: string, options: Partial<HttpOptions> = {}): Promise<T> {
+  constructor(private defaultPreInterceptors: PreInterceptor[], private defaultPostInterceptors: PostInterceptor[]) {}
+
+  async load<T = unknown>({
+    url,
+    options = {},
+    preInterceptors = this.defaultPreInterceptors,
+    postInterceptors = this.defaultPostInterceptors,
+  }: {
+    url: string;
+    options?: Partial<HttpOptions>;
+    preInterceptors?: PreInterceptor[];
+    postInterceptors?: PostInterceptor[];
+  }): Promise<T> {
     const { method = HttpMethod.GET, payload = null } = options;
     const headers = this.getHeaders();
-
-    return fetch(url, {
+    let requestInit: RequestInit = {
       method,
       headers,
       body: payload,
-    })
-      .then(this.checkStatus)
+    };
+    for (const preInterceptor of preInterceptors) {
+      [url, requestInit] = await preInterceptor({ url, options: requestInit });
+    }
+
+    const makeRequest = (url: string, options: RequestInit): Promise<Response> => fetch(url, options);
+
+    let response = await makeRequest(url, requestInit);
+    for (const postInterceptor of postInterceptors) {
+      response = await postInterceptor({
+        initialRequest: { options: requestInit, url },
+        makeRequestFn: makeRequest,
+        response,
+      });
+    }
+
+    return this.checkStatus(response)
       .then((res) => this.parseJSON<T>(res))
       .catch(this.throwError);
   }
@@ -27,9 +54,17 @@ class Http {
 
   private async checkStatus(response: Response): Promise<Response> {
     if (!response.ok) {
-      const parsedException = await response.json().catch(() => ({
-        message: response.statusText,
-      }));
+      const parsedException = await response
+        .json()
+        .then((parsed) => {
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed[0];
+          }
+          return parsed;
+        })
+        .catch(() => ({
+          message: response.statusText,
+        }));
 
       throw new HttpError({
         status: response.status,
