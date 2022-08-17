@@ -1,1 +1,1 @@
-export { ApiPath, AuthApiPath } from 'shared/build/common/enums/api/api';
+export { ApiPath, AuthApiPath, NotificationApiPath } from 'shared/build/common/enums/api/api';
