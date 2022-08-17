@@ -1,0 +1,24 @@
+.upload-image-wrapper {
+  height: 274px;
+  margin: 0;
+  padding: 20px;
+  background-color: var(--gray-300-header-menu-background);
+}
+
+.upload-image-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 316px;
+  height: 176px;
+  border: 2px green dashed;
+}
+
+.upload-image-field-plus-icon {
+  position: relative;
+  width: 0;
+  height: 0;
+  color: var(--white-text-color);
+  font-size: 50px;
+}

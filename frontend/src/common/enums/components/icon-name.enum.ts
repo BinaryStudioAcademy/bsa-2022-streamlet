@@ -22,6 +22,9 @@ enum IconName {
   MOON = 'moon',
   LOGOUT = 'logout',
   CLOSE = 'close',
+  ZOOM_IN = 'zoom_in',
+  ZOOM_OUT = 'zoom_out',
+  ROTATE = 'rotate',
 }
 
 export { IconName };

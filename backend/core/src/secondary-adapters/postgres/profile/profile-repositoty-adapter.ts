@@ -14,14 +14,36 @@ export class ProfileRepositoryAdapter implements ProfileRepository {
 
   async update(updateData: ProfileUpdateRequestDto): Promise<ProfileUpdateResponseDto> {
     const { firstName, lastName, userId, username } = updateData;
-    const { username: newUserName } = await this.prismaClient.user.update({
+    await this.prismaClient.user.update({
       where: {
         id: userId,
       },
       data: {
         username,
       },
+      select: {
+        profile: true,
+        id: true,
+        username: true,
+      },
     });
+    const isUpdatedProfileExist = await this.prismaClient.userProfile.findUnique({
+      where: {
+        userId,
+      },
+    });
+    if (!isUpdatedProfileExist) {
+      const updatedProfile = await this.prismaClient.userProfile.create({
+        data: {
+          firstName,
+          lastName,
+          userId,
+          avatar: '',
+        },
+      });
+      return createUpdateProfileResponse(username, updatedProfile);
+    }
+
     const updatedProfile = await this.prismaClient.userProfile.update({
       where: {
         userId,
@@ -31,6 +53,6 @@ export class ProfileRepositoryAdapter implements ProfileRepository {
         lastName,
       },
     });
-    return createUpdateProfileResponse(newUserName, updatedProfile);
+    return createUpdateProfileResponse(username, updatedProfile);
   }
 }

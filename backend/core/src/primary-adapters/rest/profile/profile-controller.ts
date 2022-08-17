@@ -8,11 +8,10 @@ import {
   UserUploadRequestDto,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
-import { authenticationMiddleware } from '../middleware';
 import { ProfileService } from '~/core/profile/aplication/profile-service';
 import { NotFound } from '~/shared/exceptions/not-found';
 import { exceptionMessages } from '~/shared/enums/exceptions';
-
+import { authenticationMiddleware } from '../middleware/authentication-middleware';
 /**
  * @swagger
  * tags:
@@ -124,7 +123,7 @@ export class ProfileController extends BaseHttpController {
    *          schema:
    *            $ref: '#/definitions/ImageUploadResponseDto'
    */
-  @httpPost('/upload')
+  @httpPost('/upload', authenticationMiddleware)
   public upload(@requestBody() body: UserUploadRequestDto): Promise<ImageUploadResponseDto> {
     return this.profileService.uploadAvatar(body);
   }
