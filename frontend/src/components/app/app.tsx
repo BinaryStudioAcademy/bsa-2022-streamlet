@@ -6,6 +6,7 @@ import { NotFound } from '../not-found-page/not-found';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 import { MainPage } from 'pages/main-page';
+import { VideoPageContainer } from 'pages/video/video-page-container';
 
 const App: FC = () => {
   return (
@@ -19,6 +20,7 @@ const App: FC = () => {
         <Route path={AppRoute.SEARCH} element={<Search />} />
         <Route path={AppRoute.ANY} element={<NotFound />} />
         <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
+        <Route path="video-page" element={<VideoPageContainer />} />
       </Routes>
     </>
   );
