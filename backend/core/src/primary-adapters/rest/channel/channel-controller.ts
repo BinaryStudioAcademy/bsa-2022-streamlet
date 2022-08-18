@@ -112,7 +112,6 @@ export class ChannelController extends BaseHttpController {
       throw new Forbidden('Invalid streaming key or no video created to stream on');
     }
     this.channelService.notifyTranscoderAboutStreamStart(streamData);
-    return;
   }
 
   /**
@@ -142,7 +141,6 @@ export class ChannelController extends BaseHttpController {
   @httpPost(ChannelApiPath.LIVE_DONE)
   public async prepareStreamEnd(@requestBody() rtmpLiveRequestDto: RtmpLiveRequestDto): Promise<void> {
     this.channelService.notifyTranscoderAboutStreamEnd(rtmpLiveRequestDto.name);
-    return;
   }
 
   /**

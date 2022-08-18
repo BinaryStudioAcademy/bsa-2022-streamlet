@@ -4,6 +4,7 @@ import { AmqpQueue } from '~/shared/enums/enums';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { ChannelRepository } from '../port/channel-repository';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
+import { generateUuid } from '~/shared/helpers';
 
 @injectable()
 export class ChannelService {
@@ -18,8 +19,19 @@ export class ChannelService {
     this.amqpChannel = amqpChannel;
   }
 
-  checkStreamingKey(streamingKey: string): Promise<LiveStartResponseDto | null> {
-    return this.channelRepository.checkStreamingKey(streamingKey);
+  async checkStreamingKey(key: string): Promise<LiveStartResponseDto | null> {
+    const keyRecord = await this.channelRepository.getKeyRecord({ key });
+    if (!keyRecord) {
+      return null;
+    }
+    const pendingStream = await this.channelRepository.getPendingStream(keyRecord.channelId);
+    if (!pendingStream) {
+      return null;
+    }
+    return {
+      videoId: pendingStream.id,
+      streamingKey: key,
+    };
   }
 
   notifyTranscoderAboutStreamStart(streamData: LiveStartResponseDto): Promise<boolean> {
@@ -46,11 +58,26 @@ export class ChannelService {
     });
   }
 
-  getStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
-    return this.channelRepository.getStreamingKey(channelId);
+  async getStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
+    const keyRecord = await this.channelRepository.getKeyRecord({ channelId });
+    if (!keyRecord) {
+      return null;
+    }
+    return {
+      channelId,
+      streamingKey: keyRecord.key,
+    };
   }
 
-  resetStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
-    return this.channelRepository.resetStreamingKey(channelId);
+  async resetStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
+    const newKey = generateUuid();
+    const updatedKeyRecord = await this.channelRepository.updateStreamingKey(channelId, newKey);
+    if (!updatedKeyRecord) {
+      return null;
+    }
+    return {
+      channelId,
+      streamingKey: updatedKeyRecord.key,
+    };
   }
 }

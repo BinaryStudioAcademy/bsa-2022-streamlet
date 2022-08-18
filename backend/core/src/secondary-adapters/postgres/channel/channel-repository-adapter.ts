@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, StreamingKey, Video } from '@prisma/client';
 import { inject, injectable } from 'inversify';
-import { LiveStartResponseDto, StreamingKeyResponseDto } from '~/shared/types/types';
 import { StreamingStatus } from '~/shared/enums/enums';
 import { ChannelRepository } from '~/core/channel/port/channel-repository';
-import { generateUuid } from '~/shared/helpers';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 
 @injectable()
@@ -14,60 +12,31 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
     this.prismaClient = prismaClient;
   }
 
-  async checkStreamingKey(key: string): Promise<LiveStartResponseDto | null> {
-    const keyRecord = await this.prismaClient.streamingKey.findFirst({
+  getPendingStream(channelId: string): Promise<Video | null> {
+    return this.prismaClient.video.findFirst({
       where: {
-        key,
-      },
-    });
-    if (!keyRecord) {
-      return null;
-    }
-    const pendingStream = await this.prismaClient.video.findFirst({
-      where: {
-        channelId: keyRecord.channelId,
+        channelId,
         status: StreamingStatus.PENDING,
       },
     });
-    if (!pendingStream) {
-      return null;
-    }
-    return {
-      videoId: pendingStream.id,
-      streamingKey: key,
-    };
   }
 
-  async getStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
-    const key = await this.prismaClient.streamingKey.findFirst({
+  getKeyRecord(props: Partial<StreamingKey>): Promise<StreamingKey | null> {
+    return this.prismaClient.streamingKey.findFirst({
       where: {
-        channelId,
+        ...props,
       },
     });
-    if (!key) {
-      return null;
-    }
-    return {
-      channelId,
-      streamingKey: key.key,
-    };
   }
 
-  async resetStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
-    const updatedKey = await this.prismaClient.streamingKey.update({
+  updateStreamingKey(channelId: string, key: string): Promise<StreamingKey | null> {
+    return this.prismaClient.streamingKey.update({
       where: {
         channelId,
       },
       data: {
-        key: generateUuid(),
+        key,
       },
     });
-    if (!updatedKey) {
-      return null;
-    }
-    return {
-      channelId,
-      streamingKey: updatedKey.key,
-    };
   }
 }

@@ -1,7 +1,7 @@
-import { LiveStartResponseDto, StreamingKeyResponseDto } from '~/shared/types/types';
+import { StreamingKey, Video } from '@prisma/client';
 
 export interface ChannelRepository {
-  checkStreamingKey(key: string): Promise<LiveStartResponseDto | null>;
-  getStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null>;
-  resetStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null>;
+  getKeyRecord(props: Partial<StreamingKey>): Promise<StreamingKey | null>;
+  getPendingStream(channelId: string): Promise<Video | null>;
+  updateStreamingKey(channelId: string, streamingKey: string): Promise<StreamingKey | null>;
 }
