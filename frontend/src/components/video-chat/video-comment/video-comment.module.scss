@@ -44,3 +44,17 @@
   font-style: normal;
   line-height: 19px;
 }
+
+.default-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 34px;
+  height: 34px;
+  margin-right: 12px;
+  color: var(--green-100-header-menu-background);
+  font-size: 18px;
+  line-height: 18px;
+  background-color: var(--green-200-header-menu-background);
+  border-radius: 50%;
+}
