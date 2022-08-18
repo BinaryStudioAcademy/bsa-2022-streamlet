@@ -31,6 +31,7 @@
     "@types/glob": "7.2.0",
     "@types/node": "18.6.2",
     "@types/nodemailer": "6.4.5",
+    "@types/uuid": "8.3.4",
     "nodemon": "2.0.19",
     "pino-pretty": "8.1.0",
     "prisma": "4.1.1",
@@ -61,7 +62,8 @@
     "pug": "3.0.2",
     "reflect-metadata": "0.1.13",
     "swagger-jsdoc": "6.2.5",
-    "swagger-ui-express": "4.5.0"
+    "swagger-ui-express": "4.5.0",
+    "uuid": "8.3.2"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
