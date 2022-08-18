@@ -25,14 +25,24 @@ export class ChannelService {
   notifyTranscoderAboutStreamStart(streamData: LiveStartResponseDto): Promise<boolean> {
     return this.amqpChannel.sendToQueue({
       queue: AmqpQueue.STREAM_TRANSCODER,
-      content: Buffer.from(JSON.stringify(streamData)),
+      content: Buffer.from(
+        JSON.stringify({
+          ...streamData,
+          isLive: true,
+        }),
+      ),
     });
   }
 
   notifyTranscoderAboutStreamEnd(streamingKey: string): Promise<boolean> {
     return this.amqpChannel.sendToQueue({
       queue: AmqpQueue.STREAM_TRANSCODER,
-      content: Buffer.from(JSON.stringify({ streamingKey })),
+      content: Buffer.from(
+        JSON.stringify({
+          streamingKey,
+          isLive: false,
+        }),
+      ),
     });
   }
 
