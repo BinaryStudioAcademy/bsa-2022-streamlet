@@ -3,8 +3,7 @@ import { config } from 'dotenv';
 export interface ServerConfig {
   rtmpHost: string;
   rtmpPort: number;
-  rabbitmqHost: string;
-  rabbitmqPort: number;
+  rabbitmqUrl: string;
 }
 
 const configuration = (): ServerConfig => {
@@ -15,8 +14,7 @@ const configuration = (): ServerConfig => {
   return {
     rtmpHost: RTMP_HOST || 'localhost',
     rtmpPort: Number(RTMP_PORT) || 1935,
-    rabbitmqHost: RABBITMQ_HOST || 'localhost',
-    rabbitmqPort: Number(RABBITMQ_PORT) || 5672,
+    rabbitmqUrl: `amqp://${RABBITMQ_HOST || 'localhost'}:${Number(RABBITMQ_PORT) || 5672}`,
   };
 };
 

@@ -8,10 +8,10 @@
   "scripts": {
     "lint:js": "eslint \"src/**/*.ts\"",
     "lint": "npm run lint:js",
-    "start:dev": "ts-node --files -r tsconfig-paths/register ./src/app.ts",
+    "start:dev": "ts-node --files -r tsconfig-paths/register ./src/index.ts",
     "build:ts": "tsc && tsc-alias -p ./tsconfig.json",
     "build": "npm run build:ts",
-    "start": "npm run build:ts && node ./build/app.js"
+    "start": "npm run build:ts && node ./build/index.js"
   },
   "dependencies": {
     "dotenv": "16.0.1",
