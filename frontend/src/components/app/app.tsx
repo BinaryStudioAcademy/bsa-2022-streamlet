@@ -11,6 +11,8 @@ import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-m
 import { Studio, StudioAnalytics } from '../studio';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 import { ProfilePreferencesPage } from '../profile-preferences-page/profile-preferences-page';
+import { VideoCardTest } from './tests/video-card/video-card';
+
 import styles from './app.module.scss';
 
 const App: FC = () => {
@@ -41,6 +43,7 @@ const App: FC = () => {
                 <Route path={AppRoute.BROWSE} element="Browse" />
                 <Route path={AppRoute.ANY} element={<NotFound />} />
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
+                <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
                 <Route path={AppRoute.STUDIO} element={<Studio />} />
                 <Route path={AppRoute.ANALYTICS} element={<StudioAnalytics />} />
                 <Route path={AppRoute.PROFILE_PREFERENCE} element={<ProfilePreferencesPage />} />
