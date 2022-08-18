@@ -9,7 +9,6 @@ services:
       - backend
     networks:
       - backend_network
-      - rtmp_network
     volumes:
       - ../nginx/nginx.rtmp.conf:/etc/nginx/nginx.conf
   rabbitmq:
@@ -109,6 +108,4 @@ networks:
   backend_network:
     driver: bridge
   frontend_network:
-    driver: bridge
-  rtmp_network:
     driver: bridge
