@@ -19,6 +19,7 @@ RUN npm run build:frontend
 
 FROM nginx:1.22.0-alpine
 
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=frontend-build /app/frontend/build/ /usr/share/nginx/html
 
