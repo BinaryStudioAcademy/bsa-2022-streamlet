@@ -65,10 +65,12 @@ const Search: FC = () => {
       delete currentFilterFromURL[FilterType.SEARCH_TEXT];
     }
     handleSetActiveFilterIds(currentFilterFromURL);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     handleSetSearchParams();
+    // eslint-disable-next-line
   }, [activeFilterId]);
 
   return (
