@@ -1,6 +1,5 @@
 import { PrismaClient, StreamingKey, Video } from '@prisma/client';
 import { inject, injectable } from 'inversify';
-import { StreamingStatus } from '~/shared/enums/enums';
 import { ChannelRepository } from '~/core/channel/port/channel-repository';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 
@@ -12,11 +11,10 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
     this.prismaClient = prismaClient;
   }
 
-  getPendingStream(channelId: string): Promise<Video | null> {
+  getVideo(props: Partial<Video>): Promise<Video | null> {
     return this.prismaClient.video.findFirst({
       where: {
-        channelId,
-        status: StreamingStatus.PENDING,
+        ...props,
       },
     });
   }

@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { LiveStartResponseDto, StreamingKeyResponseDto } from '~/shared/types/types';
-import { AmqpQueue } from '~/shared/enums/enums';
+import { AmqpQueue, StreamingStatus } from '~/shared/enums/enums';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { ChannelRepository } from '../port/channel-repository';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
@@ -24,7 +24,10 @@ export class ChannelService {
     if (!keyRecord) {
       return null;
     }
-    const pendingStream = await this.channelRepository.getPendingStream(keyRecord.channelId);
+    const pendingStream = await this.channelRepository.getVideo({
+      channelId: keyRecord.channelId,
+      status: StreamingStatus.PENDING,
+    });
     if (!pendingStream) {
       return null;
     }
