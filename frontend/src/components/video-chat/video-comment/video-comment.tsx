@@ -1,6 +1,5 @@
 import { FC } from 'common/types/types';
-import { generateAbbreviatureNameUser } from 'helpers/user';
-import { getFullNameUserFromComment } from 'helpers/comment';
+import { generateAbbreviatureNameUser, getUserDisplayName } from 'helpers/user';
 import { getHowLongAgoString } from 'helpers/helpers';
 import { Comment } from 'shared/src/common/types/comment';
 
@@ -18,11 +17,9 @@ const VideoComment: FC<Props> = ({ comment }) => {
           <img className={styles['commentators-avatar']} src={comment.avatar} alt={comment.userName} />
         )}
         {!comment.avatar && (
-          <div className={styles['default-avatar']}>
-            {generateAbbreviatureNameUser(getFullNameUserFromComment(comment))}
-          </div>
+          <div className={styles['default-avatar']}>{generateAbbreviatureNameUser(getUserDisplayName(comment))}</div>
         )}
-        <p className={styles['commentators-name']}>{getFullNameUserFromComment(comment)}</p>
+        <p className={styles['commentators-name']}>{getUserDisplayName(comment)}</p>
         <span className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</span>
       </div>
       <div className={styles['content-part-comment']}>
