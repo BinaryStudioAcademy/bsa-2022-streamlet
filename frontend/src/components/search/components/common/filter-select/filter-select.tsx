@@ -41,6 +41,7 @@ const FilterSelect: FC<Props> = ({
       const filterSelectTitle = document.getElementById(filterTitleId);
       filterSelectTitle?.blur();
     }
+    // eslint-disable-next-line
   }, [toggleAllFilters]);
 
   return (
