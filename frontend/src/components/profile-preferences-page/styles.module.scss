@@ -2,13 +2,13 @@
 
 .preference-page-content-container {
   width: 100%;
+  overflow-y: scroll;
 }
 
 .profile-preferences-container {
   max-width: 1250px;
   height: calc(100vh - 82px);
   padding: 0 30px;
-  overflow-y: scroll;
   background-color: var(--gray-400-primary-background);
 }
 
@@ -230,5 +230,10 @@
   .profile-preferences-container {
     padding: 5px;
     overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  .preference-page-content-container {
+    overflow-y: hidden;
   }
 }

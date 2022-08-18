@@ -32,7 +32,7 @@ const ProfilePreferencesPage: FC = () => {
     } else {
       dispatch(profileActions.getProfileByUserId({ userId: user.id }));
     }
-  }, [user]);
+  }, [user, dispatch, navigate]);
   const [isNeedImageEditor, setIsNeedImageEditor] = useState(false);
   const [images, setImages] = useState([]);
   const [preparedAvatar, setPreparedAvatar] = useState<AvatarImgValue>({
@@ -80,8 +80,12 @@ const ProfilePreferencesPage: FC = () => {
     await handleImageSave({ base64Str, userId: user?.id as string });
   };
 
-  if (!user || !profile) {
+  if (!user) {
+    navigate(`${AppRoute.SIGN_IN}`, { replace: true });
     return null;
+  }
+  if (!profile) {
+    return <Loader spinnerSize={'lg'} vCentered={true} hCentered={true} />;
   }
 
   return (
