@@ -5,6 +5,11 @@ services:
     ports:
       - "1935:1935"
     container_name: rtmp_server
+    depends_on:
+      - backend
+    networks:
+      - backend_network
+      - rtmp_network
     volumes:
       - ../nginx/nginx.rtmp.conf:/etc/nginx/nginx.conf
   rabbitmq:
@@ -104,4 +109,6 @@ networks:
   backend_network:
     driver: bridge
   frontend_network:
+    driver: bridge
+  rtmp_network:
     driver: bridge
