@@ -5,7 +5,7 @@ import {
   ResetStreamingKeyResponseDto,
   RtmpLiveRequestDto,
 } from '~/shared/types/types';
-import { ApiPath } from '~/shared/enums/api/api';
+import { ApiPath, ChannelApiPath } from '~/shared/enums/api/api';
 import { ChannelService } from '~/core/channel/application/channel-service';
 import { inject } from 'inversify';
 import { Forbidden } from '~/shared/exceptions/forbidden';
@@ -20,7 +20,7 @@ export class ChannelController extends BaseHttpController {
     this.channelService = channelService;
   }
 
-  @httpPost('/live')
+  @httpPost(ChannelApiPath.LIVE)
   public async goLive(@requestBody() rtmpLiveRequestDto: RtmpLiveRequestDto): Promise<void> {
     const streamData = await this.channelService.checkStreamingKey(rtmpLiveRequestDto.name);
     if (streamData === null) {
@@ -30,13 +30,13 @@ export class ChannelController extends BaseHttpController {
     return;
   }
 
-  @httpPost('/live_done')
+  @httpPost(ChannelApiPath.LIVE_DONE)
   public async prepareStreamEnd(@requestBody() rtmpLiveRequestDto: RtmpLiveRequestDto): Promise<void> {
     this.channelService.prepareStreamEnd(rtmpLiveRequestDto.name);
     return;
   }
 
-  @httpPost('/reset_streaming_token')
+  @httpPost(ChannelApiPath.RESET_STREAMING_TOKEN)
   public async resetStreamingKey(
     @requestBody() resetStreamingKeyRequestDto: ResetStreamingKeyRequestDto,
   ): Promise<ResetStreamingKeyResponseDto> {
