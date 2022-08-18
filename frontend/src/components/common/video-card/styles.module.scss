@@ -51,7 +51,7 @@
 }
 
 .video-description-container {
-  max-width: 197.56px;
+  width: 197.56px;
 }
 
 .video-card-title {
@@ -142,4 +142,10 @@ svg {
 .viewer-container p {
   margin: 0;
   text-align: center;
+}
+
+.video-card-statistic-data {
+  color: var(--text-gray-color);
+  font-size: 12px;
+  line-height: 16px;
 }
