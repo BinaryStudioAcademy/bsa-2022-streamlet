@@ -22,7 +22,6 @@ interface ApiConfig {
 }
 
 interface EncryptionConfig {
-  REFRESH_TOKEN_BYTES: number;
   JWT_SECRET: string;
   JWT_LIFETIME: string;
   REFRESH_LIFETIME: string;
@@ -118,15 +117,12 @@ const configuration = (): ConfigInterface => {
 };
 
 const getEncryptionConfig = (): EncryptionConfig => {
-  const { REFRESH_TOKEN_BYTES, JWT_SECRET, JWT_LIFETIME, REFRESH_LIFETIME } = process.env;
+  const { JWT_SECRET, JWT_LIFETIME, REFRESH_LIFETIME } = process.env;
 
   if (!JWT_SECRET) {
     throw new Error('Missing JWT_SECRET in env');
   }
   return {
-    REFRESH_TOKEN_BYTES: REFRESH_TOKEN_BYTES
-      ? Number(REFRESH_TOKEN_BYTES)
-      : encryptionConfigDefault.REFRESH_TOKEN_BYTES,
     JWT_SECRET,
     REFRESH_LIFETIME: REFRESH_LIFETIME || encryptionConfigDefault.REFRESH_LIFETIME,
     JWT_LIFETIME: JWT_LIFETIME || encryptionConfigDefault.JWT_LIFETIME,
@@ -136,7 +132,6 @@ const getEncryptionConfig = (): EncryptionConfig => {
 const encryptionConfigDefault = {
   JWT_LIFETIME: '5m',
   REFRESH_LIFETIME: '30d',
-  REFRESH_TOKEN_BYTES: 64,
 };
 
 const CONFIG = configuration();

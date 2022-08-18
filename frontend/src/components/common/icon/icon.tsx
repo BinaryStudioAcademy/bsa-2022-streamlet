@@ -22,11 +22,13 @@ import { ReactComponent as Bell } from '../../../assets/img/bell.svg';
 import { ReactComponent as Settings } from '../../../assets/img/settings.svg';
 import { ReactComponent as Moon } from '../../../assets/img/moon.svg';
 import { ReactComponent as LogOut } from '../../../assets/img/logout.svg';
+import { ReactComponent as Analystic } from '../../../assets/img/analytics.svg';
 import { ReactComponent as Close } from '../../../assets/img/close.svg';
 import { ReactComponent as Exclamation } from '../../../assets/img/exclamation.svg';
 import { ReactComponent as Info } from '../../../assets/img/info.svg';
 import { ReactComponent as Warning } from '../../../assets/img/warning.svg';
 import { ReactComponent as Success } from '../../../assets/img/success.svg';
+
 import clsx from 'clsx';
 
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -160,6 +162,9 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.SUCCESS:
       return <Success {...commonProps} />;
+
+    case IconName.ANALYTICS:
+      return <Analystic {...commonProps} />;
 
     default: {
       return <Timeago {...commonProps} />;
