@@ -19,7 +19,7 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
     });
   }
 
-  getKeyRecord(props: Partial<StreamingKey>): Promise<StreamingKey | null> {
+  getStreamingKey(props: Partial<StreamingKey>): Promise<StreamingKey | null> {
     return this.prismaClient.streamingKey.findFirst({
       where: {
         ...props,

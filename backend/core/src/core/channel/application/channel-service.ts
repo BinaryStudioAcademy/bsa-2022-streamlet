@@ -20,7 +20,7 @@ export class ChannelService {
   }
 
   async checkStreamingKey(key: string): Promise<LiveStartResponseDto | null> {
-    const keyRecord = await this.channelRepository.getKeyRecord({ key });
+    const keyRecord = await this.channelRepository.getStreamingKey({ key });
     if (!keyRecord) {
       return null;
     }
@@ -62,7 +62,7 @@ export class ChannelService {
   }
 
   async getStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
-    const keyRecord = await this.channelRepository.getKeyRecord({ channelId });
+    const keyRecord = await this.channelRepository.getStreamingKey({ channelId });
     if (!keyRecord) {
       return null;
     }
