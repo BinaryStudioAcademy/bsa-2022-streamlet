@@ -141,7 +141,7 @@ export class ChannelController extends BaseHttpController {
    */
   @httpPost(ChannelApiPath.LIVE_DONE)
   public async prepareStreamEnd(@requestBody() rtmpLiveRequestDto: RtmpLiveRequestDto): Promise<void> {
-    this.channelService.prepareStreamEnd(rtmpLiveRequestDto.name);
+    this.channelService.notifyTranscoderAboutStreamEnd(rtmpLiveRequestDto.name);
     return;
   }
 

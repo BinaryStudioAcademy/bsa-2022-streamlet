@@ -18,8 +18,8 @@ export class ChannelService {
     this.amqpChannel = amqpChannel;
   }
 
-  checkStreamingKey(key: string): Promise<LiveStartResponseDto | null> {
-    return this.channelRepository.checkStreamingKey(key);
+  checkStreamingKey(streamingKey: string): Promise<LiveStartResponseDto | null> {
+    return this.channelRepository.checkStreamingKey(streamingKey);
   }
 
   notifyTranscoderAboutStreamStart(streamData: LiveStartResponseDto): Promise<boolean> {
@@ -29,10 +29,10 @@ export class ChannelService {
     });
   }
 
-  prepareStreamEnd(key: string): Promise<boolean> {
+  notifyTranscoderAboutStreamEnd(streamingKey: string): Promise<boolean> {
     return this.amqpChannel.sendToQueue({
       queue: AmqpQueue.STREAM_TRANSCODER,
-      content: Buffer.from(JSON.stringify({ streamingKey: key })),
+      content: Buffer.from(JSON.stringify({ streamingKey })),
     });
   }
 
