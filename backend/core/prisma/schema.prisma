@@ -113,9 +113,19 @@ model Channel {
   bannerImage   String         @default("")
   author        User           @relation(fields: [authorId], references: [id])
   authorId      String
+  streamingKeys  StreamingKey[]
   subscriptions Subscription[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+}
+
+model StreamingKey {
+  id        String  @id @default(uuid())
+  key       String  @default(uuid())
+  channel   Channel @relation(fields: [channelId], references: [id])
+  channelId String
+
+  @@unique([channelId])
 }
 
 model Subscription {
