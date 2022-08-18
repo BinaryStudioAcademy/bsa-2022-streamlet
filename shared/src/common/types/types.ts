@@ -7,3 +7,4 @@ export * from './mail/mail';
 export * from './rtmp/rtmp';
 export * from './channel/channel';
 export * from './components/components';
+export * from './request/request';

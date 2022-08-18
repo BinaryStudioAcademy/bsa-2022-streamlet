@@ -1,6 +1,6 @@
 export {
   type LiveStartResponseDto,
   type LiveEndResponseDto,
-  type ResetStreamingKeyResponseDto,
+  type StreamingKeyResponseDto,
   type ResetStreamingKeyRequestDto,
 } from 'shared/build';

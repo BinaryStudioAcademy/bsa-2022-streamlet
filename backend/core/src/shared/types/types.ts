@@ -8,3 +8,4 @@ export * from './mail/mail';
 export * from './mail-test/mail-test';
 export * from './rtmp/rtmp';
 export * from './channel/channel';
+export * from './request/request';

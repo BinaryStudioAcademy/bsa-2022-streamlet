@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { LiveStartResponseDto, ResetStreamingKeyResponseDto } from '~/shared/types/types';
+import { LiveStartResponseDto, StreamingKeyResponseDto } from '~/shared/types/types';
 import { AmqpQueue } from '~/shared/enums/enums';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { ChannelRepository } from '../port/channel-repository';
@@ -22,21 +22,25 @@ export class ChannelService {
     return this.channelRepository.checkStreamingKey(key);
   }
 
-  async notifyTranscoderAboutStreamStart(streamData: LiveStartResponseDto): Promise<boolean> {
+  notifyTranscoderAboutStreamStart(streamData: LiveStartResponseDto): Promise<boolean> {
     return this.amqpChannel.sendToQueue({
       queue: AmqpQueue.STREAM_TRANSCODER,
       content: Buffer.from(JSON.stringify(streamData)),
     });
   }
 
-  async prepareStreamEnd(key: string): Promise<boolean> {
+  prepareStreamEnd(key: string): Promise<boolean> {
     return this.amqpChannel.sendToQueue({
       queue: AmqpQueue.STREAM_TRANSCODER,
       content: Buffer.from(JSON.stringify({ streamingKey: key })),
     });
   }
 
-  resetStreamingKey(channelId: string): Promise<ResetStreamingKeyResponseDto | null> {
+  getStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
+    return this.channelRepository.getStreamingKey(channelId);
+  }
+
+  resetStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
     return this.channelRepository.resetStreamingKey(channelId);
   }
 }

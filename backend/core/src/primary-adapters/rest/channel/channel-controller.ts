@@ -1,8 +1,9 @@
-import { BaseHttpController, controller, httpPost, requestBody } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, httpPost, requestBody, requestParam } from 'inversify-express-utils';
 import {
   CONTAINER_TYPES,
+  DefaultRequestParam,
   ResetStreamingKeyRequestDto,
-  ResetStreamingKeyResponseDto,
+  StreamingKeyResponseDto,
   RtmpLiveRequestDto,
 } from '~/shared/types/types';
 import { ApiPath, ChannelApiPath } from '~/shared/enums/api/api';
@@ -16,55 +17,56 @@ import { NotFound } from '~/shared/exceptions/not-found';
  * tags:
  *   name: channel
  *   description: Channel and streaming
- * definitions:
- *    RtmpLiveRequestDto:
- *      type: object
- *      properties:
- *        app:
- *          type: string
- *        flashver:
- *          type: string
- *        swfurl:
- *          type: string
- *        tcurl:
- *          type: string
- *        pageurl:
- *          type: string
- *        clientid:
- *          type: string
- *        name:
- *          type: string
- *        addr:
- *          type: string
- *        call:
- *          type: string
- *        type:
- *          type: string
- *      required:
- *        - app
- *        - flashver
- *        - swfurl
- *        - tcurl
- *        - pageurl
- *        - clientid
- *        - name
- *        - addr
- *        - call
- *    ResetStreamingKeyRequestDto:
- *      type: object
- *      properties:
- *        channelId:
- *          type: string
- *      required:
- *        - channelId
- *    ResetStreamingKeyResponseDto:
- *      type: object
- *      properties:
- *        channelId:
- *          type: string
- *        streamingKey:
- *          type: string
- *      required:
+ * components:
+ *    schemas:
+ *      RtmpLiveRequestDto:
+ *        type: object
+ *        properties:
+ *          app:
+ *            type: string
+ *          flashver:
+ *            type: string
+ *          swfurl:
+ *            type: string
+ *          tcurl:
+ *            type: string
+ *          pageurl:
+ *            type: string
+ *          clientid:
+ *            type: string
+ *          name:
+ *            type: string
+ *          addr:
+ *            type: string
+ *          call:
+ *            type: string
+ *          type:
+ *            type: string
+ *        required:
+ *          - app
+ *          - flashver
+ *          - swfurl
+ *          - tcurl
+ *          - pageurl
+ *          - clientid
+ *          - name
+ *          - addr
+ *          - call
+ *      ResetStreamingKeyRequestDto:
+ *        type: object
+ *        properties:
+ *          channelId:
+ *            type: string
+ *        required:
+ *          - channelId
+ *      StreamingKeyResponseDto:
+ *        type: object
+ *        properties:
+ *          channelId:
+ *            type: string
+ *          streamingKey:
+ *            type: string
+ *        required:
  *          - channelId
  *          - streamingKey
  */
@@ -82,12 +84,13 @@ export class ChannelController extends BaseHttpController {
    * /live:
    *    post:
    *      tags:
-   *      - channel
+   *        - channel
    *      operationId: goLive
+   *      security: []
    *      consumes:
-   *      - application/json
+   *        - application/json
    *      produces:
-   *      - application/json
+   *        - application/json
    *      description: Checks stream key and sends notification to transcoder which then starts the stream
    *      parameters:
    *        - in: body
@@ -95,11 +98,11 @@ export class ChannelController extends BaseHttpController {
    *          description: data sent by OBS
    *          required: true
    *          schema:
-   *            $ref: '#/definitions/RtmpLiveRequestDto'
+   *            $ref: '#/components/schemas/RtmpLiveRequestDto'
    *      responses:
-   *        200:
+   *        '200':
    *          description: successful operation
-   *        403:
+   *        '403':
    *          description: Streaming token is wrong or the channel doesn't have any pending streams
    */
   @httpPost(ChannelApiPath.LIVE)
@@ -117,12 +120,13 @@ export class ChannelController extends BaseHttpController {
    * /live_done:
    *    post:
    *      tags:
-   *      - channel
+   *        - channel
    *      operationId: prepareStreamEnd
+   *      security: []
    *      consumes:
-   *      - application/json
+   *        - application/json
    *      produces:
-   *      - application/json
+   *        - application/json
    *      description: Sends notification to transcoder that the stream has stopped
    *      parameters:
    *        - in: body
@@ -130,9 +134,9 @@ export class ChannelController extends BaseHttpController {
    *          description: data sent by OBS
    *          required: true
    *          schema:
-   *            $ref: '#/definitions/RtmpLiveRequestDto'
+   *            $ref: '#/components/schemas/RtmpLiveRequestDto'
    *      responses:
-   *        200:
+   *        '200':
    *          description: new streaming key is given
    */
   @httpPost(ChannelApiPath.LIVE_DONE)
@@ -143,15 +147,55 @@ export class ChannelController extends BaseHttpController {
 
   /**
    * @swagger
-   * /reset_streaming_token:
+   * /streaming_key/{id}:
+   *    get:
+   *      tags:
+   *        - channel
+   *      operationId: getStreamingKey
+   *      security: []
+   *      consumes:
+   *        - application/json
+   *      produces:
+   *        - application/json
+   *      description: Gets the streaming key for the specified channel
+   *      parameters:
+   *        - in: path
+   *          name: id
+   *          description: channel ID to get the key
+   *          required: true
+   *          schema:
+   *            type: string
+   *      responses:
+   *        '200':
+   *          description: successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/StreamingKeyResponseDto'
+   *        '404':
+   *          description: channel not found
+   */
+  @httpGet(`${ChannelApiPath.STREAMING_KEY}${ChannelApiPath.$ID}`)
+  public async getStreamingKey(@requestParam() { id }: DefaultRequestParam): Promise<StreamingKeyResponseDto> {
+    const keyData = await this.channelService.getStreamingKey(id);
+    if (keyData === null) {
+      throw new NotFound('Invalid channel id');
+    }
+    return keyData;
+  }
+
+  /**
+   * @swagger
+   * /reset_streaming_key:
    *    post:
    *      tags:
-   *      - channel
+   *        - channel
    *      operationId: resetStreamingKey
+   *      security: []
    *      consumes:
-   *      - application/json
+   *        - application/json
    *      produces:
-   *      - application/json
+   *        - application/json
    *      description: Resets the streaming key for the specified channel
    *      parameters:
    *        - in: body
@@ -159,19 +203,21 @@ export class ChannelController extends BaseHttpController {
    *          description: channel ID the key should be reset for
    *          required: true
    *          schema:
-   *            $ref: '#/definitions/ResetStreamingKeyRequestDto'
+   *            $ref: '#/components/schemas/ResetStreamingKeyRequestDto'
    *      responses:
-   *        200:
+   *        '200':
    *          description: successful operation
-   *          schema:
-   *            $ref: '#/definitions/ResetStreamingKeyResponseDto'
-   *        404:
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/StreamingKeyResponseDto'
+   *        '404':
    *          description: channel not found
    */
-  @httpPost(ChannelApiPath.RESET_STREAMING_TOKEN)
+  @httpPost(ChannelApiPath.RESET_STREAMING_KEY)
   public async resetStreamingKey(
     @requestBody() resetStreamingKeyRequestDto: ResetStreamingKeyRequestDto,
-  ): Promise<ResetStreamingKeyResponseDto> {
+  ): Promise<StreamingKeyResponseDto> {
     const keyData = await this.channelService.resetStreamingKey(resetStreamingKeyRequestDto.channelId);
     if (keyData === null) {
       throw new NotFound('Invalid channel id');

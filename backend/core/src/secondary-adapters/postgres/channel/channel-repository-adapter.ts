@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { inject, injectable } from 'inversify';
-import { LiveStartResponseDto, ResetStreamingKeyResponseDto } from '~/shared/types/types';
+import { LiveStartResponseDto, StreamingKeyResponseDto } from '~/shared/types/types';
 import { StreamingStatus } from '~/shared/enums/enums';
 import { ChannelRepository } from '~/core/channel/port/channel-repository';
 import { generateUuid } from '~/shared/helpers';
@@ -38,7 +38,22 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
     };
   }
 
-  async resetStreamingKey(channelId: string): Promise<ResetStreamingKeyResponseDto | null> {
+  async getStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
+    const key = await this.prismaClient.streamingKey.findFirst({
+      where: {
+        channelId,
+      },
+    });
+    if (!key) {
+      return null;
+    }
+    return {
+      channelId,
+      streamingKey: key.key,
+    };
+  }
+
+  async resetStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
     const updatedKey = await this.prismaClient.streamingKey.update({
       where: {
         channelId,
