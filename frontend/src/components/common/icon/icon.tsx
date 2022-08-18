@@ -24,6 +24,10 @@ import { ReactComponent as Moon } from '../../../assets/img/moon.svg';
 import { ReactComponent as LogOut } from '../../../assets/img/logout.svg';
 import { ReactComponent as Analystic } from '../../../assets/img/analytics.svg';
 import { ReactComponent as Close } from '../../../assets/img/close.svg';
+import { ReactComponent as Exclamation } from '../../../assets/img/exclamation.svg';
+import { ReactComponent as Info } from '../../../assets/img/info.svg';
+import { ReactComponent as Warning } from '../../../assets/img/warning.svg';
+import { ReactComponent as Success } from '../../../assets/img/success.svg';
 import { ReactComponent as SendMessage } from '../../../assets/img/send-message.svg';
 import { ReactComponent as Emoji } from '../../../assets/img/emoji.svg';
 
@@ -148,6 +152,18 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
     case IconName.CLOSE: {
       return <Close {...commonProps} />;
     }
+
+    case IconName.EXCLAMATION:
+      return <Exclamation {...commonProps} />;
+
+    case IconName.INFO:
+      return <Info {...commonProps} />;
+
+    case IconName.WARNING:
+      return <Warning {...commonProps} />;
+
+    case IconName.SUCCESS:
+      return <Success {...commonProps} />;
 
     case IconName.SENDMESSAGE: {
       return <SendMessage {...commonProps} />;
