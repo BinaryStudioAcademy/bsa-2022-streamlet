@@ -1,5 +1,5 @@
 import { FC } from 'common/types/types';
-import { MainPage } from 'pages/main-page';
+import { MainPageContainer } from 'pages/main-page/main-page-container';
 import { AppRoute } from 'common/enums/enums';
 import { Routes, Route, HeaderContainer } from 'components/common/common';
 import { useLocation } from 'react-router-dom';
@@ -32,8 +32,8 @@ const App: FC = () => {
             <SidebarContainer />
             <div className={styles['main-content']}>
               <Routes>
-                <Route path={AppRoute.ROOT} element={<MainPage />} />
-                <Route path="/browse/some-path" element={<MainPage />} />
+                <Route path={AppRoute.ROOT} element={<MainPageContainer />} />
+                <Route path="/browse/some-path" element={<MainPageContainer />} />
                 <Route path={AppRoute.SEARCH} element={<Search />} />
                 <Route path={AppRoute.HISTORY} element="History" />
                 <Route path={AppRoute.FOLLOWING} element="Following" />
