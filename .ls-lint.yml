@@ -20,3 +20,6 @@ ignore:
   - backend/core/node_modules
   - backend/push/node_modules
   - backend/push/build
+  - backend/video-transcoding-server/build
+  - backend/video-transcoding-server/node_modules
+  - backend/video-transcoding-server/playback

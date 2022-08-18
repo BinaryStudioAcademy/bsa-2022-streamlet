@@ -15,6 +15,7 @@
     "build:frontend": "npm run build -w frontend",
     "build:backend": "npm run build -w backend/core",
     "build:push": "npm run build -w backend/push",
+    "build:vts": "npm run build -w backend/video-transcoding-server",
     "build": "npm run build -w shared -w frontend -w backend/core -w backend/push",
     "docker:build:backend": "docker build -f .docker/backend.Dockerfile -t backend .",
     "docker:build:push": "docker build -f .docker/push.Dockerfile -t push .",
@@ -27,7 +28,8 @@
     "migrate": "npm run migrate -w backend/core",
     "start:frontend": "npm start -w frontend",
     "start:backend": "npm run start:dev -w backend/core",
-    "start:push": "npm run start:dev -w backend/push"
+    "start:push": "npm run start:dev -w backend/push",
+    "start:vts": "npm run start:dev -w backend/video-transcoding-server"
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "1.11.2",
@@ -45,6 +47,7 @@
   "workspaces": [
     "backend/core",
     "backend/push",
+    "backend/video-transcoding-server",
     "frontend",
     "shared"
   ],

@@ -3,6 +3,7 @@ export * from './user/user';
 export { type ValidationSchema } from './validation/validation';
 export * from './auth/auth';
 export { type CloudinaryApi, type ImageUploadRequestDto, ImageUploadResponseDto } from './cloudinary/cloudinary';
+export { type ChildProcessParams } from './child-process/child-process';
 
 export {
   type MailRequestDto,
