@@ -54,3 +54,11 @@
   font-size: 16px;
   text-align: center;
 }
+
+@media screen and (max-width: 400px) {
+  .upload-image-wrapper {
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+}
