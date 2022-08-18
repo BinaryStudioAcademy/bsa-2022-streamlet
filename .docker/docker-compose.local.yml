@@ -31,6 +31,8 @@ services:
   backend:
     image: backend
     container_name: backend
+    volumes:
+      - playback:/app/playback
     depends_on:
       - api-db
     ports:
@@ -61,7 +63,24 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "5"      
+        max-file: "5"
+  video-transcoding-server:
+    image: video-transcoding-server
+    container_name: video-transcoding-server
+    volumes:
+      - playback:/app/backend/video-transcoding-server/playback
+    depends_on:
+      - rabbitmq
+    env_file:
+      - ../.env/video-transcoding-server.env
+    networks:
+      - backend_network
+      - frontend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"                  
   frontend:
     image: frontend
     container_name: frontend
@@ -84,6 +103,8 @@ services:
       - frontend_network
 
 volumes:
+  playback:
+    driver: local
   pgdata_api:
     driver: local
   pgconf_api:
