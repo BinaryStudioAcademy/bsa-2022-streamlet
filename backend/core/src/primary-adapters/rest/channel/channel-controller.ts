@@ -8,6 +8,8 @@ import {
 import { ApiPath } from '~/shared/enums/api/api';
 import { ChannelService } from '~/core/channel/application/channel-service';
 import { inject } from 'inversify';
+import { Forbidden } from '~/shared/exceptions/forbidden';
+import { NotFound } from '~/shared/exceptions/not-found';
 
 @controller(ApiPath.CHANNEL)
 export class ChannelController extends BaseHttpController {
@@ -20,7 +22,11 @@ export class ChannelController extends BaseHttpController {
 
   @httpPost('/live')
   public async goLive(@requestBody() rtmpLiveRequestDto: RtmpLiveRequestDto): Promise<void> {
-    this.channelService.prepareStreamStart(rtmpLiveRequestDto.name);
+    const streamData = await this.channelService.checkStreamingKey(rtmpLiveRequestDto.name);
+    if (streamData === null) {
+      throw new Forbidden('Invalid streaming key or no video created to stream on');
+    }
+    this.channelService.notifyTranscoderAboutStreamStart(streamData);
     return;
   }
 
@@ -34,6 +40,10 @@ export class ChannelController extends BaseHttpController {
   public async resetStreamingKey(
     @requestBody() resetStreamingKeyRequestDto: ResetStreamingKeyRequestDto,
   ): Promise<ResetStreamingKeyResponseDto> {
-    return this.channelService.resetStreamingKey(resetStreamingKeyRequestDto.channelId);
+    const keyData = await this.channelService.resetStreamingKey(resetStreamingKeyRequestDto.channelId);
+    if (keyData === null) {
+      throw new NotFound('Invalid channel id');
+    }
+    return keyData;
   }
 }
