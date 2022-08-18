@@ -13,4 +13,6 @@ export {
   type WelcomeMail,
 } from './mail/mail';
 
+export { type HistoryRequestDto, HistoryResponseDto } from './history';
+
 export { type VideoCard } from './components/components';
