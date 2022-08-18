@@ -8,6 +8,7 @@ import { SidebarContainer } from 'components/common/sidebar/sidebar-container';
 import { isRouteHaveHeader } from 'helpers/routes/is-route-have-header';
 import { NotFound } from '../not-found-page/not-found';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
+import { Studio, StudioAnalytics } from '../studio';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 import { VideoPageContainer } from 'pages/video/video-page-container';
 
@@ -41,6 +42,8 @@ const App: FC = () => {
                 <Route path={AppRoute.BROWSE} element="Browse" />
                 <Route path={AppRoute.ANY} element={<NotFound />} />
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
+                <Route path={AppRoute.STUDIO} element={<Studio />} />
+                <Route path={AppRoute.ANALYTICS} element={<StudioAnalytics />} />
                 <Route path="video-page" element={<VideoPageContainer />} />
               </Routes>
             </div>
