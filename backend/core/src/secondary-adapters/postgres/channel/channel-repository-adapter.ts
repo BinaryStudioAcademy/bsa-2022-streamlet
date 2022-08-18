@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { inject, injectable } from 'inversify';
-import { LiveEndResponseDto, LiveStartResponseDto, ResetStreamingKeyResponseDto } from 'shared/build';
+import { LiveStartResponseDto, ResetStreamingKeyResponseDto } from '~/shared/types/types';
+import { StreamingStatus } from '~/shared/enums/enums';
 import { ChannelRepository } from '~/core/channel/port/channel-repository';
 import { generateUuid } from '~/shared/helpers';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
@@ -22,50 +23,18 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
     if (!keyRecord) {
       return null;
     }
-    const activeStream = await this.prismaClient.video.findFirst({
+    const pendingStream = await this.prismaClient.video.findFirst({
       where: {
         channelId: keyRecord.channelId,
-        isLive: true,
+        status: StreamingStatus.PENDING,
       },
     });
-    if (!activeStream) {
+    if (!pendingStream) {
       return null;
     }
     return {
-      videoId: activeStream.id,
+      videoId: pendingStream.id,
       streamingKey: key,
-    };
-  }
-
-  async finishStream(key: string): Promise<LiveEndResponseDto | null> {
-    const keyRecord = await this.prismaClient.streamingKey.findFirst({
-      where: {
-        key,
-      },
-    });
-    if (!keyRecord) {
-      return null;
-    }
-    let activeStream = await this.prismaClient.video.findFirst({
-      where: {
-        channelId: keyRecord.channelId,
-        isLive: true,
-      },
-    });
-    if (!activeStream) {
-      return null;
-    }
-    activeStream = await this.prismaClient.video.update({
-      where: {
-        id: activeStream.id,
-      },
-      data: {
-        isLive: false,
-      },
-    });
-    return {
-      id: activeStream.id,
-      isLive: activeStream.isLive,
     };
   }
 
@@ -82,6 +51,7 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
       return null;
     }
     return {
+      channelId,
       streamingKey: updatedKey.key,
     };
   }

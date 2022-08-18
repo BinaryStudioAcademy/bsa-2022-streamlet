@@ -1,4 +1,5 @@
 type ResetStreamingKeyResponseDto = {
+  channelId: string;
   streamingKey: string;
 };
 

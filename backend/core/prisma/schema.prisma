@@ -128,11 +128,9 @@ model Channel {
 
 model StreamingKey {
   id        String  @id @default(uuid())
-  key       String  @default(uuid())
+  key       String  @unique @default(uuid())
   channel   Channel @relation(fields: [channelId], references: [id])
-  channelId String
-
-  @@unique([key, channelId])
+  channelId String  @unique
 }
 
 model Subscription {

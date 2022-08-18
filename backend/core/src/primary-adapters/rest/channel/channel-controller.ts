@@ -20,13 +20,13 @@ export class ChannelController extends BaseHttpController {
 
   @httpPost('/live')
   public async goLive(@requestBody() rtmpLiveRequestDto: RtmpLiveRequestDto): Promise<void> {
-    this.channelService.checkStreamingKey(rtmpLiveRequestDto.name);
+    this.channelService.prepareStreamStart(rtmpLiveRequestDto.name);
     return;
   }
 
   @httpPost('/live_done')
-  public async endStream(@requestBody() rtmpLiveRequestDto: RtmpLiveRequestDto): Promise<void> {
-    this.channelService.finishStream(rtmpLiveRequestDto.name);
+  public async prepareStreamEnd(@requestBody() rtmpLiveRequestDto: RtmpLiveRequestDto): Promise<void> {
+    this.channelService.prepareStreamEnd(rtmpLiveRequestDto.name);
     return;
   }
 
