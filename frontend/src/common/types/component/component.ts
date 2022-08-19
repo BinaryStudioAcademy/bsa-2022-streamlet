@@ -1,1 +1,1 @@
-export { type VideoCard } from 'shared/build';
+export { VideoCard } from 'shared/build';

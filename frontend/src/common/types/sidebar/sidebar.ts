@@ -1,1 +1,1 @@
-export { SubscribeChanel } from './subscribe-chanel.type';
+export { ChannelSubscriptionResponseDto } from 'shared/build';

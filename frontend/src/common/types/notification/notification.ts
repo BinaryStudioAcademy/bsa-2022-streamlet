@@ -1,6 +1,6 @@
 export {
-  type NotificationBaseResponseDto,
-  type NotificationListResponseDto,
-  type NotificationResponseDto,
-  type NotificationFilter,
+  NotificationBaseResponseDto,
+  NotificationListResponseDto,
+  NotificationResponseDto,
+  NotificationFilter,
 } from 'shared/build';
