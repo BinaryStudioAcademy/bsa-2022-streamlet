@@ -11,6 +11,7 @@ import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-m
 import { Studio, StudioAnalytics } from '../studio';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 import { VideoCardTest } from './tests/video-card/video-card';
+import { VideoPageContainer } from 'pages/video/video-page-container';
 
 import styles from './app.module.scss';
 
@@ -45,6 +46,7 @@ const App: FC = () => {
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
                 <Route path={AppRoute.STUDIO} element={<Studio />} />
                 <Route path={AppRoute.ANALYTICS} element={<StudioAnalytics />} />
+                <Route path="video-page" element={<VideoPageContainer />} />
               </Routes>
             </div>
           </section>

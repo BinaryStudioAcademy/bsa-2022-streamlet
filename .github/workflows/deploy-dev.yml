@@ -74,7 +74,7 @@ jobs:
           host: ${{ secrets.DEPLOYMENT_HOST }}
           username: ${{ secrets.DEPLOYMENT_USERNAME }}
           password: ${{ secrets.DEPLOYMENT_SSH_PASSWORD }}
-          source: .docker/docker-compose.dev.yml
+          source: ".docker/docker-compose.dev.yml,nginx/nginx.rtmp.conf"
           target: app
 
       - name: Run docker-compose.dev.yml on deployment server
