@@ -1,5 +1,16 @@
 version: '3.9'
 services:
+  rtmp:
+    image: tiangolo/nginx-rtmp
+    ports:
+      - "1935:1935"
+    container_name: rtmp
+    depends_on:
+      - backend
+    networks:
+      - backend_network
+    volumes:
+      - ../nginx/nginx.rtmp.conf:/etc/nginx/nginx.conf
   rabbitmq:
     image: rabbitmq:3-management-alpine
     hostname: rabbit
@@ -62,7 +73,7 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "5"            
+        max-file: "5"
   frontend:
     image: ghcr.io/binarystudioacademy/streamlet-frontend-dev:latest
     container_name: frontend

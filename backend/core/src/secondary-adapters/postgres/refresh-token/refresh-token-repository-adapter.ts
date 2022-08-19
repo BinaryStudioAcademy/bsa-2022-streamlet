@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
-import { generateRefreshToken, hashValue } from '~/shared/helpers';
-import bcrypt from 'bcrypt';
+import { generateJwt, verifyJwt } from '~/shared/helpers';
 import { RefreshTokenRepository } from '~/core/refresh-token/port/refresh-token-repository';
+import { CONFIG } from '~/configuration/config';
 
 @injectable()
 export class RefreshTokenRepositoryAdapter implements RefreshTokenRepository {
@@ -12,17 +12,33 @@ export class RefreshTokenRepositoryAdapter implements RefreshTokenRepository {
   constructor(@inject(CONTAINER_TYPES.PrismaClient) prismaClient: PrismaClient) {
     this.prismaClient = prismaClient;
   }
-  async checkForExistence(userId: string, refreshToken: string): Promise<boolean> {
-    const token = await this.prismaClient.refreshToken.findFirst({
+
+  async removeForUser(userId: string): Promise<void> {
+    await this.prismaClient.refreshToken.deleteMany({
       where: {
         userId,
       },
     });
-    if (token === null) {
-      return false;
-    }
+  }
 
-    return bcrypt.compare(refreshToken, token.token);
+  async getRefreshTokenUser(refreshToken: string): Promise<User | null> {
+    try {
+      const refreshTokenPayload = await verifyJwt<RefreshTokenJwtPayload>(refreshToken);
+      const token = await this.prismaClient.refreshToken.findFirst({
+        where: {
+          userId: refreshTokenPayload.userId,
+        },
+        include: {
+          user: true,
+        },
+      });
+      if (token === null) {
+        return null;
+      }
+      return refreshToken === token.token ? token.user : null;
+    } catch {
+      return null;
+    }
   }
 
   async createForUser(userId: string): Promise<string> {
@@ -31,13 +47,20 @@ export class RefreshTokenRepositoryAdapter implements RefreshTokenRepository {
         userId,
       },
     });
-    const token = await generateRefreshToken();
+    const token = await generateJwt<RefreshTokenJwtPayload>({
+      payload: { userId },
+      lifetime: CONFIG.ENCRYPTION.REFRESH_LIFETIME,
+    });
     await this.prismaClient.refreshToken.create({
       data: {
-        token: await hashValue(token),
+        token,
         userId,
       },
     });
     return token;
   }
 }
+
+type RefreshTokenJwtPayload = {
+  userId: string;
+};

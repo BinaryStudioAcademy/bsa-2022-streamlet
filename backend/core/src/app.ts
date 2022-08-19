@@ -2,6 +2,7 @@ import express from 'express';
 import PinoHttp from 'pino-http';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
+import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 
 import 'reflect-metadata';
@@ -32,6 +33,7 @@ class Application {
 
   private initMiddlewares(): void {
     this.app?.setConfig((app) => {
+      app.use(cors());
       app.use(helmet());
       app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
       app.use(bodyParser.urlencoded({ 'limit': '50mb', 'extended': true }));

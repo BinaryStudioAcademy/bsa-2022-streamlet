@@ -1,5 +1,5 @@
 import { inject } from 'inversify';
-import { BaseHttpController, controller, httpPost, requestBody } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpPost, request, requestBody } from 'inversify-express-utils';
 import { ApiPath, AuthApiPath } from '~/shared/enums/api/api';
 import {
   CONTAINER_TYPES,
@@ -11,15 +11,14 @@ import {
   UserSignUpResponseDto,
   MailResponseDto,
   MailTestRequestDto,
+  ExtendedAuthenticatedRequest,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
-import { compareHash, generateJwt } from './utils';
-import { trimUser } from '~/shared/helpers';
+import { compareHash, generateJwt, trimUser } from '~/shared/helpers';
 import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
-import { validationMiddleware } from '../../../secondary-adapters/middleware';
+import { authenticationMiddleware, validationMiddleware } from '../middleware';
 import { userSignIn, userSignUp } from '~/validation-schemas/user/user';
 import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-token';
-import { NotFound } from '~/shared/exceptions/not-found';
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
 import { exceptionMessages } from '~/shared/enums/exceptions';
 import { DuplicationError } from '~/shared/exceptions/duplication-error';
@@ -29,53 +28,49 @@ import { DuplicationError } from '~/shared/exceptions/duplication-error';
  * tags:
  *   name: auth
  *   description: Authorization
- * definitions:
- *    UserBaseResponse:
- *      type: object
- *      properties:
- *        id:
- *          type: string
- *          format: uuid
- *        email:
- *          type: string
- *          format: email
- *    TokenPair:
- *      type: object
- *      properties:
- *        accessToken:
- *          type: string
- *        refreshToken:
- *          type: string
- *    UserSignUpRequest:
- *      type: object
- *      properties:
- *        email:
- *          type: string
- *          format: email
- *        password:
- *          type: string
- *    UserSignUpResponse:
- *      type: object
- *      properties:
- *        user:
- *          $ref: '#/definitions/UserBaseResponse'
- *        tokens:
- *          $ref: '#/definitions/TokenPair'
- *    UserSignInRequest:
- *      type: object
- *      properties:
- *        email:
- *          type: string
- *          format: email
- *        password:
- *          type: string
- *    UserSignInResponse:
- *      type: object
- *      properties:
- *        user:
- *          $ref: '#/definitions/UserBaseResponse'
- *        tokens:
- *          $ref: '#/definitions/TokenPair'
+ * components:
+ *    securitySchemes:
+ *      bearerAuth:
+ *        type: http
+ *        scheme: bearer
+ *        bearerFormat: JWT
+ *    schemas:
+ *      UserBaseResponse:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: string
+ *            format: uuid
+ *          email:
+ *            type: string
+ *            format: email
+ *      TokenPair:
+ *        type: object
+ *        properties:
+ *          accessToken:
+ *            type: string
+ *          refreshToken:
+ *            type: string
+ *      Error:
+ *        type: object
+ *        properties:
+ *          message:
+ *            type: string
+ *        required:
+ *          - message
+ *    responses:
+ *      NotFound:
+ *        description: The specified resource was not found
+ *        schema:
+ *          type: array
+ *          items:
+ *            $ref: '#/components/schemas/Error'
+ *      Unauthorized:
+ *        description: Unauthorized
+ *        schema:
+ *          type: array
+ *          items:
+ *            $ref: '#/components/schemas/Error'
  */
 @controller(ApiPath.AUTH)
 export class AuthController extends BaseHttpController {
@@ -100,36 +95,60 @@ export class AuthController extends BaseHttpController {
    *      - auth
    *      security: []
    *      operationId: signUpUser
-   *      consumes:
-   *      - application/json
-   *      produces:
-   *      - application/json
    *      description: Sign up user into the system
-   *      parameters:
-   *      - in: body
-   *        name: body
+   *      requestBody:
    *        description: User auth data
    *        required: true
-   *        schema:
-   *          $ref: '#/definitions/UserSignUpRequest'
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                email:
+   *                  type: string
+   *                  format: email
+   *                username:
+   *                  type: string
+   *                password:
+   *                  type: string
    *      responses:
    *        200:
-   *          description: successful operation
-   *          schema:
-   *            $ref: '#/definitions/UserSignUpResponse'
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  user:
+   *                    $ref: '#/components/schemas/UserBaseResponse'
+   *                  tokens:
+   *                    $ref: '#/components/schemas/TokenPair'
    *        400:
    *          description: Email is already taken.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
    */
   @httpPost(AuthApiPath.SIGN_UP, validationMiddleware(userSignUp))
-  public async signUp(
-    @requestBody() userRequestDto: UserSignUpRequestDto,
-  ): Promise<{ user: UserSignUpResponseDto; tokens: TokenPair }> {
-    const userAlreadyExists = (await this.userService.getUserByEmail(userRequestDto.email)) !== null;
-    if (userAlreadyExists) {
-      throw new DuplicationError(exceptionMessages.auth.USER_EMAIL_ALREADY_EXISTS);
+  public async signUp(@requestBody() userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
+    const duplicateUser = await this.userService.getUserByUsernameOrEmail(
+      userRequestDto.email,
+      userRequestDto.username,
+    );
+
+    if (duplicateUser) {
+      if (duplicateUser.username === userRequestDto.username) {
+        throw new DuplicationError(exceptionMessages.auth.USER_USERNAME_ALREADY_EXISTS);
+      }
+      if (duplicateUser.email === userRequestDto.email) {
+        throw new DuplicationError(exceptionMessages.auth.USER_EMAIL_ALREADY_EXISTS);
+      }
     }
     const user = await this.userService.createUser(userRequestDto);
-    const accessToken = await generateJwt(user);
+    const accessToken = await generateJwt({ payload: user });
     return {
       user,
       tokens: {
@@ -147,32 +166,51 @@ export class AuthController extends BaseHttpController {
    *      - auth
    *      security: []
    *      operationId: signInUser
-   *      consumes:
-   *      - application/json
-   *      produces:
-   *      - application/json
    *      description: Sign in user into the system
-   *      parameters:
-   *      - in: body
-   *        name: body
+   *      requestBody:
    *        description: User auth data
    *        required: true
-   *        schema:
-   *          $ref: '#/definitions/UserSignInRequest'
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                email:
+   *                  type: string
+   *                  format: email
+   *                password:
+   *                  type: string
    *      responses:
    *        200:
-   *          description: successful operation
-   *          schema:
-   *            $ref: '#/definitions/UserSignInResponse'
-   *        401:
-   *          description: Incorrect credentials.
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  user:
+   *                    $ref: '#/components/schemas/UserBaseResponse'
+   *                  tokens:
+   *                    $ref: '#/components/schemas/TokenPair'
    *        400:
    *          description: Invalid request format.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   *        401:
+   *          description: Incorrect credentials.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
    */
   @httpPost(AuthApiPath.SIGN_IN, validationMiddleware(userSignIn))
-  public async signIn(
-    @requestBody() userRequestDto: UserSignInRequestDto,
-  ): Promise<{ user: UserSignInResponseDto; tokens: TokenPair }> {
+  public async signIn(@requestBody() userRequestDto: UserSignInRequestDto): Promise<UserSignInResponseDto> {
     const user = await this.userService.getUserByEmail(userRequestDto.email);
     if (!user) {
       throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
@@ -181,7 +219,7 @@ export class AuthController extends BaseHttpController {
     if (!isSameHash) {
       throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
     }
-    const accessToken = await generateJwt(trimUser(user));
+    const accessToken = await generateJwt({ payload: trimUser(user) });
     return {
       user: trimUser(user),
       tokens: {
@@ -199,52 +237,47 @@ export class AuthController extends BaseHttpController {
    *      - auth
    *      security: []
    *      operationId: refreshTokens
-   *      consumes:
-   *      - application/json
-   *      produces:
-   *      - application/json
    *      description: Refresh user's access token
-   *      parameters:
-   *      - in: body
-   *        name: body
-   *        description: User's id and refresh token
+   *      requestBody:
+   *        description: refresh token
    *        required: true
-   *        schema:
-   *          type: object
-   *          properties:
-   *            userId:
-   *              type: string
-   *              format: uuid
-   *            refreshToken:
-   *              type: string
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                refreshToken:
+   *                  type: string
    *      responses:
    *        200:
-   *          description: successful operation
-   *          schema:
-   *            type: object
-   *            properties:
-   *              tokens:
-   *                $ref: '#/definitions/TokenPair'
-   *        404:
-   *          description: Such user-token pair was not found
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  tokens:
+   *                    $ref: '#/components/schemas/TokenPair'
+   *        401:
+   *          description: Such user-token pair was not found or inspired
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
    */
   @httpPost(AuthApiPath.REFRESH_TOKENS, validationMiddleware(refreshTokenRequest))
   public async refreshTokens(
     @requestBody() refreshTokenRequestDto: RefreshTokenRequestDto,
   ): Promise<{ tokens: TokenPair }> {
-    const user = await this.userService.getUserById(refreshTokenRequestDto.userId);
-    if (!user) {
-      throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
+    const tokenUser = await this.refreshTokenService.getRefreshTokenUser(refreshTokenRequestDto.refreshToken);
+
+    if (!tokenUser) {
+      throw new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN);
     }
-    const hasToken = await this.refreshTokenService.checkForExistence(
-      refreshTokenRequestDto.userId,
-      refreshTokenRequestDto.refreshToken,
-    );
-    if (!hasToken) {
-      throw new NotFound(exceptionMessages.auth.TOKEN_NOT_FOUND);
-    }
-    const newRefreshToken = await this.userService.createRefreshToken(refreshTokenRequestDto.userId);
-    const newAccessToken = await generateJwt(trimUser(user));
+    const newRefreshToken = await this.userService.createRefreshToken(tokenUser.id);
+    const newAccessToken = await generateJwt({ payload: trimUser(tokenUser) });
     return {
       tokens: {
         accessToken: newAccessToken,
@@ -255,29 +288,64 @@ export class AuthController extends BaseHttpController {
 
   /**
    * @swagger
+   * /auth/log-out:
+   *    post:
+   *      tags:
+   *      - auth
+   *      security:
+   *      - bearerAuth: []
+   *      operationId: logOut
+   *      description: Logout the user (will delete all refresh tokens)
+   *      responses:
+   *        204:
+   *          description: Successful operation
+   *        401:
+   *          description: Such user-token is incorrect or missing.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   */
+  @httpPost(AuthApiPath.LOG_OUT, authenticationMiddleware)
+  public async logout(@request() req: ExtendedAuthenticatedRequest): Promise<void> {
+    const user = req.user;
+    return this.refreshTokenService.removeForUser(user.id);
+  }
+
+  /**
+   * @swagger
    * /auth/mail-test:
-   *   post:
-   *     tags:
-   *       - auth
-   *     summary: Test the mail service
-   *     security: []
-   *     operationId: testMailService
-   *     consumes:
-   *       - application/json
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *       - in: body
-   *         name: body
-   *         description: Email and name for test
-   *         required: true
-   *         schema:
-   *           $ref: '#/definitions/MailTestRequest'
-   *     responses:
-   *       default:
-   *         description: Confirmation that email was sent successfully or error message
-   *         schema:
-   *           $ref: '#/definitions/MailTestResponse'
+   *    post:
+   *      tags:
+   *      - auth
+   *      summary: Test the mail service
+   *      security: []
+   *      operationId: testMailService
+   *      requestBody:
+   *        description: Email and name for test
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                email:
+   *                  type: string
+   *                  format: email
+   *                name:
+   *                  type: string
+   *      responses:
+   *        default:
+   *          description: Confirmation that email was sent successfully or error message
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  message:
+   *                    type: string
    */
   // This route is created only for testing purposes.
   @httpPost('/mail-test')

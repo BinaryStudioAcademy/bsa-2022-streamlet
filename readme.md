@@ -57,6 +57,7 @@ erDiagram
   User {
     String id PK
     String email
+    String username
     String password
     Boolean isActivated
     DateTime createdAt
@@ -266,6 +267,8 @@ Run commands from root:
 ````
 docker build --build-arg REACT_APP_API_ORIGIN_URL=/api/v1 -f .docker/frontend.Dockerfile -t frontend .
 docker build -f .docker/backend.Dockerfile -t backend .
+docker build -f .docker/push.Dockerfile -t push .
+docker build -f .docker/rtmp.Dockerfile -t push .
 docker compose -f .docker/docker-compose.local.yml up -d
 ````
 ## 📦 CD

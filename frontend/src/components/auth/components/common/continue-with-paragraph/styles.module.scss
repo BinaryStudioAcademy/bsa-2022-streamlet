@@ -1,0 +1,18 @@
+.continue-with-paragraph {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 34px;
+  margin-bottom: 29px;
+}
+
+.auth-link {
+  margin-left: 5px;
+  color: var(--white-text-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.auth-link:hover {
+  color: var(--text-gray-color);
+}

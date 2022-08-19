@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { faker } from '@faker-js/faker';
-import { users, userProfiles, refreshTokens, channels, videos } from './seed-data';
+import { users, userProfiles, channels, videos } from './seed-data';
 const prisma = new PrismaClient();
 
 async function seedSampleData(): Promise<void> {
@@ -10,8 +10,8 @@ async function seedSampleData(): Promise<void> {
   }
   await seedUsers();
   await seedUserProfiles();
-  await seedRefreshTokens();
   await seedChannels();
+  await seedStreamingKeys();
   await seedVideos();
   await seedSubscriptions();
   await seedTags();
@@ -47,20 +47,20 @@ async function seedUserProfiles(): Promise<void> {
   });
 }
 
-async function seedRefreshTokens(): Promise<void> {
-  await prisma.refreshToken.createMany({
-    data: await Promise.all(
-      refreshTokens.map(async (refreshToken) => ({
-        ...refreshToken,
-        token: await bcrypt.hash(refreshToken.token, 12),
-      })),
-    ),
-  });
-}
-
 async function seedChannels(): Promise<void> {
   await prisma.channel.createMany({
     data: channels,
+  });
+}
+
+async function seedStreamingKeys(): Promise<void> {
+  const channels = await prisma.channel.findMany();
+  channels.forEach(async (channel) => {
+    await prisma.streamingKey.create({
+      data: {
+        channelId: channel.id,
+      },
+    });
   });
 }
 

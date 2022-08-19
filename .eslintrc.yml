@@ -22,6 +22,9 @@ rules:
     - error
   no-console:
     - error
+    - allow:
+        - war
+        - error
   arrow-parens:
     - error
     - always
