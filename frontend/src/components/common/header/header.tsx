@@ -22,7 +22,7 @@ interface HeaderProps {
   searchValue: string;
   searchInputId: string;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
-  handleClickLogin(e: MouseEvent<HTMLElement>): void;
+  handleClickLogin(): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;

@@ -8,10 +8,10 @@ import {
   useLocation,
   useId,
 } from 'hooks/hooks';
-import { useState, MouseEvent, FormEvent } from 'react';
+import { MouseEvent, FormEvent } from 'react';
 import { Header } from './header';
 import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
-import { searchActions } from 'store/actions';
+import { authActions, searchActions } from 'store/actions';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
 
@@ -19,12 +19,17 @@ const HeaderContainer: FC = () => {
   const dispatch = useAppDispatch();
   const {
     search: { searchText },
-  } = useAppSelector((state) => ({ search: state.search }));
+    user,
+  } = useAppSelector((state) => ({
+    search: state.search,
+    user: state.auth.user,
+  }));
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const [isLogged, setIsLogged] = useState(false);
-  const { isOpened: isMenuOpen, close, open, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+  const hasUser = Boolean(user);
+
+  const { isOpened: isMenuOpen, open, ref: menuRef } = useOutsideClick<HTMLDivElement>();
 
   const options = [
     {
@@ -47,17 +52,26 @@ const HeaderContainer: FC = () => {
       type: MenuOptions.Logout,
       text: 'Log Out',
       icon: IconName.LOGOUT,
-      onClick: (e: MouseEvent): void => {
-        handleClickLogin(e);
+      onClick: (): void => {
+        handleClickLogout();
       },
     },
   ];
 
-  function handleClickLogin(e: MouseEvent): void {
-    e.preventDefault();
+  const handleLogout = useCallback(async () => {
+    try {
+      await dispatch(authActions.logout());
+    } finally {
+      navigate(AppRoute.SIGN_IN, { replace: true });
+    }
+  }, [dispatch, navigate]);
 
-    close();
-    setIsLogged(!isLogged);
+  function handleClickLogin(): void {
+    navigate(AppRoute.SIGN_IN, { replace: true });
+  }
+
+  function handleClickLogout(): void {
+    handleLogout();
   }
 
   function handleClickUserMenu(e: MouseEvent): void {
@@ -87,7 +101,7 @@ const HeaderContainer: FC = () => {
     if (searchText) {
       handleClearActiveFilterIds();
       const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
-      navigate(`/search?${searchUrlParams.toString()}`, { replace: true });
+      navigate(`${AppRoute.SEARCH}?${searchUrlParams.toString()}`, { replace: true });
     }
   };
 
@@ -98,7 +112,7 @@ const HeaderContainer: FC = () => {
   return (
     <Header
       menuRef={menuRef}
-      isLogged={isLogged}
+      isLogged={hasUser}
       isMenuOpen={isMenuOpen}
       searchValue={searchText}
       searchInputId={searchInputId}
