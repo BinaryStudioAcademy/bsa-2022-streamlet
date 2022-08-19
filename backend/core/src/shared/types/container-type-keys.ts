@@ -7,7 +7,7 @@ const CONTAINER_TYPES = {
   RefreshTokenService: Symbol.for('RefreshTokenService'),
   RefreshTokenRepository: Symbol.for('RefreshTokenRepository'),
   MailRepository: Symbol.for('MailRepository'),
-  HistoryRepository: Symbol.for('UserRepository'),
+  HistoryRepository: Symbol.for('HistoryRepository'),
   HistoryController: Symbol.for('HistoryController'),
   HistoryService: Symbol.for('HistoryService'),
 

@@ -2,8 +2,8 @@ type HistoryResponseDto = {
   id: string;
   userId: string;
   videoId: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export { type HistoryResponseDto };

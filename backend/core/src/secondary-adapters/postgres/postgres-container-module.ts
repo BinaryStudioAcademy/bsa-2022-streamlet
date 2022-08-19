@@ -5,6 +5,8 @@ import { UserRepositoryAdapter } from './user/user-repository-adapter';
 import { PrismaClient } from '@prisma/client';
 import { RefreshTokenRepository } from '~/core/refresh-token/port/refresh-token-repository';
 import { RefreshTokenRepositoryAdapter } from './refresh-token/refresh-token-repository-adapter';
+import { HistoryRepository } from '../../core/history/port/history-repository';
+import { HistoryRepositoryAdapter } from './history/history-repository-adapter';
 
 const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const client = new PrismaClient();
@@ -12,6 +14,7 @@ const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces
 
   bind<UserRepository>(CONTAINER_TYPES.UserRepository).to(UserRepositoryAdapter);
   bind<RefreshTokenRepository>(CONTAINER_TYPES.RefreshTokenRepository).to(RefreshTokenRepositoryAdapter);
+  bind<HistoryRepository>(CONTAINER_TYPES.HistoryRepository).to(HistoryRepositoryAdapter);
   bind<PrismaClient>(CONTAINER_TYPES.PrismaClient)
     .toConstantValue(client)
     .onDeactivation(async (client) => {

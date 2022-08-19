@@ -46,6 +46,8 @@ export class HistoryController extends BaseHttpController {
    *      - history
    *      operationId: getAllUserHistory
    *      description: Returns an array of user history
+   *      security:
+   *        - bearerAuth: []
    *      responses:
    *        200:
    *          description: Successful operation
@@ -59,7 +61,8 @@ export class HistoryController extends BaseHttpController {
    *          $ref: '#/components/responses/NotFound'
    */
   @httpGet('/', authenticationMiddleware)
-  public getAllUserHistory(userId: string): Promise<History[]> {
+  public getAllUserHistory(@requestBody() historyRequestDto: { userId: string }): Promise<History[]> {
+    const { userId } = historyRequestDto;
     return this.historyService.getAllUserHistory(userId);
   }
 
@@ -68,8 +71,9 @@ export class HistoryController extends BaseHttpController {
    * /history:
    *    post:
    *      tags:
-   *      - history
-   *      security: []
+   *        - history
+   *      security:
+   *        - bearerAuth: []
    *      operationId: createHistory
    *      description: create a video history item in the system
    *      requestBody:
