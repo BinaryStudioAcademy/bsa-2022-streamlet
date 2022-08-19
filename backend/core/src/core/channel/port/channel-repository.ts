@@ -6,4 +6,5 @@ export interface ChannelRepository {
   removeSubscription(userId: string, videoId: string): Promise<CreateSubscriptionResponseDto | null>;
   getChannelById(id: string): Promise<Channel | null>;
   isUserSubscribe(channelId: string, userId: string): Promise<boolean>;
+  isUserSubscribeByVideoId(videoId: string, userId: string): Promise<boolean>;
 }

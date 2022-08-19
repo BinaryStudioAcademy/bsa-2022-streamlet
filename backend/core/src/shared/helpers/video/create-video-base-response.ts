@@ -1,23 +1,36 @@
-import { Video } from '@prisma/client';
+import { Reaction } from '@prisma/client';
 import { VideoBaseResponseDto } from 'shared/build';
 
-const createVideoBaseResponse = (video: Video, likeNum: number, disLikeNum: number): VideoBaseResponseDto | null => {
+type createVideoBaseResponseInputType = {
+  comments: { id: string; createdAt: Date; updatedAt: Date; text: string; authorId: string }[];
+  reactions: Reaction[];
+  id: string;
+  name: string;
+  description: string;
+  videoViews: number;
+  liveViews: number;
+  createdAt: Date;
+  isLive: boolean;
+  channelId: string;
+  videoPath: string;
+};
+
+const createVideoBaseResponse = (
+  video: createVideoBaseResponseInputType,
+  likeNum: number,
+  disLikeNum: number,
+  isUserSubscribeOnVideoChannel: boolean,
+): VideoBaseResponseDto | null => {
   if (!video) {
     return null;
   }
-  const { id, createdAt, name, description, videoViews, isLive, liveViews, channelId } = video;
-
+  const userReaction = video.reactions.length ? video.reactions[0] : null;
   return {
-    id,
-    createdAt: createdAt.toLocaleString(),
-    name,
-    description,
-    videoViews,
-    isLive,
-    liveViews,
-    channelId,
+    ...video,
     likeNum,
     disLikeNum,
+    userReaction,
+    isUserSubscribeOnVideoChannel,
   };
 };
 

@@ -76,4 +76,27 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
     });
     return !!userSubscription?.subscriptions.length;
   }
+  async isUserSubscribeByVideoId(videoId: string, userId: string): Promise<boolean> {
+    const { channelId } = await this.prismaClient.video.findUniqueOrThrow({
+      where: {
+        id: videoId,
+      },
+      select: {
+        channelId: true,
+      },
+    });
+    const userSubscription = await this.prismaClient.channel.findUnique({
+      where: {
+        id: channelId,
+      },
+      select: {
+        subscriptions: {
+          where: {
+            userId,
+          },
+        },
+      },
+    });
+    return !!userSubscription?.subscriptions.length;
+  }
 }

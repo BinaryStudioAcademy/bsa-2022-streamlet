@@ -3,7 +3,7 @@ export * from './user/user';
 export { AmqpSendToQueueDto, AmqpConsumeDto } from './amqp/amqp';
 export * from './auth/auth';
 export * from './express';
-export { type VideoBaseResponseDto } from './video/video';
+export * from './video/video';
 export { ImageUploadRequestDto, ImageUploadResponseDto, CloudinaryApi } from './cloudinary/image-store';
 export {
   MailRequestDto,
