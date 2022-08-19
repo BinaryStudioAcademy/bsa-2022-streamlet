@@ -28,6 +28,8 @@ import { ReactComponent as Exclamation } from '../../../assets/img/exclamation.s
 import { ReactComponent as Info } from '../../../assets/img/info.svg';
 import { ReactComponent as Warning } from '../../../assets/img/warning.svg';
 import { ReactComponent as Success } from '../../../assets/img/success.svg';
+import { ReactComponent as SendMessage } from '../../../assets/img/send-message.svg';
+import { ReactComponent as Emoji } from '../../../assets/img/emoji.svg';
 
 import clsx from 'clsx';
 
@@ -162,6 +164,14 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.SUCCESS:
       return <Success {...commonProps} />;
+
+    case IconName.SENDMESSAGE: {
+      return <SendMessage {...commonProps} />;
+    }
+
+    case IconName.EMOJI: {
+      return <Emoji {...commonProps} />;
+    }
 
     case IconName.ANALYTICS:
       return <Analystic {...commonProps} />;
