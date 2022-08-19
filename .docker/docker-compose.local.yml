@@ -90,7 +90,7 @@ services:
         max-file: "5"
     volumes:
       - ../nginx/nginx.local.conf:/etc/nginx/nginx.conf
-      - ../public:/assets
+      - ../playback:/assets
     networks:
       - backend_network
       - frontend_network
