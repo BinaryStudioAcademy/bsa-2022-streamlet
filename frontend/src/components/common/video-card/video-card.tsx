@@ -7,7 +7,7 @@ import { Icon } from '../icon';
 
 import { getHowLongAgoString } from '../../../helpers/helpers';
 
-type Props = {
+export type VideoProps = {
   id: string;
   chanelId: string;
   poster: string;
@@ -19,7 +19,7 @@ type Props = {
   viewerNum: number;
 };
 
-const VideoCard: FC<Props> = ({
+const VideoCard: FC<VideoProps> = ({
   id,
   poster,
   authorAvatar,

@@ -9,6 +9,7 @@
 
   @media screen and (max-width: 1300px) {
     width: 64px;
+    min-width: 64px;
   }
 
   @media screen and (max-width: 560px) {
@@ -23,6 +24,8 @@
 .sidebar::-webkit-scrollbar {
   display: none;
   width: 7px;
+  background-color: var(--text-gray-color);
+  border-radius: 3px;
 }
 
 .sidebar:hover {

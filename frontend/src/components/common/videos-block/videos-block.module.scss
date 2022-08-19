@@ -1,0 +1,21 @@
+.videos-block {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-gap: 15px;
+  width: 100%;
+}
+
+.separate-video-block:not(:last-child) {
+  margin-bottom: 26px;
+  padding-bottom: 26px;
+  border-bottom: 2px solid var(--gray-300-header-menu-background);
+}
+
+.video-block-title {
+  margin-bottom: 26px;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+}
