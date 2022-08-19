@@ -5,4 +5,6 @@ export {
   type UserSignInResponseDto,
   type UserSignInRequestDto,
   type UserUploadRequestDto,
+  type RestorePasswordInitRequestDto,
+  type RestorePasswordInitResponseDto,
 } from 'shared/build';

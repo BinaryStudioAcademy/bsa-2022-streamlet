@@ -2,7 +2,7 @@ import express from 'express';
 import { ExtendedRequest } from '~/shared/types/express';
 import { UserBaseResponseDto } from '~/shared/types/types';
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
-import { exceptionMessages } from '~/shared/enums/exceptions';
+import { exceptionMessages } from '~/shared/enums/messages';
 import { verifyJwt } from '~/shared/helpers';
 
 export const authenticationMiddleware = async (
