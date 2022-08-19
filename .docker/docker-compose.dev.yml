@@ -10,7 +10,7 @@ services:
     networks:
       - backend_network
     volumes:
-      - ../nginx/nginx.rtmp.conf:/etc/nginx/nginx.conf
+      - ../nginx.rtmp.conf:/etc/nginx/nginx.conf
   rabbitmq:
     image: rabbitmq:3-management-alpine
     hostname: rabbit

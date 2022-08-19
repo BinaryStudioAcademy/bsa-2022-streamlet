@@ -41,23 +41,6 @@ jobs:
           image_tag: latest
           context: ./
           dockerfile: ./.docker/push.Dockerfile
-  build-rtmp-server:
-    runs-on: ubuntu-latest
-    environment: development
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v2
-
-      - name: Build image
-        uses: whoan/docker-build-with-cache-action@v5
-        with:
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          image_name: streamlet-rtmp-dev
-          registry: ghcr.io
-          image_tag: latest
-          context: ./
-          dockerfile: ./.docker/rtmp.Dockerfile
   build-frontend:
     runs-on: ubuntu-latest
     environment: development
@@ -91,7 +74,7 @@ jobs:
           host: ${{ secrets.DEPLOYMENT_HOST }}
           username: ${{ secrets.DEPLOYMENT_USERNAME }}
           password: ${{ secrets.DEPLOYMENT_SSH_PASSWORD }}
-          source: .docker/docker-compose.dev.yml
+          source: ".docker/docker-compose.dev.yml,nginx/nginx.rtmp.conf"
           target: app
 
       - name: Run docker-compose.dev.yml on deployment server
