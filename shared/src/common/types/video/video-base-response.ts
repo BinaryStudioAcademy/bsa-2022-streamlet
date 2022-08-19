@@ -1,4 +1,5 @@
 import { type VideoComment } from './video-coment';
+import { VideoReaction } from '~/common/types/video/video-reaction';
 
 type VideoBaseResponseDto = {
   id: string;
@@ -8,12 +9,12 @@ type VideoBaseResponseDto = {
   disLikeNum: number;
   liveViews: number;
   isLive: boolean;
-  isUserLikedVideo: boolean;
-  isUserDislikedVideo: boolean;
-  videoComments: VideoComment[];
+  videoPath: string;
+  userReaction: VideoReaction | null;
+  comments: VideoComment[];
   isUserSubscribeOnVideoChannel: boolean;
   videoViews: number;
-  createdAt: string;
+  createdAt: Date;
   channelId: string;
 };
 

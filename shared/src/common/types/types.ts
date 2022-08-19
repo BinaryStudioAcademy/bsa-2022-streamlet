@@ -7,8 +7,10 @@ export {
   type VideoBaseResponseDto,
   type CreateReactionResponseDto,
   type CreateReactionRequestDto,
-  type CreateSubscriptionResponseDto,
+  type VideoReaction,
 } from './video/video';
+
+export { ChannelBaseResponse, type CreateSubscriptionResponseDto } from './channel/channel';
 
 export {
   type MailRequestDto,
