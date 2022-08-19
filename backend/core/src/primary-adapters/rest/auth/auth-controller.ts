@@ -1,5 +1,5 @@
 import { inject } from 'inversify';
-import { BaseHttpController, controller, httpPost, request, requestBody } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, httpPost, request, requestBody } from 'inversify-express-utils';
 import { ApiPath, AuthApiPath } from '~/shared/enums/api/api';
 import {
   CONTAINER_TYPES,
@@ -312,6 +312,61 @@ export class AuthController extends BaseHttpController {
   public async logout(@request() req: ExtendedAuthenticatedRequest): Promise<void> {
     const user = req.user;
     return this.refreshTokenService.removeForUser(user.id);
+  }
+
+  /**
+   * @swagger
+   * /auth/user:
+   *    get:
+   *      tags:
+   *      - auth
+   *      security:
+   *      - bearerAuth: []
+   *      operationId: getCurrentUser
+   *      description: Get current user info
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  user:
+   *                    $ref: '#/components/schemas/UserBaseResponse'
+   *                  tokens:
+   *                    $ref: '#/components/schemas/TokenPair'
+   *        400:
+   *          description: Invalid request format.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   *        401:
+   *          description: Incorrect credentials.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   */
+  @httpGet(AuthApiPath.USER, authenticationMiddleware)
+  public async getCurrentUser(@request() req: ExtendedAuthenticatedRequest): Promise<UserSignInResponseDto> {
+    const user = await this.userService.getUserByEmail(req.user.email);
+    if (!user) {
+      throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
+    }
+    const accessToken = await generateJwt({ payload: trimUser(user) });
+    return {
+      user: trimUser(user),
+      tokens: {
+        accessToken,
+        refreshToken: await this.userService.createRefreshToken(user.id),
+      },
+    };
   }
 
   /**
