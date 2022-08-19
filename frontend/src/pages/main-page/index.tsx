@@ -10,8 +10,20 @@ const MainPage: FC = () => {
       <HeaderContainer />
       <VideoPlayer
         videoAttributes={{ poster: 'https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg' }}
-        url={'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8'}
-        height={400}
+        url={'http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8'}
+        sizingProps={{
+          width: '50%',
+          aspectRatio: '16 / 9',
+        }}
+      />
+      <VideoPlayer
+        videoAttributes={{ poster: 'https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg' }}
+        url={'http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8'}
+        isLive
+        sizingProps={{
+          width: '50%',
+          aspectRatio: '16 / 9',
+        }}
       />
     </main>
   );

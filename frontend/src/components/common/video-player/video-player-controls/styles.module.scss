@@ -1,14 +1,23 @@
-.video-controls-wrapper {
+.video-elements-wrapper {
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
   z-index: 99;
+}
+
+.video-controls-wrapper {
   display: flex;
   gap: 10px;
-  color: white;
+  margin: 10px 15px;
+  color: var(--white-text-color);
 }
 
 .progress-bar {
-  flex-grow: 1;
+  width: 100%;
+}
+
+.video-time,
+.live-indicator {
+  margin-right: auto;
 }

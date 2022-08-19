@@ -6,16 +6,14 @@
   background: transparent;
   cursor: pointer;
   -webkit-appearance: none;
-
-  &:focus {
-    outline: 2px solid #1195ff;
-  }
 }
 
+$thumb-size: 12px;
+
 @mixin thumb-styles {
-  width: 12px;
-  height: 12px;
-  background: #ffffff;
+  width: $thumb-size;
+  height: $thumb-size;
+  background: var(--white-text-color);
   border: none;
   border-radius: 50%;
 }
@@ -27,7 +25,7 @@
 .volume-input::-webkit-slider-thumb {
   @include thumb-styles;
 
-  margin-top: -5px;
+  margin-top: calc($thumb-size / (-2) + 2px);
   -webkit-appearance: none;
 }
 

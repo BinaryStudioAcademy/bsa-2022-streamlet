@@ -13,8 +13,34 @@
   transition: width 150ms ease-in-out, transform 150ms ease-in-out;
 }
 
-.volume-slider:focus-within,
+@mixin thumb-initial {
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 150ms ease-in-out, opacity 150ms ease-in-out;
+}
+
+.volume-slider::-moz-range-thumb {
+  @include thumb-initial;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  @include thumb-initial;
+}
+
 .volume-wrapper:hover .volume-slider {
   width: 80px;
   transform: scaleX(1);
+
+  @mixin visible-thumb {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  &::-moz-range-thumb {
+    @include visible-thumb;
+  }
+
+  &::-webkit-slider-thumb {
+    @include visible-thumb;
+  }
 }

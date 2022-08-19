@@ -1,4 +1,6 @@
 .button {
+  display: flex;
+  align-items: center;
   height: 30px;
   padding: 0;
   color: inherit;
@@ -10,9 +12,5 @@
 
   &:hover {
     opacity: 1;
-  }
-
-  &:focus {
-    outline: 2px solid #1195ff;
   }
 }
