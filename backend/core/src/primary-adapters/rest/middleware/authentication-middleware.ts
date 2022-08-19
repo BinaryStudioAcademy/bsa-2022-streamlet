@@ -27,7 +27,7 @@ export const authenticationMiddleware = async (
   next();
 };
 
-const getBearerTokenFromAuthHeader = (authHeader: string): string => {
+export const getBearerTokenFromAuthHeader = (authHeader: string): string => {
   const bearerToken: string | undefined = authHeader.split(' ')[1];
   return bearerToken || '';
 };

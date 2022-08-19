@@ -26,6 +26,7 @@ export class VideoService {
       return this.videoRepository.getById(id, undefined, false);
     }
     const isUserSubscribeOnVideoChannel = await this.channelRepository.isUserSubscribeByVideoId(id, userId);
+
     return this.videoRepository.getById(id, userId, isUserSubscribeOnVideoChannel);
   }
 

@@ -1,9 +1,23 @@
-import { BaseHttpController, controller, httpGet, httpPost, requestBody, requestParam } from 'inversify-express-utils';
+import {
+  BaseHttpController,
+  controller,
+  httpGet,
+  httpPost,
+  request,
+  requestBody,
+  requestParam,
+} from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES, CreateReactionRequestDto, CreateReactionResponseDto } from '~/shared/types/types';
+import {
+  CONTAINER_TYPES,
+  CreateReactionRequestDto,
+  CreateReactionResponseDto,
+  ExtendedAuthenticatedRequest,
+} from '~/shared/types/types';
 import { HttpError, VideoBaseResponseDto } from 'shared/build';
 import { VideoService } from '~/core/video/aplication/video-service';
 import { Video } from '@prisma/client';
+import { optionalAuthenticationMiddleware } from '~/primary-adapters/rest/middleware';
 
 /**
  * @swagger
@@ -39,9 +53,17 @@ export class VideoController extends BaseHttpController {
     this.videoService = videoService;
   }
 
-  @httpGet('/:id')
-  public async get(@requestParam('id') id: string): Promise<VideoBaseResponseDto> {
-    const video = await this.videoService.getById(id);
+  @httpGet('/:id', optionalAuthenticationMiddleware)
+  public async get(
+    @requestParam('id') id: string,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<VideoBaseResponseDto> {
+    let userId: string | undefined = undefined;
+    if (req.user) {
+      userId = req.user.id;
+    }
+
+    const video = await this.videoService.getById(id, userId);
 
     if (!video) {
       throw new HttpError({ message: 'video dont found', status: 404 });
