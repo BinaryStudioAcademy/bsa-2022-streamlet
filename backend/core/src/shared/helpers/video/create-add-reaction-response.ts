@@ -2,13 +2,20 @@ import { Reaction } from '@prisma/client';
 import { CreateReactionResponseDto } from 'shared/build';
 
 const createAddReactionResponse = (
-  reaction: Reaction,
+  reaction: Reaction | undefined = undefined,
   likeNum: number,
   disLikeNum: number,
 ): CreateReactionResponseDto => {
-  const { id } = reaction;
+  if (reaction) {
+    const { id } = reaction;
+    return {
+      id,
+      likeNum,
+      disLikeNum,
+    };
+  }
   return {
-    id,
+    id: '',
     likeNum,
     disLikeNum,
   };

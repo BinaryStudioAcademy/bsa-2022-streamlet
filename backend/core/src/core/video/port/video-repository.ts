@@ -8,5 +8,11 @@ export interface VideoRepository {
     isUserSubscribeOnVideoChannel: boolean,
   ): Promise<VideoBaseResponseDto | null>;
   getAll(): Promise<Video[]>;
-  addReaction(request: CreateReactionRequestDto, videoId: string): Promise<CreateReactionResponseDto | null>;
+  isUserReacted(userId: string, videoId: string): Promise<boolean>;
+  removeReaction(videoId: string, userId: string): Promise<CreateReactionResponseDto | null>;
+  addReaction(
+    request: CreateReactionRequestDto,
+    videoId: string,
+    userId: string,
+  ): Promise<CreateReactionResponseDto | null>;
 }

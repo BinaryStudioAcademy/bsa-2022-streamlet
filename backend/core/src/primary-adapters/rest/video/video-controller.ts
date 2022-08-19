@@ -17,7 +17,7 @@ import {
 import { HttpError, VideoBaseResponseDto } from 'shared/build';
 import { VideoService } from '~/core/video/aplication/video-service';
 import { Video } from '@prisma/client';
-import { optionalAuthenticationMiddleware } from '~/primary-adapters/rest/middleware';
+import { authenticationMiddleware, optionalAuthenticationMiddleware } from '~/primary-adapters/rest/middleware';
 
 /**
  * @swagger
@@ -75,12 +75,15 @@ export class VideoController extends BaseHttpController {
   public async getAll(): Promise<Video[]> {
     return this.videoService.getAll();
   }
-  @httpPost('/reaction/:id')
+  @httpPost('/reaction/:id', authenticationMiddleware)
   public async addReaction(
     @requestParam('id') id: string,
     @requestBody() body: CreateReactionRequestDto,
+    @request() req: ExtendedAuthenticatedRequest,
   ): Promise<CreateReactionResponseDto> {
-    const reactionResponse = await this.videoService.addReaction(body, id);
+    const { id: userId } = req.user;
+
+    const reactionResponse = await this.videoService.addReaction(body, id, userId);
 
     if (!reactionResponse) {
       throw new HttpError({ message: 'video or user dont found', status: 404 });

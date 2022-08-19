@@ -34,7 +34,15 @@ export class VideoService {
     return this.videoRepository.getAll();
   }
 
-  addReaction(request: CreateReactionRequestDto, videoId: string): Promise<CreateReactionResponseDto | null> {
-    return this.videoRepository.addReaction(request, videoId);
+  async addReaction(
+    request: CreateReactionRequestDto,
+    videoId: string,
+    userId: string,
+  ): Promise<CreateReactionResponseDto | null> {
+    const isUserReacted = await this.videoRepository.isUserReacted(userId, videoId);
+    if (isUserReacted) {
+      return this.videoRepository.removeReaction(videoId, userId);
+    }
+    return this.videoRepository.addReaction(request, videoId, userId);
   }
 }

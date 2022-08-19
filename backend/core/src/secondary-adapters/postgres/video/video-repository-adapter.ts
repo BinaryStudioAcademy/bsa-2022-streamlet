@@ -99,12 +99,12 @@ export class VideoRepositoryAdapter implements VideoRepository {
       disLikeNum: dislikes.reactions.length,
     };
   }
-  async addReaction(request: CreateReactionRequestDto, videoId: string): Promise<CreateReactionResponseDto | null> {
-    const { userId, isLike } = request;
-    const user = await this.prismaClient.user.findUnique({ where: { id: userId } });
-    if (!user) {
-      return null;
-    }
+  async addReaction(
+    request: CreateReactionRequestDto,
+    videoId: string,
+    userId: string,
+  ): Promise<CreateReactionResponseDto | null> {
+    const { isLike } = request;
     const video = await this.prismaClient.video.update({
       where: {
         id: videoId,
@@ -122,6 +122,36 @@ export class VideoRepositoryAdapter implements VideoRepository {
         },
       },
     });
-    return createAddReactionResponse(video.reactions[0], 1, 2);
+    const { likeNum, disLikeNum } = await this.calculateReaction(videoId);
+    return createAddReactionResponse(video.reactions[0], likeNum, disLikeNum);
+  }
+  async isUserReacted(userId: string, videoId: string): Promise<boolean> {
+    const userReaction = await this.prismaClient.video.findUnique({
+      where: {
+        id: videoId,
+      },
+      select: {
+        reactions: {
+          where: {
+            userId,
+          },
+        },
+      },
+    });
+    return !!userReaction?.reactions.length;
+  }
+  async removeReaction(videoId: string, userId: string): Promise<CreateReactionResponseDto | null> {
+    await this.prismaClient.video.update({
+      where: {
+        id: videoId,
+      },
+      data: {
+        reactions: {
+          deleteMany: [{ userId }],
+        },
+      },
+    });
+    const { likeNum, disLikeNum } = await this.calculateReaction(videoId);
+    return createAddReactionResponse(undefined, likeNum, disLikeNum);
   }
 }
