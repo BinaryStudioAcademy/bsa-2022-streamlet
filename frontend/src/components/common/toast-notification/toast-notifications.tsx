@@ -1,12 +1,12 @@
 import { Store, iNotification, NotificationContent } from 'react-notifications-component';
 import 'react-notifications-component/dist/scss/notification.scss';
-import { Notification } from './notification';
-import { INotificationParams } from './config';
+import { ToastNotification } from './toast-notification';
+import { ToastNotificationParams } from './config';
 
-const setNotification = (props: INotificationParams): void => {
+const createToastNotification = (props: ToastNotificationParams): void => {
   const { type } = props;
   const notification: iNotification = {
-    content: Notification(props) as NotificationContent,
+    content: ToastNotification(props) as NotificationContent,
     insert: 'bottom',
     container: 'bottom-right',
     animationIn: ['animate__animated animate__fadeIn'],
@@ -16,4 +16,4 @@ const setNotification = (props: INotificationParams): void => {
   Store.addNotification({ ...notification, type });
 };
 
-export { setNotification };
+export { createToastNotification };

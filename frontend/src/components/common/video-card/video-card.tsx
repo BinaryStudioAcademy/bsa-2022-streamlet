@@ -9,7 +9,7 @@ import { getHowLongAgoString } from '../../../helpers/helpers';
 
 type Props = {
   id: string;
-  chanelId: string;
+  channelId: string;
   poster: string;
   author: string;
   creationDate: Date;
@@ -28,14 +28,14 @@ const VideoCard: FC<Props> = ({
   name,
   viewerNum,
   creationDate,
-  chanelId,
+  channelId,
 }) => {
   const navigate = useNavigate();
   const redirectToVideoPage = (): void => {
     navigate(`video/${id}`, { replace: true });
   };
-  const redirectToChanelPage = (): void => {
-    navigate(`channel/${chanelId}`, { replace: true });
+  const redirectToChannelPage = (): void => {
+    navigate(`channel/${channelId}`, { replace: true });
   };
   const viewerNumStringWithSpace: string = String(viewerNum).replace(/(\d)(?=(\d\d\d)+(\D|$))/g, '$1 ');
   return (
@@ -51,13 +51,13 @@ const VideoCard: FC<Props> = ({
           alt="user-avatar"
           height="20"
           width="21"
-          onClick={redirectToChanelPage}
+          onClick={redirectToChannelPage}
         />
         <div className={style['video-description-container']}>
           <h2 className={style['video-card-title']} onClick={redirectToVideoPage}>
             {name}
           </h2>
-          <h3 className={style['video-card-author-name']} onClick={redirectToChanelPage}>
+          <h3 className={style['video-card-author-name']} onClick={redirectToChannelPage}>
             {author}
           </h3>
         </div>
