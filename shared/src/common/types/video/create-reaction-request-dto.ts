@@ -1,5 +1,5 @@
 type CreateReactionRequestDto = {
-  isLike: true;
+  isLike: boolean;
 };
 
 export { type CreateReactionRequestDto };
