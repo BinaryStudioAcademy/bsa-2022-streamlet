@@ -1,5 +1,5 @@
 import { HttpError } from 'exceptions/exceptions';
-import { HttpHeader, HttpMethod } from 'common/enums/enums';
+import { HttpCode, HttpHeader, HttpMethod } from 'common/enums/enums';
 import { HttpOptions } from 'common/types/types';
 import { PostInterceptor, PreInterceptor } from './interceptors/interceptor';
 
@@ -37,6 +37,10 @@ class Http {
         makeRequestFn: makeRequest,
         response,
       });
+    }
+
+    if (response.status === HttpCode.NO_CONTENT) {
+      return {} as T;
     }
 
     return this.checkStatus(response)
