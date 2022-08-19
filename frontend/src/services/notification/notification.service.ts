@@ -3,9 +3,9 @@ import {
   NotificationBaseResponseDto,
   NotificationFilter,
   NotificationListResponseDto,
-  NotificationRequestDto,
 } from 'common/types/notifications/notifications';
 import { Http } from 'services/http/http.service';
+import { DefaultRequestParam } from 'shared/build/common/types/types';
 
 type Constructor = {
   http: Http;
@@ -34,7 +34,7 @@ class NotificationApi {
     });
   }
 
-  public getOne({ id }: NotificationRequestDto): Promise<NotificationBaseResponseDto> {
+  public getOne({ id }: DefaultRequestParam): Promise<NotificationBaseResponseDto> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.NOTIFICATION}${id}`,
       options: {
@@ -58,7 +58,7 @@ class NotificationApi {
     });
   }
 
-  public readOne({ id }: NotificationRequestDto): Promise<NotificationBaseResponseDto> {
+  public readOne({ id }: DefaultRequestParam): Promise<NotificationBaseResponseDto> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.NOTIFICATION}${NotificationApiPath.READ}${id}`,
       options: {
