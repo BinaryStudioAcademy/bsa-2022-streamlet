@@ -13,7 +13,7 @@ const getVideo = createAsyncThunk<VideoBaseResponseDto, string, AsyncThunkConfig
 );
 
 const videoChannelSubscribe = createAsyncThunk<CreateSubscriptionResponseDto, string, AsyncThunkConfig>(
-  ActionType.GET_VIDEO,
+  ActionType.SUBSCRIBE,
   async (channelId: string, { extra }) => {
     const { channelApi } = extra;
 
