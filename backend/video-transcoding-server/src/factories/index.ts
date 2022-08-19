@@ -1,1 +1,1 @@
-export { WorkerFactory } from './ffmpeg-process/ffmpeg-process-factory';
+export { FfmpegFactory } from './ffmpeg-process/ffmpeg-process-factory';

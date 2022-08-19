@@ -1,11 +1,9 @@
 import { CONFIG } from './config';
 import { connect, Channel, Connection } from 'amqplib';
-import { AmqpQueue } from '~/shared';
+import { AmqpQueue, AmqpConnectionError } from '~/shared';
 import { logger } from './logger';
-import { timeout } from '~/helpers';
+import { timeout, geometricProgressionByIndex } from '~/helpers';
 import { AMQP_CONNECTION_TRIES } from '~/shared/constants/amqp/connection-tries';
-import { geometricProgressionByIndex } from '~/helpers';
-import { AmqpConnectionError } from '~/shared';
 import { amqpService } from '~/services';
 
 const tryConnect = async (tries = 1): Promise<Connection> => {
@@ -39,8 +37,7 @@ const amqpConnect = async (): Promise<Channel> => {
   const connection: Connection = await tryConnect();
 
   const amqpChannel = await connection.createChannel();
-  amqpChannel.assertQueue(AmqpQueue.NOTIFY_USER);
-  amqpChannel.assertQueue(AmqpQueue.NOTIFY_USER_BROADCAST);
+  amqpChannel.assertQueue(AmqpQueue.STREAM_TRANSCODER);
 
   return amqpChannel;
 };

@@ -5,7 +5,7 @@ export const folderWatcher = (path: string, cb: (eventType: string, filename: st
     path,
     {
       recursive: true,
-      filter: /\.m3u8$/,
+      filter: /playlist-720p30\.m3u8/gm,
     },
     (eventType, filename) => {
       cb(eventType, filename);

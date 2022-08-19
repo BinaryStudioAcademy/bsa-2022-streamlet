@@ -1,6 +1,6 @@
 import { FsService } from '~/services';
 
-export const createMasterPlaylist = (path: string) => {
+export const createMasterPlaylist = (path: string): void => {
   FsService.createFile({
     path,
     filename: 'master.m3u8',

@@ -3,4 +3,5 @@ export interface FffmpegProcessCreatorDto {
   width: number;
   height: number;
   fps: number;
+  videoId: string;
 }

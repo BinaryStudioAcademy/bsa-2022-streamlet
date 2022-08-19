@@ -1,8 +1,8 @@
 import { FffmpegProcessCreatorDto } from '~/shared';
 import Ffmpeg from 'fluent-ffmpeg';
 
-export class WorkerFactory {
-  public static create({ input, width, height, fps }: FffmpegProcessCreatorDto): Ffmpeg.FfmpegCommand {
+export class FfmpegFactory {
+  public static create({ videoId, input, width, height, fps }: FffmpegProcessCreatorDto): Ffmpeg.FfmpegCommand {
     Ffmpeg.setFfmpegPath('/usr/bin/ffmpeg');
     return Ffmpeg(input)
       .addOption('-hide_banner')
@@ -21,7 +21,7 @@ export class WorkerFactory {
       .addOption('-map_metadata', '-1')
       .addOption('-map_chapters', '-1')
       .addOption('-hls_list_size', '0')
-      .addOption('-hls_segment_filename', `playback/STREAM_NAME/segment-${height}p${fps}_%05d.ts`)
-      .output(`playback/STREAM_NAME/playlist-${height}p${fps}.m3u8`);
+      .addOption('-hls_segment_filename', `playback/${videoId}/segment-${height}p${fps}_%05d.ts`)
+      .output(`playback/${videoId}/playlist-${height}p${fps}.m3u8`);
   }
 }
