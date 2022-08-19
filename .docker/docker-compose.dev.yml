@@ -4,13 +4,13 @@ services:
     image: tiangolo/nginx-rtmp
     ports:
       - "1935:1935"
-    container_name: rtmp_server
+    container_name: rtmp
     depends_on:
       - backend
     networks:
       - backend_network
     volumes:
-      - ../nginx/nginx.rtmp.conf:/etc/nginx/nginx.conf
+      - ../nginx.rtmp.conf:/etc/nginx/nginx.conf
   rabbitmq:
     image: rabbitmq:3-management-alpine
     hostname: rabbit
