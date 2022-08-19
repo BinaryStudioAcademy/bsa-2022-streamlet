@@ -4,5 +4,7 @@ export { type HttpOptions } from './http/http';
 export { type FC } from './react/react';
 export * from './user/user';
 export * from './auth/auth';
+export * from './video/video';
+export * from './channel/channel';
 export { type ValidationSchema } from './validation/validation';
 export { type VideoCard } from './components/components';

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { AsyncThunkConfig, VideoBaseResponseDto } from 'common/types/types';
+import { AsyncThunkConfig, CreateSubscriptionResponseDto, VideoBaseResponseDto } from 'common/types/types';
 import { ActionType } from './common';
 
 const getVideo = createAsyncThunk<VideoBaseResponseDto, string, AsyncThunkConfig>(
@@ -12,4 +12,13 @@ const getVideo = createAsyncThunk<VideoBaseResponseDto, string, AsyncThunkConfig
   },
 );
 
-export { getVideo };
+const videoChannelSubscribe = createAsyncThunk<CreateSubscriptionResponseDto, string, AsyncThunkConfig>(
+  ActionType.GET_VIDEO,
+  async (channelId: string, { extra }) => {
+    const { channelApi } = extra;
+
+    return await channelApi.createSubscription(channelId);
+  },
+);
+
+export { getVideo, videoChannelSubscribe };

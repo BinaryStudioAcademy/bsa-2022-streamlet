@@ -17,7 +17,7 @@ class VideoApi {
 
   public getVideoData(videoId: string): Promise<VideoBaseResponseDto> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.ROOT}/${videoId}`,
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.ROOT}${videoId}`,
       options: {
         method: HttpMethod.GET,
       },

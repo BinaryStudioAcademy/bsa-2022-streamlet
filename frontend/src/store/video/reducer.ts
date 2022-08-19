@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 
 import { DataStatus } from 'common/enums/enums';
 import { VideoBaseResponseDto } from 'common/types/types';
-import { getVideo } from './action';
+import { getVideo, videoChannelSubscribe } from './action';
 
 type State = {
   dataStatus: DataStatus;
@@ -19,6 +19,12 @@ const initialState: State = {
 const reducer = createReducer(initialState, (builder) => {
   builder.addCase(getVideo.fulfilled, (state, { payload }) => {
     state.video = payload;
+    state.dataStatus = DataStatus.FULFILLED;
+  });
+  builder.addCase(videoChannelSubscribe.fulfilled, (state, { payload }) => {
+    if (state.video) {
+      state.video.isUserSubscribeOnVideoChannel = payload.isSubscribe;
+    }
     state.dataStatus = DataStatus.FULFILLED;
   });
   builder.addCase(getVideo.pending, (state) => {
