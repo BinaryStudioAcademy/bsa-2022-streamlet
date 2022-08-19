@@ -1,5 +1,5 @@
-import { ApiPath, VideoApiPath, HttpMethod } from 'common/enums/enums';
-import { type VideoBaseResponseDto } from 'common/types/types';
+import { ApiPath, VideoApiPath, HttpMethod, ContentType } from 'common/enums/enums';
+import { CreateReactionResponseDto, ReactVideoActionPayloadType, type VideoBaseResponseDto } from 'common/types/types';
 import { Http } from '../http/http.service';
 type Constructor = {
   http: Http;
@@ -21,8 +21,19 @@ class VideoApi {
       options: {
         method: HttpMethod.GET,
       },
-      preInterceptors: [],
-      postInterceptors: [],
+    });
+  }
+  public react(payload: ReactVideoActionPayloadType): Promise<CreateReactionResponseDto> {
+    const { videoId, isLike } = payload;
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.ROOT}${VideoApiPath.REACTION}${
+        VideoApiPath.ROOT
+      }${videoId}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify({ isLike }),
+      },
     });
   }
 }
