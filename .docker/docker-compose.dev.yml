@@ -4,7 +4,7 @@ services:
     image: tiangolo/nginx-rtmp
     ports:
       - "1935:1935"
-    container_name: rtmp_server
+    container_name: rtmp
     depends_on:
       - backend
     networks:
@@ -73,7 +73,7 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "5"            
+        max-file: "5"
   frontend:
     image: ghcr.io/binarystudioacademy/streamlet-frontend-dev:latest
     container_name: frontend
