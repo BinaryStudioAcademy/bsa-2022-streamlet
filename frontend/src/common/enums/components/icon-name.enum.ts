@@ -21,8 +21,15 @@ enum IconName {
   SETTINGS = 'settings',
   MOON = 'moon',
   LOGOUT = 'logout',
+  ANALYTICS = 'analytics',
   MARK_AS_READ = 'markasread',
   CLOSE = 'close',
+  EXCLAMATION = 'exclamation',
+  INFO = 'info',
+  WARNING = 'warning',
+  SUCCESS = 'success',
+  SENDMESSAGE = 'send-message',
+  EMOJI = 'emoji',
 }
 
 export { IconName };

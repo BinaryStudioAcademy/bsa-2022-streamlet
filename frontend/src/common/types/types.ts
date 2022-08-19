@@ -7,3 +7,4 @@ export * from './auth/auth';
 export { type ValidationSchema } from './validation/validation';
 export { type VideoCard } from './components/components';
 export { type NotificationFields, type NotificationsResponseDto } from './notifications/notifications';
+declare module 'react-notifications-component';

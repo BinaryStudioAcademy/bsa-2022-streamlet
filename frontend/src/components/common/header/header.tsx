@@ -2,11 +2,13 @@ import { FC, NotificationsResponseDto } from 'common/types/types';
 import { Link } from 'react-router-dom';
 import { FormEvent, MouseEvent, RefObject } from 'react';
 import { AppRoute, IconName } from 'common/enums/enums';
-import { IconColor, MenuOptions } from 'common/enums/components';
+import { IconColor, MenuOptions } from 'common/enums/components/';
 import { Icon } from '../icon';
+import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 
 import styles from './header.module.scss';
 import { NotificationDropdown } from 'components/notification-dropdown/notification-dropdown';
+import { closeSidebar, openSidebar } from 'store/layout/actions';
 
 interface MenuOption {
   type: MenuOptions;
@@ -56,11 +58,22 @@ const Header: FC<HeaderProps> = ({
 }) => {
   const haveUnreadNotifications = notifications.notifications.some((notification) => !notification.isViewed);
 
+  const isSidebarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
+  const dispatch = useAppDispatch();
+
+  function handleClickBurgerMenu(): void {
+    if (isSidebarOpen) {
+      dispatch(closeSidebar());
+    } else {
+      dispatch(openSidebar());
+    }
+  }
+
   return (
     <header className={styles['header']}>
       <div className={styles['wrapper-first-part']}>
         <div className={styles['logo-block']}>
-          <button className={styles['burger-menu']}>
+          <button onClick={handleClickBurgerMenu} className={styles['burger-menu']}>
             <Icon name={IconName.BURGERMENU} width="30" height="30" />
           </button>
           <Link className={styles['logo-link']} to={AppRoute.ROOT}>

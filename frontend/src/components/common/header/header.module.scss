@@ -2,12 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 55px;
+  padding: 18px 20px;
   background-color: var(--gray-300-header-menu-background);
-
-  @media screen and (max-width: 560px) {
-    padding: 18px 20px;
-  }
 
   .block-user {
     display: flex;
@@ -100,13 +96,17 @@
     width: 46px;
     height: 46px;
     margin-left: 46px;
-    background-color: aliceblue;
+    background-color: var(--white-text-color);
     background-size: contain;
     border-radius: 50%;
     cursor: pointer;
 
     @media screen and (max-width: 560px) {
       margin-left: 26px;
+    }
+
+    @media screen and (max-width: 375px) {
+      margin-left: 16px;
     }
   }
 
@@ -162,7 +162,7 @@
 
     .option:hover {
       color: var(--primary-text-color);
-      background-color: var(--text-gray-color);
+      background-color: var(--hover-light-grey);
     }
 
     .option svg {
@@ -245,7 +245,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    margin-left: 90px;
+    margin-left: 102px;
     padding: 0 10px;
     background-color: var(--gray-400-primary-background);
     border-radius: 3px;
@@ -292,10 +292,8 @@
   }
 
   .wrapper-first-part .logo-block .burger-menu {
-    margin-right: 24px;
+    margin-right: 14px;
     background-color: transparent;
-    border: none;
-    outline: none;
     cursor: pointer;
   }
 

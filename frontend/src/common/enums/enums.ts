@@ -6,3 +6,4 @@ export { IconName, IconColor, MenuOptions } from './components';
 export { SearchQueryParam } from './search/search';
 export { StorageKeys } from './storage/storage';
 export * from './messages';
+export { NotificationType } from './notifications';
