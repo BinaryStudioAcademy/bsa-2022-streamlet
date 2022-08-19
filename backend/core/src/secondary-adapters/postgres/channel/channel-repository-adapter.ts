@@ -1,0 +1,79 @@
+import { inject, injectable } from 'inversify';
+import { Channel, PrismaClient } from '@prisma/client';
+import { CONTAINER_TYPES, CreateSubscriptionResponseDto } from '~/shared/types/types';
+import { ChannelRepository } from '~/core/channel/port/channel-repository';
+
+@injectable()
+export class ChannelRepositoryAdapter implements ChannelRepository {
+  private prismaClient: PrismaClient;
+
+  constructor(@inject(CONTAINER_TYPES.PrismaClient) prismaClient: PrismaClient) {
+    this.prismaClient = prismaClient;
+  }
+
+  async addSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {
+    await this.prismaClient.channel.update({
+      where: {
+        id: channelId,
+      },
+      data: {
+        subscriptions: {
+          createMany: {
+            data: {
+              userId,
+            },
+          },
+        },
+      },
+      select: {
+        subscriptions: {
+          where: { userId },
+        },
+      },
+    });
+
+    return { isSubscribe: true };
+  }
+  async removeSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {
+    await this.prismaClient.channel.update({
+      where: {
+        id: channelId,
+      },
+      data: {
+        subscriptions: {
+          deleteMany: [{ userId }],
+        },
+      },
+      select: {
+        subscriptions: {
+          where: { userId },
+        },
+      },
+    });
+
+    return { isSubscribe: false };
+  }
+
+  getChannelById(id: string): Promise<Channel | null> {
+    return this.prismaClient.channel.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+  async isUserSubscribe(channelId: string, userId: string): Promise<boolean> {
+    const userSubscription = await this.prismaClient.channel.findUnique({
+      where: {
+        id: channelId,
+      },
+      select: {
+        subscriptions: {
+          where: {
+            userId,
+          },
+        },
+      },
+    });
+    return !!userSubscription?.subscriptions.length;
+  }
+}
