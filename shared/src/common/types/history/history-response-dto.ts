@@ -1,6 +1,6 @@
 type HistoryResponseDto = {
   id: string;
-  userID: string;
+  userId: string;
   videoId: string;
   createdAt: string;
   updatedAt: string;

@@ -12,4 +12,5 @@ export {
   WelcomeMail,
   MailPropsType,
 } from './mail/mail';
+export * from './history/history';
 export { MailTestRequestDto } from './mail-test/mail-test';

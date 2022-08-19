@@ -7,6 +7,9 @@ const CONTAINER_TYPES = {
   RefreshTokenService: Symbol.for('RefreshTokenService'),
   RefreshTokenRepository: Symbol.for('RefreshTokenRepository'),
   MailRepository: Symbol.for('MailRepository'),
+  HistoryRepository: Symbol.for('UserRepository'),
+  HistoryController: Symbol.for('HistoryController'),
+  HistoryService: Symbol.for('HistoryService'),
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),

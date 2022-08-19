@@ -1,5 +1,6 @@
 type HistoryRequestDto = {
-  userID: string;
+  userId: string;
+  videoId: string;
 };
 
 export { type HistoryRequestDto };
