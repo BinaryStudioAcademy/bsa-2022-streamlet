@@ -1,17 +1,10 @@
-import { FC } from 'common/types/types';
-import {
-  useOutsideClick,
-  useAppDispatch,
-  useAppSelector,
-  useCallback,
-  useNavigate,
-  useLocation,
-  useId,
-} from 'hooks/hooks';
 import { MouseEvent, FormEvent } from 'react';
-import { Header } from './header';
-import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
+import { FC } from 'common/types/types';
+import { MenuOptions, AppRoute, SearchQueryParam } from 'common/enums/enums';
+import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate, useRef } from 'hooks/hooks';
 import { authActions, searchActions } from 'store/actions';
+import { allMenuOptions } from './config';
+import { Header } from './header';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
 
@@ -25,38 +18,23 @@ const HeaderContainer: FC = () => {
     user: state.auth.user,
   }));
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
   const hasUser = Boolean(user);
 
   const { isOpened: isMenuOpen, open, ref: menuRef } = useOutsideClick<HTMLDivElement>();
 
-  const options = [
-    {
-      type: MenuOptions.Settings,
-      text: 'Settings',
-      icon: IconName.SETTINGS,
-      onClick: (): void => {
-        void 1;
-      },
-    },
-    {
-      type: MenuOptions.Theme,
-      text: 'Theme',
-      icon: IconName.MOON,
-      onClick: (): void => {
-        void 1;
-      },
-    },
-    {
-      type: MenuOptions.Logout,
-      text: 'Log Out',
-      icon: IconName.LOGOUT,
-      onClick: (): void => {
-        handleClickLogout();
-      },
-    },
-  ];
+  const emptyOnClickHandler = (): void => void 0;
+
+  const matchMenuOptionWithOnClickHandler: Record<MenuOptions, () => void> = {
+    [MenuOptions.Settings]: emptyOnClickHandler,
+    [MenuOptions.Theme]: emptyOnClickHandler,
+    [MenuOptions.Logout]: handleClickLogout,
+  };
+
+  const options = allMenuOptions.map((option) => ({
+    ...option,
+    onClick: matchMenuOptionWithOnClickHandler[option.type],
+  }));
 
   const handleLogout = useCallback(async () => {
     try {
@@ -81,7 +59,7 @@ const HeaderContainer: FC = () => {
     }
   }
 
-  const searchInputId = useId();
+  const searchInputEl = useRef<HTMLInputElement>(null);
 
   const handleClearActiveFilterIds = useCallback(() => dispatch(searchActions.clearActiveFilterIds()), [dispatch]);
 
@@ -93,7 +71,7 @@ const HeaderContainer: FC = () => {
 
   const handleClearInputSearch = (): void => {
     handleInputSearch('');
-    document.getElementById(searchInputId)?.focus();
+    searchInputEl.current?.focus();
   };
 
   const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
@@ -105,17 +83,13 @@ const HeaderContainer: FC = () => {
     }
   };
 
-  if (pathname === AppRoute.SIGN_IN || pathname === AppRoute.SIGN_UP || pathname === AppRoute.RESTORE_PASSWORD) {
-    return null;
-  }
-
   return (
     <Header
       menuRef={menuRef}
       isLogged={hasUser}
       isMenuOpen={isMenuOpen}
       searchValue={searchText}
-      searchInputId={searchInputId}
+      searchInputEl={searchInputEl}
       handleClickUserMenu={handleClickUserMenu}
       handleClickLogin={handleClickLogin}
       handleChangeInputSearch={handleChangeInputSearch}
