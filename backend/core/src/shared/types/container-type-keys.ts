@@ -1,8 +1,10 @@
 const CONTAINER_TYPES = {
   UserController: Symbol.for('UserController'),
   AuthController: Symbol.for('AuthController'),
+  ChannelController: Symbol.for('ChannelController'),
   UserService: Symbol.for('UserService'),
   MailService: Symbol.for('MailService'),
+  ChannelService: Symbol.for('ChannelService'),
   UserRepository: Symbol.for('UserRepository'),
   RefreshTokenService: Symbol.for('RefreshTokenService'),
   RefreshTokenRepository: Symbol.for('RefreshTokenRepository'),
@@ -10,6 +12,7 @@ const CONTAINER_TYPES = {
   HistoryRepository: Symbol.for('HistoryRepository'),
   HistoryController: Symbol.for('HistoryController'),
   HistoryService: Symbol.for('HistoryService'),
+  ChannelRepository: Symbol.for('ChannelRepository'),
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),

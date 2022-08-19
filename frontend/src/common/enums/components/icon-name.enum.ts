@@ -23,6 +23,12 @@ enum IconName {
   LOGOUT = 'logout',
   ANALYTICS = 'analytics',
   CLOSE = 'close',
+  EXCLAMATION = 'exclamation',
+  INFO = 'info',
+  WARNING = 'warning',
+  SUCCESS = 'success',
+  SENDMESSAGE = 'send-message',
+  EMOJI = 'emoji',
 }
 
 export { IconName };

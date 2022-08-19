@@ -1,0 +1,54 @@
+.add-comments {
+  padding: 20px;
+  background-color: var(--gray-300-header-menu-background);
+  border-radius: 3px;
+}
+
+.add-comments .input-add-comments {
+  width: 100%;
+  padding: 6px 15px;
+  color: var(--brand-green-color);
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: -0.16px;
+  background-color: var(--gray-400-primary-background);
+  border: none;
+  border-radius: 6px;
+  outline: none;
+}
+
+.add-comments .group-buttons-reactions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.add-comments .group-buttons-reactions button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.add-comments .group-buttons-reactions button:hover {
+  opacity: 0.8;
+}
+
+.add-comments .group-buttons-reactions button svg {
+  display: block;
+}
+
+.add-comments .group-buttons-reactions .choose-emoji {
+  margin-left: 10px;
+  background-color: transparent;
+}
+
+.add-comments .group-buttons-reactions .choose-emoji svg path {
+  fill: var(--gray-200-input-background);
+}
+
+.add-comments .group-buttons-reactions .send-message {
+  padding: 11px 20px;
+  background-color: var(--brand-green-color);
+  border-radius: 3px;
+}
