@@ -3,4 +3,4 @@ export {
   type NotificationListResponseDto,
   type NotificationResponseDto,
   type NotificationFilter,
-} from 'shared/build/common/types/types';
+} from 'shared/build';

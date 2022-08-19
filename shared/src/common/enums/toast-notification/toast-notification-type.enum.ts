@@ -1,4 +1,4 @@
-enum NotificationType {
+enum ToastNotificationType {
   SUCCESS = 'success',
   DANGER = 'danger',
   INFO = 'info',
@@ -6,4 +6,4 @@ enum NotificationType {
   DEFAULT = 'default',
 }
 
-export { NotificationType };
+export { ToastNotificationType };

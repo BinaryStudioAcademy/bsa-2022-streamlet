@@ -1,7 +1,7 @@
 enum MenuOptions {
   Settings = 'Settings',
   Theme = 'Theme',
-  Logout = 'Logout',
+  SignOut = 'SignOut',
 }
 
 export { MenuOptions };
