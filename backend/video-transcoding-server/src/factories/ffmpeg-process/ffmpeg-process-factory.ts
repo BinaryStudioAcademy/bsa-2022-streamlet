@@ -1,5 +1,6 @@
 import { FffmpegProcessCreatorDto } from '~/shared';
 import Ffmpeg from 'fluent-ffmpeg';
+import { logger } from '~/config/logger';
 
 export class FfmpegFactory {
   public static create({ videoId, input, width, height, fps }: FffmpegProcessCreatorDto): Ffmpeg.FfmpegCommand {
@@ -22,6 +23,10 @@ export class FfmpegFactory {
       .addOption('-map_chapters', '-1')
       .addOption('-hls_list_size', '0')
       .addOption('-hls_segment_filename', `playback/${videoId}/segment-${height}p${fps}_%05d.ts`)
-      .output(`playback/${videoId}/playlist-${height}p${fps}.m3u8`);
+      .output(`playback/${videoId}/playlist-${height}p${fps}.m3u8`)
+      .on('end', () => logger.info('ffmpeg done'))
+      .on('error', (err) => {
+        logger.error(err);
+      });
   }
 }

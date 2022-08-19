@@ -43,7 +43,7 @@ services:
     image: backend
     container_name: backend
     volumes:
-      - playback:/app/playback
+      - playback:/app/assets/segments
     depends_on:
       - api-db
     ports:

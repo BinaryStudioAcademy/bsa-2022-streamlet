@@ -42,6 +42,8 @@ services:
   backend:
     image: ghcr.io/binarystudioacademy/streamlet-backend-dev:latest
     container_name: backend
+    volumes:
+      - playback:/app/playback
     depends_on:
       - api-db
       - rabbitmq
@@ -74,6 +76,23 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
+  video-transcoding-server:
+    image: video-transcoding-server
+    container_name: video-transcoding-server
+    volumes:
+      - playback:/app/backend/video-transcoding-server/playback
+    depends_on:
+      - rabbitmq
+    env_file:
+      - ../.env/video-transcoding-server.env
+    networks:
+      - backend_network
+      - frontend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"                        
   frontend:
     image: ghcr.io/binarystudioacademy/streamlet-frontend-dev:latest
     container_name: frontend

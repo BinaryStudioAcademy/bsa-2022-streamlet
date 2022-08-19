@@ -1,9 +1,11 @@
 import { logger } from '~/config/logger';
 import { FfmpegFactory } from '~/factories';
+import { createRtmpUrl } from '~/helpers';
 import { amqpService } from '~/services';
 import { AmqpQueue } from '~/shared';
 
-export const createProcess = ({ input, videoId }: { input: string; videoId: string }): void => {
+export const createProcess = ({ streamKey, videoId }: { streamKey: string; videoId: string }): void => {
+  const input = createRtmpUrl(streamKey);
   const process720p30 = FfmpegFactory.create({
     videoId,
     input,
@@ -30,15 +32,28 @@ export const createProcess = ({ input, videoId }: { input: string; videoId: stri
   process480p30.run();
   process360p30.run();
 
-  process720p30.on('end', () => {
-    logger.info(`Rabbit -> STREAM_INTERRUPTED ({ videoId: ${videoId} }).`);
-    amqpService.sendToQueue({
-      queue: AmqpQueue.STREAM_INTERRUPTED,
-      content: Buffer.from(
-        JSON.stringify({
-          videoId,
-        }),
-      ),
-    });
+  amqpService.consume({
+    queue: AmqpQueue.STREAM_INTERRUPTED,
+    onMessage: (data) => {
+      if (data) {
+        const { streamingKey } = JSON.parse(data.toString('utf-8'));
+        logger.info(`interrupted ${streamKey} ${streamingKey}`);
+        if (streamingKey === streamKey) {
+          process360p30.kill('SIGKILL');
+          process480p30.kill('SIGKILL');
+          process720p30.kill('SIGKILL');
+
+          logger.info(`Rabbit -> STREAM_INTERRUPTED ({ videoId: ${videoId} }).`);
+          amqpService.sendToQueue({
+            queue: AmqpQueue.STREAM_INTERRUPTED_DONE,
+            content: Buffer.from(
+              JSON.stringify({
+                videoId,
+              }),
+            ),
+          });
+        }
+      }
+    },
   });
 };
