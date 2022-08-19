@@ -1,3 +1,5 @@
+import { type VideoComment } from './video-coment';
+
 type VideoBaseResponseDto = {
   id: string;
   name: string;
@@ -6,6 +8,10 @@ type VideoBaseResponseDto = {
   disLikeNum: number;
   liveViews: number;
   isLive: boolean;
+  isUserLikedVideo: boolean;
+  isUserDislikedVideo: boolean;
+  videoComments: VideoComment[];
+  isUserSubscribeOnVideoChannel: boolean;
   videoViews: number;
   createdAt: string;
   channelId: string;

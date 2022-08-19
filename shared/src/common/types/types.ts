@@ -3,7 +3,12 @@ export * from './user/user';
 export { type ValidationSchema } from './validation/validation';
 export * from './auth/auth';
 export { type CloudinaryApi, type ImageUploadRequestDto, ImageUploadResponseDto } from './cloudinary/cloudinary';
-export { type VideoBaseResponseDto } from './video/video';
+export {
+  type VideoBaseResponseDto,
+  type CreateReactionResponseDto,
+  type CreateReactionRequestDto,
+  type CreateSubscriptionResponseDto,
+} from './video/video';
 
 export {
   type MailRequestDto,
