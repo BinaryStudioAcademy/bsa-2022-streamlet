@@ -1,4 +1,4 @@
-import { SubscribeChanel } from 'common/types/sidebar/subscribe-chanel';
+import { SubscribeChanel } from 'common/types/types';
 
 export const subscribesList: SubscribeChanel[] = [
   {

@@ -1,5 +1,4 @@
-import { FC } from 'common/types/types';
-import { SubscribeChanel } from 'common/types/sidebar/subscribe-chanel';
+import { FC, SubscribeChanel } from 'common/types/types';
 
 import styles from './chanel.module.scss';
 

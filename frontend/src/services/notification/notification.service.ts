@@ -1,11 +1,7 @@
 import { ApiPath, ContentType, HttpMethod, NotificationApiPath } from 'common/enums/enums';
-import {
-  NotificationBaseResponseDto,
-  NotificationFilter,
-  NotificationListResponseDto,
-} from 'common/types/notifications/notifications';
+import { NotificationBaseResponseDto, NotificationFilter, NotificationListResponseDto } from 'common/types/types';
 import { Http } from 'services/http/http.service';
-import { DefaultRequestParam } from 'shared/build/common/types/types';
+import { DefaultRequestParam } from 'shared/build';
 
 type Constructor = {
   http: Http;

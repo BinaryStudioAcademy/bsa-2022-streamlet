@@ -50,9 +50,9 @@ const HeaderContainer: FC = () => {
       },
     },
     {
-      type: MenuOptions.Logout,
+      type: MenuOptions.SignOut,
       text: 'Log Out',
-      icon: IconName.LOGOUT,
+      icon: IconName.SIGN_OUT,
       onClick: (e: MouseEvent): void => {
         handleClickLogin(e);
       },
@@ -126,7 +126,6 @@ const HeaderContainer: FC = () => {
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={FAKE_USER_AVATAR}
       options={options}
-      notifications={notifications}
       notificationsMenuRef={notificationsMenuRef}
       handleClickNotificationsMenu={handleClickNotificationsMenu}
       handleCloseNotificationsMenu={handleCloseNotificationsMenu}

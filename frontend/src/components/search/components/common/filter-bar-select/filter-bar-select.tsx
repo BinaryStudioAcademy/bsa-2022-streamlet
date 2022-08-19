@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { useId } from 'hooks/hooks';
-import { IconName } from 'common/enums/components';
+import { IconName } from 'common/enums/enums';
 import { Icon } from 'components/common/common';
 
 import styles from './styles.module.scss';

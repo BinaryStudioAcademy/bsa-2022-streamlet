@@ -69,7 +69,7 @@ const VideoCard: FC<Props> = ({
           <p className={style['video-card-statistic-data']}>{viewerNumStringWithSpace}</p>
         </div>
         <div className={style['viewer-container']}>
-          {Icon({ name: IconName.TIMEAGO, color: '#363C3A', width: '12', height: '12' })}
+          {Icon({ name: IconName.TIME_AGO, color: '#363C3A', width: '12', height: '12' })}
           <p className={style['video-card-statistic-data']}>{getHowLongAgoString(creationDate)}</p>
         </div>
       </div>

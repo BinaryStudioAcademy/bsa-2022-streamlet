@@ -1,12 +1,12 @@
-import { IconColor, IconName } from 'common/enums/components';
-import { FC, NotificationsResponseDto } from 'common/types/types';
+import { IconColor, IconName } from 'common/enums/enums';
+import { FC, NotificationListResponseDto } from 'common/types/types';
 import { Button, Icon } from 'components/common/common';
 import { Notification } from './components/components';
 
 import notificationDropdown from './styles.module.scss';
 
 interface NotificationDropdownProps {
-  notifications: NotificationsResponseDto;
+  notifications: NotificationListResponseDto;
   onClose: () => void;
 }
 
@@ -44,12 +44,11 @@ const NotificationDropdown: FC<NotificationDropdownProps> = ({ notifications, on
         <div className={notificationDropdown['buttons']}>
           <Button
             className={notificationDropdown['mark-as-read']}
-            label={<Icon color={IconColor.WHITE} name={IconName.MARK_AS_READ} width="25" height="25" />}
+            content={<Icon color={IconColor.WHITE} name={IconName.MARK_AS_READ} width="25" height="25" />}
             onClick={handleMarkAsRead}
           />
           <Button
-            className={notificationDropdown['back-button-mobile']}
-            label={<Icon color={IconColor.WHITE} name={IconName.CLOSE} width="25" height="25" />}
+            content={<Icon color={IconColor.WHITE} name={IconName.CLOSE} width="25" height="25" />}
             onClick={handleClose}
           />
         </div>
@@ -66,7 +65,7 @@ const NotificationDropdown: FC<NotificationDropdownProps> = ({ notifications, on
           {notifications.total > 10 && (
             <Button
               className={notificationDropdown['load-more']}
-              label="Load more"
+              content="Load more"
               onClick={handleLoadMoreNotifications}
             />
           )}

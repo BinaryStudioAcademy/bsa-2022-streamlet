@@ -1,6 +1,5 @@
-import { FC } from 'common/types/types';
+import { FC, SubscribeChanel } from 'common/types/types';
 import { Icon } from '../icon';
-import { SubscribeChanel } from 'common/types/sidebar/subscribe-chanel';
 import { Chanel } from 'components/sidebar/chanel';
 import { Link } from '../common';
 import { RoutePage } from './route-pages.config';

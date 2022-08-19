@@ -1,23 +1,12 @@
-import { FC } from 'common/types/types';
+import { FC, NotificationBaseResponseDto } from 'common/types/types';
 import DefaultUserAvatar from 'assets/img/default-user-avatar.jpg';
 import { Link } from 'react-router-dom';
 import { getHowLongAgoString } from 'helpers/helpers';
 
 import styles from './styles.module.scss';
 
-type NotificationData = {
-  id: string;
-  videoId: string;
-  username: string;
-  videoName: string;
-  createdAt: Date;
-  isViewed: boolean;
-  channelAvatar: string;
-  videoPreview: string;
-};
-
 type NotificationProps = {
-  notification: NotificationData;
+  notification: NotificationBaseResponseDto;
   onRead(id: string): void;
 };
 
@@ -27,11 +16,11 @@ const Notification: FC<NotificationProps> = ({ notification, onRead }) => {
   };
 
   return (
-    <Link className={styles['link']} to={`/video/${notification.videoId}`}>
+    <Link className={styles['link']} to={`/video/${notification.link}`}>
       <div className={styles['notification']} onClick={handleNotificationRead}>
         <div className={`${styles['status']} ${!notification.isViewed && styles['status-unread']}`}></div>
         <img
-          src={notification.channelAvatar ?? DefaultUserAvatar}
+          src={notification.avatar ?? DefaultUserAvatar}
           className={styles['avatar']}
           alt="channel-avatar"
           height="20"

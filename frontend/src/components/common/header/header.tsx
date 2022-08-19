@@ -1,13 +1,12 @@
-import { FC, NotificationsResponseDto } from 'common/types/types';
+import { FC } from 'common/types/types';
 import { Link } from 'react-router-dom';
 import { FormEvent, MouseEvent, RefObject } from 'react';
-import { AppRoute, IconName } from 'common/enums/enums';
-import { IconColor, MenuOptions } from 'common/enums/components/';
+import { AppRoute, IconName, IconColor, MenuOptions } from 'common/enums/enums';
 import { Icon } from '../icon';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 
 import styles from './header.module.scss';
-import { NotificationDropdown } from 'components/notification-dropdown/notification-dropdown';
+// import { NotificationDropdown } from '../../notification-dropdown/notification-dropdown';
 import { closeSidebar, openSidebar } from 'store/layout/actions';
 
 interface MenuOption {
@@ -33,7 +32,6 @@ interface HeaderProps {
   userAvatar: string;
   menuRef: RefObject<HTMLDivElement>;
   notificationsMenuRef: RefObject<HTMLDivElement>;
-  notifications: NotificationsResponseDto;
   isNotificationsMenuOpen: boolean;
 }
 
@@ -45,7 +43,7 @@ const Header: FC<HeaderProps> = ({
   handleClickLogin,
   handleClickUserMenu,
   handleClickNotificationsMenu,
-  handleCloseNotificationsMenu,
+  // handleCloseNotificationsMenu,
   handleChangeInputSearch,
   handleClearInputSearch,
   handleSubmitSearch,
@@ -53,11 +51,8 @@ const Header: FC<HeaderProps> = ({
   userAvatar,
   menuRef,
   notificationsMenuRef,
-  notifications,
   isNotificationsMenuOpen,
 }) => {
-  const haveUnreadNotifications = notifications.notifications.some((notification) => !notification.isViewed);
-
   const isSidebarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
   const dispatch = useAppDispatch();
 
@@ -74,10 +69,10 @@ const Header: FC<HeaderProps> = ({
       <div className={styles['wrapper-first-part']}>
         <div className={styles['logo-block']}>
           <button onClick={handleClickBurgerMenu} className={styles['burger-menu']}>
-            <Icon name={IconName.BURGERMENU} width="30" height="30" />
+            <Icon name={IconName.BURGER_MENU} width="30" height="30" />
           </button>
           <Link className={styles['logo-link']} to={AppRoute.ROOT}>
-            <Icon name={IconName.LOGOTIP} width="23" height="23" />
+            <Icon name={IconName.MAIN_LOGO} width="23" height="23" />
             <p className={styles['main-name']}>streamlet</p>
           </Link>
         </div>
@@ -92,7 +87,7 @@ const Header: FC<HeaderProps> = ({
             placeholder="Search or type"
           />
           <div className={styles['search-input-clear']} aria-label="Clear search" onClick={handleClearInputSearch}>
-            <Icon name={IconName.XMARK} />
+            <Icon name={IconName.X_MARK} />
           </div>
         </form>
       </div>
@@ -118,7 +113,7 @@ const Header: FC<HeaderProps> = ({
             <button className={styles['btn-notification']} onClick={handleClickNotificationsMenu}>
               <>
                 <Icon color={IconColor.GRAY} name={IconName.ALARM} width="24" height="27" />
-                {haveUnreadNotifications && <div className={styles['unread-mark']}></div>}
+                {/* {haveUnreadNotifications && <div className={styles['unread-mark']}></div>} */}
                 {isNotificationsMenuOpen && (
                   <div
                     ref={notificationsMenuRef}
@@ -126,7 +121,7 @@ const Header: FC<HeaderProps> = ({
                       isNotificationsMenuOpen && styles['notifications-dropdown-open']
                     }`}
                   >
-                    <NotificationDropdown notifications={notifications} onClose={handleCloseNotificationsMenu} />
+                    {/* <NotificationDropdown notifications={notifications} onClose={handleCloseNotificationsMenu} /> */}
                   </div>
                 )}
               </>
