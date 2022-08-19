@@ -68,8 +68,6 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
   }, [isOpen]);
 
   const handleBlur = (e: React.FocusEvent<HTMLDivElement, Element>): void => {
-    // eslint-disable-next-line no-console
-    console.log(e.currentTarget, e.relatedTarget);
     if (!e.currentTarget.contains(e.relatedTarget)) {
       // Not triggered when swapping focus between children
       setIsOpen(false);
