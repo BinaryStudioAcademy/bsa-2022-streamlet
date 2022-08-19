@@ -10,7 +10,6 @@ type createVideoBaseResponseInputType = {
   videoViews: number;
   liveViews: number;
   createdAt: Date;
-  isLive: boolean;
   channelId: string;
   videoPath: string;
 };

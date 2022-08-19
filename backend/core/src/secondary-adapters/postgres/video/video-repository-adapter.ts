@@ -36,7 +36,6 @@ export class VideoRepositoryAdapter implements VideoRepository {
         name: true,
         description: true,
         liveViews: true,
-        isLive: true,
         createdAt: true,
         videoViews: true,
         channelId: true,

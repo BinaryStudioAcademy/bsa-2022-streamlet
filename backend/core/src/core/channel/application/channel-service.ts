@@ -1,13 +1,24 @@
 import { inject, injectable } from 'inversify';
-import { CONTAINER_TYPES, CreateSubscriptionResponseDto } from '~/shared/types/types';
+import { LiveStartResponseDto, StreamingKeyResponseDto, CreateSubscriptionResponseDto } from '~/shared/types/types';
+import { AmqpQueue, StreamingStatus } from '~/shared/enums/enums';
 import { ChannelRepository } from '~/core/channel/port/channel-repository';
+import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
+import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
+import { generateUuid } from '~/shared/helpers';
 
 @injectable()
 export class ChannelService {
   private channelRepository: ChannelRepository;
-  constructor(@inject(CONTAINER_TYPES.ChannelRepository) channelRepository: ChannelRepository) {
+  private amqpChannel: AmqpChannelPort;
+
+  constructor(
+    @inject(CONTAINER_TYPES.ChannelRepository) channelRepository: ChannelRepository,
+    @inject(CONTAINER_TYPES.AmqpChannelAdapter) amqpChannel: AmqpChannelPort,
+  ) {
     this.channelRepository = channelRepository;
+    this.amqpChannel = amqpChannel;
   }
+
   async addSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {
     const channel = this.channelRepository.getChannelById(channelId);
     if (!channel) {
@@ -18,5 +29,70 @@ export class ChannelService {
       return this.channelRepository.removeSubscription(userId, channelId);
     }
     return this.channelRepository.addSubscription(userId, channelId);
+  }
+
+  async checkStreamingKey(key: string): Promise<LiveStartResponseDto | null> {
+    const keyRecord = await this.channelRepository.getStreamingKey({ key });
+    if (!keyRecord) {
+      return null;
+    }
+    const pendingStream = await this.channelRepository.getVideo({
+      channelId: keyRecord.channelId,
+      status: StreamingStatus.PENDING,
+    });
+    if (!pendingStream) {
+      return null;
+    }
+    return {
+      videoId: pendingStream.id,
+      streamingKey: key,
+    };
+  }
+
+  notifyTranscoderAboutStreamStart(streamData: LiveStartResponseDto): Promise<boolean> {
+    return this.amqpChannel.sendToQueue({
+      queue: AmqpQueue.STREAM_TRANSCODER,
+      content: Buffer.from(
+        JSON.stringify({
+          ...streamData,
+          isLive: true,
+        }),
+      ),
+    });
+  }
+
+  notifyTranscoderAboutStreamEnd(streamingKey: string): Promise<boolean> {
+    return this.amqpChannel.sendToQueue({
+      queue: AmqpQueue.STREAM_TRANSCODER,
+      content: Buffer.from(
+        JSON.stringify({
+          streamingKey,
+          isLive: false,
+        }),
+      ),
+    });
+  }
+
+  async getStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
+    const keyRecord = await this.channelRepository.getStreamingKey({ channelId });
+    if (!keyRecord) {
+      return null;
+    }
+    return {
+      channelId,
+      streamingKey: keyRecord.key,
+    };
+  }
+
+  async resetStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
+    const newKey = generateUuid();
+    const updatedKeyRecord = await this.channelRepository.updateStreamingKey(channelId, newKey);
+    if (!updatedKeyRecord) {
+      return null;
+    }
+    return {
+      channelId,
+      streamingKey: updatedKeyRecord.key,
+    };
   }
 }

@@ -8,3 +8,4 @@ export * from './video/video';
 export * from './channel/channel';
 export { type ValidationSchema } from './validation/validation';
 export { type VideoCard } from './components/components';
+declare module 'react-notifications-component';

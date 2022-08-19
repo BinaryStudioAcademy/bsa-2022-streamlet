@@ -1,5 +1,16 @@
 version: '3.9'
 services:
+  rtmp:
+    image: tiangolo/nginx-rtmp
+    ports:
+      - "1935:1935"
+    container_name: rtmp
+    depends_on:
+      - backend
+    networks:
+      - backend_network
+    volumes:
+      - ../nginx/nginx.rtmp.conf:/etc/nginx/nginx.conf
   rabbitmq:
     image: rabbitmq:3-management-alpine
     hostname: rabbit
@@ -79,6 +90,7 @@ services:
         max-file: "5"
     volumes:
       - ../nginx/nginx.local.conf:/etc/nginx/nginx.conf
+      - ../playback:/assets
     networks:
       - backend_network
       - frontend_network

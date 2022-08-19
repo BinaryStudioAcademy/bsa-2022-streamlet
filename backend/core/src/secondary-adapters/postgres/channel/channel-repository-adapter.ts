@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { Channel, PrismaClient } from '@prisma/client';
+import { Channel, PrismaClient, StreamingKey, Video } from '@prisma/client';
 import { CONTAINER_TYPES, CreateSubscriptionResponseDto } from '~/shared/types/types';
 import { ChannelRepository } from '~/core/channel/port/channel-repository';
 
@@ -34,6 +34,7 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
 
     return { isSubscribe: true };
   }
+
   async removeSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {
     await this.prismaClient.channel.update({
       where: {
@@ -61,6 +62,7 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
       },
     });
   }
+
   async isUserSubscribe(channelId: string, userId: string): Promise<boolean> {
     const userSubscription = await this.prismaClient.channel.findUnique({
       where: {
@@ -76,6 +78,7 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
     });
     return !!userSubscription?.subscriptions.length;
   }
+
   async isUserSubscribeByVideoId(videoId: string, userId: string): Promise<boolean> {
     const { channelId } = await this.prismaClient.video.findUniqueOrThrow({
       where: {
@@ -98,5 +101,32 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
       },
     });
     return !!userSubscription?.subscriptions.length;
+  }
+
+  getVideo(props: Partial<Video>): Promise<Video | null> {
+    return this.prismaClient.video.findFirst({
+      where: {
+        ...props,
+      },
+    });
+  }
+
+  getStreamingKey(props: Partial<StreamingKey>): Promise<StreamingKey | null> {
+    return this.prismaClient.streamingKey.findFirst({
+      where: {
+        ...props,
+      },
+    });
+  }
+
+  updateStreamingKey(channelId: string, key: string): Promise<StreamingKey | null> {
+    return this.prismaClient.streamingKey.update({
+      where: {
+        channelId,
+      },
+      data: {
+        key,
+      },
+    });
   }
 }
