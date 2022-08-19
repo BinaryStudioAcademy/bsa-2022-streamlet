@@ -6,6 +6,7 @@ import { RefreshTokenValidationMessage } from '~/common/enums/enums';
 const refreshTokenRequest = Joi.object({
   [getNameOf<RefreshTokenRequestDto>('refreshToken')]: Joi.string().trim().required().messages({
     'string.empty': RefreshTokenValidationMessage.TOKEN_REQUIRE,
+    'any.required': RefreshTokenValidationMessage.TOKEN_REQUIRE,
   }),
 });
 

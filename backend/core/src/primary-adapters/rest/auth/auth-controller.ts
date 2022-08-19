@@ -12,16 +12,19 @@ import {
   MailResponseDto,
   MailTestRequestDto,
   ExtendedAuthenticatedRequest,
+  RestorePasswordInitRequestDto,
+  RestorePasswordInitResponseDto,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { compareHash, generateJwt, trimUser } from '~/shared/helpers';
 import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
 import { authenticationMiddleware, validationMiddleware } from '../middleware';
-import { userSignIn, userSignUp } from '~/validation-schemas/user/user';
+import { userSignIn, userSignUp, restorePasswordInit } from '~/validation-schemas/user/user';
 import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-token';
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
-import { exceptionMessages } from '~/shared/enums/exceptions';
+import { exceptionMessages, successMessages } from '~/shared/enums/messages';
 import { DuplicationError } from '~/shared/exceptions/duplication-error';
+import { NotFound } from '~/shared/exceptions/not-found';
 
 /**
  * @swagger
@@ -123,6 +126,8 @@ export class AuthController extends BaseHttpController {
    *                    $ref: '#/components/schemas/UserBaseResponse'
    *                  tokens:
    *                    $ref: '#/components/schemas/TokenPair'
+   *                  message:
+   *                    type: string
    *        400:
    *          description: Email is already taken.
    *          content:
@@ -155,6 +160,7 @@ export class AuthController extends BaseHttpController {
         accessToken,
         refreshToken: await this.userService.createRefreshToken(user.id),
       },
+      message: successMessages.auth.SUCCESS_SIGN_UP,
     };
   }
 
@@ -192,6 +198,8 @@ export class AuthController extends BaseHttpController {
    *                    $ref: '#/components/schemas/UserBaseResponse'
    *                  tokens:
    *                    $ref: '#/components/schemas/TokenPair'
+   *                  message:
+   *                    type: string
    *        400:
    *          description: Invalid request format.
    *          content:
@@ -213,11 +221,11 @@ export class AuthController extends BaseHttpController {
   public async signIn(@requestBody() userRequestDto: UserSignInRequestDto): Promise<UserSignInResponseDto> {
     const user = await this.userService.getUserByEmail(userRequestDto.email);
     if (!user) {
-      throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
+      throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS_LOGIN);
     }
     const isSameHash = await compareHash(userRequestDto.password, user.password);
     if (!isSameHash) {
-      throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
+      throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS_LOGIN);
     }
     const accessToken = await generateJwt({ payload: trimUser(user) });
     return {
@@ -226,6 +234,7 @@ export class AuthController extends BaseHttpController {
         accessToken,
         refreshToken: await this.userService.createRefreshToken(user.id),
       },
+      message: successMessages.auth.SUCCESS_SIGN_IN,
     };
   }
 
@@ -312,6 +321,61 @@ export class AuthController extends BaseHttpController {
   public async logout(@request() req: ExtendedAuthenticatedRequest): Promise<void> {
     const user = req.user;
     return this.refreshTokenService.removeForUser(user.id);
+  }
+
+  /**
+   * @swagger
+   * /auth/restore-password-init:
+   *    post:
+   *      tags:
+   *      - auth
+   *      security: []
+   *      operationId: restorePasswordInit
+   *      description: Initialize restore password flow by sending email for password restoration to the user
+   *      requestBody:
+   *        description: User email
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                email:
+   *                  type: string
+   *                  format: email
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  message:
+   *                    type: string
+   *        404:
+   *          description: Email not found.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   */
+  @httpPost(AuthApiPath.RESTORE_PASSWORD_INIT, validationMiddleware(restorePasswordInit))
+  public async restorePasswordInit(
+    @requestBody() requestDto: RestorePasswordInitRequestDto,
+  ): Promise<RestorePasswordInitResponseDto> {
+    const user = await this.userService.getUserByEmail(requestDto.email);
+    if (!user) {
+      throw new NotFound(exceptionMessages.auth.INCORRECT_EMAIL);
+    }
+
+    // TODO: implement restore password flow within the scope of another dedicated task
+
+    return {
+      message: successMessages.auth.SUCCESS_RESTORE_PASSWORD_INIT,
+    };
   }
 
   /**
