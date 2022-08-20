@@ -15,9 +15,10 @@ type Props = {
 };
 
 const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
-  const { control, errors, handleSubmit } = useAppForm<UserSignUpRequestDto>({
+  const { control, errors, handleSubmit, isValid } = useAppForm<UserSignUpRequestDto>({
     defaultValues: DEFAULT_SIGN_UP_PAYLOAD,
     validationSchema: userSignUpValidationSchema,
+    mode: 'onChange',
   });
 
   return (
@@ -58,7 +59,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           label="Confirm password"
         />
         <ContonueWithParagraph prompt="Already have an account?" linkTitle="Login" route={AppRoute.SIGN_IN} />
-        <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign up" />
+        <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Sign up" />
       </form>
       <p>or continue with</p>
       <GoogleButton disabled={isLoading} />

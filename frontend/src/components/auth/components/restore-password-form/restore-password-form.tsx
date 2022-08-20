@@ -15,9 +15,10 @@ export interface RestorePasswordFormValues {
 }
 
 const RestorePasswordForm: FC<Props> = ({ onSubmit }) => {
-  const { control, errors, handleSubmit } = useAppForm<RestorePasswordFormValues>({
+  const { control, errors, handleSubmit, isValid } = useAppForm<RestorePasswordFormValues>({
     defaultValues: { email: '' },
     validationSchema: refreshPassword,
+    mode: 'onChange',
   });
 
   return (
@@ -32,7 +33,7 @@ const RestorePasswordForm: FC<Props> = ({ onSubmit }) => {
           wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
-        <AuthSubmitButton isLoading={false} disabled={true} name="Send" />
+        <AuthSubmitButton isLoading={false} disabled={true || !isValid} name="Send" />
       </form>
       <ContonueWithParagraph linkTitle="Back to login" prompt="Changed your mind?" route={AppRoute.SIGN_IN} />
     </>
