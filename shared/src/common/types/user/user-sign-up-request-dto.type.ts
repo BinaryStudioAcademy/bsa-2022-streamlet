@@ -2,7 +2,7 @@ type UserSignUpRequestDto = {
   email: string;
   username: string;
   password: string;
-  password_confirm?: string;
+  passwordConfirm?: string;
 };
 
 export { type UserSignUpRequestDto };

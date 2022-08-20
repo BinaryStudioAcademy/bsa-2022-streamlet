@@ -111,7 +111,7 @@ export class AuthController extends BaseHttpController {
    *                  type: string
    *                password:
    *                  type: string
-   *                password_confirm:
+   *                passwordConfirm:
    *                  type: string
    *      responses:
    *        200:
@@ -149,7 +149,7 @@ export class AuthController extends BaseHttpController {
         throw new DuplicationError(exceptionMessages.auth.USER_EMAIL_ALREADY_EXISTS);
       }
     }
-    delete userRequestDto.password_confirm;
+    delete userRequestDto.passwordConfirm;
     const user = await this.userService.createUser(userRequestDto);
     const accessToken = await generateJwt({ payload: user });
     return {

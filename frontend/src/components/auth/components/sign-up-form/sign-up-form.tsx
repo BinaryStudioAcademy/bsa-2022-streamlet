@@ -58,7 +58,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           inputWrapperErrorClassName={formStyles['input-error']}
           placeholder="Confirm password"
           control={control}
-          name="password_confirm"
+          name="passwordConfirm"
           errors={errors}
           label="Confirm password"
         />

@@ -18,7 +18,7 @@ const userSignUp = Joi.object<UserSignUpRequestDto, true>({
     'string.min': UserValidationMessage.PASSWORD_WRONG_LENGTH,
     'string.max': UserValidationMessage.PASSWORD_WRONG_LENGTH,
   }),
-  password_confirm: Joi.string().valid(Joi.ref('password')).required().messages({
+  passwordConfirm: Joi.string().valid(Joi.ref('password')).required().messages({
     'any.only': UserValidationMessage.PASSWORDS_NOT_MATCH,
   }),
   username: Joi.string().trim().min(3).max(25).required().messages({
