@@ -49,6 +49,14 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
           label="Password"
         />
+        <PasswordInput
+          wrapperClassName={formStyles['form-input']}
+          placeholder="Confirm password"
+          control={control}
+          name="password_confirm"
+          errors={errors}
+          label="Confirm password"
+        />
         <ContonueWithParagraph prompt="Already have an account?" linkTitle="Login" route={AppRoute.SIGN_IN} />
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign up" />
       </form>
