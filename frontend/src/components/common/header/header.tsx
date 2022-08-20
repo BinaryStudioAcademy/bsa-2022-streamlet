@@ -1,13 +1,12 @@
 import { FC } from 'common/types/types';
 import { Link } from 'react-router-dom';
 import { FormEvent, MouseEvent, RefObject } from 'react';
-import { AppRoute, IconName, IconColor, MenuOptions } from 'common/enums/enums';
+import { AppRoute, IconName, MenuOptions } from 'common/enums/enums';
 import { Icon } from '../icon';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
+import { closeSidebar, openSidebar } from 'store/layout/actions';
 
 import styles from './header.module.scss';
-// import { NotificationDropdown } from '../../notification-dropdown/notification-dropdown';
-import { closeSidebar, openSidebar } from 'store/layout/actions';
 
 interface MenuOption {
   type: MenuOptions;
@@ -22,8 +21,6 @@ interface HeaderProps {
   searchValue: string;
   searchInputId: string;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
-  handleClickNotificationsMenu: (e: MouseEvent<HTMLButtonElement>) => void;
-  handleCloseNotificationsMenu: () => void;
   handleClickLogin(e: MouseEvent<HTMLElement>): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
@@ -31,8 +28,7 @@ interface HeaderProps {
   options: MenuOption[];
   userAvatar: string;
   menuRef: RefObject<HTMLDivElement>;
-  notificationsMenuRef: RefObject<HTMLDivElement>;
-  isNotificationsMenuOpen: boolean;
+  notificationDropdownContent: React.ReactNode;
 }
 
 const Header: FC<HeaderProps> = ({
@@ -42,16 +38,13 @@ const Header: FC<HeaderProps> = ({
   searchInputId,
   handleClickLogin,
   handleClickUserMenu,
-  handleClickNotificationsMenu,
-  // handleCloseNotificationsMenu,
   handleChangeInputSearch,
   handleClearInputSearch,
   handleSubmitSearch,
   options,
   userAvatar,
   menuRef,
-  notificationsMenuRef,
-  isNotificationsMenuOpen,
+  notificationDropdownContent,
 }) => {
   const isSidebarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
   const dispatch = useAppDispatch();
@@ -107,25 +100,12 @@ const Header: FC<HeaderProps> = ({
             <button className={styles['search-mobile']}>
               <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
             </button>
-            <button className={styles['btn-go-stream']}>
-              <Icon name={IconName.CAMERA} width="30" height="24" />
-            </button>
-            <button className={styles['btn-notification']} onClick={handleClickNotificationsMenu}>
-              <>
-                <Icon color={IconColor.GRAY} name={IconName.ALARM} width="24" height="27" />
-                {/* {haveUnreadNotifications && <div className={styles['unread-mark']}></div>} */}
-                {isNotificationsMenuOpen && (
-                  <div
-                    ref={notificationsMenuRef}
-                    className={`${styles['notifications-wrapper']} ${
-                      isNotificationsMenuOpen && styles['notifications-dropdown-open']
-                    }`}
-                  >
-                    {/* <NotificationDropdown notifications={notifications} onClose={handleCloseNotificationsMenu} /> */}
-                  </div>
-                )}
-              </>
-            </button>
+            <div className={styles['control-icons']}>
+              <button className={styles['btn-go-stream']}>
+                <Icon name={IconName.CAMERA} width="30" height="24" />
+              </button>
+              {notificationDropdownContent}
+            </div>
             <button
               onClick={handleClickUserMenu}
               style={{ backgroundImage: `url(${userAvatar})` }}

@@ -1,24 +1,24 @@
-import { FC, NotificationBaseResponseDto } from 'common/types/types';
+import { FC, NotificationStreamStartResponseDto } from 'common/types/types';
 import DefaultUserAvatar from 'assets/img/default-user-avatar.jpg';
 import { Link } from 'react-router-dom';
 import { getHowLongAgoString } from 'helpers/helpers';
 
 import styles from './styles.module.scss';
+import { ApiPath } from 'shared/build';
 
 type NotificationProps = {
-  notification: NotificationBaseResponseDto;
+  notification: NotificationStreamStartResponseDto;
   onRead(id: string): void;
 };
 
-const Notification: FC<NotificationProps> = ({ notification, onRead }) => {
+const NewStreamNotification: FC<NotificationProps> = ({ notification, onRead }) => {
   const handleNotificationRead = (): void => {
     onRead(notification.id);
   };
 
   return (
-    <Link className={styles['link']} to={`/video/${notification.link}`}>
+    <Link className={styles['link']} to={`${ApiPath.VIDEO}${notification.link}`}>
       <div className={styles['notification']} onClick={handleNotificationRead}>
-        <div className={`${styles['status']} ${!notification.isViewed && styles['status-unread']}`}></div>
         <img
           src={notification.avatar ?? DefaultUserAvatar}
           className={styles['avatar']}
@@ -38,4 +38,4 @@ const Notification: FC<NotificationProps> = ({ notification, onRead }) => {
   );
 };
 
-export { Notification };
+export { NewStreamNotification };

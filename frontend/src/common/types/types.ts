@@ -13,6 +13,8 @@ export {
   NotificationFilter,
   NotificationListResponseDto,
   NotificationResponseDto,
+  NotificationMessageResponseDto,
+  NotificationStreamStartResponseDto,
 } from './notification/notification';
 
 export { FC } from './react/react';

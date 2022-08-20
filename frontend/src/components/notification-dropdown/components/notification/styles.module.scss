@@ -8,24 +8,25 @@
   display: flex;
   align-items: center;
   padding: 15px 8px;
+  color: var(--notifications-text);
   border-bottom: 1px solid var(--notifications-border);
+}
+
+.text-notification {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 24px 15px 53px;
+  color: var(--notifications-text);
+  border-bottom: 1px solid var(--notifications-border);
+}
+
+.text-notification-message {
+  font-size: 80%;
+  line-height: 16px;
 }
 
 .notification:hover {
   background-color: var(--notifications-hover);
-}
-
-.status {
-  display: block;
-  width: 6px;
-  height: 6px;
-  margin: 0 3px;
-  background-color: transparent;
-  border-radius: 50%;
-}
-
-.status-unread {
-  background-color: var(--notifications-unread-mark);
 }
 
 .avatar {

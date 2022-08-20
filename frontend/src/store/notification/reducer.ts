@@ -1,4 +1,5 @@
 import { createReducer, isAnyOf } from '@reduxjs/toolkit';
+import { NOTIFICATION_REQUEST_SIZE } from 'common/constants/constants';
 import { DataStatus, NotificationType } from 'common/enums/enums';
 import { NotificationBaseResponseDto, NotificationListResponseDto } from 'common/types/types';
 import { getNotification, getNotifications, readAllNotifications, readNotification } from './actions';
@@ -18,14 +19,11 @@ const notificationsMockup: NotificationListResponseDto = {
     },
     {
       'id': '281f1c2f-a546-435b-a55f-ff868f5a6a5e',
-      'type': NotificationType.STREAM_START,
-      'link': '/videos/25391635-8dd2-4298-9943-c79e741ab79b',
-      'username': 'abambrick1',
-      'videoName': '[Valheim] Trying not to die',
+      'type': NotificationType.TEXT_MESSAGE,
       'createdAt': new Date('2022-08-11T22:32:52Z'),
       'isViewed': false,
-      'avatar': 'https://randomuser.me/api/portraits/men/93.jpg',
-      'videoPreview': 'http://dummyimage.com/1920x1080.png/5fa2dd/ffffff',
+      'message':
+        'Testing message function! Please look how it looks with long string of text, since I want to create a perfect notification bar.',
     },
     {
       'id': '281f1c2f-a54e-445b-a55f-ff868f5a6a5e',
@@ -47,6 +45,7 @@ type State = {
   error: string | undefined;
   notifications: NotificationBaseResponseDto[];
   total: number;
+  loaded: number;
 };
 
 const initialState: State = {
@@ -54,6 +53,7 @@ const initialState: State = {
   error: undefined,
   notifications: notificationsMockup.notifications,
   total: notificationsMockup.total,
+  loaded: 3,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -62,6 +62,7 @@ const reducer = createReducer(initialState, (builder) => {
       ...state,
       ...payload,
       dataStatus: DataStatus.FULFILLED,
+      loaded: Math.min(state.total, state.loaded + NOTIFICATION_REQUEST_SIZE),
     };
   });
   builder.addCase(getNotification.fulfilled, (state, { payload }) => {
@@ -71,6 +72,7 @@ const reducer = createReducer(initialState, (builder) => {
       ...state,
       notifications: newArray,
       total: state.total + 1,
+      loaded: state.loaded + 1,
       dataStatus: DataStatus.FULFILLED,
     };
   });
@@ -79,6 +81,7 @@ const reducer = createReducer(initialState, (builder) => {
       ...state,
       notifications: [],
       total: 0,
+      loaded: 0,
     };
   });
   builder.addCase(readNotification.fulfilled, (state, { payload }) => {

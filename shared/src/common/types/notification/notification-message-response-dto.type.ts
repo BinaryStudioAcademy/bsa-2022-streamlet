@@ -5,6 +5,7 @@ type NotificationMessageResponseDto = {
   isViewed: boolean;
   createdAt: Date;
   type: NotificationType.TEXT_MESSAGE;
+  message: string;
 };
 
 export { NotificationMessageResponseDto };

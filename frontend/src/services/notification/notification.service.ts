@@ -19,7 +19,7 @@ class NotificationApi {
 
   public getAll(filter: NotificationFilter): Promise<NotificationListResponseDto> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.NOTIFICATION}${NotificationApiPath.ROOT}`,
+      url: `${this.#apiPrefix}${ApiPath.NOTIFICATION}`,
       options: {
         method: HttpMethod.GET,
         contentType: ContentType.JSON,
@@ -56,7 +56,7 @@ class NotificationApi {
 
   public readOne({ id }: DefaultRequestParam): Promise<NotificationBaseResponseDto> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.NOTIFICATION}${NotificationApiPath.READ}${id}`,
+      url: `${this.#apiPrefix}${ApiPath.NOTIFICATION}${NotificationApiPath.READ}/${id}`,
       options: {
         method: HttpMethod.POST,
         contentType: ContentType.JSON,

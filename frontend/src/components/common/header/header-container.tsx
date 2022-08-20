@@ -12,6 +12,7 @@ import { useState, MouseEvent, FormEvent } from 'react';
 import { Header } from './header';
 import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
 import { searchActions } from 'store/actions';
+import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
 
@@ -25,12 +26,6 @@ const HeaderContainer: FC = () => {
 
   const [isLogged, setIsLogged] = useState(false);
   const { isOpened: isMenuOpen, close: closeMenu, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
-  const {
-    isOpened: isNotificationsMenuOpen,
-    close: closeNotificationsMenu,
-    open: openNotificationsMenu,
-    ref: notificationsMenuRef,
-  } = useOutsideClick<HTMLDivElement>();
 
   const options = [
     {
@@ -71,17 +66,6 @@ const HeaderContainer: FC = () => {
       e.preventDefault();
       openMenu();
     }
-  }
-
-  function handleClickNotificationsMenu(e: MouseEvent): void {
-    if (!isNotificationsMenuOpen) {
-      e.preventDefault();
-      openNotificationsMenu();
-    }
-  }
-
-  function handleCloseNotificationsMenu(): void {
-    closeNotificationsMenu();
   }
 
   const searchInputId = useId();
@@ -126,10 +110,7 @@ const HeaderContainer: FC = () => {
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={FAKE_USER_AVATAR}
       options={options}
-      notificationsMenuRef={notificationsMenuRef}
-      handleClickNotificationsMenu={handleClickNotificationsMenu}
-      handleCloseNotificationsMenu={handleCloseNotificationsMenu}
-      isNotificationsMenuOpen={isNotificationsMenuOpen}
+      notificationDropdownContent={<NotificationDropdownContainer />}
     />
   );
 };
