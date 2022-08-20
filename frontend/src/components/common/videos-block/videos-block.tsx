@@ -1,11 +1,11 @@
-import { FC } from 'common/types/types';
-import { VideoCard, VideoProps } from '../video-card/video-card';
+import { VideoCard } from 'components/search/components/components';
+import { VideoCard as VideoCardProps, FC } from 'common/types/types';
 
 import styles from './videos-block.module.scss';
 
 export interface VideoBlockProps {
   titleBlock?: string;
-  videos: Array<VideoProps>;
+  videos: Array<VideoCardProps>;
 }
 
 const VideosBlock: FC<VideoBlockProps> = ({ videos, titleBlock }) => {
@@ -14,7 +14,7 @@ const VideosBlock: FC<VideoBlockProps> = ({ videos, titleBlock }) => {
       {titleBlock && <h2 className={styles['video-block-title']}>{titleBlock}</h2>}
       <div className={styles['videos-block']}>
         {videos.map((video) => (
-          <VideoCard key={video.id} {...video} />
+          <VideoCard key={video.id} video={video} />
         ))}
       </div>
     </div>

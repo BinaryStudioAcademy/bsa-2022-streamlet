@@ -167,128 +167,128 @@
   height: 12px;
 }
 
-@media #{$tablet-small} {
-  .video-card {
-    flex-flow: row nowrap;
-    gap: 10px;
-    background: none;
-  }
+// @media #{$tablet-small} {
+//   .video-card {
+//     flex-flow: row nowrap;
+//     gap: 10px;
+//     background: none;
+//   }
 
-  .video-card:hover {
-    background-color: var(--gray-300-header-menu-background);
-  }
+//   .video-card:hover {
+//     background-color: var(--gray-300-header-menu-background);
+//   }
 
-  .video-card-preview {
-    height: 160px;
-    aspect-ratio: 16 / 9;
-    padding-bottom: 0;
-  }
+//   .video-card-preview {
+//     height: 160px;
+//     aspect-ratio: 16 / 9;
+//     padding-bottom: 0;
+//   }
 
-  .video-card-badge-duration {
-    padding: 4px 12px 2px;
-  }
+//   .video-card-badge-duration {
+//     padding: 4px 12px 2px;
+//   }
 
-  .video-card-info {
-    display: flex;
-    margin-top: 0;
-  }
+//   .video-card-info {
+//     display: flex;
+//     margin-top: 0;
+//   }
 
-  .video-card-channel {
-    display: none;
-  }
+//   .video-card-channel {
+//     display: none;
+//   }
 
-  .video-card-desc {
-    padding-right: 0;
-  }
+//   .video-card-desc {
+//     padding-right: 0;
+//   }
 
-  .video-card-title {
-    font-size: 16px;
-    line-height: 24px;
-  }
+//   .video-card-title {
+//     font-size: 16px;
+//     line-height: 24px;
+//   }
 
-  .video-card-meta {
-    display: flex;
-    flex-flow: row nowrap;
-    gap: 13px;
-    margin-top: 5px;
-  }
+//   .video-card-meta {
+//     display: flex;
+//     flex-flow: row nowrap;
+//     gap: 13px;
+//     margin-top: 5px;
+//   }
 
-  .video-card-author {
-    gap: 10px;
-    margin-top: 15px;
-    color: var(--white-text-color);
-    font-size: 14px;
-    font-family: Gilroy-Medium, sans-serif;
-    line-height: 16px;
-  }
+//   .video-card-author {
+//     gap: 10px;
+//     margin-top: 15px;
+//     color: var(--white-text-color);
+//     font-size: 14px;
+//     font-family: Gilroy-Medium, sans-serif;
+//     line-height: 16px;
+//   }
 
-  .video-card-author .avatar {
-    display: block;
-    width: 30px;
-  }
+//   .video-card-author .avatar {
+//     display: block;
+//     width: 30px;
+//   }
 
-  .video-card-tag-list {
-    margin-top: 10px;
-  }
+//   .video-card-tag-list {
+//     margin-top: 10px;
+//   }
 
-  .video-card-meta-footer {
-    display: none;
-  }
-}
+//   .video-card-meta-footer {
+//     display: none;
+//   }
+// }
 
-@media #{$tablet-middle} {
-  .video-card {
-    gap: 15px;
-  }
+// @media #{$tablet-middle} {
+//   .video-card {
+//     gap: 15px;
+//   }
 
-  .video-card-play-btn {
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    background-color: #f41b3b;
-    border-radius: 50%;
-  }
+//   .video-card-play-btn {
+//     justify-content: center;
+//     align-items: center;
+//     width: 40px;
+//     height: 40px;
+//     background-color: #f41b3b;
+//     border-radius: 50%;
+//   }
 
-  .video-card:hover .video-card-play-btn {
-    display: flex;
-  }
+//   .video-card:hover .video-card-play-btn {
+//     display: flex;
+//   }
 
-  .video-card-play-btn svg {
-    width: 15px;
-  }
+//   .video-card-play-btn svg {
+//     width: 15px;
+//   }
 
-  .video-card-title {
-    font-size: 18px;
-  }
+//   .video-card-title {
+//     font-size: 18px;
+//   }
 
-  .video-card-meta {
-    margin-top: 10px;
-  }
+//   .video-card-meta {
+//     margin-top: 10px;
+//   }
 
-  .video-card-tag-list {
-    gap: 10px;
-    margin-top: 15px;
-  }
-}
+//   .video-card-tag-list {
+//     gap: 10px;
+//     margin-top: 15px;
+//   }
+// }
 
-@media #{$tablet-large} {
-  .video-card-preview {
-    height: 190px;
-  }
-}
+// @media #{$tablet-large} {
+//   .video-card-preview {
+//     height: 190px;
+//   }
+// }
 
-@media #{$desktop-small} {
-  .video-card-preview {
-    height: 230px;
-  }
+// @media #{$desktop-small} {
+//   .video-card-preview {
+//     height: 230px;
+//   }
 
-  .video-card-play-btn {
-    width: 50px;
-    height: 50px;
-  }
+//   .video-card-play-btn {
+//     width: 50px;
+//     height: 50px;
+//   }
 
-  .video-card-play-btn svg {
-    width: 19px;
-  }
-}
+//   .video-card-play-btn svg {
+//     width: 19px;
+//   }
+// }

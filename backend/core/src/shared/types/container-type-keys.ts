@@ -10,6 +10,9 @@ const CONTAINER_TYPES = {
   RefreshTokenRepository: Symbol.for('RefreshTokenRepository'),
   MailRepository: Symbol.for('MailRepository'),
   ChannelRepository: Symbol.for('ChannelRepository'),
+  VideoService: Symbol.for('VideoService'),
+  VideoRepository: Symbol.for('VideoRepository'),
+  VideoController: Symbol.for('VideoController'),
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),
