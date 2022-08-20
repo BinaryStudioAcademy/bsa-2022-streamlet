@@ -7,3 +7,8 @@ export type VideoComment = {
   text: string;
   author: commentAuthor;
 };
+
+export type VideoCommentResponseDto = {
+  videoId: string;
+  comments: VideoComment[];
+};

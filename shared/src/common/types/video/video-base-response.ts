@@ -1,4 +1,4 @@
-import { type VideoComment } from './video-coment';
+import { type VideoComment } from './video-coment-response-dto';
 import { VideoReaction } from '~/common/types/video/video-reaction';
 
 type VideoBaseResponseDto = {
