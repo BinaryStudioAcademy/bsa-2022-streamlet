@@ -30,6 +30,7 @@
   --green-200-header-menu-background: #344f3e;
   --green-100-header-menu-background: #ebefe8;
   --primary-text-color: #181a20;
+  --secondary-text-color: #505565;
   --text-gray-color: #6a726d;
   --white-text-color: #ffffff;
   --brand-green-color: #06c149;
@@ -38,17 +39,19 @@
   --support-info-color: #03d8ff;
   --supprot-error-color: #f76519;
   --hover-light-grey: #e8e8e8;
+  --hover-dark-grey: #2a2d37;
 
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
 }
 
-:root[data-theme='light'] {
-  --background-color-header-menu-background: var(--gray-300-header-menu-background);
-}
-
-:root[data-theme='dark'] {
-  --background-color-header-menu-background: var(--green-100-header-menu-background);
+body[data-theme='light'] {
+  --gray-300-header-menu-background: var(--green-100-header-menu-background);
+  --primary-text-color: #ffffff;
+  --white-text-color: #181a20;
+  --secondary-text-color: #a7a5a5;
+  --hover-light-grey: var(--hover-dark-grey);
+  --gray-400-primary-background: #ffffff;
 }
 
 html {
@@ -63,7 +66,7 @@ body {
   min-width: 320px;
   min-height: 100%;
   margin: 0;
-  color: #505565;
+  color: var(--secondary-text-color);
   font-size: 16px;
   font-family: Gilroy-SemiBold, sans-serif;
   line-height: 28px;

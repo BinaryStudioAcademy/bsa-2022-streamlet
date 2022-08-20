@@ -21,13 +21,13 @@ const App: FC = () => {
   const { pathname } = useLocation();
   const isHaveHeader = isRouteHaveHeader(pathname);
 
-  const { theme: isWhiteTheme } = useAppSelector((state) => ({
-    theme: state.theme.isWhiteTheme,
+  const { theme: isLightTheme } = useAppSelector((state) => ({
+    theme: state.theme.isLightTheme,
   }));
 
   useEffect(() => {
-    document.documentElement.dataset.theme = isWhiteTheme ? AppTheme.LIGHT : AppTheme.DARK;
-  }, [isWhiteTheme]);
+    document.body.dataset.theme = isLightTheme ? AppTheme.LIGHT : '';
+  }, [isLightTheme]);
 
   return (
     <>

@@ -2,16 +2,16 @@ import { createReducer } from '@reduxjs/toolkit';
 import { switchTheme } from './actions';
 
 interface InitState {
-  isWhiteTheme: boolean;
+  isLightTheme: boolean;
 }
 
 const initialState: InitState = {
-  isWhiteTheme: true,
+  isLightTheme: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder.addCase(switchTheme, (state) => {
-    state.isWhiteTheme = !state.isWhiteTheme;
+    state.isLightTheme = !state.isLightTheme;
   });
 });
 

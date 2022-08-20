@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 18px 20px;
-  background-color: var(--background-color-header-menu-background);
+  background-color: var(--gray-300-header-menu-background);
 
   .block-user {
     display: flex;
@@ -167,6 +167,7 @@
 
     .option svg {
       margin-right: 12px;
+      fill: var(--text-gray-color);
     }
   }
 
