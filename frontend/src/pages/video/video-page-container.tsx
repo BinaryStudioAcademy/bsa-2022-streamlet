@@ -114,20 +114,25 @@ const VideoPageContainer: FC = () => {
             <span>{`${videoData.description}`}</span>
           </div>
           <hr />
-          <Button
-            content={'subscribe'}
-            className={clsx({
-              [styles['subscribe-button-basic']]: true,
-              [styles['subscribe-button-default']]: !isUserSubscribeOnVideoChannel,
-              [styles['subscribe-button-subscribed']]: isUserSubscribeOnVideoChannel,
-            })}
-            onClick={handleSubscribe}
-          />
           <div className={styles['channel-info-container']}>
-            <img
-              className={styles['channel-banner']}
-              alt={'user avatar'}
-              src={channel?.bannerImage ? channel.bannerImage : defaultAvatar}
+            <div className={styles['about-channel-block']}>
+              <img
+                className={styles['channel-banner']}
+                alt={'user avatar'}
+                src={channel?.bannerImage ? channel.bannerImage : defaultAvatar}
+              />
+              <div className={styles['channel-description']}>
+                <span>{channel.name}</span>
+              </div>
+            </div>
+            <Button
+              content={'subscribe'}
+              className={clsx({
+                [styles['subscribe-button-basic']]: true,
+                [styles['subscribe-button-default']]: !isUserSubscribeOnVideoChannel,
+                [styles['subscribe-button-subscribed']]: isUserSubscribeOnVideoChannel,
+              })}
+              onClick={handleSubscribe}
             />
           </div>
         </>
