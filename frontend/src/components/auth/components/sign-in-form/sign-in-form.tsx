@@ -5,7 +5,7 @@ import formStyles from '../form-controls.module.scss';
 import styles from './styles.module.scss';
 import { useAppForm } from 'hooks/hooks';
 import { userSignIn } from 'validation-schemas/validation-schemas';
-import { AuthSubmitButton, ContonueWithParagraph, GoogleButton } from '../common/common';
+import { AuthSubmitButton, ContinueWithParagraph, GoogleButton } from '../common/common';
 
 type Props = {
   onSubmit: (formValues: SignInFormValues) => void;
@@ -51,7 +51,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
       <p>or continue with</p>
       <GoogleButton disabled={isLoading} />
 
-      <ContonueWithParagraph
+      <ContinueWithParagraph
         prompt="Don't have an account yet?"
         linkTitle="Register for free"
         route={AppRoute.SIGN_UP}
