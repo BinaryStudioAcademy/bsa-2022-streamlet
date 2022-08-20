@@ -6,4 +6,5 @@ export {
   type VideoReaction,
   type VideoCommentRequestDto,
   type VideoCommentResponseDto,
+  type VideoComment,
 } from 'shared/build';

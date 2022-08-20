@@ -1,5 +1,5 @@
 import { UserProfile } from '@prisma/client';
-import { VideoComment } from 'shared/build/common/types/video/video-coment';
+import { VideoComment } from '~/shared/types/video/video';
 import { type commentFromDb } from './types/types';
 type Comment = {
   id: string;

@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { SendMessage, SendMessageProps } from 'components/common/send-message/send-message';
-import { type VideoComment as VideoCommentType } from 'shared/build/common/types/video/video-coment';
+import { type VideoComment as VideoCommentType } from '../../common/types/types';
 import { VideoComment } from './video-comment/video-comment';
 import styles from './video-chat.module.scss';
 

@@ -8,7 +8,7 @@ import {
   VideoBaseResponseDto,
 } from 'common/types/types';
 import { ActionType } from './common';
-import { VideoCommentRequestDto, VideoCommentResponseDto } from 'shared/build/common/types/video/video';
+import { type VideoCommentRequestDto, type VideoCommentResponseDto } from '../../common/types/types';
 
 const getVideo = createAsyncThunk<VideoBaseResponseDto, string, AsyncThunkConfig>(
   ActionType.GET_VIDEO,

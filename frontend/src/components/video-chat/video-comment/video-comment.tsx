@@ -1,7 +1,7 @@
 import { FC } from 'common/types/types';
 import { generateAbbreviatureNameUser, getUserDisplayName } from 'helpers/user';
 import { getHowLongAgoString } from 'helpers/helpers';
-import { type VideoComment as VideoCommentType } from 'shared/build/common/types/video/video-coment';
+import { type VideoComment as VideoCommentType } from '../../../common/types/types';
 
 import styles from './video-comment.module.scss';
 
