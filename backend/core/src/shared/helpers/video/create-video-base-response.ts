@@ -1,28 +1,33 @@
-import { Reaction } from '@prisma/client';
 import { VideoBaseResponseDto } from 'shared/build';
+import { createBaseVideoResponse } from '~/shared/helpers/video/types/create-base-vide-response-input.type';
 
-type createVideoBaseResponseInputType = {
-  comments: { id: string; createdAt: Date; updatedAt: Date; text: string; authorId: string }[];
-  reactions: Reaction[];
-  id: string;
-  name: string;
-  description: string;
-  videoViews: number;
-  liveViews: number;
-  createdAt: Date;
-  channelId: string;
-  videoPath: string;
-};
-
-const createVideoBaseResponse = (
-  video: createVideoBaseResponseInputType,
-  likeNum: number,
-  disLikeNum: number,
-  isUserSubscribeOnVideoChannel: boolean,
-): VideoBaseResponseDto | null => {
+const createVideoBaseResponse = (input: createBaseVideoResponse): VideoBaseResponseDto | null => {
+  const { video, likeNum, disLikeNum, isUserSubscribeOnVideoChannel } = input;
   if (!video) {
     return null;
   }
+  const trimmedVideoComment = video.comments.map((comment) => {
+    const { profile } = comment.author;
+    if (!profile) {
+      return {
+        ...comment,
+        author: {
+          username: 'anonimus',
+        },
+      };
+    }
+    const { avatar, firstName, lastName } = profile;
+    return {
+      ...comment,
+      author: {
+        avatar,
+        firstName,
+        username: 'anonimus',
+        lastName,
+      },
+    };
+  });
+
   const userReaction = video.reactions.length ? video.reactions[0] : null;
   return {
     ...video,
@@ -30,6 +35,7 @@ const createVideoBaseResponse = (
     disLikeNum,
     userReaction,
     isUserSubscribeOnVideoChannel,
+    comments: trimmedVideoComment,
   };
 };
 

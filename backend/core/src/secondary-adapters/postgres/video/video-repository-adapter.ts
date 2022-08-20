@@ -46,7 +46,11 @@ export class VideoRepositoryAdapter implements VideoRepository {
             createdAt: true,
             updatedAt: true,
             text: true,
-            authorId: true,
+            author: {
+              select: {
+                profile: true,
+              },
+            },
           },
         },
         reactions: {
@@ -56,17 +60,16 @@ export class VideoRepositoryAdapter implements VideoRepository {
         },
       },
     });
-
     if (!video) {
       return null;
     }
-    const reactionCount = await this.calculateReaction(video.id);
-    return createVideoBaseResponse(
+    const { likeNum, disLikeNum } = await this.calculateReaction(video.id);
+    return createVideoBaseResponse({
       video,
-      reactionCount.likeNum,
-      reactionCount.disLikeNum,
+      likeNum,
+      disLikeNum,
       isUserSubscribeOnVideoChannel,
-    );
+    });
   }
   async calculateReaction(videoId: string): Promise<reactionCountReturn> {
     const likes = await this.prismaClient.video.findUniqueOrThrow({
