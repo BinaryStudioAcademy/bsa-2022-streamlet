@@ -6,7 +6,7 @@
     "npm": ">=8 <9"
   },
   "scripts": {
-    "lint:js": "npx eslint \"src/**/*.ts\"",
+    "lint:js": "npx eslint \"src/**/*.ts\" --max-warnings=0",
     "lint": "npm run lint:js",
     "build:ts": "tsc && tsc-alias -p tsconfig.json",
     "build": "npm run build:ts"
