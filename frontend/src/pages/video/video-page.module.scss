@@ -1,7 +1,7 @@
 .video-page {
   display: flex;
   height: calc(100vh - 82px);
-
+  overflow-y: scroll;
   @media screen and (max-width: 992px) {
     display: block;
   }
@@ -9,12 +9,12 @@
 
 .video-block {
   width: 70%;
-  height: 100%;
-
+  min-height: 250px;
+  max-height: 400px;
+  background-color: #1f8838;
   @media screen and (max-width: 1100px) {
     width: 60%;
   }
-
   @media screen and (max-width: 992px) {
     height: fit-content;
   }
@@ -31,4 +31,8 @@
   @media screen and (max-width: 992px) {
     width: 100%;
   }
+}
+
+.react-height {
+  color: var(--brand-green-color);
 }

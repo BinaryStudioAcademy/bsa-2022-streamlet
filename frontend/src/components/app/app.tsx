@@ -6,12 +6,11 @@ import { useLocation } from 'react-router-dom';
 import { Search } from 'components/search/search';
 import { SidebarContainer } from 'components/common/sidebar/sidebar-container';
 import { isRouteHaveHeader } from 'helpers/routes/is-route-have-header';
-import { NotFound } from '../not-found-page/not-found';
+import { NotFound, VideoPageContainer } from 'pages/pages';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
 import { Studio, StudioAnalytics } from '../studio';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 import { VideoCardTest } from './tests/video-card/video-card';
-import { VideoPageContainer } from 'pages/video/video-page-container';
 
 import styles from './app.module.scss';
 
@@ -46,7 +45,7 @@ const App: FC = () => {
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
                 <Route path={AppRoute.STUDIO} element={<Studio />} />
                 <Route path={AppRoute.ANALYTICS} element={<StudioAnalytics />} />
-                <Route path="video-page" element={<VideoPageContainer />} />
+                <Route path={AppRoute.VIDEO_$ID} element={<VideoPageContainer />} />
               </Routes>
             </div>
           </section>

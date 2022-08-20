@@ -1,26 +1,25 @@
 import { FC } from 'common/types/types';
 import { generateAbbreviatureNameUser, getUserDisplayName } from 'helpers/user';
 import { getHowLongAgoString } from 'helpers/helpers';
-import { Comment } from 'shared/src/common/types/comment';
+import { type VideoComment as VideoCommentType } from 'shared/build/common/types/video/video-coment';
 
 import styles from './video-comment.module.scss';
 
 type Props = {
-  comment: Comment;
+  comment: VideoCommentType;
 };
 
 const VideoComment: FC<Props> = ({ comment }) => {
+  const { author } = comment;
   return (
     <div className={styles['video-comment']}>
       <div className={styles['main-part-comment']}>
-        {comment.avatar && (
-          <img className={styles['commentators-avatar']} src={comment.avatar} alt={comment.userName} />
+        {author.avatar && <img className={styles['commentators-avatar']} src={author.avatar} alt={author.username} />}
+        {!author.avatar && (
+          <div className={styles['default-avatar']}>{generateAbbreviatureNameUser(getUserDisplayName(author))}</div>
         )}
-        {!comment.avatar && (
-          <div className={styles['default-avatar']}>{generateAbbreviatureNameUser(getUserDisplayName(comment))}</div>
-        )}
-        <p className={styles['commentators-name']}>{getUserDisplayName(comment)}</p>
-        <span className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</span>
+        <p className={styles['commentators-name']}>{getUserDisplayName(author)}</p>
+        <span className={styles['dispatch-time']}>{getHowLongAgoString(comment.createdAt)}</span>
       </div>
       <div className={styles['content-part-comment']}>
         <p className={styles['text-comment']}>{comment.text}</p>

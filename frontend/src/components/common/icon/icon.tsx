@@ -30,6 +30,8 @@ import { ReactComponent as Warning } from '../../../assets/img/warning.svg';
 import { ReactComponent as Success } from '../../../assets/img/success.svg';
 import { ReactComponent as SendMessage } from '../../../assets/img/send-message.svg';
 import { ReactComponent as Emoji } from '../../../assets/img/emoji.svg';
+import { ReactComponent as ThumbUp } from '../../../assets/img/thumb-up.svg';
+import { ReactComponent as ThumbDown } from '../../../assets/img/thumb-down.svg';
 
 import clsx from 'clsx';
 
@@ -175,6 +177,12 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.ANALYTICS:
       return <Analystic {...commonProps} />;
+
+    case IconName.THUMB_UP:
+      return <ThumbUp {...commonProps} />;
+
+    case IconName.THUMB_DOWN:
+      return <ThumbDown {...commonProps} />;
 
     default: {
       return <Timeago {...commonProps} />;

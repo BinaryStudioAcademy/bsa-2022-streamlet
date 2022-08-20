@@ -1,13 +1,13 @@
 import { joinExistingValues } from 'helpers/common/join-existing-values';
 
 interface DisplayNameParams {
-  userName: string;
+  username: string;
   firstName?: string;
   lastName?: string;
 }
 
-const getUserDisplayName = ({ firstName, lastName, userName }: DisplayNameParams): string => {
-  return joinExistingValues([firstName, lastName], ' ') || userName;
+const getUserDisplayName = ({ firstName, lastName, username }: DisplayNameParams): string => {
+  return joinExistingValues([firstName, lastName], ' ') || username;
 };
 
 export { getUserDisplayName };

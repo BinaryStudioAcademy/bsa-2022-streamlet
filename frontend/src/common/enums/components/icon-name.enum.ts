@@ -29,6 +29,8 @@ enum IconName {
   SUCCESS = 'success',
   SENDMESSAGE = 'send-message',
   EMOJI = 'emoji',
+  THUMB_UP = 'thumb-up',
+  THUMB_DOWN = 'thumb-down',
 }
 
 export { IconName };

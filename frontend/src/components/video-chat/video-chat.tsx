@@ -1,12 +1,11 @@
 import { FC } from 'common/types/types';
 import { SendMessage, SendMessageProps } from 'components/common/send-message/send-message';
+import { type VideoComment as VideoCommentType } from 'shared/build/common/types/video/video-coment';
 import { VideoComment } from './video-comment/video-comment';
-import { Comment } from 'shared/src/common/types/comment';
-
 import styles from './video-chat.module.scss';
 
 interface VideoChatProps {
-  comments: Array<Comment>;
+  comments: Array<VideoCommentType>;
   sendMessageProps: SendMessageProps;
 }
 

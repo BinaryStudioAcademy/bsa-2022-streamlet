@@ -1,9 +1,13 @@
 import { FC } from 'common/types/types';
 import { VideoChat } from './video-chat';
-import { comments } from './comments.mock';
 import { SendMessageProps } from 'components/common/send-message/send-message';
+import { VideoComment } from 'shared/build/common/types/video/video-coment';
 
-const VideoChatContainer: FC = () => {
+type Props = {
+  comments: VideoComment[];
+};
+
+const VideoChatContainer: FC<Props> = ({ comments }) => {
   function handlerSubmitMessage(): void {
     return void 1;
   }
