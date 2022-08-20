@@ -14,7 +14,8 @@ const userSignUp = Joi.object<UserSignUpRequestDto, true>({
   password: Joi.string().trim().required().messages({
     'string.empty': UserValidationMessage.PASSWORD_REQUIRE,
   }),
-  password_confirm: Joi.string().trim().valid(Joi.ref('password')).required().messages({
+  password_confirm: Joi.string().valid(Joi.ref('password')).required().messages({
+    'string.empty': UserValidationMessage.PASSWORD_CONFIRM_REQUIRE,
     'any.only': UserValidationMessage.PASSWORDS_NOT_MATCH,
   }),
   username: Joi.string().trim().required().messages({
