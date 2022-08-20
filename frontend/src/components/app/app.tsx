@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { MainPage } from 'pages/main-page';
-import { AppRoute } from 'common/enums/enums';
+import { AppRoute, AppTheme } from 'common/enums/enums';
 import { Routes, Route, HeaderContainer } from 'components/common/common';
 import { useLocation } from 'react-router-dom';
 import { Search } from 'components/search/search';
@@ -14,10 +14,20 @@ import { VideoCardTest } from './tests/video-card/video-card';
 import { VideoPageContainer } from 'pages/video/video-page-container';
 
 import styles from './app.module.scss';
+import { useEffect } from 'react';
+import { useAppSelector } from 'hooks/hooks';
 
 const App: FC = () => {
   const { pathname } = useLocation();
   const isHaveHeader = isRouteHaveHeader(pathname);
+
+  const { theme: isWhiteTheme } = useAppSelector((state) => ({
+    theme: state.theme.isWhiteTheme,
+  }));
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = isWhiteTheme ? AppTheme.LIGHT : AppTheme.DARK;
+  }, [isWhiteTheme]);
 
   return (
     <>

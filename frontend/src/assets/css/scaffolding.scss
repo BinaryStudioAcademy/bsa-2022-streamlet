@@ -43,6 +43,14 @@
   --auth-modal-background: rgba(52 79 62 / 47%);
 }
 
+:root[data-theme='light'] {
+  --background-color-header-menu-background: var(--gray-300-header-menu-background);
+}
+
+:root[data-theme='dark'] {
+  --background-color-header-menu-background: var(--green-100-header-menu-background);
+}
+
 html {
   @include custom-scrollbar;
 

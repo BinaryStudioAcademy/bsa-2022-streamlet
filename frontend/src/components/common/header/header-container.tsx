@@ -12,6 +12,7 @@ import { useState, MouseEvent, FormEvent } from 'react';
 import { Header } from './header';
 import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
 import { searchActions } from 'store/actions';
+import { switchTheme } from 'store/theme-switch/actions';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
 
@@ -39,8 +40,8 @@ const HeaderContainer: FC = () => {
       type: MenuOptions.Theme,
       text: 'Theme',
       icon: IconName.MOON,
-      onClick: (): void => {
-        void 1;
+      onClick: (e: MouseEvent): void => {
+        handleClickTheme(e);
       },
     },
     {
@@ -58,6 +59,12 @@ const HeaderContainer: FC = () => {
 
     close();
     setIsLogged(!isLogged);
+  }
+
+  function handleClickTheme(e: MouseEvent): void {
+    e.preventDefault();
+
+    dispatch(switchTheme());
   }
 
   function handleClickUserMenu(e: MouseEvent): void {
