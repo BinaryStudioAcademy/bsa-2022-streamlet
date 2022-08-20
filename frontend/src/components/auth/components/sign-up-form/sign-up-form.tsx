@@ -26,6 +26,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
       <form onSubmit={handleSubmit(onSubmit)} className={formStyles['form-container']}>
         <Input
           wrapperClassName={formStyles['form-input']}
+          inputErrorClassName={formStyles['input-error']}
           type="email"
           label="Email"
           placeholder="Enter your email"
@@ -35,6 +36,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
         />
         <Input
           wrapperClassName={formStyles['form-input']}
+          inputErrorClassName={formStyles['input-error']}
           type="text"
           label="Username"
           placeholder="Enter your username"
@@ -44,6 +46,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
         />
         <PasswordInput
           wrapperClassName={formStyles['form-input']}
+          inputWrapperErrorClassName={formStyles['input-error']}
           placeholder="Password"
           control={control}
           name="password"
@@ -52,6 +55,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
         />
         <PasswordInput
           wrapperClassName={formStyles['form-input']}
+          inputWrapperErrorClassName={formStyles['input-error']}
           placeholder="Confirm password"
           control={control}
           name="password_confirm"

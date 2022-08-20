@@ -33,11 +33,13 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
           name="email"
           label="Email"
           type="email"
+          inputErrorClassName={formStyles['input-error']}
           wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
         <PasswordInput
           wrapperClassName={formStyles['form-input']}
+          inputWrapperErrorClassName={formStyles['input-error']}
           placeholder="Password"
           control={control}
           name="password"

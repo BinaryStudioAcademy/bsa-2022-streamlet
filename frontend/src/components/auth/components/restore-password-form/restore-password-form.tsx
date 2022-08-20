@@ -30,6 +30,7 @@ const RestorePasswordForm: FC<Props> = ({ onSubmit }) => {
           name="email"
           label="Email"
           type="email"
+          inputErrorClassName={formStyles['input-error']}
           wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
