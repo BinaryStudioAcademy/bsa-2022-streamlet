@@ -3,7 +3,7 @@ import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import styles from './video-page.module.scss';
 import { Button, Icon, Loader } from '../../components/common/common';
 import { AppRoute, IconName } from '../../common/enums/enums';
-import { useAppDispatch, useAppSelector, useEffect, useNavigate } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector, useEffect, useLocation, useNavigate } from '../../hooks/hooks';
 import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
 import { videoActions, channelActions } from '../../store/actions';
 import { VideoBaseResponseDto } from '../../common/types/video/video';
@@ -13,14 +13,15 @@ import { getReactBtnColor } from './common/helper/get-react-btn-color';
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const videoId = location.pathname.replace('/video/', '');
   const videoData: VideoBaseResponseDto | null = useAppSelector((state) => {
     return state.video.video;
   });
 
   useEffect(() => {
-    dispatch(videoActions.getVideo('90862886-dab4-4777-9b1d-62a0f541559e'));
-  }, [dispatch]);
+    dispatch(videoActions.getVideo(videoId));
+  }, [videoId, dispatch]);
 
   useEffect(() => {
     if (!videoData) {
@@ -42,7 +43,7 @@ const VideoPageContainer: FC = () => {
       navigate(AppRoute.SIGN_IN, { replace: true });
       return;
     }
-    dispatch(videoActions.videoReact({ videoId: '90862886-dab4-4777-9b1d-62a0f541559e', isLike: true }));
+    dispatch(videoActions.videoReact({ videoId, isLike: true }));
   };
 
   const handleDisLikeReact = (): void => {
@@ -50,7 +51,7 @@ const VideoPageContainer: FC = () => {
       navigate(AppRoute.SIGN_IN, { replace: true });
       return;
     }
-    dispatch(videoActions.videoReact({ videoId: '90862886-dab4-4777-9b1d-62a0f541559e', isLike: false }));
+    dispatch(videoActions.videoReact({ videoId, isLike: false }));
   };
 
   const handleMessageSubmit = (text: string): void => {
@@ -58,7 +59,7 @@ const VideoPageContainer: FC = () => {
       navigate(AppRoute.SIGN_IN, { replace: true });
       return;
     }
-    dispatch(videoActions.addVideoComment({ videoId: '90862886-dab4-4777-9b1d-62a0f541559e', text }));
+    dispatch(videoActions.addVideoComment({ videoId, text }));
   };
 
   const handleSubscribe = (): void => {
