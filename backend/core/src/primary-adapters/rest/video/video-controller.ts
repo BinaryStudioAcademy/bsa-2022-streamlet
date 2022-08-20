@@ -24,26 +24,28 @@ import { authenticationMiddleware, optionalAuthenticationMiddleware } from '~/pr
  * @swagger
  * tags:
  *   name: video
- *   description: Video management
+ *   description: video
  * components:
  *    schemas:
- *      User:
+ *      CreateReactionRequestDto:
  *        type: object
  *        properties:
- *          id:
- *            type: string
- *            format: uuid
- *          email:
- *            type: string
- *            format: email
- *          password:
- *            type: string
- *          isActivated:
+ *          isLike:
  *            type: boolean
- *          createdAt:
+ *        required:
+ *          - isLike
+ *      VideoCommentRequestDto:
+ *        type: object
+ *        properties:
+ *          videoId:
  *            type: string
- *            format: date-time
+ *          text:
+ *            type: string
+ *        required:
+ *          - videoId
+ *          - text
  */
+
 @controller('/videos')
 export class VideoController extends BaseHttpController {
   private videoService: VideoService;
@@ -53,6 +55,38 @@ export class VideoController extends BaseHttpController {
 
     this.videoService = videoService;
   }
+
+  /**
+   * @swagger
+   * /videos/{id}:
+   *    get:
+   *      tags:
+   *        - video
+   *      operationId: getVideoById
+   *      security:
+   *      - bearerAuth: []
+   *      consumes:
+   *        - application/json
+   *      produces:
+   *        - application/json
+   *      description: Get video data by video id
+   *      parameters:
+   *        - in: path
+   *          name: id
+   *          description: video ID to get the data of this video
+   *          required: true
+   *          schema:
+   *            type: string
+   *      responses:
+   *        '200':
+   *          description: successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/VideoBaseResponseDto'
+   *        '404':
+   *          description: video not found
+   */
 
   @httpGet('/:id', optionalAuthenticationMiddleware)
   public async get(
@@ -72,10 +106,64 @@ export class VideoController extends BaseHttpController {
 
     return video;
   }
+  /**
+   * @swagger
+   * /users:
+   *    get:
+   *      tags:
+   *      - videos
+   *      operationId: getAllVideos
+   *      description: Returns an array of videos
+   *      security: []
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Video'
+   */
   @httpGet('/')
   public async getAll(): Promise<Video[]> {
     return this.videoService.getAll();
   }
+
+  /**
+   * @swagger
+   * /comment:
+   *    post:
+   *      tags:
+   *        - video
+   *      operationId: addVideoComment
+   *      security:
+   *      - bearerAuth: []
+   *      consumes:
+   *        - application/json
+   *      produces:
+   *        - application/json
+   *      description: Add comment to video
+   *      parameters:
+   *        - in: body
+   *          name: body
+   *          description: data that contain isLike filed
+   *          required: true
+   *          schema:
+   *            $ref: '#/components/schemas/CreateReactionRequestDto'
+   *        - in: path
+   *          name: id
+   *          description: video ID
+   *          required: true
+   *          schema:
+   *            type: string
+   *      responses:
+   *        '200':
+   *          description: reaction added
+   *        '404':
+   *          description: video not found
+   */
+
   @httpPost('/reaction/:id', authenticationMiddleware)
   public async addReaction(
     @requestParam('id') id: string,
@@ -92,6 +180,35 @@ export class VideoController extends BaseHttpController {
 
     return reactionResponse;
   }
+
+  /**
+   * @swagger
+   * /comment:
+   *    post:
+   *      tags:
+   *        - video
+   *      operationId: addVideoComment
+   *      security:
+   *      - bearerAuth: []
+   *      consumes:
+   *        - application/json
+   *      produces:
+   *        - application/json
+   *      description: Add comment to video
+   *      parameters:
+   *        - in: body
+   *          name: body
+   *          description: data that contain comment text and video id
+   *          required: true
+   *          schema:
+   *            $ref: '#/components/schemas/VideoCommentRequestDto'
+   *      responses:
+   *        '200':
+   *          description: comment added
+   *        '404':
+   *          description: video not found
+   */
+
   @httpPost(VideoApiPath.COMMENT, authenticationMiddleware)
   public async addComment(
     @requestBody() body: VideoCommentRequestDto,
