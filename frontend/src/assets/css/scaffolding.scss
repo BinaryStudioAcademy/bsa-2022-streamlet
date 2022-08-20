@@ -38,7 +38,7 @@
   --brand-yellow-color: #f6c648;
   --support-info-color: #03d8ff;
   --supprot-error-color: #f76519;
-  --hover-light-grey: #e8e8e8;
+  --hover-light-grey: #dadada;
   --hover-dark-grey: #2a2d37;
 
   /* auth forms */
@@ -52,6 +52,7 @@ body[data-theme='light'] {
   --secondary-text-color: #a7a5a5;
   --hover-light-grey: var(--hover-dark-grey);
   --gray-400-primary-background: #ffffff;
+  --gray-200-input-background: #dadada;
 }
 
 html {
