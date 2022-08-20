@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { PrismaClient, Video } from '@prisma/client';
+import { PrismaClient, Reaction, Video } from '@prisma/client';
 import {
   CONTAINER_TYPES,
   CreateReactionRequestDto,
@@ -56,7 +56,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
         channel: true,
         reactions: {
           where: {
-            userId: userId,
+            userId,
           },
         },
       },
@@ -128,7 +128,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     const { likeNum, disLikeNum } = await this.calculateReaction(videoId);
     return createAddReactionResponse(video.reactions[0], likeNum, disLikeNum);
   }
-  async isUserReacted(userId: string, videoId: string): Promise<boolean> {
+  async isUserReacted(userId: string, videoId: string): Promise<Reaction[] | undefined> {
     const userReaction = await this.prismaClient.video.findUnique({
       where: {
         id: videoId,
@@ -141,20 +141,46 @@ export class VideoRepositoryAdapter implements VideoRepository {
         },
       },
     });
-    return !!userReaction?.reactions.length;
+    return userReaction?.reactions;
   }
-  async removeReaction(videoId: string, userId: string): Promise<CreateReactionResponseDto | null> {
-    await this.prismaClient.video.update({
+  async removeReactionAndAddNew(
+    videoId: string,
+    userId: string,
+    isLike: boolean,
+    userReaction: Reaction,
+  ): Promise<CreateReactionResponseDto | null> {
+    if (userReaction.isLike === isLike) {
+      await this.prismaClient.video.update({
+        where: {
+          id: videoId,
+        },
+        data: {
+          reactions: {
+            deleteMany: [{ userId }],
+          },
+        },
+      });
+      const { likeNum, disLikeNum } = await this.calculateReaction(videoId);
+      return createAddReactionResponse(null, likeNum, disLikeNum);
+    }
+
+    const newReaction = await this.prismaClient.video.update({
       where: {
         id: videoId,
       },
       data: {
         reactions: {
           deleteMany: [{ userId }],
+          createMany: { data: { isLike, userId } },
+        },
+      },
+      select: {
+        reactions: {
+          where: { userId },
         },
       },
     });
     const { likeNum, disLikeNum } = await this.calculateReaction(videoId);
-    return createAddReactionResponse(undefined, likeNum, disLikeNum);
+    return createAddReactionResponse(newReaction.reactions[0], likeNum, disLikeNum);
   }
 }

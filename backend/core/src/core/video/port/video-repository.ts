@@ -1,5 +1,5 @@
 import { CreateReactionRequestDto, CreateReactionResponseDto, type VideoBaseResponseDto } from '~/shared/types/types';
-import { Video } from '@prisma/client';
+import { Reaction, Video } from '@prisma/client';
 
 export interface VideoRepository {
   getById(
@@ -8,8 +8,13 @@ export interface VideoRepository {
     isUserSubscribeOnVideoChannel: boolean,
   ): Promise<VideoBaseResponseDto | null>;
   getAll(): Promise<Video[]>;
-  isUserReacted(userId: string, videoId: string): Promise<boolean>;
-  removeReaction(videoId: string, userId: string): Promise<CreateReactionResponseDto | null>;
+  isUserReacted(userId: string, videoId: string): Promise<Reaction[] | undefined>;
+  removeReactionAndAddNew(
+    videoId: string,
+    userId: string,
+    isLike: boolean,
+    userReaction: Reaction,
+  ): Promise<CreateReactionResponseDto | null>;
   addReaction(
     request: CreateReactionRequestDto,
     videoId: string,
