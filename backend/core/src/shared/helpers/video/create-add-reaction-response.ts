@@ -4,7 +4,7 @@ import { CreateReactionResponseDto } from 'shared/build';
 const createAddReactionResponse = (
   reaction: Reaction | null,
   likeNum: number,
-  disLikeNum: number,
+  dislikeNum: number,
 ): CreateReactionResponseDto => {
   if (reaction) {
     const { id, isLike } = reaction;
@@ -12,14 +12,14 @@ const createAddReactionResponse = (
       id,
       isLike,
       likeNum,
-      disLikeNum,
+      dislikeNum,
     };
   }
   return {
     id: '',
     isLike: null,
     likeNum,
-    disLikeNum,
+    dislikeNum,
   };
 };
 

@@ -6,7 +6,7 @@ type VideoBaseResponseDto = {
   name: string;
   description: string;
   likeNum: number;
-  disLikeNum: number;
+  dislikeNum: number;
   liveViews: number;
   videoPath: string;
   userReaction: VideoReaction | null;

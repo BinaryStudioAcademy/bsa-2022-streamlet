@@ -103,7 +103,7 @@ const VideoPageContainer: FC = () => {
                 height={'25'}
                 width={'25'}
               />
-              <span>{videoData.disLikeNum}</span>
+              <span>{videoData.dislikeNum}</span>
             </div>
           </div>
         </div>

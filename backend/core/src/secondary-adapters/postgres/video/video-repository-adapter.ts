@@ -11,7 +11,7 @@ import {
 import { createVideoBaseResponse, createAddReactionResponse, createVideoCommentResponse } from '~/shared/helpers';
 import { VideoRepository } from '~/core/video/port/video-repository';
 
-type reactionCountReturn = { likeNum: number; disLikeNum: number };
+type reactionCountReturn = { likeNum: number; dislikeNum: number };
 
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
@@ -59,11 +59,11 @@ export class VideoRepositoryAdapter implements VideoRepository {
     if (!video) {
       return null;
     }
-    const { likeNum, disLikeNum } = await this.calculateReaction(video.id);
+    const { likeNum, dislikeNum } = await this.calculateReaction(video.id);
     return createVideoBaseResponse({
       video,
       likeNum,
-      disLikeNum,
+      dislikeNum,
       isUserSubscribeOnVideoChannel,
     });
   }
@@ -95,7 +95,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
     return {
       likeNum: likes.reactions.length,
-      disLikeNum: dislikes.reactions.length,
+      dislikeNum: dislikes.reactions.length,
     };
   }
 
@@ -157,8 +157,8 @@ export class VideoRepositoryAdapter implements VideoRepository {
         },
       },
     });
-    const { likeNum, disLikeNum } = await this.calculateReaction(videoId);
-    return createAddReactionResponse(video.reactions[0], likeNum, disLikeNum);
+    const { likeNum, dislikeNum } = await this.calculateReaction(videoId);
+    return createAddReactionResponse(video.reactions[0], likeNum, dislikeNum);
   }
 
   async isUserReacted(userId: string, videoId: string): Promise<Reaction[] | undefined> {
@@ -194,8 +194,8 @@ export class VideoRepositoryAdapter implements VideoRepository {
           },
         },
       });
-      const { likeNum, disLikeNum } = await this.calculateReaction(videoId);
-      return createAddReactionResponse(null, likeNum, disLikeNum);
+      const { likeNum, dislikeNum } = await this.calculateReaction(videoId);
+      return createAddReactionResponse(null, likeNum, dislikeNum);
     }
 
     const newReaction = await this.prismaClient.video.update({
@@ -214,7 +214,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
         },
       },
     });
-    const { likeNum, disLikeNum } = await this.calculateReaction(videoId);
-    return createAddReactionResponse(newReaction.reactions[0], likeNum, disLikeNum);
+    const { likeNum, dislikeNum } = await this.calculateReaction(videoId);
+    return createAddReactionResponse(newReaction.reactions[0], likeNum, dislikeNum);
   }
 }

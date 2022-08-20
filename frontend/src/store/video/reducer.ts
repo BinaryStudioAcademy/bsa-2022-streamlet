@@ -37,11 +37,11 @@ const reducer = createReducer(initialState, (builder) => {
   });
 
   builder.addCase(videoReact.fulfilled, (state, { payload }) => {
-    const { likeNum, disLikeNum, isLike } = payload;
+    const { likeNum, dislikeNum, isLike } = payload;
     if (state.video) {
       state.video.userReaction = isLike === null ? null : { isLike };
       state.video.likeNum = likeNum;
-      state.video.disLikeNum = disLikeNum;
+      state.video.dislikeNum = dislikeNum;
     }
     state.dataStatus = DataStatus.FULFILLED;
   });

@@ -34,7 +34,7 @@
 .video-page h2 {
   display: block;
   width: 70%;
-  color: #ffffff;
+  color: var(--white-text-color);
   font-size: 24px;
   font-family: Gilroy-SemiBold, sans-serif;
   line-height: 48px;
@@ -45,7 +45,7 @@
 
 .video-block {
   grid-area: video;
-  background-color: #1f8838;
+  background-color: var(--brand-green-color);
   @media screen and (max-width: 992px) {
     height: fit-content;
   }
@@ -111,7 +111,7 @@
 }
 
 .subscribe-button-subscribed {
-  color: white;
+  color: var(--white-text-color);
   background-color: var(--brand-green-color);
 }
 

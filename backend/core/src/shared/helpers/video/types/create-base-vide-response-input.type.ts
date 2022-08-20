@@ -22,6 +22,6 @@ type videoFromDbType = {
 export type createBaseVideoResponse = {
   video: videoFromDbType;
   likeNum: number;
-  disLikeNum: number;
+  dislikeNum: number;
   isUserSubscribeOnVideoChannel: boolean;
 };

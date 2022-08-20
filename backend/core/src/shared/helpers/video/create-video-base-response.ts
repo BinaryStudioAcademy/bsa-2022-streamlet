@@ -3,7 +3,7 @@ import { createBaseVideoResponse } from '~/shared/helpers/video/types/create-bas
 import { createVideoCommentResponse } from '~/shared/helpers/video/crete-comment-response';
 
 const createVideoBaseResponse = (input: createBaseVideoResponse): VideoBaseResponseDto | null => {
-  const { video, likeNum, disLikeNum, isUserSubscribeOnVideoChannel } = input;
+  const { video, likeNum, dislikeNum, isUserSubscribeOnVideoChannel } = input;
   if (!video) {
     return null;
   }
@@ -13,7 +13,7 @@ const createVideoBaseResponse = (input: createBaseVideoResponse): VideoBaseRespo
   return {
     ...video,
     likeNum,
-    disLikeNum,
+    dislikeNum,
     userReaction,
     isUserSubscribeOnVideoChannel,
     comments: trimmedVideoComment,
