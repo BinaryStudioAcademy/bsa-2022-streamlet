@@ -20,7 +20,7 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addMatcher(isAnyOf(logout.rejected, logout.fulfilled), (state) => {
     state.user = null;
   });
-  builder.addMatcher(isAnyOf(signUp.fulfilled, signIn.fulfilled), (state, { payload }) => {
+  builder.addMatcher(isAnyOf(loadCurrentUser.fulfilled, signIn.fulfilled), (state, { payload }) => {
     state.user = payload;
   });
   builder.addMatcher(
