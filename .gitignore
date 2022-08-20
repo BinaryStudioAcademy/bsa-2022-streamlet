@@ -9,3 +9,6 @@ build
 .env
 .vscode
 .idea
+
+# video manifests & segments folder
+playback
