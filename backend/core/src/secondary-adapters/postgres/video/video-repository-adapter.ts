@@ -5,8 +5,10 @@ import {
   CreateReactionRequestDto,
   CreateReactionResponseDto,
   VideoBaseResponseDto,
+  VideoCommentRequestDto,
+  VideoCommentResponseDto,
 } from '~/shared/types/types';
-import { createVideoBaseResponse, createAddReactionResponse } from '~/shared/helpers';
+import { createVideoBaseResponse, createAddReactionResponse, createVideoCommentResponse } from '~/shared/helpers';
 import { VideoRepository } from '~/core/video/port/video-repository';
 
 type reactionCountReturn = { likeNum: number; disLikeNum: number };
@@ -22,6 +24,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
   getAll(): Promise<Video[]> {
     return this.prismaClient.video.findMany();
   }
+
   async getById(
     id: string,
     userId: string | undefined = undefined,
@@ -31,15 +34,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       where: {
         id,
       },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        liveViews: true,
-        createdAt: true,
-        videoViews: true,
-        channelId: true,
-        videoPath: true,
+      include: {
         comments: {
           select: {
             id: true,
@@ -53,7 +48,6 @@ export class VideoRepositoryAdapter implements VideoRepository {
             },
           },
         },
-        channel: true,
         reactions: {
           where: {
             userId,
@@ -72,6 +66,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       isUserSubscribeOnVideoChannel,
     });
   }
+
   async calculateReaction(videoId: string): Promise<reactionCountReturn> {
     const likes = await this.prismaClient.video.findUniqueOrThrow({
       where: {
@@ -102,6 +97,41 @@ export class VideoRepositoryAdapter implements VideoRepository {
       disLikeNum: dislikes.reactions.length,
     };
   }
+
+  async addComment(request: VideoCommentRequestDto, authorId: string): Promise<VideoCommentResponseDto | null> {
+    const { videoId, text } = request;
+    const comments = await this.prismaClient.video.update({
+      where: {
+        id: videoId,
+      },
+      data: {
+        comments: {
+          createMany: { data: [{ text, authorId }] },
+        },
+      },
+      select: {
+        comments: {
+          select: {
+            id: true,
+            createdAt: true,
+            updatedAt: true,
+            text: true,
+            author: {
+              select: {
+                profile: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    if (!comments) {
+      return null;
+    }
+    const newCommentResponse = createVideoCommentResponse(comments.comments);
+    return { videoId, comments: newCommentResponse };
+  }
+
   async addReaction(
     request: CreateReactionRequestDto,
     videoId: string,
@@ -128,6 +158,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     const { likeNum, disLikeNum } = await this.calculateReaction(videoId);
     return createAddReactionResponse(video.reactions[0], likeNum, disLikeNum);
   }
+
   async isUserReacted(userId: string, videoId: string): Promise<Reaction[] | undefined> {
     const userReaction = await this.prismaClient.video.findUnique({
       where: {
@@ -143,6 +174,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
     return userReaction?.reactions;
   }
+
   async removeReactionAndAddNew(
     videoId: string,
     userId: string,

@@ -13,8 +13,9 @@ import {
   CreateReactionRequestDto,
   CreateReactionResponseDto,
   ExtendedAuthenticatedRequest,
+  VideoCommentResponseDto,
 } from '~/shared/types/types';
-import { HttpError, VideoBaseResponseDto } from 'shared/build';
+import { HttpError, VideoBaseResponseDto, VideoCommentRequestDto } from 'shared/build';
 import { VideoService } from '~/core/video/aplication/video-service';
 import { Video } from '@prisma/client';
 import { authenticationMiddleware, optionalAuthenticationMiddleware } from '~/primary-adapters/rest/middleware';
@@ -90,5 +91,20 @@ export class VideoController extends BaseHttpController {
     }
 
     return reactionResponse;
+  }
+  @httpPost('/comment/:id', authenticationMiddleware)
+  public async addComment(
+    @requestBody() body: VideoCommentRequestDto,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<VideoCommentResponseDto> {
+    const { id: userId } = req.user;
+
+    const res = await this.videoService.addComment(body, userId);
+
+    if (!res) {
+      throw new HttpError({ message: 'video dont found', status: 404 });
+    }
+
+    return res;
   }
 }

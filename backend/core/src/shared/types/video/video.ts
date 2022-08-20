@@ -4,4 +4,6 @@ export {
   type CreateReactionResponseDto,
   type CreateSubscriptionResponseDto,
   type VideoReaction,
+  type VideoCommentRequestDto,
+  type VideoCommentResponseDto,
 } from 'shared/build';

@@ -1,4 +1,10 @@
-import { CreateReactionRequestDto, CreateReactionResponseDto, type VideoBaseResponseDto } from '~/shared/types/types';
+import {
+  CreateReactionRequestDto,
+  CreateReactionResponseDto,
+  type VideoBaseResponseDto,
+  VideoCommentRequestDto,
+  VideoCommentResponseDto,
+} from '~/shared/types/types';
 import { Reaction, Video } from '@prisma/client';
 
 export interface VideoRepository {
@@ -20,4 +26,5 @@ export interface VideoRepository {
     videoId: string,
     userId: string,
   ): Promise<CreateReactionResponseDto | null>;
+  addComment(request: VideoCommentRequestDto, authorId: string): Promise<VideoCommentResponseDto | null>;
 }

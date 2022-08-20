@@ -15,6 +15,7 @@ import {
   RtmpLiveRequestDto,
   ExtendedAuthenticatedRequest,
   CreateSubscriptionResponseDto,
+  ChannelBaseResponse,
 } from '~/shared/types/types';
 import { ApiPath, ChannelApiPath } from '~/shared/enums/api/api';
 import { ChannelService } from '~/core/channel/application/channel-service';
@@ -234,6 +235,37 @@ export class ChannelController extends BaseHttpController {
     }
     return keyData;
   }
+  /**
+   * @swagger
+   * /subscribe:
+   *    post:
+   *      tags:
+   *        - channel
+   *      operationId: channelSubscribe
+   *      security:
+   *        - bearerAuth: []
+   *      consumes:
+   *        - application/json
+   *      produces:
+   *        - application/json
+   *      description: subscribe or unsubscribe to channel
+   *      parameters:
+   *        - in: path
+   *          name: id
+   *          description: channel ID to get the key
+   *          required: true
+   *          schema:
+   *            type: string
+   *      responses:
+   *        '200':
+   *          description: successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/CreateSubscriptionResponseDto'
+   *        '404':
+   *          description: channel not found
+   */
   @httpPost(`${ChannelApiPath.SUBSCRIPTION}${ChannelApiPath.$ID}`, authenticationMiddleware)
   public async addSubscription(
     @requestParam('id') id: string,
@@ -248,5 +280,39 @@ export class ChannelController extends BaseHttpController {
     }
 
     return res;
+  }
+  /**
+   * @swagger
+   * /subscribe:
+   *    post:
+   *      tags:
+   *        - channel
+   *      operationId: getChannelById
+   *      security: []
+   *      consumes:
+   *        - application/json
+   *      produces:
+   *        - application/json
+   *      description: get channel data by id
+   *      parameters:
+   *        - in: path
+   *          name: id
+   *          description: channel ID to get data
+   *          required: true
+   *          schema:
+   *            type: string
+   *      responses:
+   *        '200':
+   *          description: successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/ChannelBaseResponse'
+   *        '404':
+   *          description: channel not found
+   */
+  @httpGet(`${ChannelApiPath.$ID}`)
+  public async getById(@requestParam('id') id: string): Promise<ChannelBaseResponse | null> {
+    return this.channelService.getById(id);
   }
 }

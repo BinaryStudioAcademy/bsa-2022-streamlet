@@ -1,5 +1,10 @@
 import { inject, injectable } from 'inversify';
-import { LiveStartResponseDto, StreamingKeyResponseDto, CreateSubscriptionResponseDto } from '~/shared/types/types';
+import {
+  LiveStartResponseDto,
+  StreamingKeyResponseDto,
+  CreateSubscriptionResponseDto,
+  ChannelBaseResponse,
+} from '~/shared/types/types';
 import { AmqpQueue, StreamingStatus } from '~/shared/enums/enums';
 import { ChannelRepository } from '~/core/channel/port/channel-repository';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
@@ -48,7 +53,9 @@ export class ChannelService {
       streamingKey: key,
     };
   }
-
+  getById(id: string): Promise<ChannelBaseResponse | null> {
+    return this.channelRepository.getChannelById(id);
+  }
   notifyTranscoderAboutStreamStart(streamData: LiveStartResponseDto): Promise<boolean> {
     return this.amqpChannel.sendToQueue({
       queue: AmqpQueue.STREAM_TRANSCODER,

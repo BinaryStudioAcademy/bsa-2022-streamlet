@@ -4,10 +4,12 @@ import {
   CreateReactionRequestDto,
   CreateReactionResponseDto,
   VideoBaseResponseDto,
+  VideoCommentResponseDto,
 } from '~/shared/types/types';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { Video } from '@prisma/client';
 import { ChannelRepository } from '~/core/channel/port/channel-repository';
+import { VideoCommentRequestDto } from 'shared/build';
 
 @injectable()
 export class VideoService {
@@ -28,6 +30,10 @@ export class VideoService {
     const isUserSubscribeOnVideoChannel = await this.channelRepository.isUserSubscribeByVideoId(id, userId);
 
     return this.videoRepository.getById(id, userId, isUserSubscribeOnVideoChannel);
+  }
+
+  addComment(request: VideoCommentRequestDto, userId: string): Promise<VideoCommentResponseDto | null> {
+    return this.videoRepository.addComment(request, userId);
   }
 
   getAll(): Promise<Video[]> {

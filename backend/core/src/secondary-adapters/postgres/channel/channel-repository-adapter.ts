@@ -60,6 +60,15 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
       where: {
         id,
       },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+          },
+        },
+      },
     });
   }
 
