@@ -1,4 +1,4 @@
 export type VideoCommentRequestDto = {
   text: string;
-  videId: string;
+  videoId: string;
 };
