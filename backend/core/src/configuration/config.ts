@@ -22,9 +22,14 @@ interface ApiConfig {
 }
 
 interface EncryptionConfig {
-  JWT_SECRET: string;
-  JWT_LIFETIME: string;
+  ACCESS_TOKEN_SECRET: string;
+  ACCESS_TOKEN_LIFETIME: string;
+  REFRESH_SECRET: string;
   REFRESH_LIFETIME: string;
+  RESET_PASSWORD_TOKEN_SECRET: string;
+  RESET_PASSWORD_TOKEN_LIFETIME: string;
+  VERIFICATION_TOKEN_SECRET: string;
+  VERIFICATION_TOKEN_LIFETIME: string;
 }
 
 interface CloudConfig {
@@ -41,6 +46,10 @@ interface MailServiceConfig {
   REFRESH_TOKEN: string;
 }
 
+interface ClientInfo {
+  URL: string;
+}
+
 export interface ConfigInterface {
   APP: AppConfig;
   DATABASE: DatabaseConfig;
@@ -48,6 +57,7 @@ export interface ConfigInterface {
   API: ApiConfig;
   ENCRYPTION: EncryptionConfig;
   MAIL_SERVICE: MailServiceConfig;
+  CLIENT_INFO: ClientInfo;
 }
 
 const isDevEnvironment = (nodeEnv = ''): boolean => nodeEnv === AppEnvironment.DEVELOPMENT;
@@ -71,6 +81,7 @@ const configuration = (): ConfigInterface => {
     MAIL_REFRESH_TOKEN,
     RABBITMQ_PORT,
     RABBITMQ_HOST,
+    CLIENT_URL,
   } = process.env;
 
   const host = HOST || 'localhost';
@@ -113,25 +124,45 @@ const configuration = (): ConfigInterface => {
       REDIRECT_URI: MAIL_REDIRECT_URI || '',
       REFRESH_TOKEN: MAIL_REFRESH_TOKEN || '',
     },
+    CLIENT_INFO: {
+      URL: CLIENT_URL || 'http://localhost:3000',
+    },
   };
 };
 
 const getEncryptionConfig = (): EncryptionConfig => {
-  const { JWT_SECRET, JWT_LIFETIME, REFRESH_LIFETIME } = process.env;
+  const {
+    ACCESS_TOKEN_SECRET,
+    REFRESH_SECRET,
+    RESET_PASSWORD_TOKEN_SECRET,
+    VERIFICATION_TOKEN_SECRET,
+    ACCESS_TOKEN_LIFETIME,
+    REFRESH_LIFETIME,
+    RESET_PASSWORD_TOKEN_LIFETIME,
+    VERIFICATION_TOKEN_LIFETIME,
+  } = process.env;
 
-  if (!JWT_SECRET) {
-    throw new Error('Missing JWT_SECRET in env');
+  if (!ACCESS_TOKEN_SECRET || !REFRESH_SECRET || !RESET_PASSWORD_TOKEN_SECRET || !VERIFICATION_TOKEN_SECRET) {
+    throw new Error('Missing jwt secrets in env');
   }
   return {
-    JWT_SECRET,
+    ACCESS_TOKEN_SECRET,
+    REFRESH_SECRET,
+    RESET_PASSWORD_TOKEN_SECRET,
+    VERIFICATION_TOKEN_SECRET,
     REFRESH_LIFETIME: REFRESH_LIFETIME || encryptionConfigDefault.REFRESH_LIFETIME,
-    JWT_LIFETIME: JWT_LIFETIME || encryptionConfigDefault.JWT_LIFETIME,
+    ACCESS_TOKEN_LIFETIME: ACCESS_TOKEN_LIFETIME || encryptionConfigDefault.ACCESS_TOKEN_LIFETIME,
+    RESET_PASSWORD_TOKEN_LIFETIME:
+      RESET_PASSWORD_TOKEN_LIFETIME || encryptionConfigDefault.RESET_PASSWORD_TOKEN_LIFETIME,
+    VERIFICATION_TOKEN_LIFETIME: VERIFICATION_TOKEN_LIFETIME || encryptionConfigDefault.VERIFICATION_TOKEN_LIFETIME,
   };
 };
 
 const encryptionConfigDefault = {
-  JWT_LIFETIME: '5m',
+  ACCESS_TOKEN_LIFETIME: '5m',
   REFRESH_LIFETIME: '30d',
+  RESET_PASSWORD_TOKEN_LIFETIME: '30m',
+  VERIFICATION_TOKEN_LIFETIME: '30m',
 };
 
 const CONFIG = configuration();

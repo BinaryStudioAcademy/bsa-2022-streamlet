@@ -10,7 +10,7 @@ import {
 } from 'hooks/hooks';
 import { useState, MouseEvent, FormEvent } from 'react';
 import { Header } from './header';
-import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
+import { MenuOptions, IconName, AppRoutes, SearchQueryParam } from 'common/enums/enums';
 import { searchActions } from 'store/actions';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
@@ -91,7 +91,11 @@ const HeaderContainer: FC = () => {
     }
   };
 
-  if (pathname === AppRoute.SIGN_IN || pathname === AppRoute.SIGN_UP || pathname === AppRoute.RESTORE_PASSWORD) {
+  if (
+    pathname === AppRoutes.SIGN_IN ||
+    pathname === AppRoutes.SIGN_UP ||
+    pathname === AppRoutes.RESTORE_PASSWORD_INIT
+  ) {
     return null;
   }
 

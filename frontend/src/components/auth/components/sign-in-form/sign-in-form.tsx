@@ -1,4 +1,4 @@
-import { AppRoute } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { Input, Link, PasswordInput } from 'components/common/common';
 import formStyles from '../form-controls.module.scss';
@@ -43,7 +43,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
           label="Password"
         />
-        <Link to={AppRoute.RESTORE_PASSWORD} className={styles['forgot-password']}>
+        <Link to={AppRoutes.RESTORE_PASSWORD_INIT} className={styles['forgot-password']}>
           Forgot Password?
         </Link>
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign in" />
@@ -54,7 +54,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
       <ContonueWithParagraph
         prompt="Don't have an account yet?"
         linkTitle="Register for free"
-        route={AppRoute.SIGN_UP}
+        route={AppRoutes.SIGN_UP}
       />
     </>
   );

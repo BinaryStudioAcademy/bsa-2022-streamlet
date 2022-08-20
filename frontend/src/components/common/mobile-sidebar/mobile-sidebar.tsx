@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { IconName } from 'common/enums/components';
-import { AppRoute } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { Link } from '../common';
 import { Icon } from '../icon';
@@ -30,7 +30,7 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
           <button onClick={closeMobileSidebar} className={styles['burger-menu']}>
             <Icon name={IconName.BURGERMENU} width="30" height="30" />
           </button>
-          <Link className={styles['logo-link']} to={AppRoute.ROOT}>
+          <Link className={styles['logo-link']} to={AppRoutes.ROOT}>
             <Icon name={IconName.LOGOTIP} width="23" height="23" />
             <p className={styles['main-name']}>streamlet</p>
           </Link>

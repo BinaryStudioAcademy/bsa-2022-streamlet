@@ -1,4 +1,4 @@
-import { AppRoute } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { Input } from 'components/common/common';
 import { useAppForm } from 'hooks/hooks';
@@ -34,7 +34,7 @@ const RestorePasswordForm: FC<Props> = ({ onSubmit }) => {
         />
         <AuthSubmitButton isLoading={false} disabled={false} name="Send" />
       </form>
-      <ContonueWithParagraph linkTitle="Back to login" prompt="Changed your mind?" route={AppRoute.SIGN_IN} />
+      <ContonueWithParagraph linkTitle="Back to login" prompt="Changed your mind?" route={AppRoutes.SIGN_IN} />
     </>
   );
 };

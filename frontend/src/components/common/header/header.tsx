@@ -1,7 +1,7 @@
 import { FC } from 'common/types/types';
 import { Link } from 'react-router-dom';
 import { FormEvent, MouseEvent, RefObject } from 'react';
-import { AppRoute, IconName } from 'common/enums/enums';
+import { AppRoutes, IconName } from 'common/enums/enums';
 import { MenuOptions } from 'common/enums/components/';
 import { Icon } from '../icon';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
@@ -63,7 +63,7 @@ const Header: FC<HeaderProps> = ({
           <button onClick={handleClickBurgerMenu} className={styles['burger-menu']}>
             <Icon name={IconName.BURGERMENU} width="30" height="30" />
           </button>
-          <Link className={styles['logo-link']} to={AppRoute.ROOT}>
+          <Link className={styles['logo-link']} to={AppRoutes.ROOT}>
             <Icon name={IconName.LOGOTIP} width="23" height="23" />
             <p className={styles['main-name']}>streamlet</p>
           </Link>

@@ -25,6 +25,11 @@ import { Unauthorized } from '~/shared/exceptions/unauthorized';
 import { exceptionMessages, successMessages } from '~/shared/enums/messages';
 import { DuplicationError } from '~/shared/exceptions/duplication-error';
 import { NotFound } from '~/shared/exceptions/not-found';
+import { ResetPasswordService } from '~/core/reset-password/application/reset-password-service';
+import { restorePasswordConfirm } from 'shared/build/validation-schemas/user/restore-password-confirm-validation-schema';
+import { RestorePasswordConfirmRequestDto } from 'shared/build';
+import { AccountVerificationService } from '~/core/account-verification/application/account-verification-service';
+import { CONFIG } from '~/configuration/config';
 
 /**
  * @swagger
@@ -77,17 +82,13 @@ import { NotFound } from '~/shared/exceptions/not-found';
  */
 @controller(ApiPath.AUTH)
 export class AuthController extends BaseHttpController {
-  private userService: UserService;
-  private refreshTokenService: RefreshTokenService;
-
   constructor(
-    @inject(CONTAINER_TYPES.UserService) userService: UserService,
-    @inject(CONTAINER_TYPES.RefreshTokenService) refreshTokenService: RefreshTokenService,
+    @inject(CONTAINER_TYPES.UserService) private userService: UserService,
+    @inject(CONTAINER_TYPES.RefreshTokenService) private refreshTokenService: RefreshTokenService,
+    @inject(CONTAINER_TYPES.ResetPasswordService) private resetPasswordService: ResetPasswordService,
+    @inject(CONTAINER_TYPES.AccountVerificationService) private accountVerificationService: AccountVerificationService,
   ) {
     super();
-
-    this.userService = userService;
-    this.refreshTokenService = refreshTokenService;
   }
 
   /**
@@ -122,10 +123,6 @@ export class AuthController extends BaseHttpController {
    *              schema:
    *                type: object
    *                properties:
-   *                  user:
-   *                    $ref: '#/components/schemas/UserBaseResponse'
-   *                  tokens:
-   *                    $ref: '#/components/schemas/TokenPair'
    *                  message:
    *                    type: string
    *        400:
@@ -153,13 +150,8 @@ export class AuthController extends BaseHttpController {
       }
     }
     const user = await this.userService.createUser(userRequestDto);
-    const accessToken = await generateJwt({ payload: user });
+    await this.accountVerificationService.sendVerificationEmail(user);
     return {
-      user,
-      tokens: {
-        accessToken,
-        refreshToken: await this.userService.createRefreshToken(user.id),
-      },
       message: successMessages.auth.SUCCESS_SIGN_UP,
     };
   }
@@ -227,7 +219,11 @@ export class AuthController extends BaseHttpController {
     if (!isSameHash) {
       throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS_LOGIN);
     }
-    const accessToken = await generateJwt({ payload: trimUser(user) });
+    const accessToken = await generateJwt({
+      payload: trimUser(user),
+      lifetime: CONFIG.ENCRYPTION.ACCESS_TOKEN_LIFETIME,
+      secret: CONFIG.ENCRYPTION.ACCESS_TOKEN_SECRET,
+    });
     return {
       user: trimUser(user),
       tokens: {
@@ -286,7 +282,11 @@ export class AuthController extends BaseHttpController {
       throw new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN);
     }
     const newRefreshToken = await this.userService.createRefreshToken(tokenUser.id);
-    const newAccessToken = await generateJwt({ payload: trimUser(tokenUser) });
+    const newAccessToken = await generateJwt({
+      payload: trimUser(tokenUser),
+      lifetime: CONFIG.ENCRYPTION.ACCESS_TOKEN_LIFETIME,
+      secret: CONFIG.ENCRYPTION.ACCESS_TOKEN_SECRET,
+    });
     return {
       tokens: {
         accessToken: newAccessToken,
@@ -325,6 +325,57 @@ export class AuthController extends BaseHttpController {
 
   /**
    * @swagger
+   * /auth/restore-password-confirm:
+   *    post:
+   *      tags:
+   *      - auth
+   *      security: []
+   *      operationId: restorePasswordConfirm
+   *      description: COnfirm password restoration by providing a token and a new password
+   *      requestBody:
+   *        description: Token sent by email previously and a new password
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                token:
+   *                  type: string
+   *                password:
+   *                  type: string
+   *      responses:
+   *        204:
+   *          description: Successful operation
+   *        401:
+   *          description: Incorrect token.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   *        400:
+   *          description: Validation error (wrong password format).
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   */
+  @httpPost(AuthApiPath.RESTORE_PASSWORD_CONFIRM, validationMiddleware(restorePasswordConfirm))
+  public async restorePasswordConfirm(@requestBody() requestDto: RestorePasswordConfirmRequestDto): Promise<void> {
+    const tokenUser = await this.resetPasswordService.getResetTokenUser(requestDto.token);
+
+    if (!tokenUser) {
+      throw new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_RESET_PASSWORD_LINK);
+    }
+    await this.userService.changeUserPassword(tokenUser.id, requestDto.password);
+  }
+
+  /**
+   * @swagger
    * /auth/restore-password-init:
    *    post:
    *      tags:
@@ -353,7 +404,7 @@ export class AuthController extends BaseHttpController {
    *                properties:
    *                  message:
    *                    type: string
-   *        404:
+   *        400:
    *          description: Email not found.
    *          content:
    *            application/json:
@@ -371,7 +422,9 @@ export class AuthController extends BaseHttpController {
       throw new NotFound(exceptionMessages.auth.INCORRECT_EMAIL);
     }
 
-    // TODO: implement restore password flow within the scope of another dedicated task
+    const token = await this.resetPasswordService.createForUser(user.id);
+
+    await this.resetPasswordService.notifyUser(user.email, token);
 
     return {
       message: successMessages.auth.SUCCESS_RESTORE_PASSWORD_INIT,

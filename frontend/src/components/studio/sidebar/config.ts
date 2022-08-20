@@ -1,4 +1,4 @@
-import { IconName, AppRoute } from 'common/enums/enums';
+import { IconName, AppRoutes } from 'common/enums/enums';
 
 export interface ISideBarItem {
   itemName: string;
@@ -6,6 +6,6 @@ export interface ISideBarItem {
 }
 
 export const sideBarItems: ISideBarItem[] = [
-  { itemName: IconName.HOME, routeName: AppRoute.STUDIO },
-  { itemName: IconName.ANALYTICS, routeName: AppRoute.ANALYTICS },
+  { itemName: IconName.HOME, routeName: AppRoutes.STUDIO },
+  { itemName: IconName.ANALYTICS, routeName: AppRoutes.ANALYTICS },
 ];

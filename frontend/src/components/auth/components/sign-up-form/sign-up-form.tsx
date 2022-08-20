@@ -1,4 +1,4 @@
-import { AppRoute } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import { FC, UserSignUpRequestDto } from 'common/types/types';
 import { Input, PasswordInput } from 'components/common/common';
 import { useAppForm } from 'hooks/hooks';
@@ -49,7 +49,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
           label="Password"
         />
-        <ContonueWithParagraph prompt="Already have an account?" linkTitle="Login" route={AppRoute.SIGN_IN} />
+        <ContonueWithParagraph prompt="Already have an account?" linkTitle="Login" route={AppRoutes.SIGN_IN} />
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign up" />
       </form>
       <p>or continue with</p>

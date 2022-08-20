@@ -8,3 +8,4 @@ export { ImageStorePresetType } from './cloudinary/cloudinary';
 export { AmqpQueue } from './amqp/amqp';
 export { MailType } from './mail/mail';
 export { StreamingStatus } from './stream/stream';
+export { commonFrontendPaths } from './frontend/frontend-common-paths';

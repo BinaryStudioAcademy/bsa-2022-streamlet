@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { MainPage } from 'pages/main-page';
-import { AppRoute } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import { Routes, Route, HeaderContainer } from 'components/common/common';
 import { useLocation } from 'react-router-dom';
 import { Search } from 'components/search/search';
@@ -23,9 +23,9 @@ const App: FC = () => {
     <>
       {isHaveHeader && (
         <Routes>
-          <Route path={AppRoute.SIGN_UP} element={<SignUpPage />} />
-          <Route path={AppRoute.SIGN_IN} element={<SignInPage />} />
-          <Route path={AppRoute.RESTORE_PASSWORD} element={<RestorePasswordPage />} />
+          <Route path={AppRoutes.SIGN_UP} element={<SignUpPage />} />
+          <Route path={AppRoutes.SIGN_IN} element={<SignInPage />} />
+          <Route path={AppRoutes.RESTORE_PASSWORD_INIT} element={<RestorePasswordPage />} />
         </Routes>
       )}
       {!isHaveHeader && (
@@ -35,17 +35,17 @@ const App: FC = () => {
             <SidebarContainer />
             <div className={styles['main-content']}>
               <Routes>
-                <Route path={AppRoute.ROOT} element={<MainPage />} />
+                <Route path={AppRoutes.ROOT} element={<MainPage />} />
                 <Route path="/browse/some-path" element={<MainPage />} />
-                <Route path={AppRoute.SEARCH} element={<Search />} />
-                <Route path={AppRoute.HISTORY} element="History" />
-                <Route path={AppRoute.FOLLOWING} element="Following" />
-                <Route path={AppRoute.BROWSE} element="Browse" />
-                <Route path={AppRoute.ANY} element={<NotFound />} />
+                <Route path={AppRoutes.SEARCH} element={<Search />} />
+                <Route path={AppRoutes.HISTORY} element="History" />
+                <Route path={AppRoutes.FOLLOWING} element="Following" />
+                <Route path={AppRoutes.BROWSE} element="Browse" />
+                <Route path={AppRoutes.ANY} element={<NotFound />} />
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
-                <Route path={AppRoute.STUDIO} element={<Studio />} />
-                <Route path={AppRoute.ANALYTICS} element={<StudioAnalytics />} />
+                <Route path={AppRoutes.STUDIO} element={<Studio />} />
+                <Route path={AppRoutes.ANALYTICS} element={<StudioAnalytics />} />
                 <Route path="video-page" element={<VideoPageContainer />} />
               </Routes>
             </div>

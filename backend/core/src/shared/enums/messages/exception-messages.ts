@@ -7,6 +7,8 @@ export const exceptionMessages = {
     USER_USERNAME_ALREADY_EXISTS: 'This name is already taken. Please, enter another name',
     UNAUTHORIZED_NO_TOKEN: 'No bearer token provided',
     UNAUTHORIZED_INCORRECT_TOKEN: 'Incorrect or expired token',
+    UNAUTHORIZED_INCORRECT_RESET_PASSWORD_LINK:
+      'The token in your link has expired or was incorrect. Please, get a new one',
     INCORRECT_EMAIL: 'Wrong email. Please, try again',
   },
 };
