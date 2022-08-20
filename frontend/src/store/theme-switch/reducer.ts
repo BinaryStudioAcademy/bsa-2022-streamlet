@@ -6,12 +6,13 @@ interface InitState {
 }
 
 const initialState: InitState = {
-  isLightTheme: false,
+  isLightTheme: localStorage.getItem('light-theme') === 'true' || false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder.addCase(switchTheme, (state) => {
     state.isLightTheme = !state.isLightTheme;
+    localStorage.setItem('light-theme', state.isLightTheme.toString());
   });
 });
 
