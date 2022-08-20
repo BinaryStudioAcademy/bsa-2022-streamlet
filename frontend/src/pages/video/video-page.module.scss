@@ -1,16 +1,31 @@
 .video-page {
   display: flex;
+  justify-content: space-between;
   height: calc(100vh - 82px);
+  padding: 22px 43px 0;
   overflow-y: scroll;
   @media screen and (max-width: 992px) {
     display: block;
   }
 }
 
-.video-block {
+.video-page h2 {
+  display: block;
   width: 70%;
+  color: #ffffff;
+  font-size: 24px;
+  font-family: Gilroy-SemiBold, sans-serif;
+  line-height: 48px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.video-block {
+  grid-area: video;
+  min-width: 400px;
+  max-width: 600px;
   min-height: 250px;
-  max-height: 400px;
+  max-height: 450px;
   background-color: #1f8838;
   @media screen and (max-width: 1100px) {
     width: 60%;
@@ -20,7 +35,23 @@
   }
 }
 
+.reaction-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.reaction-container span {
+  margin-left: 10px;
+}
+
+.reaction-block {
+  display: flex;
+}
+
 .chat-block {
+  grid-area: chat;
   width: 30%;
   height: 100%;
 
@@ -33,6 +64,42 @@
   }
 }
 
-.react-height {
-  color: var(--brand-green-color);
+.video-info-block {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+
+.video-header {
+  display: flex;
+}
+
+.description-container {
+  max-width: 70%;
+  margin: 11px 0 8px;
+  color: #6a726d;
+  font-weight: 400;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 19px;
+}
+
+.video-page hr {
+  width: 80%;
+  height: 1px;
+  margin-bottom: 19px;
+  color: var(--gray-200-input-background);
+  background-color: var(--gray-200-input-background);
+  border-color: var(--gray-200-input-background);
+  outline-color: var(--gray-200-input-background);
+}
+
+.subscribe-button-default {
+  color: var(--text-gray-color);
+  background-color: var(--green-300-primary-background);
+}
+
+.subscribe-button-subscribed {
+  color: white;
+  background-color: var(--brand-green-color);
 }
