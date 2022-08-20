@@ -49,12 +49,12 @@ const HeaderContainer: FC = () => {
       text: 'Sign Out',
       icon: IconName.SIGN_OUT,
       onClick: (e: MouseEvent): void => {
-        handleClickLogin(e);
+        handleClickSignIn(e);
       },
     },
   ];
 
-  function handleClickLogin(e: MouseEvent): void {
+  function handleClickSignIn(e: MouseEvent): void {
     e.preventDefault();
 
     closeMenu();
@@ -104,7 +104,7 @@ const HeaderContainer: FC = () => {
       searchValue={searchText}
       searchInputId={searchInputId}
       handleClickUserMenu={handleClickUserMenu}
-      handleClickLogin={handleClickLogin}
+      handleClickSignIn={handleClickSignIn}
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
       handleSubmitSearch={handleSubmitSearch}

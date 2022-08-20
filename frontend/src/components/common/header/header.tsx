@@ -21,7 +21,7 @@ interface HeaderProps {
   searchValue: string;
   searchInputId: string;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
-  handleClickLogin(e: MouseEvent<HTMLElement>): void;
+  handleClickSignIn(e: MouseEvent<HTMLElement>): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
@@ -36,7 +36,7 @@ const Header: FC<HeaderProps> = ({
   isMenuOpen,
   searchValue,
   searchInputId,
-  handleClickLogin,
+  handleClickSignIn,
   handleClickUserMenu,
   handleChangeInputSearch,
   handleClearInputSearch,
@@ -90,7 +90,7 @@ const Header: FC<HeaderProps> = ({
             <button className={styles['search-mobile']}>
               <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
             </button>
-            <button onClick={handleClickLogin} className={styles['sign-in-btn']}>
+            <button onClick={handleClickSignIn} className={styles['sign-in-btn']}>
               Sign In
             </button>
           </>

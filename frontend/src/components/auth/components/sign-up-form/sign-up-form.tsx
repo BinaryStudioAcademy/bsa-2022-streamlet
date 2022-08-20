@@ -49,7 +49,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
           label="Password"
         />
-        <ContinueWithParagraph prompt="Already have an account?" linkTitle="Login" route={AppRoute.SIGN_IN} />
+        <ContinueWithParagraph prompt="Already have an account?" linkTitle="Sign in" route={AppRoute.SIGN_IN} />
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign up" />
       </form>
       <p>or continue with</p>

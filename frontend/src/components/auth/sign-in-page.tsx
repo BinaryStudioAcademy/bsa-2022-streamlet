@@ -27,7 +27,7 @@ const SignInPage: FC = () => {
 
   return (
     <AuthContainer
-      pageTitle="Login"
+      pageTitle="Sign in"
       className="sign-in"
       children={<SignInForm onSubmit={handleSignInSubmit} isLoading={isLoading} />}
       topLevelError={error}
