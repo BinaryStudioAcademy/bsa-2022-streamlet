@@ -44,7 +44,7 @@ const refreshTokens = createAsyncThunk<RefreshTokenResponseDto, RefreshTokenRequ
   },
 );
 
-// in some cases there is a need only to log out on client, while usually it's also needed to signOut on backend
+// in some cases there is a need only to sign out on client, while usually it's also needed to signOut on backend
 const signOut = createAsyncThunk<void, { hitApi: boolean } | undefined>(
   ActionType.SIGN_OUT,
   async ({ hitApi } = { hitApi: true }) => {

@@ -46,7 +46,7 @@ const HeaderContainer: FC = () => {
     },
     {
       type: MenuOptions.SignOut,
-      text: 'Log Out',
+      text: 'Sign Out',
       icon: IconName.SIGN_OUT,
       onClick: (e: MouseEvent): void => {
         handleClickLogin(e);

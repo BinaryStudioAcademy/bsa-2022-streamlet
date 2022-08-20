@@ -43,7 +43,7 @@ export const refreshTokenInterceptor: PostInterceptor = async ({
   } catch (e: unknown) {
     // in the above try block the only thing that could go wrong is refreshing token
     // which can go wrong if the refresh token is invalid
-    // in this case it's pointless to hit api to log out on backend, since it'll only create an endless loop of refreshing
+    // in this case it's pointless to hit api to sign out on backend, since it'll only create an endless loop of refreshing
     await injectedStore.dispatch(signOut({ hitApi: false })).unwrap();
     throw e;
   }

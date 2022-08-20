@@ -53,7 +53,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
 
       <ContinueWithParagraph
         prompt="Don't have an account yet?"
-        linkTitle="Register for free"
+        linkTitle="Sign up for free"
         route={AppRoute.SIGN_UP}
       />
     </>
