@@ -1,9 +1,9 @@
 import { Store, iNotification, NotificationContent } from 'react-notifications-component';
 import 'react-notifications-component/dist/scss/notification.scss';
 import { Notification } from './notification';
-import { INotificationParams } from './config';
+import { NotificationParams } from 'common/types/types';
 
-const setNotification = (props: INotificationParams): void => {
+const setNotification = (props: NotificationParams): void => {
   const { type } = props;
   const notification: iNotification = {
     content: Notification(props) as NotificationContent,
