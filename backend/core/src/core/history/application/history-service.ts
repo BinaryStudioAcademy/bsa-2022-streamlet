@@ -15,7 +15,7 @@ export class HistoryService {
     return this.historyRepository.getAllUserHistory(userId);
   }
 
-  createHistory(historyRequestDto: HistoryRequestDto): Promise<HistoryResponseDto> {
-    return this.historyRepository.createHistory(historyRequestDto);
+  createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<HistoryResponseDto> {
+    return this.historyRepository.createHistoryItem(historyRequestDto);
   }
 }

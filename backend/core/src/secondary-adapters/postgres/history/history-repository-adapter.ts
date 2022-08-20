@@ -19,7 +19,7 @@ export class HistoryRepositoryAdapter implements HistoryRepository {
     });
   }
 
-  async createHistory(historyRequestDto: HistoryRequestDto): Promise<HistoryResponseDto> {
+  async createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<HistoryResponseDto> {
     const history = await this.prismaClient.history.create({
       data: { ...historyRequestDto },
     });

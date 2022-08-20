@@ -1,6 +1,6 @@
-import { BaseHttpController, controller, httpGet, httpPost, requestBody } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, httpPost, requestBody, request } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES, HistoryRequestDto, HistoryResponseDto } from '~/shared/types/types';
+import { CONTAINER_TYPES, HistoryResponseDto, ExtendedAuthenticatedRequest } from '~/shared/types/types';
 import { HistoryService } from '~/core/history/application/history-service';
 import { History } from '@prisma/client';
 import { authenticationMiddleware } from '../middleware';
@@ -61,8 +61,8 @@ export class HistoryController extends BaseHttpController {
    *          $ref: '#/components/responses/NotFound'
    */
   @httpGet('/', authenticationMiddleware)
-  public getAllUserHistory(@requestBody() historyRequestDto: { userId: string }): Promise<History[]> {
-    const { userId } = historyRequestDto;
+  public getAllUserHistory(@request() req: ExtendedAuthenticatedRequest): Promise<History[]> {
+    const { id: userId } = req.user;
     return this.historyService.getAllUserHistory(userId);
   }
 
@@ -74,7 +74,7 @@ export class HistoryController extends BaseHttpController {
    *        - history
    *      security:
    *        - bearerAuth: []
-   *      operationId: createHistory
+   *      operationId: createHistoryItem
    *      description: create a video history item in the system
    *      requestBody:
    *        description: History data
@@ -102,7 +102,11 @@ export class HistoryController extends BaseHttpController {
    *                    $ref: '#/components/schemas/HistoryResponse'
    */
   @httpPost('/', authenticationMiddleware)
-  public async createHistory(@requestBody() historyRequestDto: HistoryRequestDto): Promise<HistoryResponseDto> {
-    return this.historyService.createHistory(historyRequestDto);
+  public async createHistoryItem(
+    @requestBody() { videoId }: { videoId: string },
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<HistoryResponseDto> {
+    const { id: userId } = req.user;
+    return this.historyService.createHistoryItem({ userId, videoId });
   }
 }
