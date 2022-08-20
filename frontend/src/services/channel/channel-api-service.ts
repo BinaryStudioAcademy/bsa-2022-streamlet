@@ -1,5 +1,5 @@
 import { ApiPath, HttpMethod, ChannelApiPath } from 'common/enums/enums';
-import { CreateSubscriptionResponseDto } from 'common/types/types';
+import { ChannelBaseResponse, CreateSubscriptionResponseDto } from 'common/types/types';
 import { Http } from '../http/http.service';
 type Constructor = {
   http: Http;
@@ -21,6 +21,16 @@ class ChannelApi {
       options: {
         method: HttpMethod.POST,
       },
+    });
+  }
+  public getById(channelId: string): Promise<ChannelBaseResponse> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.CHANNEL}${ChannelApiPath.ROOT}${channelId}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+      postInterceptors: [],
+      preInterceptors: [],
     });
   }
 }

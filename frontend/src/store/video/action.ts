@@ -8,6 +8,7 @@ import {
   VideoBaseResponseDto,
 } from 'common/types/types';
 import { ActionType } from './common';
+import { VideoCommentRequestDto, VideoCommentResponseDto } from 'shared/build/common/types/video/video';
 
 const getVideo = createAsyncThunk<VideoBaseResponseDto, string, AsyncThunkConfig>(
   ActionType.GET_VIDEO,
@@ -27,6 +28,15 @@ const videoChannelSubscribe = createAsyncThunk<CreateSubscriptionResponseDto, st
   },
 );
 
+const addVideoComment = createAsyncThunk<VideoCommentResponseDto, VideoCommentRequestDto, AsyncThunkConfig>(
+  ActionType.COMMENT,
+  async (payload: VideoCommentRequestDto, { extra }) => {
+    const { videoApi } = extra;
+
+    return await videoApi.comment(payload);
+  },
+);
+
 const videoReact = createAsyncThunk<CreateReactionResponseDto, ReactVideoActionPayloadType, AsyncThunkConfig>(
   ActionType.REACT,
   async (payload: ReactVideoActionPayloadType, { extra }) => {
@@ -35,4 +45,4 @@ const videoReact = createAsyncThunk<CreateReactionResponseDto, ReactVideoActionP
   },
 );
 
-export { getVideo, videoChannelSubscribe, videoReact };
+export { getVideo, videoChannelSubscribe, videoReact, addVideoComment };

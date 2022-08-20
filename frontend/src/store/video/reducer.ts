@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 
 import { DataStatus } from 'common/enums/enums';
 import { VideoBaseResponseDto } from 'common/types/types';
-import { getVideo, videoChannelSubscribe, videoReact } from './action';
+import { addVideoComment, getVideo, videoChannelSubscribe, videoReact } from './action';
 
 type State = {
   dataStatus: DataStatus;
@@ -21,12 +21,21 @@ const reducer = createReducer(initialState, (builder) => {
     state.video = payload;
     state.dataStatus = DataStatus.FULFILLED;
   });
+
+  builder.addCase(addVideoComment.fulfilled, (state, { payload }) => {
+    if (state.video) {
+      state.video.comments = payload.comments;
+    }
+    state.dataStatus = DataStatus.FULFILLED;
+  });
+
   builder.addCase(videoChannelSubscribe.fulfilled, (state, { payload }) => {
     if (state.video) {
       state.video.isUserSubscribeOnVideoChannel = payload.isSubscribe;
     }
     state.dataStatus = DataStatus.FULFILLED;
   });
+
   builder.addCase(videoReact.fulfilled, (state, { payload }) => {
     const { likeNum, disLikeNum, isLike } = payload;
     if (state.video) {
@@ -36,6 +45,7 @@ const reducer = createReducer(initialState, (builder) => {
     }
     state.dataStatus = DataStatus.FULFILLED;
   });
+
   builder.addCase(getVideo.pending, (state) => {
     state.error = undefined;
     state.dataStatus = DataStatus.PENDING;

@@ -1,6 +1,7 @@
 import { ApiPath, VideoApiPath, HttpMethod, ContentType } from 'common/enums/enums';
 import { CreateReactionResponseDto, ReactVideoActionPayloadType, type VideoBaseResponseDto } from 'common/types/types';
 import { Http } from '../http/http.service';
+import { VideoCommentRequestDto, VideoCommentResponseDto } from 'shared/build';
 type Constructor = {
   http: Http;
   apiPrefix: string;
@@ -33,6 +34,16 @@ class VideoApi {
         method: HttpMethod.POST,
         contentType: ContentType.JSON,
         payload: JSON.stringify({ isLike }),
+      },
+    });
+  }
+  public comment(payload: VideoCommentRequestDto): Promise<VideoCommentResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.COMMENT}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
       },
     });
   }

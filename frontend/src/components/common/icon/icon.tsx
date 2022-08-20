@@ -32,7 +32,6 @@ import { ReactComponent as SendMessage } from '../../../assets/img/send-message.
 import { ReactComponent as Emoji } from '../../../assets/img/emoji.svg';
 import { ReactComponent as ThumbUp } from '../../../assets/img/thumb-up.svg';
 import { ReactComponent as ThumbDown } from '../../../assets/img/thumb-down.svg';
-
 import clsx from 'clsx';
 
 const getColor = (color: string): string => styles[`fill${color}`];

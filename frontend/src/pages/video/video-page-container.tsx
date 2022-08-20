@@ -1,10 +1,11 @@
-import { FC, UserBaseResponseDto } from 'common/types/types';
+import { ChannelBaseResponse, FC, UserBaseResponseDto } from 'common/types/types';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import styles from './video-page.module.scss';
 import { Button, Icon, Loader } from '../../components/common/common';
 import { AppRoute, IconName } from '../../common/enums/enums';
 import { useAppDispatch, useAppSelector, useEffect, useNavigate } from '../../hooks/hooks';
-import { videoActions } from '../../store/actions';
+import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
+import { videoActions, channelActions } from '../../store/actions';
 import { VideoBaseResponseDto } from '../../common/types/video/video';
 import clsx from 'clsx';
 import { getReactBtnColor } from './common/helper/get-react-btn-color';
@@ -12,15 +13,30 @@ import { getReactBtnColor } from './common/helper/get-react-btn-color';
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  useEffect(() => {
-    dispatch(videoActions.getVideo('90862886-dab4-4777-9b1d-62a0f541559e'));
-  }, [dispatch]);
+
   const videoData: VideoBaseResponseDto | null = useAppSelector((state) => {
     return state.video.video;
   });
+
+  useEffect(() => {
+    dispatch(videoActions.getVideo('90862886-dab4-4777-9b1d-62a0f541559e'));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!videoData) {
+      return;
+    }
+    dispatch(channelActions.getChannel(videoData.channelId));
+  }, [dispatch, videoData]);
+
   const user: UserBaseResponseDto | null = useAppSelector((state) => {
     return state.auth.user;
   });
+
+  const channel: ChannelBaseResponse | null = useAppSelector((state) => {
+    return state.channel.channel;
+  });
+
   const handleLikeReact = (): void => {
     if (!user) {
       navigate(AppRoute.SIGN_IN, { replace: true });
@@ -37,6 +53,14 @@ const VideoPageContainer: FC = () => {
     dispatch(videoActions.videoReact({ videoId: '90862886-dab4-4777-9b1d-62a0f541559e', isLike: false }));
   };
 
+  const handleMessageSubmit = (text: string): void => {
+    if (!user) {
+      navigate(AppRoute.SIGN_IN, { replace: true });
+      return;
+    }
+    dispatch(videoActions.addVideoComment({ videoId: '90862886-dab4-4777-9b1d-62a0f541559e', text }));
+  };
+
   const handleSubscribe = (): void => {
     if (!user) {
       navigate(AppRoute.SIGN_IN, { replace: true });
@@ -47,9 +71,11 @@ const VideoPageContainer: FC = () => {
     }
     dispatch(videoActions.videoChannelSubscribe(videoData.channelId));
   };
-  if (!videoData) {
-    return <Loader />;
+
+  if (!videoData || !channel) {
+    return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
   }
+
   const { userReaction, isUserSubscribeOnVideoChannel } = videoData;
   return (
     <div className={styles['video-page']}>
@@ -97,12 +123,18 @@ const VideoPageContainer: FC = () => {
             })}
             onClick={handleSubscribe}
           />
-          <div className={styles['author-info-container']}></div>
+          <div className={styles['channel-info-container']}>
+            <img
+              className={styles['channel-banner']}
+              alt={'user avatar'}
+              src={channel?.bannerImage ? channel.bannerImage : defaultAvatar}
+            />
+          </div>
         </>
       </div>
 
       <div className={styles['chat-block']}>
-        <VideoChatContainer comments={videoData.comments} />
+        <VideoChatContainer comments={videoData.comments} handlerSubmitMessage={handleMessageSubmit} />
       </div>
     </div>
   );

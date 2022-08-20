@@ -5,7 +5,7 @@
     'video video chat'
     'info info chat';
   grid-template-rows: 1fr 1fr 1fr;
-  grid-template-columns: minmax(200px, 403px) minmax(200px, 403px) 1fr;
+  grid-template-columns: 1fr 1fr fit-content(40%);
   grid-gap: 17px;
   height: calc(100vh - 82px);
   padding: 22px 43px 0;
@@ -29,9 +29,6 @@
 .video-block {
   grid-area: video;
   background-color: #1f8838;
-  @media screen and (max-width: 1100px) {
-    width: 60%;
-  }
   @media screen and (max-width: 992px) {
     height: fit-content;
   }
@@ -55,10 +52,6 @@
 .chat-block {
   grid-area: chat;
   height: 100%;
-
-  @media screen and (max-width: 1100px) {
-    width: 40%;
-  }
 
   @media screen and (max-width: 992px) {
     width: 100%;

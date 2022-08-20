@@ -5,13 +5,10 @@ import { VideoComment } from 'shared/build/common/types/video/video-coment';
 
 type Props = {
   comments: VideoComment[];
+  handlerSubmitMessage(text: string): void;
 };
 
-const VideoChatContainer: FC<Props> = ({ comments }) => {
-  function handlerSubmitMessage(): void {
-    return void 1;
-  }
-
+const VideoChatContainer: FC<Props> = ({ comments, handlerSubmitMessage }) => {
   function handleChooseEmoji(): void {
     return void 1;
   }
