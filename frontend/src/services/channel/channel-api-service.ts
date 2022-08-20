@@ -17,9 +17,7 @@ class ChannelApi {
 
   public createSubscription(channelId: string): Promise<CreateSubscriptionResponseDto> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.CHANNEL}${ChannelApiPath.ROOT}${ChannelApiPath.SUBSCRIPTION}${
-        ChannelApiPath.ROOT
-      }${channelId}`,
+      url: `${this.#apiPrefix}${ApiPath.CHANNEL}${ChannelApiPath.SUBSCRIPTION}${ChannelApiPath.ROOT}${channelId}`,
       options: {
         method: HttpMethod.POST,
       },

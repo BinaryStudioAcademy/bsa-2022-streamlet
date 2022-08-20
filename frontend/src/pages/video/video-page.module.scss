@@ -1,6 +1,12 @@
 .video-page {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template:
+    'video video chat'
+    'video video chat'
+    'info info chat';
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: minmax(200px, 403px) minmax(200px, 403px) 1fr;
+  grid-gap: 17px;
   height: calc(100vh - 82px);
   padding: 22px 43px 0;
   overflow-y: scroll;
@@ -22,10 +28,6 @@
 
 .video-block {
   grid-area: video;
-  min-width: 400px;
-  max-width: 600px;
-  min-height: 250px;
-  max-height: 450px;
   background-color: #1f8838;
   @media screen and (max-width: 1100px) {
     width: 60%;
@@ -52,7 +54,6 @@
 
 .chat-block {
   grid-area: chat;
-  width: 30%;
   height: 100%;
 
   @media screen and (max-width: 1100px) {
@@ -66,8 +67,8 @@
 
 .video-info-block {
   display: flex;
+  grid-area: info;
   flex-direction: column;
-  width: 70%;
 }
 
 .video-header {
@@ -102,4 +103,10 @@
 .subscribe-button-subscribed {
   color: white;
   background-color: var(--brand-green-color);
+}
+
+.subscribe-button-basic {
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 2px;
 }

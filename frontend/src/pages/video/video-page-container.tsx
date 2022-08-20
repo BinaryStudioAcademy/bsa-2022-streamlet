@@ -2,10 +2,12 @@ import { FC, UserBaseResponseDto } from 'common/types/types';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import styles from './video-page.module.scss';
 import { Button, Icon, Loader } from '../../components/common/common';
-import { AppRoute, IconColor, IconName } from '../../common/enums/enums';
+import { AppRoute, IconName } from '../../common/enums/enums';
 import { useAppDispatch, useAppSelector, useEffect, useNavigate } from '../../hooks/hooks';
 import { videoActions } from '../../store/actions';
 import { VideoBaseResponseDto } from '../../common/types/video/video';
+import clsx from 'clsx';
+import { getReactBtnColor } from './common/helper/get-react-btn-color';
 
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -48,10 +50,11 @@ const VideoPageContainer: FC = () => {
   if (!videoData) {
     return <Loader />;
   }
+  const { userReaction, isUserSubscribeOnVideoChannel } = videoData;
   return (
     <div className={styles['video-page']}>
+      <div className={styles['video-block']} />
       <div className={styles['video-info-block']}>
-        <div className={styles['video-block']} />
         <div className={styles['video-header']}>
           <h2 className={styles['video-block-header']}>{videoData.name}</h2>
           <div className={styles['reaction-block']}>
@@ -59,7 +62,7 @@ const VideoPageContainer: FC = () => {
               <Icon
                 onClick={handleLikeReact}
                 name={IconName.THUMB_UP}
-                color={videoData.userReaction?.isLike ? IconColor.GREEN : IconColor.GRAY}
+                color={getReactBtnColor(userReaction, true)}
                 height={'25'}
                 width={'25'}
               />
@@ -69,7 +72,7 @@ const VideoPageContainer: FC = () => {
               <Icon
                 onClick={handleDisLikeReact}
                 name={IconName.THUMB_DOWN}
-                color={IconColor.GRAY}
+                color={getReactBtnColor(userReaction, false)}
                 height={'25'}
                 width={'25'}
               />
@@ -87,11 +90,11 @@ const VideoPageContainer: FC = () => {
           <hr />
           <Button
             content={'subscribe'}
-            className={
-              videoData.isUserSubscribeOnVideoChannel
-                ? styles['subscribe-button-subscribed']
-                : styles['subscribe-button-default']
-            }
+            className={clsx({
+              [styles['subscribe-button-basic']]: true,
+              [styles['subscribe-button-default']]: !isUserSubscribeOnVideoChannel,
+              [styles['subscribe-button-subscribed']]: isUserSubscribeOnVideoChannel,
+            })}
             onClick={handleSubscribe}
           />
           <div className={styles['author-info-container']}></div>
