@@ -81,6 +81,7 @@ const FilterSidebar: FC = () => {
       window.removeEventListener('click', onHandleClickOutsideFilters);
       window.removeEventListener('scroll', onHandleScroll);
     };
+    // eslint-disable-next-line
   }, [toggleAllFilters]);
 
   return (

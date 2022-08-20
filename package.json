@@ -51,11 +51,5 @@
   ],
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
-  },
-  "lint-staged": {
-    "*": "npm run lint:fs",
-    "*.{ts,tsx,json,scss}": "prettier --write",
-    "{shared,backend/core,backend/push,frontend}/**/*.{ts,tsx}": "npm run lint:js",
-    "frontend/**/*.scss": "npm run lint:css"
   }
 }

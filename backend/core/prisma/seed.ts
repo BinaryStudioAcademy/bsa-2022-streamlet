@@ -11,6 +11,7 @@ async function seedSampleData(): Promise<void> {
   await seedUsers();
   await seedUserProfiles();
   await seedChannels();
+  await seedStreamingKeys();
   await seedVideos();
   await seedSubscriptions();
   await seedTags();
@@ -49,6 +50,17 @@ async function seedUserProfiles(): Promise<void> {
 async function seedChannels(): Promise<void> {
   await prisma.channel.createMany({
     data: channels,
+  });
+}
+
+async function seedStreamingKeys(): Promise<void> {
+  const channels = await prisma.channel.findMany();
+  channels.forEach(async (channel) => {
+    await prisma.streamingKey.create({
+      data: {
+        channelId: channel.id,
+      },
+    });
   });
 }
 
