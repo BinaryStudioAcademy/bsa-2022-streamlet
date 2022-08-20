@@ -1,10 +1,10 @@
 const UserValidationMessage = {
-  EMAIL_REQUIRE: 'Email is required',
-  EMAIL_WRONG: 'Email is wrong',
-  PASSWORD_REQUIRE: 'Password is required',
-  PASSWORDS_NOT_MATCH: 'Password and Confirm Password must be match',
-  PASSWORD_CONFIRM_REQUIRE: 'Confirm password is required',
-  USERNAME_REQUIRE: 'Username is required',
+  EMAIL_REQUIRE: 'Please enter a valid email',
+  EMAIL_WRONG: 'Please enter a valid email',
+  PASSWORD_REQUIRE: 'Password should have 8-16 characters',
+  PASSWORD_WRONG: 'Password should have 8-16 characters',
+  PASSWORDS_NOT_MATCH: 'That is not the same password as the first one',
+  USERNAME_REQUIRE: 'Username should have 3-25 characters',
 } as const;
 
 export { UserValidationMessage };
