@@ -59,6 +59,10 @@ export class UserService {
     return this.userRepository.createUser(userRequestDto);
   }
 
+  setIsActivated(shouldBeActivated: boolean, userId: string): Promise<void> {
+    return this.userRepository.setIsActivated(shouldBeActivated, userId);
+  }
+
   changeUserPassword(userId: string, newPassword: string): Promise<void> {
     return this.userRepository.changePassword(userId, newPassword);
   }

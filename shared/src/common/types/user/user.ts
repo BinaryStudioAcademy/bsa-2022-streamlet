@@ -7,3 +7,5 @@ export { type UserUploadRequestDto } from './user-upload-request-dto.type';
 export { type RestorePasswordInitRequestDto } from './restore-password-init-request-dto';
 export { type RestorePasswordInitResponseDto } from './restore-password-init-response-dto';
 export { type RestorePasswordConfirmRequestDto } from './restore-password-confirm-request-dto';
+export { type AccountVerificationConfirmRequestDto } from './account-verification-confirm-request-dto';
+export { type AccountVerificationConfirmResponseDto } from './account-verification-confirm-response-dto';

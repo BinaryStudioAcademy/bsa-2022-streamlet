@@ -14,20 +14,27 @@ import {
   ExtendedAuthenticatedRequest,
   RestorePasswordInitRequestDto,
   RestorePasswordInitResponseDto,
+  RestorePasswordConfirmRequestDto,
+  AccountVerificationConfirmRequestDto,
+  AccountVerificationConfirmResponseDto,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { compareHash, generateJwt, trimUser } from '~/shared/helpers';
 import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
 import { authenticationMiddleware, validationMiddleware } from '../middleware';
-import { userSignIn, userSignUp, restorePasswordInit } from '~/validation-schemas/user/user';
+import {
+  userSignIn,
+  userSignUp,
+  restorePasswordInit,
+  restorePasswordConfirm,
+  accountVerificationConfirm,
+} from '~/validation-schemas/user/user';
 import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-token';
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
 import { exceptionMessages, successMessages } from '~/shared/enums/messages';
 import { DuplicationError } from '~/shared/exceptions/duplication-error';
 import { NotFound } from '~/shared/exceptions/not-found';
 import { ResetPasswordService } from '~/core/reset-password/application/reset-password-service';
-import { restorePasswordConfirm } from 'shared/build/validation-schemas/user/restore-password-confirm-validation-schema';
-import { RestorePasswordConfirmRequestDto } from 'shared/build';
 import { AccountVerificationService } from '~/core/account-verification/application/account-verification-service';
 import { CONFIG } from '~/configuration/config';
 
@@ -331,7 +338,7 @@ export class AuthController extends BaseHttpController {
    *      - auth
    *      security: []
    *      operationId: restorePasswordConfirm
-   *      description: COnfirm password restoration by providing a token and a new password
+   *      description: Confirm password restoration by providing a token and a new password
    *      requestBody:
    *        description: Token sent by email previously and a new password
    *        required: true
@@ -428,6 +435,64 @@ export class AuthController extends BaseHttpController {
 
     return {
       message: successMessages.auth.SUCCESS_RESTORE_PASSWORD_INIT,
+    };
+  }
+
+  /**
+   * @swagger
+   * /auth/account-verification-confirm:
+   *    post:
+   *      tags:
+   *      - auth
+   *      security: []
+   *      operationId: accountVerificationConfirm
+   *      description: Confirm email by providing a token from the link in a letter
+   *      requestBody:
+   *        description: Token sent by email previously
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                token:
+   *                  type: string
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  message:
+   *                    type: string
+   *        401:
+   *          description: Incorrect token.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   */
+  @httpPost(AuthApiPath.ACCOUNT_VERIFICATION_CONFIRM, validationMiddleware(accountVerificationConfirm))
+  public async accountVerificationConfirm(
+    @requestBody() requestDto: AccountVerificationConfirmRequestDto,
+  ): Promise<AccountVerificationConfirmResponseDto> {
+    const tokenUser = await this.accountVerificationService.getConfirmTokenUser(requestDto.token);
+
+    if (!tokenUser) {
+      throw new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_ACCOUNT_VERIFICATION_LINK);
+    }
+    if (tokenUser.isActivated) {
+      return {
+        message: successMessages.auth.SUCCESS_ACCOUNT_ALREADY_VERIFIED,
+      };
+    }
+    await this.userService.setIsActivated(true, tokenUser.id);
+    return {
+      message: successMessages.auth.SUCCESS_ACCOUNT_VERIFICATION,
     };
   }
 

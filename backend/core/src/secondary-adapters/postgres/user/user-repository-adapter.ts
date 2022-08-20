@@ -11,6 +11,7 @@ export class UserRepositoryAdapter implements UserRepository {
   constructor(@inject(CONTAINER_TYPES.PrismaClient) prismaClient: PrismaClient) {
     this.prismaClient = prismaClient;
   }
+
   async changePassword(userId: string, newPassword: string): Promise<void> {
     await this.prismaClient.user.update({
       where: {
@@ -21,6 +22,7 @@ export class UserRepositoryAdapter implements UserRepository {
       },
     });
   }
+
   getUserByUsernameOrEmail(email: string, username: string): Promise<User | null> {
     return this.prismaClient.user.findFirst({
       where: {
@@ -55,5 +57,16 @@ export class UserRepositoryAdapter implements UserRepository {
     });
 
     return user;
+  }
+
+  async setIsActivated(shouldBeActivated: boolean, userId: string): Promise<void> {
+    await this.prismaClient.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        isActivated: shouldBeActivated,
+      },
+    });
   }
 }

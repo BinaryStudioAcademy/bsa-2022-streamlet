@@ -5,7 +5,7 @@ import { UserRepository } from '~/core/user/port/user-repository';
 
 import { MailRepository } from '~/core/mail/port/mail-repository';
 import { commonFrontendPaths, MailType } from 'shared/build';
-import { generateJwt } from '~/shared/helpers';
+import { generateJwt, verifyJwt } from '~/shared/helpers';
 import { CONFIG } from '~/configuration/config';
 
 @injectable()
@@ -34,6 +34,20 @@ export class AccountVerificationService {
     return `${CONFIG.CLIENT_INFO.URL}${commonFrontendPaths.auth.ACCOUNT_VERIFICATION_CONFIRM.path}?${
       commonFrontendPaths.auth.ACCOUNT_VERIFICATION_CONFIRM.queryParamNames.token
     }=${Buffer.from(token).toString('base64url')}`;
+  }
+
+  async getConfirmTokenUser(token: string): Promise<User | null> {
+    try {
+      const tokenPayload = await verifyJwt<VerificationUserJwtPayload>({
+        jwt: token,
+        secret: CONFIG.ENCRYPTION.VERIFICATION_TOKEN_SECRET,
+      });
+
+      const user = await this.userRepository.getById(tokenPayload.userId);
+      return user;
+    } catch {
+      return null;
+    }
   }
 }
 
