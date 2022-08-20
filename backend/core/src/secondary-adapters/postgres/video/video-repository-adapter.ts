@@ -43,6 +43,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
             text: true,
             author: {
               select: {
+                username: true,
                 profile: true,
               },
             },
@@ -118,6 +119,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
             text: true,
             author: {
               select: {
+                username: true,
                 profile: true,
               },
             },

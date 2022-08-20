@@ -15,7 +15,7 @@ import {
   ExtendedAuthenticatedRequest,
   VideoCommentResponseDto,
 } from '~/shared/types/types';
-import { HttpError, VideoBaseResponseDto, VideoCommentRequestDto } from 'shared/build';
+import { HttpError, VideoApiPath, VideoBaseResponseDto, VideoCommentRequestDto } from 'shared/build';
 import { VideoService } from '~/core/video/aplication/video-service';
 import { Video } from '@prisma/client';
 import { authenticationMiddleware, optionalAuthenticationMiddleware } from '~/primary-adapters/rest/middleware';
@@ -92,7 +92,7 @@ export class VideoController extends BaseHttpController {
 
     return reactionResponse;
   }
-  @httpPost('/comment/:id', authenticationMiddleware)
+  @httpPost(VideoApiPath.COMMENT, authenticationMiddleware)
   public async addComment(
     @requestBody() body: VideoCommentRequestDto,
     @request() req: ExtendedAuthenticatedRequest,

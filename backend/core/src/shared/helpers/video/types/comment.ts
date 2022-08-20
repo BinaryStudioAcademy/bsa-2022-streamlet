@@ -5,5 +5,5 @@ export type commentFromDb = {
   createdAt: Date;
   updatedAt: Date;
   text: string;
-  author: { profile: UserProfile | null };
+  author: { username: string; profile: UserProfile | null };
 };

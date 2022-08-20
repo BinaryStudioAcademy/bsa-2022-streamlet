@@ -6,7 +6,7 @@ type videoFromDbType = {
     createdAt: Date;
     updatedAt: Date;
     text: string;
-    author: { profile: UserProfile | null };
+    author: { username: string; profile: UserProfile | null };
   }[];
   reactions: Reaction[];
   id: string;

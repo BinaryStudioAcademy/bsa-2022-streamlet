@@ -1,16 +1,22 @@
 import { UserProfile } from '@prisma/client';
 import { VideoComment } from 'shared/build/common/types/video/video-coment';
 import { type commentFromDb } from './types/types';
-type Comment = { id: string; createdAt: Date; updatedAt: Date; text: string; author: { profile: UserProfile | null } };
+type Comment = {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  text: string;
+  author: { username: string; profile: UserProfile | null };
+};
 
 export const createVideoCommentResponse = (comments: commentFromDb[]): VideoComment[] => {
   const commentsResponse = comments.map((comment: Comment) => {
-    const { profile } = comment.author;
+    const { profile, username } = comment.author;
     if (!profile) {
       return {
         ...comment,
         author: {
-          username: 'anonimus',
+          username,
         },
       };
     }
@@ -20,7 +26,7 @@ export const createVideoCommentResponse = (comments: commentFromDb[]): VideoComm
       author: {
         avatar,
         firstName,
-        username: 'anonimus',
+        username,
         lastName,
       },
     };
