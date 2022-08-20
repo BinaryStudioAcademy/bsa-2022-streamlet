@@ -1,36 +1,31 @@
+import Ffmpeg from 'fluent-ffmpeg';
 import { logger } from '~/config/logger';
 import { FfmpegFactory } from '~/factories';
 import { createRtmpUrl } from '~/helpers';
+import { presetMatch } from '~/helpers/ffmpeg-preset-matcher';
 import { amqpService } from '~/services';
-import { AmqpQueue } from '~/shared';
+import { AmqpQueue, ProcessPreset } from '~/shared';
 
-export const createProcess = ({ streamKey, videoId }: { streamKey: string; videoId: string }): void => {
+export const createProcess = ({
+  presets,
+  streamKey,
+  videoId,
+}: {
+  presets: ProcessPreset[];
+  streamKey: string;
+  videoId: string;
+}): Ffmpeg.FfmpegCommand[] => {
   const input = createRtmpUrl(streamKey);
-  const process720p30 = FfmpegFactory.create({
-    videoId,
-    input,
-    width: 1280,
-    height: 720,
-    fps: 30,
-  });
-  const process480p30 = FfmpegFactory.create({
-    videoId,
-    input,
-    width: 720,
-    height: 480,
-    fps: 30,
-  });
-  const process360p30 = FfmpegFactory.create({
-    videoId,
-    input,
-    width: 480,
-    height: 360,
-    fps: 30,
+  const processes = presets.map((processType) => {
+    const preset = presetMatch[processType];
+    return FfmpegFactory.create({
+      ...preset,
+      videoId,
+      input,
+    });
   });
 
-  process720p30.run();
-  process480p30.run();
-  process360p30.run();
+  processes.map((process) => process.run());
 
   amqpService.consume({
     queue: AmqpQueue.STREAM_INTERRUPTED,
@@ -39,9 +34,7 @@ export const createProcess = ({ streamKey, videoId }: { streamKey: string; video
         const { streamingKey } = JSON.parse(data.toString('utf-8'));
         logger.info(`interrupted ${streamKey} ${streamingKey}`);
         if (streamingKey === streamKey) {
-          process360p30.kill('SIGKILL');
-          process480p30.kill('SIGKILL');
-          process720p30.kill('SIGKILL');
+          processes.map((process) => process.kill('SIGKILL'));
 
           logger.info(`Rabbit -> STREAM_INTERRUPTED ({ videoId: ${videoId} }).`);
           amqpService.sendToQueue({
@@ -56,4 +49,6 @@ export const createProcess = ({ streamKey, videoId }: { streamKey: string; video
       }
     },
   });
+
+  return processes;
 };

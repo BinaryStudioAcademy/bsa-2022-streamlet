@@ -14,6 +14,4 @@ export function bootstrapApp(): void {
       }
     },
   });
-
-  // transcode({ streamKey: "STREAM_NAME", videoId: "432924239" });
 }
