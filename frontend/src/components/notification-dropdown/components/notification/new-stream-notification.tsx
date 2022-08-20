@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { getHowLongAgoString } from 'helpers/helpers';
 
 import styles from './styles.module.scss';
-import { ApiPath } from 'shared/build';
 
 type NotificationProps = {
   notification: NotificationStreamStartResponseDto;
@@ -17,7 +16,7 @@ const NewStreamNotification: FC<NotificationProps> = ({ notification, onRead }) 
   };
 
   return (
-    <Link className={styles['link']} to={`${ApiPath.VIDEO}${notification.link}`}>
+    <Link className={styles['link']} to={`${notification.link}`}>
       <div className={styles['notification']} onClick={handleNotificationRead}>
         <img
           src={notification.avatar ?? DefaultUserAvatar}

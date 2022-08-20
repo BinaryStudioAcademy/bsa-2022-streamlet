@@ -25,7 +25,8 @@
   line-height: 16px;
 }
 
-.notification:hover {
+.notification:hover,
+.text-notification:hover {
   background-color: var(--notifications-hover);
 }
 
