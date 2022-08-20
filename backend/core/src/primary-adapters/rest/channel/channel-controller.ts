@@ -1,16 +1,28 @@
-import { BaseHttpController, controller, httpGet, httpPost, requestBody, requestParam } from 'inversify-express-utils';
+import {
+  BaseHttpController,
+  controller,
+  httpGet,
+  httpPost,
+  request,
+  requestBody,
+  requestParam,
+} from 'inversify-express-utils';
 import {
   CONTAINER_TYPES,
   DefaultRequestParam,
   ResetStreamingKeyRequestDto,
   StreamingKeyResponseDto,
   RtmpLiveRequestDto,
+  ExtendedAuthenticatedRequest,
+  CreateSubscriptionResponseDto,
 } from '~/shared/types/types';
 import { ApiPath, ChannelApiPath } from '~/shared/enums/api/api';
 import { ChannelService } from '~/core/channel/application/channel-service';
 import { inject } from 'inversify';
 import { Forbidden } from '~/shared/exceptions/forbidden';
 import { NotFound } from '~/shared/exceptions/not-found';
+import { authenticationMiddleware } from '~/primary-adapters/rest/middleware';
+import { HttpError } from 'shared/build';
 
 /**
  * @swagger
@@ -221,5 +233,20 @@ export class ChannelController extends BaseHttpController {
       throw new NotFound('Invalid channel id');
     }
     return keyData;
+  }
+  @httpPost(`${ChannelApiPath.SUBSCRIPTION}${ChannelApiPath.$ID}`, authenticationMiddleware)
+  public async addSubscription(
+    @requestParam('id') id: string,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<CreateSubscriptionResponseDto | null> {
+    const { id: userId } = req.user;
+
+    const res = this.channelService.addSubscription(userId, id);
+
+    if (res === null) {
+      throw new HttpError({ message: 'channel dont found', status: 404 });
+    }
+
+    return res;
   }
 }

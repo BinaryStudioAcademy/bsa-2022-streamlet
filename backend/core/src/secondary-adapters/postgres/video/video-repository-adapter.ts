@@ -53,6 +53,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
             },
           },
         },
+        channel: true,
         reactions: {
           where: {
             userId: userId,
