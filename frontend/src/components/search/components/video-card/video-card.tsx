@@ -1,30 +1,41 @@
+import { MouseEvent } from 'react';
+import clsx from 'clsx';
 import dayjs from 'dayjs';
 import * as dayjsDuration from 'dayjs/plugin/duration';
+import * as dayjsRelativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
 import { FC, VideoCard as VideoCardType } from 'common/types/types';
-import { AppRoute, IconName } from 'common/enums/enums';
+import { AppRoute, IconName, StreamingStatus } from 'common/enums/enums';
 import { Icon } from 'components/common/common';
 import { getHowLongAgoString } from 'helpers/helpers';
 import { VideoTag } from '../common/common';
+import { VideoTagName } from '../../config/config';
 import styles from './styles.module.scss';
 
 dayjs.extend(dayjsDuration.default);
+dayjs.extend(dayjsRelativeTime.default);
 
 type Props = {
   video: VideoCardType;
 };
 
-const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, createdAt, preview, channel } }) => {
+const VideoCard: FC<Props> = ({
+  video: { id, name, status, publishedAt, scheduledStreamDate, poster, duration, videoViews, liveViews, channel },
+}) => {
   const linkToVideoPage = `${AppRoute.VIDEO}/${id}`;
   const linkToChannelPage = `${AppRoute.CHANNEL}/${id}`;
 
   const isNew = (): boolean => {
     const maxTimeFromNowIsNew = 4 * 60 * 60 * 1000; // 4 hours
-    return dayjs().diff(dayjs(createdAt)) <= maxTimeFromNowIsNew;
+    return dayjs().diff(dayjs(publishedAt)) <= maxTimeFromNowIsNew;
   };
 
-  const getDurationString = (durationInSeconds: number): string => {
-    const d = dayjs.duration(durationInSeconds * 1000);
+  const isWaiting = status === StreamingStatus.WAITING;
+  const isLive = status === StreamingStatus.LIVE;
+  const isFinished = status === StreamingStatus.FINISHED;
+
+  const getDurationString = (): string => {
+    const d = dayjs.duration(duration * 1000);
     if (d.hours() > 9) {
       return d.format('HH:mm:ss');
     }
@@ -37,19 +48,72 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
     return d.format('m:ss');
   };
 
-  const getDividedViewString = (view: number): string => view.toLocaleString();
+  const getDividedViewString = (): string => {
+    const view = isFinished ? videoViews : liveViews;
+    return view.toLocaleString();
+  };
+
+  const getFormatScheduledStreamDateFor = (): string => dayjs(scheduledStreamDate).format('D/M/YY, H:mm A');
+  const getFormatScheduledStreamDateLiveIn = (): string => dayjs().to(dayjs(scheduledStreamDate));
+  const getFormatScheduledStreamDateAt = (): string => {
+    const d = dayjs(scheduledStreamDate);
+    return `${d.format('D MMMM')} at ${d.format('H:mm')}`;
+  };
+
+  const handleClickNotifyBtn = (e: MouseEvent<HTMLDivElement>): void => {
+    e.preventDefault();
+  };
+
+  const MetaData: FC = () =>
+    isWaiting ? (
+      <div className={clsx(styles['video-card-meta'], styles['video-card-meta-scheduled'])}>
+        <div className={styles['video-card-meta-data']}>
+          <span>{`Scheduled for ${getFormatScheduledStreamDateFor()}`}</span>
+        </div>
+        <div className={styles['video-card-meta-data']}>
+          <div className={styles['video-card-meta-data-scheduled']} onClick={handleClickNotifyBtn}>
+            <Icon name={IconName.BELL_OUTLINE} />
+            <span>Notify me</span>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div className={styles['video-card-meta']}>
+        <div className={styles['video-card-meta-data']}>
+          <Icon name={IconName.WATCH} />
+          {getDividedViewString()}
+        </div>
+        <div className={styles['video-card-meta-data']}>
+          <Icon name={IconName.TIMEAGO} />
+          {getHowLongAgoString(new Date(publishedAt))}
+        </div>
+      </div>
+    );
 
   return (
     <div className={styles['video-card']}>
-      <Link to={linkToVideoPage} className={styles['video-card-preview']}>
-        <img src={preview} alt="Preview video img" />
-        <div className={styles['video-card-play']}>
+      <div className={styles['video-card-preview']}>
+        <img src={poster} alt="Preview video img" />
+        <Link to={linkToVideoPage} className={styles['video-card-play']}>
           <div className={styles['video-card-play-btn']}>
             <Icon name={IconName.PLAY} />
           </div>
-          <span className={styles['video-card-badge-duration']}>{getDurationString(duration)}</span>
-        </div>
-      </Link>
+          {isFinished && <span className={styles['video-card-badge-duration']}>{getDurationString()}</span>}
+        </Link>
+        {isWaiting && (
+          <div className={styles['video-card-badge-scheduled']}>
+            <Icon name={IconName.ONLINE_STREAMING} />
+            <div className={styles['video-card-badge-scheduled-data']}>
+              <span>{`Live ${getFormatScheduledStreamDateLiveIn()}`}</span>
+              <span>{getFormatScheduledStreamDateAt()}</span>
+            </div>
+            <div className={styles['video-card-badge-scheduled-btn']} onClick={handleClickNotifyBtn}>
+              <Icon name={IconName.BELL_OUTLINE} />
+              <span>Notify me</span>
+            </div>
+          </div>
+        )}
+      </div>
       <div className={styles['video-card-info']}>
         <Link to={linkToChannelPage} className={styles['video-card-channel']}>
           <img className={styles['avatar']} src={channel.avatar} alt="Channels avatar" />
@@ -58,16 +122,7 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
           <Link to={linkToVideoPage} className={styles['video-card-title']}>
             {name}
           </Link>
-          <div className={styles['video-card-meta']}>
-            <div className={styles['video-card-meta-data']}>
-              <Icon name={IconName.WATCH} />
-              {getDividedViewString(videoViews)}
-            </div>
-            <div className={styles['video-card-meta-data']}>
-              <Icon name={IconName.TIMEAGO} />
-              {getHowLongAgoString(new Date(createdAt))}
-            </div>
-          </div>
+          <MetaData />
           <div className={styles['video-card-author']}>
             <Link to={linkToChannelPage} className={styles['video-card-author-avatar']}>
               <img className={styles['avatar']} src={channel.avatar} alt="Channels avatar" />
@@ -76,18 +131,12 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
               <span>{channel.name}</span>
             </Link>
           </div>
-          <div className={styles['video-card-tag-list']}>{isNew() && <VideoTag name="new" />}</div>
-        </div>
-        <div className={styles['video-card-meta-footer']}>
-          <div className={styles['video-card-meta-data']}>
-            <Icon name={IconName.WATCH} />
-            {getDividedViewString(videoViews)}
-          </div>
-          <div className={styles['video-card-meta-data']}>
-            <Icon name={IconName.TIMEAGO} />
-            {getHowLongAgoString(new Date(createdAt))}
+          <div className={styles['video-card-tag-list']}>
+            {isLive && <VideoTag name={VideoTagName.LIVE} />}
+            {(isLive || isFinished) && isNew() && <VideoTag name={VideoTagName.NEW} />}
           </div>
         </div>
+        <div className={styles['video-card-meta-footer']}>{!isWaiting && <MetaData />}</div>
       </div>
     </div>
   );
