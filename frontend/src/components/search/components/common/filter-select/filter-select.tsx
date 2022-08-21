@@ -52,7 +52,6 @@ const FilterSelect: FC<Props> = ({
     if (!toggleAllFilters) {
       setToggleSelect(false);
     }
-    // eslint-disable-next-line
   }, [toggleAllFilters]);
 
   return (

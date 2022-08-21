@@ -27,7 +27,7 @@ const Search: FC = () => {
     [dispatch],
   );
 
-  const handleGetVideoFilter = (): Partial<Record<SearchQueryParam, string>> => {
+  const handleGetVideoFilter = useCallback((): Partial<Record<SearchQueryParam, string>> => {
     const currentSearchState = {
       [FilterType.SEARCH_TEXT]: searchText,
       ...activeFilterId,
@@ -43,11 +43,11 @@ const Search: FC = () => {
       }
       return prev;
     }, {});
-  };
+  }, [activeFilterId, searchText]);
 
-  const handleSetSearchParams = (): void => {
+  const handleSetSearchParams = useCallback(() => {
     setSearchParams({ ...handleGetVideoFilter() });
-  };
+  }, [setSearchParams, handleGetVideoFilter]);
 
   useEffect(() => {
     const currentFilterFromURL = Object.values(SearchQueryParam).reduce((prev, curr) => {
@@ -65,13 +65,11 @@ const Search: FC = () => {
       delete currentFilterFromURL[FilterType.SEARCH_TEXT];
     }
     handleSetActiveFilterIds(currentFilterFromURL);
-    // eslint-disable-next-line
-  }, []);
+  }, [searchParams, handleSetSearchText, handleSetActiveFilterIds]);
 
   useEffect(() => {
     handleSetSearchParams();
-    // eslint-disable-next-line
-  }, [activeFilterId]);
+  }, [activeFilterId, handleSetSearchParams]);
 
   return (
     <div className={styles['search-page']}>
