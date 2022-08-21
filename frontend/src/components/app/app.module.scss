@@ -1,3 +1,5 @@
+@import 'assets/css/config.scss';
+
 .layout-wrapper {
   display: flex;
   flex-direction: column;
@@ -6,11 +8,12 @@
 
 .content-section {
   display: flex;
-  height: calc(100vh - 82px);
+  height: calc(100vh - $header-height);
 }
 
 .content-section .main-content {
   flex: 1;
+  overflow: auto;
   color: var(--white-text-color);
   background-color: var(--primary-text-color);
 }
