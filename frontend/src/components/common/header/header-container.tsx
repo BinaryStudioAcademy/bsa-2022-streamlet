@@ -30,10 +30,10 @@ const HeaderContainer: FC = () => {
   const options = [
     {
       type: MenuOptions.Settings,
-      text: 'Settings',
+      text: 'Profile settings',
       icon: IconName.SETTINGS,
       onClick: (): void => {
-        void 1;
+        navigate(AppRoute.PROFILE_PREFERENCE, { replace: true });
       },
     },
     {
