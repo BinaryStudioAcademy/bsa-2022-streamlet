@@ -32,7 +32,7 @@ const reducer = createReducer(initialState, (builder) => {
     isAnyOf(getProfileByUserId.rejected, updateProfile.rejected, uploadAvatar.rejected),
     (state, { error }) => {
       const { message: errorMessage } = error;
-      state.dataStatus = DataStatus.FULFILLED;
+      state.dataStatus = DataStatus.REJECTED;
       state.error = errorMessage;
       state.profileData = null;
     },

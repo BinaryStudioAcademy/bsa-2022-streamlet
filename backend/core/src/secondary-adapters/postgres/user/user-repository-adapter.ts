@@ -35,6 +35,7 @@ export class UserRepositoryAdapter implements UserRepository {
       },
     });
   }
+
   updateUserName(userId: string, username: string): Promise<User | null> {
     return this.prismaClient.user.update({
       where: {

@@ -34,9 +34,7 @@ class ProfileApi {
 
   public getProfileByUserId(payload: getProfileByUserIdRequestDto): Promise<ProfileUpdateResponseDto> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.PROFILE}${ProfileApiPath.GET_BY_USER_ID}${ProfileApiPath.ROOT}${
-        payload.userId
-      }`,
+      url: `${this.#apiPrefix}${ApiPath.PROFILE}${ProfileApiPath.ROOT}${payload.userId}`,
       options: {
         method: HttpMethod.GET,
       },

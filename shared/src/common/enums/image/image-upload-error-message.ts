@@ -1,5 +1,5 @@
 export const ImageUploadErrorMessage = {
-  MAX_SIZE: 'you file is too big max allowed file size 10MB',
-  FILE_EXTENSION: 'you file has unsupported file extension use png or jpg file',
-  UNKNOWN_ERROR: 'ooops something went wrong',
+  MAX_SIZE: 'Your file is too big! Max allowed file size is 10MB.',
+  FILE_EXTENSION: 'We dont support this file extention. Please use .png or .jpg file.',
+  UNKNOWN_ERROR: 'Ooops, something went wrong!',
 };

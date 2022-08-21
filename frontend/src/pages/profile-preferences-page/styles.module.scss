@@ -62,12 +62,6 @@
   margin-right: 20px;
 }
 
-.profile-banner-preview {
-  max-width: 500px;
-  height: 96px;
-  margin-right: 20px;
-}
-
 .profile-image-preview {
   width: 96px;
   height: 96px;
@@ -114,10 +108,6 @@
 
 .input:focus {
   outline: 3px green solid;
-}
-
-.channel-avatar-container {
-  width: auto;
 }
 
 .profile-setting-input-block {
@@ -187,10 +177,6 @@
     margin-right: 20px;
   }
 
-  .profile-banner-preview {
-    margin-right: 20px;
-  }
-
   .profile-image-preview {
     margin-right: 20px;
   }
@@ -213,16 +199,11 @@
     text-align: center;
   }
 
-  .avatar-container,
-  .channel-avatar-container {
+  .avatar-container {
     display: flex;
     justify-content: center;
     width: 100%;
     margin-bottom: 20px;
-  }
-
-  .profile-banner-preview {
-    margin: 0;
   }
 
   .profile-image-preview {

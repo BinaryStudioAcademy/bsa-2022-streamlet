@@ -108,13 +108,13 @@ export class ProfileController extends BaseHttpController {
     @requestBody() body: ProfileUpdateRequestDto,
     @request() req: ExtendedAuthenticatedRequest,
   ): Promise<ProfileUpdateResponseDto> {
-    const res = await this.profileService.update(body);
-
     const { id: clientUserId } = req.user;
 
     if (clientUserId !== body.userId) {
       throw new Forbidden();
     }
+
+    const res = await this.profileService.update(body);
 
     if (!res) {
       throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
@@ -185,7 +185,7 @@ export class ProfileController extends BaseHttpController {
    *        '404':
    *          description: user not found
    */
-  @httpGet(`${ProfileApiPath.GET_BY_USER_ID}/:id`, authenticationMiddleware)
+  @httpGet(`${ProfileApiPath.$ID}`, authenticationMiddleware)
   public async get(@requestParam('id') id: string): Promise<ProfileUpdateResponseDto> {
     const res = await this.profileService.getByUserId(id);
 

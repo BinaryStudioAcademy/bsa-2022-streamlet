@@ -8,7 +8,6 @@ import {
 } from 'common/types/types';
 import style from './styles.module.scss';
 import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
-import defaultUserBanner from '../../assets/img/profile-baner-default.jpg';
 import { UploadImage, ImageEditor, Loader } from '../../components/common/common';
 import React, { useCallback, useState } from 'react';
 import { profileActions } from 'store/actions';
@@ -163,33 +162,14 @@ const ProfilePreferencesPage: FC = () => {
                   {error ? (
                     <span className={style['error-message']}>{error}</span>
                   ) : (
-                    'Must be JPEG, PNG and cannot exceed 10MB.'
+                    'File format: JPEG/PNG, max size: 10MB'
                   )}
                 </span>
               </div>
             </div>
           </div>
-          <div className={style['image-setting-container']}>
-            <h2 className={style['profile-image-header']}>Channel Banner</h2>
-            <div className={style['profile-image-upload-container']}>
-              <div className={style['channel-avatar-container']}>
-                <img
-                  className={style['profile-banner-preview']}
-                  height={'96'}
-                  src={defaultUserBanner}
-                  alt="profile picture preview"
-                />
-              </div>
-              <div className={style['image-upload-control-container']}>
-                <button type="button" className={style['image-upload-button']}>
-                  Update
-                </button>
-                <span>File format: JPEG, PNG (recommended 1200x480, max 10MB) </span>
-              </div>
-            </div>
-          </div>
           <h2 className={style['profile-settings-header']}>Profile settings</h2>
-          <h3 className={style['profile-settings-sub-header']}>Change identifying details for your account</h3>
+          <h3 className={style['profile-settings-sub-header']}>Change your personal information</h3>
           <ProfilePreferencesPageForm
             onSubmit={onFormSubmit}
             error={formError}

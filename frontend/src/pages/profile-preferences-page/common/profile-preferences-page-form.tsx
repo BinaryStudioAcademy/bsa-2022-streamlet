@@ -28,10 +28,9 @@ const ProfilePreferencesPageForm: FC<Props> = ({ onSubmit, defaultFormValue, err
             name="username"
             type="text"
             inputClassName={style['input']}
-            label="username"
-            placeholder="enter new user name"
+            label="Username"
+            placeholder="Enter new username..."
           />
-          <p>Update your username</p>
         </div>
       </div>
       <div className={style['profile-setting-change-block']}>
@@ -42,10 +41,9 @@ const ProfilePreferencesPageForm: FC<Props> = ({ onSubmit, defaultFormValue, err
             name="firstName"
             type="text"
             inputClassName={style['input']}
-            label="firstName"
-            placeholder="enter new first name"
+            label="First name"
+            placeholder="Enter new first name..."
           />
-          <p>Update your first name</p>
         </div>
       </div>
       <div className={style['profile-setting-change-block']}>
@@ -56,16 +54,15 @@ const ProfilePreferencesPageForm: FC<Props> = ({ onSubmit, defaultFormValue, err
             name="lastName"
             type="text"
             inputClassName={style['input']}
-            label="lastName"
-            placeholder="enter new last name"
+            label="Last name"
+            placeholder="Enter new last name..."
           />
-          <p>Update your last name</p>
         </div>
       </div>
       <div className={style['save-change-button-container']}>
-        {error ? <span className={style['error-message']}>{error}</span> : null}
+        {error && <span className={style['error-message']}>{error}</span>}
         <button type="submit" className={style['save-change-button']}>
-          {isLoading ? <Loader hCentered={true} vCentered={true} /> : 'Save change'}
+          {isLoading ? <Loader hCentered={true} vCentered={true} /> : 'Save changes'}
         </button>
       </div>
     </form>

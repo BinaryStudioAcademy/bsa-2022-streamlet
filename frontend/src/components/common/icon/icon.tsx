@@ -30,7 +30,6 @@ import { ReactComponent as Warning } from '../../../assets/img/warning.svg';
 import { ReactComponent as Success } from '../../../assets/img/success.svg';
 import { ReactComponent as SendMessage } from '../../../assets/img/send-message.svg';
 import { ReactComponent as Emoji } from '../../../assets/img/emoji.svg';
-
 import { ReactComponent as Rotate } from '../../../assets/img/rotate.svg';
 import { ReactComponent as ZoomIn } from '../../../assets/img/zoom-in.svg';
 import clsx from 'clsx';
