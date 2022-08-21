@@ -12,3 +12,5 @@ export { setNotification } from './notifications';
 export { HeaderContainer } from './header/header-container';
 
 export { Loader } from './loader/loader';
+
+export { VideoTag } from './video-tag/video-tag';

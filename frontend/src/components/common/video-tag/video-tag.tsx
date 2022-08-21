@@ -1,6 +1,6 @@
-import { FC } from 'common/types/types';
 import clsx from 'clsx';
-import { VideoTagName } from '../../../config/config';
+import { FC } from 'common/types/types';
+import { VideoTagName } from 'common/enums/enums';
 import styles from './styles.module.scss';
 
 type Props = {

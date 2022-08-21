@@ -5,11 +5,9 @@ import * as dayjsDuration from 'dayjs/plugin/duration';
 import * as dayjsRelativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
 import { FC, VideoCard as VideoCardType } from 'common/types/types';
-import { AppRoute, IconName, StreamingStatus } from 'common/enums/enums';
-import { Icon } from 'components/common/common';
+import { AppRoute, IconName, StreamingStatus, VideoTagName } from 'common/enums/enums';
+import { Icon, VideoTag } from 'components/common/common';
 import { getHowLongAgoString } from 'helpers/helpers';
-import { VideoTag } from '../common/common';
-import { VideoTagName } from '../../config/config';
 import styles from './styles.module.scss';
 
 dayjs.extend(dayjsDuration.default);
