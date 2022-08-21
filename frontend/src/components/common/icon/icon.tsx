@@ -30,6 +30,8 @@ import { ReactComponent as Warning } from '../../../assets/img/warning.svg';
 import { ReactComponent as Success } from '../../../assets/img/success.svg';
 import { ReactComponent as SendMessage } from '../../../assets/img/send-message.svg';
 import { ReactComponent as Emoji } from '../../../assets/img/emoji.svg';
+import { ReactComponent as OnlineStreaming } from '../../../assets/img/online-streaming.svg';
+import { ReactComponent as BellOutline } from '../../../assets/img/bell-outline.svg';
 
 import clsx from 'clsx';
 
@@ -153,17 +155,21 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
       return <Close {...commonProps} />;
     }
 
-    case IconName.EXCLAMATION:
+    case IconName.EXCLAMATION: {
       return <Exclamation {...commonProps} />;
+    }
 
-    case IconName.INFO:
+    case IconName.INFO: {
       return <Info {...commonProps} />;
+    }
 
-    case IconName.WARNING:
+    case IconName.WARNING: {
       return <Warning {...commonProps} />;
+    }
 
-    case IconName.SUCCESS:
+    case IconName.SUCCESS: {
       return <Success {...commonProps} />;
+    }
 
     case IconName.SENDMESSAGE: {
       return <SendMessage {...commonProps} />;
@@ -173,8 +179,17 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
       return <Emoji {...commonProps} />;
     }
 
-    case IconName.ANALYTICS:
+    case IconName.ANALYTICS: {
       return <Analystic {...commonProps} />;
+    }
+
+    case IconName.ONLINE_STREAMING: {
+      return <OnlineStreaming {...commonProps} />;
+    }
+
+    case IconName.BELL_OUTLINE: {
+      return <BellOutline {...commonProps} />;
+    }
 
     default: {
       return <Timeago {...commonProps} />;

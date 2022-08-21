@@ -29,6 +29,8 @@ enum IconName {
   SUCCESS = 'success',
   SENDMESSAGE = 'send-message',
   EMOJI = 'emoji',
+  ONLINE_STREAMING = 'online-streaming',
+  BELL_OUTLINE = 'bell-outline',
 }
 
 export { IconName };
