@@ -122,7 +122,7 @@ const ProfilePreferencesPage: FC = () => {
 
   return (
     <div className={style['preference-page-content-container']}>
-      {isNeedUpload ?? <UploadImage images={images} onUpload={onChange} onClose={onUploadImageClose} />}
+      {isNeedUpload && <UploadImage images={images} onUpload={onChange} onClose={onUploadImageClose} />}
       {isNeedImageEditor && (
         <ImageEditor
           avatar={preparedAvatar}

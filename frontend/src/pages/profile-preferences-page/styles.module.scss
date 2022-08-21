@@ -5,6 +5,10 @@
   overflow-y: scroll;
 }
 
+.preference-page-content-container button {
+  cursor: pointer;
+}
+
 .profile-preferences-container {
   max-width: 1250px;
   height: calc(100vh - 82px);
@@ -47,6 +51,7 @@
 }
 
 .image-upload-control-container span {
+  display: block;
   text-transform: none;
 }
 
@@ -54,6 +59,7 @@
   display: block;
   width: 96px;
   height: 96px;
+  margin-right: 20px;
 }
 
 .profile-banner-preview {
@@ -172,10 +178,6 @@
   .image-upload-control-container {
     display: block;
     height: 96px;
-  }
-
-  .image-upload-control-container span {
-    text-transform: none;
   }
 
   .avatar-container {
