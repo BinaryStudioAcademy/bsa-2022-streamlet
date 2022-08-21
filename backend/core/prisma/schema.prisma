@@ -64,24 +64,28 @@ enum StreamingStatus {
 }
 
 model Video {
-  id             String          @id @default(uuid())
-  name           String
-  description    String          @default("")
-  status         StreamingStatus @default(pending)
-  videoPath      String
-  liveViews      Int             @default(0)
-  videoViews     Int             @default(0)
-  tags           Tag[]
-  categories     Category[]
-  comments       VideoComment[]
-  channel        Channel         @relation(fields: [channelId], references: [id])
-  channelId      String
-  chatMessages   ChatMessage[]
-  notifications  Notification[]
-  historyRecords History[]
-  reactions      Reaction[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id                    String          @id @default(uuid())
+  name                  String
+  description           String          @default("")
+  status                StreamingStatus @default(pending)
+  publishedAt           DateTime
+  scheduledStreamDate   DateTime
+  poster                String
+  duration              Int
+  videoPath             String
+  liveViews             Int             @default(0)
+  videoViews            Int             @default(0)
+  tags                  Tag[]
+  categories            Category[]
+  comments              VideoComment[]
+  channel               Channel         @relation(fields: [channelId], references: [id])
+  channelId             String
+  chatMessages          ChatMessage[]
+  notifications         Notification[]
+  historyRecords        History[]
+  reactions             Reaction[]
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
 }
 
 model Tag {
@@ -114,6 +118,7 @@ model VideoComment {
 model Channel {
   id            String         @id @default(uuid())
   name          String
+  avatar        String
   description   String         @default("")
   videos        Video[]
   contactEmail  String         @default("")
