@@ -1,13 +1,12 @@
 import 'react-notifications-component/dist/scss/notification.scss';
-import { FC } from 'common/types/types';
+import { FC, NotificationParams } from 'common/types/types';
 import { IconColor } from 'common/enums/enums';
 import { Icon } from 'components/common/icon';
 import cn from 'clsx';
-import { INotificationParams } from './config';
 
 import styles from './styles.module.scss';
 
-const Notification: FC<INotificationParams> = ({ type, iconName, title, message }) => {
+const Notification: FC<NotificationParams> = ({ type, iconName, title, message }) => {
   return (
     <div className={cn(styles.item, `rnc__notification-item--${type}`)}>
       <div className={cn(styles.icon)}>

@@ -1,4 +1,6 @@
 @mixin custom-scrollbar {
+  overflow-x: hidden;
+
   @media screen and (min-width: 425px) {
     scrollbar-color: var(--white-text-color), var(--brand-green-color);
 

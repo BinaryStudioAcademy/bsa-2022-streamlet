@@ -1,10 +1,11 @@
 import { NOTIFICATION_TYPE } from 'react-notifications-component';
 
-interface INotificationParams {
+type NotificationParams = {
   type: NOTIFICATION_TYPE;
   iconName: string;
   title: string;
   message: string;
-}
+  durationMs?: number;
+};
 
-export { INotificationParams };
+export { type NotificationParams };

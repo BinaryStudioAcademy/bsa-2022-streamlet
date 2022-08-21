@@ -18,9 +18,10 @@ export interface SignInFormValues {
 }
 
 const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
-  const { control, errors, handleSubmit } = useAppForm<SignInFormValues>({
+  const { control, errors, handleSubmit, isValid } = useAppForm<SignInFormValues>({
     defaultValues: { email: '', password: '' },
     validationSchema: userSignIn,
+    mode: 'onChange',
   });
 
   return (
@@ -32,11 +33,13 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
           name="email"
           label="Email"
           type="email"
+          inputErrorClassName={formStyles['input-error']}
           wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
         <PasswordInput
           wrapperClassName={formStyles['form-input']}
+          inputWrapperErrorClassName={formStyles['input-error']}
           placeholder="Password"
           control={control}
           name="password"
@@ -46,7 +49,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
         <Link to={AppRoutes.RESTORE_PASSWORD_INIT} className={styles['forgot-password']}>
           Forgot Password?
         </Link>
-        <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign in" />
+        <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Sign in" />
       </form>
       <p>or continue with</p>
       <GoogleButton disabled={isLoading} />

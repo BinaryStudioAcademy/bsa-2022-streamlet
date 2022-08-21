@@ -1,5 +1,5 @@
 import { inject } from 'inversify';
-import { BaseHttpController, controller, httpPost, request, requestBody } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, httpPost, request, requestBody } from 'inversify-express-utils';
 import { ApiPath, AuthApiPath } from '~/shared/enums/api/api';
 import {
   CONTAINER_TYPES,
@@ -37,6 +37,7 @@ import { NotFound } from '~/shared/exceptions/not-found';
 import { ResetPasswordService } from '~/core/reset-password/application/reset-password-service';
 import { AccountVerificationService } from '~/core/account-verification/application/account-verification-service';
 import { CONFIG } from '~/configuration/config';
+import { GetCurrentUserResponseDto } from 'shared/build/common/types/auth/get-current-user-response-dto';
 
 /**
  * @swagger
@@ -122,6 +123,8 @@ export class AuthController extends BaseHttpController {
    *                  type: string
    *                password:
    *                  type: string
+   *                passwordConfirm:
+   *                  type: string
    *      responses:
    *        200:
    *          description: Successful operation
@@ -156,6 +159,7 @@ export class AuthController extends BaseHttpController {
         throw new DuplicationError(exceptionMessages.auth.USER_EMAIL_ALREADY_EXISTS);
       }
     }
+    delete userRequestDto.passwordConfirm;
     const user = await this.userService.createUser(userRequestDto);
     await this.accountVerificationService.sendVerificationEmail(user);
     return {
@@ -493,6 +497,56 @@ export class AuthController extends BaseHttpController {
     await this.userService.setIsActivated(true, tokenUser.id);
     return {
       message: successMessages.auth.SUCCESS_ACCOUNT_VERIFICATION,
+    };
+  }
+
+  /**
+   * @swagger
+   * /auth/user:
+   *    get:
+   *      tags:
+   *      - auth
+   *      security:
+   *      - bearerAuth: []
+   *      operationId: getCurrentUser
+   *      description: Get current user info
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  user:
+   *                    $ref: '#/components/schemas/UserBaseResponse'
+   *                  tokens:
+   *                    $ref: '#/components/schemas/TokenPair'
+   *        400:
+   *          description: Invalid request format.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   *        404:
+   *          description: Your user account was not found.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   */
+  @httpGet(AuthApiPath.USER, authenticationMiddleware)
+  public async getCurrentUser(@request() req: ExtendedAuthenticatedRequest): Promise<GetCurrentUserResponseDto> {
+    const user = await this.userService.getUserByEmail(req.user.email);
+    if (!user) {
+      throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
+    }
+    return {
+      user: trimUser(user),
     };
   }
 

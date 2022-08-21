@@ -7,6 +7,7 @@ enum AuthApiPath {
   RESTORE_PASSWORD_INIT = '/restore-password-init',
   RESTORE_PASSWORD_CONFIRM = '/restore-password-confirm',
   ACCOUNT_VERIFICATION_CONFIRM = '/account-verification-confirm',
+  USER = '/user',
 }
 
 export { AuthApiPath };

@@ -1,3 +1,5 @@
-export const errorMessages = {
-  DEFAULT: 'Oops! An unknown error ocurred. Try again',
-};
+enum ErrorMessages {
+  DEFAULT = 'Oops! An unknown error ocurred. Try again',
+}
+
+export { ErrorMessages };

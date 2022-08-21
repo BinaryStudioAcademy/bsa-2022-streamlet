@@ -10,5 +10,6 @@ export { Modal } from './modal/modal';
 export { setNotification } from './notifications';
 
 export { HeaderContainer } from './header/header-container';
+export { SidebarContainer } from './sidebar/sidebar-container';
 
 export { Loader } from './loader/loader';

@@ -20,9 +20,9 @@ interface HeaderProps {
   isLogged: boolean;
   isMenuOpen: boolean;
   searchValue: string;
-  searchInputId: string;
+  searchInputEl: RefObject<HTMLInputElement>;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
-  handleClickLogin(e: MouseEvent<HTMLElement>): void;
+  handleClickLogin(): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
@@ -35,7 +35,7 @@ const Header: FC<HeaderProps> = ({
   isLogged,
   isMenuOpen,
   searchValue,
-  searchInputId,
+  searchInputEl,
   handleClickLogin,
   handleClickUserMenu,
   handleChangeInputSearch,
@@ -72,7 +72,7 @@ const Header: FC<HeaderProps> = ({
           <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
           <input
             className={styles['search-input']}
-            id={searchInputId}
+            ref={searchInputEl}
             type="text"
             value={searchValue}
             onChange={handleChangeInputSearch}
