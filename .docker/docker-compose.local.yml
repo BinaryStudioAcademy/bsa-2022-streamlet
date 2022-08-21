@@ -77,7 +77,7 @@ services:
     image: video-transcoding-server
     container_name: video-transcoding-server
     volumes:
-      - segments:/app/backend/video-transcoding-server/playback
+      - segments:../backend/video-transoding-server/playback
     depends_on:
       - rabbitmq
     env_file:

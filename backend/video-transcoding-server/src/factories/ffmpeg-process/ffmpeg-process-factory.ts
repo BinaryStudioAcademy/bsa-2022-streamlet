@@ -1,10 +1,11 @@
 import { FffmpegProcessCreatorDto } from '~/shared';
 import Ffmpeg from 'fluent-ffmpeg';
 import { logger } from '~/config/logger';
+import { CONFIG } from '~/config/config';
 
 export class FfmpegFactory {
   public static create({ videoId, input, width, height, fps }: FffmpegProcessCreatorDto): Ffmpeg.FfmpegCommand {
-    Ffmpeg.setFfmpegPath('/usr/bin/ffmpeg');
+    Ffmpeg.setFfmpegPath(CONFIG.ffmpegPath);
     return Ffmpeg(input)
       .addOption('-hide_banner')
       .addOption('-c:v', 'libx264')

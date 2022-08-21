@@ -42,8 +42,6 @@ services:
   backend:
     image: ghcr.io/binarystudioacademy/streamlet-backend-dev:latest
     container_name: backend
-    volumes:
-      - playback:/app/playback
     depends_on:
       - api-db
       - rabbitmq
@@ -119,8 +117,6 @@ services:
       - frontend_network
 
 volumes:
-  segments:
-    driver: local
   pgdata_api:
     driver: local
   pgconf_api:

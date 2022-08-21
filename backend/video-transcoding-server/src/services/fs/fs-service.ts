@@ -1,14 +1,18 @@
-import fs from 'fs';
+import { mkdir } from 'node:fs/promises';
+import { createWriteStream } from 'node:fs';
+import { logger } from '~/config/logger';
 
 export class FsService {
-  public static createFolder({ path }: { path: string }): void {
-    if (!fs.existsSync(path)) {
-      fs.mkdirSync(path, { recursive: true });
+  public static async createFolder({ path }: { path: string }): Promise<void> {
+    try {
+      mkdir(path, { recursive: true });
+    } catch (err) {
+      logger.error(err);
     }
   }
 
   public static createFile({ path, filename, content }: { path: string; filename: string; content: string[] }): void {
-    const writeStream = fs.createWriteStream(`${path}/${filename}`);
+    const writeStream = createWriteStream(`${path}/${filename}`);
     writeStream.write(content.join('\r\n'));
 
     writeStream.end();
