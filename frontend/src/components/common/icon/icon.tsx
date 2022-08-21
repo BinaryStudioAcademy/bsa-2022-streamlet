@@ -30,6 +30,7 @@ import { ReactComponent as Warning } from '../../../assets/img/warning.svg';
 import { ReactComponent as Success } from '../../../assets/img/success.svg';
 import { ReactComponent as SendMessage } from '../../../assets/img/send-message.svg';
 import { ReactComponent as Emoji } from '../../../assets/img/emoji.svg';
+import { ReactComponent as Sun } from '../../../assets/img/sun-solid.svg';
 
 import clsx from 'clsx';
 
@@ -173,8 +174,13 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
       return <Emoji {...commonProps} />;
     }
 
-    case IconName.ANALYTICS:
+    case IconName.ANALYTICS: {
       return <Analystic {...commonProps} />;
+    }
+
+    case IconName.SUN: {
+      return <Sun {...commonProps} />;
+    }
 
     default: {
       return <Timeago {...commonProps} />;

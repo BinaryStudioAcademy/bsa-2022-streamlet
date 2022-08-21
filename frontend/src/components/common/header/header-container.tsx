@@ -12,7 +12,8 @@ import { useState, MouseEvent, FormEvent } from 'react';
 import { Header } from './header';
 import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
 import { searchActions } from 'store/actions';
-import { switchTheme } from 'store/theme-switch/actions';
+import { ThemeMenuOptions } from 'common/enums/components/user-menu-options';
+import { switchDark, switchLight } from 'store/theme-switch/actions';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
 
@@ -26,6 +27,14 @@ const HeaderContainer: FC = () => {
 
   const [isLogged, setIsLogged] = useState(false);
   const { isOpened: isMenuOpen, close, open, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+  const {
+    isOpened: isTHemeMenuOpen,
+    close: themeMenuClose,
+    open: themeMenuOpen,
+    ref: themeMenuRef,
+  } = useOutsideClick<HTMLDivElement>();
+
+  const isLightTheme = useAppSelector((store) => store.theme.isLightTheme);
 
   const options = [
     {
@@ -39,7 +48,7 @@ const HeaderContainer: FC = () => {
     {
       type: MenuOptions.Theme,
       text: 'Theme',
-      icon: IconName.MOON,
+      icon: isLightTheme ? IconName.SUN : IconName.MOON,
       onClick: (e: MouseEvent): void => {
         handleClickTheme(e);
       },
@@ -54,6 +63,33 @@ const HeaderContainer: FC = () => {
     },
   ];
 
+  const themeOptions = [
+    {
+      type: ThemeMenuOptions.BACK,
+      text: '',
+      icon: IconName.ARROW_UP,
+      onClick: (e: MouseEvent): void => {
+        handleCLickBack(e);
+      },
+    },
+    {
+      type: ThemeMenuOptions.LIGHT_THEME,
+      text: 'Light theme',
+      icon: IconName.SUN,
+      onClick: (e: MouseEvent): void => {
+        handleClickLightTheme(e);
+      },
+    },
+    {
+      type: ThemeMenuOptions.DARK_THEME,
+      text: 'Dark theme',
+      icon: IconName.MOON,
+      onClick: (e: MouseEvent): void => {
+        handleClickDarkTheme(e);
+      },
+    },
+  ];
+
   function handleClickLogin(e: MouseEvent): void {
     e.preventDefault();
 
@@ -62,9 +98,31 @@ const HeaderContainer: FC = () => {
   }
 
   function handleClickTheme(e: MouseEvent): void {
-    e.preventDefault();
+    if (!isTHemeMenuOpen) {
+      e.preventDefault();
+      themeMenuOpen();
+      close();
+    }
+  }
 
-    dispatch(switchTheme());
+  function handleCLickBack(e: MouseEvent): void {
+    e.preventDefault();
+    themeMenuClose();
+    open();
+  }
+
+  function handleClickDarkTheme(e: MouseEvent): void {
+    e.preventDefault();
+    dispatch(switchDark());
+    themeMenuClose();
+    open();
+  }
+
+  function handleClickLightTheme(e: MouseEvent): void {
+    e.preventDefault();
+    dispatch(switchLight());
+    themeMenuClose();
+    open();
   }
 
   function handleClickUserMenu(e: MouseEvent): void {
@@ -105,8 +163,10 @@ const HeaderContainer: FC = () => {
   return (
     <Header
       menuRef={menuRef}
+      themeMenuRef={themeMenuRef}
       isLogged={isLogged}
       isMenuOpen={isMenuOpen}
+      isThemeMenuOpen={isTHemeMenuOpen}
       searchValue={searchText}
       searchInputId={searchInputId}
       handleClickUserMenu={handleClickUserMenu}
@@ -116,6 +176,7 @@ const HeaderContainer: FC = () => {
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={FAKE_USER_AVATAR}
       options={options}
+      themeOptions={themeOptions}
     />
   );
 };

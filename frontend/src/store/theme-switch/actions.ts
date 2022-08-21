@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { ActionsType } from './common';
 
-const switchTheme = createAction(ActionsType.SWITCH_THEME);
+const switchDark = createAction(ActionsType.SWITCH_DARK);
+const switchLight = createAction(ActionsType.SWITCH_LIGHT);
 
-export { switchTheme };
+export { switchDark, switchLight };

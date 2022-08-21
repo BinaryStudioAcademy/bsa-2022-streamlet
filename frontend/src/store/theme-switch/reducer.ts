@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { switchTheme } from './actions';
+import { switchDark, switchLight } from './actions';
 
 interface InitState {
   isLightTheme: boolean;
@@ -10,8 +10,12 @@ const initialState: InitState = {
 };
 
 const reducer = createReducer(initialState, (builder) => {
-  builder.addCase(switchTheme, (state) => {
-    state.isLightTheme = !state.isLightTheme;
+  builder.addCase(switchDark, (state) => {
+    state.isLightTheme = false;
+    localStorage.setItem('light-theme', state.isLightTheme.toString());
+  });
+  builder.addCase(switchLight, (state) => {
+    state.isLightTheme = true;
     localStorage.setItem('light-theme', state.isLightTheme.toString());
   });
 });

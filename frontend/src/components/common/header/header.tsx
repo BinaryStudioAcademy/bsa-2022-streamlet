@@ -8,9 +8,16 @@ import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 
 import styles from './header.module.scss';
 import { closeSidebar, openSidebar } from 'store/layout/actions';
+import { ThemeMenuOptions } from 'common/enums/components/user-menu-options';
 
 interface MenuOption {
   type: MenuOptions;
+  text: string;
+  icon: string;
+  onClick?: (e: MouseEvent) => void;
+}
+interface ThemeMenuOption {
+  type: ThemeMenuOptions;
   text: string;
   icon: string;
   onClick?: (e: MouseEvent) => void;
@@ -19,6 +26,7 @@ interface MenuOption {
 interface HeaderProps {
   isLogged: boolean;
   isMenuOpen: boolean;
+  isThemeMenuOpen: boolean;
   searchValue: string;
   searchInputId: string;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
@@ -27,13 +35,16 @@ interface HeaderProps {
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
   options: MenuOption[];
+  themeOptions: ThemeMenuOption[];
   userAvatar: string;
   menuRef: RefObject<HTMLDivElement>;
+  themeMenuRef: RefObject<HTMLDivElement>;
 }
 
 const Header: FC<HeaderProps> = ({
   isLogged,
   isMenuOpen,
+  isThemeMenuOpen,
   searchValue,
   searchInputId,
   handleClickLogin,
@@ -42,8 +53,10 @@ const Header: FC<HeaderProps> = ({
   handleClearInputSearch,
   handleSubmitSearch,
   options,
+  themeOptions,
   userAvatar,
   menuRef,
+  themeMenuRef,
 }) => {
   const isSidebarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
   const dispatch = useAppDispatch();
@@ -114,6 +127,18 @@ const Header: FC<HeaderProps> = ({
               <div ref={menuRef} className={styles['user-menu']}>
                 <ul className={styles['option-list']}>
                   {options.map((option) => (
+                    <li key={option.type} className={styles['option']} onClick={option.onClick}>
+                      <Icon name={option.icon} />
+                      <span>{option.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {isThemeMenuOpen && (
+              <div ref={themeMenuRef} className={styles['user-menu']}>
+                <ul className={styles['option-list']}>
+                  {themeOptions.map((option) => (
                     <li key={option.type} className={styles['option']} onClick={option.onClick}>
                       <Icon name={option.icon} />
                       <span>{option.text}</span>

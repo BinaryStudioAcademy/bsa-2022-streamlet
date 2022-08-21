@@ -1,3 +1,4 @@
 export enum ActionsType {
-  SWITCH_THEME = 'theme/switch',
+  SWITCH_DARK = 'theme/switch-dark',
+  SWITCH_LIGHT = 'theme/switch-light',
 }
