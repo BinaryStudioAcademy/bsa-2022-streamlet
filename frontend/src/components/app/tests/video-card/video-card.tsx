@@ -90,7 +90,7 @@ const VideoCardTest = (): ReactElement => {
       <div style={{ margin: '100px' }}>
         <VideoCard
           id={'test'}
-          chanelId={'test'}
+          channelId={'test'}
           poster={posterImage}
           author={author}
           creationDate={creationData}
