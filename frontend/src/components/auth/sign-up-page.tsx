@@ -1,9 +1,9 @@
-import { AppRoute, ErrorMessages } from 'common/enums/enums';
+import { AppRoute, ErrorMessage } from 'common/enums/enums';
 import { FC, UserSignUpRequestDto } from 'common/types/types';
 import { useAppDispatch, useState, useNavigate, useAppSelector, useEffect } from 'hooks/hooks';
 import { store } from 'store/store';
 import { signUp } from 'store/auth/actions';
-import { setNotification } from 'components/common/common';
+import { createToastNotification } from 'components/common/common';
 import { AuthContainer, SignUpForm } from './components/components';
 import { allAuthNotifications, AuthNotification } from './config/config';
 
@@ -27,9 +27,9 @@ const SignUpPage: FC = () => {
       await dispatch(signUp(formValues))
         .unwrap()
         .then(() => navigate(AppRoute.SIGN_IN, { replace: true }));
-      setNotification(allAuthNotifications[AuthNotification.SIGN_UP_SUCCESS]);
+      createToastNotification(allAuthNotifications[AuthNotification.SIGN_UP_SUCCESS]);
     } catch {
-      setError(store.getState().auth.error || ErrorMessages.DEFAULT);
+      setError(store.getState().auth.error || ErrorMessage.DEFAULT);
     } finally {
       setIsLoading(false);
     }

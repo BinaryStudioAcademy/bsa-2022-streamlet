@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import * as dayjsDuration from 'dayjs/plugin/duration';
 import { FC, VideoCard as VideoCardType } from 'common/types/types';
-import { IconName } from 'common/enums/components';
+import { IconName } from 'common/enums/enums';
 import { Icon } from 'components/common/common';
 import { useNavigate } from 'hooks/hooks';
 import { getHowLongAgoString } from 'helpers/helpers';
@@ -66,7 +66,7 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
               {getDividedViewString(videoViews)}
             </div>
             <div className={styles['video-card-meta-data']}>
-              <Icon name={IconName.TIMEAGO} />
+              <Icon name={IconName.TIME_AGO} />
               {getHowLongAgoString(new Date(createdAt))}
             </div>
           </div>
@@ -86,7 +86,7 @@ const VideoCard: FC<Props> = ({ video: { id, name, duration, videoViews, created
             {getDividedViewString(videoViews)}
           </div>
           <div className={styles['video-card-meta-data']}>
-            <Icon name={IconName.TIMEAGO} />
+            <Icon name={IconName.TIME_AGO} />
             {getHowLongAgoString(new Date(createdAt))}
           </div>
         </div>

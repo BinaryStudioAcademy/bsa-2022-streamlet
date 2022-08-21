@@ -1,35 +1,35 @@
 import styles from './styles.module.scss';
-import { IconName } from '../../../common/enums/enums';
-import { ReactComponent as Alarm } from '../../../assets/img/alarm.svg';
-import { ReactComponent as ArrowDown } from '../../../assets/img/arrow-down.svg';
-import { ReactComponent as ArrowUp } from '../../../assets/img/arrow-up.svg';
-import { ReactComponent as Camera } from '../../../assets/img/camera.svg';
-import { ReactComponent as Compas } from '../../../assets/img/compas.svg';
-import { ReactComponent as Filter } from '../../../assets/img/filter.svg';
-import { ReactComponent as Follow } from '../../../assets/img/follow.svg';
-import { ReactComponent as History } from '../../../assets/img/history.svg';
-import { ReactComponent as Home } from '../../../assets/img/home.svg';
-import { ReactComponent as Play } from '../../../assets/img/play.svg';
-import { ReactComponent as Search } from '../../../assets/img/search.svg';
-import { ReactComponent as Signout } from '../../../assets/img/signout.svg';
-import { ReactComponent as Smile } from '../../../assets/img/smile.svg';
-import { ReactComponent as Timeago } from '../../../assets/img/timeago.svg';
-import { ReactComponent as Watch } from '../../../assets/img/watch.svg';
-import { ReactComponent as Xmark } from '../../../assets/img/xmark.svg';
-import { ReactComponent as BurgerMenu } from '../../../assets/img/burger-menu.svg';
-import { ReactComponent as MainLogo } from '../../../assets/img/main-logo.svg';
-import { ReactComponent as Bell } from '../../../assets/img/bell.svg';
-import { ReactComponent as Settings } from '../../../assets/img/settings.svg';
-import { ReactComponent as Moon } from '../../../assets/img/moon.svg';
-import { ReactComponent as LogOut } from '../../../assets/img/logout.svg';
-import { ReactComponent as Analystic } from '../../../assets/img/analytics.svg';
-import { ReactComponent as Close } from '../../../assets/img/close.svg';
-import { ReactComponent as Exclamation } from '../../../assets/img/exclamation.svg';
-import { ReactComponent as Info } from '../../../assets/img/info.svg';
-import { ReactComponent as Warning } from '../../../assets/img/warning.svg';
-import { ReactComponent as Success } from '../../../assets/img/success.svg';
-import { ReactComponent as SendMessage } from '../../../assets/img/send-message.svg';
-import { ReactComponent as Emoji } from '../../../assets/img/emoji.svg';
+import { IconName } from 'common/enums/enums';
+import { ReactComponent as Alarm } from 'assets/img/alarm.svg';
+import { ReactComponent as ArrowDown } from 'assets/img/arrow-down.svg';
+import { ReactComponent as ArrowUp } from 'assets/img/arrow-up.svg';
+import { ReactComponent as Camera } from 'assets/img/camera.svg';
+import { ReactComponent as Compass } from 'assets/img/compass.svg';
+import { ReactComponent as Filter } from 'assets/img/filter.svg';
+import { ReactComponent as Follow } from 'assets/img/follow.svg';
+import { ReactComponent as History } from 'assets/img/history.svg';
+import { ReactComponent as Home } from 'assets/img/home.svg';
+import { ReactComponent as Play } from 'assets/img/play.svg';
+import { ReactComponent as Search } from 'assets/img/search.svg';
+import { ReactComponent as Smile } from 'assets/img/smile.svg';
+import { ReactComponent as TimeAgo } from 'assets/img/time-ago.svg';
+import { ReactComponent as Watch } from 'assets/img/watch.svg';
+import { ReactComponent as XMark } from 'assets/img/x-mark.svg';
+import { ReactComponent as MarkAsRead } from 'assets/img/mark-as-read.svg';
+import { ReactComponent as BurgerMenu } from 'assets/img/burger-menu.svg';
+import { ReactComponent as MainLogo } from 'assets/img/main-logo.svg';
+import { ReactComponent as Bell } from 'assets/img/bell.svg';
+import { ReactComponent as Settings } from 'assets/img/settings.svg';
+import { ReactComponent as Moon } from 'assets/img/moon.svg';
+import { ReactComponent as SignOut } from 'assets/img/sign-out.svg';
+import { ReactComponent as Analytics } from 'assets/img/analytics.svg';
+import { ReactComponent as Close } from 'assets/img/close.svg';
+import { ReactComponent as Exclamation } from 'assets/img/exclamation.svg';
+import { ReactComponent as Info } from 'assets/img/info.svg';
+import { ReactComponent as Warning } from 'assets/img/warning.svg';
+import { ReactComponent as Success } from 'assets/img/success.svg';
+import { ReactComponent as SendMessage } from 'assets/img/send-message.svg';
+import { ReactComponent as Emoji } from 'assets/img/emoji.svg';
 
 import clsx from 'clsx';
 
@@ -81,8 +81,8 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
       return <Camera {...commonProps} />;
     }
 
-    case IconName.COMPAS: {
-      return <Compas {...commonProps} />;
+    case IconName.COMPASS: {
+      return <Compass {...commonProps} />;
     }
 
     case IconName.FILTER: {
@@ -109,8 +109,8 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
       return <Search {...commonProps} />;
     }
 
-    case IconName.SIGNOUT: {
-      return <Signout {...commonProps} />;
+    case IconName.SIGN_OUT: {
+      return <SignOut {...commonProps} />;
     }
 
     case IconName.SMILE: {
@@ -121,11 +121,11 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
       return <Watch {...commonProps} />;
     }
 
-    case IconName.BURGERMENU: {
+    case IconName.BURGER_MENU: {
       return <BurgerMenu {...commonProps} />;
     }
 
-    case IconName.LOGOTIP: {
+    case IconName.MAIN_LOGO: {
       return <MainLogo {...commonProps} />;
     }
 
@@ -141,12 +141,8 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
       return <Moon {...commonProps} />;
     }
 
-    case IconName.LOGOUT: {
-      return <LogOut {...commonProps} />;
-    }
-
-    case IconName.XMARK: {
-      return <Xmark {...commonProps} />;
+    case IconName.X_MARK: {
+      return <XMark {...commonProps} />;
     }
 
     case IconName.CLOSE: {
@@ -165,7 +161,7 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
     case IconName.SUCCESS:
       return <Success {...commonProps} />;
 
-    case IconName.SENDMESSAGE: {
+    case IconName.SEND_MESSAGE: {
       return <SendMessage {...commonProps} />;
     }
 
@@ -174,10 +170,13 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
     }
 
     case IconName.ANALYTICS:
-      return <Analystic {...commonProps} />;
+      return <Analytics {...commonProps} />;
+
+    case IconName.MARK_AS_READ:
+      return <MarkAsRead {...commonProps} />;
 
     default: {
-      return <Timeago {...commonProps} />;
+      return <TimeAgo {...commonProps} />;
     }
   }
 };

@@ -292,14 +292,14 @@ export class AuthController extends BaseHttpController {
 
   /**
    * @swagger
-   * /auth/log-out:
+   * /auth/sign-out:
    *    post:
    *      tags:
    *      - auth
    *      security:
    *      - bearerAuth: []
-   *      operationId: logOut
-   *      description: Logout the user (will delete all refresh tokens)
+   *      operationId: signOut
+   *      description: SignOut the user (will delete all refresh tokens)
    *      responses:
    *        204:
    *          description: Successful operation
@@ -312,8 +312,8 @@ export class AuthController extends BaseHttpController {
    *                items:
    *                  $ref: '#/components/schemas/Error'
    */
-  @httpPost(AuthApiPath.LOG_OUT, authenticationMiddleware)
-  public async logout(@request() req: ExtendedAuthenticatedRequest): Promise<void> {
+  @httpPost(AuthApiPath.SIGN_OUT, authenticationMiddleware)
+  public async signOut(@request() req: ExtendedAuthenticatedRequest): Promise<void> {
     const user = req.user;
     return this.refreshTokenService.removeForUser(user.id);
   }

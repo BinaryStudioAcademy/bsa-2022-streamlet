@@ -3,7 +3,7 @@ enum AuthApiPath {
   SIGN_UP = '/sign-up',
   SIGN_IN = '/sign-in',
   REFRESH_TOKENS = '/refresh-tokens',
-  LOG_OUT = '/log-out',
+  SIGN_OUT = '/sign-out',
   USER = '/user',
 }
 

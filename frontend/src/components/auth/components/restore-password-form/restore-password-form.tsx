@@ -3,7 +3,7 @@ import { FC } from 'common/types/types';
 import { Input } from 'components/common/common';
 import { useAppForm } from 'hooks/hooks';
 import { refreshPassword } from 'validation-schemas/validation-schemas';
-import { AuthSubmitButton, ContonueWithParagraph } from '../common/common';
+import { AuthSubmitButton, ContinueWithParagraph } from '../common/common';
 import formStyles from '../form-controls.module.scss';
 
 type Props = {
@@ -36,7 +36,7 @@ const RestorePasswordForm: FC<Props> = ({ onSubmit }) => {
         />
         <AuthSubmitButton isLoading={false} disabled={true || !isValid} name="Send" />
       </form>
-      <ContonueWithParagraph linkTitle="Back to login" prompt="Changed your mind?" route={AppRoute.SIGN_IN} />
+      <ContinueWithParagraph linkTitle="Back to login" prompt="Changed your mind?" route={AppRoute.SIGN_IN} />
     </>
   );
 };

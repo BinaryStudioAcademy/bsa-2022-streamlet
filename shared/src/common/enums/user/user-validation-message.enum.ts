@@ -5,8 +5,10 @@ const UserValidationMessage = {
   PASSWORD_REQUIRE: 'Password should have 8-16 characters',
   PASSWORD_WRONG: 'Password should have 8-16 characters',
   PASSWORD_WRONG_LENGTH: 'Password should have 8-16 characters',
+  PASSWORD_CONFIRM_REQUIRE: 'That is not the same password as the first one',
   PASSWORDS_NOT_MATCH: 'That is not the same password as the first one',
   USERNAME_REQUIRE: 'Username should have 3-25 characters',
+  USERNAME_WRONG: 'Username should have 3-25 characters',
   USERNAME_WRONG_LENGTH: 'Username should have 3-25 characters',
 } as const;
 

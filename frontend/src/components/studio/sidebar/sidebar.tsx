@@ -13,7 +13,7 @@ const StudioSidebar: FC = () => {
     <aside className={styles.sidebar}>
       <NavLink to={AppRoute.ROOT}>
         <div className={styles.button}>
-          <Icon name={IconName.LOGOTIP} />
+          <Icon name={IconName.MAIN_LOGO} />
         </div>
       </NavLink>
 
