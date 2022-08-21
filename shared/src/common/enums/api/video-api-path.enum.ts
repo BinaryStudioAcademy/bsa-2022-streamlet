@@ -1,5 +1,6 @@
 enum VideoApiPath {
-  ROOT = '/videos',
+  ROOT = '/',
+  $ID = '/:id',
 }
 
 export { VideoApiPath };
