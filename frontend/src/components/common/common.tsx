@@ -14,3 +14,4 @@ export { HeaderContainer } from './header/header-container';
 export { Loader } from './loader/loader';
 
 export { VideoTag } from './video-tag/video-tag';
+export { VideoCardMain } from './video-card-main/video-card-main';

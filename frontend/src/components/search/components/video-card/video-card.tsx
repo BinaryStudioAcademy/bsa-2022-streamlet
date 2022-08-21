@@ -13,6 +13,8 @@ import styles from './styles.module.scss';
 dayjs.extend(dayjsDuration.default);
 dayjs.extend(dayjsRelativeTime.default);
 
+const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
+
 type Props = {
   video: VideoCardType;
 };
@@ -22,6 +24,8 @@ const VideoCard: FC<Props> = ({
 }) => {
   const linkToVideoPage = `${AppRoute.VIDEO}/${id}`;
   const linkToChannelPage = `${AppRoute.CHANNEL}/${id}`;
+
+  const channelAvatar = channel.avatar ? channel.avatar : FAKE_USER_AVATAR;
 
   const isNew = (): boolean => {
     const maxTimeFromNowIsNew = 4 * 60 * 60 * 1000; // 4 hours
@@ -114,7 +118,7 @@ const VideoCard: FC<Props> = ({
       </div>
       <div className={styles['video-card-info']}>
         <Link to={linkToChannelPage} className={styles['video-card-channel']}>
-          <img className={styles['avatar']} src={channel.avatar} alt="Channels avatar" />
+          <img className={styles['avatar']} src={channelAvatar} alt="Channels avatar" />
         </Link>
         <div className={styles['video-card-desc']}>
           <Link to={linkToVideoPage} className={styles['video-card-title']}>
@@ -123,7 +127,7 @@ const VideoCard: FC<Props> = ({
           <MetaData />
           <div className={styles['video-card-author']}>
             <Link to={linkToChannelPage} className={styles['video-card-author-avatar']}>
-              <img className={styles['avatar']} src={channel.avatar} alt="Channels avatar" />
+              <img className={styles['avatar']} src={channelAvatar} alt="Channels avatar" />
             </Link>
             <Link to={linkToChannelPage} className={styles['video-card-author-name']}>
               <span>{channel.name}</span>
