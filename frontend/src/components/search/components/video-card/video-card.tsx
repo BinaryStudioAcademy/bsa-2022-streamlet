@@ -6,7 +6,8 @@ import * as dayjsRelativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
 import { FC, VideoCard as VideoCardType } from 'common/types/types';
 import { AppRoute, IconName, StreamingStatus, VideoTagName } from 'common/enums/enums';
-import { Icon, VideoTag } from 'components/common/common';
+import { Icon } from 'components/common/common';
+import { VideoTag } from '../common/common';
 import { getHowLongAgoString } from 'helpers/helpers';
 import styles from './styles.module.scss';
 
