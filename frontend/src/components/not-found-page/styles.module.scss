@@ -12,6 +12,11 @@
   background-color: var(--gray-400-primary-background);
 }
 
+.error-page-description-container span {
+  display: block;
+  text-transform: uppercase;
+}
+
 .go-home-button {
   height: 50px;
   padding: 0 10px;
@@ -45,11 +50,6 @@
 
 .message-container {
   height: fit-content;
-}
-
-span {
-  display: block;
-  text-transform: uppercase;
 }
 
 .button-container {
