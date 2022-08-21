@@ -7,3 +7,4 @@ export { SearchQueryParam } from './search/search';
 export { StorageKeys } from './storage/storage';
 export * from './messages';
 export { NotificationType } from './notifications';
+export { StreamingStatus } from './stream/stream';
