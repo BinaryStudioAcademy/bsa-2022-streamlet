@@ -15,7 +15,7 @@ import { profileActions } from 'store/actions';
 import { ImageListType } from 'react-images-uploading';
 import { useAppDispatch, useAppSelector, useEffect, useNavigate } from 'hooks/hooks';
 import { AppRoute } from '../../common/enums/app/app-route.enum';
-import { errorMessages } from '../../common/enums/enums';
+import { ErrorMessage } from '../../common/enums/enums';
 import { store } from '../../store/store';
 import { ProfilePreferencesPageForm } from './common/profile-preferences-page-form';
 
@@ -78,7 +78,7 @@ const ProfilePreferencesPage: FC = () => {
         setIsLoading(true);
         await dispatch(profileActions.uploadAvatar(payload)).unwrap();
       } catch {
-        setError(store.getState().auth.error || errorMessages.DEFAULT);
+        setError(store.getState().auth.error || ErrorMessage.DEFAULT);
       } finally {
         setIsLoading(false);
       }
@@ -98,7 +98,7 @@ const ProfilePreferencesPage: FC = () => {
         setFormLoading(true);
         await dispatch(profileActions.updateProfile(payload)).unwrap();
       } catch {
-        setFormError(store.getState().auth.error || errorMessages.DEFAULT);
+        setFormError(store.getState().auth.error || ErrorMessage.DEFAULT);
       } finally {
         setFormLoading(false);
       }
