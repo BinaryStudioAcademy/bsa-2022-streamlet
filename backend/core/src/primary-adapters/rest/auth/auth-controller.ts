@@ -22,6 +22,7 @@ import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
 import { exceptionMessages } from '~/shared/enums/exceptions';
 import { DuplicationError } from '~/shared/exceptions/duplication-error';
+import { NotFound } from '~/shared/exceptions/not-found';
 
 /**
  * @swagger
@@ -355,12 +356,20 @@ export class AuthController extends BaseHttpController {
    *                type: array
    *                items:
    *                  $ref: '#/components/schemas/Error'
+   *        404:
+   *          description: User not found.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
    */
   @httpGet(AuthApiPath.USER, authenticationMiddleware)
   public async getCurrentUser(@request() req: ExtendedAuthenticatedRequest): Promise<UserSignInResponseDto> {
     const user = await this.userService.getUserByEmail(req.user.email);
     if (!user) {
-      throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS);
+      throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
     }
     const accessToken = await generateJwt({ payload: trimUser(user) });
     return {
