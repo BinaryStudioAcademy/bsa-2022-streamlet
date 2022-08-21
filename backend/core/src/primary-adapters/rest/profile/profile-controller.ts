@@ -6,10 +6,12 @@ import {
   requestBody,
   httpGet,
   requestParam,
+  request,
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import {
   CONTAINER_TYPES,
+  ExtendedAuthenticatedRequest,
   ProfileUpdateRequestDto,
   ProfileUpdateResponseDto,
   UserUploadRequestDto,
@@ -19,6 +21,7 @@ import { ProfileService } from '~/core/profile/aplication/profile-service';
 import { NotFound } from '~/shared/exceptions/not-found';
 import { exceptionMessages } from '~/shared/enums/exceptions';
 import { authenticationMiddleware } from '../middleware/authentication-middleware';
+import { Forbidden } from '~/shared/exceptions/forbidden';
 
 /* @swagger
  * tags:
@@ -100,8 +103,17 @@ export class ProfileController extends BaseHttpController {
    *          $ref: '#/components/responses/NotFound'
    */
   @httpPut('/update', authenticationMiddleware)
-  public async update(@requestBody() body: ProfileUpdateRequestDto): Promise<ProfileUpdateResponseDto> {
+  public async update(
+    @requestBody() body: ProfileUpdateRequestDto,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<ProfileUpdateResponseDto> {
     const res = await this.profileService.update(body);
+
+    const { id: clientUserId } = req.user;
+
+    if (clientUserId !== body.userId) {
+      throw new Forbidden();
+    }
 
     if (!res) {
       throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);

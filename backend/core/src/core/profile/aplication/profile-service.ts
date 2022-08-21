@@ -22,14 +22,13 @@ export class ProfileService {
   }
 
   async update(updateCredentialRequestDto: ProfileUpdateRequestDto): Promise<ProfileUpdateResponseDto | null> {
-    const { userId } = updateCredentialRequestDto;
+    const { userId, username } = updateCredentialRequestDto;
     const isUserExist = await this.userRepository.getById(userId);
 
     if (!isUserExist) {
       return null;
     }
 
-    const { username } = isUserExist;
     const isProfileExist = await this.profileRepository.checkProfileExist(userId);
 
     if (!isProfileExist) {
