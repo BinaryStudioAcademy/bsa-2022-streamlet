@@ -8,6 +8,8 @@ export { Icon } from './icon';
 export { ConfirmationModal } from './confirmation-modal/confirmation-modal';
 export { Modal } from './modal/modal';
 export { setNotification } from './notifications';
+export { ImageEditor } from './image-editor/image-editor';
+export { UploadImage } from './upload-image/upload-image';
 
 export { HeaderContainer } from './header/header-container';
 

@@ -1,38 +1,33 @@
-import { FC, AvatarImgValue, UserUploadRequestDto, UserBaseResponseDto } from 'common/types/types';
+import {
+  FC,
+  AvatarImgValue,
+  UserUploadRequestDto,
+  UserBaseResponseDto,
+  UpdateProfileValue,
+  ProfileUpdateRequestDto,
+} from 'common/types/types';
 import style from './styles.module.scss';
 import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
 import defaultUserBanner from '../../assets/img/profile-baner-default.jpg';
-import { UploadImage } from '../common/upload-image/upload-image';
+import { UploadImage, ImageEditor, Loader } from '../../components/common/common';
 import React, { useCallback, useState } from 'react';
 import { profileActions } from 'store/actions';
 import { ImageListType } from 'react-images-uploading';
-import { ImageEditor } from '../common/image-editor/image-editor';
 import { useAppDispatch, useAppSelector, useEffect, useNavigate } from 'hooks/hooks';
 import { AppRoute } from '../../common/enums/app/app-route.enum';
 import { errorMessages } from '../../common/enums/enums';
-import { Loader } from '../common/common';
 import { store } from '../../store/store';
 import { ProfilePreferencesPageForm } from './common/profile-preferences-page-form';
 
 const ProfilePreferencesPage: FC = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [isNeedUpload, setIsNeedUpload] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
-  const dispatch = useAppDispatch();
-  const user: UserBaseResponseDto | null = useAppSelector((state) => {
-    return state.auth.user;
-  });
-  const profile = useAppSelector((state) => {
-    return state.profile.profileData;
-  });
-  useEffect(() => {
-    if (!user) {
-      navigate(`${AppRoute.SIGN_IN}`, { replace: true });
-    } else {
-      dispatch(profileActions.getProfileByUserId({ userId: user.id }));
-    }
-  }, [user, dispatch, navigate]);
+  const [formError, setFormError] = useState<string | undefined>();
+  const [formLoading, setFormLoading] = useState<boolean>(false);
   const [isNeedImageEditor, setIsNeedImageEditor] = useState(false);
   const [images, setImages] = useState([]);
   const [preparedAvatar, setPreparedAvatar] = useState<AvatarImgValue>({
@@ -42,6 +37,23 @@ const ProfilePreferencesPage: FC = () => {
     croppedImg: '',
     rotate: 0,
   });
+
+  const user: UserBaseResponseDto | null = useAppSelector((state) => {
+    return state.auth.user;
+  });
+
+  const profile = useAppSelector((state) => {
+    return state.profile.profileData;
+  });
+
+  useEffect(() => {
+    if (!user) {
+      navigate(`${AppRoute.SIGN_IN}`, { replace: true });
+      return;
+    }
+    dispatch(profileActions.getProfileByUserId({ userId: user.id }));
+  }, [user, dispatch, navigate]);
+
   const onChange = (imageList: ImageListType): void => {
     setImages(imageList as never[]);
     setPreparedAvatar({
@@ -80,25 +92,45 @@ const ProfilePreferencesPage: FC = () => {
     await handleImageSave({ base64Str, userId: user?.id as string });
   };
 
-  if (!user) {
-    navigate(`${AppRoute.SIGN_IN}`, { replace: true });
-    return null;
-  }
+  const handleUpdateProfileDataSubmit = useCallback(
+    async (payload: ProfileUpdateRequestDto) => {
+      try {
+        setFormLoading(true);
+        await dispatch(profileActions.updateProfile(payload)).unwrap();
+      } catch {
+        setFormError(store.getState().auth.error || errorMessages.DEFAULT);
+      } finally {
+        setFormLoading(false);
+      }
+    },
+    [dispatch],
+  );
+
+  const onFormSubmit = async (submitValue: UpdateProfileValue): Promise<void> => {
+    const request: ProfileUpdateRequestDto = {
+      ...submitValue,
+      userId: user?.id as string,
+    };
+    await handleUpdateProfileDataSubmit(request);
+  };
+
   if (!profile) {
     return <Loader spinnerSize={'lg'} vCentered={true} hCentered={true} />;
   }
 
+  const { firstName, lastName, username } = profile;
+
   return (
     <div className={style['preference-page-content-container']}>
-      {isNeedUpload ? <UploadImage images={images} onUpload={onChange} onClose={onUploadImageClose} /> : null}
-      {isNeedImageEditor ? (
+      {isNeedUpload ?? <UploadImage images={images} onUpload={onChange} onClose={onUploadImageClose} />}
+      {isNeedImageEditor && (
         <ImageEditor
           avatar={preparedAvatar}
           setAvatar={setPreparedAvatar}
           onClose={(): void => setIsNeedImageEditor(false)}
           handleSave={onImageSave}
         />
-      ) : null}
+      )}
       <div className={style['profile-preferences-container']}>
         <div className={style['profile-preferences-main-content-container']}>
           <div className={style['image-setting-container']}>
@@ -158,7 +190,12 @@ const ProfilePreferencesPage: FC = () => {
           </div>
           <h2 className={style['profile-settings-header']}>Profile settings</h2>
           <h3 className={style['profile-settings-sub-header']}>Change identifying details for your account</h3>
-          <ProfilePreferencesPageForm profile={profile} user={user} />
+          <ProfilePreferencesPageForm
+            onSubmit={onFormSubmit}
+            error={formError}
+            isLoading={formLoading}
+            defaultFormValue={{ firstName, lastName, username }}
+          />
         </div>
       </div>
     </div>

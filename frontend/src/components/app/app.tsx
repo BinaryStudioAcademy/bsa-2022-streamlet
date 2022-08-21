@@ -10,7 +10,7 @@ import { NotFound } from '../not-found-page/not-found';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
 import { Studio, StudioAnalytics } from '../studio';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
-import { ProfilePreferencesPage } from '../profile-preferences-page/profile-preferences-page';
+import { ProfilePreferencesPage } from '../../pages/profile-preferences-page/profile-preferences-page';
 import { VideoCardTest } from './tests/video-card/video-card';
 import { VideoPageContainer } from 'pages/video/video-page-container';
 

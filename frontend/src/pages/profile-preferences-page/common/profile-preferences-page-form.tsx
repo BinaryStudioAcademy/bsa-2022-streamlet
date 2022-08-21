@@ -1,58 +1,22 @@
-import {
-  FC,
-  ProfileUpdateRequestDto,
-  ProfileUpdateResponseDto,
-  UpdateProfileValue,
-  UserBaseResponseDto,
-} from 'common/types/types';
+import { FC, UpdateProfileValue } from 'common/types/types';
 import style from '../styles.module.scss';
-import React, { useCallback, useState } from 'react';
-import { profileActions } from 'store/actions';
-import { useAppDispatch, useAppForm } from 'hooks/hooks';
+import React from 'react';
+import { useAppForm } from 'hooks/hooks';
 import { profileUpdateValidationSchema } from '../../../validation-schemas/validation-schemas';
-import { Input } from '../../common/input/input';
-import { store } from '../../../store/store';
-import { errorMessages } from '../../../common/enums/messages';
-import { Loader } from '../../common/common';
+import { Input, Loader } from '../../../components/common/common';
 
 type Props = {
-  user: UserBaseResponseDto;
-  profile: ProfileUpdateResponseDto;
+  onSubmit: { (submitValue: UpdateProfileValue): Promise<void> };
+  isLoading: boolean;
+  defaultFormValue: { firstName: string; lastName: string; username: string };
+  error: string | undefined;
 };
 
-const ProfilePreferencesPageForm: FC<Props> = ({ user, profile }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
-  const { id: userId } = user;
-  const { firstName, lastName, username } = profile;
-  const [error, setError] = useState<string>();
-
+const ProfilePreferencesPageForm: FC<Props> = ({ onSubmit, defaultFormValue, error, isLoading }) => {
   const { control, errors, handleSubmit } = useAppForm<UpdateProfileValue>({
-    defaultValues: { firstName, lastName, username },
+    defaultValues: defaultFormValue,
     validationSchema: profileUpdateValidationSchema,
   });
-
-  const handleUpdateProfileDataSubmit = useCallback(
-    async (payload: ProfileUpdateRequestDto) => {
-      try {
-        setIsLoading(true);
-        await dispatch(profileActions.updateProfile(payload)).unwrap();
-      } catch {
-        setError(store.getState().auth.error || errorMessages.DEFAULT);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [dispatch],
-  );
-
-  const onSubmit = async (submitValue: UpdateProfileValue): Promise<void> => {
-    const request: ProfileUpdateRequestDto = {
-      ...submitValue,
-      userId,
-    };
-    await handleUpdateProfileDataSubmit(request);
-  };
 
   return (
     <form className={style['profile-settings-block']} onSubmit={handleSubmit(onSubmit)}>

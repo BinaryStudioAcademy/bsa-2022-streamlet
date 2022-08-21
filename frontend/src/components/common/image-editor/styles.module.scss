@@ -8,7 +8,7 @@
 
 .image-editor-control-container button {
   padding: 0 10px;
-  color: white;
+  color: var(--white-text-color);
   background-color: var(--brand-green-color);
   border: none;
   border-radius: 3px;
@@ -42,7 +42,7 @@
 }
 
 .example-track.example-track-0 {
-  background: #83a9ff;
+  background: var(--image-editor-zoom-slider-track-color);
 }
 
 .horizontal-slider .example-track {
