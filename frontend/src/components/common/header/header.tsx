@@ -25,6 +25,7 @@ interface HeaderProps {
   handleClickLogin(e: MouseEvent<HTMLElement>): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
+  handleClickSearchBtn(e: MouseEvent<HTMLElement>): void;
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
   options: MenuOption[];
   userAvatar: string;
@@ -40,6 +41,7 @@ const Header: FC<HeaderProps> = ({
   handleClickUserMenu,
   handleChangeInputSearch,
   handleClearInputSearch,
+  handleClickSearchBtn,
   handleSubmitSearch,
   options,
   userAvatar,
@@ -69,7 +71,9 @@ const Header: FC<HeaderProps> = ({
           </Link>
         </div>
         <form className={styles['block-search']} onSubmit={handleSubmitSearch}>
-          <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
+          <div onClick={handleClickSearchBtn}>
+            <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
+          </div>
           <input
             className={styles['search-input']}
             id={searchInputId}

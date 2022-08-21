@@ -82,13 +82,17 @@ const HeaderContainer: FC = () => {
     document.getElementById(searchInputId)?.focus();
   };
 
-  const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
+  const handleClickSearchBtn = (): void => {
     if (searchText) {
       handleClearActiveFilterIds();
       const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
       navigate(`/search?${searchUrlParams.toString()}`, { replace: true });
     }
+  };
+
+  const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    handleClickSearchBtn();
   };
 
   if (pathname === AppRoute.SIGN_IN || pathname === AppRoute.SIGN_UP || pathname === AppRoute.RESTORE_PASSWORD) {
@@ -106,6 +110,7 @@ const HeaderContainer: FC = () => {
       handleClickLogin={handleClickLogin}
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
+      handleClickSearchBtn={handleClickSearchBtn}
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={FAKE_USER_AVATAR}
       options={options}
