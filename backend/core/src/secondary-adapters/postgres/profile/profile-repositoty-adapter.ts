@@ -12,20 +12,11 @@ export class ProfileRepositoryAdapter implements ProfileRepository {
     this.prismaClient = prismaClient;
   }
 
-  async getByUserId(userId: string, username: string): Promise<ProfileUpdateResponseDto> {
-    const isProfileExist = await this.checkProfileExist(userId);
-    if (!isProfileExist) {
-      const defaultProfile = await this.createDefaultProfile(userId);
-      return createUpdateProfileResponse(userId, defaultProfile);
-    }
-    return createUpdateProfileResponse(username, isProfileExist);
+  async getByUserId(userId: string, username: string, userProfile: UserProfile): Promise<ProfileUpdateResponseDto> {
+    return createUpdateProfileResponse(username, userProfile);
   }
 
   async updateAvatar(url: string, userId: string): Promise<ProfileUpdateResponseDto> {
-    const isProfileExist = await this.checkProfileExist(userId);
-    if (!isProfileExist) {
-      await this.createDefaultProfile(userId);
-    }
     const updatedProfile = await this.prismaClient.userProfile.update({
       where: {
         userId,
@@ -34,28 +25,13 @@ export class ProfileRepositoryAdapter implements ProfileRepository {
         avatar: url,
       },
     });
+
     return createUpdateProfileResponse(userId, updatedProfile);
   }
 
   async update(updateData: ProfileUpdateRequestDto): Promise<ProfileUpdateResponseDto> {
     const { firstName, lastName, userId, username } = updateData;
-    await this.prismaClient.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        username,
-      },
-      select: {
-        profile: true,
-        id: true,
-        username: true,
-      },
-    });
-    const isProfileExist = await this.checkProfileExist(userId);
-    if (!isProfileExist) {
-      await this.createDefaultProfile(userId);
-    }
+
     const updatedProfile = await this.prismaClient.userProfile.update({
       where: {
         userId,
@@ -65,6 +41,7 @@ export class ProfileRepositoryAdapter implements ProfileRepository {
         lastName,
       },
     });
+
     return createUpdateProfileResponse(username, updatedProfile);
   }
 

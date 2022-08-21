@@ -20,6 +20,51 @@ import { NotFound } from '~/shared/exceptions/not-found';
 import { exceptionMessages } from '~/shared/enums/exceptions';
 import { authenticationMiddleware } from '../middleware/authentication-middleware';
 
+/* @swagger
+ * tags:
+ *   name: profile
+ *   description: Profile management
+ * components:
+ *    schemas:
+ *      ProfileUpdateResponseDto:
+ *        type: object
+ *        properties:
+ *          userId:
+ *            type: string
+ *            format: uuid
+ *          avatar:
+ *            type: string
+ *          profileId:
+ *            type: string
+ *            format: uuid
+ *          username:
+ *            type: string
+ *          firstName:
+ *            type: string
+ *          lastName:
+ *            type: string
+ *      ProfileUpdateRequestDto:
+ *        type: object
+ *        properties:
+ *          userId:
+ *            type: string
+ *            format: uuid
+ *          username:
+ *            type: string
+ *          firstName:
+ *            type: string
+ *          lastName:
+ *            type: string
+ *       UserUploadRequestDto:
+ *           type: object
+ *           properties:
+ *             userId:
+ *               type: string
+ *               format: uuid
+ *             base64Str:
+ *               type: string
+ */
+
 @controller('/profile')
 export class ProfileController extends BaseHttpController {
   private profileService: ProfileService;
@@ -32,28 +77,109 @@ export class ProfileController extends BaseHttpController {
     this.userService = userService;
     this.profileService = profileService;
   }
-
+  /**
+   * @swagger
+   * /profile:
+   *    post:
+   *      tags:
+   *      - profile
+   *      operationId: update user profile
+   *      description: update user profile
+   *      security:
+   *      - bearerAuth: []
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                items:
+   *                  $ref: '#/components/schemas/ProfileUpdateResponseDto'
+   *        404:
+   *          $ref: '#/components/responses/NotFound'
+   */
   @httpPut('/update', authenticationMiddleware)
   public async update(@requestBody() body: ProfileUpdateRequestDto): Promise<ProfileUpdateResponseDto> {
-    const { userId } = body;
-    const isUserExist = await this.userService.getUserById(userId);
-    if (!isUserExist) {
+    const res = await this.profileService.update(body);
+
+    if (!res) {
       throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
     }
-    return this.profileService.update(body);
-  }
 
-  @httpPost('/upload', authenticationMiddleware)
-  public upload(@requestBody() body: UserUploadRequestDto): Promise<ProfileUpdateResponseDto> {
-    return this.profileService.uploadAvatar(body);
+    return res;
   }
+  /**
+   * @swagger
+   * /upload:
+   *    post:
+   *      tags:
+   *      - profile
+   *      operationId: uploadAvatar
+   *      description: update user profile
+   *      security:
+   *      - bearerAuth: []
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                items:
+   *                  $ref: '#/components/schemas/ProfileUpdateResponseDto'
+   *        404:
+   *          description: user not found
+   */
+  @httpPost('/upload', authenticationMiddleware)
+  public async upload(@requestBody() body: UserUploadRequestDto): Promise<ProfileUpdateResponseDto> {
+    const res = await this.profileService.uploadAvatar(body);
+
+    if (!res) {
+      throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
+    }
+
+    return res;
+  }
+  /**
+   * @swagger
+   * /get/{id}:
+   *    get:
+   *      tags:
+   *        - profile
+   *      operationId: getProfileByUserId
+   *      security:
+   *      - bearerAuth: []
+   *      consumes:
+   *        - application/json
+   *      produces:
+   *        - application/json
+   *      description: get profile by user id
+   *      parameters:
+   *        - in: path
+   *          name: id
+   *          description: user id
+   *          required: true
+   *          schema:
+   *            type: string
+   *      responses:
+   *        '200':
+   *          description: successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                $ref: '#/components/schemas/ProfileUpdateResponseDto'
+   *        '404':
+   *          description: user not found
+   */
   @httpGet('/get/:id', authenticationMiddleware)
   public async get(@requestParam('id') id: string): Promise<ProfileUpdateResponseDto> {
-    const isUserExist = await this.userService.getUserById(id);
-    if (!isUserExist) {
+    const res = await this.profileService.getByUserId(id);
+
+    if (!res) {
       throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
     }
-    const { username } = isUserExist;
-    return this.profileService.getByUserId(id, username);
+
+    return res;
   }
 }
