@@ -1,4 +1,4 @@
-import { errorMessages } from 'common/enums/messages';
+import { ErrorMessage } from 'common/enums/enums';
 import { FC, UserSignUpRequestDto } from 'common/types/types';
 import { useAppDispatch, useState } from 'hooks/hooks';
 import { store } from 'store/store';
@@ -18,7 +18,7 @@ const SignUpPage: FC = () => {
       setIsLoading(true);
       await dispatch(signUp(formValues)).unwrap();
     } catch {
-      setError(store.getState().auth.error || errorMessages.DEFAULT);
+      setError(store.getState().auth.error || ErrorMessage.DEFAULT);
     } finally {
       setIsLoading(false);
     }

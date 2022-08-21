@@ -1,1 +1,1 @@
-export { type ValidationSchema } from 'shared/build/common/types/validation/validation';
+export { type ValidationSchema } from 'shared/build';
