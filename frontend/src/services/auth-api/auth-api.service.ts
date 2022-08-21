@@ -62,9 +62,9 @@ class AuthApi {
     });
   }
 
-  public logout(): Promise<void> {
+  public signOut(): Promise<void> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.LOG_OUT}`,
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.SIGN_OUT}`,
       options: {
         method: HttpMethod.POST,
       },
