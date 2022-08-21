@@ -16,6 +16,7 @@ import { VideoCardTest } from './tests/video-card/video-card';
 import { VideoPageContainer } from 'pages/video/video-page-container';
 
 import styles from './app.module.scss';
+import { AccountVerificationPage } from 'pages/account-verification-page/account-verification-page';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -43,6 +44,7 @@ const App: FC = () => {
           <Route path={AppRoutes.SIGN_UP} element={<SignUpPage />} />
           <Route path={AppRoutes.SIGN_IN} element={<SignInPage />} />
           <Route path={AppRoutes.RESTORE_PASSWORD_INIT} element={<RestorePasswordPage />} />
+          <Route path={AppRoutes.ACCOUNT_VERIFICATION_CONFIRM} element={<AccountVerificationPage />} />
         </Routes>
       )}
       {!isHaveHeader && (
