@@ -4,12 +4,8 @@ export { type HttpOptions } from './http/http';
 export { type FC } from './react/react';
 export * from './user/user';
 export * from './auth/auth';
-export {
-  ProfileUpdateRequestDto,
-  ProfileUpdateResponseDto,
-  type UpdateProfileValue,
-  type getProfileByUserIdRequestDto,
-} from './profile/profile';
+export * from './profile/profile';
 export { type ValidationSchema } from './validation/validation';
 export { type VideoCard } from './components/components';
-export { ImageStorePresetType, type AvatarImgValue } from './image/image';
+export * from './image/image';
+declare module 'react-notifications-component';

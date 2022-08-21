@@ -26,6 +26,12 @@ enum IconName {
   ZOOM_IN = 'zoom_in',
   ZOOM_OUT = 'zoom_out',
   ROTATE = 'rotate',
+  EXCLAMATION = 'exclamation',
+  INFO = 'info',
+  WARNING = 'warning',
+  SUCCESS = 'success',
+  SENDMESSAGE = 'send-message',
+  EMOJI = 'emoji',
 }
 
 export { IconName };

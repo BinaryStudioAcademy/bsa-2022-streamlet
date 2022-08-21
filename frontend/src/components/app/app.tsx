@@ -12,6 +12,7 @@ import { Studio, StudioAnalytics } from '../studio';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 import { ProfilePreferencesPage } from '../profile-preferences-page/profile-preferences-page';
 import { VideoCardTest } from './tests/video-card/video-card';
+import { VideoPageContainer } from 'pages/video/video-page-container';
 
 import styles from './app.module.scss';
 
@@ -47,6 +48,7 @@ const App: FC = () => {
                 <Route path={AppRoute.STUDIO} element={<Studio />} />
                 <Route path={AppRoute.ANALYTICS} element={<StudioAnalytics />} />
                 <Route path={AppRoute.PROFILE_PREFERENCE} element={<ProfilePreferencesPage />} />
+                <Route path="video-page" element={<VideoPageContainer />} />
               </Routes>
             </div>
           </section>
