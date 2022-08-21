@@ -538,6 +538,14 @@ export class AuthController extends BaseHttpController {
    *                type: array
    *                items:
    *                  $ref: '#/components/schemas/Error'
+   *        404:
+   *          description: User not found.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
    */
   @httpGet(AuthApiPath.USER, authenticationMiddleware)
   public async getCurrentUser(@request() req: ExtendedAuthenticatedRequest): Promise<GetCurrentUserResponseDto> {

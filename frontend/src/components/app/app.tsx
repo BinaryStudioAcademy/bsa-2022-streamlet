@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { AppRoutes } from 'common/enums/enums';
-import { useLocation, useAppSelector, useEffect, useAppDispatch } from 'hooks/hooks';
+import { useLocation, useEffect, useAppDispatch } from 'hooks/hooks';
 import { tokensStorageService } from 'services/services';
 import { authActions } from 'store/actions';
 import { MainPage } from 'pages/main-page';
@@ -21,12 +21,8 @@ import { AccountVerificationPage } from 'pages/account-verification-page/account
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
-  const { user } = useAppSelector((state) => ({
-    user: state.auth.user,
-  }));
 
   const hasToken = Boolean(tokensStorageService.getTokens().accessToken);
-  const hasUser = Boolean(user);
 
   const isHaveHeader = isRouteHaveHeader(pathname);
 
@@ -34,7 +30,7 @@ const App: FC = () => {
     if (hasToken) {
       dispatch(authActions.loadCurrentUser());
     }
-  }, [hasToken, hasUser, dispatch]);
+  }, [hasToken, dispatch]);
 
   return (
     <>
