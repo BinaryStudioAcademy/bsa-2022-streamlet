@@ -4,4 +4,5 @@ export {
   restorePasswordInit,
   accountVerificationConfirm,
   restorePasswordConfirm,
+  accountVerificationInit,
 } from 'shared/build/validation-schemas/user/user';

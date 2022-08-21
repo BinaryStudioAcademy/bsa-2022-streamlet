@@ -33,7 +33,7 @@ export class AccountVerificationService {
     });
     return `${CONFIG.CLIENT_INFO.URL}${commonFrontendPaths.auth.ACCOUNT_VERIFICATION_CONFIRM.path}?${
       commonFrontendPaths.auth.ACCOUNT_VERIFICATION_CONFIRM.queryParamNames.token
-    }=${Buffer.from(token).toString('base64url')}`;
+    }=${encodeURIComponent(token)}`;
   }
 
   async getConfirmTokenUser(token: string): Promise<User | null> {

@@ -34,6 +34,10 @@ export class ResetPasswordService {
   generateResetLink(token: string): string {
     return `${CONFIG.CLIENT_INFO.URL}${commonFrontendPaths.auth.RESET_PASSWORD_CONFIRM.path}?${
       commonFrontendPaths.auth.RESET_PASSWORD_CONFIRM.queryParamNames.token
-    }=${Buffer.from(token).toString('base64url')}`;
+    }=${encodeURIComponent(token)}`;
+  }
+
+  async removeTokensForUser(userId: string): Promise<void> {
+    await this.resetPasswordRepository.removeForUser(userId);
   }
 }

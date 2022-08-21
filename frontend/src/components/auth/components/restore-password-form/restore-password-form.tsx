@@ -7,14 +7,15 @@ import { AuthSubmitButton, ContonueWithParagraph } from '../common/common';
 import formStyles from '../form-controls.module.scss';
 
 type Props = {
-  onSubmit: () => void;
+  onSubmit: (data: RestorePasswordFormValues) => void;
+  isLoading: boolean;
 };
 
 export interface RestorePasswordFormValues {
   email: string;
 }
 
-const RestorePasswordForm: FC<Props> = ({ onSubmit }) => {
+const RestorePasswordForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit, isValid } = useAppForm<RestorePasswordFormValues>({
     defaultValues: { email: '' },
     validationSchema: restorePasswordInit,
@@ -34,7 +35,7 @@ const RestorePasswordForm: FC<Props> = ({ onSubmit }) => {
           wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
-        <AuthSubmitButton isLoading={false} disabled={true || !isValid} name="Send" />
+        <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Send" />
       </form>
       <ContonueWithParagraph linkTitle="Back to login" prompt="Changed your mind?" route={AppRoutes.SIGN_IN} />
     </>

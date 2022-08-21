@@ -1,1 +1,6 @@
-export { userSignUp, userSignIn, restorePasswordInit } from 'shared/build/validation-schemas/user/user';
+export {
+  userSignUp,
+  userSignIn,
+  restorePasswordInit,
+  accountVerificationInit,
+} from 'shared/build/validation-schemas/user/user';

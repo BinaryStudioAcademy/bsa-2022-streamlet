@@ -13,6 +13,14 @@ export class ResetPasswordRepositoryAdapter implements ResetPasswordRepository {
     this.prismaClient = prismaClient;
   }
 
+  async removeForUser(userId: string): Promise<void> {
+    await this.prismaClient.resetPasswordToken.deleteMany({
+      where: {
+        userId,
+      },
+    });
+  }
+
   async createTokenForUser(userId: string): Promise<string> {
     await this.prismaClient.resetPasswordToken.deleteMany({
       where: {

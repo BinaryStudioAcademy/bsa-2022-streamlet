@@ -9,3 +9,5 @@ export { type RestorePasswordInitResponseDto } from './restore-password-init-res
 export { type RestorePasswordConfirmRequestDto } from './restore-password-confirm-request-dto';
 export { type AccountVerificationConfirmRequestDto } from './account-verification-confirm-request-dto';
 export { type AccountVerificationConfirmResponseDto } from './account-verification-confirm-response-dto';
+export { type AccountVerificationInitRequestDto } from './account-verification-init-request-dto';
+export { type AccountVerificationInitResponseDto } from './account-verification-init-response-dto';

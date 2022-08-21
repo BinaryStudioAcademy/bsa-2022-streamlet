@@ -28,6 +28,7 @@ import {
   restorePasswordInit,
   restorePasswordConfirm,
   accountVerificationConfirm,
+  accountVerificationInit,
 } from '~/validation-schemas/user/user';
 import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-token';
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
@@ -38,6 +39,7 @@ import { ResetPasswordService } from '~/core/reset-password/application/reset-pa
 import { AccountVerificationService } from '~/core/account-verification/application/account-verification-service';
 import { CONFIG } from '~/configuration/config';
 import { GetCurrentUserResponseDto } from 'shared/build/common/types/auth/get-current-user-response-dto';
+import { AccountVerificationInitRequestDto, AccountVerificationInitResponseDto } from 'shared/build';
 
 /**
  * @swagger
@@ -383,6 +385,7 @@ export class AuthController extends BaseHttpController {
       throw new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_RESET_PASSWORD_LINK);
     }
     await this.userService.changeUserPassword(tokenUser.id, requestDto.password);
+    await this.resetPasswordService.removeTokensForUser(tokenUser.id);
   }
 
   /**
@@ -415,7 +418,7 @@ export class AuthController extends BaseHttpController {
    *                properties:
    *                  message:
    *                    type: string
-   *        400:
+   *        404:
    *          description: Email not found.
    *          content:
    *            application/json:
@@ -497,6 +500,67 @@ export class AuthController extends BaseHttpController {
     await this.userService.setIsActivated(true, tokenUser.id);
     return {
       message: successMessages.auth.SUCCESS_ACCOUNT_VERIFICATION,
+    };
+  }
+
+  /**
+   * @swagger
+   * /auth/account-verification-init:
+   *    post:
+   *      tags:
+   *      - auth
+   *      security: []
+   *      operationId: accountVerificationInit
+   *      description: Initialize verification flow by sending email to the user
+   *      requestBody:
+   *        description: User email
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                email:
+   *                  type: string
+   *                  format: email
+   *      responses:
+   *        200:
+   *          description: Successful operation (whether already activated or letter was sent will be said in the message)
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  message:
+   *                    type: string
+   *        404:
+   *          description: Email not found.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   */
+  @httpPost(AuthApiPath.ACCOUNT_VERIFICATION_INIT, validationMiddleware(accountVerificationInit))
+  public async accountVerificationInit(
+    @requestBody() requestDto: AccountVerificationInitRequestDto,
+  ): Promise<AccountVerificationInitResponseDto> {
+    const user = await this.userService.getUserByEmail(requestDto.email);
+    if (!user) {
+      throw new NotFound(exceptionMessages.auth.INCORRECT_EMAIL);
+    }
+
+    if (user.isActivated) {
+      return {
+        message: successMessages.auth.SUCCESS_ACCOUNT_VERIFICATION_INIT_ALREADY_VERIFIED,
+      };
+    }
+
+    await this.accountVerificationService.sendVerificationEmail(user);
+
+    return {
+      message: successMessages.auth.SUCCESS_ACCOUNT_VERIFICATION_INIT_NEW_LETTER,
     };
   }
 

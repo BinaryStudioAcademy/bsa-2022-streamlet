@@ -6,6 +6,7 @@ enum AuthApiPath {
   LOG_OUT = '/log-out',
   RESTORE_PASSWORD_INIT = '/restore-password-init',
   RESTORE_PASSWORD_CONFIRM = '/restore-password-confirm',
+  ACCOUNT_VERIFICATION_INIT = '/account-verification-init',
   ACCOUNT_VERIFICATION_CONFIRM = '/account-verification-confirm',
   USER = '/user',
 }

@@ -1,6 +1,7 @@
 import * as Joi from 'joi';
 import { UserSignUpRequestDto } from '~/common/types/types';
 import { UserValidationMessage } from '~/common/enums/enums';
+import { passwordCreationSchema } from './password-creation-schema';
 
 const userSignUp = Joi.object<UserSignUpRequestDto, true>({
   email: Joi.string()
@@ -14,12 +15,7 @@ const userSignUp = Joi.object<UserSignUpRequestDto, true>({
       'any.required': UserValidationMessage.EMAIL_REQUIRE,
       'string.min': UserValidationMessage.EMAIL_WRONG_LENGTH,
     }),
-  password: Joi.string().trim().min(8).max(16).required().messages({
-    'string.empty': UserValidationMessage.PASSWORD_REQUIRE,
-    'any.required': UserValidationMessage.PASSWORD_REQUIRE,
-    'string.min': UserValidationMessage.PASSWORD_WRONG_LENGTH,
-    'string.max': UserValidationMessage.PASSWORD_WRONG_LENGTH,
-  }),
+  password: passwordCreationSchema,
   passwordConfirm: Joi.string().valid(Joi.ref('password')).required().messages({
     'any.only': UserValidationMessage.PASSWORDS_NOT_MATCH,
   }),
