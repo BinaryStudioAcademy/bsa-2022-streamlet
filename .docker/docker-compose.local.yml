@@ -77,7 +77,7 @@ services:
     image: video-transcoding-server
     container_name: video-transcoding-server
     volumes:
-      - segments:../backend/video-transoding-server/playback
+      - ../playback:/app/backend/video-transcoding-server/playback
     depends_on:
       - rabbitmq
     env_file:
@@ -107,7 +107,7 @@ services:
         max-file: "5"
     volumes:
       - ../nginx/nginx.local.conf:/etc/nginx/nginx.conf
-      - segments:/assets/segments
+      - ../playback:/assets/segments
     networks:
       - backend_network
       - frontend_network

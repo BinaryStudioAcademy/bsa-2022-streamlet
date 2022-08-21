@@ -23,3 +23,4 @@ ignore:
   - backend/video-transcoding-server/build
   - backend/video-transcoding-server/node_modules
   - backend/video-transcoding-server/playback
+  - playback

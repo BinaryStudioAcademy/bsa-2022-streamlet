@@ -78,7 +78,7 @@ services:
     image: ghcr.io/binarystudioacademy/streamlet-video-transoding-server-dev:latest
     container_name: video-transcoding-server
     volumes:
-      - segments:/app/backend/video-transcoding-server/playback
+      - ../playback:/app/backend/video-transcoding-server/playback
     depends_on:
       - rabbitmq
     env_file:
@@ -111,7 +111,7 @@ services:
       - /etc/letsencrypt/live/dev.streamlet.tk/privkey.pem:/etc/letsencrypt/live/dev.streamlet.tk/privkey.pem
       - /etc/letsencrypt/options-ssl-nginx.conf:/etc/letsencrypt/options-ssl-nginx.conf
       - /etc/letsencrypt/ssl-dhparams.pem:/etc/letsencrypt/ssl-dhparams.pem
-      - segments:/assets/segments
+      - ../playback:/assets/segments
     networks:
       - backend_network
       - frontend_network
