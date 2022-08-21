@@ -11,10 +11,11 @@ import {
 import authSumbitBtnStyles from 'components/auth/components/common/auth-submit-btn/styles.module.scss';
 import styles from './styles.module.scss';
 import { ContonueWithParagraph } from 'components/auth/components/common/common';
-import { AppRoutes, IconName, NotificationType } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import clsx from 'clsx';
 import { authApi } from 'services/services';
 import { ErrorBox } from 'components/common/errors/errors';
+import { allAuthNotifications, AuthNotification } from 'components/auth/config/config';
 
 // this page is for verification link from email
 // it assumes user hasn't signed in yet and provides a way to resend link if the token expired
@@ -43,11 +44,8 @@ const AccountVerificationConfirmPage: FC = () => {
         const response = await responsePromise;
         navigate(AppRoutes.SIGN_IN, { replace: true });
         setNotification({
-          type: NotificationType.SUCCESS,
-          iconName: IconName.BELL,
-          title: 'Account Verification',
+          ...allAuthNotifications[AuthNotification.ACCOUNT_VERIFICATION_SUCCESS],
           message: response.message,
-          durationMs: 10_000,
         });
       } catch (err: unknown) {
         setError(
@@ -70,11 +68,8 @@ const AccountVerificationConfirmPage: FC = () => {
       const response = await authApi.sendAccountVerificationLetter({ email: data.email });
       navigate(AppRoutes.SIGN_IN, { replace: true });
       setNotification({
-        type: NotificationType.SUCCESS,
-        iconName: IconName.BELL,
-        title: 'Account Verification',
+        ...allAuthNotifications[AuthNotification.ACCOUNT_VERIFICATION_LETTER_SENT],
         message: response.message,
-        durationMs: 10_000,
       });
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Unknown error occurred. Try again, please');

@@ -7,7 +7,7 @@ import {
   matchAuthNotificationWithTitle,
 } from './auth-notification/auth-notification';
 
-const allAuthNotifications: Record<AuthNotification, NotificationParams> = [AuthNotification.SIGN_UP_SUCCESS].reduce(
+const allAuthNotifications: Record<AuthNotification, NotificationParams> = Object.values(AuthNotification).reduce(
   (prev, curr) => ({
     ...prev,
     [curr]: {

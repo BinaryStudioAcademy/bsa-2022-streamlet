@@ -1,4 +1,4 @@
-import { AppRoutes, IconName, NotificationType } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { setNotification } from 'components/common/notifications';
 import { useState } from 'react';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { authApi } from 'services/services';
 import { AuthContainer, RestorePasswordForm } from './components/components';
 import { RestorePasswordFormValues } from './components/restore-password-form/restore-password-form';
+import { allAuthNotifications, AuthNotification } from './config/config';
 
 const RestorePasswordPage: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,11 +22,8 @@ const RestorePasswordPage: FC = () => {
         const response = await authApi.sendPasswordResetLetter({ email: data.email });
         navigate(AppRoutes.SIGN_IN, { replace: true });
         setNotification({
-          type: NotificationType.SUCCESS,
-          iconName: IconName.BELL,
-          title: 'Password reset',
+          ...allAuthNotifications[AuthNotification.PASSWORD_RESET_LETTER_SENT_SUCCESS],
           message: response.message,
-          durationMs: 10_000,
         });
       } catch (err: unknown) {
         setError(

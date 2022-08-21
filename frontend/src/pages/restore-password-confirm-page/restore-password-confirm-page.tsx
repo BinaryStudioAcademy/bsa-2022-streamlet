@@ -5,13 +5,14 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { commonFrontendPaths } from 'shared/build/common/enums/enums';
 import { ContonueWithParagraph } from 'components/auth/components/common/common';
-import { AppRoutes, IconName, NotificationType } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import { authApi } from 'services/services';
 import { ErrorBox } from 'components/common/errors/errors';
 import {
   SelectNewPasswordForm,
   SelectNewPasswordFormValues,
 } from './select-new-password-form/select-new-password-form';
+import { allAuthNotifications, AuthNotification } from 'components/auth/config/config';
 
 // this page is for verification link from email
 // it assumes user hasn't signed in yet and provides a way to resend link if the token expired
@@ -41,13 +42,7 @@ const RestorePasswordConfirmPage: FC = () => {
         token: decodeURIComponent(token),
       });
       navigate(AppRoutes.SIGN_IN, { replace: true });
-      setNotification({
-        type: NotificationType.SUCCESS,
-        iconName: IconName.BELL,
-        title: 'Password Reset',
-        message: 'Your password has successfully been reset! Feel free to login now',
-        durationMs: 10_000,
-      });
+      setNotification(allAuthNotifications[AuthNotification.PASSWORD_RESET_SUCCESS]);
     } catch (err: unknown) {
       setError(
         err instanceof Error ? err.message : 'Unknown error occurred. Refresh the page, or get a new verification link',
