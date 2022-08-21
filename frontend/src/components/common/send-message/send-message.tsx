@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { Icon } from '../icon';
-import { IconName } from 'common/enums/components';
+import { IconName } from 'common/enums/enums';
 import { ChangeEvent, useState } from 'react';
 
 import styles from './send-message.module.scss';
@@ -28,10 +28,10 @@ const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseE
       />
       <div className={styles['group-buttons-reactions']}>
         <button onClick={handleChooseEmoji} className={styles['choose-emoji']}>
-          <Icon name={IconName.EMOJI} />
+          <Icon name={IconName.EMOJI} width="26" height="26" />
         </button>
         <button onClick={handlerSubmitMessage} className={styles['send-message']}>
-          <Icon name={IconName.SENDMESSAGE} />
+          <Icon name={IconName.SEND_MESSAGE} width="24" height="20" />
         </button>
       </div>
     </div>
