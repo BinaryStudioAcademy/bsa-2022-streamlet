@@ -22,6 +22,7 @@ import { NotFound } from '~/shared/exceptions/not-found';
 import { exceptionMessages } from '~/shared/enums/exceptions';
 import { authenticationMiddleware } from '../middleware/authentication-middleware';
 import { Forbidden } from '~/shared/exceptions/forbidden';
+import { ApiPath, ProfileApiPath } from 'shared/build';
 
 /* @swagger
  * tags:
@@ -68,7 +69,7 @@ import { Forbidden } from '~/shared/exceptions/forbidden';
  *               type: string
  */
 
-@controller('/profile')
+@controller(ApiPath.PROFILE)
 export class ProfileController extends BaseHttpController {
   private profileService: ProfileService;
   private userService: UserService;
@@ -102,7 +103,7 @@ export class ProfileController extends BaseHttpController {
    *        404:
    *          $ref: '#/components/responses/NotFound'
    */
-  @httpPut('/update', authenticationMiddleware)
+  @httpPut(ProfileApiPath.UPDATE, authenticationMiddleware)
   public async update(
     @requestBody() body: ProfileUpdateRequestDto,
     @request() req: ExtendedAuthenticatedRequest,
@@ -143,7 +144,7 @@ export class ProfileController extends BaseHttpController {
    *        404:
    *          description: user not found
    */
-  @httpPost('/upload', authenticationMiddleware)
+  @httpPost(ProfileApiPath.UPLOAD, authenticationMiddleware)
   public async upload(@requestBody() body: UserUploadRequestDto): Promise<ProfileUpdateResponseDto> {
     const res = await this.profileService.uploadAvatar(body);
 
@@ -184,7 +185,7 @@ export class ProfileController extends BaseHttpController {
    *        '404':
    *          description: user not found
    */
-  @httpGet('/get/:id', authenticationMiddleware)
+  @httpGet(`${ProfileApiPath.GET_BY_USER_ID}/:id`, authenticationMiddleware)
   public async get(@requestParam('id') id: string): Promise<ProfileUpdateResponseDto> {
     const res = await this.profileService.getByUserId(id);
 
