@@ -11,5 +11,5 @@
 .input-error {
   border: 1px solid var(--input-error-color);
   border-radius: 3px;
-  box-shadow: 0 0 3px 0 rgb(244 27 59 / 80%), 0 0 5px 0 rgb(244 27 59 / 50%);
+  box-shadow: 0 0 3px 0 rgb(var(--input-error-color) / 80%), 0 0 5px 0 rgb(var(--input-error-color) / 50%);
 }
