@@ -8,7 +8,7 @@ type Props = {
   linkTitle: string;
 };
 
-const ContonueWithParagraph: FC<Props> = ({ linkTitle, prompt, route }) => {
+const ContinueWithParagraph: FC<Props> = ({ linkTitle, prompt, route }) => {
   return (
     <p className={styles['continue-with-paragraph']}>
       {prompt}
@@ -19,4 +19,4 @@ const ContonueWithParagraph: FC<Props> = ({ linkTitle, prompt, route }) => {
   );
 };
 
-export { ContonueWithParagraph };
+export { ContinueWithParagraph };

@@ -1,49 +1,49 @@
-import { SubscribeChanel } from 'common/types/sidebar/subscribe-chanel';
+import { ChannelSubscriptionResponseDto } from 'common/types/types';
 
-export const subscribesList: SubscribeChanel[] = [
+export const subscribesList: ChannelSubscriptionResponseDto[] = [
   {
     id: '1',
-    chanelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
+    channelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
     title: 'Binary Studio Academy',
   },
   {
     id: '2',
-    chanelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
+    channelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
     title: 'Binary Studio Academy',
   },
   {
     id: '3',
-    chanelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
+    channelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
     title: 'Binary Studio Academy',
   },
   {
     id: '4',
-    chanelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
+    channelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
     title: 'Binary Studio Academy',
   },
   {
     id: '5',
-    chanelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
+    channelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
     title: 'Binary Studio Academy',
   },
   {
     id: '6',
-    chanelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
+    channelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
     title: 'Binary Studio Academy',
   },
   {
     id: '7',
-    chanelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
+    channelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
     title: 'Binary Studio Academy',
   },
   {
     id: '8',
-    chanelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
+    channelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
     title: 'Binary Studio Academy',
   },
   {
     id: '9',
-    chanelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
+    channelAvatar: 'https://i.pinimg.com/736x/f5/27/41/f52741fb62bf1d821948a49204406bdc.jpg',
     title: 'Binary Studio Academy',
   },
 ];

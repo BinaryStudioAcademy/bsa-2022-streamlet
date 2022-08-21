@@ -2,6 +2,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { reducer as auth } from './auth/reducer';
 import { reducer as search } from './search/reducer';
 import { reducer as profile } from './profile/reducer';
+import { reducer as notification } from './notification/reducer';
 import { reducer as layout } from './layout/reducer';
 
 const rootReducer = combineReducers({
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
   layout,
   search,
   profile,
+  notification,
 });
 
 export { rootReducer };
