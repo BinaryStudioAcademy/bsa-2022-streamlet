@@ -51,8 +51,8 @@
 
 .video-card-badge-duration {
   position: absolute;
-  right: 10px;
-  bottom: 5px;
+  right: 7px;
+  bottom: 7px;
   z-index: 15;
   display: flex;
   flex-flow: row nowrap;
@@ -70,25 +70,26 @@
 .video-card-info {
   display: grid;
   grid-template-rows: auto 30px;
-  grid-template-columns: 40px auto;
+  grid-template-columns: 50px auto;
   gap: 0 10px;
   margin-top: 10px;
 }
 
 .avatar {
-  width: 20px;
+  width: 100%;
   border-radius: 50%;
   cursor: pointer;
 }
 
 .video-card-channel {
   justify-self: end;
+  padding-left: 10px;
 }
 
 .video-card-desc {
   display: flex;
   flex-flow: column nowrap;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   padding-right: 10px;
 }
 
@@ -115,7 +116,7 @@
 .video-card-meta-data {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 2px;
   color: var(--text-gray-color);
 }
 
@@ -159,7 +160,7 @@
   flex-flow: row nowrap;
   justify-content: flex-end;
   align-items: center;
-  gap: 13px;
+  gap: 15px;
   padding: 0 15px;
   font-weight: 400;
   font-size: 12px;
@@ -171,10 +172,20 @@
   height: 12px;
 }
 
+@media #{$mobile-large} {
+  .video-card-desc {
+    margin-bottom: 15px;
+  }
+
+  .video-card-meta-footer {
+    gap: 25px;
+  }
+}
+
 @media #{$tablet-small} {
   .video-card {
     flex-flow: row nowrap;
-    gap: 10px;
+    gap: 12px;
     background: none;
   }
 
@@ -269,6 +280,10 @@
 
   .video-card-meta {
     margin-top: 10px;
+  }
+
+  .video-card-meta-data {
+    gap: 4px;
   }
 
   .video-card-tag-list {
