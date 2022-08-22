@@ -109,12 +109,8 @@
     border-radius: 50%;
     cursor: pointer;
 
-    @media screen and (max-width: 575px) {
-      margin-left: 26px;
-    }
-
-    @media screen and (max-width: 374px) {
-      margin-left: 16px;
+    @media screen and (max-width: 991px) {
+      margin-left: 25px;
     }
   }
 
@@ -147,10 +143,6 @@
     fill: var(--brand-green-color-hover);
   }
 
-  .block-user .block-auth-user .btn-notification svg:hover {
-    opacity: 0.8;
-  }
-
   .block-user .block-auth-user .user-menu .option-list {
     width: 100%;
     list-style: none;
@@ -178,16 +170,17 @@
     }
   }
 
-  .block-user .block-auth-user .btn-notification {
-    margin-left: 34px;
-
-    @media screen and (max-width: 575px) {
-      margin-left: 20px;
-    }
-  }
-
   .block-user .block-auth-user .btn-go-stream svg:hover path {
     fill: var(--brand-green-color-hover);
+  }
+
+  .control-icons {
+    display: flex;
+    gap: 25px;
+
+    @media screen and (max-width: 991px) {
+      gap: 25px;
+    }
   }
 
   .block-user .block-auth-user button {

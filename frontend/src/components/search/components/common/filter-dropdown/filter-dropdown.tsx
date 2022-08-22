@@ -1,7 +1,7 @@
 import React from 'react';
 import { FC } from 'common/types/types';
 import { useId, useState, useEffect } from 'hooks/hooks';
-import { IconName } from 'common/enums/components';
+import { IconName } from 'common/enums/enums';
 import { Icon } from 'components/common/common';
 
 import styles from './styles.module.scss';
@@ -74,7 +74,7 @@ const FilterDropdown: FC<Props> = ({
                   />
                   <label htmlFor={optionId}>{o.text}</label>
                   <div className={styles['filter-dropdown-item-close-icon']} onClick={handleClearFilter}>
-                    <Icon name={IconName.XMARK} />
+                    <Icon name={IconName.X_MARK} />
                   </div>
                 </li>
               );

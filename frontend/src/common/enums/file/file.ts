@@ -1,1 +1,1 @@
-export { ContentType } from 'shared/build/common/enums/enums';
+export { ContentType } from 'shared/build';

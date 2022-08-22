@@ -1,13 +1,12 @@
 import { FC } from 'common/types/types';
 import { Link } from 'react-router-dom';
 import { FormEvent, MouseEvent, RefObject } from 'react';
-import { AppRoute, IconName } from 'common/enums/enums';
-import { MenuOptions } from 'common/enums/components/';
+import { AppRoute, IconName, MenuOptions } from 'common/enums/enums';
 import { Icon } from '../icon';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
+import { closeSidebar, openSidebar } from 'store/layout/actions';
 
 import styles from './header.module.scss';
-import { closeSidebar, openSidebar } from 'store/layout/actions';
 
 interface MenuOption {
   type: MenuOptions;
@@ -22,7 +21,7 @@ interface HeaderProps {
   searchValue: string;
   searchInputId: string;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
-  handleClickLogin(e: MouseEvent<HTMLElement>): void;
+  handleClickSignIn(e: MouseEvent<HTMLElement>): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
   handleClickSearchBtn(e: MouseEvent<HTMLElement>): void;
@@ -30,6 +29,7 @@ interface HeaderProps {
   options: MenuOption[];
   userAvatar: string;
   menuRef: RefObject<HTMLDivElement>;
+  notificationDropdownContent: React.ReactNode;
 }
 
 const Header: FC<HeaderProps> = ({
@@ -37,7 +37,7 @@ const Header: FC<HeaderProps> = ({
   isMenuOpen,
   searchValue,
   searchInputId,
-  handleClickLogin,
+  handleClickSignIn,
   handleClickUserMenu,
   handleChangeInputSearch,
   handleClearInputSearch,
@@ -46,6 +46,7 @@ const Header: FC<HeaderProps> = ({
   options,
   userAvatar,
   menuRef,
+  notificationDropdownContent,
 }) => {
   const isSidebarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
   const dispatch = useAppDispatch();
@@ -63,10 +64,10 @@ const Header: FC<HeaderProps> = ({
       <div className={styles['wrapper-first-part']}>
         <div className={styles['logo-block']}>
           <button onClick={handleClickBurgerMenu} className={styles['burger-menu']}>
-            <Icon name={IconName.BURGERMENU} width="30" height="30" />
+            <Icon name={IconName.BURGER_MENU} width="30" height="30" />
           </button>
           <Link className={styles['logo-link']} to={AppRoute.ROOT}>
-            <Icon name={IconName.LOGOTIP} width="23" height="23" />
+            <Icon name={IconName.MAIN_LOGO} width="23" height="23" />
             <p className={styles['main-name']}>streamlet</p>
           </Link>
         </div>
@@ -84,7 +85,7 @@ const Header: FC<HeaderProps> = ({
             autoComplete="off"
           />
           <div className={styles['search-input-clear']} aria-label="Clear search" onClick={handleClearInputSearch}>
-            <Icon name={IconName.XMARK} />
+            <Icon name={IconName.X_MARK} />
           </div>
         </form>
       </div>
@@ -94,7 +95,7 @@ const Header: FC<HeaderProps> = ({
             <button className={styles['search-mobile']}>
               <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
             </button>
-            <button onClick={handleClickLogin} className={styles['sign-in-btn']}>
+            <button onClick={handleClickSignIn} className={styles['sign-in-btn']}>
               Sign In
             </button>
           </>
@@ -104,12 +105,12 @@ const Header: FC<HeaderProps> = ({
             <button className={styles['search-mobile']}>
               <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
             </button>
-            <button className={styles['btn-go-stream']}>
-              <Icon name={IconName.CAMERA} width="30" height="24" />
-            </button>
-            <button className={styles['btn-notification']}>
-              <Icon name={IconName.BELL} width="24" height="27" />
-            </button>
+            <div className={styles['control-icons']}>
+              <button className={styles['btn-go-stream']}>
+                <Icon name={IconName.CAMERA} width="30" height="24" />
+              </button>
+              {notificationDropdownContent}
+            </div>
             <button
               onClick={handleClickUserMenu}
               style={{ backgroundImage: `url(${userAvatar})` }}

@@ -8,7 +8,7 @@ import { ErrorBox } from 'components/common/errors/errors';
 import clsx from 'clsx';
 
 type Props = {
-  pageTitle: 'Login' | 'Sign up' | 'Restore password';
+  pageTitle: 'Sign in' | 'Sign up' | 'Restore password';
   topLevelError?: string | undefined;
   children: React.ReactNode;
   className: string;

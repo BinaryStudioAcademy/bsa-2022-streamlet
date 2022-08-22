@@ -12,6 +12,7 @@ import { useState, MouseEvent, FormEvent } from 'react';
 import { Header } from './header';
 import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
 import { searchActions } from 'store/actions';
+import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
 
@@ -24,7 +25,7 @@ const HeaderContainer: FC = () => {
   const { pathname } = useLocation();
 
   const [isLogged, setIsLogged] = useState(false);
-  const { isOpened: isMenuOpen, close, open, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+  const { isOpened: isMenuOpen, close: closeMenu, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
 
   const options = [
     {
@@ -44,26 +45,26 @@ const HeaderContainer: FC = () => {
       },
     },
     {
-      type: MenuOptions.Logout,
-      text: 'Log Out',
-      icon: IconName.LOGOUT,
+      type: MenuOptions.SignOut,
+      text: 'Sign Out',
+      icon: IconName.SIGN_OUT,
       onClick: (e: MouseEvent): void => {
-        handleClickLogin(e);
+        handleClickSignIn(e);
       },
     },
   ];
 
-  function handleClickLogin(e: MouseEvent): void {
+  function handleClickSignIn(e: MouseEvent): void {
     e.preventDefault();
 
-    close();
+    closeMenu();
     setIsLogged(!isLogged);
   }
 
   function handleClickUserMenu(e: MouseEvent): void {
     if (!isMenuOpen) {
       e.preventDefault();
-      open();
+      openMenu();
     }
   }
 
@@ -107,13 +108,14 @@ const HeaderContainer: FC = () => {
       searchValue={searchText}
       searchInputId={searchInputId}
       handleClickUserMenu={handleClickUserMenu}
-      handleClickLogin={handleClickLogin}
+      handleClickSignIn={handleClickSignIn}
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
       handleClickSearchBtn={handleClickSearchBtn}
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={FAKE_USER_AVATAR}
       options={options}
+      notificationDropdownContent={<NotificationDropdownContainer />}
     />
   );
 };

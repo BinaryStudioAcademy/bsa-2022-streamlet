@@ -115,7 +115,7 @@ const VideoCardMain: FC<Props> = ({
                   {getDividedViewString()}
                 </div>
                 <div className={styles['video-card-meta-data']}>
-                  <Icon name={IconName.TIMEAGO} />
+                  <Icon name={IconName.TIME_AGO} />
                   {getHowLongAgoString(new Date(publishedAt))}
                 </div>
               </div>
