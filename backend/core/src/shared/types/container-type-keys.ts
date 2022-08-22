@@ -8,8 +8,11 @@ const CONTAINER_TYPES = {
   UserRepository: Symbol.for('UserRepository'),
   RefreshTokenService: Symbol.for('RefreshTokenService'),
   RefreshTokenRepository: Symbol.for('RefreshTokenRepository'),
+  ResetPasswordService: Symbol.for('ResetPasswordService'),
+  ResetPasswordRepository: Symbol.for('ResetPasswordRepository'),
   MailRepository: Symbol.for('MailRepository'),
   ChannelRepository: Symbol.for('ChannelRepository'),
+  AccountVerificationService: Symbol.for('AccountVerificationService'),
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),

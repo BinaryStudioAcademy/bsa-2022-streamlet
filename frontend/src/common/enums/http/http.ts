@@ -1,1 +1,1 @@
-export { HttpHeader, HttpMethod } from 'shared/build';
+export { HttpHeader, HttpMethod, HttpCode } from 'shared/build';

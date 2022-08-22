@@ -1,6 +1,3 @@
-import { TokenPair } from '../types';
-import { UserBaseResponseDto } from './user';
-
-type UserSignUpResponseDto = { user: UserBaseResponseDto; tokens: TokenPair };
+type UserSignUpResponseDto = { message: string };
 
 export { type UserSignUpResponseDto };
