@@ -1,6 +1,5 @@
 import clsx from 'clsx';
-import { IconName } from 'common/enums/components';
-import { AppRoute } from 'common/enums/enums';
+import { IconName, AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { Link } from '../common';
 import { Icon } from '../icon';
@@ -28,10 +27,10 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
       <div className={styles['sidebar-content']} onClick={(e): void => e.stopPropagation()}>
         <div className={styles['sidebar-header']}>
           <button onClick={closeMobileSidebar} className={styles['burger-menu']}>
-            <Icon name={IconName.BURGERMENU} width="30" height="30" />
+            <Icon name={IconName.BURGER_MENU} width="30" height="30" />
           </button>
-          <Link className={styles['logo-link']} to={AppRoute.ROOT}>
-            <Icon name={IconName.LOGOTIP} width="23" height="23" />
+          <Link className={styles['logo-link']} to={AppRoutes.ROOT}>
+            <Icon name={IconName.MAIN_LOGO} width="23" height="23" />
             <p className={styles['main-name']}>streamlet</p>
           </Link>
         </div>

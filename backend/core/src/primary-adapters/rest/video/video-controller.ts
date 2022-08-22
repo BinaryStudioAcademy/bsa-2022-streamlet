@@ -18,7 +18,7 @@ import {
 import { HttpError, VideoApiPath, VideoBaseResponseDto, VideoCommentRequestDto } from 'shared/build';
 import { VideoService } from '~/core/video/aplication/video-service';
 import { Video } from '@prisma/client';
-import { authenticationMiddleware, optionalAuthenticationMiddleware } from '~/primary-adapters/rest/middleware';
+import { authenticationMiddleware } from '~/primary-adapters/rest/middleware';
 
 /**
  * @swagger
@@ -88,7 +88,7 @@ export class VideoController extends BaseHttpController {
    *          description: video not found
    */
 
-  @httpGet('/:id', optionalAuthenticationMiddleware)
+  @httpGet('/:id', authenticationMiddleware)
   public async get(
     @requestParam('id') id: string,
     @request() req: ExtendedAuthenticatedRequest,

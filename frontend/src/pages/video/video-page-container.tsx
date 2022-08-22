@@ -2,7 +2,7 @@ import { ChannelBaseResponse, FC, UserBaseResponseDto } from 'common/types/types
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import styles from './video-page.module.scss';
 import { Button, Icon, Loader } from '../../components/common/common';
-import { AppRoute, IconName } from '../../common/enums/enums';
+import { AppRoutes, IconName } from '../../common/enums/enums';
 import { useAppDispatch, useAppSelector, useEffect, useLocation, useNavigate } from '../../hooks/hooks';
 import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
 import { videoActions, channelActions } from '../../store/actions';
@@ -40,7 +40,7 @@ const VideoPageContainer: FC = () => {
 
   const handleLikeReact = (): void => {
     if (!user) {
-      navigate(AppRoute.SIGN_IN, { replace: true });
+      navigate(AppRoutes.SIGN_IN, { replace: true });
       return;
     }
     dispatch(videoActions.videoReact({ videoId, isLike: true }));
@@ -48,7 +48,7 @@ const VideoPageContainer: FC = () => {
 
   const handleDisLikeReact = (): void => {
     if (!user) {
-      navigate(AppRoute.SIGN_IN, { replace: true });
+      navigate(AppRoutes.SIGN_IN, { replace: true });
       return;
     }
     dispatch(videoActions.videoReact({ videoId, isLike: false }));
@@ -56,7 +56,7 @@ const VideoPageContainer: FC = () => {
 
   const handleMessageSubmit = (text: string): void => {
     if (!user) {
-      navigate(AppRoute.SIGN_IN, { replace: true });
+      navigate(AppRoutes.SIGN_IN, { replace: true });
       return;
     }
     dispatch(videoActions.addVideoComment({ videoId, text }));
@@ -64,7 +64,7 @@ const VideoPageContainer: FC = () => {
 
   const handleSubscribe = (): void => {
     if (!user) {
-      navigate(AppRoute.SIGN_IN, { replace: true });
+      navigate(AppRoutes.SIGN_IN, { replace: true });
       return;
     }
     if (!videoData) {

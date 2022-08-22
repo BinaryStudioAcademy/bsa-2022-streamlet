@@ -1,5 +1,10 @@
 import { ApiPath, AuthApiPath, ContentType, HttpMethod } from 'common/enums/enums';
+import { CancellableRequest } from 'common/types/http/http';
 import {
+  AccountVerificationConfirmRequestDto,
+  AccountVerificationConfirmResponseDto,
+  AccountVerificationInitRequestDto,
+  AccountVerificationInitResponseDto,
   RefreshTokenRequestDto,
   RefreshTokenResponseDto,
   UserSignInRequestDto,
@@ -7,6 +12,11 @@ import {
   UserSignUpRequestDto,
   UserSignUpResponseDto,
 } from 'common/types/types';
+import {
+  RestorePasswordConfirmRequestDto,
+  RestorePasswordInitRequestDto,
+  RestorePasswordInitResponseDto,
+} from 'shared/build/common/types/types';
 import { Http } from '../http/http.service';
 
 type Constructor = {
@@ -62,12 +72,79 @@ class AuthApi {
     });
   }
 
-  public logout(): Promise<void> {
+  public signOut(): Promise<void> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.LOG_OUT}`,
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.SIGN_OUT}`,
       options: {
         method: HttpMethod.POST,
       },
+    });
+  }
+
+  public getCurrentUser(): Promise<UserSignInResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.USER}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+    });
+  }
+
+  public confirmAccountVerification(
+    payload: AccountVerificationConfirmRequestDto,
+  ): CancellableRequest<AccountVerificationConfirmResponseDto> {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    return {
+      response: this.#http.load<AccountVerificationConfirmResponseDto>({
+        url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.ACCOUNT_VERIFICATION_CONFIRM}`,
+        options: {
+          method: HttpMethod.POST,
+          payload: JSON.stringify(payload),
+        },
+        preInterceptors: [],
+        postInterceptors: [],
+        abortSignal: signal,
+      }),
+      cancelRequest: () => controller.abort(),
+    };
+  }
+
+  public sendAccountVerificationLetter(
+    payload: AccountVerificationInitRequestDto,
+  ): Promise<AccountVerificationInitResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.ACCOUNT_VERIFICATION_INIT}`,
+      options: {
+        method: HttpMethod.POST,
+        payload: JSON.stringify(payload),
+      },
+      preInterceptors: [],
+      postInterceptors: [],
+    });
+  }
+
+  public sendPasswordResetLetter(payload: RestorePasswordInitRequestDto): Promise<RestorePasswordInitResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.RESTORE_PASSWORD_INIT}`,
+      options: {
+        method: HttpMethod.POST,
+        payload: JSON.stringify(payload),
+      },
+      preInterceptors: [],
+      postInterceptors: [],
+    });
+  }
+
+  public confirmPasswordReset(payload: RestorePasswordConfirmRequestDto): Promise<void> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.RESTORE_PASSWORD_CONFIRM}`,
+      options: {
+        method: HttpMethod.POST,
+        payload: JSON.stringify(payload),
+      },
+      preInterceptors: [],
+      postInterceptors: [],
     });
   }
 }

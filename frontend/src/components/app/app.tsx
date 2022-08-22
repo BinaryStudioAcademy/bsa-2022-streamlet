@@ -1,30 +1,48 @@
 import { FC } from 'common/types/types';
+import { AppRoutes } from 'common/enums/enums';
+import { useLocation, useEffect, useAppDispatch } from 'hooks/hooks';
+import { tokensStorageService } from 'services/services';
+import { authActions } from 'store/actions';
 import { MainPage } from 'pages/main-page';
-import { AppRoute } from 'common/enums/enums';
-import { Routes, Route, HeaderContainer } from 'components/common/common';
-import { useLocation } from 'react-router-dom';
-import { Search } from 'components/search/search';
-import { SidebarContainer } from 'components/common/sidebar/sidebar-container';
-import { isRouteHaveHeader } from 'helpers/routes/is-route-have-header';
-import { NotFound, VideoPageContainer } from 'pages/pages';
-import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
-import { Studio, StudioAnalytics } from '../studio';
+import { Routes, Route, HeaderContainer, SidebarContainer } from 'components/common/common';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
+import { Studio, StudioAnalytics } from 'components/studio';
+import { Search } from 'components/search/search';
+import { NotFound } from '../../pages/pages';
+import { ReactNotifications } from 'react-notifications-component';
+import { isRouteHaveHeader } from 'helpers/routes/is-route-have-header';
+import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
 import { VideoCardTest } from './tests/video-card/video-card';
+import { VideoPageContainer } from 'pages/video/video-page-container';
 
 import styles from './app.module.scss';
+import { AccountVerificationConfirmPage } from 'pages/account-verification-page/account-verification-confirm-page';
+import { RestorePasswordConfirmPage } from 'pages/restore-password-confirm-page/restore-password-confirm-page';
 
 const App: FC = () => {
+  const dispatch = useAppDispatch();
   const { pathname } = useLocation();
+
+  const hasToken = Boolean(tokensStorageService.getTokens().accessToken);
+
   const isHaveHeader = isRouteHaveHeader(pathname);
+
+  useEffect(() => {
+    if (hasToken) {
+      dispatch(authActions.loadCurrentUser());
+    }
+  }, [hasToken, dispatch]);
 
   return (
     <>
+      <ReactNotifications />
       {isHaveHeader && (
         <Routes>
-          <Route path={AppRoute.SIGN_UP} element={<SignUpPage />} />
-          <Route path={AppRoute.SIGN_IN} element={<SignInPage />} />
-          <Route path={AppRoute.RESTORE_PASSWORD} element={<RestorePasswordPage />} />
+          <Route path={AppRoutes.SIGN_UP} element={<SignUpPage />} />
+          <Route path={AppRoutes.SIGN_IN} element={<SignInPage />} />
+          <Route path={AppRoutes.RESTORE_PASSWORD_INIT} element={<RestorePasswordPage />} />
+          <Route path={AppRoutes.ACCOUNT_VERIFICATION_CONFIRM} element={<AccountVerificationConfirmPage />} />
+          <Route path={AppRoutes.RESTORE_PASSWORD_CONFIRM} element={<RestorePasswordConfirmPage />} />
         </Routes>
       )}
       {!isHaveHeader && (
@@ -34,18 +52,19 @@ const App: FC = () => {
             <SidebarContainer />
             <div className={styles['main-content']}>
               <Routes>
-                <Route path={AppRoute.ROOT} element={<MainPage />} />
+                <Route path={AppRoutes.ROOT} element={<MainPage />} />
                 <Route path="/browse/some-path" element={<MainPage />} />
-                <Route path={AppRoute.SEARCH} element={<Search />} />
-                <Route path={AppRoute.HISTORY} element="History" />
-                <Route path={AppRoute.FOLLOWING} element="Following" />
-                <Route path={AppRoute.BROWSE} element="Browse" />
-                <Route path={AppRoute.ANY} element={<NotFound />} />
+                <Route path={AppRoutes.SEARCH} element={<Search />} />
+                <Route path={AppRoutes.HISTORY} element="History" />
+                <Route path={AppRoutes.FOLLOWING} element="Following" />
+                <Route path={AppRoutes.BROWSE} element="Browse" />
+                <Route path={AppRoutes.ANY} element={<NotFound />} />
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
-                <Route path={AppRoute.STUDIO} element={<Studio />} />
-                <Route path={AppRoute.ANALYTICS} element={<StudioAnalytics />} />
-                <Route path={AppRoute.VIDEO_$ID} element={<VideoPageContainer />} />
+                <Route path={AppRoutes.VIDEO_$ID} element={<VideoPageContainer />} />
+                <Route path={AppRoutes.STUDIO} element={<Studio />} />
+                <Route path={AppRoutes.ANALYTICS} element={<StudioAnalytics />} />
+                <Route path="video-page" element={<VideoPageContainer />} />
               </Routes>
             </div>
           </section>

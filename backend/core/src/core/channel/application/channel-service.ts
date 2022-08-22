@@ -62,7 +62,6 @@ export class ChannelService {
       content: Buffer.from(
         JSON.stringify({
           ...streamData,
-          isLive: true,
         }),
       ),
     });
@@ -70,11 +69,10 @@ export class ChannelService {
 
   notifyTranscoderAboutStreamEnd(streamingKey: string): Promise<boolean> {
     return this.amqpChannel.sendToQueue({
-      queue: AmqpQueue.STREAM_TRANSCODER,
+      queue: AmqpQueue.STREAM_INTERRUPTED,
       content: Buffer.from(
         JSON.stringify({
           streamingKey,
-          isLive: false,
         }),
       ),
     });

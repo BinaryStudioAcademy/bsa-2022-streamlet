@@ -2,27 +2,32 @@ import express from 'express';
 import { ExtendedRequest } from '~/shared/types/express';
 import { UserBaseResponseDto } from '~/shared/types/types';
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
-import { exceptionMessages } from '~/shared/enums/exceptions';
+import { exceptionMessages } from '~/shared/enums/messages';
 import { verifyJwt } from '~/shared/helpers';
+import { CONFIG } from '~/configuration/config';
+import { optionalAuthRoutesEnum } from '~/shared/enums/enums';
 
 export const authenticationMiddleware = async (
   req: ExtendedRequest,
   _res: express.Response,
   next: express.NextFunction,
 ): Promise<void> => {
+  const isAuthOptional = req.path === optionalAuthRoutesEnum.GET_VIDEO_BY_ID;
   const authHeader = req.headers['authorization'];
-  if (!authHeader) {
+  if (!authHeader && !isAuthOptional) {
     return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_NO_TOKEN));
   }
-  const token = getBearerTokenFromAuthHeader(authHeader);
-  if (!token) {
+  const token = getBearerTokenFromAuthHeader(authHeader as string);
+  if (!token && !isAuthOptional) {
     return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_NO_TOKEN));
   }
   try {
-    const payload = await verifyJwt<UserBaseResponseDto>(token);
+    const payload = await verifyJwt<UserBaseResponseDto>({ jwt: token, secret: CONFIG.ENCRYPTION.ACCESS_TOKEN_SECRET });
     req.user = payload;
   } catch {
-    return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN));
+    if (!isAuthOptional) {
+      return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN));
+    }
   }
   next();
 };
