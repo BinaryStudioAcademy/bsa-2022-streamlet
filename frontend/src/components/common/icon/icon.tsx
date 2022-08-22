@@ -3,6 +3,7 @@ import { IconName } from 'common/enums/enums';
 import { ReactComponent as Alarm } from '../../../assets/img/alarm.svg';
 import { ReactComponent as ArrowDown } from '../../../assets/img/arrow-down.svg';
 import { ReactComponent as ArrowUp } from '../../../assets/img/arrow-up.svg';
+import { ReactComponent as ArrowLeft } from '../../../assets/img/arrow-left.svg';
 import { ReactComponent as Camera } from '../../../assets/img/camera.svg';
 import { ReactComponent as Compass } from '../../../assets/img/compass.svg';
 import { ReactComponent as Filter } from '../../../assets/img/filter.svg';
@@ -77,6 +78,10 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.ARROW_UP: {
       return <ArrowUp {...commonProps} />;
+    }
+
+    case IconName.ARROW_LEFT: {
+      return <ArrowLeft {...commonProps} />;
     }
 
     case IconName.CAMERA: {

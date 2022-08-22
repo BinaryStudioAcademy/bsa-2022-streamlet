@@ -1,7 +1,15 @@
 import { MouseEvent, FormEvent } from 'react';
 import { FC } from 'common/types/types';
 import { MenuOptions, AppRoute, SearchQueryParam } from 'common/enums/enums';
-import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate, useRef } from 'hooks/hooks';
+import {
+  useOutsideClick,
+  useAppDispatch,
+  useAppSelector,
+  useCallback,
+  useNavigate,
+  useRef,
+  useState,
+} from 'hooks/hooks';
 import { authActions, searchActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
 import { allMenuOptions } from './config';
@@ -20,9 +28,11 @@ const HeaderContainer: FC = () => {
   }));
   const navigate = useNavigate();
 
-  const hasUser = Boolean(user);
+  const [mobileSearchToggle, setMobileSearchToggle] = useState(false);
 
   const { isOpened: isMenuOpen, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+
+  const hasUser = Boolean(user);
 
   const emptyOnClickHandler = (): void => void 0;
 
@@ -70,9 +80,20 @@ const HeaderContainer: FC = () => {
     handleInputSearch(currentTarget.value);
   };
 
+  const setFocusOnSearchInput = (): void => {
+    searchInputEl.current?.focus();
+  };
+
   const handleClearInputSearch = (): void => {
     handleInputSearch('');
-    searchInputEl.current?.focus();
+    setFocusOnSearchInput();
+  };
+
+  const handleClickSearchMobileToggle = (): void => {
+    if (!mobileSearchToggle) {
+      setTimeout(setFocusOnSearchInput, 0);
+    }
+    setMobileSearchToggle(!mobileSearchToggle);
   };
 
   const handleClickSearchBtn = (): void => {
@@ -80,6 +101,8 @@ const HeaderContainer: FC = () => {
       handleClearActiveFilterIds();
       const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
       navigate(`${AppRoute.SEARCH}?${searchUrlParams.toString()}`, { replace: true });
+    } else {
+      searchInputEl.current?.focus();
     }
   };
 
@@ -93,6 +116,7 @@ const HeaderContainer: FC = () => {
       menuRef={menuRef}
       isLogged={hasUser}
       isMenuOpen={isMenuOpen}
+      isMobileSearchOpen={mobileSearchToggle}
       searchValue={searchText}
       searchInputEl={searchInputEl}
       handleClickUserMenu={handleClickUserMenu}
@@ -100,6 +124,7 @@ const HeaderContainer: FC = () => {
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
       handleClickSearchBtn={handleClickSearchBtn}
+      handleClickSearchMobileToggle={handleClickSearchMobileToggle}
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={FAKE_USER_AVATAR}
       options={options}

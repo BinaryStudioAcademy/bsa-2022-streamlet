@@ -2,6 +2,7 @@ enum IconName {
   ALARM = 'alarm',
   ARROW_DOWN = 'arrow-down',
   ARROW_UP = 'arrow-up',
+  ARROW_LEFT = 'arrow-left',
   CAMERA = 'camera',
   COMPASS = 'compass',
   FILTER = 'filter',

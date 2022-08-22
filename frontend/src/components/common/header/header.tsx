@@ -1,5 +1,6 @@
 import { FormEvent, MouseEvent, RefObject } from 'react';
 import { Link } from 'react-router-dom';
+import clsx from 'clsx';
 import { FC } from 'common/types/types';
 import { AppRoute, IconName, MenuOptions } from 'common/enums/enums';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
@@ -20,11 +21,13 @@ interface HeaderProps {
   isMenuOpen: boolean;
   searchValue: string;
   searchInputEl: RefObject<HTMLInputElement>;
+  isMobileSearchOpen: boolean;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
   handleClickSignIn(): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
   handleClickSearchBtn(e: MouseEvent<HTMLElement>): void;
+  handleClickSearchMobileToggle(): void;
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
   options: MenuOption[];
   userAvatar: string;
@@ -37,11 +40,13 @@ const Header: FC<HeaderProps> = ({
   isMenuOpen,
   searchValue,
   searchInputEl,
+  isMobileSearchOpen,
   handleClickSignIn,
   handleClickUserMenu,
   handleChangeInputSearch,
   handleClearInputSearch,
   handleClickSearchBtn,
+  handleClickSearchMobileToggle,
   handleSubmitSearch,
   options,
   userAvatar,
@@ -71,29 +76,40 @@ const Header: FC<HeaderProps> = ({
             <p className={styles['main-name']}>streamlet</p>
           </Link>
         </div>
-        <form className={styles['block-search']} onSubmit={handleSubmitSearch}>
-          <div onClick={handleClickSearchBtn}>
-            <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
+        <form
+          className={clsx(styles['block-search'], isMobileSearchOpen && styles['block-search-mobile'])}
+          onSubmit={handleSubmitSearch}
+        >
+          <div className={styles['back-btn-mobile']} onClick={handleClickSearchMobileToggle}>
+            <Icon name={IconName.ARROW_LEFT} className={styles['search-icon']} />
           </div>
-          <input
-            className={styles['search-input']}
-            ref={searchInputEl}
-            type="text"
-            value={searchValue}
-            onChange={handleChangeInputSearch}
-            placeholder="Search or type"
-            autoComplete="off"
-          />
-          <div className={styles['search-input-clear']} aria-label="Clear search" onClick={handleClearInputSearch}>
-            <Icon name={IconName.X_MARK} />
+          <div className={styles['block-search-input']}>
+            <div className={styles['search-btn']} onClick={handleClickSearchBtn}>
+              <Icon name={IconName.SEARCH} className={styles['search-icon']} />
+            </div>
+            <input
+              className={styles['search-input']}
+              ref={searchInputEl}
+              type="text"
+              value={searchValue}
+              onChange={handleChangeInputSearch}
+              placeholder="Search or type"
+              autoComplete="off"
+            />
+            <div className={styles['search-input-clear']} aria-label="Clear search" onClick={handleClearInputSearch}>
+              <Icon name={IconName.X_MARK} />
+            </div>
+          </div>
+          <div className={styles['search-btn-mobile']} onClick={handleClickSearchBtn}>
+            <Icon name={IconName.SEARCH} className={styles['search-icon']} />
           </div>
         </form>
       </div>
       <div className={styles['block-user']}>
         {!isLogged && (
           <>
-            <button className={styles['search-mobile']}>
-              <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
+            <button className={styles['search-mobile']} onClick={handleClickSearchMobileToggle}>
+              <Icon name={IconName.SEARCH} className={styles['search-icon']} />
             </button>
             <button onClick={handleClickSignIn} className={styles['sign-in-btn']}>
               Sign In
@@ -102,7 +118,7 @@ const Header: FC<HeaderProps> = ({
         )}
         {isLogged && (
           <div className={styles['block-auth-user']}>
-            <button className={styles['search-mobile']}>
+            <button className={styles['search-mobile']} onClick={handleClickSearchMobileToggle}>
               <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
             </button>
             <div className={styles['control-icons']}>
