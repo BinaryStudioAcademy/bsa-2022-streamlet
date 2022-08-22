@@ -88,7 +88,7 @@ export class VideoController extends BaseHttpController {
    *              schema:
    *                $ref: '#/components/schemas/VideoBaseResponseDto'
    *        '404':
-   *          description: video not found
+   *          description: video does not exist
    */
 
   @httpGet('/:id', optionalAuthenticationMiddleware, authenticationMiddleware)
@@ -101,7 +101,7 @@ export class VideoController extends BaseHttpController {
     const video = await this.videoService.getById(id, userId);
 
     if (!video) {
-      throw new NotFound('does not exist');
+      throw new NotFound('video does not exist');
     }
 
     return video;
@@ -161,7 +161,7 @@ export class VideoController extends BaseHttpController {
    *        '200':
    *          description: reaction added
    *        '404':
-   *          description: video not found
+   *          description: video does not exist
    */
 
   @httpPost('/reaction/:id', authenticationMiddleware)
@@ -206,7 +206,7 @@ export class VideoController extends BaseHttpController {
    *        '200':
    *          description: comment added
    *        '404':
-   *          description: video not found
+   *          description: video does not exist
    */
 
   @httpPost(VideoApiPath.COMMENT, authenticationMiddleware)

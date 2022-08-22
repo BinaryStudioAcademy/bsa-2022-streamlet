@@ -23,7 +23,6 @@ import { inject } from 'inversify';
 import { Forbidden } from '~/shared/exceptions/forbidden';
 import { NotFound } from '~/shared/exceptions/not-found';
 import { authenticationMiddleware } from '~/primary-adapters/rest/middleware';
-import { HttpError } from 'shared/build';
 
 /**
  * @swagger
@@ -184,7 +183,7 @@ export class ChannelController extends BaseHttpController {
    *              schema:
    *                $ref: '#/components/schemas/StreamingKeyResponseDto'
    *        '404':
-   *          description: channel not found
+   *          description: Invalid channel id
    */
   @httpGet(`${ChannelApiPath.STREAMING_KEY}${ChannelApiPath.$ID}`)
   public async getStreamingKey(@requestParam() { id }: DefaultRequestParam): Promise<StreamingKeyResponseDto> {
@@ -223,7 +222,7 @@ export class ChannelController extends BaseHttpController {
    *              schema:
    *                $ref: '#/components/schemas/StreamingKeyResponseDto'
    *        '404':
-   *          description: channel not found
+   *          description: Invalid channel id
    */
   @httpPost(ChannelApiPath.RESET_STREAMING_KEY)
   public async resetStreamingKey(
@@ -264,7 +263,7 @@ export class ChannelController extends BaseHttpController {
    *              schema:
    *                $ref: '#/components/schemas/CreateSubscriptionResponseDto'
    *        '404':
-   *          description: channel not found
+   *          description: channel does not exist
    */
   @httpPost(`${ChannelApiPath.SUBSCRIPTION}${ChannelApiPath.$ID}`, authenticationMiddleware)
   public async addSubscription(
@@ -276,7 +275,7 @@ export class ChannelController extends BaseHttpController {
     const res = this.channelService.toggleSubscription(userId, id);
 
     if (res === null) {
-      throw new HttpError({ message: 'channel dont found', status: 404 });
+      throw new NotFound('channel does not exist');
     }
 
     return res;
