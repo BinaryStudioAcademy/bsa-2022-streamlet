@@ -10,9 +10,11 @@ const userSignIn = Joi.object<UserSignInRequestDto, true>({
     .messages({
       'string.email': UserValidationMessage.EMAIL_WRONG,
       'string.empty': UserValidationMessage.EMAIL_REQUIRE,
+      'any.required': UserValidationMessage.EMAIL_REQUIRE,
     }),
   password: Joi.string().trim().required().messages({
     'string.empty': UserValidationMessage.PASSWORD_REQUIRE,
+    'any.required': UserValidationMessage.PASSWORD_REQUIRE,
   }),
 });
 
