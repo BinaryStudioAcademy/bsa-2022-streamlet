@@ -1,5 +1,5 @@
-import { Button, Loader } from 'components/common/common';
 import React, { FC } from 'react';
+import { Button, Loader } from 'components/common/common';
 import styles from './styles.module.scss';
 
 type Props = {
@@ -18,7 +18,7 @@ const AuthSubmitButton: FC<Props> = ({ isLoading, name, disabled }) => {
     <Button
       className={styles['auth-submit-btn']}
       type="submit"
-      content={isLoading ? <Loader spinnerSize="xs" /> : name}
+      content={isLoading ? <Loader spinnerSize="25px" /> : name}
       disabled={disabled}
     />
   );

@@ -8,17 +8,17 @@
 
 @font-face {
   font-family: Gilroy-SemiBold;
-  src: url('../font/Gilroy-SemiBold.ttf');
+  src: url('../font/Gilroy-SemiBold.woff');
 }
 
 @font-face {
   font-family: Gilroy;
-  src: url('../font/Gilroy-Regular.ttf');
+  src: url('../font/Gilroy-Regular.woff');
 }
 
 @font-face {
   font-family: Gilroy-SemiBold;
-  src: url('../font/Gilroy-Medium.ttf');
+  src: url('../font/Gilroy-Medium.woff');
 }
 
 :root {
@@ -37,9 +37,10 @@
   --brand-green-color-hover: #00802d;
   --brand-yellow-color: #f6c648;
   --support-info-color: #03d8ff;
-  --supprot-error-color: #f76519;
-  --hover-light-grey: #dadada;
   --hover-dark-grey: #2a2d37;
+  --support-error-color: #f76519;
+  --hover-light-grey: #e8e8e8;
+  --input-error-color: #f41b3b;
 
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
