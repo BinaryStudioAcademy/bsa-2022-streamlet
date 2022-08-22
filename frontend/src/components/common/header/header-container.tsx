@@ -7,25 +7,35 @@ import {
   useNavigate,
   useLocation,
   useId,
+  useEffect,
 } from 'hooks/hooks';
 import { useState, MouseEvent, FormEvent } from 'react';
 import { Header } from './header';
 import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
-import { searchActions } from 'store/actions';
+import { searchActions, profileActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
-
-const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
+import defaultAvatar from '../../../assets/img/default-user-avatar.jpg';
 
 const HeaderContainer: FC = () => {
   const dispatch = useAppDispatch();
   const {
     search: { searchText },
   } = useAppSelector((state) => ({ search: state.search }));
+  const user = useAppSelector((state) => state.auth.user);
+  const profile = useAppSelector((state) => state.profile.profileData);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const [isLogged, setIsLogged] = useState(false);
   const { isOpened: isMenuOpen, close: closeMenu, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+
+  useEffect(() => {
+    if (!isLogged || !user) {
+      return;
+    }
+    const { id: userId } = user;
+    dispatch(profileActions.getProfileByUserId({ userId }));
+  }, [dispatch, isLogged, user]);
 
   const options = [
     {
@@ -108,7 +118,7 @@ const HeaderContainer: FC = () => {
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
       handleSubmitSearch={handleSubmitSearch}
-      userAvatar={FAKE_USER_AVATAR}
+      userAvatar={profile?.avatar ? profile?.avatar : defaultAvatar}
       options={options}
       notificationDropdownContent={<NotificationDropdownContainer />}
     />
