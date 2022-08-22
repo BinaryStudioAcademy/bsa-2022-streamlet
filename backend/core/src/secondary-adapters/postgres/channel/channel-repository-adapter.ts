@@ -18,10 +18,8 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
       },
       data: {
         subscriptions: {
-          createMany: {
-            data: {
-              userId,
-            },
+          create: {
+            userId,
           },
         },
       },

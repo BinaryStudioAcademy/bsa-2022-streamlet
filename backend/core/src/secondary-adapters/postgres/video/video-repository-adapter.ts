@@ -107,7 +107,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       },
       data: {
         comments: {
-          createMany: { data: [{ text, authorId }] },
+          create: { text, authorId },
         },
       },
       select: {
@@ -146,7 +146,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       },
       data: {
         reactions: {
-          createMany: { data: [{ isLike, userId }] },
+          create: { isLike, userId },
         },
       },
       select: {
@@ -205,7 +205,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       data: {
         reactions: {
           deleteMany: [{ userId }],
-          createMany: { data: { isLike, userId } },
+          create: { isLike, userId },
         },
       },
       select: {
