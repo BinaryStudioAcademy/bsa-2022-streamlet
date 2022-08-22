@@ -41,7 +41,7 @@ jobs:
           image_tag: latest
           context: ./
           dockerfile: ./.docker/push.Dockerfile
-  build-video-transoding-server:
+  build-video-transcoding-server:
     runs-on: ubuntu-latest
     environment: development
     steps:
@@ -53,11 +53,11 @@ jobs:
         with:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          image_name: streamlet-video-transoding-server-dev
+          image_name: streamlet-video-transcoding-server-dev
           registry: ghcr.io
           image_tag: latest
           context: ./
-          dockerfile: ./.docker/video-transoding-server.Dockerfile   
+          dockerfile: ./.docker/video-transcoding-server.Dockerfile   
   build-frontend:
     runs-on: ubuntu-latest
     environment: development
