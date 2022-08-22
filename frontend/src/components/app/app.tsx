@@ -17,6 +17,7 @@ import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers
 import styles from './app.module.scss';
 import { ProtectedRoute } from 'components/common/protected-route/protected-route';
 import { StudioChannel } from 'components/studio/channel/channel';
+import { StudioStream } from 'components/studio/stream';
 
 const App: FC = () => {
   const { pathname } = useLocation();
@@ -40,6 +41,7 @@ const App: FC = () => {
               <Route path={AppRoute.STUDIO} element={<ProtectedRoute element={<StudioHome />} />} />
               <Route path={AppRoute.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />
               <Route path={AppRoute.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />} />
+              <Route path={AppRoute.STUDIO_STREAM_$ID} element={<ProtectedRoute element={<StudioStream />} />} />
             </Routes>
           </div>
         </div>
