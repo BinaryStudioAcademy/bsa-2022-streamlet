@@ -27,9 +27,11 @@ This is the repository responsible for Streamlet's apps.
 ## 🏃‍♂️ Simple Start
 
 ### Setup database
+
 1. Create `.env` folder at the root project and add `api-db.env` file according to `.env.example`
 
 ### Setup apps
+
 1. Fill ENVs in each project
 2. `npm install` at the root
 3. `npx simple-git-hooks` at the root
@@ -78,6 +80,14 @@ erDiagram
   RefreshToken {
     String id PK
     String token
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+  ResetPasswordToken {
+    String id PK
+    String token
+    String userId
     DateTime createdAt
     DateTime updatedAt
     }
@@ -192,7 +202,6 @@ erDiagram
     Reaction o{--|| Video : "video"
 ```
 
-
 ## 🧑‍💻 CI
 
 ### 🗜 Tools
@@ -264,13 +273,15 @@ erDiagram
 
 Specify `api.env` `api-db.env` files in `.env` folder
 Run commands from root:
-````
+
+```
 docker build --build-arg REACT_APP_API_ORIGIN_URL=/api/v1 -f .docker/frontend.Dockerfile -t frontend .
 docker build -f .docker/backend.Dockerfile -t backend .
 docker build -f .docker/push.Dockerfile -t push .
 docker build -f .docker/rtmp.Dockerfile -t push .
 docker compose -f .docker/docker-compose.local.yml up -d
-````
+```
+
 ## 📦 CD
 
 [Handled](.github/workflows/cd.yml) by [GitHub Actions](https://docs.github.com/en/actions).

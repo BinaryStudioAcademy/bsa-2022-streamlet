@@ -1,74 +1,77 @@
+import { MouseEvent, FormEvent } from 'react';
 import { FC } from 'common/types/types';
+import { MenuOptions, AppRoutes, SearchQueryParam } from 'common/enums/enums';
 import {
   useOutsideClick,
   useAppDispatch,
   useAppSelector,
   useCallback,
   useNavigate,
-  useLocation,
-  useId,
+  useRef,
   useEffect,
 } from 'hooks/hooks';
-import { useState, MouseEvent, FormEvent } from 'react';
-import { Header } from './header';
-import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
-import { searchActions, profileActions } from 'store/actions';
+import { authActions, profileActions, searchActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
+import { allMenuOptions } from './config';
+import { Header } from './header';
 import defaultAvatar from '../../../assets/img/default-user-avatar.jpg';
 
 const HeaderContainer: FC = () => {
   const dispatch = useAppDispatch();
   const {
     search: { searchText },
-  } = useAppSelector((state) => ({ search: state.search }));
-  const user = useAppSelector((state) => state.auth.user);
-  const profile = useAppSelector((state) => state.profile.profileData);
+    user,
+    profile,
+  } = useAppSelector((state) => ({
+    search: state.search,
+    user: state.auth.user,
+    profile: state.profile.profileData,
+  }));
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
-  const [isLogged, setIsLogged] = useState(false);
-  const { isOpened: isMenuOpen, close: closeMenu, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+  const hasUser = Boolean(user);
+
+  const { isOpened: isMenuOpen, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+
+  const emptyOnClickHandler = (): void => void 0;
+
+  const handleClickSettings = (): void => {
+    navigate(AppRoutes.PROFILE_PREFERENCE, { replace: true });
+  };
+
+  const matchMenuOptionWithOnClickHandler: Record<MenuOptions, () => void> = {
+    [MenuOptions.Settings]: handleClickSettings,
+    [MenuOptions.Theme]: emptyOnClickHandler,
+    [MenuOptions.SignOut]: handleClickSignOut,
+  };
 
   useEffect(() => {
-    if (!isLogged || !user) {
+    if (!user) {
       return;
     }
     const { id: userId } = user;
     dispatch(profileActions.getProfileByUserId({ userId }));
-  }, [dispatch, isLogged, user]);
+  }, [dispatch, user]);
 
-  const options = [
-    {
-      type: MenuOptions.Settings,
-      text: 'Profile settings',
-      icon: IconName.SETTINGS,
-      onClick: (): void => {
-        navigate(AppRoute.PROFILE_PREFERENCE, { replace: true });
-      },
-    },
-    {
-      type: MenuOptions.Theme,
-      text: 'Theme',
-      icon: IconName.MOON,
-      onClick: (): void => {
-        void 1;
-      },
-    },
-    {
-      type: MenuOptions.SignOut,
-      text: 'Sign Out',
-      icon: IconName.SIGN_OUT,
-      onClick: (e: MouseEvent): void => {
-        handleClickSignIn(e);
-      },
-    },
-  ];
+  const options = allMenuOptions.map((option) => ({
+    ...option,
+    onClick: matchMenuOptionWithOnClickHandler[option.type],
+  }));
 
-  function handleClickSignIn(e: MouseEvent): void {
-    e.preventDefault();
+  const handleSignOut = useCallback(async () => {
+    try {
+      await dispatch(authActions.signOut());
+    } finally {
+      navigate(AppRoutes.SIGN_IN, { replace: true });
+    }
+  }, [dispatch, navigate]);
 
-    closeMenu();
-    setIsLogged(!isLogged);
+  function handleClickSignIn(): void {
+    navigate(AppRoutes.SIGN_IN, { replace: true });
+  }
+
+  function handleClickSignOut(): void {
+    handleSignOut();
   }
 
   function handleClickUserMenu(e: MouseEvent): void {
@@ -78,7 +81,7 @@ const HeaderContainer: FC = () => {
     }
   }
 
-  const searchInputId = useId();
+  const searchInputEl = useRef<HTMLInputElement>(null);
 
   const handleClearActiveFilterIds = useCallback(() => dispatch(searchActions.clearActiveFilterIds()), [dispatch]);
 
@@ -90,7 +93,7 @@ const HeaderContainer: FC = () => {
 
   const handleClearInputSearch = (): void => {
     handleInputSearch('');
-    document.getElementById(searchInputId)?.focus();
+    searchInputEl.current?.focus();
   };
 
   const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
@@ -98,27 +101,23 @@ const HeaderContainer: FC = () => {
     if (searchText) {
       handleClearActiveFilterIds();
       const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
-      navigate(`/search?${searchUrlParams.toString()}`, { replace: true });
+      navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`, { replace: true });
     }
   };
-
-  if (pathname === AppRoute.SIGN_IN || pathname === AppRoute.SIGN_UP || pathname === AppRoute.RESTORE_PASSWORD) {
-    return null;
-  }
 
   return (
     <Header
       menuRef={menuRef}
-      isLogged={isLogged}
+      isLogged={hasUser}
       isMenuOpen={isMenuOpen}
       searchValue={searchText}
-      searchInputId={searchInputId}
+      searchInputEl={searchInputEl}
       handleClickUserMenu={handleClickUserMenu}
       handleClickSignIn={handleClickSignIn}
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
       handleSubmitSearch={handleSubmitSearch}
-      userAvatar={profile?.avatar ? profile?.avatar : defaultAvatar}
+      userAvatar={profile?.avatar ? profile.avatar : defaultAvatar}
       options={options}
       notificationDropdownContent={<NotificationDropdownContainer />}
     />

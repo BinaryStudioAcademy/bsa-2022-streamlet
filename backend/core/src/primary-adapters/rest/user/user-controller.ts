@@ -59,7 +59,7 @@ export class UserController extends BaseHttpController {
    *                items:
    *                  $ref: '#/components/schemas/User'
    *        401:
-   *          $ref: '#/components/responses/NotFound'
+   *          $ref: '#/components/responses/Unauthorized'
    */
   @httpGet('/', authenticationMiddleware)
   public getAllUsers(): Promise<User[]> {

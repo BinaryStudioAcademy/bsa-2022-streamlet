@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify';
 import { UserRepository } from '~/core/user/port/user-repository';
 import { PrismaClient, User } from '@prisma/client';
-import { CONTAINER_TYPES, UserBaseResponseDto, UserSignUpRequestDto } from '~/shared/types/types';
-import { trimUser, hashValue } from '~/shared/helpers';
+import { CONTAINER_TYPES, UserSignUpRequestDto } from '~/shared/types/types';
+import { hashValue } from '~/shared/helpers';
 
 @injectable()
 export class UserRepositoryAdapter implements UserRepository {
@@ -11,6 +11,18 @@ export class UserRepositoryAdapter implements UserRepository {
   constructor(@inject(CONTAINER_TYPES.PrismaClient) prismaClient: PrismaClient) {
     this.prismaClient = prismaClient;
   }
+
+  async changePassword(userId: string, newPassword: string): Promise<void> {
+    await this.prismaClient.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: await hashValue(newPassword),
+      },
+    });
+  }
+
   getUserByUsernameOrEmail(email: string, username: string): Promise<User | null> {
     return this.prismaClient.user.findFirst({
       where: {
@@ -58,11 +70,22 @@ export class UserRepositoryAdapter implements UserRepository {
     return this.prismaClient.user.findMany();
   }
 
-  async createUser(userRequestDto: UserSignUpRequestDto): Promise<UserBaseResponseDto> {
+  async createUser(userRequestDto: UserSignUpRequestDto): Promise<User> {
     const user = await this.prismaClient.user.create({
       data: { ...userRequestDto, password: await hashValue(userRequestDto.password) },
     });
 
-    return trimUser(user);
+    return user;
+  }
+
+  async setIsActivated(shouldBeActivated: boolean, userId: string): Promise<void> {
+    await this.prismaClient.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        isActivated: shouldBeActivated,
+      },
+    });
   }
 }

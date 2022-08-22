@@ -12,5 +12,6 @@ export { UploadImage } from './upload-image/upload-image';
 export { createToastNotification } from './toast-notification';
 
 export { HeaderContainer } from './header/header-container';
+export { SidebarContainer } from './sidebar/sidebar-container';
 
 export { Loader } from './loader/loader';
