@@ -43,7 +43,8 @@ const Search: FC = () => {
       }
       return prev;
     }, {});
-  }, [activeFilterId, searchText]);
+    // eslint-disable-next-line
+  }, [activeFilterId]);
 
   const handleSetSearchParams = useCallback(() => {
     setSearchParams({ ...handleGetVideoFilter() });
