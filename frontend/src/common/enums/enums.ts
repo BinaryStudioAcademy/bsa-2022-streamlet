@@ -2,7 +2,7 @@ export { ApiPath, AuthApiPath, NotificationApiPath } from './api/api';
 
 export { AppRoute, DataStatus, ENV, RoutesWithoutHeader } from './app/app';
 
-export { IconColor, IconName, MenuOptions, VideoTagName } from './component/component';
+export { IconColor, IconName, MenuOptions, VideoTagName, ComponentUpdateDelayTime } from './component/component';
 
 export { ContentType } from './file/file';
 
