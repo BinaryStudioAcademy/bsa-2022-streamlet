@@ -61,7 +61,7 @@ const Header: FC<HeaderProps> = ({
     <header className={styles['header']}>
       <div className={styles['logo-block']}>
         <button onClick={handleClickBurgerMenu} className={styles['burger-menu']}>
-          <Icon name={IconName.BURGER_MENU} width="30" height="30" />
+          <Icon name={IconName.BURGER_MENU} width="24" height="24" />
         </button>
         <Link className={styles['logo-link']} to={AppRoutes.ROOT}>
           <Icon name={IconName.MAIN_LOGO} width="26" height="26" />
