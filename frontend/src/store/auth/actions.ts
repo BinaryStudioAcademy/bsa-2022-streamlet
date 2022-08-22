@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { HttpCode } from 'common/enums/enums';
 
 import {
   UserSignUpRequestDto,
@@ -8,17 +9,16 @@ import {
   UserBaseResponseDto,
   RefreshTokenResponseDto,
 } from 'common/types/types';
+import { HttpError } from 'exceptions/exceptions';
 import { authApi, tokensStorageService } from 'services/services';
 import { ActionType } from './common';
 
-const signUp = createAsyncThunk<UserBaseResponseDto, UserSignUpRequestDto, AsyncThunkConfig>(
+const signUp = createAsyncThunk<void, UserSignUpRequestDto, AsyncThunkConfig>(
   ActionType.SIGN_UP,
   async (registerPayload, { extra }) => {
     const { authApi } = extra;
 
-    const { tokens, user } = await authApi.signUp(registerPayload);
-    tokensStorageService.saveTokens(tokens);
-    return user;
+    await authApi.signUp(registerPayload);
   },
 );
 
@@ -44,15 +44,37 @@ const refreshTokens = createAsyncThunk<RefreshTokenResponseDto, RefreshTokenRequ
   },
 );
 
-// in some cases there is a need only to log out on client, while usually it's also needed to logout on backend
-const logout = createAsyncThunk<void, { hitApi: boolean } | undefined>(
-  ActionType.LOGOUT,
+// in some cases there is a need only to sign out on client, while usually it's also needed to signOut on backend
+const signOut = createAsyncThunk<void, { hitApi: boolean } | undefined>(
+  ActionType.SIGN_OUT,
   async ({ hitApi } = { hitApi: true }) => {
-    if (hitApi) {
-      await authApi.logout();
+    try {
+      if (hitApi) {
+        await authApi.signOut();
+      }
+    } finally {
+      tokensStorageService.clearTokens();
     }
-    tokensStorageService.clearTokens();
   },
 );
 
-export { signUp, signIn, refreshTokens, logout };
+const loadCurrentUser = createAsyncThunk<UserBaseResponseDto, void, AsyncThunkConfig>(
+  ActionType.SIGN_IN,
+  async (_request, { dispatch, extra: { authApi } }) => {
+    try {
+      const { tokens, user } = await authApi.getCurrentUser();
+      tokensStorageService.saveTokens(tokens);
+      return user;
+    } catch (err) {
+      const isHttpError = err instanceof HttpError;
+
+      if (isHttpError && err.status === HttpCode.UNAUTHORIZED) {
+        await dispatch(signOut({ hitApi: false }));
+      }
+
+      throw err;
+    }
+  },
+);
+
+export { signUp, signIn, refreshTokens, signOut, loadCurrentUser };

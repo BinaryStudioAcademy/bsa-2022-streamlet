@@ -1,6 +1,7 @@
 import { HttpError } from 'exceptions/exceptions';
-import { HttpHeader, HttpMethod } from 'common/enums/enums';
+import { HttpCode, HttpHeader, HttpMethod } from 'common/enums/enums';
 import { HttpOptions } from 'common/types/types';
+import { getStringifiedQuery } from 'helpers/helpers';
 import { PostInterceptor, PreInterceptor } from './interceptors/interceptor';
 
 class Http {
@@ -9,11 +10,15 @@ class Http {
   async load<T = unknown>({
     url,
     options = {},
+    query,
     preInterceptors = this.defaultPreInterceptors,
     postInterceptors = this.defaultPostInterceptors,
+    abortSignal,
   }: {
     url: string;
+    query?: Record<string, unknown>;
     options?: Partial<HttpOptions>;
+    abortSignal?: AbortSignal;
     preInterceptors?: PreInterceptor[];
     postInterceptors?: PostInterceptor[];
   }): Promise<T> {
@@ -24,19 +29,26 @@ class Http {
       headers,
       body: payload,
     };
+    if (abortSignal) {
+      requestInit.signal = abortSignal;
+    }
     for (const preInterceptor of preInterceptors) {
       [url, requestInit] = await preInterceptor({ url, options: requestInit });
     }
 
     const makeRequest = (url: string, options: RequestInit): Promise<Response> => fetch(url, options);
 
-    let response = await makeRequest(url, requestInit);
+    let response = await makeRequest(this.getUrl(url, query), requestInit);
     for (const postInterceptor of postInterceptors) {
       response = await postInterceptor({
         initialRequest: { options: requestInit, url },
         makeRequestFn: makeRequest,
         response,
       });
+    }
+
+    if (response.status === HttpCode.NO_CONTENT) {
+      return {} as T;
     }
 
     return this.checkStatus(response)
@@ -73,6 +85,10 @@ class Http {
     }
 
     return response;
+  }
+
+  private getUrl(url: string, query: Record<string, unknown> | undefined): string {
+    return `${url}${query ? `?${getStringifiedQuery(query)}` : ''}`;
   }
 
   private parseJSON<T>(response: Response): Promise<T> {

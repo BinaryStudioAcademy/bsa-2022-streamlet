@@ -1,6 +1,6 @@
 import { PostInterceptor } from './interceptor';
 import { type storeType } from 'store/store';
-import { logout, refreshTokens } from 'store/auth/actions';
+import { signOut, refreshTokens } from 'store/auth/actions';
 import { tokensStorageService } from 'services/services';
 import { attachAuthTokenInterceptor } from './attach-auth-token-interceptor';
 
@@ -43,8 +43,8 @@ export const refreshTokenInterceptor: PostInterceptor = async ({
   } catch (e: unknown) {
     // in the above try block the only thing that could go wrong is refreshing token
     // which can go wrong if the refresh token is invalid
-    // in this case it's pointless to hit api to log out on backend, since it'll only create an endless loop of refreshing
-    await injectedStore.dispatch(logout({ hitApi: false })).unwrap();
+    // in this case it's pointless to hit api to sign out on backend, since it'll only create an endless loop of refreshing
+    await injectedStore.dispatch(signOut({ hitApi: false })).unwrap();
     throw e;
   }
 };

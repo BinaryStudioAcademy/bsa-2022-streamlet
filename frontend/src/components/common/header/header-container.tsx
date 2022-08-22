@@ -1,17 +1,11 @@
+import { MouseEvent, FormEvent } from 'react';
 import { FC } from 'common/types/types';
-import {
-  useOutsideClick,
-  useAppDispatch,
-  useAppSelector,
-  useCallback,
-  useNavigate,
-  useLocation,
-  useId,
-} from 'hooks/hooks';
-import { useState, MouseEvent, FormEvent } from 'react';
+import { MenuOptions, AppRoutes, SearchQueryParam } from 'common/enums/enums';
+import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate, useRef } from 'hooks/hooks';
+import { authActions, searchActions } from 'store/actions';
+import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
+import { allMenuOptions } from './config';
 import { Header } from './header';
-import { MenuOptions, IconName, AppRoute, SearchQueryParam } from 'common/enums/enums';
-import { searchActions } from 'store/actions';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
 
@@ -19,55 +13,54 @@ const HeaderContainer: FC = () => {
   const dispatch = useAppDispatch();
   const {
     search: { searchText },
-  } = useAppSelector((state) => ({ search: state.search }));
+    user,
+  } = useAppSelector((state) => ({
+    search: state.search,
+    user: state.auth.user,
+  }));
   const navigate = useNavigate();
-  const { pathname } = useLocation();
 
-  const [isLogged, setIsLogged] = useState(false);
-  const { isOpened: isMenuOpen, close, open, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+  const hasUser = Boolean(user);
 
-  const options = [
-    {
-      type: MenuOptions.Settings,
-      text: 'Settings',
-      icon: IconName.SETTINGS,
-      onClick: (): void => {
-        void 1;
-      },
-    },
-    {
-      type: MenuOptions.Theme,
-      text: 'Theme',
-      icon: IconName.MOON,
-      onClick: (): void => {
-        void 1;
-      },
-    },
-    {
-      type: MenuOptions.Logout,
-      text: 'Log Out',
-      icon: IconName.LOGOUT,
-      onClick: (e: MouseEvent): void => {
-        handleClickLogin(e);
-      },
-    },
-  ];
+  const { isOpened: isMenuOpen, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
 
-  function handleClickLogin(e: MouseEvent): void {
-    e.preventDefault();
+  const emptyOnClickHandler = (): void => void 0;
 
-    close();
-    setIsLogged(!isLogged);
+  const matchMenuOptionWithOnClickHandler: Record<MenuOptions, () => void> = {
+    [MenuOptions.Settings]: emptyOnClickHandler,
+    [MenuOptions.Theme]: emptyOnClickHandler,
+    [MenuOptions.SignOut]: handleClickSignOut,
+  };
+
+  const options = allMenuOptions.map((option) => ({
+    ...option,
+    onClick: matchMenuOptionWithOnClickHandler[option.type],
+  }));
+
+  const handleSignOut = useCallback(async () => {
+    try {
+      await dispatch(authActions.signOut());
+    } finally {
+      navigate(AppRoutes.SIGN_IN, { replace: true });
+    }
+  }, [dispatch, navigate]);
+
+  function handleClickSignIn(): void {
+    navigate(AppRoutes.SIGN_IN, { replace: true });
+  }
+
+  function handleClickSignOut(): void {
+    handleSignOut();
   }
 
   function handleClickUserMenu(e: MouseEvent): void {
     if (!isMenuOpen) {
       e.preventDefault();
-      open();
+      openMenu();
     }
   }
 
-  const searchInputId = useId();
+  const searchInputEl = useRef<HTMLInputElement>(null);
 
   const handleClearActiveFilterIds = useCallback(() => dispatch(searchActions.clearActiveFilterIds()), [dispatch]);
 
@@ -79,7 +72,7 @@ const HeaderContainer: FC = () => {
 
   const handleClearInputSearch = (): void => {
     handleInputSearch('');
-    document.getElementById(searchInputId)?.focus();
+    searchInputEl.current?.focus();
   };
 
   const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
@@ -87,28 +80,25 @@ const HeaderContainer: FC = () => {
     if (searchText) {
       handleClearActiveFilterIds();
       const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
-      navigate(`/search?${searchUrlParams.toString()}`, { replace: true });
+      navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`, { replace: true });
     }
   };
-
-  if (pathname === AppRoute.SIGN_IN || pathname === AppRoute.SIGN_UP || pathname === AppRoute.RESTORE_PASSWORD) {
-    return null;
-  }
 
   return (
     <Header
       menuRef={menuRef}
-      isLogged={isLogged}
+      isLogged={hasUser}
       isMenuOpen={isMenuOpen}
       searchValue={searchText}
-      searchInputId={searchInputId}
+      searchInputEl={searchInputEl}
       handleClickUserMenu={handleClickUserMenu}
-      handleClickLogin={handleClickLogin}
+      handleClickSignIn={handleClickSignIn}
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={FAKE_USER_AVATAR}
       options={options}
+      notificationDropdownContent={<NotificationDropdownContainer />}
     />
   );
 };
