@@ -4,9 +4,7 @@ import { Icon } from 'components/common/icon';
 
 import styles from './styles.module.scss';
 
-type Props = Record<string, unknown>;
-
-const StudioHome: FC<Props> = () => {
+const StudioHome: FC = () => {
   return (
     <div className={styles['studio']}>
       <h1 className={styles['header']}>Welcome to Studio!</h1>

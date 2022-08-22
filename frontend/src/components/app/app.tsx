@@ -16,6 +16,7 @@ import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers
 
 import styles from './app.module.scss';
 import { ProtectedRoute } from 'components/common/protected-route/protected-route';
+import { StudioChannel } from 'components/studio/channel/channel';
 
 const App: FC = () => {
   const { pathname } = useLocation();
@@ -37,6 +38,7 @@ const App: FC = () => {
           <div className={styles['main-content']}>
             <Routes>
               <Route path={AppRoute.STUDIO} element={<ProtectedRoute element={<StudioHome />} />} />
+              <Route path={AppRoute.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />
               <Route path={AppRoute.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />} />
             </Routes>
           </div>
