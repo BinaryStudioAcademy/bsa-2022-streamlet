@@ -1,9 +1,9 @@
 import { FC } from 'common/types/types';
 import { useId, useEffect } from 'hooks/hooks';
-import { IconName } from 'common/enums/enums';
 import { Icon } from 'components/common/common';
 
 import styles from './styles.module.scss';
+import { IconName } from 'common/enums/component/component';
 
 type Props = {
   activeFilterId: string;

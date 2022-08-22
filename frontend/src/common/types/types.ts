@@ -23,14 +23,9 @@ export { DefaultRequestParam } from './request/request';
 
 export { ChannelSubscriptionResponseDto } from './sidebar/sidebar';
 
-export {
-  UserBaseResponseDto,
-  UserSignInRequestDto,
-  UserSignInResponseDto,
-  UserSignUpRequestDto,
-  UserSignUpResponseDto,
-} from './user/user';
+export * from './user/user';
 
 export { ValidationSchema } from './validation/validation';
 
 declare module 'react-notifications-component';
+export { type ToastNotificationParams } from './toast-notification/toast-notifications';
