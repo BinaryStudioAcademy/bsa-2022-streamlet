@@ -161,7 +161,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     return createAddReactionResponse(video.reactions[0], likeNum, dislikeNum);
   }
 
-  async isUserReacted(userId: string, videoId: string): Promise<Reaction[] | undefined> {
+  async hasUserReacted(userId: string, videoId: string): Promise<Reaction[] | undefined> {
     const userReaction = await this.prismaClient.video.findUnique({
       where: {
         id: videoId,

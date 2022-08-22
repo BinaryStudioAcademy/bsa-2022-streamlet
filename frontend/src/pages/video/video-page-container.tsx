@@ -3,7 +3,7 @@ import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import styles from './video-page.module.scss';
 import { Button, Icon, Loader } from '../../components/common/common';
 import { AppRoutes, IconName } from '../../common/enums/enums';
-import { useAppDispatch, useAppSelector, useEffect, useLocation, useNavigate } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector, useEffect, useNavigate, useParams } from '../../hooks/hooks';
 import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
 import { videoActions, channelActions } from '../../store/actions';
 import { VideoBaseResponseDto } from '../../common/types/video/video';
@@ -13,14 +13,20 @@ import { getReactBtnColor } from './common/helper/get-react-btn-color';
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
-  const videoId = location.pathname.replace('/video/', '');
+  const { videoId: isVideoIdProvided } = useParams();
+
+  if (!isVideoIdProvided) {
+    navigate(AppRoutes.ANY, { replace: true });
+  }
+
+  const videoId = isVideoIdProvided as string;
+
   const videoData: VideoBaseResponseDto | null = useAppSelector((state) => {
     return state.video.video;
   });
 
   useEffect(() => {
-    dispatch(videoActions.getVideo(videoId));
+    dispatch(videoActions.getVideo(videoId as string));
   }, [videoId, dispatch]);
 
   useEffect(() => {

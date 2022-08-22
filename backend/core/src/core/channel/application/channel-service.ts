@@ -24,7 +24,7 @@ export class ChannelService {
     this.amqpChannel = amqpChannel;
   }
 
-  async addSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {
+  async toggleSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {
     const channel = this.channelRepository.getChannelById(channelId);
     if (!channel) {
       return null;

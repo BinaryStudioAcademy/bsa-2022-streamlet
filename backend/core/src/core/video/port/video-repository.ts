@@ -14,7 +14,7 @@ export interface VideoRepository {
     isUserSubscribeOnVideoChannel: boolean,
   ): Promise<VideoBaseResponseDto | null>;
   getAll(): Promise<Video[]>;
-  isUserReacted(userId: string, videoId: string): Promise<Reaction[] | undefined>;
+  hasUserReacted(userId: string, videoId: string): Promise<Reaction[] | undefined>;
   removeReactionAndAddNew(
     videoId: string,
     userId: string,

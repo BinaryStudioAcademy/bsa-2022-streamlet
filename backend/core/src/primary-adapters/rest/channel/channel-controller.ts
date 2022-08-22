@@ -273,7 +273,7 @@ export class ChannelController extends BaseHttpController {
   ): Promise<CreateSubscriptionResponseDto | null> {
     const { id: userId } = req.user;
 
-    const res = this.channelService.addSubscription(userId, id);
+    const res = this.channelService.toggleSubscription(userId, id);
 
     if (res === null) {
       throw new HttpError({ message: 'channel dont found', status: 404 });

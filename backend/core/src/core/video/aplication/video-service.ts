@@ -45,7 +45,7 @@ export class VideoService {
     videoId: string,
     userId: string,
   ): Promise<CreateReactionResponseDto | null> {
-    const userReaction = await this.videoRepository.isUserReacted(userId, videoId);
+    const userReaction = await this.videoRepository.hasUserReacted(userId, videoId);
     if (userReaction && userReaction.length) {
       return this.videoRepository.removeReactionAndAddNew(videoId, userId, request.isLike, userReaction[0]);
     }

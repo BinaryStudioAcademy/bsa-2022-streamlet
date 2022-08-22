@@ -5,20 +5,25 @@ import { Unauthorized } from '~/shared/exceptions/unauthorized';
 import { exceptionMessages } from '~/shared/enums/messages';
 import { verifyJwt } from '~/shared/helpers';
 import { CONFIG } from '~/configuration/config';
-import { optionalAuthRoutesEnum } from '~/shared/enums/enums';
 
 export const authenticationMiddleware = async (
   req: ExtendedRequest,
   _res: express.Response,
   next: express.NextFunction,
 ): Promise<void> => {
-  const isAuthOptional = req.path === optionalAuthRoutesEnum.GET_VIDEO_BY_ID;
   const authHeader = req.headers['authorization'];
-  if (!authHeader && !isAuthOptional) {
+  const isAuthOptional = !!req.isOptionalAuth;
+  if (!authHeader && isAuthOptional) {
+    return next();
+  }
+  if (!authHeader) {
     return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_NO_TOKEN));
   }
   const token = getBearerTokenFromAuthHeader(authHeader as string);
-  if (!token && !isAuthOptional) {
+  if (!token && isAuthOptional) {
+    return next();
+  }
+  if (!token) {
     return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_NO_TOKEN));
   }
   try {

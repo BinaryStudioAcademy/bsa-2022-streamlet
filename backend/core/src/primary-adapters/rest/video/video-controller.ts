@@ -13,12 +13,15 @@ import {
   CreateReactionRequestDto,
   CreateReactionResponseDto,
   ExtendedAuthenticatedRequest,
+  ExtendedRequest,
   VideoCommentResponseDto,
 } from '~/shared/types/types';
-import { HttpError, VideoApiPath, VideoBaseResponseDto, VideoCommentRequestDto } from 'shared/build';
+import { VideoApiPath, VideoBaseResponseDto, VideoCommentRequestDto } from 'shared/build';
 import { VideoService } from '~/core/video/aplication/video-service';
 import { Video } from '@prisma/client';
 import { authenticationMiddleware } from '~/primary-adapters/rest/middleware';
+import { optionalAuthenticationMiddleware } from '~/primary-adapters/rest/middleware/optional-auth-middleware';
+import { NotFound } from '~/shared/exceptions/not-found';
 
 /**
  * @swagger
@@ -88,11 +91,8 @@ export class VideoController extends BaseHttpController {
    *          description: video not found
    */
 
-  @httpGet('/:id', authenticationMiddleware)
-  public async get(
-    @requestParam('id') id: string,
-    @request() req: ExtendedAuthenticatedRequest,
-  ): Promise<VideoBaseResponseDto> {
+  @httpGet('/:id', optionalAuthenticationMiddleware, authenticationMiddleware)
+  public async get(@requestParam('id') id: string, @request() req: ExtendedRequest): Promise<VideoBaseResponseDto> {
     let userId: string | undefined = undefined;
     if (req.user) {
       userId = req.user.id;
@@ -101,7 +101,7 @@ export class VideoController extends BaseHttpController {
     const video = await this.videoService.getById(id, userId);
 
     if (!video) {
-      throw new HttpError({ message: 'video dont found', status: 404 });
+      throw new NotFound('does not exist');
     }
 
     return video;
@@ -175,7 +175,7 @@ export class VideoController extends BaseHttpController {
     const reactionResponse = await this.videoService.addReaction(body, id, userId);
 
     if (!reactionResponse) {
-      throw new HttpError({ message: 'video or user dont found', status: 404 });
+      throw new NotFound('video does not exist');
     }
 
     return reactionResponse;
@@ -219,7 +219,7 @@ export class VideoController extends BaseHttpController {
     const res = await this.videoService.addComment(body, userId);
 
     if (!res) {
-      throw new HttpError({ message: 'video dont found', status: 404 });
+      throw new NotFound('does not exist');
     }
 
     return res;
