@@ -1,23 +1,24 @@
-import { AppRoute } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { Input } from 'components/common/common';
 import { useAppForm } from 'hooks/hooks';
-import { refreshPassword } from 'validation-schemas/validation-schemas';
+import { restorePasswordInit } from 'validation-schemas/validation-schemas';
 import { AuthSubmitButton, ContinueWithParagraph } from '../common/common';
 import formStyles from '../form-controls.module.scss';
 
 type Props = {
-  onSubmit: () => void;
+  onSubmit: (data: RestorePasswordFormValues) => void;
+  isLoading: boolean;
 };
 
 export interface RestorePasswordFormValues {
   email: string;
 }
 
-const RestorePasswordForm: FC<Props> = ({ onSubmit }) => {
+const RestorePasswordForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit, isValid } = useAppForm<RestorePasswordFormValues>({
     defaultValues: { email: '' },
-    validationSchema: refreshPassword,
+    validationSchema: restorePasswordInit,
     mode: 'onChange',
   });
 
@@ -34,9 +35,9 @@ const RestorePasswordForm: FC<Props> = ({ onSubmit }) => {
           wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
-        <AuthSubmitButton isLoading={false} disabled={true || !isValid} name="Send" />
+        <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Send" />
       </form>
-      <ContinueWithParagraph linkTitle="Back to login" prompt="Changed your mind?" route={AppRoute.SIGN_IN} />
+      <ContinueWithParagraph linkTitle="Back to login" prompt="Changed your mind?" route={AppRoutes.SIGN_IN} />
     </>
   );
 };

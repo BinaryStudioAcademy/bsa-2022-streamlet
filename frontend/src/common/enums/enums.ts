@@ -1,6 +1,6 @@
 export { ApiPath, AuthApiPath, NotificationApiPath } from './api/api';
 
-export { AppRoute, DataStatus, ENV, RoutesWithoutHeader } from './app/app';
+export * from './app/app';
 
 export { IconColor, IconName, MenuOptions } from './component/component';
 

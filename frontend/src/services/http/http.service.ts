@@ -13,10 +13,12 @@ class Http {
     query,
     preInterceptors = this.defaultPreInterceptors,
     postInterceptors = this.defaultPostInterceptors,
+    abortSignal,
   }: {
     url: string;
     query?: Record<string, unknown>;
     options?: Partial<HttpOptions>;
+    abortSignal?: AbortSignal;
     preInterceptors?: PreInterceptor[];
     postInterceptors?: PostInterceptor[];
   }): Promise<T> {
@@ -27,6 +29,9 @@ class Http {
       headers,
       body: payload,
     };
+    if (abortSignal) {
+      requestInit.signal = abortSignal;
+    }
     for (const preInterceptor of preInterceptors) {
       [url, requestInit] = await preInterceptor({ url, options: requestInit });
     }

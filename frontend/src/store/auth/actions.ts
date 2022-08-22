@@ -13,13 +13,12 @@ import { HttpError } from 'exceptions/exceptions';
 import { authApi, tokensStorageService } from 'services/services';
 import { ActionType } from './common';
 
-const signUp = createAsyncThunk<UserBaseResponseDto, UserSignUpRequestDto, AsyncThunkConfig>(
+const signUp = createAsyncThunk<void, UserSignUpRequestDto, AsyncThunkConfig>(
   ActionType.SIGN_UP,
   async (registerPayload, { extra }) => {
     const { authApi } = extra;
 
-    const { user } = await authApi.signUp(registerPayload);
-    return user;
+    await authApi.signUp(registerPayload);
   },
 );
 

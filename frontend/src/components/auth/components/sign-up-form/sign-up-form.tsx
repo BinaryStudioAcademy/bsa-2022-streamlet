@@ -1,4 +1,3 @@
-import { AppRoute } from 'common/enums/enums';
 import { FC, UserSignUpRequestDto } from 'common/types/types';
 import { Input, PasswordInput } from 'components/common/common';
 import { useAppForm } from 'hooks/hooks';
@@ -8,6 +7,7 @@ import { AuthSubmitButton, ContinueWithParagraph, GoogleButton } from '../common
 import { DEFAULT_SIGN_UP_PAYLOAD } from './common';
 
 import formStyles from '../form-controls.module.scss';
+import { AppRoutes } from 'common/enums/enums';
 
 type Props = {
   onSubmit: (formValues: UserSignUpRequestDto) => void;
@@ -62,7 +62,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
           label="Confirm password"
         />
-        <ContinueWithParagraph prompt="Already have an account?" linkTitle="Sign in" route={AppRoute.SIGN_IN} />
+        <ContinueWithParagraph prompt="Already have an account?" linkTitle="Sign in" route={AppRoutes.SIGN_IN} />
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Sign up" />
       </form>
       <p>or continue with</p>

@@ -1,6 +1,7 @@
 import * as Joi from 'joi';
 import { UserSignUpRequestDto } from '~/common/types/types';
 import { UserValidationMessage } from '~/common/enums/enums';
+import { passwordCreationSchema } from './password-creation-schema';
 
 const userSignUp = Joi.object<UserSignUpRequestDto, true>({
   email: Joi.string()
@@ -11,13 +12,10 @@ const userSignUp = Joi.object<UserSignUpRequestDto, true>({
     .messages({
       'string.email': UserValidationMessage.EMAIL_WRONG,
       'string.empty': UserValidationMessage.EMAIL_REQUIRE,
+      'any.required': UserValidationMessage.EMAIL_REQUIRE,
       'string.min': UserValidationMessage.EMAIL_WRONG_LENGTH,
     }),
-  password: Joi.string().trim().min(8).max(16).required().messages({
-    'string.empty': UserValidationMessage.PASSWORD_REQUIRE,
-    'string.min': UserValidationMessage.PASSWORD_WRONG_LENGTH,
-    'string.max': UserValidationMessage.PASSWORD_WRONG_LENGTH,
-  }),
+  password: passwordCreationSchema,
   passwordConfirm: Joi.string().valid(Joi.ref('password')).required().messages({
     'any.only': UserValidationMessage.PASSWORDS_NOT_MATCH,
     'any.required': UserValidationMessage.PASSWORD_CONFIRM_REQUIRE,
@@ -32,7 +30,8 @@ const userSignUp = Joi.object<UserSignUpRequestDto, true>({
       'string.empty': UserValidationMessage.USERNAME_REQUIRE,
       'string.min': UserValidationMessage.USERNAME_WRONG_LENGTH,
       'string.max': UserValidationMessage.USERNAME_WRONG_LENGTH,
-      'string.pattern.invert.base': UserValidationMessage.USERNAME_WRONG,
+      'string.pattern.invert.base': UserValidationMessage.USERNAME_WRONG_REGEX,
+      'any.required': UserValidationMessage.USERNAME_REQUIRE,
     }),
 });
 

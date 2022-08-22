@@ -1,6 +1,6 @@
 import { MouseEvent, FormEvent } from 'react';
 import { FC } from 'common/types/types';
-import { MenuOptions, AppRoute, SearchQueryParam } from 'common/enums/enums';
+import { MenuOptions, AppRoutes, SearchQueryParam } from 'common/enums/enums';
 import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate, useRef } from 'hooks/hooks';
 import { authActions, searchActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
@@ -41,12 +41,12 @@ const HeaderContainer: FC = () => {
     try {
       await dispatch(authActions.signOut());
     } finally {
-      navigate(AppRoute.SIGN_IN, { replace: true });
+      navigate(AppRoutes.SIGN_IN, { replace: true });
     }
   }, [dispatch, navigate]);
 
   function handleClickSignIn(): void {
-    navigate(AppRoute.SIGN_IN, { replace: true });
+    navigate(AppRoutes.SIGN_IN, { replace: true });
   }
 
   function handleClickSignOut(): void {
@@ -80,7 +80,7 @@ const HeaderContainer: FC = () => {
     if (searchText) {
       handleClearActiveFilterIds();
       const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
-      navigate(`${AppRoute.SEARCH}?${searchUrlParams.toString()}`, { replace: true });
+      navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`, { replace: true });
     }
   };
 

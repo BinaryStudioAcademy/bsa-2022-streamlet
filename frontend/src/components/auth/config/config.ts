@@ -7,9 +7,7 @@ import {
   matchAuthNotificationWithTitle,
 } from './auth-notification/auth-notification';
 
-const allAuthNotifications: Record<AuthNotification, ToastNotificationParams> = [
-  AuthNotification.SIGN_UP_SUCCESS,
-].reduce(
+const allAuthNotifications: Record<AuthNotification, ToastNotificationParams> = Object.values(AuthNotification).reduce(
   (prev, curr) => ({
     ...prev,
     [curr]: {
@@ -17,6 +15,7 @@ const allAuthNotifications: Record<AuthNotification, ToastNotificationParams> = 
       iconName: matchAuthNotificationWithIconName[curr],
       title: matchAuthNotificationWithTitle[curr],
       message: matchAuthNotificationWithMessage[curr],
+      durationMs: 10_000,
     },
   }),
   {} as Record<AuthNotification, ToastNotificationParams>,

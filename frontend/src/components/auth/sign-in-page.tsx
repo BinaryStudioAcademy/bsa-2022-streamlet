@@ -1,4 +1,4 @@
-import { AppRoute, ErrorMessage } from 'common/enums/enums';
+import { AppRoutes, ErrorMessage } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { useAppDispatch, useState, useNavigate, useAppSelector, useEffect } from 'hooks/hooks';
 import { store } from 'store/store';
@@ -33,7 +33,7 @@ const SignInPage: FC = () => {
 
   useEffect(() => {
     if (hasUser) {
-      navigate(AppRoute.ROOT, { replace: true });
+      navigate(AppRoutes.ROOT, { replace: true });
     }
   }, [hasUser, navigate]);
 
