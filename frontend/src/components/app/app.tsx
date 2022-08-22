@@ -15,6 +15,7 @@ import { VideoPageContainer } from 'pages/video/video-page-container';
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
 
 import styles from './app.module.scss';
+import { ProtectedRoute } from 'components/common/protected-route/protected-route';
 
 const App: FC = () => {
   const { pathname } = useLocation();
@@ -35,8 +36,8 @@ const App: FC = () => {
           <StudioSidebar />
           <div className={styles['main-content']}>
             <Routes>
-              <Route path={AppRoute.STUDIO} element={<StudioHome />} />
-              <Route path={AppRoute.STUDIO_ANALYTICS} element={<StudioAnalytics />} />
+              <Route path={AppRoute.STUDIO} element={<ProtectedRoute element={<StudioHome />} />} />
+              <Route path={AppRoute.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />} />
             </Routes>
           </div>
         </div>
@@ -54,11 +55,12 @@ const App: FC = () => {
                 <Route path={AppRoute.HISTORY} element="History" />
                 <Route path={AppRoute.FOLLOWING} element="Following" />
                 <Route path={AppRoute.BROWSE} element="Browse" />
+                <Route
+                  path={AppRoute.PROFILE_PREFERENCE}
+                  element={<ProtectedRoute element={<ProfilePreferencesPage />} />}
+                />
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
-                <Route path={AppRoute.STUDIO} element={<Studio />} />
-                <Route path={AppRoute.ANALYTICS} element={<StudioAnalytics />} />
-                <Route path={AppRoute.PROFILE_PREFERENCE} element={<ProfilePreferencesPage />} />
                 <Route path="video-page" element={<VideoPageContainer />} />
                 <Route path={AppRoute.ANY} element={<NotFound />} />
               </Routes>
