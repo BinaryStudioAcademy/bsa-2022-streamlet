@@ -8,10 +8,10 @@ import { ErrorBox } from 'components/common/errors/errors';
 import clsx from 'clsx';
 
 type Props = {
-  pageTitle: 'Sign in' | 'Sign up' | 'Restore password';
+  pageTitle: 'Sign in' | 'Sign up' | 'Restore password' | 'Account Verification';
   topLevelError?: string | undefined;
   children: React.ReactNode;
-  className: string;
+  className?: string;
 };
 
 const AuthContainer: FC<Props> = ({ children, pageTitle, className, topLevelError }) => {

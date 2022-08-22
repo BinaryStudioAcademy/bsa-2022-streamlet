@@ -1,10 +1,10 @@
-import { FC } from 'common/types/types';
-import { Link } from 'react-router-dom';
 import { FormEvent, MouseEvent, RefObject } from 'react';
-import { AppRoute, IconName, MenuOptions } from 'common/enums/enums';
-import { Icon } from '../icon';
+import { Link } from 'react-router-dom';
+import { FC } from 'common/types/types';
+import { AppRoutes, IconName, MenuOptions } from 'common/enums/enums';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import { closeSidebar, openSidebar } from 'store/layout/actions';
+import { Icon } from 'components/common/common';
 
 import styles from './header.module.scss';
 
@@ -19,9 +19,9 @@ interface HeaderProps {
   isLogged: boolean;
   isMenuOpen: boolean;
   searchValue: string;
-  searchInputId: string;
+  searchInputEl: RefObject<HTMLInputElement>;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
-  handleClickSignIn(e: MouseEvent<HTMLElement>): void;
+  handleClickSignIn(): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
@@ -35,7 +35,7 @@ const Header: FC<HeaderProps> = ({
   isLogged,
   isMenuOpen,
   searchValue,
-  searchInputId,
+  searchInputEl,
   handleClickSignIn,
   handleClickUserMenu,
   handleChangeInputSearch,
@@ -64,7 +64,7 @@ const Header: FC<HeaderProps> = ({
           <button onClick={handleClickBurgerMenu} className={styles['burger-menu']}>
             <Icon name={IconName.BURGER_MENU} width="30" height="30" />
           </button>
-          <Link className={styles['logo-link']} to={AppRoute.ROOT}>
+          <Link className={styles['logo-link']} to={AppRoutes.ROOT}>
             <Icon name={IconName.MAIN_LOGO} width="23" height="23" />
             <p className={styles['main-name']}>streamlet</p>
           </Link>
@@ -73,7 +73,7 @@ const Header: FC<HeaderProps> = ({
           <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
           <input
             className={styles['search-input']}
-            id={searchInputId}
+            ref={searchInputEl}
             type="text"
             value={searchValue}
             onChange={handleChangeInputSearch}
