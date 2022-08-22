@@ -6,6 +6,6 @@ export interface UserRepository {
   getByEmail(email: string): Promise<User | null>;
   getById(id: string): Promise<User | null>;
   getUserByUsernameOrEmail(email: string, username: string): Promise<User | null>;
-
+  updateUserName(userId: string, username: string): Promise<User | null>;
   createUser(userRequestDto: UserSignUpRequestDto): Promise<UserBaseResponseDto>;
 }

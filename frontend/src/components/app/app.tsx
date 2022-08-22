@@ -9,6 +9,7 @@ import { NotFound } from '../not-found-page/not-found';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
 import { StudioHome, StudioAnalytics, StudioSidebar } from '../studio';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
+import { ProfilePreferencesPage } from '../../pages/profile-preferences-page/profile-preferences-page';
 import { VideoCardTest } from './tests/video-card/video-card';
 import { VideoPageContainer } from 'pages/video/video-page-container';
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
@@ -55,6 +56,9 @@ const App: FC = () => {
                 <Route path={AppRoute.BROWSE} element="Browse" />
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
+                <Route path={AppRoute.STUDIO} element={<Studio />} />
+                <Route path={AppRoute.ANALYTICS} element={<StudioAnalytics />} />
+                <Route path={AppRoute.PROFILE_PREFERENCE} element={<ProfilePreferencesPage />} />
                 <Route path="video-page" element={<VideoPageContainer />} />
                 <Route path={AppRoute.ANY} element={<NotFound />} />
               </Routes>

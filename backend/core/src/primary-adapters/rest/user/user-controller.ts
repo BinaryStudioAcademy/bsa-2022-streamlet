@@ -1,6 +1,6 @@
 import { BaseHttpController, controller, httpGet, httpPost, requestBody } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES, ImageUploadResponseDto, UserUploadRequestDto } from '~/shared/types/types';
+import { CONTAINER_TYPES } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
 import { authenticationMiddleware } from '../middleware';
@@ -64,51 +64,6 @@ export class UserController extends BaseHttpController {
   @httpGet('/', authenticationMiddleware)
   public getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
-  }
-
-  //NOTE: this route should be private and moved to user profile controller in future to set user avatar in db
-  /**
-   * @swagger
-   * /users/upload:
-   *    post:
-   *      tags:
-   *      - users
-   *      operationId: upload
-   *      description: Returns Image Store API Upload Response
-   *      security:
-   *      - bearerAuth: []
-   *      requestBody:
-   *        description: Image in base64 format
-   *        required: true
-   *        content:
-   *          application/json:
-   *            schema:
-   *              type: object
-   *              properties:
-   *                base64Str:
-   *                  type: string
-   *                  format: base64
-   *      responses:
-   *        200:
-   *          content:
-   *            application/json:
-   *              description: Successful operation
-   *              schema:
-   *                type: object
-   *                properties:
-   *                  url:
-   *                    type: string
-   *                    format: uri
-   *                  format:
-   *                    type: string
-   *                  width:
-   *                    type: number
-   *                  height:
-   *                    type: number
-   */
-  @httpPost('/upload')
-  public upload(@requestBody() body: UserUploadRequestDto): Promise<ImageUploadResponseDto> {
-    return this.userService.uploadAvatar(body);
   }
 
   //NOTE: this routes only for testing and in future should removed or modified

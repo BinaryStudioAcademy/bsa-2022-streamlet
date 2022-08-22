@@ -17,3 +17,7 @@ export { SearchQueryParam } from './search/search';
 export { StorageKeys } from './storage/storage';
 
 export { ToastNotificationType } from './toast-notification/toast-notification';
+
+export { ProfileApiPath } from './api/api';
+
+export { ImageUploadErrorMessage } from './image/image';

@@ -14,6 +14,7 @@ enum AppRoute {
   STUDIO_CHANNEL = '/studio/channel',
   STUDIO_STREAM_$ID = '/studio/stream/:id',
   SEARCH = '/search',
+  PROFILE_PREFERENCE = '/profile-preference',
 }
 
 enum RoutesWithStudioHeader {

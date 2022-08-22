@@ -24,12 +24,17 @@ export { DefaultRequestParam } from './request/request';
 export { ChannelSubscriptionResponseDto } from './sidebar/sidebar';
 
 export {
-  UserBaseResponseDto,
-  UserSignInRequestDto,
-  UserSignInResponseDto,
-  UserSignUpRequestDto,
-  UserSignUpResponseDto,
+  type UserSignUpRequestDto,
+  type UserSignUpResponseDto,
+  type UserSignInRequestDto,
+  type UserSignInResponseDto,
+  type UserBaseResponseDto,
+  type UserUploadResponseDto,
+  type UserUploadRequestDto,
 } from './user/user';
+
+export * from './profile/profile';
+export { type AvatarImgValue, ImageStorePresetType } from './image/image';
 
 export { ValidationSchema } from './validation/validation';
 
