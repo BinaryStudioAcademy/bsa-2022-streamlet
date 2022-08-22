@@ -9,7 +9,7 @@
   align-items: center;
   padding: 15px 8px;
   color: var(--white-text-color);
-  border-bottom: 1px solid var(--notifications-border);
+  border-bottom: 1px solid var(--primary-text-color);
 }
 
 .text-notification {
@@ -17,7 +17,7 @@
   flex-direction: column;
   padding: 15px 24px 15px 53px;
   color: var(--white-text-color);
-  border-bottom: 1px solid var(--notifications-border);
+  border-bottom: 1px solid var(--primary-text-color);
 }
 
 .text-notification-message {

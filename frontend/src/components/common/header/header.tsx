@@ -1,21 +1,16 @@
 import { FC } from 'common/types/types';
 import { Link } from 'react-router-dom';
 import { FormEvent, MouseEvent, RefObject } from 'react';
-import { AppRoute, IconName, MenuOptions, ThemeMenuOptions } from 'common/enums/enums';
+import { AppRoute, IconName, MenuOptions } from 'common/enums/enums';
 import { Icon } from '../icon';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import { closeSidebar, openSidebar } from 'store/layout/actions';
 
 import styles from './header.module.scss';
+import { ToggleSwitch } from '../toggle-switch';
 
 interface MenuOption {
   type: MenuOptions;
-  text: string;
-  icon: string;
-  onClick?: (e: MouseEvent) => void;
-}
-interface ThemeMenuOption {
-  type: ThemeMenuOptions;
   text: string;
   icon: string;
   onClick?: (e: MouseEvent) => void;
@@ -24,26 +19,24 @@ interface ThemeMenuOption {
 interface HeaderProps {
   isLogged: boolean;
   isMenuOpen: boolean;
-  isThemeMenuOpen: boolean;
   searchValue: string;
   searchInputId: string;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
   handleClickSignIn(e: MouseEvent<HTMLElement>): void;
+  handleClickThemeSwitch(): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
   options: MenuOption[];
-  themeOptions: ThemeMenuOption[];
   userAvatar: string;
   menuRef: RefObject<HTMLDivElement>;
-  themeMenuRef: RefObject<HTMLDivElement>;
   notificationDropdownContent: React.ReactNode;
+  themeValue: boolean;
 }
 
 const Header: FC<HeaderProps> = ({
   isLogged,
   isMenuOpen,
-  isThemeMenuOpen,
   searchValue,
   searchInputId,
   handleClickSignIn,
@@ -51,12 +44,12 @@ const Header: FC<HeaderProps> = ({
   handleChangeInputSearch,
   handleClearInputSearch,
   handleSubmitSearch,
+  handleClickThemeSwitch,
   options,
-  themeOptions,
   userAvatar,
   menuRef,
-  themeMenuRef,
   notificationDropdownContent,
+  themeValue,
 }) => {
   const isSidebarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
   const dispatch = useAppDispatch();
@@ -130,18 +123,9 @@ const Header: FC<HeaderProps> = ({
                     <li key={option.type} className={styles['option']} onClick={option.onClick}>
                       <Icon name={option.icon} />
                       <span>{option.text}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {isThemeMenuOpen && (
-              <div ref={themeMenuRef} className={styles['user-menu']}>
-                <ul className={styles['option-list']}>
-                  {themeOptions.map((option) => (
-                    <li key={option.type} className={styles['option']} onClick={option.onClick}>
-                      <Icon name={option.icon} />
-                      <span>{option.text}</span>
+                      {option.type === MenuOptions.Theme && (
+                        <ToggleSwitch defaultValue={themeValue} onToggle={handleClickThemeSwitch} />
+                      )}
                     </li>
                   ))}
                 </ul>

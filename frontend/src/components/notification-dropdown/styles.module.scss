@@ -45,7 +45,7 @@
   width: 400px;
   height: 300px;
   background-color: var(--gray-300-header-menu-background);
-  border: 1px solid var(--gray-300-header-menu-background);
+  border: 1px solid var(--gray-200-header-menu-background);
   border-radius: 5px;
   cursor: default;
 
@@ -77,7 +77,7 @@
   align-items: center;
   padding: 8px 16px;
   color: var(--white-text-color);
-  border-bottom: 2px solid var(--gray-200-input-background);
+  border-bottom: 2px solid var(--primary-text-color);
 }
 
 .title {
