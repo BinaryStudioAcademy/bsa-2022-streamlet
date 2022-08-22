@@ -1,5 +1,5 @@
 import { HttpError } from 'exceptions/exceptions';
-import { HttpHeader, HttpMethod } from 'common/enums/enums';
+import { HttpCode, HttpHeader, HttpMethod } from 'common/enums/enums';
 import { HttpOptions } from 'common/types/types';
 import { getStringifiedQuery } from 'helpers/helpers';
 import { PostInterceptor, PreInterceptor } from './interceptors/interceptor';
@@ -13,10 +13,12 @@ class Http {
     query,
     preInterceptors = this.defaultPreInterceptors,
     postInterceptors = this.defaultPostInterceptors,
+    abortSignal,
   }: {
     url: string;
     query?: Record<string, unknown>;
     options?: Partial<HttpOptions>;
+    abortSignal?: AbortSignal;
     preInterceptors?: PreInterceptor[];
     postInterceptors?: PostInterceptor[];
   }): Promise<T> {
@@ -27,6 +29,9 @@ class Http {
       headers,
       body: payload,
     };
+    if (abortSignal) {
+      requestInit.signal = abortSignal;
+    }
     for (const preInterceptor of preInterceptors) {
       [url, requestInit] = await preInterceptor({ url, options: requestInit });
     }
@@ -40,6 +45,10 @@ class Http {
         makeRequestFn: makeRequest,
         response,
       });
+    }
+
+    if (response.status === HttpCode.NO_CONTENT) {
+      return {} as T;
     }
 
     return this.checkStatus(response)

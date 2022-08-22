@@ -1,23 +1,33 @@
-enum AppRoute {
-  ROOT = '/',
-  BROWSE = '/browse',
-  FOLLOWING = '/following',
-  HISTORY = '/history',
-  SIGN_IN = '/sign-in',
-  SIGN_UP = '/sign-up',
-  RESTORE_PASSWORD = '/restore-password',
-  ANY = '*',
-  VIDEO_$ID = '/video/:videoId',
-  CHANNEL_$ID = '/channel/:channelId',
-  STUDIO = '/studio',
-  ANALYTICS = '/analytics',
-  SEARCH = '/search',
-}
+import { commonFrontendPaths } from 'shared/build/common/enums/enums';
 
-enum RoutesWithoutHeader {
-  SIGN_IN = '/sign-in',
-  SIGN_UP = '/sign-up',
-  RESTORE_PASSWORD = '/restore-password',
-}
+const AppRoutes = {
+  ROOT: '/',
+  BROWSE: '/browse',
+  FOLLOWING: '/following',
+  HISTORY: '/history',
+  SIGN_IN: '/sign-in',
+  SIGN_UP: '/sign-up',
+  RESTORE_PASSWORD_INIT: '/restore-password',
+  RESTORE_PASSWORD_CONFIRM: commonFrontendPaths.auth.RESET_PASSWORD_CONFIRM.path,
+  ACCOUNT_VERIFICATION_CONFIRM: commonFrontendPaths.auth.ACCOUNT_VERIFICATION_CONFIRM.path,
+  ANY: '*',
+  VIDEO_$ID: '/video/:videoId',
+  CHANNEL_$ID: '/channel/:channelId',
+  STUDIO: '/studio',
+  ANALYTICS: '/analytics',
+  SEARCH: '/search',
+} as const;
 
-export { AppRoute, RoutesWithoutHeader };
+type AppRoute = typeof AppRoutes[keyof typeof AppRoutes];
+
+const RoutesWithoutHeader = {
+  SIGN_IN: '/sign-in',
+  SIGN_UP: '/sign-up',
+  RESTORE_PASSWORD_INIT: '/restore-password',
+  RESTORE_PASSWORD_CONFIRM: commonFrontendPaths.auth.RESET_PASSWORD_CONFIRM.path,
+  ACCOUNT_VERIFICATION_CONFIRM: commonFrontendPaths.auth.ACCOUNT_VERIFICATION_CONFIRM.path,
+} as const;
+
+type RouteWithoutHeader = typeof RoutesWithoutHeader[keyof typeof RoutesWithoutHeader];
+
+export { AppRoute, AppRoutes, RouteWithoutHeader, RoutesWithoutHeader };
