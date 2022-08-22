@@ -30,6 +30,7 @@ import { ReactComponent as Warning } from '../../../assets/img/warning.svg';
 import { ReactComponent as Success } from '../../../assets/img/success.svg';
 import { ReactComponent as SendMessage } from '../../../assets/img/send-message.svg';
 import { ReactComponent as Emoji } from '../../../assets/img/emoji.svg';
+import { ReactComponent as TV } from '../../../assets/img/tv.svg';
 
 import clsx from 'clsx';
 
@@ -149,17 +150,20 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
       return <Close {...commonProps} />;
     }
 
-    case IconName.EXCLAMATION:
+    case IconName.EXCLAMATION: {
       return <Exclamation {...commonProps} />;
+    }
 
     case IconName.INFO:
       return <Info {...commonProps} />;
 
-    case IconName.WARNING:
+    case IconName.WARNING: {
       return <Warning {...commonProps} />;
+    }
 
-    case IconName.SUCCESS:
+    case IconName.SUCCESS: {
       return <Success {...commonProps} />;
+    }
 
     case IconName.SEND_MESSAGE: {
       return <SendMessage {...commonProps} />;
@@ -169,11 +173,17 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
       return <Emoji {...commonProps} />;
     }
 
-    case IconName.ANALYTICS:
+    case IconName.ANALYTICS: {
       return <Analytics {...commonProps} />;
+    }
 
-    case IconName.MARK_AS_READ:
+    case IconName.MARK_AS_READ: {
       return <MarkAsRead {...commonProps} />;
+    }
+
+    case IconName.TV: {
+      return <TV {...commonProps} />;
+    }
 
     default: {
       return <TimeAgo {...commonProps} />;

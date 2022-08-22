@@ -29,6 +29,7 @@ enum IconName {
   SUCCESS = 'success',
   SEND_MESSAGE = 'send-message',
   EMOJI = 'emoji',
+  TV = 'tv',
 }
 
 export { IconName };

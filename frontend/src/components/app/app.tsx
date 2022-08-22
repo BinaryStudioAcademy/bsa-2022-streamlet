@@ -7,7 +7,7 @@ import { Search } from 'components/search/search';
 import { SidebarContainer } from 'components/common/sidebar/sidebar-container';
 import { NotFound } from '../not-found-page/not-found';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
-import { Studio, StudioAnalytics } from '../studio';
+import { StudioHome, StudioAnalytics, StudioSidebar } from '../studio';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 import { VideoCardTest } from './tests/video-card/video-card';
 import { VideoPageContainer } from 'pages/video/video-page-container';
@@ -30,10 +30,15 @@ const App: FC = () => {
         </Routes>
       )}
       {isHasStudioNavigation && (
-        <Routes>
-          <Route path={AppRoute.STUDIO} element={<Studio />} />
-          <Route path={AppRoute.STUDIO_ANALYTICS} element={<StudioAnalytics />} />
-        </Routes>
+        <div className={styles['studio-content-section']}>
+          <StudioSidebar />
+          <div className={styles['main-content']}>
+            <Routes>
+              <Route path={AppRoute.STUDIO} element={<StudioHome />} />
+              <Route path={AppRoute.STUDIO_ANALYTICS} element={<StudioAnalytics />} />
+            </Routes>
+          </div>
+        </div>
       )}
       {isHasDefaultNavigation && (
         <div className={styles['layout-wrapper']}>

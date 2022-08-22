@@ -9,6 +9,16 @@
   height: calc(100vh - 82px);
 }
 
+.studio-content-section {
+  display: flex;
+  height: 100vh;
+}
+
+.main-content {
+  width: 100%;
+  height: 100%;
+}
+
 .content-section .main-content {
   flex: 1;
   color: var(--white-text-color);

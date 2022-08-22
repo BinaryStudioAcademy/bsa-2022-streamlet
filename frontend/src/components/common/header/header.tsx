@@ -101,9 +101,9 @@ const Header: FC<HeaderProps> = ({
               <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
             </button>
             <div className={styles['control-icons']}>
-              <button className={styles['btn-go-stream']}>
+              <Link className={styles['btn-go-stream']} to={AppRoute.STUDIO}>
                 <Icon name={IconName.CAMERA} width="30" height="24" />
-              </button>
+              </Link>
               {notificationDropdownContent}
             </div>
             <button
