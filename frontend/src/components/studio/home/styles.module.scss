@@ -23,9 +23,16 @@
 }
 
 .button {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
   width: 150px;
   height: 150px;
+  padding: 10px;
   color: white;
+  line-height: 16px;
+  text-transform: uppercase;
   background-color: var(--brand-green-color);
 
   &:hover {
