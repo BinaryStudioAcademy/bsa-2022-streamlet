@@ -9,3 +9,4 @@ export * from './channel/channel';
 export * from './components/components';
 export * from './request/request';
 export * from './notification/notification';
+export * from './video/video';

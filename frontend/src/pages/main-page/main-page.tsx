@@ -6,7 +6,7 @@ import styles from './main-page.module.scss';
 
 interface MainPageProps {
   filterBlockProps: FilterBlockProps;
-  blocksVideo: Array<VideoBlockProps>;
+  blocksVideo: Array<VideoBlockProps> | [];
 }
 
 const MainPage: FC<MainPageProps> = ({ filterBlockProps, blocksVideo }) => (

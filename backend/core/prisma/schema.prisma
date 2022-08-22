@@ -68,10 +68,10 @@ model Video {
   name                  String
   description           String          @default("")
   status                StreamingStatus @default(pending)
-  publishedAt           DateTime
-  scheduledStreamDate   DateTime
-  poster                String
-  duration              Int
+  publishedAt           DateTime        @default(now())
+  scheduledStreamDate   DateTime        @default(now())
+  poster                String          @default("")
+  duration              Int             @default(0)
   videoPath             String
   liveViews             Int             @default(0)
   videoViews            Int             @default(0)
@@ -118,7 +118,7 @@ model VideoComment {
 model Channel {
   id            String         @id @default(uuid())
   name          String
-  avatar        String
+  avatar        String         @default("")
   description   String         @default("")
   videos        Video[]
   contactEmail  String         @default("")

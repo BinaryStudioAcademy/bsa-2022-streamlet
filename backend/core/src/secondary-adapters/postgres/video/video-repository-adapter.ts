@@ -12,6 +12,16 @@ export class VideoRepositoryAdapter implements VideoRepository {
   }
 
   getAll(): Promise<Video[]> {
-    return this.prismaClient.video.findMany();
+    return this.prismaClient.video.findMany({
+      include: {
+        channel: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+    });
   }
 }

@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
-import { Video } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { VideoRepository } from '~/core/video/port/video-repository';
+import { Video } from '@prisma/client';
 
 @injectable()
 export class VideoService {

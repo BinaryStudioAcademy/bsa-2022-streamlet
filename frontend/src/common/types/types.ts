@@ -33,4 +33,6 @@ export {
 
 export { ValidationSchema } from './validation/validation';
 
+export { BaseVideoResponseDto } from './video/video';
+
 declare module 'react-notifications-component';

@@ -4,7 +4,6 @@ import { CONTAINER_TYPES } from '~/shared/types/types';
 import { VideoService } from '~/core/video/application/video-service';
 import { Video } from '@prisma/client';
 
-//add swagger!
 @controller('/videos')
 export class VideoController extends BaseHttpController {
   private videoService: VideoService;
