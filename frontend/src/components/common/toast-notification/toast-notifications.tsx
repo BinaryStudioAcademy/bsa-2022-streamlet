@@ -1,7 +1,7 @@
 import { Store, iNotification, NotificationContent } from 'react-notifications-component';
 import 'react-notifications-component/dist/scss/notification.scss';
 import { ToastNotification } from './toast-notification';
-import { ToastNotificationParams } from './config';
+import { ToastNotificationParams } from 'common/types/types';
 
 const createToastNotification = (props: ToastNotificationParams): void => {
   const { type } = props;

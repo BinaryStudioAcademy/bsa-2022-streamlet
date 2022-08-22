@@ -34,3 +34,4 @@ export {
 export { ValidationSchema } from './validation/validation';
 
 declare module 'react-notifications-component';
+export { type ToastNotificationParams } from './toast-notification/toast-notifications';

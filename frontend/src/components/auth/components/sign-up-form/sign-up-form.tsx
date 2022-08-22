@@ -15,9 +15,10 @@ type Props = {
 };
 
 const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
-  const { control, errors, handleSubmit } = useAppForm<UserSignUpRequestDto>({
+  const { control, errors, handleSubmit, isValid } = useAppForm<UserSignUpRequestDto>({
     defaultValues: DEFAULT_SIGN_UP_PAYLOAD,
     validationSchema: userSignUpValidationSchema,
+    mode: 'onChange',
   });
 
   return (
@@ -25,6 +26,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
       <form onSubmit={handleSubmit(onSubmit)} className={formStyles['form-container']}>
         <Input
           wrapperClassName={formStyles['form-input']}
+          inputErrorClassName={formStyles['input-error']}
           type="email"
           label="Email"
           placeholder="Enter your email"
@@ -34,6 +36,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
         />
         <Input
           wrapperClassName={formStyles['form-input']}
+          inputErrorClassName={formStyles['input-error']}
           type="text"
           label="Username"
           placeholder="Enter your username"
@@ -43,14 +46,24 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
         />
         <PasswordInput
           wrapperClassName={formStyles['form-input']}
+          inputWrapperErrorClassName={formStyles['input-error']}
           placeholder="Password"
           control={control}
           name="password"
           errors={errors}
           label="Password"
         />
+        <PasswordInput
+          wrapperClassName={formStyles['form-input']}
+          inputWrapperErrorClassName={formStyles['input-error']}
+          placeholder="Confirm password"
+          control={control}
+          name="passwordConfirm"
+          errors={errors}
+          label="Confirm password"
+        />
         <ContinueWithParagraph prompt="Already have an account?" linkTitle="Sign in" route={AppRoute.SIGN_IN} />
-        <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign up" />
+        <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Sign up" />
       </form>
       <p>or continue with</p>
       <GoogleButton disabled={isLoading} />

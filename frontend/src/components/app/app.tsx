@@ -1,26 +1,39 @@
 import { FC } from 'common/types/types';
-import { MainPage } from 'pages/main-page';
 import { AppRoute } from 'common/enums/enums';
-import { Routes, Route, HeaderContainer } from 'components/common/common';
-import { useLocation } from 'react-router-dom';
-import { Search } from 'components/search/search';
-import { SidebarContainer } from 'components/common/sidebar/sidebar-container';
-import { isRouteHaveHeader } from 'helpers/routes/is-route-have-header';
-import { NotFound } from '../not-found-page/not-found';
-import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
-import { Studio, StudioAnalytics } from '../studio';
+import { useLocation, useEffect, useAppDispatch } from 'hooks/hooks';
+import { tokensStorageService } from 'services/services';
+import { authActions } from 'store/actions';
+import { MainPage } from 'pages/main-page';
+import { Routes, Route, HeaderContainer, SidebarContainer } from 'components/common/common';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
+import { Studio, StudioAnalytics } from 'components/studio';
+import { Search } from 'components/search/search';
+import { NotFound } from 'components/not-found-page/not-found';
+import { ReactNotifications } from 'react-notifications-component';
+import { isRouteHaveHeader } from 'helpers/routes/is-route-have-header';
+import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
 import { VideoCardTest } from './tests/video-card/video-card';
 import { VideoPageContainer } from 'pages/video/video-page-container';
 
 import styles from './app.module.scss';
 
 const App: FC = () => {
+  const dispatch = useAppDispatch();
   const { pathname } = useLocation();
+
+  const hasToken = Boolean(tokensStorageService.getTokens().accessToken);
+
   const isHaveHeader = isRouteHaveHeader(pathname);
+
+  useEffect(() => {
+    if (hasToken) {
+      dispatch(authActions.loadCurrentUser());
+    }
+  }, [hasToken, dispatch]);
 
   return (
     <>
+      <ReactNotifications />
       {isHaveHeader && (
         <Routes>
           <Route path={AppRoute.SIGN_UP} element={<SignUpPage />} />

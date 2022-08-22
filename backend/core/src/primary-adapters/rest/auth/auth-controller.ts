@@ -1,5 +1,5 @@
 import { inject } from 'inversify';
-import { BaseHttpController, controller, httpPost, request, requestBody } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, httpPost, request, requestBody } from 'inversify-express-utils';
 import { ApiPath, AuthApiPath } from '~/shared/enums/api/api';
 import {
   CONTAINER_TYPES,
@@ -22,6 +22,7 @@ import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-
 import { Unauthorized } from '~/shared/exceptions/unauthorized';
 import { exceptionMessages } from '~/shared/enums/exceptions';
 import { DuplicationError } from '~/shared/exceptions/duplication-error';
+import { NotFound } from '~/shared/exceptions/not-found';
 
 /**
  * @swagger
@@ -111,6 +112,8 @@ export class AuthController extends BaseHttpController {
    *                  type: string
    *                password:
    *                  type: string
+   *                passwordConfirm:
+   *                  type: string
    *      responses:
    *        200:
    *          description: Successful operation
@@ -147,6 +150,7 @@ export class AuthController extends BaseHttpController {
         throw new DuplicationError(exceptionMessages.auth.USER_EMAIL_ALREADY_EXISTS);
       }
     }
+    delete userRequestDto.passwordConfirm;
     const user = await this.userService.createUser(userRequestDto);
     const accessToken = await generateJwt({ payload: user });
     return {
@@ -312,6 +316,69 @@ export class AuthController extends BaseHttpController {
   public async signOut(@request() req: ExtendedAuthenticatedRequest): Promise<void> {
     const user = req.user;
     return this.refreshTokenService.removeForUser(user.id);
+  }
+
+  /**
+   * @swagger
+   * /auth/user:
+   *    get:
+   *      tags:
+   *      - auth
+   *      security:
+   *      - bearerAuth: []
+   *      operationId: getCurrentUser
+   *      description: Get current user info
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  user:
+   *                    $ref: '#/components/schemas/UserBaseResponse'
+   *                  tokens:
+   *                    $ref: '#/components/schemas/TokenPair'
+   *        400:
+   *          description: Invalid request format.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   *        401:
+   *          description: Incorrect credentials.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   *        404:
+   *          description: User not found.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   */
+  @httpGet(AuthApiPath.USER, authenticationMiddleware)
+  public async getCurrentUser(@request() req: ExtendedAuthenticatedRequest): Promise<UserSignInResponseDto> {
+    const user = await this.userService.getUserByEmail(req.user.email);
+    if (!user) {
+      throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
+    }
+    const accessToken = await generateJwt({ payload: trimUser(user) });
+    return {
+      user: trimUser(user),
+      tokens: {
+        accessToken,
+        refreshToken: await this.userService.createRefreshToken(user.id),
+      },
+    };
   }
 
   /**

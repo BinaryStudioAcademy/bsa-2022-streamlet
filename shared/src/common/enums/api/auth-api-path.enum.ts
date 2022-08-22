@@ -4,6 +4,7 @@ enum AuthApiPath {
   SIGN_IN = '/sign-in',
   REFRESH_TOKENS = '/refresh-tokens',
   SIGN_OUT = '/sign-out',
+  USER = '/user',
 }
 
 export { AuthApiPath };
