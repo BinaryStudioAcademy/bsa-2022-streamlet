@@ -17,7 +17,7 @@
 }
 
 @font-face {
-  font-family: Gilroy-SemiBold;
+  font-family: Gilroy-Medium;
   src: url('../font/Gilroy-Medium.woff');
 }
 
@@ -39,6 +39,8 @@
   --support-error-color: #f76519;
   --hover-light-grey: #e8e8e8;
   --input-error-color: #f41b3b;
+  --input-placeholder-color: #c4c4c4;
+  --input-password-placeholder-color: #bcbec0;
 
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
