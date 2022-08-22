@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { AuthContainer } from 'components/auth/components/components';
-import { Button, Loader, setNotification } from 'components/common/common';
+import { Button, Loader, createToastNotification } from 'components/common/common';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { commonFrontendPaths } from 'shared/build/common/enums/enums';
@@ -10,7 +10,7 @@ import {
 } from './send-verification-link-form/send-verification-link-form';
 import authSumbitBtnStyles from 'components/auth/components/common/auth-submit-btn/styles.module.scss';
 import styles from './styles.module.scss';
-import { ContonueWithParagraph } from 'components/auth/components/common/common';
+import { ContinueWithParagraph } from 'components/auth/components/common/common';
 import { AppRoutes } from 'common/enums/enums';
 import clsx from 'clsx';
 import { authApi } from 'services/services';
@@ -43,7 +43,7 @@ const AccountVerificationConfirmPage: FC = () => {
         // remember that token in url is encoded to base64url
         const response = await responsePromise;
         navigate(AppRoutes.SIGN_IN, { replace: true });
-        setNotification({
+        createToastNotification({
           ...allAuthNotifications[AuthNotification.ACCOUNT_VERIFICATION_SUCCESS],
           message: response.message,
         });
@@ -67,7 +67,7 @@ const AccountVerificationConfirmPage: FC = () => {
       setIsLoading(true);
       const response = await authApi.sendAccountVerificationLetter({ email: data.email });
       navigate(AppRoutes.SIGN_IN, { replace: true });
-      setNotification({
+      createToastNotification({
         ...allAuthNotifications[AuthNotification.ACCOUNT_VERIFICATION_LETTER_SENT],
         message: response.message,
       });
@@ -94,7 +94,7 @@ const AccountVerificationConfirmPage: FC = () => {
           disabled={isLoading}
         />
       )}
-      <ContonueWithParagraph linkTitle="Back to Sign In" prompt="" route={AppRoutes.SIGN_IN} />
+      <ContinueWithParagraph linkTitle="Back to Sign In" prompt="" route={AppRoutes.SIGN_IN} />
     </AuthContainer>
   );
 };

@@ -18,13 +18,21 @@ const userSignUp = Joi.object<UserSignUpRequestDto, true>({
   password: passwordCreationSchema,
   passwordConfirm: Joi.string().valid(Joi.ref('password')).required().messages({
     'any.only': UserValidationMessage.PASSWORDS_NOT_MATCH,
+    'any.required': UserValidationMessage.PASSWORD_CONFIRM_REQUIRE,
   }),
-  username: Joi.string().trim().min(3).max(25).required().messages({
-    'string.empty': UserValidationMessage.USERNAME_REQUIRE,
-    'any.required': UserValidationMessage.USERNAME_REQUIRE,
-    'string.min': UserValidationMessage.USERNAME_WRONG_LENGTH,
-    'string.max': UserValidationMessage.USERNAME_WRONG_LENGTH,
-  }),
+  username: Joi.string()
+    .trim()
+    .min(3)
+    .max(25)
+    .pattern(/[а-яА-ЯЁё]/, { invert: true })
+    .required()
+    .messages({
+      'string.empty': UserValidationMessage.USERNAME_REQUIRE,
+      'string.min': UserValidationMessage.USERNAME_WRONG_LENGTH,
+      'string.max': UserValidationMessage.USERNAME_WRONG_LENGTH,
+      'string.pattern.invert.base': UserValidationMessage.USERNAME_WRONG_REGEX,
+      'any.required': UserValidationMessage.USERNAME_REQUIRE,
+    }),
 });
 
 export { userSignUp };

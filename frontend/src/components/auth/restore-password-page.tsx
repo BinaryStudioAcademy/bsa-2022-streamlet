@@ -1,6 +1,6 @@
 import { AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { setNotification } from 'components/common/notifications';
+import { createToastNotification } from 'components/common/common';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from 'services/services';
@@ -21,7 +21,7 @@ const RestorePasswordPage: FC = () => {
         // remember that token in url is encoded to base64url
         const response = await authApi.sendPasswordResetLetter({ email: data.email });
         navigate(AppRoutes.SIGN_IN, { replace: true });
-        setNotification({
+        createToastNotification({
           ...allAuthNotifications[AuthNotification.PASSWORD_RESET_LETTER_SENT_SUCCESS],
           message: response.message,
         });

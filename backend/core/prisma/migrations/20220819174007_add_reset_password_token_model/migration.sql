@@ -5,9 +5,6 @@
   - A unique constraint covering the columns `[channelId]` on the table `StreamingKey` will be added. If there are existing duplicate values, this will fail.
 
 */
--- DropIndex
-DROP INDEX "StreamingKey_key_channelId_key";
-
 -- CreateTable
 CREATE TABLE "ResetPasswordToken" (
     "id" TEXT NOT NULL,
@@ -21,12 +18,6 @@ CREATE TABLE "ResetPasswordToken" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ResetPasswordToken_userId_key" ON "ResetPasswordToken"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "StreamingKey_key_key" ON "StreamingKey"("key");
-
--- CreateIndex
-CREATE UNIQUE INDEX "StreamingKey_channelId_key" ON "StreamingKey"("channelId");
 
 -- AddForeignKey
 ALTER TABLE "ResetPasswordToken" ADD CONSTRAINT "ResetPasswordToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

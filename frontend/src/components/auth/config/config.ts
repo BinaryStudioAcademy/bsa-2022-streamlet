@@ -1,4 +1,4 @@
-import { NotificationParams } from 'common/types/types';
+import { ToastNotificationParams } from 'common/types/types';
 import {
   AuthNotification,
   matchAuthNotificationWithIconName,
@@ -7,7 +7,7 @@ import {
   matchAuthNotificationWithTitle,
 } from './auth-notification/auth-notification';
 
-const allAuthNotifications: Record<AuthNotification, NotificationParams> = Object.values(AuthNotification).reduce(
+const allAuthNotifications: Record<AuthNotification, ToastNotificationParams> = Object.values(AuthNotification).reduce(
   (prev, curr) => ({
     ...prev,
     [curr]: {
@@ -18,7 +18,7 @@ const allAuthNotifications: Record<AuthNotification, NotificationParams> = Objec
       durationMs: 10_000,
     },
   }),
-  {} as Record<AuthNotification, NotificationParams>,
+  {} as Record<AuthNotification, ToastNotificationParams>,
 );
 
 export { AuthNotification, allAuthNotifications };

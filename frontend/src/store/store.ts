@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { authApi } from 'services/services';
+import { authApi, notificationApi } from 'services/services';
 import { rootReducer } from './root-reducer';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
@@ -8,6 +8,7 @@ import { injectStore as injectStoreRefreshInterceptor } from 'services/http/inte
 
 const extraArgument = {
   authApi,
+  notificationApi,
 };
 
 const persistConfig = {

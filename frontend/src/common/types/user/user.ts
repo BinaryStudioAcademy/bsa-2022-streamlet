@@ -8,4 +8,4 @@ export {
   type AccountVerificationConfirmRequestDto,
   type AccountVerificationInitRequestDto,
   type AccountVerificationInitResponseDto,
-} from 'shared/build/common/types/types';
+} from 'shared/build';

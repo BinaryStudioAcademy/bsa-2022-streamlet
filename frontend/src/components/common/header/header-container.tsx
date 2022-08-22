@@ -3,6 +3,7 @@ import { FC } from 'common/types/types';
 import { MenuOptions, AppRoutes, SearchQueryParam } from 'common/enums/enums';
 import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate, useRef } from 'hooks/hooks';
 import { authActions, searchActions } from 'store/actions';
+import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
 import { allMenuOptions } from './config';
 import { Header } from './header';
 
@@ -21,14 +22,14 @@ const HeaderContainer: FC = () => {
 
   const hasUser = Boolean(user);
 
-  const { isOpened: isMenuOpen, open, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+  const { isOpened: isMenuOpen, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
 
   const emptyOnClickHandler = (): void => void 0;
 
   const matchMenuOptionWithOnClickHandler: Record<MenuOptions, () => void> = {
     [MenuOptions.Settings]: emptyOnClickHandler,
     [MenuOptions.Theme]: emptyOnClickHandler,
-    [MenuOptions.Logout]: handleClickLogout,
+    [MenuOptions.SignOut]: handleClickSignOut,
   };
 
   const options = allMenuOptions.map((option) => ({
@@ -36,26 +37,26 @@ const HeaderContainer: FC = () => {
     onClick: matchMenuOptionWithOnClickHandler[option.type],
   }));
 
-  const handleLogout = useCallback(async () => {
+  const handleSignOut = useCallback(async () => {
     try {
-      await dispatch(authActions.logout());
+      await dispatch(authActions.signOut());
     } finally {
       navigate(AppRoutes.SIGN_IN, { replace: true });
     }
   }, [dispatch, navigate]);
 
-  function handleClickLogin(): void {
+  function handleClickSignIn(): void {
     navigate(AppRoutes.SIGN_IN, { replace: true });
   }
 
-  function handleClickLogout(): void {
-    handleLogout();
+  function handleClickSignOut(): void {
+    handleSignOut();
   }
 
   function handleClickUserMenu(e: MouseEvent): void {
     if (!isMenuOpen) {
       e.preventDefault();
-      open();
+      openMenu();
     }
   }
 
@@ -91,12 +92,13 @@ const HeaderContainer: FC = () => {
       searchValue={searchText}
       searchInputEl={searchInputEl}
       handleClickUserMenu={handleClickUserMenu}
-      handleClickLogin={handleClickLogin}
+      handleClickSignIn={handleClickSignIn}
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={FAKE_USER_AVATAR}
       options={options}
+      notificationDropdownContent={<NotificationDropdownContainer />}
     />
   );
 };

@@ -3,7 +3,7 @@ import { Input, PasswordInput } from 'components/common/common';
 import { useAppForm } from 'hooks/hooks';
 
 import { userSignUp as userSignUpValidationSchema } from 'validation-schemas/validation-schemas';
-import { AuthSubmitButton, ContonueWithParagraph, GoogleButton } from '../common/common';
+import { AuthSubmitButton, ContinueWithParagraph, GoogleButton } from '../common/common';
 import { DEFAULT_SIGN_UP_PAYLOAD } from './common';
 
 import formStyles from '../form-controls.module.scss';
@@ -62,7 +62,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
           label="Confirm password"
         />
-        <ContonueWithParagraph prompt="Already have an account?" linkTitle="Login" route={AppRoutes.SIGN_IN} />
+        <ContinueWithParagraph prompt="Already have an account?" linkTitle="Sign in" route={AppRoutes.SIGN_IN} />
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Sign up" />
       </form>
       <p>or continue with</p>

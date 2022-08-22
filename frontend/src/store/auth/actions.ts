@@ -44,13 +44,13 @@ const refreshTokens = createAsyncThunk<RefreshTokenResponseDto, RefreshTokenRequ
   },
 );
 
-// in some cases there is a need only to log out on client, while usually it's also needed to logout on backend
-const logout = createAsyncThunk<void, { hitApi: boolean } | undefined>(
-  ActionType.LOGOUT,
+// in some cases there is a need only to sign out on client, while usually it's also needed to signOut on backend
+const signOut = createAsyncThunk<void, { hitApi: boolean } | undefined>(
+  ActionType.SIGN_OUT,
   async ({ hitApi } = { hitApi: true }) => {
     try {
       if (hitApi) {
-        await authApi.logout();
+        await authApi.signOut();
       }
     } finally {
       tokensStorageService.clearTokens();
@@ -69,7 +69,7 @@ const loadCurrentUser = createAsyncThunk<UserBaseResponseDto, void, AsyncThunkCo
       const isHttpError = err instanceof HttpError;
 
       if (isHttpError && err.status === HttpCode.UNAUTHORIZED) {
-        await dispatch(logout({ hitApi: false }));
+        await dispatch(signOut({ hitApi: false }));
       }
 
       throw err;
@@ -77,4 +77,4 @@ const loadCurrentUser = createAsyncThunk<UserBaseResponseDto, void, AsyncThunkCo
   },
 );
 
-export { signUp, signIn, refreshTokens, logout, loadCurrentUser };
+export { signUp, signIn, refreshTokens, signOut, loadCurrentUser };

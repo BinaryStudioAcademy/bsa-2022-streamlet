@@ -17,7 +17,7 @@ export const configRoutePages: Array<RoutePage> = [
   {
     id: 2,
     linkTo: AppRoutes.BROWSE,
-    iconName: IconName.COMPAS,
+    iconName: IconName.COMPASS,
     textLink: 'Browse',
   },
   {
@@ -29,7 +29,7 @@ export const configRoutePages: Array<RoutePage> = [
   {
     id: 4,
     linkTo: AppRoutes.HISTORY,
-    iconName: IconName.TIMEAGO,
+    iconName: IconName.TIME_AGO,
     textLink: 'History',
   },
 ];

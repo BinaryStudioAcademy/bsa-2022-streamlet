@@ -1,9 +1,9 @@
 import { FC } from 'common/types/types';
 import { useId, useEffect } from 'hooks/hooks';
-import { IconName } from 'common/enums/components';
 import { Icon } from 'components/common/common';
 
 import styles from './styles.module.scss';
+import { IconName } from 'common/enums/component/component';
 
 type Props = {
   activeFilterId: string;
@@ -66,7 +66,7 @@ const FilterSelect: FC<Props> = ({
                 />
                 <label htmlFor={optionId}>{o.text}</label>
                 <div className={styles['filter-select-item-close-icon']} onClick={handleClearFilter}>
-                  <Icon name={IconName.XMARK} />
+                  <Icon name={IconName.X_MARK} />
                 </div>
               </div>
             );

@@ -1,6 +1,5 @@
-import { ErrorMessages } from 'common/enums/messages';
+import { AppRoutes, ErrorMessage } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { AppRoutes } from 'common/enums/enums';
 import { useAppDispatch, useState, useNavigate, useAppSelector, useEffect } from 'hooks/hooks';
 import { store } from 'store/store';
 import { signIn } from 'store/auth/actions';
@@ -26,7 +25,7 @@ const SignInPage: FC = () => {
       setIsLoading(true);
       await dispatch(signIn(formValues)).unwrap();
     } catch {
-      setError(store.getState().auth.error || ErrorMessages.DEFAULT);
+      setError(store.getState().auth.error || ErrorMessage.DEFAULT);
     } finally {
       setIsLoading(false);
     }
@@ -40,7 +39,7 @@ const SignInPage: FC = () => {
 
   return (
     <AuthContainer
-      pageTitle="Login"
+      pageTitle="Sign in"
       className="sign-in"
       children={<SignInForm onSubmit={handleSignInSubmit} isLoading={isLoading} />}
       topLevelError={error}
