@@ -5,10 +5,12 @@ import { UserRepositoryAdapter } from './user/user-repository-adapter';
 import { PrismaClient } from '@prisma/client';
 import { RefreshTokenRepository } from '~/core/refresh-token/port/refresh-token-repository';
 import { RefreshTokenRepositoryAdapter } from './refresh-token/refresh-token-repository-adapter';
-import { ChannelRepository } from '~/core/channel/port/channel-repository';
-import { ChannelRepositoryAdapter } from './channel/channel-repository-adapter';
+import { ChannelStreamingRepository } from '~/core/channel-streaming/port/channel-streaming-repository';
+import { ChannelStreamingRepositoryAdapter } from './channel-streaming/channel-streaming-repository-adapter';
 import { ResetPasswordRepository } from '~/core/reset-password/port/reset-password-repository';
 import { ResetPasswordRepositoryAdapter } from './reset-password/reset-password-repository-adapter';
+import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
+import { ChannelCrudRepositoryAdapter } from './channel-crud/channel-crud-repository-adapter';
 
 const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const client = new PrismaClient();
@@ -17,7 +19,8 @@ const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces
   bind<UserRepository>(CONTAINER_TYPES.UserRepository).to(UserRepositoryAdapter);
   bind<RefreshTokenRepository>(CONTAINER_TYPES.RefreshTokenRepository).to(RefreshTokenRepositoryAdapter);
   bind<ResetPasswordRepository>(CONTAINER_TYPES.ResetPasswordRepository).to(ResetPasswordRepositoryAdapter);
-  bind<ChannelRepository>(CONTAINER_TYPES.ChannelRepository).to(ChannelRepositoryAdapter);
+  bind<ChannelStreamingRepository>(CONTAINER_TYPES.ChannelStreamingRepository).to(ChannelStreamingRepositoryAdapter);
+  bind<ChannelCrudRepository>(CONTAINER_TYPES.ChannelCrudRepository).to(ChannelCrudRepositoryAdapter);
   bind<PrismaClient>(CONTAINER_TYPES.PrismaClient)
     .toConstantValue(client)
     .onDeactivation(async (client) => {

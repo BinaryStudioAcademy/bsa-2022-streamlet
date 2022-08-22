@@ -18,7 +18,7 @@ const AuthSubmitButton: FC<Props> = ({ isLoading, name, disabled }) => {
     <Button
       className={styles['auth-submit-btn']}
       type="submit"
-      content={isLoading ? <Loader spinnerSize="25px" /> : name}
+      content={isLoading ? <Loader spinnerSize="25px" vCentered={false} /> : name}
       disabled={disabled}
     />
   );

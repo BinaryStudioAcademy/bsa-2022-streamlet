@@ -1,8 +1,12 @@
 $submit-top-margin: 20px;
 
 .auth-submit-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
   margin-top: $submit-top-margin;
-  padding: 15px;
+  padding: 0 15px;
   color: var(--white-text-color);
   font: inherit;
   background-color: var(--brand-green-color);

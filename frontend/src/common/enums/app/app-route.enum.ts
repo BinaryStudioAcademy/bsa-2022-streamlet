@@ -1,5 +1,9 @@
 import { commonFrontendPaths } from 'shared/build/common/enums/enums';
 
+const AppParams = {
+  channelId: 'channelId',
+} as const;
+
 const AppRoutes = {
   ROOT: '/',
   BROWSE: '/browse',
@@ -12,7 +16,7 @@ const AppRoutes = {
   ACCOUNT_VERIFICATION_CONFIRM: commonFrontendPaths.auth.ACCOUNT_VERIFICATION_CONFIRM.path,
   ANY: '*',
   VIDEO_$ID: '/video/:videoId',
-  CHANNEL_$ID: '/channel/:channelId',
+  CHANNEL_$ID: `/channel/:${AppParams.channelId}`,
   STUDIO: '/studio',
   ANALYTICS: '/analytics',
   SEARCH: '/search',
@@ -30,4 +34,4 @@ const RoutesWithoutHeader = {
 
 type RouteWithoutHeader = typeof RoutesWithoutHeader[keyof typeof RoutesWithoutHeader];
 
-export { AppRoute, AppRoutes, RouteWithoutHeader, RoutesWithoutHeader };
+export { AppRoute, AppRoutes, RouteWithoutHeader, RoutesWithoutHeader, AppParams };

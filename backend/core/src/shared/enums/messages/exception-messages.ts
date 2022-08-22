@@ -13,4 +13,7 @@ export const exceptionMessages = {
       'The token in your link for account verification has expired or was incorrect. Please, get a new one',
     INCORRECT_EMAIL: 'Wrong email. Please, try again',
   },
+  channelCrud: {
+    CHANNEL_ID_NOT_FOUND: 'Channel with such id wasn`t found',
+  },
 };

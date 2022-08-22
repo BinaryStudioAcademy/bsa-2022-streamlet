@@ -129,6 +129,7 @@ model Channel {
   videos        Video[]
   contactEmail  String         @default("")
   bannerImage   String         @default("")
+  avatar String @default("")
   author        User           @relation(fields: [authorId], references: [id])
   authorId      String
   streamingKeys StreamingKey[]
