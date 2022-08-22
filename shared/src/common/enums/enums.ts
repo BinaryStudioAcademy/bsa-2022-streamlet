@@ -10,3 +10,4 @@ export * from './mail/mail';
 export * from './notification/notification';
 export * from './stream/stream';
 export * from './toast-notification/toast-notification';
+export * from './frontend/frontend';

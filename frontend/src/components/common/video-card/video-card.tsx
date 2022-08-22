@@ -32,10 +32,10 @@ const VideoCard: FC<VideoProps> = ({
 }) => {
   const navigate = useNavigate();
   const redirectToVideoPage = (): void => {
-    navigate(`video/${id}`, { replace: true });
+    navigate(`video/${id}`);
   };
   const redirectToChannelPage = (): void => {
-    navigate(`channel/${channelId}`, { replace: true });
+    navigate(`channel/${channelId}`);
   };
   const viewerNumStringWithSpace: string = String(viewerNum).replace(/(\d)(?=(\d\d\d)+(\D|$))/g, '$1 ');
   return (

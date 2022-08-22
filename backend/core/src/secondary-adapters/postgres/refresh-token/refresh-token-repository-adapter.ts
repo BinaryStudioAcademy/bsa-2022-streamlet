@@ -23,7 +23,10 @@ export class RefreshTokenRepositoryAdapter implements RefreshTokenRepository {
 
   async getRefreshTokenUser(refreshToken: string): Promise<User | null> {
     try {
-      const refreshTokenPayload = await verifyJwt<RefreshTokenJwtPayload>(refreshToken);
+      const refreshTokenPayload = await verifyJwt<RefreshTokenJwtPayload>({
+        jwt: refreshToken,
+        secret: CONFIG.ENCRYPTION.REFRESH_SECRET,
+      });
       const token = await this.prismaClient.refreshToken.findFirst({
         where: {
           userId: refreshTokenPayload.userId,
@@ -50,6 +53,7 @@ export class RefreshTokenRepositoryAdapter implements RefreshTokenRepository {
     const token = await generateJwt<RefreshTokenJwtPayload>({
       payload: { userId },
       lifetime: CONFIG.ENCRYPTION.REFRESH_LIFETIME,
+      secret: CONFIG.ENCRYPTION.REFRESH_SECRET,
     });
     await this.prismaClient.refreshToken.create({
       data: {

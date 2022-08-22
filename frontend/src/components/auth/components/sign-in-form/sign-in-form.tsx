@@ -1,4 +1,4 @@
-import { AppRoute } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { Input, Link, PasswordInput } from 'components/common/common';
 import formStyles from '../form-controls.module.scss';
@@ -18,9 +18,10 @@ export interface SignInFormValues {
 }
 
 const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
-  const { control, errors, handleSubmit } = useAppForm<SignInFormValues>({
+  const { control, errors, handleSubmit, isValid } = useAppForm<SignInFormValues>({
     defaultValues: { email: '', password: '' },
     validationSchema: userSignIn,
+    mode: 'onChange',
   });
 
   return (
@@ -32,29 +33,35 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
           name="email"
           label="Email"
           type="email"
+          inputClassName={formStyles['input']}
+          inputErrorClassName={formStyles['input-error']}
+          labelClassName={formStyles['label']}
           wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
         <PasswordInput
+          inputClassName={formStyles['password']}
+          labelClassName={formStyles['label']}
           wrapperClassName={formStyles['form-input']}
+          inputWrapperErrorClassName={formStyles['input-error']}
           placeholder="Password"
           control={control}
           name="password"
           errors={errors}
           label="Password"
         />
-        <Link to={AppRoute.RESTORE_PASSWORD} className={styles['forgot-password']}>
+        <Link to={AppRoutes.RESTORE_PASSWORD_INIT} className={styles['forgot-password']}>
           Forgot Password?
         </Link>
-        <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign in" />
+        <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Sign in" />
       </form>
-      <p>or continue with</p>
+      <p className={formStyles['continue-with']}>or continue with</p>
       <GoogleButton disabled={isLoading} />
 
       <ContinueWithParagraph
         prompt="Don't have an account yet?"
         linkTitle="Sign up for free"
-        route={AppRoute.SIGN_UP}
+        route={AppRoutes.SIGN_UP}
       />
     </>
   );

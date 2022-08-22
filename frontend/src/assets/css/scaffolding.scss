@@ -8,17 +8,17 @@
 
 @font-face {
   font-family: Gilroy-SemiBold;
-  src: url('../font/Gilroy-SemiBold.ttf');
+  src: url('../font/Gilroy-SemiBold.woff');
 }
 
 @font-face {
   font-family: Gilroy;
-  src: url('../font/Gilroy-Regular.ttf');
+  src: url('../font/Gilroy-Regular.woff');
 }
 
 @font-face {
-  font-family: Gilroy-SemiBold;
-  src: url('../font/Gilroy-Medium.ttf');
+  font-family: Gilroy-Medium;
+  src: url('../font/Gilroy-Medium.woff');
 }
 
 :root {
@@ -36,11 +36,18 @@
   --brand-green-color-hover: #00802d;
   --brand-yellow-color: #f6c648;
   --support-info-color: #03d8ff;
-  --supprot-error-color: #f76519;
+  --support-error-color: #f76519;
   --hover-light-grey: #e8e8e8;
+  --input-error-color: #f41b3b;
+  --input-placeholder-color: #c4c4c4;
+  --input-password-placeholder-color: #bcbec0;
 
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
+
+  /* video-card */
+  --video-card-schedule-badge-background: #000000b3;
+  --video-card-schedule-btn-background: #ffffff40;
 }
 
 html {
