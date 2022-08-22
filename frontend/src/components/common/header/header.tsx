@@ -1,10 +1,10 @@
-import { FC } from 'common/types/types';
-import { Link } from 'react-router-dom';
 import { FormEvent, MouseEvent, RefObject } from 'react';
+import { Link } from 'react-router-dom';
+import { FC } from 'common/types/types';
 import { AppRoute, IconName, MenuOptions } from 'common/enums/enums';
-import { Icon } from '../icon';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import { closeSidebar, openSidebar } from 'store/layout/actions';
+import { Icon } from 'components/common/common';
 
 import styles from './header.module.scss';
 
@@ -19,9 +19,9 @@ interface HeaderProps {
   isLogged: boolean;
   isMenuOpen: boolean;
   searchValue: string;
-  searchInputId: string;
+  searchInputEl: RefObject<HTMLInputElement>;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
-  handleClickSignIn(e: MouseEvent<HTMLElement>): void;
+  handleClickSignIn(): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
   handleClickSearchBtn(e: MouseEvent<HTMLElement>): void;
@@ -36,7 +36,7 @@ const Header: FC<HeaderProps> = ({
   isLogged,
   isMenuOpen,
   searchValue,
-  searchInputId,
+  searchInputEl,
   handleClickSignIn,
   handleClickUserMenu,
   handleChangeInputSearch,
@@ -77,7 +77,7 @@ const Header: FC<HeaderProps> = ({
           </div>
           <input
             className={styles['search-input']}
-            id={searchInputId}
+            ref={searchInputEl}
             type="text"
             value={searchValue}
             onChange={handleChangeInputSearch}
