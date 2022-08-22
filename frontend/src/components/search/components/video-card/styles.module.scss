@@ -80,7 +80,7 @@
   color: var(--white-text-color);
   font-size: 10px;
   line-height: 14px;
-  background-color: rgb(0 0 0 / 70%);
+  background-color: var(--video-card-schedule-badge-background);
   border-radius: 4px;
 }
 
@@ -106,7 +106,7 @@
   margin-left: 15px;
   padding: 4px 10px;
   color: var(--white-text-color);
-  background-color: rgb(255 255 255 / 25%);
+  background-color: var(--video-card-schedule-btn-background);
   border-radius: 3px;
   cursor: pointer;
 }
@@ -185,7 +185,7 @@
   height: 20px;
   padding: 3px 6px 3px 3px;
   color: var(--white-text-color);
-  background-color: rgb(255 255 255 / 15%);
+  background-color: #ffffff26;
   border-radius: 3px;
   cursor: pointer;
 }
@@ -195,7 +195,7 @@
 }
 
 .video-card-meta-data-scheduled:hover {
-  background-color: rgb(255 255 255 / 25%);
+  background-color: var(--video-card-schedule-btn-background);
 }
 
 .video-card-author {
@@ -364,7 +364,7 @@
     align-items: center;
     width: 40px;
     height: 40px;
-    background-color: #f41b3b;
+    background-color: var(--input-error-color);
     border-radius: 50%;
   }
 
