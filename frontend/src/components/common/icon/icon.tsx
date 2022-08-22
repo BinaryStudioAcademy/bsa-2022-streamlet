@@ -34,8 +34,8 @@ import { ReactComponent as Success } from 'assets/img/success.svg';
 import { ReactComponent as SendMessage } from 'assets/img/send-message.svg';
 import { ReactComponent as Emoji } from 'assets/img/emoji.svg';
 import { ReactComponent as OnlineStreaming } from 'assets/img/online-streaming.svg';
-import { ReactComponent as Rotate } from '../../../assets/img/rotate.svg';
-import { ReactComponent as ZoomIn } from '../../../assets/img/zoom-in.svg';
+import { ReactComponent as Rotate } from 'assets/img/rotate.svg';
+import { ReactComponent as ZoomIn } from 'assets/img/zoom-in.svg';
 
 import clsx from 'clsx';
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -181,6 +181,7 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
     case IconName.EMOJI: {
       return <Emoji {...commonProps} />;
     }
+
     case IconName.SUN: {
       return <Sun {...commonProps} />;
     }
