@@ -75,7 +75,7 @@ services:
         max-size: "10m"
         max-file: "5"
   video-transcoding-server:
-    image: ghcr.io/binarystudioacademy/streamlet-video-transoding-server-dev:latest
+    image: ghcr.io/binarystudioacademy/streamlet-video-transcoding-server-dev:latest
     container_name: video-transcoding-server
     volumes:
       - ../playback:/app/backend/video-transcoding-server/playback
