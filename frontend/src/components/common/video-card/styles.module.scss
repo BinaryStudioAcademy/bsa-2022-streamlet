@@ -18,20 +18,35 @@
   object-position: 50% 50%;
 }
 
-.video-duration-label {
+.video-labels {
   position: absolute;
   right: 20px;
   bottom: 12px;
+  display: flex;
+  column-gap: 5px;
+}
+
+.video-duration-label,
+.video-live-label {
   min-width: 47px;
-  color: white;
+  padding: 5px;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0;
   text-align: center;
-  background-color: var(--gray-300-header-menu-background);
-  border-radius: 16px;
+  border-radius: 10px;
   cursor: pointer;
+}
+
+.video-duration-label {
+  color: var(--text-white-color);
+  background-color: var(--gray-300-header-menu-background);
+}
+
+.video-live-label {
+  color: var(--text-white-color);
+  background-color: var(--brand-green-color-hover);
 }
 
 .video-card-author-avatar {
@@ -101,6 +116,7 @@
   align-items: center;
   width: 100%;
   min-height: 29px;
+  color: var(--text-gray-color);
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
@@ -123,7 +139,6 @@
 .video-card-statistic-container > div:first-child svg {
   width: 20px;
   height: 20px;
-  color: #363c3a;
 }
 
 .video-card-statistic-container > div:last-child svg {
@@ -147,4 +162,8 @@
   color: var(--text-gray-color);
   font-size: 12px;
   line-height: 16px;
+}
+
+.live-icon {
+  color: var(--brand-green-color);
 }

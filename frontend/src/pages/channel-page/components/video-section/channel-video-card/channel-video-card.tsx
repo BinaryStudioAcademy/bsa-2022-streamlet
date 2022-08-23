@@ -26,6 +26,7 @@ const ChannelVideoCard: FC<Props> = ({ videoId, className }) => {
       viewerNum={
         videoData.status === StreamingStatus.LIVE ? videoData.liveViews : videoData.liveViews + videoData.videoViews
       }
+      isLive={videoData.status === StreamingStatus.LIVE}
     />
   );
 };

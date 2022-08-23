@@ -94,6 +94,7 @@ const VideoCardTest = (): ReactElement => {
             author,
             channelId: 'test',
           }}
+          isLive={false}
           poster={posterImage}
           creationDate={creationData}
           name={videoHeader}
