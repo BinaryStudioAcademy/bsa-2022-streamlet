@@ -98,7 +98,6 @@ export class UserController extends BaseHttpController {
    *                properties:
    *                  url:
    *                    type: string
-   *                    format: uri
    *                  format:
    *                    type: string
    *                  width:
