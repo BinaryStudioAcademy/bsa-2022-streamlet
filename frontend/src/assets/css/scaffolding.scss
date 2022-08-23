@@ -17,7 +17,7 @@
 }
 
 @font-face {
-  font-family: Gilroy-SemiBold;
+  font-family: Gilroy-Medium;
   src: url('../font/Gilroy-Medium.woff');
 }
 
@@ -30,22 +30,36 @@
   --green-200-header-menu-background: #344f3e;
   --green-100-header-menu-background: #ebefe8;
   --primary-text-color: #181a20;
+  --secondary-text-color: #505565;
   --text-gray-color: #6a726d;
   --white-text-color: #ffffff;
   --brand-green-color: #06c149;
   --brand-green-color-hover: #00802d;
   --brand-yellow-color: #f6c648;
   --support-info-color: #03d8ff;
+  --hover-dark-grey: #2a2d37;
   --support-error-color: #f76519;
   --hover-light-grey: #e8e8e8;
   --input-error-color: #f41b3b;
+  --input-placeholder-color: #c4c4c4;
+  --input-password-placeholder-color: #bcbec0;
 
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
 
-  /* image editor */
+  /* video-card */
+  --video-card-schedule-badge-background: #000000b3;
+  --video-card-schedule-btn-background: #ffffff40;
+}
 
-  --image-editor-zoom-slider-track-color: #83a9ff;
+body[data-theme='light'] {
+  --gray-300-header-menu-background: var(--green-100-header-menu-background);
+  --primary-text-color: #ffffff;
+  --white-text-color: #181a20;
+  --secondary-text-color: #a7a5a5;
+  --hover-light-grey: var(--hover-dark-grey);
+  --gray-400-primary-background: #ffffff;
+  --gray-200-input-background: #dadada;
 }
 
 html {
@@ -60,7 +74,7 @@ body {
   min-width: 320px;
   min-height: 100%;
   margin: 0;
-  color: #505565;
+  color: var(--secondary-text-color);
   font-size: 16px;
   font-family: Gilroy-SemiBold, sans-serif;
   line-height: 28px;

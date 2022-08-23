@@ -26,7 +26,20 @@ export class UserRepositoryAdapter implements UserRepository {
   getUserByUsernameOrEmail(email: string, username: string): Promise<User | null> {
     return this.prismaClient.user.findFirst({
       where: {
-        OR: [{ email }, { username }],
+        OR: [
+          {
+            email: {
+              equals: email,
+              mode: 'insensitive',
+            },
+          },
+          {
+            username: {
+              equals: username,
+              mode: 'insensitive',
+            },
+          },
+        ],
       },
     });
   }

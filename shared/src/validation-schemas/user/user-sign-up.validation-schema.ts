@@ -8,12 +8,14 @@ const userSignUp = Joi.object<UserSignUpRequestDto, true>({
     .trim()
     .email({ tlds: { allow: false } })
     .min(6)
+    .pattern(/[а-яА-ЯЁё]/, { invert: true })
     .required()
     .messages({
       'string.email': UserValidationMessage.EMAIL_WRONG,
       'string.empty': UserValidationMessage.EMAIL_REQUIRE,
       'any.required': UserValidationMessage.EMAIL_REQUIRE,
       'string.min': UserValidationMessage.EMAIL_WRONG_LENGTH,
+      'string.pattern.invert.base': UserValidationMessage.EMAIL_WRONG_REGEX,
     }),
   password: passwordCreationSchema,
   passwordConfirm: Joi.string().valid(Joi.ref('password')).required().messages({

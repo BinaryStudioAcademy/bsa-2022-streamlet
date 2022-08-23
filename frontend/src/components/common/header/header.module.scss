@@ -84,6 +84,10 @@
   background-color: var(--white-text-color);
   border-radius: 3px;
   cursor: auto;
+
+  svg {
+    fill: var(--primary-text-color);
+  }
 }
 
 .btn-go-stream svg {
@@ -204,7 +208,7 @@
 }
 
 .burger-menu {
-  margin-right: 14px;
+  margin-right: 20px;
   background-color: transparent;
   cursor: pointer;
 

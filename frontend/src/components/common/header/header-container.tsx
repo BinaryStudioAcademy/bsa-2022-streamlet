@@ -1,6 +1,6 @@
 import { MouseEvent, FormEvent } from 'react';
 import { FC } from 'common/types/types';
-import { MenuOptions, AppRoutes, SearchQueryParam } from 'common/enums/enums';
+import { MenuOptions, AppRoutes, SearchQueryParam, IconName } from 'common/enums/enums';
 import {
   useOutsideClick,
   useAppDispatch,
@@ -10,9 +10,9 @@ import {
   useRef,
   useEffect,
 } from 'hooks/hooks';
-import { authActions, profileActions, searchActions } from 'store/actions';
+import { authActions, searchActions, profileActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
-import { allMenuOptions } from './config';
+import { switchTheme } from 'store/theme-switch/actions';
 import { Header } from './header';
 import defaultAvatar from '../../../assets/img/default-user-avatar.jpg';
 
@@ -30,7 +30,7 @@ const HeaderContainer: FC = () => {
   const navigate = useNavigate();
 
   const hasUser = Boolean(user);
-
+  const isLightTheme = useAppSelector((store) => store.theme.isLightTheme);
   const { isOpened: isMenuOpen, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
 
   const emptyOnClickHandler = (): void => void 0;
@@ -53,6 +53,24 @@ const HeaderContainer: FC = () => {
     dispatch(profileActions.getProfileByUserId({ userId }));
   }, [dispatch, user]);
 
+  const matchMenuOptionWithIconName: Record<MenuOptions, IconName> = {
+    [MenuOptions.Settings]: IconName.SETTINGS,
+    [MenuOptions.Theme]: isLightTheme ? IconName.SUN : IconName.MOON,
+    [MenuOptions.SignOut]: IconName.SIGN_OUT,
+  };
+
+  const matchMenuOptionWithText: Record<MenuOptions, string> = {
+    [MenuOptions.Settings]: 'Settings',
+    [MenuOptions.Theme]: isLightTheme ? 'Light Theme' : 'Dark Theme',
+    [MenuOptions.SignOut]: 'Sign Out',
+  };
+
+  const allMenuOptions = [MenuOptions.Settings, MenuOptions.Theme, MenuOptions.SignOut].map((option) => ({
+    type: option,
+    text: matchMenuOptionWithText[option],
+    icon: matchMenuOptionWithIconName[option],
+  }));
+
   const options = allMenuOptions.map((option) => ({
     ...option,
     onClick: matchMenuOptionWithOnClickHandler[option.type],
@@ -62,12 +80,12 @@ const HeaderContainer: FC = () => {
     try {
       await dispatch(authActions.signOut());
     } finally {
-      navigate(AppRoutes.SIGN_IN, { replace: true });
+      navigate(AppRoutes.ROOT);
     }
   }, [dispatch, navigate]);
 
   function handleClickSignIn(): void {
-    navigate(AppRoutes.SIGN_IN, { replace: true });
+    navigate(AppRoutes.SIGN_IN);
   }
 
   function handleClickSignOut(): void {
@@ -105,6 +123,10 @@ const HeaderContainer: FC = () => {
     }
   };
 
+  const handleThemeToggle = (): void => {
+    dispatch(switchTheme());
+  };
+
   return (
     <Header
       menuRef={menuRef}
@@ -114,11 +136,13 @@ const HeaderContainer: FC = () => {
       searchInputEl={searchInputEl}
       handleClickUserMenu={handleClickUserMenu}
       handleClickSignIn={handleClickSignIn}
+      handleClickThemeSwitch={handleThemeToggle}
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={profile?.avatar ? profile.avatar : defaultAvatar}
       options={options}
+      themeValue={isLightTheme}
       notificationDropdownContent={<NotificationDropdownContainer />}
     />
   );

@@ -18,6 +18,14 @@
   text-transform: capitalize;
 }
 
+.video-tag-live {
+  border: 1px solid var(--support-error-color);
+}
+
+.video-tag-live span {
+  color: var(--support-error-color);
+}
+
 @media #{$tablet-large} {
   .video-tag {
     padding: 4px 12px;

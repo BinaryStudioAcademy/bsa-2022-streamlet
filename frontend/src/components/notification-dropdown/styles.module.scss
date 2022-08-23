@@ -4,7 +4,7 @@
   --dropdown-background: var(--gray-300-header-menu-background);
   --notifications-unread-mark: rgb(221 7 7);
   --notifications-dropdown-border: var(--gray-200-input-background);
-  --notifications-text: #ffffff;
+  --notifications-text: var(--white-text-color);
 }
 
 .wrapper {
@@ -23,6 +23,15 @@
   cursor: pointer;
 }
 
+.buttons {
+  display: flex;
+  gap: 15px;
+
+  svg {
+    fill: var(--text-gray-color);
+  }
+}
+
 .wrapper svg:hover {
   opacity: 0.8;
 }
@@ -35,8 +44,8 @@
   flex-direction: column;
   width: 400px;
   height: 300px;
-  background-color: var(--dropdown-background);
-  border: 1px solid var(--notifications-dropdown-border);
+  background-color: var(--gray-300-header-menu-background);
+  border: 1px solid var(--gray-200-header-menu-background);
   border-radius: 5px;
   cursor: default;
 
@@ -58,7 +67,7 @@
   width: 12px;
   height: 12px;
   background-color: var(--notifications-unread-mark);
-  border: 2px solid var(--unread-mark-border);
+  border: 2px solid var(--gray-300-header-menu-background);
   border-radius: 50%;
 }
 
@@ -67,18 +76,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 16px;
-  color: var(--notifications-text);
-  border-bottom: 2px solid var(--notifications-dropdown-border);
+  color: var(--white-text-color);
+  border-bottom: 2px solid var(--primary-text-color);
 }
 
 .title {
   margin: 0;
   font-size: 130%;
-}
-
-.buttons {
-  display: flex;
-  gap: 15px;
 }
 
 .close-mobile {
@@ -104,7 +108,7 @@
 
 .load-more {
   margin: 5px 0;
-  color: var(--notifications-text);
+  color: var(--white-text-color);
 }
 
 .load-more:hover {

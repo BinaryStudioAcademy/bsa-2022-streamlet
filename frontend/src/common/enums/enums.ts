@@ -2,7 +2,7 @@ export { ApiPath, AuthApiPath, NotificationApiPath } from './api/api';
 
 export * from './app/app';
 
-export { IconColor, IconName, MenuOptions, LoaderSize } from './component/component';
+export { IconColor, IconName, MenuOptions, LoaderSize, VideoTagName } from './component/component';
 
 export { ContentType } from './file/file';
 
@@ -21,3 +21,5 @@ export { ToastNotificationType } from './toast-notification/toast-notification';
 export { ProfileApiPath } from './api/api';
 
 export { ImageUploadErrorMessage } from './image/image';
+
+export { StreamingStatus } from './stream/stream';
