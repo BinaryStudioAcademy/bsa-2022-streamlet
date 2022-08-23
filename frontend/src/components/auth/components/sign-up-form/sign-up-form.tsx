@@ -53,7 +53,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign up" />
       </form>
       <p>or continue with</p>
-      <GoogleButton disabled={isLoading} />
+      <GoogleButton />
     </>
   );
 };

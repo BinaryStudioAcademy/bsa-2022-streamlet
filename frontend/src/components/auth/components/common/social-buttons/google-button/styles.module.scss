@@ -1,11 +1,8 @@
 .google-btn {
   display: flex;
   justify-content: center;
-  width: 100%;
-  padding: 15px 0;
-  color: inherit;
+  align-items: stretch;
   background-color: var(--white-text-color);
-  border: none;
   border-radius: 3px;
   outline: inherit;
   cursor: pointer;

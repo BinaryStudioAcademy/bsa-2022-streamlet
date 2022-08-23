@@ -12,6 +12,7 @@ import {
   MailResponseDto,
   MailTestRequestDto,
   ExtendedAuthenticatedRequest,
+  UserBaseResponseDto,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { compareHash, generateJwt, trimUser } from '~/shared/helpers';
@@ -351,5 +352,69 @@ export class AuthController extends BaseHttpController {
   @httpPost('/mail-test')
   public testMail(@requestBody() mailTestRequestDto: MailTestRequestDto): Promise<MailResponseDto> {
     return this.userService.testSendingEmail(mailTestRequestDto);
+  }
+
+  /**
+   * @swagger
+   * /auth/sign-in-google:
+   *    post:
+   *      tags:
+   *      - auth
+   *      security: []
+   *      operationId: signIpGoogleUser
+   *      description: Sign up google user into the system
+   *      requestBody:
+   *        description: User auth data
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                email:
+   *                  type: string
+   *                  format: email
+   *                username:
+   *                  type: string
+   *                password:
+   *                  type: string
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  user:
+   *                    $ref: '#/components/schemas/UserBaseResponse'
+   *                  tokens:
+   *                    $ref: '#/components/schemas/TokenPair'
+   *        400:
+   *          description: Email is already taken.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   */
+  @httpPost(AuthApiPath.SIGN_IN_GOOGLE, validationMiddleware(userSignUp))
+  public async signInGoogleUser(@requestBody() userRequestDto: UserSignUpRequestDto): Promise<UserSignUpResponseDto> {
+    let newUser = {} as UserBaseResponseDto;
+    const googleUser = await this.userService.getUserByEmail(userRequestDto.email);
+
+    if (!googleUser) {
+      newUser = await this.userService.createUser(userRequestDto);
+    }
+    const user = googleUser ? trimUser(googleUser) : newUser;
+    const accessToken = await generateJwt({ payload: user });
+    return {
+      user,
+      tokens: {
+        accessToken,
+        refreshToken: await this.userService.createRefreshToken(user.id),
+      },
+    };
   }
 }

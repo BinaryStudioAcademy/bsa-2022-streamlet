@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "1.8.3",
     "clsx": "1.2.1",
     "dayjs": "1.11.4",
+    "jwt-decode": "^3.1.2",
     "query-string": "7.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -30,6 +31,7 @@
     "redux-persist": "6.0.0"
   },
   "devDependencies": {
+    "@types/google.accounts": "^0.0.2",
     "@types/node": "18.0.5",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",

@@ -49,7 +49,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading} name="Sign in" />
       </form>
       <p>or continue with</p>
-      <GoogleButton disabled={isLoading} />
+      <GoogleButton />
 
       <ContinueWithParagraph
         prompt="Don't have an account yet?"
