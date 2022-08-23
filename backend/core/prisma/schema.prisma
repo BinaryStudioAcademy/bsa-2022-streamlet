@@ -75,24 +75,28 @@ enum StreamingStatus {
 }
 
 model Video {
-  id             String          @id @default(uuid())
-  name           String
-  description    String          @default("")
-  status         StreamingStatus @default(pending)
-  videoPath      String
-  liveViews      Int             @default(0)
-  videoViews     Int             @default(0)
-  tags           Tag[]
-  categories     Category[]
-  comments       VideoComment[]
-  channel        Channel         @relation(fields: [channelId], references: [id])
-  channelId      String
-  chatMessages   ChatMessage[]
-  notifications  Notification[]
-  historyRecords History[]
-  reactions      Reaction[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id                    String          @id @default(uuid())
+  name                  String
+  description           String          @default("")
+  status                StreamingStatus @default(pending)
+  publishedAt           DateTime        @default(now())
+  scheduledStreamDate   DateTime        @default(now())
+  poster                String          @default("")
+  duration              Int             @default(0)
+  videoPath             String
+  liveViews             Int             @default(0)
+  videoViews            Int             @default(0)
+  tags                  Tag[]
+  categories            Category[]
+  comments              VideoComment[]
+  channel               Channel         @relation(fields: [channelId], references: [id])
+  channelId             String
+  chatMessages          ChatMessage[]
+  notifications         Notification[]
+  historyRecords        History[]
+  reactions             Reaction[]
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
 }
 
 model Tag {
@@ -125,6 +129,7 @@ model VideoComment {
 model Channel {
   id            String         @id @default(uuid())
   name          String
+  avatar        String         @default("")
   description   String         @default("")
   videos        Video[]
   contactEmail  String         @default("")

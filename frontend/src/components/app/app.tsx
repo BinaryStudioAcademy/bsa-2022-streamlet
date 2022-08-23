@@ -3,7 +3,7 @@ import { AppRoutes, AppTheme } from 'common/enums/enums';
 import { useLocation, useEffect, useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { tokensStorageService } from 'services/services';
 import { authActions } from 'store/actions';
-import { MainPage } from 'pages/main-page';
+import { MainPageContainer } from 'pages/main-page/main-page-container';
 import { Routes, Route, HeaderContainer, SidebarContainer } from 'components/common/common';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 import { Studio, StudioAnalytics } from 'components/studio';
@@ -58,7 +58,7 @@ const App: FC = () => {
             <SidebarContainer />
             <div className={styles['main-content']}>
               <Routes>
-                <Route path={AppRoutes.ROOT} element={<MainPage />} />
+                <Route path={AppRoutes.ROOT} element={<MainPageContainer />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />
                 <Route path={AppRoutes.HISTORY} element="History" />
                 <Route path={AppRoutes.FOLLOWING} element="Following" />

@@ -13,6 +13,8 @@ import { ResetPasswordRepository } from '~/core/reset-password/port/reset-passwo
 import { ResetPasswordRepositoryAdapter } from './reset-password/reset-password-repository-adapter';
 import { HistoryRepository } from '../../core/history/port/history-repository';
 import { HistoryRepositoryAdapter } from './history/history-repository-adapter';
+import { VideoRepository } from '~/core/video/port/video-repository';
+import { VideoRepositoryAdapter } from './video/video-repository-adapter';
 
 const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const client = new PrismaClient();
@@ -20,6 +22,7 @@ const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces
 
   bind<UserRepository>(CONTAINER_TYPES.UserRepository).to(UserRepositoryAdapter);
   bind<ProfileRepository>(CONTAINER_TYPES.ProfileRepository).to(ProfileRepositoryAdapter);
+  bind<VideoRepository>(CONTAINER_TYPES.VideoRepository).to(VideoRepositoryAdapter);
   bind<RefreshTokenRepository>(CONTAINER_TYPES.RefreshTokenRepository).to(RefreshTokenRepositoryAdapter);
   bind<ResetPasswordRepository>(CONTAINER_TYPES.ResetPasswordRepository).to(ResetPasswordRepositoryAdapter);
   bind<ChannelRepository>(CONTAINER_TYPES.ChannelRepository).to(ChannelRepositoryAdapter);
