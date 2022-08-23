@@ -28,6 +28,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           wrapperClassName={formStyles['form-input']}
           inputClassName={formStyles['input']}
           inputErrorClassName={formStyles['input-error']}
+          errorBlockClassName={formStyles['error']}
           labelClassName={formStyles['label']}
           type="email"
           label="Email"
@@ -40,6 +41,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           wrapperClassName={formStyles['form-input']}
           inputClassName={formStyles['input']}
           inputErrorClassName={formStyles['input-error']}
+          errorBlockClassName={formStyles['error']}
           labelClassName={formStyles['label']}
           type="text"
           label="Username"
