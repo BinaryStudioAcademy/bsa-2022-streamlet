@@ -75,7 +75,6 @@ const App: FC = () => {
             <div className={styles['main-content']}>
               <Routes>
                 <Route path={AppRoutes.ROOT} element={<MainPage />} />
-                <Route path="/browse/some-path" element={<MainPage />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />
                 <Route path={AppRoutes.HISTORY} element="History" />
                 <Route path={AppRoutes.FOLLOWING} element="Following" />

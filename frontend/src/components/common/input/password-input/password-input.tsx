@@ -18,6 +18,7 @@ type Props<T> = {
   inputClassName?: string;
   labelClassName?: string;
   wrapperClassName?: string;
+  errorBlockClassName?: string;
   changeVisibilityBtnClassName?: string;
   inputWrapperClassName?: string;
   inputWrapperErrorClassName?: string;
@@ -34,6 +35,7 @@ const PasswordInput = <T extends FieldValues>({
   inputClassName,
   labelClassName,
   wrapperClassName,
+  errorBlockClassName,
   inputWrapperClassName,
   inputWrapperErrorClassName,
   changeVisibilityBtnClassName,
@@ -78,7 +80,7 @@ const PasswordInput = <T extends FieldValues>({
           content={<img src={passwordEye} alt="check" />}
         />
       </div>
-      <div className={styles['error-block']}>
+      <div className={clsx(styles['error-block'], errorBlockClassName)}>
         <ErrorMessage
           errors={errors}
           name={name}

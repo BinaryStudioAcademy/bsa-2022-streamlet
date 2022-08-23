@@ -1,11 +1,15 @@
 .form-container {
   display: flex;
   flex-direction: column;
+  margin-top: 15px;
 }
 
 .form-input {
-  margin-top: 13px;
   margin-bottom: 22px;
+}
+
+.password {
+  border-radius: 3px 0 0 3px;
 }
 
 .password::placeholder {
@@ -30,4 +34,8 @@
 .continue-with {
   color: var(--white-text-color);
   text-align: center;
+}
+
+.error {
+  line-height: 20px;
 }
