@@ -59,12 +59,12 @@ const HeaderContainer: FC = () => {
     try {
       await dispatch(authActions.signOut());
     } finally {
-      navigate(AppRoutes.SIGN_IN, { replace: true });
+      navigate(AppRoutes.ROOT);
     }
   }, [dispatch, navigate]);
 
   function handleClickSignIn(): void {
-    navigate(AppRoutes.SIGN_IN, { replace: true });
+    navigate(AppRoutes.SIGN_IN);
   }
 
   function handleClickSignOut(): void {
@@ -98,7 +98,7 @@ const HeaderContainer: FC = () => {
     if (searchText) {
       handleClearActiveFilterIds();
       const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
-      navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`, { replace: true });
+      navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`);
     }
   };
 

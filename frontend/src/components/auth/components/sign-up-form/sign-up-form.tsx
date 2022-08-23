@@ -26,7 +26,9 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
       <form onSubmit={handleSubmit(onSubmit)} className={formStyles['form-container']}>
         <Input
           wrapperClassName={formStyles['form-input']}
+          inputClassName={formStyles['input']}
           inputErrorClassName={formStyles['input-error']}
+          labelClassName={formStyles['label']}
           type="email"
           label="Email"
           placeholder="Enter your email"
@@ -36,7 +38,9 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
         />
         <Input
           wrapperClassName={formStyles['form-input']}
+          inputClassName={formStyles['input']}
           inputErrorClassName={formStyles['input-error']}
+          labelClassName={formStyles['label']}
           type="text"
           label="Username"
           placeholder="Enter your username"
@@ -45,6 +49,8 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
         />
         <PasswordInput
+          inputClassName={formStyles['password']}
+          labelClassName={formStyles['label']}
           wrapperClassName={formStyles['form-input']}
           inputWrapperErrorClassName={formStyles['input-error']}
           placeholder="Password"
@@ -54,6 +60,8 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           label="Password"
         />
         <PasswordInput
+          inputClassName={formStyles['password']}
+          labelClassName={formStyles['label']}
           wrapperClassName={formStyles['form-input']}
           inputWrapperErrorClassName={formStyles['input-error']}
           placeholder="Confirm password"
@@ -65,7 +73,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
         <ContinueWithParagraph prompt="Already have an account?" linkTitle="Sign in" route={AppRoutes.SIGN_IN} />
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Sign up" />
       </form>
-      <p>or continue with</p>
+      <p className={formStyles['continue-with']}>or continue with</p>
       <GoogleButton disabled={isLoading} />
     </>
   );

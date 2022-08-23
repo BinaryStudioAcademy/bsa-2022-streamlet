@@ -33,11 +33,15 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
           name="email"
           label="Email"
           type="email"
+          inputClassName={formStyles['input']}
           inputErrorClassName={formStyles['input-error']}
+          labelClassName={formStyles['label']}
           wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
         <PasswordInput
+          inputClassName={formStyles['password']}
+          labelClassName={formStyles['label']}
           wrapperClassName={formStyles['form-input']}
           inputWrapperErrorClassName={formStyles['input-error']}
           placeholder="Password"
@@ -51,7 +55,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
         </Link>
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Sign in" />
       </form>
-      <p>or continue with</p>
+      <p className={formStyles['continue-with']}>or continue with</p>
       <GoogleButton disabled={isLoading} />
 
       <ContinueWithParagraph

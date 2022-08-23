@@ -26,7 +26,7 @@ const SignUpPage: FC = () => {
       setIsLoading(true);
       await dispatch(signUp(formValues))
         .unwrap()
-        .then(() => navigate(AppRoutes.SIGN_IN, { replace: true }));
+        .then(() => navigate(AppRoutes.SIGN_IN));
       createToastNotification(allAuthNotifications[AuthNotification.SIGN_UP_SUCCESS]);
     } catch {
       setError(store.getState().auth.error || ErrorMessage.DEFAULT);

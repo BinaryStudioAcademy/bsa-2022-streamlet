@@ -1,10 +1,13 @@
 type VideoCard = {
   id: string;
   name: string;
+  status: string;
+  publishedAt: string;
+  scheduledStreamDate: string;
+  poster: string;
   duration: number;
   videoViews: number;
-  createdAt: string;
-  preview: string;
+  liveViews: number;
   channel: {
     id: string;
     name: string;
