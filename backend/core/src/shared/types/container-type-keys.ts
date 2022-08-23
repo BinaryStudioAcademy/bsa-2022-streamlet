@@ -16,6 +16,9 @@ const CONTAINER_TYPES = {
   MailRepository: Symbol.for('MailRepository'),
   ChannelRepository: Symbol.for('ChannelRepository'),
   AccountVerificationService: Symbol.for('AccountVerificationService'),
+  HistoryRepository: Symbol.for('HistoryRepository'),
+  HistoryController: Symbol.for('HistoryController'),
+  HistoryService: Symbol.for('HistoryService'),
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),
