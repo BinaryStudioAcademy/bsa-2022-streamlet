@@ -7,6 +7,7 @@ import { refreshTokenInterceptor } from './http/interceptors/refresh-token-inter
 import { ENV } from 'common/enums/enums';
 import { ProfileApi } from './profile/profile-api.service';
 import { NotificationApi } from './notification/notification.service';
+import { HistoryApi } from './history-api/history-api.service';
 
 const storageService = new StorageService();
 const tokensStorageService = new TokensStorageService(storageService);
@@ -27,4 +28,9 @@ const notificationApi = new NotificationApi({
   http,
 });
 
-export { http, authApi, profileApi, notificationApi, storageService, tokensStorageService };
+const historyApi = new HistoryApi({
+  apiPrefix: ENV.API_PATH,
+  http,
+});
+
+export { http, authApi, profileApi, notificationApi, storageService, tokensStorageService, historyApi };
