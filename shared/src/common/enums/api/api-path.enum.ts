@@ -3,7 +3,7 @@ enum ApiPath {
   PROFILE = '/profile',
   CHANNEL = '/channel',
   NOTIFICATION = '/notification',
-  VIDEO = '/video',
+  VIDEOS = '/videos',
 }
 
 export { ApiPath };

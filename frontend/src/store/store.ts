@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { authApi, profileApi, notificationApi } from 'services/services';
+import { authApi, profileApi, notificationApi, videoApi } from 'services/services';
 import { rootReducer } from './root-reducer';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
@@ -10,6 +10,7 @@ const extraArgument = {
   authApi,
   profileApi,
   notificationApi,
+  videoApi,
 };
 
 const persistConfig = {
