@@ -1,4 +1,4 @@
-import { RoutesWithoutHeader } from 'common/enums/app/app-route.enum';
+import { RoutesWithoutHeader } from 'common/enums/enums';
 
 const enumRoutesWithOutHeader: Array<string> = Object.values(RoutesWithoutHeader);
 

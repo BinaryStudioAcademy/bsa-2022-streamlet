@@ -1,0 +1,137 @@
+:root {
+  // The same color as header background
+  --unread-mark-border: var(--gray-300-header-menu-background);
+  --dropdown-background: var(--gray-300-header-menu-background);
+  --notifications-unread-mark: rgb(221 7 7);
+  --notifications-dropdown-border: var(--gray-200-input-background);
+  --notifications-text: var(--white-text-color);
+}
+
+.wrapper {
+  position: relative;
+}
+
+.bell,
+.mark-as-read,
+.load-more,
+.close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.buttons {
+  display: flex;
+  gap: 15px;
+
+  svg {
+    fill: var(--text-gray-color);
+  }
+}
+
+.wrapper svg:hover {
+  opacity: 0.8;
+}
+
+.dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 300px;
+  background-color: var(--gray-300-header-menu-background);
+  border: 1px solid var(--gray-200-header-menu-background);
+  border-radius: 5px;
+  cursor: default;
+
+  @media screen and (max-width: 560px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 90vw;
+    height: 100vh;
+    border: none;
+  }
+}
+
+.unread-mark {
+  position: absolute;
+  top: 0;
+  right: -2px;
+  display: block;
+  width: 12px;
+  height: 12px;
+  background-color: var(--notifications-unread-mark);
+  border: 2px solid var(--gray-300-header-menu-background);
+  border-radius: 50%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  color: var(--white-text-color);
+  border-bottom: 2px solid var(--primary-text-color);
+}
+
+.title {
+  margin: 0;
+  font-size: 130%;
+}
+
+.close-mobile {
+  display: none;
+
+  @media screen and (max-width: 560px) {
+    display: block;
+  }
+}
+
+.dropdown-body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.notification-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  overflow-x: auto;
+}
+
+.load-more {
+  margin: 5px 0;
+  color: var(--white-text-color);
+}
+
+.load-more:hover {
+  text-decoration: underline;
+}
+
+.placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.notification-list::-webkit-scrollbar {
+  width: 7px;
+}
+
+.notification-list::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+  background-color: var(--gray-200-input-background);
+  border-radius: 2px;
+}

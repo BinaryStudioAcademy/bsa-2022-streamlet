@@ -7,6 +7,8 @@ import { RefreshTokenRepository } from '~/core/refresh-token/port/refresh-token-
 import { RefreshTokenRepositoryAdapter } from './refresh-token/refresh-token-repository-adapter';
 import { ChannelRepository } from '~/core/channel/port/channel-repository';
 import { ChannelRepositoryAdapter } from './channel/channel-repository-adapter';
+import { ResetPasswordRepository } from '~/core/reset-password/port/reset-password-repository';
+import { ResetPasswordRepositoryAdapter } from './reset-password/reset-password-repository-adapter';
 import { HistoryRepository } from '../../core/history/port/history-repository';
 import { HistoryRepositoryAdapter } from './history/history-repository-adapter';
 
@@ -16,6 +18,7 @@ const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces
 
   bind<UserRepository>(CONTAINER_TYPES.UserRepository).to(UserRepositoryAdapter);
   bind<RefreshTokenRepository>(CONTAINER_TYPES.RefreshTokenRepository).to(RefreshTokenRepositoryAdapter);
+  bind<ResetPasswordRepository>(CONTAINER_TYPES.ResetPasswordRepository).to(ResetPasswordRepositoryAdapter);
   bind<ChannelRepository>(CONTAINER_TYPES.ChannelRepository).to(ChannelRepositoryAdapter);
   bind<HistoryRepository>(CONTAINER_TYPES.HistoryRepository).to(HistoryRepositoryAdapter);
   bind<PrismaClient>(CONTAINER_TYPES.PrismaClient)

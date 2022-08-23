@@ -10,13 +10,14 @@ import { ReactNotifications } from 'react-notifications-component';
 import 'assets/css/styles.scss';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Loader } from 'components/common/common';
+import { LoaderSize } from 'common/enums/enums';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
   <StrictMode>
     <Provider store={store}>
-      <PersistGate loading={<Loader spinnerSize="xl" />} persistor={persistor}>
+      <PersistGate loading={<Loader spinnerSize={LoaderSize.XL} />} persistor={persistor}>
         <Router>
           <ReactNotifications />
           <App />

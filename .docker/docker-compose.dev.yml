@@ -74,6 +74,23 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
+  video-transcoding-server:
+    image: ghcr.io/binarystudioacademy/streamlet-video-transcoding-server-dev:latest
+    container_name: video-transcoding-server
+    volumes:
+      - ../playback:/app/backend/video-transcoding-server/playback
+    depends_on:
+      - rabbitmq
+    env_file:
+      - ../.env/video-transcoding-server.env
+    networks:
+      - backend_network
+      - frontend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"                        
   frontend:
     image: ghcr.io/binarystudioacademy/streamlet-frontend-dev:latest
     container_name: frontend
@@ -94,7 +111,7 @@ services:
       - /etc/letsencrypt/live/dev.streamlet.tk/privkey.pem:/etc/letsencrypt/live/dev.streamlet.tk/privkey.pem
       - /etc/letsencrypt/options-ssl-nginx.conf:/etc/letsencrypt/options-ssl-nginx.conf
       - /etc/letsencrypt/ssl-dhparams.pem:/etc/letsencrypt/ssl-dhparams.pem
-      - ../playback:/assets
+      - ../playback:/assets/segments
     networks:
       - backend_network
       - frontend_network

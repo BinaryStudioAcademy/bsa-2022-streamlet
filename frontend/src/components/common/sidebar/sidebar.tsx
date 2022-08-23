@@ -1,7 +1,6 @@
-import { FC } from 'common/types/types';
+import { FC, ChannelSubscriptionResponseDto } from 'common/types/types';
 import { Icon } from '../icon';
-import { SubscribeChanel } from 'common/types/sidebar/subscribe-chanel';
-import { Chanel } from 'components/sidebar/chanel';
+import { Channel } from 'components/sidebar/channel';
 import { Link } from '../common';
 import { RoutePage } from './route-pages.config';
 import { MobileSidebar, MobileSidebarProps } from '../mobile-sidebar/mobile-sidebar';
@@ -11,7 +10,7 @@ import styles from './sidebar.module.scss';
 
 interface SidebarProps {
   isSidebarOpen: boolean;
-  subscribesList: SubscribeChanel[];
+  subscribesList: ChannelSubscriptionResponseDto[];
   configRoutePages: RoutePage[];
   activeRouteId: number;
   mobileSidebarProps: MobileSidebarProps;
@@ -43,8 +42,8 @@ const Sidebar: FC<SidebarProps> = ({
         <div className={styles['horizontal-line']} />
         <div className={styles['subscription-list']}>
           <p className={styles['subscription-title']}>Subscriptions</p>
-          {subscribesList.map((chanel) => (
-            <Chanel key={chanel.id} chanelInfo={chanel} />
+          {subscribesList.map((channel) => (
+            <Channel key={channel.id} channelInfo={channel} />
           ))}
         </div>
       </div>

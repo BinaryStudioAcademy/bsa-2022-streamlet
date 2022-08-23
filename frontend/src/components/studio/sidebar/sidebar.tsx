@@ -1,19 +1,20 @@
 import { FC } from 'common/types/types';
 import { Icon } from 'frontend/src/components/common/common';
-import { IconName, IconColor, AppRoute } from 'common/enums/enums';
+import { IconName, AppRoutes, AppRoute } from 'common/enums/enums';
 import cn from 'clsx';
 import { ISideBarItem, sideBarItems } from './config';
 import { NavLink } from 'react-router-dom';
 import { ReactNode } from 'react';
 
 import styles from './styles.module.scss';
+import { IconColor } from 'common/enums/component/component';
 
 const StudioSidebar: FC = () => {
   return (
     <aside className={styles.sidebar}>
-      <NavLink to={AppRoute.ROOT}>
+      <NavLink to={AppRoutes.ROOT}>
         <div className={styles.button}>
-          <Icon name={IconName.LOGOTIP} />
+          <Icon name={IconName.MAIN_LOGO} />
         </div>
       </NavLink>
 
