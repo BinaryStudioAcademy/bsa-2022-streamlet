@@ -3,3 +3,4 @@ export { AuthApiPath } from './auth-api-path.enum';
 export { ProfileApiPath } from './profile-api-path.enum';
 export { NotificationApiPath } from './notification-api-path.enum';
 export { ChannelApiPath } from './channel-api-path.enum';
+export { HistoryApiPath } from './history-api-path.enums';

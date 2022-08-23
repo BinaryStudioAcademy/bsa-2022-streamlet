@@ -14,6 +14,7 @@ import { isRouteHaveHeader } from 'helpers/routes/is-route-have-header';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
 import { VideoCardTest } from './tests/video-card/video-card';
 import { VideoPageContainer } from 'pages/video/video-page-container';
+import { HistoryPage } from 'pages/history-page/history-page';
 
 import styles from './app.module.scss';
 import { AccountVerificationConfirmPage } from 'pages/account-verification-page/account-verification-confirm-page';
@@ -63,7 +64,7 @@ const App: FC = () => {
                 <Route path={AppRoutes.ROOT} element={<MainPage />} />
                 <Route path="/browse/some-path" element={<MainPage />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />
-                <Route path={AppRoutes.HISTORY} element="History" />
+                <Route path={AppRoutes.HISTORY} element={<HistoryPage />} />
                 <Route path={AppRoutes.FOLLOWING} element="Following" />
                 <Route path={AppRoutes.BROWSE} element="Browse" />
                 <Route path={AppRoutes.ANY} element={<NotFound />} />

@@ -26,6 +26,7 @@ export { ChannelSubscriptionResponseDto } from './sidebar/sidebar';
 export * from './user/user';
 
 export * from './profile/profile';
+export * from './history/history';
 export { type AvatarImgValue, ImageStorePresetType } from './image/image';
 
 export { ValidationSchema } from './validation/validation';

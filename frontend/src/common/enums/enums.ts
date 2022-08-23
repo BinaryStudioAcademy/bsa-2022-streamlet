@@ -1,4 +1,4 @@
-export { ApiPath, AuthApiPath, NotificationApiPath } from './api/api';
+export { ApiPath, AuthApiPath, NotificationApiPath, HistoryApiPath } from './api/api';
 
 export * from './app/app';
 

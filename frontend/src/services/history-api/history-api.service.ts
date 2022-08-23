@@ -17,7 +17,7 @@ class HistoryApi {
   }
   public getUserHistory(): Promise<HistoryResponseDto[]> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.PROFILE}${HistoryApiPath.ROOT}`,
+      url: `${this.#apiPrefix}${ApiPath.HISTORY}${HistoryApiPath.ROOT}`,
       options: {
         method: HttpMethod.GET,
       },
