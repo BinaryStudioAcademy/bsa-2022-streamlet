@@ -55,5 +55,8 @@
   ],
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
+  },
+  "dependencies": {
+    "react-loading-skeleton": "^3.1.0"
   }
 }
