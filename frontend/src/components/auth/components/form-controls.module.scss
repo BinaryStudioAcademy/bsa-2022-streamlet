@@ -8,8 +8,26 @@
   margin-bottom: 22px;
 }
 
+.password::placeholder {
+  color: var(--input-password-placeholder-color);
+}
+
+.input::placeholder {
+  color: var(--input-placeholder-color);
+}
+
 .input-error {
   border: 1px solid var(--input-error-color);
   border-radius: 3px;
   box-shadow: 0 0 3px 0 rgb(var(--input-error-color) / 80%), 0 0 5px 0 rgb(var(--input-error-color) / 50%);
+}
+
+.label {
+  font-family: Gilroy-Medium, sans-serif;
+  text-transform: capitalize;
+}
+
+.continue-with {
+  color: var(--white-text-color);
+  text-align: center;
 }

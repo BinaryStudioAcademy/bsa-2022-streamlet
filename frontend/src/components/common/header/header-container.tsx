@@ -1,10 +1,10 @@
 import { MouseEvent, FormEvent } from 'react';
 import { FC } from 'common/types/types';
-import { MenuOptions, AppRoutes, SearchQueryParam } from 'common/enums/enums';
+import { MenuOptions, AppRoutes, SearchQueryParam, IconName } from 'common/enums/enums';
 import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate, useRef } from 'hooks/hooks';
 import { authActions, searchActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
-import { allMenuOptions } from './config';
+import { switchTheme } from 'store/theme-switch/actions';
 import { Header } from './header';
 
 const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
@@ -21,7 +21,7 @@ const HeaderContainer: FC = () => {
   const navigate = useNavigate();
 
   const hasUser = Boolean(user);
-
+  const isLightTheme = useAppSelector((store) => store.theme.isLightTheme);
   const { isOpened: isMenuOpen, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
 
   const emptyOnClickHandler = (): void => void 0;
@@ -32,6 +32,24 @@ const HeaderContainer: FC = () => {
     [MenuOptions.SignOut]: handleClickSignOut,
   };
 
+  const matchMenuOptionWithIconName: Record<MenuOptions, IconName> = {
+    [MenuOptions.Settings]: IconName.SETTINGS,
+    [MenuOptions.Theme]: isLightTheme ? IconName.SUN : IconName.MOON,
+    [MenuOptions.SignOut]: IconName.SIGN_OUT,
+  };
+
+  const matchMenuOptionWithText: Record<MenuOptions, string> = {
+    [MenuOptions.Settings]: 'Settings',
+    [MenuOptions.Theme]: isLightTheme ? 'Light Theme' : 'Dark Theme',
+    [MenuOptions.SignOut]: 'Sign Out',
+  };
+
+  const allMenuOptions = [MenuOptions.Settings, MenuOptions.Theme, MenuOptions.SignOut].map((option) => ({
+    type: option,
+    text: matchMenuOptionWithText[option],
+    icon: matchMenuOptionWithIconName[option],
+  }));
+
   const options = allMenuOptions.map((option) => ({
     ...option,
     onClick: matchMenuOptionWithOnClickHandler[option.type],
@@ -41,12 +59,12 @@ const HeaderContainer: FC = () => {
     try {
       await dispatch(authActions.signOut());
     } finally {
-      navigate(AppRoutes.SIGN_IN, { replace: true });
+      navigate(AppRoutes.ROOT);
     }
   }, [dispatch, navigate]);
 
   function handleClickSignIn(): void {
-    navigate(AppRoutes.SIGN_IN, { replace: true });
+    navigate(AppRoutes.SIGN_IN);
   }
 
   function handleClickSignOut(): void {
@@ -80,8 +98,12 @@ const HeaderContainer: FC = () => {
     if (searchText) {
       handleClearActiveFilterIds();
       const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
-      navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`, { replace: true });
+      navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`);
     }
+  };
+
+  const handleThemeToggle = (): void => {
+    dispatch(switchTheme());
   };
 
   return (
@@ -93,11 +115,13 @@ const HeaderContainer: FC = () => {
       searchInputEl={searchInputEl}
       handleClickUserMenu={handleClickUserMenu}
       handleClickSignIn={handleClickSignIn}
+      handleClickThemeSwitch={handleThemeToggle}
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={FAKE_USER_AVATAR}
       options={options}
+      themeValue={isLightTheme}
       notificationDropdownContent={<NotificationDropdownContainer />}
     />
   );

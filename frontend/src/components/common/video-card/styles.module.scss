@@ -30,6 +30,7 @@
 .video-live-label {
   min-width: 47px;
   padding: 5px;
+  color: var(--white-text-color);
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
@@ -40,12 +41,10 @@
 }
 
 .video-duration-label {
-  color: var(--text-white-color);
   background-color: var(--gray-300-header-menu-background);
 }
 
 .video-live-label {
-  color: var(--text-white-color);
   background-color: var(--brand-green-color-hover);
 }
 
@@ -61,7 +60,7 @@
 .video-information-container {
   display: flex;
   justify-content: center;
-  border-bottom: 1px black solid;
+  border-bottom: 2px var(--primary-text-color) solid;
 }
 
 .video-description-container {
@@ -72,7 +71,7 @@
   max-height: 40px;
   margin: 7px 0 9px;
   overflow: hidden;
-  color: white;
+  color: var(--white-text-color);
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
@@ -104,6 +103,7 @@
 }
 
 .video-card-hr {
+  display: none;
   margin: 0 0 5px;
   color: var(--gray-400-primary-background);
   background-color: var(--gray-400-primary-background);

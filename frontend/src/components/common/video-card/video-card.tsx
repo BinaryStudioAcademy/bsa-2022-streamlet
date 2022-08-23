@@ -4,7 +4,7 @@ import DefaultUserAvatar from '../../../assets/img/default-user-avatar.jpg';
 import { useNavigate } from 'react-router-dom';
 import { ChannelCrudApiPath } from 'common/enums/enums';
 
-import { getHowLongAgoString } from '../../../helpers/helpers';
+import { getDividedViewsString, getHowLongAgoString } from '../../../helpers/helpers';
 import { ReactComponent as WatchIcon } from 'assets/img/watch.svg';
 import { ReactComponent as TimeAgoIcon } from 'assets/img/time-ago.svg';
 import clsx from 'clsx';
@@ -43,8 +43,6 @@ const VideoCard: FC<Props> = ({
   const redirectToChannelPage = (): void => {
     navigate(`${ChannelCrudApiPath.ROOT}/${authorInfo?.channelId}`);
   };
-  const viewerNumStringWithSpace: (viewerNum: number) => string = (viewerNum) =>
-    String(viewerNum).replace(/(\d)(?=(\d\d\d)+(\D|$))/g, '$1 ');
   return (
     <div className={clsx(style['video-card'], className)}>
       <div className={style['video-preview-container']} onClick={redirectToVideoPage}>
@@ -81,7 +79,7 @@ const VideoCard: FC<Props> = ({
         {viewerNum !== null && (
           <div className={style['viewer-container']}>
             <WatchIcon width={12} height={12} className={style['icon']} />
-            <p className={style['video-card-statistic-data']}>{viewerNumStringWithSpace(viewerNum)}</p>
+            <p className={style['video-card-statistic-data']}>{getDividedViewsString(viewerNum)}</p>
           </div>
         )}
         <div className={style['viewer-container']}>

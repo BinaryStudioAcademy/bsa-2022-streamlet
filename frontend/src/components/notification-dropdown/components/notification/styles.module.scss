@@ -8,16 +8,16 @@
   display: flex;
   align-items: center;
   padding: 15px 8px;
-  color: var(--notifications-text);
-  border-bottom: 1px solid var(--notifications-border);
+  color: var(--white-text-color);
+  border-bottom: 1px solid var(--primary-text-color);
 }
 
 .text-notification {
   display: flex;
   flex-direction: column;
   padding: 15px 24px 15px 53px;
-  color: var(--notifications-text);
-  border-bottom: 1px solid var(--notifications-border);
+  color: var(--white-text-color);
+  border-bottom: 1px solid var(--primary-text-color);
 }
 
 .text-notification-message {
@@ -27,7 +27,7 @@
 
 .notification:hover,
 .text-notification:hover {
-  background-color: var(--notifications-hover);
+  background-color: var(--gray-200-input-background);
 }
 
 .avatar {
