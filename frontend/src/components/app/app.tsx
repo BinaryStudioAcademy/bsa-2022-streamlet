@@ -9,7 +9,6 @@ import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/aut
 import { Studio, StudioAnalytics } from 'components/studio';
 import { Search } from 'components/search/search';
 import { NotFound } from 'components/not-found-page/not-found';
-import { ReactNotifications } from 'react-notifications-component';
 import { isRouteHaveHeader } from 'helpers/routes/is-route-have-header';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
 import { VideoCardTest } from './tests/video-card/video-card';
@@ -43,7 +42,6 @@ const App: FC = () => {
 
   return (
     <>
-      <ReactNotifications />
       {isHaveHeader && (
         <Routes>
           <Route path={AppRoutes.SIGN_UP} element={<SignUpPage />} />
