@@ -1,1 +1,1 @@
-export { ApiPath, AuthApiPath, NotificationApiPath, VideoApiPath } from 'shared/build';
+export { ApiPath, AuthApiPath, NotificationApiPath, ProfileApiPath, VideoApiPath } from 'shared/build';

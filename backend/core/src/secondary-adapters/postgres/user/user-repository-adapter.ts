@@ -26,7 +26,20 @@ export class UserRepositoryAdapter implements UserRepository {
   getUserByUsernameOrEmail(email: string, username: string): Promise<User | null> {
     return this.prismaClient.user.findFirst({
       where: {
-        OR: [{ email }, { username }],
+        OR: [
+          {
+            email: {
+              equals: email,
+              mode: 'insensitive',
+            },
+          },
+          {
+            username: {
+              equals: username,
+              mode: 'insensitive',
+            },
+          },
+        ],
       },
     });
   }
@@ -36,9 +49,28 @@ export class UserRepositoryAdapter implements UserRepository {
       where: {
         id,
       },
+      select: {
+        id: true,
+        username: true,
+        password: true,
+        createdAt: true,
+        updatedAt: true,
+        email: true,
+        isActivated: true,
+      },
     });
   }
 
+  updateUserName(userId: string, username: string): Promise<User | null> {
+    return this.prismaClient.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        username,
+      },
+    });
+  }
   getByEmail(email: string): Promise<User | null> {
     return this.prismaClient.user.findFirst({
       where: {

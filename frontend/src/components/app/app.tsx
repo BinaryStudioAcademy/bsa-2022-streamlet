@@ -18,6 +18,7 @@ import { VideoPageContainer } from 'pages/video/video-page-container';
 import styles from './app.module.scss';
 import { AccountVerificationConfirmPage } from 'pages/account-verification-page/account-verification-confirm-page';
 import { RestorePasswordConfirmPage } from 'pages/restore-password-confirm-page/restore-password-confirm-page';
+import { ProfilePreferencesPage } from 'pages/profile-preferences-page/profile-preferences-page';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -70,6 +71,7 @@ const App: FC = () => {
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
                 <Route path={AppRoutes.STUDIO} element={<Studio />} />
                 <Route path={AppRoutes.ANALYTICS} element={<StudioAnalytics />} />
+                <Route path={AppRoutes.PROFILE_PREFERENCE} element={<ProfilePreferencesPage />} />
                 <Route path="video-page" element={<VideoPageContainer />} />
               </Routes>
             </div>
