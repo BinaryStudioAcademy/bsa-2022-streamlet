@@ -4,7 +4,14 @@ import { CONTAINER_TYPES, MailTestRequestDto, UserSignUpRequestDto } from '~/sha
 import { UserRepository } from '~/core/user/port/user-repository';
 import { RefreshTokenRepository } from '~/core/refresh-token/port/refresh-token-repository';
 
-import { MailResponseDto, MailType, UserBaseResponseDto, AmqpQueue } from 'shared/build';
+import {
+  MailResponseDto,
+  MailType,
+  ImageStorePresetType,
+  ImageUploadResponseDto,
+  UserUploadRequestDto,
+  AmqpQueue,
+} from 'shared/build';
 import { ImageStorePort } from '~/core/common/port/image-store';
 
 import { MailRepository } from '~/core/mail/port/mail-repository';
@@ -48,12 +55,24 @@ export class UserService {
     return this.userRepository.getUserByUsernameOrEmail(email, username);
   }
 
-  createUser(userRequestDto: UserSignUpRequestDto): Promise<UserBaseResponseDto> {
+  createUser(userRequestDto: UserSignUpRequestDto): Promise<User> {
     return this.userRepository.createUser(userRequestDto);
+  }
+
+  setIsActivated(shouldBeActivated: boolean, userId: string): Promise<void> {
+    return this.userRepository.setIsActivated(shouldBeActivated, userId);
+  }
+
+  changeUserPassword(userId: string, newPassword: string): Promise<void> {
+    return this.userRepository.changePassword(userId, newPassword);
   }
 
   createRefreshToken(userId: string): Promise<string> {
     return this.refreshTokenRepository.createForUser(userId);
+  }
+
+  uploadAvatar({ base64Str }: UserUploadRequestDto): Promise<ImageUploadResponseDto> {
+    return this.imageStore.upload({ base64Str, type: ImageStorePresetType.AVATAR });
   }
   // This method is created only for testing purposes. When proper registration method will be implemented,
   // this.mailRepository.sendEmail() will be called  from there.

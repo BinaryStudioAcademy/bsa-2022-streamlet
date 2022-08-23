@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { Icon } from 'frontend/src/components/common/common';
-import { IconName, AppRoute } from 'common/enums/enums';
+import { IconName, AppRoutes, AppRoute } from 'common/enums/enums';
 import cn from 'clsx';
 import { ISideBarItem, sideBarItems } from './config';
 import { NavLink } from 'react-router-dom';
@@ -11,7 +11,7 @@ import styles from './styles.module.scss';
 const StudioSidebar: FC = () => {
   return (
     <aside className={styles['sidebar']}>
-      <NavLink to={AppRoute.ROOT}>
+      <NavLink to={AppRoutes.ROOT}>
         <div className={styles['logo-button']}>
           <Icon name={IconName.MAIN_LOGO} width="24" height="24" />
         </div>

@@ -1,12 +1,12 @@
 import style from './styles.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { AppRoute } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import { ReactElement } from 'react';
 
 const NotFound = (): ReactElement => {
   const navigate = useNavigate();
   const redirectToMainPage = (): void => {
-    navigate(`${AppRoute.ROOT}`, { replace: true });
+    navigate(`${AppRoutes.ROOT}`, { replace: true });
   };
 
   return (

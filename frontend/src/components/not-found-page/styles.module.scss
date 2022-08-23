@@ -20,7 +20,7 @@
 .go-home-button {
   height: 50px;
   padding: 0 10px;
-  color: white;
+  color: var(--white-text-color);
   font-size: 16px;
   line-height: 16px;
   letter-spacing: 1.5px;
@@ -34,7 +34,7 @@
 
 .error-code {
   margin-bottom: 40px;
-  color: white;
+  color: var(--white-text-color);
   font-weight: bold;
   font-size: 100px;
   letter-spacing: 1px;
