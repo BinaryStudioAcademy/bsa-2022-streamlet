@@ -19,6 +19,9 @@ const CONTAINER_TYPES = {
   HistoryRepository: Symbol.for('HistoryRepository'),
   HistoryController: Symbol.for('HistoryController'),
   HistoryService: Symbol.for('HistoryService'),
+  VideoService: Symbol.for('VideoService'),
+  VideoRepository: Symbol.for('VideoRepository'),
+  VideoController: Symbol.for('VideoController'),
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),
