@@ -52,12 +52,12 @@ const NotificationDropdown: FC<NotificationDropdownProps> = ({
             <div className={notificationDropdown['buttons']}>
               <Button
                 className={notificationDropdown['mark-as-read']}
-                content={<Icon color={IconColor.WHITE} name={IconName.MARK_AS_READ} width="25" height="25" />}
+                content={<Icon name={IconName.MARK_AS_READ} width="25" height="25" />}
                 onClick={onReadAllNotifications}
               />
               <Button
                 className={notificationDropdown['close-mobile']}
-                content={<Icon color={IconColor.WHITE} name={IconName.CLOSE} width="25" height="25" />}
+                content={<Icon name={IconName.CLOSE} width="25" height="25" />}
                 onClick={onCloseDropdown}
               />
             </div>

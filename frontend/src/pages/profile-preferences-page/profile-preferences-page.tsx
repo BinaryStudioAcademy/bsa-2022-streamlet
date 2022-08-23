@@ -13,8 +13,7 @@ import React, { useCallback, useState } from 'react';
 import { profileActions } from 'store/actions';
 import { ImageListType } from 'react-images-uploading';
 import { useAppDispatch, useAppSelector, useEffect, useNavigate } from 'hooks/hooks';
-import { AppRoute } from '../../common/enums/app/app-route.enum';
-import { ErrorMessage } from '../../common/enums/enums';
+import { AppRoutes, ErrorMessage } from '../../common/enums/enums';
 import { store } from '../../store/store';
 import { ProfilePreferencesPageForm } from './common/profile-preferences-page-form';
 
@@ -47,7 +46,7 @@ const ProfilePreferencesPage: FC = () => {
 
   useEffect(() => {
     if (!user) {
-      navigate(`${AppRoute.SIGN_IN}`, { replace: true });
+      navigate(`${AppRoutes.SIGN_IN}`, { replace: true });
       return;
     }
     dispatch(profileActions.getProfileByUserId({ userId: user.id }));

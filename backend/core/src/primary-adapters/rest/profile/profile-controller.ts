@@ -19,7 +19,7 @@ import {
 import { UserService } from '~/core/user/application/user-service';
 import { ProfileService } from '~/core/profile/aplication/profile-service';
 import { NotFound } from '~/shared/exceptions/not-found';
-import { exceptionMessages } from '~/shared/enums/exceptions';
+import { exceptionMessages } from '~/shared/enums/messages';
 import { authenticationMiddleware } from '../middleware/authentication-middleware';
 import { Forbidden } from '~/shared/exceptions/forbidden';
 import { ApiPath, ProfileApiPath } from 'shared/build';

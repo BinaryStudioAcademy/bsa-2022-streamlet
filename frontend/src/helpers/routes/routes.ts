@@ -1,2 +1,2 @@
-export { isRouteHasDefaultNavigation } from './is-router-has-header/is-route-has-header.helper';
-export { isRouteHasStudioNavigation } from './is-router-has-studio-header/is-route-has-studio-header.helper';
+export { isRouteHasDefaultNavigation } from './is-router-has-default-navigation/is-route-has-default-navigation.helper';
+export { isRouteHasStudioNavigation } from './is-router-has-studio-navigation/is-route-has-studio-navigation.helper';

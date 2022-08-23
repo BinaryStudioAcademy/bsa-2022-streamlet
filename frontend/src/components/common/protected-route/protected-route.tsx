@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from 'hooks/hooks';
-import { AppRoute } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 
 type Props = {
@@ -14,7 +14,7 @@ const ProtectedRoute: FC<Props> = ({ element }) => {
 
   const hasUser = Boolean(user);
 
-  return hasUser ? element : <Navigate to={{ pathname: AppRoute.SIGN_IN }} />;
+  return hasUser ? element : <Navigate to={{ pathname: AppRoutes.SIGN_IN }} />;
 };
 
 export { ProtectedRoute };

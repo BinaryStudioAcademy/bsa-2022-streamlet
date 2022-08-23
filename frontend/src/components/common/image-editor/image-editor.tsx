@@ -6,8 +6,8 @@ import { AvatarImgValue } from '../../../common/types/image/avatar/avatar-option
 import { IconName } from '../../../common/enums/component/icon-name.enum';
 import { IconColor } from '../../../common/enums/component/icon-color.enum';
 import { Icon } from '../icon';
-import { FC } from '../../../common/types/types';
 import { Modal } from '../modal/modal';
+import { FC } from '../../../common/types/react/fc.type';
 
 type imageEditorProps = {
   avatar: AvatarImgValue;

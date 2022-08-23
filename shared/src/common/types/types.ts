@@ -9,4 +9,5 @@ export * from './channel/channel';
 export * from './components/components';
 export * from './request/request';
 export * from './profile/profile';
+export * from './history';
 export * from './notification/notification';
