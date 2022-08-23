@@ -4,7 +4,6 @@ import { CONTAINER_TYPES } from '~/shared/types/types';
 import { ApiPath, DefaultRequestParam, TagApiPath, TagCreateRequestDto, TagResponseDto } from 'shared/build';
 import { TagService } from '~/core/tag/application/tag-service';
 import { NotFound } from '~/shared/exceptions/not-found';
-import { DuplicationError } from '~/shared/exceptions/duplication-error';
 import { normalizeTagPayload } from './helpers/helpers';
 
 @controller(ApiPath.TAG)
@@ -27,14 +26,16 @@ export class TagController extends BaseHttpController {
     return tag;
   }
 
-  @httpPost(TagApiPath.ROOT)
-  public async createTag(@requestBody() body: TagCreateRequestDto): Promise<TagResponseDto> {
+  @httpPost(TagApiPath.$BIND)
+  public async bindTagToVIdeo(
+    @requestParam() { id }: DefaultRequestParam,
+    @requestBody() body: TagCreateRequestDto,
+  ): Promise<TagResponseDto> {
     const payload = normalizeTagPayload(body);
-    const isTagCreated = await this.tagService.getByName(payload);
-    if (isTagCreated) {
-      throw new DuplicationError('Tag already created');
-    }
 
-    return this.tagService.createTag(payload);
+    return this.tagService.bindTag({
+      ...payload,
+      videoId: id,
+    });
   }
 }

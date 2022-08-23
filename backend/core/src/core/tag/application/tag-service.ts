@@ -24,8 +24,17 @@ export class TagService {
     return tag && castToTagResponseDto(tag);
   }
 
-  async createTag(createTagDto: TagCreateRequestDto): Promise<TagResponseDto> {
-    const createdTag = await this.tagRepository.createTag(createTagDto);
-    return castToTagResponseDto(createdTag);
+  async createTag({ name }: TagCreateRequestDto): Promise<TagResponseDto | undefined> {
+    const isTagCreated = await this.tagRepository.getByName(name);
+    if (isTagCreated) {
+      return;
+    }
+    return this.tagRepository.createTag({ name });
+  }
+
+  async bindTag({ name, videoId }: { name: string; videoId: string }): Promise<TagResponseDto> {
+    await this.createTag({ name });
+    const tag = await this.tagRepository.bindTagToVideo({ name, videoId });
+    return castToTagResponseDto(tag);
   }
 }

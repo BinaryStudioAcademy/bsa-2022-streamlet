@@ -32,4 +32,19 @@ export class TagRepositoryAdapter implements TagRepository {
       data: tagCreateDto,
     });
   }
+
+  bindTagToVideo({ name, videoId }: { name: string; videoId: string }): Promise<Tag> {
+    return this.prismaClient.tag.update({
+      where: {
+        name,
+      },
+      data: {
+        videos: {
+          connect: {
+            id: videoId,
+          },
+        },
+      },
+    });
+  }
 }
