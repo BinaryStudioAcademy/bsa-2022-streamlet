@@ -22,9 +22,7 @@ const MainPageContainer: FC = () => {
     (async function getAllVideos(): Promise<void> {
       const videos = await videoApi.getVideos();
 
-      setTimeout(() => {
-        setBlockVideo([{ videos: videos }]);
-      }, 5000);
+      setBlockVideo([{ videos: videos }]);
     })();
   }, []);
 
