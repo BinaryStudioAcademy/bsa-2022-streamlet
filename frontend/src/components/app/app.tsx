@@ -10,7 +10,7 @@ import { Search } from 'components/search/search';
 import { NotFound } from 'components/not-found-page/not-found';
 import { ReactNotifications } from 'react-notifications-component';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
-import { StudioHome, StudioAnalytics, StudioSidebar, StudioChannel } from '../../pages/studio';
+import { StudioHome, StudioAnalytics, StudioSidebar, StudioChannel, StudioStream } from '../../pages/studio';
 import { VideoCardTest } from './tests/video-card/video-card';
 import { VideoPageContainer } from 'pages/video/video-page-container';
 import { ProtectedRoute } from 'components/common/protected-route/protected-route';
@@ -63,6 +63,8 @@ const App: FC = () => {
               <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHome />} />} />
               <Route path={AppRoutes.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />
               <Route path={AppRoutes.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />} />
+              <Route path={AppRoutes.STUDIO_STREAM_$ID} element={<ProtectedRoute element={<StudioStream />} />} />
+              <Route path={AppRoutes.ANY} element={<NotFound />} />
             </Routes>
           </div>
         </div>

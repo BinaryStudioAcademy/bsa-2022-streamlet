@@ -12,9 +12,9 @@ const AppRoutes = {
   ACCOUNT_VERIFICATION_CONFIRM: commonFrontendPaths.auth.ACCOUNT_VERIFICATION_CONFIRM.path,
   ANY: '*',
   VIDEO: '/video',
-  VIDEO_$ID: '/video/:videoId',
+  VIDEO_$ID: '/video/:id',
   CHANNEL: '/channel',
-  CHANNEL_$ID: '/channel/:channelId',
+  CHANNEL_$ID: '/channel/:id',
   STUDIO: '/studio/home',
   STUDIO_ANALYTICS: '/studio/analytics',
   STUDIO_CHANNEL: '/studio/channel',
@@ -33,12 +33,12 @@ const RoutesWithoutHeader = {
   ACCOUNT_VERIFICATION_CONFIRM: commonFrontendPaths.auth.ACCOUNT_VERIFICATION_CONFIRM.path,
 } as const;
 
-enum RoutesWithStudioHeader {
-  STUDIO = '/studio/home',
-  STUDIO_ANALYTICS = '/studio/analytics',
-  STUDIO_CHANNEL = '/studio/channel',
-  STUDIO_STREAM_$ID = '/studio/stream/:id',
-}
+const RoutesWithStudioHeader = {
+  STUDIO: '/studio/home',
+  STUDIO_ANALYTICS: '/studio/analytics',
+  STUDIO_CHANNEL: '/studio/channel',
+  STUDIO_STREAM_$ID: '/studio/stream/:id',
+};
 
 type RouteWithoutHeader = typeof RoutesWithoutHeader[keyof typeof RoutesWithoutHeader];
 

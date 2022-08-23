@@ -13,7 +13,6 @@ import styles from './styles.module.scss';
 //   description: 'Me testing stream!',
 //   streamingKey: 'testkey',
 //   videoId: 'teststream',
-
 // };
 
 // type UpdateStreamRequestDto = {
@@ -22,7 +21,7 @@ import styles from './styles.module.scss';
 // }
 
 const StudioStream: FC = () => {
-  const { streamId } = useParams();
+  const { id } = useParams();
   // const [isNeedUpload, setIsNeedUpload] = useState(false);
   // const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState<string | undefined>();
@@ -43,42 +42,38 @@ const StudioStream: FC = () => {
   //   setIsNeedUpload(!isNeedUpload);
   // };
 
-  return (
-    <div className={styles['studio']}>
-      {
-        streamId /* {isNeedUpload && <UploadImage images={images} onUpload={onChange} onClose={onUploadImageClose} />}
-      <div className={styles['row1']}>
-        <div className={styles['video-preview']}></div>
-        {isLoading ? (
-          <Loader spinnerSize={'xs'} vCentered={true} hCentered={true} />
-        ) : (
-          <img
-            className={styles['profile-image-preview']}
-            src={video.previewImage === '' ? defaultPreview : video.previewImage}
-            alt="profile picture preview"
-          />
-        )}
-        <div className={styles['image-upload-control-container']}>
-          <button
-            type="button"
-            className={styles['image-upload-button']}
-            onClick={(): void => {
-              setIsNeedUpload(!isNeedUpload);
-            }}
-          >
-            Upload profile image
-          </button>
-          <span>
-            {error ? (
-              <span className={styles['error-message']}>{error}</span>
-            ) : (
-              'File format: JPEG/PNG, max size: 10MB'
-            )}
-          </span>
-        </div>
-      </div> */
-      }
-    </div>
-  );
+  return <div className={styles['studio']}>{id}</div>;
 };
 export { StudioStream };
+
+/* {isNeedUpload && <UploadImage images={images} onUpload={onChange} onClose={onUploadImageClose} />}
+<div className={styles['row1']}>
+  <div className={styles['video-preview']}></div>
+  {isLoading ? (
+    <Loader spinnerSize={'xs'} vCentered={true} hCentered={true} />
+  ) : (
+    <img
+      className={styles['profile-image-preview']}
+      src={video.previewImage === '' ? defaultPreview : video.previewImage}
+      alt="profile picture preview"
+    />
+  )}
+  <div className={styles['image-upload-control-container']}>
+    <button
+      type="button"
+      className={styles['image-upload-button']}
+      onClick={(): void => {
+        setIsNeedUpload(!isNeedUpload);
+      }}
+    >
+      Upload profile image
+    </button>
+    <span>
+      {error ? (
+        <span className={styles['error-message']}>{error}</span>
+      ) : (
+        'File format: JPEG/PNG, max size: 10MB'
+      )}
+    </span>
+  </div>
+</div> */
