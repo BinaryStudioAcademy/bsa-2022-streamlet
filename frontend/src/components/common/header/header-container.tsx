@@ -14,7 +14,7 @@ import { authActions, searchActions, profileActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
 import { switchTheme } from 'store/theme-switch/actions';
 import { Header } from './header';
-import defaultAvatar from '../../../assets/img/default-user-avatar.jpg';
+import defaultAvatar from 'assets/img/default-user-avatar.jpg';
 
 const HeaderContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -31,7 +31,7 @@ const HeaderContainer: FC = () => {
 
   const hasUser = Boolean(user);
   const isLightTheme = useAppSelector((store) => store.theme.isLightTheme);
-  const { isOpened: isMenuOpen, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+  const { isOpened: isMenuOpen, open: openMenu, close: closeMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
 
   const emptyOnClickHandler = (): void => void 0;
 
@@ -41,7 +41,7 @@ const HeaderContainer: FC = () => {
 
   const matchMenuOptionWithOnClickHandler: Record<MenuOptions, () => void> = {
     [MenuOptions.Settings]: handleClickSettings,
-    [MenuOptions.Theme]: emptyOnClickHandler,
+    [MenuOptions.Theme]: emptyOnClickHandler, // should be () => void 0; to work properly
     [MenuOptions.SignOut]: handleClickSignOut,
   };
 
@@ -90,6 +90,7 @@ const HeaderContainer: FC = () => {
 
   function handleClickSignOut(): void {
     handleSignOut();
+    closeMenu();
   }
 
   function handleClickUserMenu(e: MouseEvent): void {
@@ -98,6 +99,8 @@ const HeaderContainer: FC = () => {
       openMenu();
     }
   }
+
+  const handleClickGoToStream = (): void => navigate(AppRoutes.STUDIO);
 
   const searchInputEl = useRef<HTMLInputElement>(null);
 
@@ -119,7 +122,7 @@ const HeaderContainer: FC = () => {
     if (searchText) {
       handleClearActiveFilterIds();
       const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
-      navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`, { replace: true });
+      navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`);
     }
   };
 
@@ -135,6 +138,7 @@ const HeaderContainer: FC = () => {
       searchValue={searchText}
       searchInputEl={searchInputEl}
       handleClickUserMenu={handleClickUserMenu}
+      handleClickGoToStream={handleClickGoToStream}
       handleClickSignIn={handleClickSignIn}
       handleClickThemeSwitch={handleThemeToggle}
       handleChangeInputSearch={handleChangeInputSearch}
