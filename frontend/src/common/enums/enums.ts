@@ -18,3 +18,4 @@ export { NotificationType } from './notification/notification';
 
 export { ToastNotificationType } from './toast-notification/toast-notification';
 export * from './streaming/streaming';
+export * from './channel/channel';
