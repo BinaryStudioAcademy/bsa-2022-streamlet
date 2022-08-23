@@ -1,1 +1,1 @@
-export { BaseVideoResponseDto } from './base-video-response-dto.type';
+export { BaseVideoResponseDto, DataVideo } from './base-video-response-dto.type';

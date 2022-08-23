@@ -1,5 +1,5 @@
-import { Video } from '@prisma/client';
+import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 
 export interface VideoRepository {
-  getAll(): Promise<Video[]>;
+  getAll(): Promise<DataVideo>;
 }

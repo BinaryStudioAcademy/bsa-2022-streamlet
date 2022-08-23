@@ -1,5 +1,5 @@
 import { HttpMethod, ApiPath } from 'common/enums/enums';
-import { BaseVideoResponseDto } from 'common/types/types';
+import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { Http } from '../http/http.service';
 
 type Constructor = {
@@ -16,7 +16,7 @@ class VideoApi {
     this.#apiPrefix = apiPrefix;
   }
 
-  public getVideos(): Promise<BaseVideoResponseDto[] | []> {
+  public getVideos(): Promise<DataVideo> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.VIDEOS}`,
       options: {

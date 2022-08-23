@@ -2,7 +2,8 @@ import { BaseHttpController, controller, httpGet } from 'inversify-express-utils
 import { inject } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { VideoService } from '~/core/video/application/video-service';
-import { Video } from '@prisma/client';
+import { ApiPath } from 'shared/build';
+import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 
 /**
  * @swagger
@@ -54,7 +55,7 @@ import { Video } from '@prisma/client';
  *          channel:
  *            $ref: '#/components/schemas/Channel'
  */
-@controller('/videos')
+@controller(ApiPath.VIDEOS)
 export class VideoController extends BaseHttpController {
   private videoService: VideoService;
 
@@ -84,7 +85,7 @@ export class VideoController extends BaseHttpController {
    *                  $ref: '#/components/schemas/Video'
    */
   @httpGet('/')
-  public getAllVideos(): Promise<Video[]> {
+  public getAllVideos(): Promise<DataVideo> {
     return this.videoService.getAllVideos();
   }
 }

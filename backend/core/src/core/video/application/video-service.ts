@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { VideoRepository } from '~/core/video/port/video-repository';
-import { Video } from '@prisma/client';
+import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 
 @injectable()
 export class VideoService {
@@ -11,7 +11,7 @@ export class VideoService {
     this.videoRepository = videoRepository;
   }
 
-  getAllVideos(): Promise<Video[]> {
+  getAllVideos(): Promise<DataVideo> {
     return this.videoRepository.getAll();
   }
 }

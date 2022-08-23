@@ -33,7 +33,7 @@ const filterList: Array<FilterItem> = [
   },
   {
     id: 7,
-    filterName: 'Tou watched',
+    filterName: 'You watched',
     isActive: false,
   },
   {

@@ -15,4 +15,9 @@ type BaseVideoResponseDto = {
   };
 };
 
-export { type BaseVideoResponseDto };
+type DataVideo = {
+  list: BaseVideoResponseDto[];
+  total: number;
+};
+
+export { BaseVideoResponseDto, DataVideo };
