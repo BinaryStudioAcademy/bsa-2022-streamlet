@@ -7,6 +7,7 @@ import { closeSidebar, openSidebar } from 'store/layout/actions';
 import { Icon } from 'components/common/common';
 
 import styles from './header.module.scss';
+import { ToggleSwitch } from '../toggle-switch';
 
 interface MenuOption {
   type: MenuOptions;
@@ -21,6 +22,7 @@ interface HeaderProps {
   searchValue: string;
   searchInputEl: RefObject<HTMLInputElement>;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
+  handleClickThemeSwitch(): void;
   handleClickSignIn(): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
@@ -29,6 +31,7 @@ interface HeaderProps {
   userAvatar: string;
   menuRef: RefObject<HTMLDivElement>;
   notificationDropdownContent: React.ReactNode;
+  themeValue: boolean;
 }
 
 const Header: FC<HeaderProps> = ({
@@ -41,10 +44,12 @@ const Header: FC<HeaderProps> = ({
   handleChangeInputSearch,
   handleClearInputSearch,
   handleSubmitSearch,
+  handleClickThemeSwitch,
   options,
   userAvatar,
   menuRef,
   notificationDropdownContent,
+  themeValue,
 }) => {
   const isSidebarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
   const dispatch = useAppDispatch();
@@ -104,6 +109,9 @@ const Header: FC<HeaderProps> = ({
                     <li key={option.type} className={styles['option']} onClick={option.onClick}>
                       <Icon name={option.icon} />
                       <span>{option.text}</span>
+                      {option.type === MenuOptions.Theme && (
+                        <ToggleSwitch defaultValue={themeValue} onToggle={handleClickThemeSwitch} />
+                      )}
                     </li>
                   ))}
                 </ul>

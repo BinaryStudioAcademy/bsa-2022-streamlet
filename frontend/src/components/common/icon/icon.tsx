@@ -1,7 +1,8 @@
 import styles from './styles.module.scss';
 import { IconName } from 'common/enums/enums';
+import { ReactComponent as ArrowDown } from '../../../assets/img/arrow-down.svg';
+import { ReactComponent as Sun } from '../../../assets/img/sun-solid.svg';
 import { ReactComponent as Alarm } from 'assets/img/alarm.svg';
-import { ReactComponent as ArrowDown } from 'assets/img/arrow-down.svg';
 import { ReactComponent as ArrowUp } from 'assets/img/arrow-up.svg';
 import { ReactComponent as Camera } from 'assets/img/camera.svg';
 import { ReactComponent as Compass } from 'assets/img/compass.svg';
@@ -32,7 +33,6 @@ import { ReactComponent as SendMessage } from 'assets/img/send-message.svg';
 import { ReactComponent as Emoji } from 'assets/img/emoji.svg';
 
 import clsx from 'clsx';
-
 const getColor = (color: string): string => styles[`fill${color}`];
 
 interface ISVGProps {
@@ -168,7 +168,9 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
     case IconName.EMOJI: {
       return <Emoji {...commonProps} />;
     }
-
+    case IconName.SUN: {
+      return <Sun {...commonProps} />;
+    }
     case IconName.ANALYTICS:
       return <Analytics {...commonProps} />;
 
