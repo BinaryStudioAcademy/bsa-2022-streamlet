@@ -4,6 +4,8 @@ export {
   type UserSignInRequestDto,
   type UserSignInResponseDto,
   type UserBaseResponseDto,
+  type UserUploadResponseDto,
+  type UserUploadRequestDto,
   type AccountVerificationConfirmResponseDto,
   type AccountVerificationConfirmRequestDto,
   type AccountVerificationInitRequestDto,

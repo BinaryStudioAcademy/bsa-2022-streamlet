@@ -10,4 +10,6 @@ export * from './mail/mail';
 export * from './notification/notification';
 export * from './stream/stream';
 export * from './toast-notification/toast-notification';
+export * from './image/image';
+export * from './profile/profile';
 export * from './frontend/frontend';
