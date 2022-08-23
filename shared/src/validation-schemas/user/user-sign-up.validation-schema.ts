@@ -7,6 +7,7 @@ const userSignUp = Joi.object<UserSignUpRequestDto, true>({
   email: Joi.string()
     .trim()
     .email({ tlds: { allow: false } })
+    .lowercase()
     .min(6)
     .required()
     .messages({
