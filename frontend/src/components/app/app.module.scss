@@ -12,6 +12,8 @@
 
 .main-content {
   flex: 1;
+  max-height: 100%;
+  overflow: auto;
   color: var(--white-text-color);
   background-color: var(--primary-text-color);
 }
