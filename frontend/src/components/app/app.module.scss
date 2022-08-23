@@ -10,10 +10,8 @@
   height: calc(100vh - 82px);
 }
 
-.content-section .main-content {
-  flex-grow: 1;
-  max-height: 100%;
-  overflow: auto;
+.main-content {
+  flex: 1;
   color: var(--white-text-color);
   background-color: var(--primary-text-color);
 }

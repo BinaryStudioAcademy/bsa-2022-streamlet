@@ -1,4 +1,7 @@
+@import 'assets/css/config.scss';
+
 .sidebar {
+  z-index: $sidebar-z-index;
   display: flex;
   flex-direction: column;
   width: 300px;

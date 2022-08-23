@@ -17,6 +17,7 @@ type Props<T> = {
   inputClassName?: string;
   inputErrorClassName?: string;
   labelClassName?: string;
+  errorBlockClassName?: string;
   wrapperClassName?: string;
 };
 
@@ -30,6 +31,7 @@ const Input = <T extends FieldValues>({
   inputClassName,
   inputErrorClassName,
   labelClassName,
+  errorBlockClassName,
   wrapperClassName,
 }: Props<T>): ReactElement | null => {
   const {
@@ -50,7 +52,7 @@ const Input = <T extends FieldValues>({
         className={clsx(styles.input, inputClassName, error && inputErrorClassName)}
         id={id}
       />
-      <div className={styles['error-block']}>
+      <div className={clsx(styles['error-block'], errorBlockClassName)}>
         <ErrorMessage
           errors={errors}
           name={name}
