@@ -90,9 +90,11 @@ const VideoCardTest = (): ReactElement => {
       <div style={{ margin: '100px' }}>
         <VideoCard
           id={'test'}
-          channelId={'test'}
+          authorInfo={{
+            author,
+            channelId: 'test',
+          }}
           poster={posterImage}
-          author={author}
           creationDate={creationData}
           name={videoHeader}
           duration={duration}

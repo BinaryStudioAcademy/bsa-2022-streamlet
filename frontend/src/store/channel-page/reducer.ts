@@ -1,10 +1,10 @@
 import { createEntityAdapter, createReducer } from '@reduxjs/toolkit';
 import { DataStatus, ErrorMessage } from 'common/enums/enums';
-import { ChannelInfoResponseDto, ChannelVideoPreviewsResponseDto } from 'common/types/types';
+import { ChannelInfoResponseDto, ChannelVideoPreviewsPageDto, RootState } from 'common/types/types';
 import { loadChannel } from './actions';
 
-type CurrentChannelInfo = ChannelInfoResponseDto;
-type ChannelVideo = ChannelVideoPreviewsResponseDto['videos'][number];
+type CurrentChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
+type ChannelVideo = ChannelVideoPreviewsPageDto['videos'][number];
 
 interface InitialState {
   currentChannel: {
@@ -21,7 +21,7 @@ interface InitialState {
 
 const channelVideosAdapter = createEntityAdapter<ChannelVideo>({
   selectId: (channelVideo) => channelVideo.id,
-  sortComparer: (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+  sortComparer: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
 });
 
 const initialState: InitialState = {
@@ -36,7 +36,15 @@ const initialState: InitialState = {
 const reducer = createReducer(initialState, (builder) => {
   builder.addCase(loadChannel.pending, (state) => {
     state.currentChannel.dataStatus = DataStatus.PENDING;
+
+    // be sure to reset state, so that no stale data is displayed
     state.currentChannel.error = undefined;
+    state.currentChannel.data = null;
+    state.currentChannelVideos = {
+      data: channelVideosAdapter.getInitialState(),
+      dataStatus: DataStatus.IDLE,
+      error: undefined,
+    };
   });
 
   builder.addCase(loadChannel.rejected, (state, { error }) => {
@@ -46,8 +54,14 @@ const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(loadChannel.fulfilled, (state, { payload }) => {
     state.currentChannel.dataStatus = DataStatus.FULFILLED;
-    state.currentChannel.data = payload;
+    const { initialVideosPage, ...channelData } = payload;
+    state.currentChannel.data = channelData;
+    channelVideosAdapter.setAll(state.currentChannelVideos.data, initialVideosPage.videos);
   });
 });
+
+export const { selectById: selectChannelVideoById } = channelVideosAdapter.getSelectors<RootState>(
+  (state) => state.channelPage.currentChannelVideos.data,
+);
 
 export { reducer };

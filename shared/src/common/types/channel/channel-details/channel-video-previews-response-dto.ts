@@ -12,10 +12,14 @@ type ChannelVideoPreview = {
   videoViews: number;
   tags: string[];
   categories: string[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
+  poster: string;
+  durationSec: number | null;
 };
 
-export type ChannelVideoPreviewsResponseDto = {
+// when pagination is implemented
+// might also include additional data, like totalCount, page etc.
+export type ChannelVideoPreviewsPageDto = {
   videos: ChannelVideoPreview[];
 };

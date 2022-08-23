@@ -1,13 +1,5 @@
-import { Channel, User } from '@prisma/client';
+import { ChannelInfoBeforeTrimming } from '~/shared/types/types';
 
 export interface ChannelCrudRepository {
-  getChannelById(id: string): Promise<
-    | (Channel & {
-        author: User;
-        _count: {
-          subscriptions: number;
-        };
-      })
-    | null
-  >;
+  getChannelById(id: string): Promise<ChannelInfoBeforeTrimming | null>;
 }

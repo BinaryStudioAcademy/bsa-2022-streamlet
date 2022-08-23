@@ -1,7 +1,8 @@
 import { Video } from '@prisma/client';
 import { channels } from '../seed-data';
+import { faker } from '@faker-js/faker';
 
-const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId'>[] = [
+const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'poster' | 'durationSec'>[] = [
   {
     'id': '90862886-dab4-4777-9b1d-62a0f541559e',
     'name': 'application',
@@ -958,4 +959,7 @@ const channelIndices = Array.from(videosNoChannels, () => Math.floor(Math.random
 export const videos: Omit<Video, 'updatedAt' | 'createdAt'>[] = videosNoChannels.map((video, index) => ({
   ...video,
   channelId: channels[channelIndices[index]].id,
+  poster:
+    'https://images.theconversation.com/files/457052/original/file-20220408-15-pl446k.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1000&fit=clip',
+  durationSec: faker.datatype.number({ max: 10000, min: 10, precision: 1 }),
 }));

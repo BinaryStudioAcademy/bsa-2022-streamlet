@@ -3,20 +3,20 @@ import { DataStatus, ErrorMessage, LoaderSize } from 'common/enums/enums';
 import { Loader } from 'components/common/common';
 import { ErrorBox } from 'components/common/errors/errors';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import React, { FC, ReactElement, useEffect } from 'react';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { loadChannel } from 'store/channel-page/actions';
+import { AboutSection } from './components/about-section/about-section';
 import { ChannelHeader } from './components/channel-header/channel-header';
+import { Tabs } from './components/channel-header/channel-tabs/tabs.enum';
 import { BannerSection } from './components/components';
+import { VideoSection } from './components/video-section/video-section';
 import styles from './styles.module.scss';
 
 const ChannelPage: FC = () => {
   const { [AppParams.channelId]: channelId } = useParams();
   const dispatch = useAppDispatch();
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(channelId);
-
     if (!channelId) return;
     dispatch(loadChannel({ id: channelId }));
   }, [channelId, dispatch]);
@@ -24,6 +24,8 @@ const ChannelPage: FC = () => {
   const channelDataStatus = useAppSelector((state) => state.channelPage.currentChannel.dataStatus);
   const channelInfo = useAppSelector((state) => state.channelPage.currentChannel.data);
   const channelError = useAppSelector((state) => state.channelPage.currentChannel.error);
+
+  const [currentTab, setCurrentTab] = useState<Tabs>(Tabs.About);
 
   const getChannelComponent = (): ReactElement => {
     if (channelDataStatus === DataStatus.PENDING) {
@@ -39,7 +41,11 @@ const ChannelPage: FC = () => {
         {channelInfo && (
           <>
             {channelInfo.bannerImage && <BannerSection imageLink={channelInfo.bannerImage} />}
-            <ChannelHeader />
+            <ChannelHeader setTab={setCurrentTab} currentTab={currentTab} />
+            <div className={styles['content']}>
+              {currentTab === Tabs.About && <AboutSection />}
+              {currentTab === Tabs.Videos && <VideoSection />}
+            </div>
           </>
         )}
       </>

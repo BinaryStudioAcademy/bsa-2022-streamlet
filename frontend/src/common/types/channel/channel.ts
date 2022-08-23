@@ -1,1 +1,1 @@
-export { ChannelInfoResponseDto, ChannelVideoPreviewsResponseDto, ChannelInfoRequestDto } from 'shared/build';
+export { ChannelInfoResponseDto, ChannelVideoPreviewsPageDto, ChannelInfoRequestDto } from 'shared/build';

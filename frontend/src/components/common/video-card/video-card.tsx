@@ -6,60 +6,58 @@ import { IconName } from 'common/enums/enums';
 import { Icon } from '../icon';
 
 import { getHowLongAgoString } from '../../../helpers/helpers';
+import clsx from 'clsx';
 
 type Props = {
   id: string;
-  channelId: string;
   poster: string;
-  author: string;
   creationDate: Date;
   name: string;
-  authorAvatar?: string;
-  duration: string;
+  authorInfo?: {
+    author: string;
+    authorAvatar?: string;
+    channelId: string;
+  };
+  duration: string | null;
   viewerNum: number;
+  className?: string;
 };
 
-const VideoCard: FC<Props> = ({
-  id,
-  poster,
-  authorAvatar,
-  author,
-  duration,
-  name,
-  viewerNum,
-  creationDate,
-  channelId,
-}) => {
+const VideoCard: FC<Props> = ({ id, poster, authorInfo, duration, name, viewerNum, creationDate, className }) => {
   const navigate = useNavigate();
   const redirectToVideoPage = (): void => {
     navigate(`video/${id}`, { replace: true });
   };
   const redirectToChannelPage = (): void => {
-    navigate(`channel/${channelId}`, { replace: true });
+    navigate(`channel/${authorInfo?.channelId}`, { replace: true });
   };
   const viewerNumStringWithSpace: string = String(viewerNum).replace(/(\d)(?=(\d\d\d)+(\D|$))/g, '$1 ');
   return (
-    <div className={style['video-card']}>
+    <div className={clsx(style['video-card'], className)}>
       <div className={style['video-preview-container']} onClick={redirectToVideoPage}>
         <img src={poster} alt="image-poster" height="121" width="262" className={style['video-preview-poster']} />
-        <label className={style['video-duration-label']}>{duration}</label>
+        {duration !== null && <label className={style['video-duration-label']}>{duration}</label>}
       </div>
       <div className={style['video-information-container']}>
-        <img
-          src={authorAvatar ? authorAvatar : DefaultUserAvatar}
-          className={style['video-card-author-avatar']}
-          alt="user-avatar"
-          height="20"
-          width="21"
-          onClick={redirectToChannelPage}
-        />
+        {authorInfo && (
+          <img
+            src={authorInfo.authorAvatar ? authorInfo.authorAvatar : DefaultUserAvatar}
+            className={style['video-card-author-avatar']}
+            alt="user-avatar"
+            height="20"
+            width="21"
+            onClick={redirectToChannelPage}
+          />
+        )}
         <div className={style['video-description-container']}>
           <h2 className={style['video-card-title']} onClick={redirectToVideoPage}>
             {name}
           </h2>
-          <h3 className={style['video-card-author-name']} onClick={redirectToChannelPage}>
-            {author}
-          </h3>
+          {authorInfo && (
+            <h3 className={style['video-card-author-name']} onClick={redirectToChannelPage}>
+              {authorInfo.author}
+            </h3>
+          )}
         </div>
       </div>
       <hr className={style['video-card-hr']} />
