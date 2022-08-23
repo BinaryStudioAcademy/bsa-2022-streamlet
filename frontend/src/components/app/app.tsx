@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
-import { AppRoutes } from 'common/enums/enums';
-import { useLocation, useEffect, useAppDispatch } from 'hooks/hooks';
+import { AppRoutes, AppTheme } from 'common/enums/enums';
+import { useLocation, useEffect, useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { tokensStorageService } from 'services/services';
 import { authActions } from 'store/actions';
 import { MainPage } from 'pages/main-page';
@@ -27,6 +27,13 @@ const App: FC = () => {
 
   const isHaveHeader = isRouteHaveHeader(pathname);
 
+  const { theme: isLightTheme } = useAppSelector((state) => ({
+    theme: state.theme.isLightTheme,
+  }));
+
+  useEffect(() => {
+    document.body.dataset.theme = isLightTheme ? AppTheme.LIGHT : '';
+  }, [isLightTheme]);
   useEffect(() => {
     if (hasToken) {
       dispatch(authActions.loadCurrentUser());
