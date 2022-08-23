@@ -1,3 +1,7 @@
+@import 'assets/css/config.scss';
+
+$base-z-index: $page-z-index;
+
 .auth-logo {
   max-height: 40px;
 }
@@ -11,7 +15,7 @@
 }
 
 .auth-modal {
-  z-index: 1;
+  z-index: $base-z-index + 1;
   width: 100vw;
   margin: auto;
   background-color: var(--auth-modal-background);
@@ -35,14 +39,14 @@
   position: absolute;
   top: 20vh;
   left: 5vw;
-  z-index: 0;
+  z-index: $base-z-index;
 }
 
 .background-zigzag-2 {
   position: absolute;
   top: 44vh;
   left: 0;
-  z-index: 0;
+  z-index: $base-z-index;
   width: 155px;
 }
 
@@ -50,7 +54,7 @@
   position: absolute;
   top: -2vh;
   right: 1vw;
-  z-index: -1;
+  z-index: $base-z-index - 1;
 }
 
 @media screen and (min-height: 820px) {
@@ -75,12 +79,12 @@
 
   .background-zigzag {
     left: -30vw;
-    z-index: 2;
+    z-index: $base-z-index + 2;
   }
 
   .background-zigzag-2 {
     left: -20vw;
-    z-index: 2;
+    z-index: $base-z-index + 2;
   }
 }
 
@@ -108,7 +112,7 @@
   }
 
   .background-element {
-    z-index: 0;
+    z-index: $base-z-index;
   }
 }
 

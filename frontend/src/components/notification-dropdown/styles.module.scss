@@ -1,3 +1,5 @@
+@import 'assets/css/config.scss';
+
 :root {
   // The same color as header background
   --unread-mark-border: var(--gray-300-header-menu-background);
@@ -40,6 +42,7 @@
   position: absolute;
   top: 40px;
   right: 0;
+  z-index: $header-menu-z-index;
   display: flex;
   flex-direction: column;
   width: 400px;
