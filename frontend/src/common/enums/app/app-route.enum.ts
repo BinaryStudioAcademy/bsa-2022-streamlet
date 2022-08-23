@@ -18,6 +18,7 @@ const AppRoutes = {
   STUDIO: '/studio',
   ANALYTICS: '/analytics',
   SEARCH: '/search',
+  PROFILE_PREFERENCE: '/profile-preference',
 } as const;
 
 type AppRoute = typeof AppRoutes[keyof typeof AppRoutes];
