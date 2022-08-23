@@ -3,6 +3,7 @@ enum ApiPath {
   CHANNEL = '/channel',
   NOTIFICATION = '/notification',
   VIDEO = '/video',
+  TAG = '/tag',
 }
 
 export { ApiPath };

@@ -9,6 +9,8 @@ import { ChannelRepository } from '~/core/channel/port/channel-repository';
 import { ChannelRepositoryAdapter } from './channel/channel-repository-adapter';
 import { ResetPasswordRepository } from '~/core/reset-password/port/reset-password-repository';
 import { ResetPasswordRepositoryAdapter } from './reset-password/reset-password-repository-adapter';
+import { TagRepository } from '~/core/tag/port/tag-repository';
+import { TagRepositoryAdapter } from './tag/tag-repository-adapter';
 
 const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const client = new PrismaClient();
@@ -18,6 +20,8 @@ const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces
   bind<RefreshTokenRepository>(CONTAINER_TYPES.RefreshTokenRepository).to(RefreshTokenRepositoryAdapter);
   bind<ResetPasswordRepository>(CONTAINER_TYPES.ResetPasswordRepository).to(ResetPasswordRepositoryAdapter);
   bind<ChannelRepository>(CONTAINER_TYPES.ChannelRepository).to(ChannelRepositoryAdapter);
+  bind<TagRepository>(CONTAINER_TYPES.TagRepository).to(TagRepositoryAdapter);
+
   bind<PrismaClient>(CONTAINER_TYPES.PrismaClient)
     .toConstantValue(client)
     .onDeactivation(async (client) => {
