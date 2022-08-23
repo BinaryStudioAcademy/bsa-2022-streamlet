@@ -1,9 +1,11 @@
-import { BaseHttpController, controller, httpGet, requestParam } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, httpPost, requestBody, requestParam } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/types';
-import { ApiPath, DefaultRequestParam, TagApiPath, TagResponseDto } from 'shared/build';
+import { ApiPath, DefaultRequestParam, TagApiPath, TagCreateRequestDto, TagResponseDto } from 'shared/build';
 import { TagService } from '~/core/tag/application/tag-service';
 import { NotFound } from '~/shared/exceptions/not-found';
+import { DuplicationError } from '~/shared/exceptions/duplication-error';
+import { normalizeTagPayload } from './helpers/helpers';
 
 @controller(ApiPath.TAG)
 export class TagController extends BaseHttpController {
@@ -25,8 +27,14 @@ export class TagController extends BaseHttpController {
     return tag;
   }
 
-  // @httpPost('/notify-broadcast')
-  // public notifyBroadcast(@requestBody() body: { data: { message: string } }): Promise<boolean> {
+  @httpPost(TagApiPath.ROOT)
+  public async createTag(@requestBody() body: TagCreateRequestDto): Promise<TagResponseDto> {
+    const payload = normalizeTagPayload(body);
+    const isTagCreated = await this.tagService.getByName(payload);
+    if (isTagCreated) {
+      throw new DuplicationError('Tag already created');
+    }
 
-  // }
+    return this.tagService.createTag(payload);
+  }
 }

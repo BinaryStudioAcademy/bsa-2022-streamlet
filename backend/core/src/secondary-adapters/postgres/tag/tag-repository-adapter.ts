@@ -19,6 +19,14 @@ export class TagRepositoryAdapter implements TagRepository {
     });
   }
 
+  getByName(name: string): Promise<Tag | null> {
+    return this.prismaClient.tag.findFirst({
+      where: {
+        name,
+      },
+    });
+  }
+
   createTag(tagCreateDto: TagCreateRequestDto): Promise<Tag> {
     return this.prismaClient.tag.create({
       data: tagCreateDto,

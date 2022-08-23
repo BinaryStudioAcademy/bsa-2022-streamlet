@@ -14,13 +14,18 @@ export class TagService {
     this.tagRepository = tagRepository;
   }
 
+  async getByName({ name }: TagCreateRequestDto): Promise<TagResponseDto | null> {
+    const tag = await this.tagRepository.getByName(name);
+    return tag && castToTagResponseDto(tag);
+  }
+
   async getById(id: string): Promise<TagResponseDto | null> {
     const tag = await this.tagRepository.getById(id);
-    return tag ? castToTagResponseDto(tag) : tag;
+    return tag && castToTagResponseDto(tag);
   }
 
   async createTag(createTagDto: TagCreateRequestDto): Promise<TagResponseDto> {
     const createdTag = await this.tagRepository.createTag(createTagDto);
-    return castToTagResponseDto(createdTag) as TagResponseDto;
+    return castToTagResponseDto(createdTag);
   }
 }
