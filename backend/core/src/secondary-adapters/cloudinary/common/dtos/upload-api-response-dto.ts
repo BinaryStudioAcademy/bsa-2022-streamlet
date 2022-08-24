@@ -8,7 +8,7 @@ export const castToImageUploadResponseDto = ({
   height,
 }: UploadApiResponse): ImageUploadResponseDto => {
   return {
-    url,
+    url: url.replace('http', 'https'),
     format,
     width,
     height,
