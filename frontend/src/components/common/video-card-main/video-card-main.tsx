@@ -9,7 +9,8 @@ import { ScheduledVideoBadge } from './components/components';
 import { getDividedViewsString, getFormatDurationString, getHowLongAgoString } from 'helpers/helpers';
 import { UPDATE_CARD_TIME_DELAY } from './config';
 import styles from './styles.module.scss';
-import defaultVideoPoster from 'assets/img/default-video-poster.jpg';
+import defaultVideoPosterDark from 'assets/img/default-video-poster-dark.jpg';
+import defaultVideoPosterLight from 'assets/img/default-video-poster-light.jpg';
 
 dayjs.extend(dayjsRelativeTime.default);
 
@@ -17,10 +18,12 @@ const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x
 
 type Props = {
   video: VideoCardType;
+  isLightTheme: boolean;
 };
 
 const VideoCardMain: FC<Props> = ({
   video: { id, name, status, publishedAt, scheduledStreamDate, poster, duration, videoViews, liveViews, channel },
+  isLightTheme,
 }) => {
   const [timeNow, setTimeNow] = useState(dayjs());
 
@@ -33,6 +36,7 @@ const VideoCardMain: FC<Props> = ({
   const linkToVideoPage = `${AppRoutes.VIDEO}/${id}`;
   const linkToChannelPage = `${AppRoutes.CHANNEL}/${id}`;
 
+  const videoPoster = poster ? poster : isLightTheme ? defaultVideoPosterLight : defaultVideoPosterDark;
   const channelAvatar = channel.avatar ? channel.avatar : FAKE_USER_AVATAR;
   const videoDuration = getFormatDurationString(duration);
   const views = getDividedViewsString(isFinished ? videoViews : liveViews);
@@ -57,7 +61,7 @@ const VideoCardMain: FC<Props> = ({
   return (
     <div className={styles['video-card']}>
       <div className={styles['video-card-preview']}>
-        <img src={poster ? poster : defaultVideoPoster} alt="Preview video img" />
+        <img src={videoPoster} alt="Preview video img" />
         <Link to={linkToVideoPage} className={styles['video-card-play']}>
           {isFinished && <span className={styles['video-card-badge-duration']}>{videoDuration}</span>}
         </Link>

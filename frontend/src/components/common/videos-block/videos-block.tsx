@@ -13,7 +13,10 @@ export interface VideoBlockProps {
 }
 
 const VideosBlock: FC<VideoBlockProps> = ({ videos, blockTitle }) => {
-  const statusVideoLoading = useAppSelector((state) => state.videos.dataStatus);
+  const { statusVideoLoading, isLightTheme } = useAppSelector((state) => ({
+    statusVideoLoading: state.videos.dataStatus,
+    isLightTheme: state.theme.isLightTheme,
+  }));
 
   return (
     <div className={styles['separate-video-block']}>
@@ -23,7 +26,7 @@ const VideosBlock: FC<VideoBlockProps> = ({ videos, blockTitle }) => {
           {statusVideoLoading === DataStatus.PENDING &&
             ARRAY_FAKE_VIDEOS.map((_, index) => <VideoSkeleton key={index} />)}
           {videos.map((video) => (
-            <VideoCardMain key={video.id} video={video} />
+            <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />
           ))}
         </div>
       </SkeletonTheme>
