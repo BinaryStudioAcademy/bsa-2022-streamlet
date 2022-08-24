@@ -35,97 +35,99 @@ $base-z-index: $page-z-index;
   font-size: 44px;
 }
 
-.background-zigzag {
-  position: absolute;
-  top: 20vh;
-  left: 5vw;
-  z-index: $base-z-index;
+.background-zigzag,
+.background-zigzag2,
+.background-curve1 {
+  display: none;
 }
 
-.background-zigzag-2 {
-  position: absolute;
-  top: 44vh;
-  left: 0;
-  z-index: $base-z-index;
-  width: 155px;
-}
+// .background-zigzag {
+//   position: absolute;
+//   top: 20vh;
+//   left: 5vw;
+//   z-index: $base-z-index;
+// }
 
-.background-element {
-  position: absolute;
-  top: -2vh;
-  right: 1vw;
-  z-index: $base-z-index - 1;
-}
+// .background-zigzag-2 {
+//   position: absolute;
+//   top: 44vh;
+//   left: 0;
+//   z-index: $base-z-index;
+//   width: 155px;
+// }
 
-@media screen and (min-height: 820px) {
-  .auth-background {
-    width: 100vw;
-  }
+// .background-curve1 {
+//   position: absolute;
+//   top: -2vh;
+//   right: 1vw;
+//   z-index: $base-z-index - 1;
+// }
 
-  .auth-modal {
-    width: 100vw;
-  }
-}
+// @media screen and (min-height: 820px) {
+//   .auth-background {
+//     width: 100vw;
+//   }
 
-@media screen and (min-width: 600px) {
-  .auth-modal {
-    width: 80vw;
-    height: auto;
-  }
+//   .auth-modal {
+//     width: 100vw;
+//   }
+// }
 
-  .auth-container {
-    margin: 38px 46px;
-  }
+// @media screen and (min-width: 600px) {
+//   .auth-modal {
+//     // width: 80vw;
+//     // height: auto;
+//   }
+//   .auth-modal {
+//     width: 600px;
+//   }
 
-  .background-zigzag {
-    left: -30vw;
-    z-index: $base-z-index + 2;
-  }
+//   .auth-container {
+//     margin: 38px 46px;
+//   }
 
-  .background-zigzag-2 {
-    left: -20vw;
-    z-index: $base-z-index + 2;
-  }
-}
+//   .background-zigzag {
+//     left: -30vw;
+//     z-index: $base-z-index + 2;
+//   }
 
-@media screen and (min-width: 850px) {
-  .auth-modal {
-    width: 60vw;
-  }
+//   .background-zigzag-2 {
+//     left: -20vw;
+//     z-index: $base-z-index + 2;
+//   }
+// }
 
-  .auth-container {
-    margin: 38px 96px;
-  }
+// @media screen and (min-width: 850px) {
 
-  .background-zigzag {
-    left: -3vw;
-  }
+//   .auth-container {
+//     margin: 38px 96px;
+//   }
 
-  .background-zigzag-2 {
-    left: 0;
-  }
-}
+//   .background-zigzag {
+//     left: -3vw;
+//   }
 
-@media screen and (min-width: 980px) {
-  .background-zigzag {
-    left: 2vw;
-  }
+//   .background-zigzag-2 {
+//     left: 0;
+//   }
+// }
 
-  .background-element {
-    z-index: $base-z-index;
-  }
-}
+// @media screen and (min-width: 980px) {
+//   .background-zigzag {
+//     left: 2vw;
+//   }
 
-@media screen and (min-width: 1200px) {
-  .auth-modal {
-    width: 50vw;
-  }
+//   .background-curve1 {
+//     z-index: $base-z-index;
+//   }
+// }
 
-  .background-zigzag {
-    left: 10vw;
-  }
+// @media screen and (min-width: 1200px) {
+//   .background-zigzag {
+//     left: 10vw;
+//   }
 
-  .background-zigzag-2 {
-    left: 10vw;
-  }
-}
+//   .background-zigzag-2 {
+//     left: 10vw;
+//   }
+// }

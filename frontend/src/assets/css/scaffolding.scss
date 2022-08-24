@@ -485,6 +485,7 @@
   --auth-modal-background: rgba(52 79 62 / 47%);
   --auth-modal-border-color-1: rgb(34 240 0 / 47%);
   --auth-modal-border-color-2: rgb(146 255 229 / 47%);
+  --auth-box-shadow: none;
 
   /* video-card */
   --video-card-schedule-badge-background: #000000b3;
@@ -502,6 +503,8 @@ body[data-theme='light'] {
   --gray-400-primary-background: #ffffff;
   --gray-200-input-background: #dadada;
   --sidebar-scrollbar-track-background: #e8e8e8;
+  --auth-modal-background: white;
+  --auth-box-shadow: none;
 }
 
 html {
