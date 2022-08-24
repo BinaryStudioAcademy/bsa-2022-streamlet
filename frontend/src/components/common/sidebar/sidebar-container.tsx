@@ -31,8 +31,7 @@ const SidebarContainer: FC = () => {
 
   useEffect(() => {
     dispatch(openSidebar());
-    // eslint-disable-next-line
-  }, [pathname]);
+  }, [pathname, dispatch]);
 
   const closeMobileSidebar = (): void => {
     dispatch(openSidebar());
