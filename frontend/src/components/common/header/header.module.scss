@@ -268,3 +268,21 @@
 .logo-block {
   display: flex;
 }
+
+.logo-desktop {
+  display: block;
+}
+
+.logo-mobile {
+  display: none;
+}
+
+@media screen and (max-width: 560px) {
+  .logo-desktop {
+    display: none;
+  }
+
+  .logo-mobile {
+    display: block;
+  }
+}

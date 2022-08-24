@@ -2,10 +2,6 @@
 
 $base-z-index: $page-z-index;
 
-.auth-logo {
-  max-height: 40px;
-}
-
 .auth-background {
   display: flex;
   flex-grow: 1;
@@ -17,12 +13,14 @@ $base-z-index: $page-z-index;
 .auth-modal {
   z-index: $base-z-index + 1;
   width: 100vw;
+  height: 100vh;
   margin: auto;
   background-color: var(--auth-modal-background);
   border: solid 3px transparent;
-  border-radius: 3px;
-  border-image-source: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
-  border-image-slice: 1;
+
+  // border-radius: 3px;
+  // border-image-source: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
+  // border-image-slice: 1;
 }
 
 .auth-container {
@@ -33,6 +31,13 @@ $base-z-index: $page-z-index;
   margin-top: 0;
   color: var(--white-text-color);
   font-size: 44px;
+}
+
+.auth-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .background-zigzag,

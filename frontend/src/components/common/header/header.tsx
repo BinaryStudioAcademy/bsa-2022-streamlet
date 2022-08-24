@@ -73,7 +73,8 @@ const Header: FC<HeaderProps> = ({
         <button onClick={handleClickBurgerMenu} className={styles['burger-menu']}>
           <Icon name={IconName.BURGER_MENU} width="24" height="24" />
         </button>
-        <Logo size={24} />
+        <Logo size={24} className={styles['logo-desktop']} />
+        <Logo size={24} isMobile={true} className={styles['logo-mobile']} />
       </div>
       <form className={styles['block-search']} onSubmit={handleSubmitSearch}>
         <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
