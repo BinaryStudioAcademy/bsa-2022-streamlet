@@ -1,7 +1,10 @@
 .layout-wrapper {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 1920px;
   height: 100vh;
+  margin: 0 auto;
 }
 
 .content-section {
