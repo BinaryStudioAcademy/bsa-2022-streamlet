@@ -1,0 +1,67 @@
+@import 'assets/css/breakpoint.scss';
+
+.filter-bar {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 20px;
+  padding: 12px;
+  border-bottom: 1px solid var(--gray-200-input-background);
+}
+
+.filter-bar-toggle {
+  display: none;
+}
+
+.filter-bar-title {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+}
+
+.filter-bar-title span {
+  color: var(--white-text-color);
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+}
+
+.filter-bar-toggle:checked ~ .filter-bar-title span {
+  display: none;
+}
+
+.filter-bar-title svg path {
+  fill: var(--text-gray-color);
+}
+
+.filter-bar-toggle:checked ~ .filter-bar-title svg path {
+  fill: var(--white-text-color);
+}
+
+.filter-bar-wrapper {
+  display: none;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 20px;
+}
+
+.filter-bar-toggle:checked ~ .filter-bar-wrapper {
+  display: flex;
+}
+
+@media #{$mobile-middle} {
+  .filter-bar {
+    padding: 12px 18px;
+  }
+}
+
+@media #{$tablet-large} {
+  .filter-bar {
+    display: none;
+  }
+}

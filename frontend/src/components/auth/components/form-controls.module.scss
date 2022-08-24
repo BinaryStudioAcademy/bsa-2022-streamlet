@@ -1,9 +1,42 @@
 .form-container {
   display: flex;
   flex-direction: column;
+  margin-top: 15px;
 }
 
 .form-input {
-  margin-top: 13px;
   margin-bottom: 22px;
+}
+
+.password {
+  border-radius: 3px 0 0 3px;
+}
+
+.password::placeholder {
+  color: var(--input-password-placeholder-color);
+}
+
+.input::placeholder {
+  color: var(--input-placeholder-color);
+}
+
+.input-error {
+  border: 1px solid var(--input-error-color);
+  border-radius: 3px;
+  box-shadow: 0 0 3px 0 rgb(var(--input-error-color) / 80%), 0 0 5px 0 rgb(var(--input-error-color) / 50%);
+}
+
+.label {
+  font-weight: 500;
+  font-family: Gilroy, sans-serif;
+  text-transform: capitalize;
+}
+
+.continue-with {
+  color: var(--white-text-color);
+  text-align: center;
+}
+
+.error {
+  line-height: 20px;
 }

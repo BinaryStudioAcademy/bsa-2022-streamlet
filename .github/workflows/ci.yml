@@ -28,7 +28,7 @@ jobs:
 
       - name: Code Linting
         run: |
-          npm run lint
+          npm run lint --max-warnings=0
 
       - name: Code Building
         run: |
@@ -52,6 +52,15 @@ jobs:
 
       - name: Build push Dockerfile
         run: docker build -f .docker/push.Dockerfile -t push .
+  build-video-transcoding-server:
+    name: streamlet build video-transcoding-server.Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Build push Dockerfile
+        run: docker build -f .docker/video-transcoding-server.Dockerfile -t video-transcoding-server .      
   build-frontend:
     name: streamlet build frontend.Dockerfile
     runs-on: ubuntu-latest

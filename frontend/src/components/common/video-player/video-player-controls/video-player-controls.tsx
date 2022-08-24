@@ -33,7 +33,7 @@ const VideoPlayerControls: FC<Props> = ({ videoContainer, videoContainerWrapper,
       videoContainer.removeEventListener('pause', handlePause);
       videoContainer.removeEventListener('play', handlePlay);
     };
-  }, []);
+  }, [videoContainer, videoContainerWrapper]);
 
   return (
     <div className={clsx(styles['video-elements-wrapper'], className)}>

@@ -114,7 +114,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
         }));
       };
     }
-  }, [areRefsNull.videoContainer]);
+  }, [areRefsNull.videoContainer, url]);
 
   const videoContainerWrapperCallbackRef = useCallback((element: HTMLDivElement | null): void => {
     videoContainerWrapperRef.current = element;

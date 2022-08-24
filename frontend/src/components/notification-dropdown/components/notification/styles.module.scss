@@ -1,0 +1,63 @@
+:root {
+  --notifications-border: var(--gray-400-primary-background);
+  --notifications-hover: var(--gray-200-input-background);
+  --notifications-timestamp: var(--text-gray-color);
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  padding: 15px 8px;
+  color: var(--white-text-color);
+  border-bottom: 1px solid var(--primary-text-color);
+}
+
+.text-notification {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 24px 15px 53px;
+  color: var(--white-text-color);
+  border-bottom: 1px solid var(--primary-text-color);
+}
+
+.text-notification-message {
+  font-size: 80%;
+  line-height: 16px;
+}
+
+.notification:hover,
+.text-notification:hover {
+  background-color: var(--gray-200-input-background);
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  margin: 0 5px;
+  border-radius: 50%;
+}
+
+.info {
+  width: 70%;
+  padding: 5px;
+  line-height: 16px;
+}
+
+.message {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 80%;
+}
+
+.timestamp {
+  color: var(--notifications-timestamp);
+  font-size: 70%;
+}
+
+.thumbnail {
+  margin: 0 10px;
+}
+
+.link {
+  text-decoration: none;
+}

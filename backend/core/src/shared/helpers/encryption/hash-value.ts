@@ -1,4 +1,4 @@
-import { encryption } from '~/shared/constants';
+import { encryption } from '~/shared/constants/constants';
 import bcrypt from 'bcrypt';
 
 export const hashValue = async (value: string): Promise<string> => {

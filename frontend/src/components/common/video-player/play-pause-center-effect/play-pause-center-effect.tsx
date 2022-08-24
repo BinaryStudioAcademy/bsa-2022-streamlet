@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
-import { ReactComponent as PlayIcon } from 'assets/img/play.svg';
+import { ReactComponent as PlayIcon } from 'assets/img/play-player.svg';
 import { ReactComponent as PauseIcon } from 'assets/img/pause.svg';
 import clsx from 'clsx';
 
@@ -25,7 +25,7 @@ const PlayPauseCenterEffect: FC<Props> = ({ videoContainer, className }) => {
       videoContainer.removeEventListener('pause', handlePause);
       videoContainer.removeEventListener('play', handlePlay);
     };
-  }, []);
+  }, [videoContainer]);
 
   useLayoutEffect(() => {
     if (!containerRef.current) {

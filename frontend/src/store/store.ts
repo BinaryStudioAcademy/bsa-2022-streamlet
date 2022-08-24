@@ -1,12 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { authApi } from 'services/services';
+import { authApi, profileApi, notificationApi, videoApi } from 'services/services';
 import { rootReducer } from './root-reducer';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
+import { injectStore as injectStoreRefreshInterceptor } from 'services/http/interceptors/refresh-token-interceptor';
 
 const extraArgument = {
   authApi,
+  profileApi,
+  notificationApi,
+  videoApi,
 };
 
 const persistConfig = {
@@ -27,6 +31,10 @@ const store = configureStore({
   },
 });
 
+injectStoreRefreshInterceptor(store);
+
 const persistor = persistStore(store);
 
-export { extraArgument, store, persistor };
+type storeType = typeof store;
+
+export { extraArgument, store, persistor, type storeType };

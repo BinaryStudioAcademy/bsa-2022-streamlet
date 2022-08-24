@@ -15,7 +15,9 @@ type Props<T> = {
   placeholder?: string;
   type?: 'text' | 'email' | 'date' | 'password';
   inputClassName?: string;
+  inputErrorClassName?: string;
   labelClassName?: string;
+  errorBlockClassName?: string;
   wrapperClassName?: string;
 };
 
@@ -27,10 +29,15 @@ const Input = <T extends FieldValues>({
   placeholder = '',
   type = 'text',
   inputClassName,
+  inputErrorClassName,
   labelClassName,
+  errorBlockClassName,
   wrapperClassName,
 }: Props<T>): ReactElement | null => {
-  const { field } = useFormControl({ name, control });
+  const {
+    field,
+    fieldState: { error },
+  } = useFormControl({ name, control });
   const id = useId();
 
   return (
@@ -38,8 +45,14 @@ const Input = <T extends FieldValues>({
       <label className={clsx(styles.label, labelClassName)} htmlFor={id}>
         <span>{label}</span>
       </label>
-      <input {...field} type={type} placeholder={placeholder} className={clsx(styles.input, inputClassName)} id={id} />
-      <div className={styles['error-block']}>
+      <input
+        {...field}
+        type={type}
+        placeholder={placeholder}
+        className={clsx(styles.input, inputClassName, error && inputErrorClassName)}
+        id={id}
+      />
+      <div className={clsx(styles['error-block'], errorBlockClassName)}>
         <ErrorMessage
           errors={errors}
           name={name}

@@ -5,8 +5,13 @@
   - Added the required column `username` to the `User` table without a default value. This is not possible if the table is not empty.
 
 */
--- AlterTable
-ALTER TABLE "User" ADD COLUMN     "username" TEXT NOT NULL;
 
--- CreateIndex
+CREATE SEQUENCE "username_generator" MINVALUE 0 INCREMENT 1 START 0;
+
+ALTER TABLE "User" ADD "username" TEXT;
+
+UPDATE "User" SET "username" = CONCAT('username', nextval('username_generator')) WHERE "username" IS NULL;
+
+ALTER TABLE "User" ALTER COLUMN "username" SET NOT NULL;
+
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");

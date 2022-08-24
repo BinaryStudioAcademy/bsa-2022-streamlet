@@ -19,7 +19,7 @@ const SpeedSelector: FC<Props> = ({ className, goBack, videoContainer }) => {
     return () => {
       videoContainer.removeEventListener('ratechange', handleRateChange);
     };
-  }, []);
+  }, [videoContainer]);
   return (
     <GenericSettingsModal className={className}>
       <ModalItem isHeader onClick={goBack}>

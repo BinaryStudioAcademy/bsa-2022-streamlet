@@ -10,7 +10,7 @@ const getHowLongAgoString = (date: Date): string => {
   const moreThanMinute = timeUnitArray.find((timeUnit) => nowDate.diff(inputDate, timeUnit) > 0);
 
   if (moreThanMinute) {
-    return `${nowDate.diff(inputDate, moreThanMinute)} ${moreThanMinute} ago`;
+    return `${nowDate.diff(inputDate, moreThanMinute)} ${moreThanMinute}(s) ago`;
   }
 
   return 'less than minute ago';

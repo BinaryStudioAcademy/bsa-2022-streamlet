@@ -1,0 +1,146 @@
+@import 'assets/css/config.scss';
+
+.sidebar {
+  z-index: $sidebar-z-index;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 100%;
+  overflow: auto;
+  overflow-y: overlay;
+  background-color: var(--gray-300-header-menu-background);
+
+  @media screen and (max-width: 1300px) {
+    width: 64px;
+    min-width: 64px;
+  }
+
+  @media screen and (max-width: 560px) {
+    display: none;
+  }
+}
+
+.sidebar.close {
+  width: 64px;
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar:hover {
+  &::-webkit-scrollbar {
+    display: block;
+  }
+}
+
+.navigate-menu ul a {
+  display: block;
+  text-decoration: none;
+}
+
+.navigate-menu ul li .link-name {
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+
+  @media screen and (max-width: 1300px) {
+    display: none;
+  }
+}
+
+.navigate-menu ul a:hover .link-name {
+  color: var(--white-text-color);
+}
+
+.sidebar.close .navigate-menu ul li .link-name {
+  display: none;
+}
+
+.navigate-menu ul li svg path {
+  fill: var(--text-gray-color);
+}
+
+.navigate-menu ul a:hover svg path {
+  fill: var(--white-text-color);
+}
+
+.navigate-menu ul li {
+  display: flex;
+  align-items: center;
+  padding: 13px 20px;
+
+  @media screen and(max-width: 1300px) {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+}
+
+.sidebar.close .navigate-menu ul li {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.navigate-menu ul a.active {
+  background-color: var(--brand-green-color);
+}
+
+.navigate-menu ul a.active svg path {
+  fill: var(--white-text-color);
+}
+
+.navigate-menu ul a.active span {
+  color: var(--white-text-color);
+}
+
+.navigate-menu ul li svg {
+  margin-right: 20px;
+
+  @media screen and (max-width: 1300px) {
+    margin: 0;
+  }
+}
+
+.sidebar.close .navigate-menu ul li svg {
+  margin: 0;
+}
+
+.block-subscriptions {
+  margin-top: 25px;
+  padding-bottom: 24px;
+}
+
+.horizontal-line {
+  width: 70%;
+  height: 2px;
+  margin: 0 auto;
+  background-color: var(--primary-text-color);
+}
+
+.subscription-list {
+  padding-top: 25px;
+  padding-left: 20px;
+
+  @media screen and(max-width: 1300px) {
+    display: none;
+  }
+}
+
+.sidebar.close .subscription-list {
+  display: none;
+}
+
+.subscription-title {
+  margin-bottom: 18px;
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+
+  @media screen and (max-width: 1300px) {
+    display: none;
+  }
+}
+
+.sidebar.close .subscription-title {
+  display: none;
+}

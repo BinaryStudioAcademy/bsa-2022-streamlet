@@ -3,6 +3,17 @@ const UserValidationMessage = {
   EMAIL_WRONG: 'Email is wrong',
   PASSWORD_REQUIRE: 'Password is required',
   USERNAME_REQUIRE: 'Username is required',
+  PASSWORD_RESET_TOKEN_REQUIRE: 'Password reset token is required',
+  PASSWORD_RESET_PASSWORD_REQUIRE: 'Please provide a new password',
+  ACCOUNT_VERIFICATION_TOKEN_REQUIRE: 'Account verification token is required',
+  EMAIL_WRONG_LENGTH: 'Please enter a valid email',
+  EMAIL_WRONG_REGEX: 'Email should only contain latin characters, numbers and underscores',
+  PASSWORD_WRONG_LENGTH: 'Password should have 8-16 characters',
+  PASSWORD_WRONG_REGEX: 'Password should only contain latin characters, numbers and special characters',
+  PASSWORD_CONFIRM_REQUIRE: 'That is not the same password as the first one',
+  PASSWORDS_NOT_MATCH: 'That is not the same password as the first one',
+  USERNAME_WRONG_LENGTH: 'Username should have 3-25 characters',
+  USERNAME_WRONG_REGEX: 'Username should only contain latin characters, numbers and special characters',
 } as const;
 
 export { UserValidationMessage };

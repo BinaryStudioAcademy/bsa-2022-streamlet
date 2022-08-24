@@ -1,1 +1,1 @@
-export { getNameOf } from 'shared/build/helpers/helpers';
+export { getNameOf } from 'shared/build';

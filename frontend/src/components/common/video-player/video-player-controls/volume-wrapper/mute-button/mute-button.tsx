@@ -24,7 +24,7 @@ const MuteButton: FC<Props> = ({ videoContainer, className }) => {
     return () => {
       videoContainer.removeEventListener('volumechange', handleVolumeChange);
     };
-  }, []);
+  }, [videoContainer]);
 
   return (
     <ControlButton onClick={handleClick} className={className}>

@@ -18,8 +18,10 @@ type Props<T> = {
   inputClassName?: string;
   labelClassName?: string;
   wrapperClassName?: string;
+  errorBlockClassName?: string;
   changeVisibilityBtnClassName?: string;
   inputWrapperClassName?: string;
+  inputWrapperErrorClassName?: string;
 };
 
 type PasswordType = 'password' | 'text';
@@ -33,10 +35,15 @@ const PasswordInput = <T extends FieldValues>({
   inputClassName,
   labelClassName,
   wrapperClassName,
+  errorBlockClassName,
   inputWrapperClassName,
+  inputWrapperErrorClassName,
   changeVisibilityBtnClassName,
 }: Props<T>): ReactElement | null => {
-  const { field } = useFormControl({ name, control });
+  const {
+    field,
+    fieldState: { error },
+  } = useFormControl({ name, control });
   const id = useId();
 
   const [inputPasswordType, setInputPasswordType] = useState<PasswordType>('password');
@@ -53,7 +60,13 @@ const PasswordInput = <T extends FieldValues>({
       <label className={clsx(styles['label'], labelClassName)} htmlFor={id}>
         <span>{label}</span>
       </label>
-      <div className={clsx(passwordStyles['password-container'], inputWrapperClassName)}>
+      <div
+        className={clsx(
+          passwordStyles['password-container'],
+          inputWrapperClassName,
+          error && inputWrapperErrorClassName,
+        )}
+      >
         <input
           {...field}
           type={inputPasswordType}
@@ -67,7 +80,7 @@ const PasswordInput = <T extends FieldValues>({
           content={<img src={passwordEye} alt="check" />}
         />
       </div>
-      <div className={styles['error-block']}>
+      <div className={clsx(styles['error-block'], errorBlockClassName)}>
         <ErrorMessage
           errors={errors}
           name={name}

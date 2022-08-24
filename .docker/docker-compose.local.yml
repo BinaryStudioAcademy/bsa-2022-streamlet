@@ -1,5 +1,16 @@
 version: '3.9'
 services:
+  rtmp:
+    image: tiangolo/nginx-rtmp
+    ports:
+      - "1935:1935"
+    container_name: rtmp
+    depends_on:
+      - backend
+    networks:
+      - backend_network
+    volumes:
+      - ../nginx/nginx.rtmp.conf:/etc/nginx/nginx.conf
   rabbitmq:
     image: rabbitmq:3-management-alpine
     hostname: rabbit
@@ -61,7 +72,24 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
-        max-file: "5"      
+        max-file: "5"
+  video-transcoding-server:
+    image: video-transcoding-server
+    container_name: video-transcoding-server
+    volumes:
+      - ../playback:/app/backend/video-transcoding-server/playback
+    depends_on:
+      - rabbitmq
+    env_file:
+      - ../.env/video-transcoding-server.env
+    networks:
+      - backend_network
+      - frontend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"                  
   frontend:
     image: frontend
     container_name: frontend
@@ -79,11 +107,14 @@ services:
         max-file: "5"
     volumes:
       - ../nginx/nginx.local.conf:/etc/nginx/nginx.conf
+      - ../playback:/assets/segments
     networks:
       - backend_network
       - frontend_network
 
 volumes:
+  segments:
+    driver: local
   pgdata_api:
     driver: local
   pgconf_api:

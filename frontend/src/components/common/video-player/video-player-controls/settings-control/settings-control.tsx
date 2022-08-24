@@ -60,12 +60,12 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
         );
       }
     }
-  }, [currentModal]);
+  }, [currentModal, hlsClient, videoContainer]);
 
   useLayoutEffect(() => {
     videoWrapper.setAttribute('data-keep-open-modal', isOpen.toString());
     setCurrentModal(Modal.MAIN);
-  }, [isOpen]);
+  }, [isOpen, videoWrapper]);
 
   const handleBlur = (e: React.FocusEvent<HTMLDivElement, Element>): void => {
     if (!e.currentTarget.contains(e.relatedTarget)) {

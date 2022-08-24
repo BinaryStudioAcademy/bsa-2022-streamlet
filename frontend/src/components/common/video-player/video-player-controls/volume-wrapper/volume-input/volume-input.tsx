@@ -12,7 +12,7 @@ const VolumeInput: FC<Props> = ({ videoContainer, className }) => {
 
   useEffect(() => {
     videoContainer.volume = volume;
-  }, [volume]);
+  }, [volume, videoContainer]);
 
   return (
     <input

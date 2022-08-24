@@ -1,1 +1,1 @@
-export { HttpHeader, HttpMethod } from 'shared/build/common/enums/http/http';
+export { HttpHeader, HttpMethod, HttpCode } from 'shared/build';

@@ -1,22 +1,28 @@
 .video-card {
-  width: 262px;
-  min-height: 235px;
   padding-bottom: 5px;
   background-color: var(--gray-300-header-menu-background);
 }
 
 .video-preview-container {
   position: relative;
-  width: 262px;
-  height: 121px;
+  width: 100%;
+  height: 120px;
   cursor: pointer;
+
+  @media screen and (max-width: 670px) {
+    height: 160px;
+  }
+
+  @media screen and (max-width: 470px) {
+    height: 120px;
+  }
 }
 
 .video-preview-poster {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 50%;
 }
 
 .video-duration-label {
@@ -24,7 +30,7 @@
   right: 20px;
   bottom: 12px;
   min-width: 47px;
-  color: white;
+  color: var(--white-text-color);
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
@@ -47,18 +53,18 @@
 .video-information-container {
   display: flex;
   justify-content: center;
-  border-bottom: 1px black solid;
+  border-bottom: 2px var(--primary-text-color) solid;
 }
 
 .video-description-container {
-  max-width: 197.56px;
+  width: 197.56px;
 }
 
 .video-card-title {
   max-height: 40px;
   margin: 7px 0 9px;
   overflow: hidden;
-  color: white;
+  color: var(--white-text-color);
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
@@ -68,7 +74,7 @@
   cursor: pointer;
 }
 
-svg {
+.svg-icon {
   width: 15px;
   height: 12px;
   margin: 0 6px;
@@ -90,6 +96,7 @@ svg {
 }
 
 .video-card-hr {
+  display: none;
   margin: 0 0 5px;
   color: var(--gray-400-primary-background);
   background-color: var(--gray-400-primary-background);
@@ -142,4 +149,10 @@ svg {
 .viewer-container p {
   margin: 0;
   text-align: center;
+}
+
+.video-card-statistic-data {
+  color: var(--text-gray-color);
+  font-size: 12px;
+  line-height: 16px;
 }

@@ -1,0 +1,61 @@
+@import 'assets/css/breakpoint.scss';
+
+.search-page {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+  background-color: var(--gray-400-primary-background);
+}
+
+.search-page-wrapper {
+  display: flex;
+  flex: 1;
+  flex-flow: column nowrap;
+  align-items: center;
+  width: 100%;
+}
+
+.search-page-video-list {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 15px;
+  width: 100%;
+  padding: 12px;
+}
+
+@media #{$mobile-middle} {
+  .search-page-video-list {
+    padding: 18px;
+  }
+}
+
+@media #{$tablet-large} {
+  .search-page {
+    padding: 0 20px;
+  }
+
+  .search-page-wrapper {
+    flex-flow: row nowrap;
+    align-items: flex-start;
+  }
+
+  .search-page-video-list {
+    padding: 20px;
+  }
+}
+
+@media #{$desktop-small} {
+  .search-page {
+    align-items: center;
+  }
+
+  .search-page-wrapper {
+    max-width: 1080px;
+  }
+}
+
+@media #{$desktop-small} {
+  .search-page-wrapper {
+    max-width: 1150px;
+  }
+}

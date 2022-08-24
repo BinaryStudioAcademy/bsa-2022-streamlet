@@ -1,0 +1,150 @@
+@import 'assets/css/config.scss';
+
+.mobile-sidebar {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  z-index: $mobile-sidebar-z-index;
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  background-color: var(--gray-300-header-menu-background-opacity);
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s;
+
+  @media screen and (min-width: 1301px) {
+    display: none;
+  }
+}
+
+.mobile-sidebar.open {
+  left: 0;
+  visibility: visible;
+  opacity: 1;
+}
+
+.sidebar-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: $mobile-sidebar-z-index + 1;
+  width: 40%;
+  height: 100%;
+  max-height: 100%;
+  overflow: auto;
+  overflow-y: overlay;
+  background-color: var(--gray-300-header-menu-background);
+
+  @media screen and (max-width: 900px) {
+    width: 50%;
+  }
+
+  @media screen and (max-width: 560px) {
+    width: 70%;
+  }
+}
+
+.sidebar-content::-webkit-scrollbar {
+  display: none;
+  width: 7px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background-color: var(--gray-200-input-background);
+  border-radius: 2px;
+}
+
+.sidebar-content:hover .sidebar-content::-webkit-scrollbar {
+  display: block;
+}
+
+.sidebar-header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  padding: 26px 20px;
+  background: var(--gray-300-header-menu-background);
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo-link .main-name {
+  margin-left: 5px;
+  color: var(--white-text-color);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 25px;
+  text-transform: uppercase;
+}
+
+.burger-menu {
+  display: block;
+  margin-right: 14px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.burger-menu svg {
+  display: block;
+}
+
+.nav-link li svg path {
+  fill: var(--text-gray-color);
+}
+
+.burger-menu:hover svg path {
+  stroke: var(--brand-green-color);
+}
+
+.list-links {
+  list-style: none;
+}
+
+.nav-link {
+  display: block;
+  text-decoration: none;
+}
+
+.nav-link li {
+  display: flex;
+  align-items: center;
+  padding: 13px 20px;
+}
+
+.nav-link li svg {
+  margin-right: 20px;
+}
+
+.link-name {
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+}
+
+.nav-link:hover {
+  svg path {
+    fill: var(--white-text-color);
+  }
+
+  .link-name {
+    color: var(--white-text-color);
+  }
+}
+
+.nav-link.active li {
+  background-color: var(--brand-green-color);
+
+  .link-name {
+    color: var(--white-text-color);
+  }
+
+  svg path {
+    fill: var(--white-text-color);
+  }
+}

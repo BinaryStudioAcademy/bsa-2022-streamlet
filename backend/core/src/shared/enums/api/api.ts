@@ -1,1 +1,1 @@
-export { ApiPath, AuthApiPath } from 'shared/build';
+export { ApiPath, AuthApiPath, ChannelApiPath } from 'shared/build';

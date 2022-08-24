@@ -17,22 +17,23 @@ datasource db {
 }
 
 model User {
-  id             String         @id @default(uuid())
-  username       String         @unique
-  email          String         @unique
-  password       String
-  isActivated    Boolean        @default(false)
-  refreshToken   RefreshToken?
-  comments       VideoComment[]
-  channels       Channel[]
-  subscriptions  Subscription[]
-  chatMessages   ChatMessage[]
-  notifications  Notification[]
-  profile        UserProfile?
-  historyRecords History[]
-  reactions      Reaction[]
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  id                 String              @id @default(uuid())
+  username           String              @unique
+  email              String              @unique
+  password           String
+  isActivated        Boolean             @default(false)
+  refreshToken       RefreshToken?
+  resetPasswordToken ResetPasswordToken?
+  comments           VideoComment[]
+  channels           Channel[]
+  subscriptions      Subscription[]
+  chatMessages       ChatMessage[]
+  notifications      Notification[]
+  profile            UserProfile?
+  historyRecords     History[]
+  reactions          Reaction[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
 }
 
 model UserProfile {
@@ -56,25 +57,46 @@ model RefreshToken {
   updatedAt DateTime @updatedAt
 }
 
+model ResetPasswordToken {
+  id        String   @id @default(uuid())
+  token     String
+  // assuming there should be at most one token for a user at any given time
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum StreamingStatus {
+  pending
+  ready
+  live
+  finished
+}
+
 model Video {
-  id             String         @id @default(uuid())
-  name           String
-  description    String         @default("")
-  isLive         Boolean
-  videoPath      String
-  liveViews      Int            @default(0)
-  videoViews     Int            @default(0)
-  tags           Tag[]
-  categories     Category[]
-  comments       VideoComment[]
-  channel        Channel        @relation(fields: [channelId], references: [id])
-  channelId      String
-  chatMessages   ChatMessage[]
-  notifications  Notification[]
-  historyRecords History[]
-  reactions      Reaction[]
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  id                    String          @id @default(uuid())
+  name                  String
+  description           String          @default("")
+  status                StreamingStatus @default(pending)
+  publishedAt           DateTime        @default(now())
+  scheduledStreamDate   DateTime        @default(now())
+  poster                String          @default("")
+  duration              Int             @default(0)
+  videoPath             String
+  liveViews             Int             @default(0)
+  videoViews            Int             @default(0)
+  tags                  Tag[]
+  categories            Category[]
+  comments              VideoComment[]
+  channel               Channel         @relation(fields: [channelId], references: [id])
+  channelId             String
+  chatMessages          ChatMessage[]
+  notifications         Notification[]
+  historyRecords        History[]
+  reactions             Reaction[]
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
 }
 
 model Tag {
@@ -107,15 +129,24 @@ model VideoComment {
 model Channel {
   id            String         @id @default(uuid())
   name          String
+  avatar        String         @default("")
   description   String         @default("")
   videos        Video[]
   contactEmail  String         @default("")
   bannerImage   String         @default("")
   author        User           @relation(fields: [authorId], references: [id])
   authorId      String
+  streamingKeys StreamingKey[]
   subscriptions Subscription[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+}
+
+model StreamingKey {
+  id        String  @id @default(uuid())
+  key       String  @unique @default(uuid())
+  channel   Channel @relation(fields: [channelId], references: [id])
+  channelId String  @unique
 }
 
 model Subscription {

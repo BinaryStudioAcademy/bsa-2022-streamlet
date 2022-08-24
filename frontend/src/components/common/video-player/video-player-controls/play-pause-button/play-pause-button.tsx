@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { ControlButton } from '../control-button/control-button';
 
-import { ReactComponent as PlayIcon } from 'assets/img/play.svg';
+import { ReactComponent as PlayIcon } from 'assets/img/play-player.svg';
 import { ReactComponent as PauseIcon } from 'assets/img/pause.svg';
 import { toggleVideoPlay } from '../../helpers/toggle-video-play';
 
@@ -29,7 +29,7 @@ const PlayPauseButton: FC<Props> = ({ videoContainer, className }) => {
       videoContainer.removeEventListener('pause', handlePause);
       videoContainer.removeEventListener('play', handlePlay);
     };
-  }, []);
+  }, [videoContainer]);
 
   return (
     <ControlButton onClick={handleClick} className={className}>

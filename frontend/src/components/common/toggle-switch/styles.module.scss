@@ -1,0 +1,23 @@
+.toggle-switch-label {
+  display: flex;
+  flex-direction: column;
+  width: 40px;
+  height: 20px;
+  margin: 0 10px;
+  background-color: transparent;
+  border: 2px solid var(--white-text-color);
+  border-radius: 12px;
+}
+
+.slider,
+.slider-checked {
+  width: 10px;
+  height: 10px;
+  margin: 3px;
+  background-color: var(--white-text-color);
+  border-radius: 12px;
+}
+
+.slider-checked {
+  align-self: flex-end;
+}

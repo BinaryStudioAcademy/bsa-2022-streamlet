@@ -59,7 +59,7 @@ const QualitySelector: FC<Props> = ({ className, goBack, hlsClient }) => {
       hlsClient.off(Hls.Events.LEVEL_SWITCHING, handleCurrentLevelChange);
       hlsClient.off(Hls.Events.LEVELS_UPDATED, handleLevelsUpdated);
     };
-  }, []);
+  }, [hlsClient]);
 
   const allLevelRepresentations: LevelRepresentation[] = [];
   levels.forEach((level) => {
