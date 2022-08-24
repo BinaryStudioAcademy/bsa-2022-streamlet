@@ -4,7 +4,7 @@
   margin-top: 1px;
   padding: 12px 35px;
   overflow: auto;
-  overflow-y: overlay;
+  overflow-x: overlay;
   background-color: var(--gray-300-header-menu-background);
 
   @media screen and(max-width: 900px) {
@@ -14,9 +14,7 @@
 
 .filter-block::-webkit-scrollbar {
   display: none;
-  height: 7px;
-  background-color: var(--text-gray-color);
-  border-radius: 3px;
+  height: 11px;
 }
 
 .filter-block:hover {
@@ -25,9 +23,8 @@
   }
 }
 
-.filter-block::-webkit-scrollbar-thumb {
-  background-color: var(--gray-200-input-background);
-  border-radius: 2px;
+.filter-block::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .filter-item {
