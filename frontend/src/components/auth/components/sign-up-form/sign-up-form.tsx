@@ -72,11 +72,11 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
           label="Confirm password"
         />
-        <ContinueWithParagraph prompt="Already have an account?" linkTitle="Sign in" route={AppRoutes.SIGN_IN} />
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Sign up" />
       </form>
       <p className={formStyles['continue-with']}>or continue with</p>
       <GoogleButton disabled={isLoading} />
+      <ContinueWithParagraph prompt="Already have an account?" linkTitle="Sign in" route={AppRoutes.SIGN_IN} />
     </>
   );
 };

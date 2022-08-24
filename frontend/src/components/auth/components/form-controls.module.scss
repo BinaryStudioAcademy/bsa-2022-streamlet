@@ -5,7 +5,7 @@
 }
 
 .form-input {
-  margin-bottom: 22px;
+  margin-bottom: 12px;
 }
 
 .password {
@@ -21,9 +21,12 @@
 }
 
 .input-error {
-  border: 1px solid var(--input-error-color);
   border-radius: 3px;
   box-shadow: 0 0 3px 0 rgb(var(--input-error-color) / 80%), 0 0 5px 0 rgb(var(--input-error-color) / 50%);
+}
+
+div .input-error {
+  border: var(--input-error-border);
 }
 
 .label {
@@ -33,6 +36,7 @@
 }
 
 .continue-with {
+  margin: 5px;
   color: var(--white-text-color);
   text-align: center;
 }

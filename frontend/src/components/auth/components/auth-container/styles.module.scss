@@ -24,7 +24,9 @@ $base-z-index: $page-z-index;
 }
 
 .auth-container {
-  margin: 38px 20px;
+  width: 100%;
+  margin: 38px 0;
+  padding: 0 20px;
 }
 
 .auth-title {

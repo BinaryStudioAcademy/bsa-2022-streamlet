@@ -479,7 +479,11 @@
   --input-error-color: #f41b3b;
   --input-placeholder-color: #c4c4c4;
   --input-password-placeholder-color: #bcbec0;
+  --input-border: none;
+  --input-error-border: 1px solid var(--input-error-color);
+  --input-background-color: #ffffff;
   --sidebar-scrollbar-track-background: var(--gray-300-header-menu-background);
+  --always-white-color: #ffffff;
 
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
@@ -505,6 +509,7 @@ body[data-theme='light'] {
   --sidebar-scrollbar-track-background: #e8e8e8;
   --auth-modal-background: white;
   --auth-box-shadow: none;
+  --input-border: 1px solid var(--brand-green-color);
 }
 
 html {
