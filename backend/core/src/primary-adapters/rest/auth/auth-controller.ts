@@ -19,7 +19,7 @@ import {
   AccountVerificationConfirmResponseDto,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
-import { compareHash, generateJwt, trimUser } from '~/shared/helpers';
+import { compareHash, compareStringsInsensitive, generateJwt, trimUser } from '~/shared/helpers';
 import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
 import { authenticationMiddleware, validationMiddleware } from '../middleware';
 import {
@@ -152,10 +152,10 @@ export class AuthController extends BaseHttpController {
     );
 
     if (duplicateUser) {
-      if (duplicateUser.username === userRequestDto.username) {
+      if (compareStringsInsensitive(duplicateUser.username, userRequestDto.username)) {
         throw new DuplicationError(exceptionMessages.auth.USER_USERNAME_ALREADY_EXISTS);
       }
-      if (duplicateUser.email === userRequestDto.email) {
+      if (compareStringsInsensitive(duplicateUser.email, userRequestDto.email)) {
         throw new DuplicationError(exceptionMessages.auth.USER_EMAIL_ALREADY_EXISTS);
       }
     }
