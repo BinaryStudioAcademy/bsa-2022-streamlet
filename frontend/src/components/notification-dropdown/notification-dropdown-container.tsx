@@ -1,12 +1,12 @@
-import { NOTIFICATION_REQUEST_SIZE } from 'common/constants/constants';
+// import { NOTIFICATION_REQUEST_SIZE } from 'common/constants/constants';
 import { FC } from 'common/types/types';
-import { useAppDispatch, useAppSelector, useCallback, useEffect, useOutsideClick } from 'hooks/hooks';
+import { /* useAppDispatch, useEffect, */ useAppSelector, useCallback, useOutsideClick } from 'hooks/hooks';
 import { MouseEvent } from 'react';
-import { notificationActions } from 'store/actions';
+// import { notificationActions } from 'store/actions';
 import { NotificationDropdown } from './notification-dropdown';
 
 const NotificationDropdownContainer: FC = () => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const { dataStatus, notifications, total, loaded } = useAppSelector((state) => ({
     dataStatus: state.notification.dataStatus,
     error: state.notification.error,
@@ -34,39 +34,46 @@ const NotificationDropdownContainer: FC = () => {
   }
 
   const handleLoadNotifications = useCallback(
-    () =>
-      dispatch(
-        notificationActions.getNotifications({
-          from: loaded,
-          count: NOTIFICATION_REQUEST_SIZE,
-        }),
-      ),
-    [dispatch, loaded],
+    // () =>
+    //   dispatch(
+    //     notificationActions.getNotifications({
+    //       from: loaded,
+    //       count: NOTIFICATION_REQUEST_SIZE,
+    //     }),
+    //   ),
+    // [dispatch, loaded],
+    () => null,
+    [],
   );
 
   const handleReadAllNotifications = useCallback(
-    () => dispatch(notificationActions.readAllNotifications()),
-    [dispatch],
+    // () => dispatch(notificationActions.readAllNotifications()),
+    // [dispatch],
+    () => null,
+    [],
   );
 
   const handleReadNotification = useCallback(
-    (id: string) => {
-      dispatch(notificationActions.readNotification({ id }));
-      if (loaded < total) {
-        dispatch(
-          notificationActions.getNotifications({
-            from: 0,
-            count: loaded + 1,
-          }),
-        );
-      }
-    },
-    [dispatch, loaded, total],
+    // (id: string) => {
+    //   dispatch(notificationActions.readNotification({ id }));
+    //   if (loaded < total) {
+    //     dispatch(
+    //       notificationActions.getNotifications({
+    //         from: 0,
+    //         count: loaded + 1,
+    //       }),
+    //     );
+    //   }
+    // },
+    // [dispatch, loaded, total],
+    () => null,
+    [],
   );
 
-  useEffect(() => {
-    handleLoadNotifications();
-  }, [handleLoadNotifications]);
+  // Will be used when backend part is configured
+  // useEffect(() => {
+  //   handleLoadNotifications();
+  // }, [handleLoadNotifications]);
 
   return (
     <NotificationDropdown
