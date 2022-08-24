@@ -161,6 +161,12 @@
   cursor: pointer;
 }
 
+.control-icons > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .block-search {
   position: relative;
   display: flex;

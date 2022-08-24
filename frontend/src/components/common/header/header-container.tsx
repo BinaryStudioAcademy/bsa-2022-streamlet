@@ -100,8 +100,6 @@ const HeaderContainer: FC = () => {
     }
   }
 
-  const handleClickGoToStream = (): void => navigate(AppRoutes.STUDIO);
-
   const searchInputEl = useRef<HTMLInputElement>(null);
 
   const handleClearActiveFilterIds = useCallback(() => dispatch(searchActions.clearActiveFilterIds()), [dispatch]);
@@ -138,7 +136,6 @@ const HeaderContainer: FC = () => {
       searchValue={searchText}
       searchInputEl={searchInputEl}
       handleClickUserMenu={handleClickUserMenu}
-      handleClickGoToStream={handleClickGoToStream}
       handleClickSignIn={handleClickSignIn}
       handleClickThemeSwitch={handleThemeToggle}
       handleChangeInputSearch={handleChangeInputSearch}

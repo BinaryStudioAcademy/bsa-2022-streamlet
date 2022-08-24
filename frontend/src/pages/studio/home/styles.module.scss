@@ -1,0 +1,42 @@
+@import 'assets/css/styles.scss';
+
+.studio {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  background: var(--green-300-primary-background);
+}
+
+.header {
+  display: flex;
+  flex-grow: 4;
+  align-items: center;
+  color: white;
+}
+
+.controls {
+  display: flex;
+  flex-grow: 5;
+  justify-content: center;
+}
+
+.button {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 150px;
+  height: 150px;
+  padding: 10px;
+  color: white;
+  line-height: 16px;
+  text-transform: uppercase;
+  background-color: var(--brand-green-color);
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+}

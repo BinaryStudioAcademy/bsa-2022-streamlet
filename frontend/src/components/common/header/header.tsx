@@ -22,7 +22,6 @@ interface HeaderProps {
   searchValue: string;
   searchInputEl: RefObject<HTMLInputElement>;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
-  handleClickGoToStream(): void;
   handleClickThemeSwitch(): void;
   handleClickSignIn(): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
@@ -42,7 +41,6 @@ const Header: FC<HeaderProps> = ({
   searchInputEl,
   handleClickSignIn,
   handleClickUserMenu,
-  handleClickGoToStream,
   handleChangeInputSearch,
   handleClearInputSearch,
   handleSubmitSearch,
@@ -95,9 +93,9 @@ const Header: FC<HeaderProps> = ({
         </button>
         {isLogged ? (
           <>
-            <button className={styles['btn-go-stream']} onClick={handleClickGoToStream}>
+            <Link className={styles['btn-go-stream']} to={AppRoutes.STUDIO}>
               <Icon name={IconName.CAMERA} width="30" height="24" />
-            </button>
+            </Link>
             {notificationDropdownContent}
             <button
               onClick={handleClickUserMenu}

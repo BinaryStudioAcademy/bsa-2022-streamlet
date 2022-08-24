@@ -15,8 +15,10 @@ const AppRoutes = {
   VIDEO_$ID: '/video/:videoId',
   CHANNEL: '/channel',
   CHANNEL_$ID: '/channel/:channelId',
-  STUDIO: '/studio',
-  ANALYTICS: '/analytics',
+  STUDIO: '/studio/home',
+  STUDIO_ANALYTICS: '/studio/analytics',
+  STUDIO_CHANNEL: '/studio/channel',
+  STUDIO_STREAM_$ID: '/studio/stream/:id',
   SEARCH: '/search',
   PROFILE_PREFERENCE: '/profile-preference',
 } as const;
@@ -31,6 +33,13 @@ const RoutesWithoutHeader = {
   ACCOUNT_VERIFICATION_CONFIRM: commonFrontendPaths.auth.ACCOUNT_VERIFICATION_CONFIRM.path,
 } as const;
 
+enum RoutesWithStudioHeader {
+  STUDIO = '/studio/home',
+  STUDIO_ANALYTICS = '/studio/analytics',
+  STUDIO_CHANNEL = '/studio/channel',
+  STUDIO_STREAM_$ID = '/studio/stream/:id',
+}
+
 type RouteWithoutHeader = typeof RoutesWithoutHeader[keyof typeof RoutesWithoutHeader];
 
-export { AppRoute, AppRoutes, RouteWithoutHeader, RoutesWithoutHeader };
+export { AppRoute, AppRoutes, RouteWithoutHeader, RoutesWithoutHeader, RoutesWithStudioHeader };

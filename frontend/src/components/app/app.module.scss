@@ -10,6 +10,11 @@
   height: calc(100vh - 82px);
 }
 
+.studio-content-section {
+  display: flex;
+  height: 100vh;
+}
+
 .main-content {
   flex: 1;
   max-height: 100%;
