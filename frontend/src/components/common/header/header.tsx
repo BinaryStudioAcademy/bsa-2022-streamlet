@@ -29,6 +29,8 @@ interface HeaderProps {
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
   options: MenuOption[];
   userAvatar: string;
+  userName: string | undefined;
+  userEmail: string | undefined;
   menuRef: RefObject<HTMLDivElement>;
   notificationDropdownContent: React.ReactNode;
   themeValue: boolean;
@@ -47,6 +49,8 @@ const Header: FC<HeaderProps> = ({
   handleClickThemeSwitch,
   options,
   userAvatar,
+  userName,
+  userEmail,
   menuRef,
   notificationDropdownContent,
   themeValue,
@@ -104,6 +108,14 @@ const Header: FC<HeaderProps> = ({
             ></button>
             {isMenuOpen && (
               <div ref={menuRef} className={styles['user-menu']}>
+                <div className={styles['user-menu-header']}>
+                  <div style={{ backgroundImage: `url(${userAvatar})` }} className={styles['user-menu-avatar']} />
+                  <div className={styles['user-menu-info']}>
+                    <div className={styles['user-menu-username']}>{userName}</div>
+                    <div className={styles['user-menu-email']}>{userEmail}</div>
+                  </div>
+                </div>
+                <div className={styles['horizontal-line']} />
                 <ul className={styles['option-list']}>
                   {options.map((option) => (
                     <li key={option.type} className={styles['option']} onClick={option.onClick}>
