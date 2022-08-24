@@ -26,20 +26,12 @@
 
 .sidebar::-webkit-scrollbar {
   display: none;
-  width: 7px;
-  background-color: var(--text-gray-color);
-  border-radius: 3px;
 }
 
 .sidebar:hover {
   &::-webkit-scrollbar {
     display: block;
   }
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background-color: var(--gray-200-input-background);
-  border-radius: 2px;
 }
 
 .navigate-menu ul a {
