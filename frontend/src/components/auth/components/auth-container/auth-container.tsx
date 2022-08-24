@@ -20,12 +20,10 @@ const AuthContainer: FC<Props> = ({ children, pageTitle, className, topLevelErro
       <img src={zigzag} className={styles['background-zigzag-2']} alt="zigzag" />
       <img src={element} className={styles['background-element']} alt="element" />
       <div className={styles['auth-modal']}>
-        <div className={styles['auth-container']}>
-          <img src={logo} className={styles['auth-logo']} alt="logo" />
-          <h1 className={styles['auth-title']}>{pageTitle}</h1>
-          {topLevelErrorComponent}
-          {children}
-        </div>
+        <img src={logo} className={styles['auth-logo']} alt="logo" />
+        <h1 className={styles['auth-title']}>{pageTitle}</h1>
+        {topLevelErrorComponent}
+        {children}
       </div>
     </div>
   );

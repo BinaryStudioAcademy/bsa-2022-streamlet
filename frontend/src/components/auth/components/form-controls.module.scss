@@ -1,11 +1,6 @@
 .form-container {
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
-}
-
-.form-input {
-  margin-bottom: 22px;
 }
 
 .password {
@@ -30,6 +25,10 @@
   font-weight: 500;
   font-family: Gilroy, sans-serif;
   text-transform: capitalize;
+}
+
+.upper-space-regular {
+  margin-top: 10px;
 }
 
 .continue-with {
