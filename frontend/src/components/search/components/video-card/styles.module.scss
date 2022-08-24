@@ -298,11 +298,6 @@ $base-z-index: $page-component-z-index;
     background: none;
   }
 
-  .video-card:focus-within,
-  .video-card:hover {
-    background-color: var(--gray-300-header-menu-background);
-  }
-
   .video-card-preview {
     height: 140px;
     aspect-ratio: 16 / 9;
