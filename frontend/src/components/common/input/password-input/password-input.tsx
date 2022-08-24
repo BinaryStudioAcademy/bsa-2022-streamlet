@@ -22,6 +22,7 @@ type Props<T> = {
   changeVisibilityBtnClassName?: string;
   inputWrapperClassName?: string;
   inputWrapperErrorClassName?: string;
+  isReadOnly?: boolean;
 };
 
 type PasswordType = 'password' | 'text';
@@ -39,6 +40,7 @@ const PasswordInput = <T extends FieldValues>({
   inputWrapperClassName,
   inputWrapperErrorClassName,
   changeVisibilityBtnClassName,
+  isReadOnly = false,
 }: Props<T>): ReactElement | null => {
   const {
     field,
@@ -73,6 +75,7 @@ const PasswordInput = <T extends FieldValues>({
           placeholder={placeholder}
           className={clsx(styles['input'], inputClassName)}
           id={id}
+          readOnly={isReadOnly}
         />
         <Button
           onClick={handleChangeInputPasswordType}
