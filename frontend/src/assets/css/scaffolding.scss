@@ -7,18 +7,163 @@
 }
 
 @font-face {
-  font-family: Gilroy-SemiBold;
-  src: url('../font/Gilroy-SemiBold.woff');
-}
-
-@font-face {
+  font-weight: 900;
   font-family: Gilroy;
-  src: url('../font/Gilroy-Regular.woff');
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Black.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: Gilroy-Medium;
-  src: url('../font/Gilroy-Medium.woff');
+  font-weight: normal;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 100;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-ThinItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 600;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Semibold.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 500;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-MediumItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 300;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Light.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-ExtraboldItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 600;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-SemiboldItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 500;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Extrabold.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 200;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-UltraLight.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 900;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Heavy.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-BoldItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: normal;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-RegularItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 100;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Thin.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 900;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-BlackItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 300;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-LightItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 900;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-HeavyItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 200;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-UltraLightItalic.woff2') format('woff2');
 }
 
 :root {
@@ -46,13 +191,10 @@
 
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
-  --auth-modal-border-color-1: rgb(34 240 0 / 47%);
-  --auth-modal-border-color-2: rgb(146 255 229 / 47%);
 
   /* video-card */
   --video-card-schedule-badge-background: #000000b3;
   --video-card-schedule-btn-background: #ffffff40;
-  --white-background-video-card: #ffffff26;
 }
 
 body[data-theme='light'] {
