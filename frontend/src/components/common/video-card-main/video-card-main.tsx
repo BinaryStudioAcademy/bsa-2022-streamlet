@@ -1,4 +1,3 @@
-import { MouseEvent } from 'react';
 import dayjs from 'dayjs';
 import * as dayjsRelativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
@@ -6,7 +5,9 @@ import { FC, VideoCard as VideoCardType } from 'common/types/types';
 import { AppRoutes, IconName, StreamingStatus } from 'common/enums/enums';
 import { useState, useCallback, useEffect } from 'hooks/hooks';
 import { Icon } from 'components/common/common';
+import { ScheduledVideoBadge } from './components/components';
 import { getDividedViewsString, getFormatDurationString, getHowLongAgoString } from 'helpers/helpers';
+import { UPDATE_CARD_TIME_DELAY } from './config';
 import styles from './styles.module.scss';
 
 dayjs.extend(dayjsRelativeTime.default);
@@ -26,7 +27,7 @@ const VideoCardMain: FC<Props> = ({
   const isLive = status === StreamingStatus.LIVE;
   const isFinished = status === StreamingStatus.FINISHED;
 
-  const updateTimeDelay = 5 * 60 * 1000; // 5 minutes
+  const updateTimeDelay = UPDATE_CARD_TIME_DELAY;
 
   const linkToVideoPage = `${AppRoutes.VIDEO}/${id}`;
   const linkToChannelPage = `${AppRoutes.CHANNEL}/${id}`;
@@ -42,14 +43,8 @@ const VideoCardMain: FC<Props> = ({
   const getFormatScheduledStreamDateLiveIn = useCallback((): string => {
     return timeNow.to(dayjs(scheduledStreamDate));
   }, [timeNow, scheduledStreamDate]);
-  const getFormatScheduledStreamDateAt = (): string => {
-    const d = dayjs(scheduledStreamDate);
-    return `${d.format('D MMMM')} at ${d.format('H:mm')}`;
-  };
 
-  const handleClickNotifyBtn = (e: MouseEvent<HTMLDivElement>): void => {
-    e.preventDefault();
-  };
+  const handleClickNotifyBtn = (): void => void 0;
 
   useEffect(() => {
     const updateTimeInterval = setInterval(() => {
@@ -69,23 +64,13 @@ const VideoCardMain: FC<Props> = ({
           {isFinished && <span className={styles['video-card-badge-duration']}>{videoDuration}</span>}
         </Link>
         {isWaiting && (
-          <div className={styles['video-card-badge-scheduled']}>
-            <Icon name={IconName.ONLINE_STREAMING} />
-            <div className={styles['video-card-badge-scheduled-data']}>
-              {isSchedulePassed() ? (
-                <span>{`Waiting for ${channel.name}`}</span>
-              ) : (
-                <span>{`Live ${getFormatScheduledStreamDateLiveIn()}`}</span>
-              )}
-              <span>{getFormatScheduledStreamDateAt()}</span>
-            </div>
-            {!isSchedulePassed() && (
-              <div className={styles['video-card-badge-scheduled-btn']} onClick={handleClickNotifyBtn}>
-                <Icon name={IconName.BELL_OUTLINE} />
-                <span>Notify me</span>
-              </div>
-            )}
-          </div>
+          <ScheduledVideoBadge
+            channelName={channel.name}
+            isSchedulePassed={isSchedulePassed()}
+            scheduledStreamDate={scheduledStreamDate}
+            isLiveIn={getFormatScheduledStreamDateLiveIn()}
+            handleClickNotifyBtn={handleClickNotifyBtn}
+          />
         )}
       </div>
       <div className={styles['video-card-info']}>
