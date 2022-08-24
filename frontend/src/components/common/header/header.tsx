@@ -119,10 +119,14 @@ const Header: FC<HeaderProps> = ({
                 <ul className={styles['option-list']}>
                   {options.map((option) => (
                     <li key={option.type} className={styles['option']} onClick={option.onClick}>
-                      <Icon name={option.icon} />
-                      <span>{option.text}</span>
+                      <div className={styles['option-segment']}>
+                        <Icon name={option.icon} />
+                        <span>{option.text}</span>
+                      </div>
                       {option.type === MenuOptions.Theme && (
-                        <ToggleSwitch defaultValue={themeValue} onToggle={handleClickThemeSwitch} />
+                        <div className={styles['option-segment']}>
+                          <ToggleSwitch defaultValue={themeValue} onToggle={handleClickThemeSwitch} />
+                        </div>
                       )}
                     </li>
                   ))}

@@ -19,8 +19,10 @@ const Search: FC = () => {
       activeFilterId,
       results: { results },
     },
+    theme: { isLightTheme },
   } = useAppSelector((state) => ({
     search: state.search,
+    theme: state.theme,
   }));
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -71,7 +73,7 @@ const Search: FC = () => {
         <div className={styles['search-page-video-list']}>
           {results.length === 0 && <ResultNotFound />}
           {results.map((c: VideoCardType) => (
-            <VideoCard key={c.id} video={c} />
+            <VideoCard key={c.id} video={c} isLightTheme={isLightTheme} />
           ))}
         </div>
       </div>

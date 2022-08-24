@@ -21,6 +21,7 @@
   gap: 15px;
   width: 100%;
   padding: 12px;
+  overflow: hidden;
 }
 
 @media #{$mobile-middle} {
@@ -31,7 +32,7 @@
 
 @media #{$tablet-large} {
   .search-page {
-    padding: 0 20px;
+    padding: 0 10px;
   }
 
   .search-page-wrapper {
