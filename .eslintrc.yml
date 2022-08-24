@@ -23,7 +23,7 @@ rules:
   no-console:
     - error
     - allow:
-        - war
+        - warn
         - error
   arrow-parens:
     - error

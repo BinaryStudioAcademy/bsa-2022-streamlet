@@ -1,25 +1,46 @@
 @import 'assets/css/styles.scss';
 
-.studio {
+.settings-container {
   display: flex;
-  flex-direction: column;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-start;
   height: 100%;
+  padding: 20px;
   background: var(--green-300-primary-background);
 }
 
-.header {
+.settings-block {
   display: flex;
-  flex-grow: 4;
-  align-items: center;
-  color: white;
+  height: 100%;
+  background: var(--gray-200-input-background);
 }
 
-.controls {
+.chat-block {
   display: flex;
-  flex-grow: 5;
-  justify-content: center;
+  height: 100%;
+  background: var(--gray-200-input-background);
+}
+
+.col-1,
+.col-2,
+.col-3 {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  margin: 20px;
+  padding: 0 20px;
+}
+
+.col-1 {
+  flex-basis: 35%;
+}
+
+.col-2 {
+  flex-basis: 55%;
+}
+
+.col-3 {
+  flex-basis: 30%;
 }
 
 .button {
@@ -27,8 +48,7 @@
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  width: 150px;
-  height: 150px;
+  width: 100%;
   padding: 10px;
   color: white;
   line-height: 16px;
@@ -39,4 +59,49 @@
     cursor: pointer;
     opacity: 0.8;
   }
+}
+
+.preview-button {
+  margin-top: 10px;
+}
+
+.preview-container {
+  margin-bottom: 30px;
+}
+
+.input {
+  height: 40px;
+}
+
+.form-container {
+  padding: 15px 0;
+}
+
+.streaming-key-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.form-container > * {
+  padding-bottom: 20px;
+}
+
+.streaming-key-container > * {
+  width: 100%;
+}
+
+.label {
+  margin: 0;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.button-wrapper .button {
+  width: 120px;
 }
