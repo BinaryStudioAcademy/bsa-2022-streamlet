@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { HttpCode } from 'common/enums/enums';
+import { AsyncThunkConfigHttpError } from 'common/types/app/app';
 
 import {
   UserSignUpRequestDto,
@@ -10,6 +11,7 @@ import {
   RefreshTokenResponseDto,
 } from 'common/types/types';
 import { HttpError } from 'exceptions/exceptions';
+import { serializeHttpError } from 'helpers/http/http';
 import { authApi, tokensStorageService } from 'services/services';
 import { ActionType } from './common';
 
@@ -22,14 +24,20 @@ const signUp = createAsyncThunk<void, UserSignUpRequestDto, AsyncThunkConfig>(
   },
 );
 
-const signIn = createAsyncThunk<UserBaseResponseDto, UserSignInRequestDto, AsyncThunkConfig>(
+const signIn = createAsyncThunk<UserBaseResponseDto, UserSignInRequestDto, AsyncThunkConfigHttpError>(
   ActionType.SIGN_IN,
-  async (signinPayload, { extra }) => {
+  async (signinPayload, { extra, rejectWithValue }) => {
     const { authApi } = extra;
-
-    const { tokens, user } = await authApi.signIn(signinPayload);
-    tokensStorageService.saveTokens(tokens);
-    return user;
+    try {
+      const { tokens, user } = await authApi.signIn(signinPayload);
+      tokensStorageService.saveTokens(tokens);
+      return user;
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return rejectWithValue(serializeHttpError(error));
+      }
+      throw error;
+    }
   },
 );
 
