@@ -31,7 +31,7 @@ export { type AvatarImgValue, ImageStorePresetType } from './image/image';
 export { ValidationSchema } from './validation/validation';
 export { type ToastNotificationParams } from './toast-notification/toast-notifications';
 
-export { BaseVideoResponseDto } from './video/video';
+export { BaseVideoResponseDto, DataVideo } from './video/video';
 
 declare module 'react-notifications-component';
 export * from './channel/channel';

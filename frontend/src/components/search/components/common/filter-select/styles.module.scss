@@ -1,8 +1,8 @@
 .filter-select {
   position: relative;
   margin-top: 20px;
-  padding: 0 15px 0 5px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-weight: 600;
+  font-family: Gilroy, sans-serif;
   border-radius: 4px;
   box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 5px 5px rgb(0 0 0 / 20%);
 }
@@ -13,6 +13,7 @@
   justify-content: space-between;
   align-items: center;
   height: 30px;
+  padding: 0 15px 0 5px;
   background-color: var(--gray-400-primary-background);
   cursor: pointer;
 }
@@ -47,25 +48,13 @@
   display: flex;
   flex-flow: column nowrap;
   background-color: var(--gray-300-header-menu-background);
-  opacity: 0;
-  animation-name: hide-list;
-  animation-duration: 0.5s;
-  animation-timing-function: step-start;
-  animation-delay: 0.5s;
-  animation-fill-mode: forwards;
 }
 
 .filter-select-item {
   display: flex;
   align-items: center;
   height: 30px;
-  padding: 0 15px 0 8px;
   background-color: var(--gray-300-header-menu-background);
-}
-
-.filter-select-title:focus + .filter-select-list {
-  opacity: 1;
-  animation-name: none;
 }
 
 .filter-select-item input {
@@ -73,13 +62,16 @@
 }
 
 .filter-select-item label {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
+  height: 100%;
   margin: 0;
-  padding: 0;
+  padding: 0 15px 0 8px;
   color: var(--text-gray-color);
   font-size: 15px;
   line-height: 24px;
+  cursor: pointer;
 }
 
 .filter-select-item-close-icon {
@@ -101,23 +93,15 @@
 }
 
 .filter-select-item input:checked ~ label {
+  padding: 0 0 0 8px;
   color: var(--white-text-color);
 }
 
 .filter-select-item input:checked ~ .filter-select-item-close-icon {
   display: flex;
+  margin-right: 15px;
 }
 
 .filter-select-item:hover {
   background-color: var(--brand-green-color);
-}
-
-@keyframes hide-list {
-  from {
-    transform: scaleY(1);
-  }
-
-  to {
-    transform: scaleY(0);
-  }
 }

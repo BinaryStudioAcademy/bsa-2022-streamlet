@@ -40,18 +40,6 @@ $base-z-index: $page-component-z-index;
   height: 100%;
 }
 
-.video-card-play-btn {
-  display: none;
-}
-
-.video-card-preview:focus .video-card-play-btn {
-  display: flex;
-}
-
-.video-card-play-btn svg path {
-  fill: var(--white-text-color);
-}
-
 .video-card-badge-duration {
   position: absolute;
   right: 7px;
@@ -261,8 +249,19 @@ $base-z-index: $page-component-z-index;
 
 .video-card-meta-tag {
   display: flex;
+  flex-flow: row nowrap;
   justify-content: center;
-  width: 40px;
+  align-items: center;
+  gap: 5px;
+  width: 55px;
+}
+
+.video-card-meta-tag svg {
+  width: 12px;
+}
+
+.video-card-meta-tag svg path {
+  fill: var(--video-card-live-color);
 }
 
 @media #{$mobile-large} {
@@ -335,8 +334,9 @@ $base-z-index: $page-component-z-index;
     gap: 10px;
     margin-top: 5px;
     color: var(--white-text-color);
+    font-weight: 500;
     font-size: 14px;
-    font-family: Gilroy-Medium, sans-serif;
+    font-family: Gilroy, sans-serif;
     line-height: 16px;
   }
 
@@ -363,23 +363,6 @@ $base-z-index: $page-component-z-index;
     height: 190px;
   }
 
-  .video-card-play-btn {
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    background-color: var(--input-error-color);
-    border-radius: 50%;
-  }
-
-  .video-card:hover .video-card-play-btn {
-    display: flex;
-  }
-
-  .video-card-play-btn svg {
-    width: 15px;
-  }
-
   .video-card-title {
     font-size: 18px;
   }
@@ -396,14 +379,5 @@ $base-z-index: $page-component-z-index;
 @media #{$desktop-small} {
   .video-card-preview {
     height: 230px;
-  }
-
-  .video-card-play-btn {
-    width: 50px;
-    height: 50px;
-  }
-
-  .video-card-play-btn svg {
-    width: 19px;
   }
 }

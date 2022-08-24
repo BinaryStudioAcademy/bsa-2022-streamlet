@@ -85,12 +85,12 @@
   width: 220px;
   padding: 12px;
   overflow: hidden;
-  background-color: var(--white-text-color);
+  background-color: var(--primary-text-color);
   border-radius: 3px;
   cursor: auto;
 
   svg {
-    fill: var(--primary-text-color);
+    fill: var(--white-text-color);
   }
 }
 
@@ -128,8 +128,8 @@
   }
 
   .option:hover {
-    color: var(--primary-text-color);
-    background-color: var(--hover-light-grey);
+    color: var(--white-text-color);
+    background-color: var(--hover-dark-grey);
   }
 
   .option svg {
@@ -241,7 +241,10 @@
   margin-left: 8px;
   color: var(--white-text-color);
   font-weight: 700;
-  font-size: 26px;
+  font-size: 20.7158px;
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  line-height: 25px;
   text-transform: uppercase;
 
   @media screen and (max-width: 560px) {
