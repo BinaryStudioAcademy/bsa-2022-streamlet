@@ -261,8 +261,19 @@ $base-z-index: $page-component-z-index;
 
 .video-card-meta-tag {
   display: flex;
+  flex-flow: row nowrap;
   justify-content: center;
-  width: 40px;
+  align-items: center;
+  gap: 5px;
+  width: 55px;
+}
+
+.video-card-meta-tag svg {
+  width: 12px;
+}
+
+.video-card-meta-tag svg path {
+  fill: var(--video-card-live-color);
 }
 
 @media #{$mobile-large} {

@@ -94,9 +94,8 @@ const VideoCardMain: FC<Props> = ({
             <>
               {isLive && (
                 <div className={styles['video-card-meta-tag']}>
-                  <div className={styles['video-tag']}>
-                    <span>Live</span>
-                  </div>
+                  <Icon name={IconName.CIRCLE} />
+                  <span>Live</span>
                 </div>
               )}
               <div className={styles['video-card-meta']}>

@@ -19,11 +19,11 @@
 }
 
 .video-tag-live {
-  border: 1px solid var(--support-error-color);
+  border: 1px solid var(--video-card-live-color);
 }
 
 .video-tag-live span {
-  color: var(--support-error-color);
+  color: var(--video-card-live-color);
 }
 
 @media #{$tablet-large} {

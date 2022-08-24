@@ -114,7 +114,8 @@ const VideoCard: FC<Props> = ({
         <div className={styles['video-card-meta-footer']}>
           {isLive && (
             <div className={styles['video-card-meta-tag']}>
-              <VideoTag name={VideoTagName.LIVE} />
+              <Icon name={IconName.CIRCLE} />
+              <span>Live</span>
             </div>
           )}
           {!isWaiting && <MetaDataVideo views={views} publishedAt={publishedAt} />}
