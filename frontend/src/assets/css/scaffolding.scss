@@ -7,18 +7,163 @@
 }
 
 @font-face {
-  font-family: Gilroy-SemiBold;
-  src: url('../font/Gilroy-SemiBold.woff');
-}
-
-@font-face {
+  font-weight: 900;
   font-family: Gilroy;
-  src: url('../font/Gilroy-Regular.woff');
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Black.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: Gilroy-Medium;
-  src: url('../font/Gilroy-Medium.woff');
+  font-weight: normal;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 100;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-ThinItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 600;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Semibold.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 500;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-MediumItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 300;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Light.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-ExtraboldItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 600;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-SemiboldItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 500;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Extrabold.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 200;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-UltraLight.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 900;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Heavy.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-BoldItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: normal;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-RegularItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 100;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Thin.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 900;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-BlackItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: Gilroy;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Gilroy-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 300;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-LightItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 900;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-HeavyItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-weight: 200;
+  font-family: Gilroy;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Gilroy-UltraLightItalic.woff2') format('woff2');
 }
 
 :root {
@@ -79,8 +224,9 @@ body {
   min-height: 100%;
   margin: 0;
   color: var(--secondary-text-color);
+  font-weight: 600;
   font-size: 16px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 28px;
 }
 
@@ -120,50 +266,57 @@ select {
 
 h1 {
   color: #232735;
+  font-weight: 600;
   font-size: 44px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 64px;
 }
 
 h2 {
   color: #232735;
+  font-weight: 600;
   font-size: 30px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 48px;
 }
 
 h3 {
   color: #232735;
+  font-weight: 600;
   font-size: 20px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 32px;
 }
 
 h4 {
   color: #232735;
+  font-weight: 600;
   font-size: 18px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 24px;
 }
 
 h5 {
   color: #232735;
+  font-weight: 500;
   font-size: 16px;
-  font-family: Gilroy-Medium, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 18px;
 }
 
 h6 {
   color: #232735;
+  font-weight: 600;
   font-size: 14px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 24px;
 }
 
 .sub-heading {
   color: #232735;
+  font-weight: 600;
   font-size: 24px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 48px;
 }
 
