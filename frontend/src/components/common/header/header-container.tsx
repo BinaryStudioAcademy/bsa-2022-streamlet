@@ -39,6 +39,7 @@ const HeaderContainer: FC = () => {
 
   const handleClickSettings = (): void => {
     navigate(AppRoutes.PROFILE_PREFERENCE, { replace: true });
+    closeMenu();
   };
 
   const matchMenuOptionWithOnClickHandler: Record<MenuOptions, () => void> = {
