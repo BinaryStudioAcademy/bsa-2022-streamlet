@@ -40,25 +40,6 @@ $base-z-index: $page-component-z-index;
   height: 100%;
 }
 
-.video-card-play-btn {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  background-color: var(--input-error-color);
-  border-radius: 50%;
-}
-
-.video-card-play-btn svg path {
-  fill: var(--white-text-color);
-}
-
-.video-card-preview:hover .video-card-play-btn,
-.video-card-preview:focus .video-card-play-btn {
-  display: flex;
-}
-
 .video-card-badge-duration {
   position: absolute;
   right: 7px;
@@ -197,27 +178,19 @@ $base-z-index: $page-component-z-index;
 
 .video-card-meta-tag {
   display: flex;
-  justify-content: center;
-  width: 40px;
-}
-
-.video-tag {
-  display: flex;
+  flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
-  margin: 5px 0;
-  padding: 2px 6px;
-  background-color: var(--gray-300-header-menu-background);
-  border: 1px solid var(--support-error-color);
-  border-radius: 16px;
+  gap: 5px;
+  width: 55px;
 }
 
-.video-tag span {
-  color: var(--support-error-color);
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 15px;
-  text-transform: capitalize;
+.video-card-meta-tag svg {
+  width: 12px;
+}
+
+.video-card-meta-tag svg path {
+  fill: var(--video-card-live-color);
 }
 
 .video-card-meta {

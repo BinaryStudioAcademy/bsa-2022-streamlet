@@ -1,1 +1,1 @@
-export { BaseVideoResponseDto } from 'shared/build';
+export { BaseVideoResponseDto, DataVideo } from 'shared/build';

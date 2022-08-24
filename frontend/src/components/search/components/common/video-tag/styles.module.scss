@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   padding: 2px 6px;
-  background-color: var(--gray-300-header-menu-background);
+  background-color: transparent;
   border: 1px solid var(--brand-green-color);
   border-radius: 16px;
 }
@@ -19,11 +19,12 @@
 }
 
 .video-tag-live {
-  border: 1px solid var(--support-error-color);
+  border: 1px solid var(--video-card-live-color);
 }
 
 .video-tag-live span {
-  color: var(--support-error-color);
+  color: var(--video-card-live-color);
+  font-weight: 600;
 }
 
 @media #{$tablet-large} {
