@@ -38,7 +38,6 @@ const HeaderContainer: FC = () => {
   const emptyOnClickHandler = (): void => void 0;
 
   const handleClickSettings = (): void => {
-    closeMenu();
     navigate(AppRoutes.PROFILE_PREFERENCE, { replace: true });
     closeMenu();
   };
