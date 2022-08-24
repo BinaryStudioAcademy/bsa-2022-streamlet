@@ -1,0 +1,1 @@
+export { StudioHome } from './home';

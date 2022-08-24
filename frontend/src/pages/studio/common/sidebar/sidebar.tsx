@@ -7,14 +7,13 @@ import { NavLink } from 'react-router-dom';
 import { ReactNode } from 'react';
 
 import styles from './styles.module.scss';
-import { IconColor } from 'common/enums/component/component';
 
 const StudioSidebar: FC = () => {
   return (
-    <aside className={styles.sidebar}>
+    <aside className={styles['sidebar']}>
       <NavLink to={AppRoutes.ROOT}>
-        <div className={styles.button}>
-          <Icon name={IconName.MAIN_LOGO} />
+        <div className={styles['logo-button']}>
+          <Icon name={IconName.MAIN_LOGO} width="24" height="24" />
         </div>
       </NavLink>
 
@@ -22,8 +21,8 @@ const StudioSidebar: FC = () => {
         <NavLink key={item.itemName} to={item.routeName as AppRoute}>
           {({ isActive }): ReactNode => {
             return (
-              <div className={cn(styles.button, styles['hover-item'])}>
-                <Icon name={item.itemName} color={isActive ? IconColor.GREEN : IconColor.WHITE} />
+              <div className={cn(styles['button'], isActive && styles['active'])}>
+                <Icon name={item.itemName} width="24" height="24" />
               </div>
             );
           }}

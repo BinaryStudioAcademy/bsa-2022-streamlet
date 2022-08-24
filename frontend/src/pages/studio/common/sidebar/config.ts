@@ -7,5 +7,6 @@ export interface ISideBarItem {
 
 export const sideBarItems: ISideBarItem[] = [
   { itemName: IconName.HOME, routeName: AppRoutes.STUDIO },
-  { itemName: IconName.ANALYTICS, routeName: AppRoutes.ANALYTICS },
+  { itemName: IconName.TV, routeName: AppRoutes.STUDIO_CHANNEL },
+  { itemName: IconName.ANALYTICS, routeName: AppRoutes.STUDIO_ANALYTICS },
 ];

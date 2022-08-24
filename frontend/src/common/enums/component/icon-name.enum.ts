@@ -34,6 +34,7 @@ enum IconName {
   SUCCESS = 'success',
   SEND_MESSAGE = 'send-message',
   EMOJI = 'emoji',
+  TV = 'tv',
   SUN = 'sun',
   ONLINE_STREAMING = 'online-streaming',
   BELL_OUTLINE = 'bell-outline',
