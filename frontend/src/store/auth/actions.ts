@@ -33,12 +33,19 @@ const signIn = createAsyncThunk<UserBaseResponseDto, UserSignInRequestDto, Async
   },
 );
 
+let refreshPromise: Promise<RefreshTokenResponseDto> | null;
 const refreshTokens = createAsyncThunk<RefreshTokenResponseDto, RefreshTokenRequestDto, AsyncThunkConfig>(
   ActionType.REFRESH_TOKENS,
   async (refreshPayload, { extra }) => {
     const { authApi } = extra;
-
-    const newTokens = await authApi.refreshTokens(refreshPayload);
+    let newTokens;
+    if (refreshPromise) {
+      newTokens = await refreshPromise;
+    } else {
+      refreshPromise = authApi.refreshTokens(refreshPayload);
+      newTokens = await refreshPromise;
+      refreshPromise = null;
+    }
     tokensStorageService.saveTokens(newTokens.tokens);
     return newTokens;
   },
@@ -59,11 +66,10 @@ const signOut = createAsyncThunk<void, { hitApi: boolean } | undefined>(
 );
 
 const loadCurrentUser = createAsyncThunk<UserBaseResponseDto, void, AsyncThunkConfig>(
-  ActionType.SIGN_IN,
+  ActionType.LOAD_CURRENT_USER,
   async (_request, { dispatch, extra: { authApi } }) => {
     try {
-      const { tokens, user } = await authApi.getCurrentUser();
-      tokensStorageService.saveTokens(tokens);
+      const { user } = await authApi.getCurrentUser();
       return user;
     } catch (err) {
       const isHttpError = err instanceof HttpError;
