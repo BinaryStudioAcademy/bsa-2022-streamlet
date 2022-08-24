@@ -223,8 +223,9 @@ body {
   min-height: 100%;
   margin: 0;
   color: var(--secondary-text-color);
+  font-weight: 600;
   font-size: 16px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 28px;
 }
 
@@ -264,50 +265,57 @@ select {
 
 h1 {
   color: #232735;
+  font-weight: 600;
   font-size: 44px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 64px;
 }
 
 h2 {
   color: #232735;
+  font-weight: 600;
   font-size: 30px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 48px;
 }
 
 h3 {
   color: #232735;
+  font-weight: 600;
   font-size: 20px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 32px;
 }
 
 h4 {
   color: #232735;
+  font-weight: 600;
   font-size: 18px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 24px;
 }
 
 h5 {
   color: #232735;
+  font-weight: 500;
   font-size: 16px;
-  font-family: Gilroy-Medium, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 18px;
 }
 
 h6 {
   color: #232735;
+  font-weight: 600;
   font-size: 14px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 24px;
 }
 
 .sub-heading {
   color: #232735;
+  font-weight: 600;
   font-size: 24px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-family: Gilroy, sans-serif;
   line-height: 48px;
 }
 

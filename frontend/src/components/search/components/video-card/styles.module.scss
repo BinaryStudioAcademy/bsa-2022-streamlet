@@ -335,8 +335,9 @@ $base-z-index: $page-component-z-index;
     gap: 10px;
     margin-top: 5px;
     color: var(--white-text-color);
+    font-weight: 500;
     font-size: 14px;
-    font-family: Gilroy-Medium, sans-serif;
+    font-family: Gilroy, sans-serif;
     line-height: 16px;
   }
 
