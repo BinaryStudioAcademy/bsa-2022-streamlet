@@ -19,7 +19,7 @@ const RestorePasswordForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit, isValid } = useAppForm<RestorePasswordFormValues>({
     defaultValues: { email: '' },
     validationSchema: restorePasswordInit,
-    mode: 'onChange',
+    mode: 'onBlur',
   });
 
   return (
