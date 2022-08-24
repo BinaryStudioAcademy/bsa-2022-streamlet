@@ -16,6 +16,7 @@ $base-z-index: $page-z-index;
   flex-direction: column;
   justify-content: center;
   width: 100vw;
+  max-width: 600px;
   height: 100vh;
   margin: auto;
   padding: 25px 35px;
