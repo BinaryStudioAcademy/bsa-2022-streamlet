@@ -5,7 +5,7 @@ import { ErrorBox } from 'components/common/errors/errors';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { loadChannel } from 'store/channel-page/actions';
+import { loadChannel } from 'store/channel/actions';
 import { AboutSection } from './components/about-section/about-section';
 import { ChannelHeader } from './components/channel-header/channel-header';
 import { Tabs } from './components/channel-header/channel-tabs/tabs.enum';
@@ -21,9 +21,9 @@ const ChannelPage: FC = () => {
     dispatch(loadChannel({ id: channelId }));
   }, [channelId, dispatch]);
 
-  const channelDataStatus = useAppSelector((state) => state.channelPage.currentChannel.dataStatus);
-  const channelInfo = useAppSelector((state) => state.channelPage.currentChannel.data);
-  const channelError = useAppSelector((state) => state.channelPage.currentChannel.error);
+  const channelDataStatus = useAppSelector((state) => state.channel.currentChannel.dataStatus);
+  const channelInfo = useAppSelector((state) => state.channel.currentChannel.data);
+  const channelError = useAppSelector((state) => state.channel.currentChannel.error);
 
   const [currentTab, setCurrentTab] = useState<Tabs>(Tabs.About);
 

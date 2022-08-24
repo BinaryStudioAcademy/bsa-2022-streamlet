@@ -2,7 +2,12 @@ import { Video } from '@prisma/client';
 import { channels } from '../seed-data';
 import { faker } from '@faker-js/faker';
 
-const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'poster' | 'durationSec'>[] = [
+type VideoWithPredefinedMockProperties = Omit<
+  Video,
+  'updatedAt' | 'createdAt' | 'channelId' | 'poster' | 'durationSec'
+>;
+
+const videosNoChannels: VideoWithPredefinedMockProperties[] = [
   {
     'id': '90862886-dab4-4777-9b1d-62a0f541559e',
     'name': 'application',

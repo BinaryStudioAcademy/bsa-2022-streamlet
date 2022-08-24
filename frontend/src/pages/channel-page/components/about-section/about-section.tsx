@@ -1,10 +1,11 @@
+import { getUserDisplayName } from 'helpers/user';
 import { useAppSelector } from 'hooks/hooks';
 import React, { FC } from 'react';
 import styles from './styles.module.scss';
 
 const AboutSection: FC = () => {
   const aboutInfo = useAppSelector((state) => {
-    const data = state.channelPage.currentChannel.data;
+    const data = state.channel.currentChannel.data;
     return data
       ? {
           firstName: data.authorInfo.firstName,
@@ -19,17 +20,11 @@ const AboutSection: FC = () => {
     return null;
   }
 
-  let authorNameDisplay = aboutInfo.username;
-
-  let combinedFirstLastName = '';
-  if (aboutInfo.firstName && aboutInfo.lastName) {
-    combinedFirstLastName = `${aboutInfo.firstName}, ${aboutInfo.lastName}`;
-  } else if (aboutInfo.firstName) {
-    combinedFirstLastName = aboutInfo.firstName;
-  } else if (aboutInfo.lastName) {
-    combinedFirstLastName = aboutInfo.lastName;
-  }
-  authorNameDisplay = authorNameDisplay + (combinedFirstLastName ? ` (${combinedFirstLastName})` : '');
+  const authorNameDisplay = getUserDisplayName({
+    userName: aboutInfo.username,
+    firstName: aboutInfo.firstName,
+    lastName: aboutInfo.lastName,
+  });
 
   return (
     <section className={styles['about-container']}>

@@ -61,7 +61,7 @@ const reducer = createReducer(initialState, (builder) => {
 });
 
 export const { selectById: selectChannelVideoById } = channelVideosAdapter.getSelectors<RootState>(
-  (state) => state.channelPage.currentChannelVideos.data,
+  (state) => state.channel.currentChannelVideos.data,
 );
 
 export { reducer };

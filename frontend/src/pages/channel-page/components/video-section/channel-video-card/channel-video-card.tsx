@@ -1,7 +1,7 @@
 import { EntityId } from '@reduxjs/toolkit';
 import { VideoCard } from 'components/common/video-card/video-card';
 import React, { FC } from 'react';
-import { selectChannelVideoById } from 'store/channel-page/reducer';
+import { selectChannelVideoById } from 'store/channel/reducer';
 import { store } from 'store/store';
 import { StreamingStatus } from 'common/enums/enums';
 

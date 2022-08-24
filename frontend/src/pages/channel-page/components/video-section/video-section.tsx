@@ -11,10 +11,10 @@ const VideoSection: FC = () => {
   // this component will probably be wrapped into InfiniteScroll
   // and dispatch an action like loadMoreVideos(...) to the channel-page store slice
   // currently all videos are fetch with channel info
-  const videoIds = useAppSelector((state) => state.channelPage.currentChannelVideos.data.ids);
+  const videoIds = useAppSelector((state) => state.channel.currentChannelVideos.data.ids);
 
-  const dataStatus = useAppSelector((state) => state.channelPage.currentChannelVideos.dataStatus);
-  const error = useAppSelector((state) => state.channelPage.currentChannelVideos.error);
+  const dataStatus = useAppSelector((state) => state.channel.currentChannelVideos.dataStatus);
+  const error = useAppSelector((state) => state.channel.currentChannelVideos.error);
   const getComponent = (): ReactNode => {
     if (dataStatus === DataStatus.PENDING) {
       return <Loader hCentered vCentered spinnerSize={LoaderSize.MD} />;

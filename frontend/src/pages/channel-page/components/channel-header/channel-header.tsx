@@ -13,7 +13,7 @@ type Props = {
 
 const ChannelHeader: FC<Props> = ({ setTab, currentTab }) => {
   const channelInfo = useAppSelector((state) => {
-    const data = state.channelPage.currentChannel.data;
+    const data = state.channel.currentChannel.data;
     return data
       ? {
           avatar: data.avatar,
