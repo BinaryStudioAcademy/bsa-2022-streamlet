@@ -11,10 +11,9 @@ import { UPDATE_CARD_TIME_DELAY } from './config';
 import styles from './styles.module.scss';
 import defaultVideoPosterDark from 'assets/img/default-video-poster-dark.jpg';
 import defaultVideoPosterLight from 'assets/img/default-video-poster-light.jpg';
+import defaultUserAvatar from 'assets/img/default-user-avatar.jpg';
 
 dayjs.extend(dayjsRelativeTime.default);
-
-const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
 
 type Props = {
   video: VideoCardType;
@@ -37,7 +36,7 @@ const VideoCardMain: FC<Props> = ({
   const linkToChannelPage = `${AppRoutes.CHANNEL}/${id}`;
 
   const videoPoster = poster ? poster : isLightTheme ? defaultVideoPosterLight : defaultVideoPosterDark;
-  const channelAvatar = channel.avatar ? channel.avatar : FAKE_USER_AVATAR;
+  const channelAvatar = channel.avatar ? channel.avatar : defaultUserAvatar;
   const videoDuration = getFormatDurationString(duration);
   const views = getDividedViewsString(isFinished ? videoViews : liveViews);
 
@@ -78,7 +77,7 @@ const VideoCardMain: FC<Props> = ({
       <div className={styles['video-card-info']}>
         <div className={styles['video-card-desc']}>
           <Link to={linkToChannelPage} className={styles['video-card-channel']}>
-            <img src={channelAvatar} alt="Channels avatar" />
+            <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']}></div>
           </Link>
           <div className={styles['video-card-name']}>
             <Link to={linkToVideoPage} className={styles['video-card-title']}>

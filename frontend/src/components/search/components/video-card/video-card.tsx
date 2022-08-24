@@ -12,10 +12,9 @@ import { getDividedViewsString, getFormatDurationString } from 'helpers/helpers'
 import styles from './styles.module.scss';
 import defaultVideoPosterDark from 'assets/img/default-video-poster-dark.jpg';
 import defaultVideoPosterLight from 'assets/img/default-video-poster-light.jpg';
+import defaultUserAvatar from 'assets/img/default-user-avatar.jpg';
 
 dayjs.extend(dayjsRelativeTime.default);
-
-const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
 
 type Props = {
   video: VideoCardType;
@@ -38,7 +37,7 @@ const VideoCard: FC<Props> = ({
   const linkToChannelPage = `${AppRoutes.CHANNEL}/${id}`;
 
   const videoPoster = poster ? poster : isLightTheme ? defaultVideoPosterLight : defaultVideoPosterDark;
-  const channelAvatar = channel.avatar ? channel.avatar : FAKE_USER_AVATAR;
+  const channelAvatar = channel.avatar ? channel.avatar : defaultUserAvatar;
   const videoDuration = getFormatDurationString(duration);
   const views = getDividedViewsString(isFinished ? videoViews : liveViews);
 
@@ -84,26 +83,27 @@ const VideoCard: FC<Props> = ({
       </div>
       <div className={styles['video-card-info']}>
         <Link to={linkToChannelPage} className={styles['video-card-channel']}>
-          <img className={styles['avatar']} src={channelAvatar} alt="Channels avatar" />
+          <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']}></div>
         </Link>
         <div className={styles['video-card-desc']}>
           <Link to={linkToVideoPage} className={styles['video-card-title']}>
             {name}
           </Link>
+          <MetaDataVideo views={views} publishedAt={publishedAt} />
+          <div className={styles['video-card-author']}>
+            <Link to={linkToChannelPage} className={styles['video-card-author-avatar']}>
+              <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']}></div>
+            </Link>
+            <Link to={linkToChannelPage} className={styles['video-card-author-name']}>
+              <span>{channel.name}</span>
+            </Link>
+          </div>
           {isWaiting && !isSchedulePassed() && (
             <MetaDataWait
               scheduledStreamDateFor={getFormatScheduledStreamDateFor()}
               handleClickNotifyBtn={handleClickNotifyBtn}
             />
           )}
-          <div className={styles['video-card-author']}>
-            <Link to={linkToChannelPage} className={styles['video-card-author-avatar']}>
-              <img className={styles['avatar']} src={channelAvatar} alt="Channels avatar" />
-            </Link>
-            <Link to={linkToChannelPage} className={styles['video-card-author-name']}>
-              <span>{channel.name}</span>
-            </Link>
-          </div>
           <div className={styles['video-card-tag-list']}>
             {isLive && (
               <div className={styles['video-card-tag-live']}>
