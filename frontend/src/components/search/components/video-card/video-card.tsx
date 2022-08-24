@@ -86,7 +86,7 @@ const VideoCard: FC<Props> = ({
           <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
         </Link>
         <div className={styles['video-card-desc']}>
-          <Link to={linkToVideoPage} className={styles['video-card-title']}>
+          <Link to={linkToVideoPage} className={styles['video-card-title']} title={name}>
             {name}
           </Link>
           <MetaDataVideo views={views} publishedAt={publishedAt} />
