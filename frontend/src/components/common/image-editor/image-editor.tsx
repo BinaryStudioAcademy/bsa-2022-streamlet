@@ -30,14 +30,14 @@ const ImageEditor: FC<imageEditorProps> = ({ avatar, setAvatar, onClose, handleS
     if (editor) {
       const canvasScaled = editor.getImageScaledToCanvas();
       const croppedImg = canvasScaled.toDataURL();
+      handleSave(croppedImg);
 
       setAvatar({
         ...avatar,
         img: null,
         cropperOpen: false,
-        croppedImg: croppedImg,
+        croppedImg: '',
       });
-      handleSave(croppedImg);
     }
   };
   const handleRotate = (): void => {

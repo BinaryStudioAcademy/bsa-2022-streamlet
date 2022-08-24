@@ -21,6 +21,7 @@ import { ProfilePreferencesPage } from 'pages/profile-preferences-page/profile-p
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
 
 import styles from './app.module.scss';
+import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -38,6 +39,7 @@ const App: FC = () => {
   useEffect(() => {
     document.body.dataset.theme = isLightTheme ? AppTheme.LIGHT : '';
   }, [isLightTheme]);
+
   useEffect(() => {
     if (hasToken) {
       dispatch(authActions.loadCurrentUser());
@@ -53,6 +55,7 @@ const App: FC = () => {
           <Route path={AppRoutes.SIGN_IN} element={<SignInPage />} />
           <Route path={AppRoutes.RESTORE_PASSWORD_INIT} element={<RestorePasswordPage />} />
           <Route path={AppRoutes.ACCOUNT_VERIFICATION_CONFIRM} element={<AccountVerificationConfirmPage />} />
+          <Route path={AppRoutes.ACCOUNT_VERIFICATION_INIT} element={<AccountVerificationInitPage />} />
           <Route path={AppRoutes.RESTORE_PASSWORD_CONFIRM} element={<RestorePasswordConfirmPage />} />
         </Routes>
       )}
