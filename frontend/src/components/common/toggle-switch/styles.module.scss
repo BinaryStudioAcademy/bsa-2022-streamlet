@@ -1,23 +1,33 @@
-.toggle-switch-label {
-  display: flex;
-  flex-direction: column;
+.toggle-switch-label,
+.toggle-switch-label-checked {
+  display: inline-block;
   width: 40px;
   height: 20px;
-  margin: 0 10px;
-  background-color: transparent;
-  border: 2px solid var(--white-text-color);
-  border-radius: 12px;
+  margin-top: 10px;
+  margin-left: 12px;
+  background-color: var(--gray-200-input-background);
+  border-radius: 10px;
+  transition: background-color 0.6s ease;
+}
+
+.toggle-switch-label-checked {
+  background-color: var(--brand-green-color);
 }
 
 .slider,
 .slider-checked {
-  width: 10px;
-  height: 10px;
-  margin: 3px;
-  background-color: var(--white-text-color);
+  position: relative;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: -2px;
+  background-color: #ffffff;
+  border: 3px solid var(--gray-200-input-background);
   border-radius: 12px;
+  transition: border 0.6s ease, left 0.6s ease;
 }
 
 .slider-checked {
-  align-self: flex-end;
+  left: 20px;
+  border: 3px solid var(--brand-green-color);
 }
