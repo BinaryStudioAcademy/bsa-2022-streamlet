@@ -1,9 +1,13 @@
 import { FC, VideoCard as VideoCardType } from 'common/types/types';
-import { useEffect, useSearchParams, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
+import { useEffect, useSearchParams, useAppDispatch, useAppSelector, useCallback, useMemo } from 'hooks/hooks';
 import { FilterBar, FilterSidebar, ResultNotFound, VideoCard } from './components/components';
 import { SearchQueryParam, FilterType, SearchState } from './config/config';
 import { searchActions } from 'store/actions';
-import { matchSearchQueryParamWithFilterType, matchSearchQueryParamWithDefaultFilterId } from './helpers';
+import {
+  matchSearchQueryParamWithFilterType,
+  matchSearchQueryParamWithDefaultFilterId,
+  getFilterFromSearchParams,
+} from './helpers';
 
 import styles from './styles.module.scss';
 
@@ -27,7 +31,7 @@ const Search: FC = () => {
     [dispatch],
   );
 
-  const handleGetVideoFilter = (): Partial<Record<SearchQueryParam, string>> => {
+  const handleGetVideoFilter = useMemo((): Partial<Record<SearchQueryParam, string>> => {
     const currentSearchState = {
       [FilterType.SEARCH_TEXT]: searchText,
       ...activeFilterId,
@@ -43,35 +47,21 @@ const Search: FC = () => {
       }
       return prev;
     }, {});
-  };
-
-  const handleSetSearchParams = (): void => {
-    setSearchParams({ ...handleGetVideoFilter() });
-  };
+  }, [searchText, activeFilterId]);
 
   useEffect(() => {
-    const currentFilterFromURL = Object.values(SearchQueryParam).reduce((prev, curr) => {
-      if (searchParams.has(curr)) {
-        return {
-          ...prev,
-          [matchSearchQueryParamWithFilterType[curr]]: searchParams.get(curr),
-        };
-      }
-      return prev;
-    }, {} as Partial<SearchState['activeFilterId']> & { [FilterType.SEARCH_TEXT]?: string });
+    const currentFilterFromURL = getFilterFromSearchParams(searchParams);
 
     if (FilterType.SEARCH_TEXT in currentFilterFromURL) {
       handleSetSearchText(currentFilterFromURL[FilterType.SEARCH_TEXT] as string);
       delete currentFilterFromURL[FilterType.SEARCH_TEXT];
     }
     handleSetActiveFilterIds(currentFilterFromURL);
-    // eslint-disable-next-line
-  }, []);
+  }, [searchParams, handleSetSearchText, handleSetActiveFilterIds]);
 
   useEffect(() => {
-    handleSetSearchParams();
-    // eslint-disable-next-line
-  }, [activeFilterId]);
+    setSearchParams({ ...handleGetVideoFilter });
+  }, [activeFilterId, setSearchParams, handleGetVideoFilter]);
 
   return (
     <div className={styles['search-page']}>

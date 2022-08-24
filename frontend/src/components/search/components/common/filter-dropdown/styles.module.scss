@@ -78,8 +78,9 @@
   fill: var(--white-text-color);
 }
 
-.filter-dropdown-item:hover label {
+.filter-dropdown-item label:hover {
   color: var(--brand-green-color);
+  cursor: pointer;
 }
 
 .filter-dropdown-item input {
