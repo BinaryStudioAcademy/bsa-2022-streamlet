@@ -83,7 +83,7 @@ const VideoCard: FC<Props> = ({
       </div>
       <div className={styles['video-card-info']}>
         <Link to={linkToChannelPage} className={styles['video-card-channel']}>
-          <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']}></div>
+          <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
         </Link>
         <div className={styles['video-card-desc']}>
           <Link to={linkToVideoPage} className={styles['video-card-title']}>
@@ -92,7 +92,7 @@ const VideoCard: FC<Props> = ({
           <MetaDataVideo views={views} publishedAt={publishedAt} />
           <div className={styles['video-card-author']}>
             <Link to={linkToChannelPage} className={styles['video-card-author-avatar']}>
-              <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']}></div>
+              <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
             </Link>
             <Link to={linkToChannelPage} className={styles['video-card-author-name']}>
               <span>{channel.name}</span>
