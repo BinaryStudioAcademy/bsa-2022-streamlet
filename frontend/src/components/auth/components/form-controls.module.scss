@@ -3,6 +3,18 @@
   flex-direction: column;
 }
 
+.link {
+  color: var(--link-color);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 14px;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: var(--text-gray-color);
+}
+
 .password {
   border-radius: 3px 0 0 3px;
 }
@@ -21,18 +33,29 @@
   box-shadow: 0 0 3px 0 rgb(var(--input-error-color) / 80%), 0 0 5px 0 rgb(var(--input-error-color) / 50%);
 }
 
+.input-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  column-gap: 20px;
+}
+
 .label {
   font-weight: 500;
+  font-size: 15px;
   font-family: Gilroy, sans-serif;
   text-transform: capitalize;
 }
 
 .upper-space-regular {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .continue-with {
+  margin: 15px 0;
   color: var(--white-text-color);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
   text-align: center;
 }
 

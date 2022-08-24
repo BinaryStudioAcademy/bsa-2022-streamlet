@@ -2,10 +2,6 @@
 
 $base-z-index: $page-z-index;
 
-.auth-logo {
-  max-height: 40px;
-}
-
 .auth-background {
   display: flex;
   flex-grow: 1;
@@ -29,10 +25,24 @@ $base-z-index: $page-z-index;
   border-image-slice: 1;
 }
 
+.auth-logo {
+  height: 28px;
+}
+
 .auth-title {
   margin-top: 0;
   color: var(--white-text-color);
-  font-size: 44px;
+  font-size: 28px;
+  line-height: 28px;
+}
+
+.heading {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
 .background-zigzag {
