@@ -244,10 +244,6 @@
   }
 }
 
-.logo-block {
-  display: flex;
-}
-
 .burger-menu {
   margin-right: 20px;
   background-color: transparent;
@@ -262,30 +258,13 @@
   stroke: var(--brand-green-color);
 }
 
-.logo-link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.logo-link .main-name {
-  margin-left: 8px;
-  color: var(--white-text-color);
-  font-weight: 600;
-  font-size: 20.7158px;
-  font-family: Inter, sans-serif;
-  font-style: normal;
-  line-height: 25px;
-  text-transform: uppercase;
-
-  @media screen and (max-width: 560px) {
-    display: none;
-  }
-}
-
 .horizontal-line {
   width: 100%;
   height: 2px;
   margin: 0 auto;
   background-color: var(--primary-text-color);
+}
+
+.logo-block {
+  display: flex;
 }
