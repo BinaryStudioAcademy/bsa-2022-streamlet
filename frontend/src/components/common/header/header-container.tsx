@@ -1,36 +1,57 @@
 import { MouseEvent, FormEvent } from 'react';
 import { FC } from 'common/types/types';
 import { MenuOptions, AppRoutes, SearchQueryParam, IconName } from 'common/enums/enums';
-import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate, useRef } from 'hooks/hooks';
-import { authActions, searchActions } from 'store/actions';
+import {
+  useOutsideClick,
+  useAppDispatch,
+  useAppSelector,
+  useCallback,
+  useNavigate,
+  useRef,
+  useEffect,
+} from 'hooks/hooks';
+import { authActions, searchActions, profileActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
 import { switchTheme } from 'store/theme-switch/actions';
 import { Header } from './header';
-
-const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
+import defaultAvatar from 'assets/img/default-user-avatar.jpg';
 
 const HeaderContainer: FC = () => {
   const dispatch = useAppDispatch();
   const {
     search: { searchText },
     user,
+    profile,
   } = useAppSelector((state) => ({
     search: state.search,
     user: state.auth.user,
+    profile: state.profile.profileData,
   }));
   const navigate = useNavigate();
 
   const hasUser = Boolean(user);
   const isLightTheme = useAppSelector((store) => store.theme.isLightTheme);
-  const { isOpened: isMenuOpen, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+  const { isOpened: isMenuOpen, open: openMenu, close: closeMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
 
   const emptyOnClickHandler = (): void => void 0;
 
+  const handleClickSettings = (): void => {
+    navigate(AppRoutes.PROFILE_PREFERENCE, { replace: true });
+  };
+
   const matchMenuOptionWithOnClickHandler: Record<MenuOptions, () => void> = {
-    [MenuOptions.Settings]: emptyOnClickHandler,
-    [MenuOptions.Theme]: emptyOnClickHandler,
+    [MenuOptions.Settings]: handleClickSettings,
+    [MenuOptions.Theme]: emptyOnClickHandler, // should be () => void 0; to work properly
     [MenuOptions.SignOut]: handleClickSignOut,
   };
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+    const { id: userId } = user;
+    dispatch(profileActions.getProfileByUserId({ userId }));
+  }, [dispatch, user]);
 
   const matchMenuOptionWithIconName: Record<MenuOptions, IconName> = {
     [MenuOptions.Settings]: IconName.SETTINGS,
@@ -69,6 +90,7 @@ const HeaderContainer: FC = () => {
 
   function handleClickSignOut(): void {
     handleSignOut();
+    closeMenu();
   }
 
   function handleClickUserMenu(e: MouseEvent): void {
@@ -119,7 +141,7 @@ const HeaderContainer: FC = () => {
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
       handleSubmitSearch={handleSubmitSearch}
-      userAvatar={FAKE_USER_AVATAR}
+      userAvatar={profile?.avatar ? profile.avatar : defaultAvatar}
       options={options}
       themeValue={isLightTheme}
       notificationDropdownContent={<NotificationDropdownContainer />}

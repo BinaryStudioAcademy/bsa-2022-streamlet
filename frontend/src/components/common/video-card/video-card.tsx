@@ -9,7 +9,7 @@ import { ReactComponent as WatchIcon } from 'assets/img/watch.svg';
 import { ReactComponent as TimeAgoIcon } from 'assets/img/time-ago.svg';
 import clsx from 'clsx';
 
-type Props = {
+export type VideoProps = {
   id: string;
   poster: string;
   creationDate: Date;
@@ -25,7 +25,7 @@ type Props = {
   className?: string;
 };
 
-const VideoCard: FC<Props> = ({
+const VideoCard: FC<VideoProps> = ({
   id,
   poster,
   authorInfo,

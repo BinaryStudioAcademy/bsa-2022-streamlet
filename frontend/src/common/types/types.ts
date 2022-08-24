@@ -25,9 +25,13 @@ export { ChannelSubscriptionResponseDto } from './sidebar/sidebar';
 
 export * from './user/user';
 
-export { ValidationSchema } from './validation/validation';
+export * from './profile/profile';
+export { type AvatarImgValue, ImageStorePresetType } from './image/image';
 
-declare module 'react-notifications-component';
+export { ValidationSchema } from './validation/validation';
 export { type ToastNotificationParams } from './toast-notification/toast-notifications';
 
+export { BaseVideoResponseDto } from './video/video';
+
+declare module 'react-notifications-component';
 export * from './channel/channel';

@@ -17,6 +17,7 @@ export const trimChannelInfo = (channel: ChannelInfoBeforeTrimming): ChannelInfo
         categories: video.categories.map((category) => category.name),
         createdAt: video.createdAt.toISOString(),
         updatedAt: video.updatedAt.toISOString(),
+        durationSec: video.duration,
       })),
     },
     bannerImage: channel.bannerImage,

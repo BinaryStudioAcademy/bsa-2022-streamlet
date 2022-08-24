@@ -1,5 +1,6 @@
-import { ImageUploadRequestDto } from '../cloudinary/image-store-upload-dto-request.type';
-
-type UserUploadRequestDto = Pick<ImageUploadRequestDto, 'base64Str'>;
+type UserUploadRequestDto = {
+  base64Str: string;
+  userId: string;
+};
 
 export { type UserUploadRequestDto };

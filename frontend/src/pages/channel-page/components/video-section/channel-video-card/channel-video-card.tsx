@@ -4,6 +4,7 @@ import React, { FC } from 'react';
 import { selectChannelVideoById } from 'store/channel/reducer';
 import { store } from 'store/store';
 import { StreamingStatus } from 'common/enums/enums';
+import { getFormatDurationString } from 'helpers/helpers';
 
 type Props = {
   videoId: EntityId;
@@ -22,7 +23,7 @@ const ChannelVideoCard: FC<Props> = ({ videoId, className }) => {
       name={videoData.name}
       className={className}
       poster={videoData.poster}
-      duration={videoData.durationSec ? videoData.durationSec.toString() : null}
+      duration={videoData.durationSec ? getFormatDurationString(videoData.durationSec) : null}
       viewerNum={
         videoData.status === StreamingStatus.LIVE ? videoData.liveViews : videoData.liveViews + videoData.videoViews
       }

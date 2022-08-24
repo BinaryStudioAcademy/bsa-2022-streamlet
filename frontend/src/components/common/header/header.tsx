@@ -93,9 +93,9 @@ const Header: FC<HeaderProps> = ({
         </button>
         {isLogged ? (
           <>
-            <button className={styles['btn-go-stream']}>
+            <Link className={styles['btn-go-stream']} to={AppRoutes.STUDIO}>
               <Icon name={IconName.CAMERA} width="30" height="24" />
-            </button>
+            </Link>
             {notificationDropdownContent}
             <button
               onClick={handleClickUserMenu}

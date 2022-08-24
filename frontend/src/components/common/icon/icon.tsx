@@ -34,6 +34,9 @@ import { ReactComponent as Success } from 'assets/img/success.svg';
 import { ReactComponent as SendMessage } from 'assets/img/send-message.svg';
 import { ReactComponent as Emoji } from 'assets/img/emoji.svg';
 import { ReactComponent as OnlineStreaming } from 'assets/img/online-streaming.svg';
+import { ReactComponent as TV } from '../../../assets/img/tv.svg';
+import { ReactComponent as Rotate } from '../../../assets/img/rotate.svg';
+import { ReactComponent as ZoomIn } from '../../../assets/img/zoom-in.svg';
 
 import clsx from 'clsx';
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -182,12 +185,25 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
     case IconName.SUN: {
       return <Sun {...commonProps} />;
     }
+
+    case IconName.ZOOM_IN: {
+      return <ZoomIn {...commonProps} />;
+    }
+
+    case IconName.ROTATE: {
+      return <Rotate {...commonProps} />;
+    }
+
     case IconName.ANALYTICS: {
       return <Analytics {...commonProps} />;
     }
 
     case IconName.MARK_AS_READ: {
       return <MarkAsRead {...commonProps} />;
+    }
+
+    case IconName.TV: {
+      return <TV {...commonProps} />;
     }
 
     case IconName.ONLINE_STREAMING: {

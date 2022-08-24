@@ -1,0 +1,31 @@
+@import 'assets/css/styles.scss';
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--green-200-header-menu-background);
+  border-right: 1px solid var(--text-gray-color);
+}
+
+.button path {
+  fill: white;
+}
+
+.button,
+.logo-button {
+  padding: 15px;
+
+  &:hover {
+    background-color: var(--brand-green-color);
+    cursor: pointer;
+
+    & path {
+      fill: white;
+    }
+  }
+}
+
+.active {
+  background-color: var(--brand-green-color);
+}

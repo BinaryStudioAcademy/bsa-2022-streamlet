@@ -1,5 +1,7 @@
+@import 'assets/css/config.scss';
+
 .header {
-  z-index: 200;
+  z-index: $header-z-index;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -78,6 +80,7 @@
   position: absolute;
   top: 110%;
   right: 0;
+  z-index: $header-menu-z-index;
   display: block;
   width: 220px;
   padding: 12px;
@@ -156,6 +159,12 @@
   border: none;
   outline: none;
   cursor: pointer;
+}
+
+.control-icons > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .block-search {
