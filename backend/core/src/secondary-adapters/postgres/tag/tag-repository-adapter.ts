@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { PrismaClient, Tag } from '@prisma/client';
+import { PrismaClient, Tag, Video } from '@prisma/client';
 import { CONTAINER_TYPES, TagCreateRequestDto } from '~/shared/types/types';
 import { TagRepository } from '~/core/tag/port/tag-repository';
 
@@ -23,6 +23,24 @@ export class TagRepositoryAdapter implements TagRepository {
     return this.prismaClient.tag.findFirst({
       where: {
         name,
+      },
+    });
+  }
+
+  search({ take, tags }: { take: number; tags: string[] }): Promise<Video[]> {
+    return this.prismaClient.video.findMany({
+      where: {
+        tags: {
+          some: {
+            name: {
+              in: tags,
+            },
+          },
+        },
+      },
+      take,
+      include: {
+        tags: true,
       },
     });
   }

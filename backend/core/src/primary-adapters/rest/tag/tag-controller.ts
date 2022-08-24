@@ -1,10 +1,27 @@
-import { BaseHttpController, controller, httpGet, httpPost, requestBody, requestParam } from 'inversify-express-utils';
+import {
+  BaseHttpController,
+  controller,
+  httpGet,
+  httpPost,
+  queryParam,
+  requestBody,
+  requestParam,
+} from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/types';
-import { ApiPath, DefaultRequestParam, TagApiPath, TagCreateRequestDto, TagResponseDto } from 'shared/build';
+import {
+  ApiPath,
+  DefaultRequestParam,
+  SearchByTagResponseDto,
+  TagApiPath,
+  TagCreateRequestDto,
+  TagResponseDto,
+  TagSearchRequestQueryDto,
+} from 'shared/build';
 import { TagService } from '~/core/tag/application/tag-service';
 import { NotFound } from '~/shared/exceptions/not-found';
 import { normalizeTagPayload } from './helpers/helpers';
+import { normalizeTagFiltersPayload } from './helpers/normalize-tag-filters-helper';
 
 @controller(ApiPath.TAG)
 export class TagController extends BaseHttpController {
@@ -14,6 +31,15 @@ export class TagController extends BaseHttpController {
     super();
 
     this.tagService = tagService;
+  }
+
+  @httpGet(TagApiPath.SEARCH)
+  public async search(@queryParam() { take, skip, tags }: TagSearchRequestQueryDto): Promise<SearchByTagResponseDto[]> {
+    return this.tagService.search({
+      take: Number(take) || undefined,
+      skip: Number(skip) || undefined,
+      tags: normalizeTagFiltersPayload(tags),
+    });
   }
 
   @httpGet(TagApiPath.$ID)

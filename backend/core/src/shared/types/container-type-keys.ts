@@ -18,6 +18,7 @@ const CONTAINER_TYPES = {
   ResetPasswordRepository: Symbol.for('ResetPasswordRepository'),
   MailRepository: Symbol.for('MailRepository'),
   ChannelRepository: Symbol.for('ChannelRepository'),
+  VideoRepository: Symbol.for('VideoRepository'),
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),
