@@ -36,6 +36,7 @@ const HeaderContainer: FC = () => {
   const emptyOnClickHandler = (): void => void 0;
 
   const handleClickSettings = (): void => {
+    closeMenu();
     navigate(AppRoutes.PROFILE_PREFERENCE, { replace: true });
   };
 
@@ -61,7 +62,7 @@ const HeaderContainer: FC = () => {
 
   const matchMenuOptionWithText: Record<MenuOptions, string> = {
     [MenuOptions.Settings]: 'Settings',
-    [MenuOptions.Theme]: isLightTheme ? 'Light Theme' : 'Dark Theme',
+    [MenuOptions.Theme]: 'Dark mode',
     [MenuOptions.SignOut]: 'Sign Out',
   };
 
@@ -142,8 +143,10 @@ const HeaderContainer: FC = () => {
       handleClearInputSearch={handleClearInputSearch}
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={profile?.avatar ? profile.avatar : defaultAvatar}
+      userName={profile?.username}
+      userEmail={user?.email}
       options={options}
-      themeValue={isLightTheme}
+      themeValue={!isLightTheme}
       notificationDropdownContent={<NotificationDropdownContainer />}
     />
   );

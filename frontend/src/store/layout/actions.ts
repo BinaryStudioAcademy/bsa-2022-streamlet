@@ -5,4 +5,8 @@ const openSidebar = createAction(ActionsType.OPEN_SIDEBAR);
 
 const closeSidebar = createAction(ActionsType.CLOSE_SIDEBAR);
 
-export { openSidebar, closeSidebar };
+const lockScroll = createAction(ActionsType.LOCK_SCROLL);
+
+const unlockScroll = createAction(ActionsType.UNLOCK_SCROLL);
+
+export { openSidebar, closeSidebar, lockScroll, unlockScroll };

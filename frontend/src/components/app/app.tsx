@@ -32,11 +32,13 @@ const App: FC = () => {
 
   const { theme: isLightTheme } = useAppSelector((state) => ({
     theme: state.theme.isLightTheme,
+    scrollStyle: state.layout.isScrollLocked ? { overflow: 'hidden' } : { overflow: 'auto' },
   }));
 
   useEffect(() => {
     document.body.dataset.theme = isLightTheme ? AppTheme.LIGHT : '';
   }, [isLightTheme]);
+
   useEffect(() => {
     if (hasToken) {
       dispatch(authActions.loadCurrentUser());

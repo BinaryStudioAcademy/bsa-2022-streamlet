@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState, RefObject } from 'react';
+import { lockScroll, unlockScroll } from 'store/layout/actions';
+import { useAppDispatch } from '../hooks';
 
 interface UseOutsideClickResult<RefType extends HTMLElement> {
   ref: RefObject<RefType>;
@@ -11,12 +13,19 @@ interface UseOutsideClickResult<RefType extends HTMLElement> {
 const useOutsideClick = <RefType extends HTMLElement = HTMLElement>(
   defaultIsOpened = false,
 ): UseOutsideClickResult<RefType> => {
+  const dispatch = useAppDispatch();
   const ref = useRef<RefType>(null);
   const [isOpened, setIsOpened] = useState(defaultIsOpened);
 
-  const open = (): void => setIsOpened(true);
+  const open = (): void => {
+    setIsOpened(true);
+    dispatch(lockScroll());
+  };
 
-  const close = (): void => setIsOpened(false);
+  const close = (): void => {
+    setIsOpened(false);
+    dispatch(unlockScroll());
+  };
 
   const toggle = (): void => setIsOpened(!isOpened);
 
@@ -24,7 +33,6 @@ const useOutsideClick = <RefType extends HTMLElement = HTMLElement>(
     if (!ref.current) {
       return;
     }
-
     const element = ref.current;
 
     const handleClick = (e: MouseEvent): void => {
@@ -42,8 +50,9 @@ const useOutsideClick = <RefType extends HTMLElement = HTMLElement>(
 
     return (): void => {
       window.removeEventListener('click', handleClick, true);
+      dispatch(unlockScroll());
     };
-  }, [isOpened]);
+  }, [isOpened, dispatch]);
 
   return { ref, isOpened, open, close, toggle };
 };
