@@ -9,6 +9,7 @@ import { ScheduledVideoBadge } from './components/components';
 import { getDividedViewsString, getFormatDurationString, getHowLongAgoString } from 'helpers/helpers';
 import { UPDATE_CARD_TIME_DELAY } from './config';
 import styles from './styles.module.scss';
+import defaultVideoPoster from 'assets/img/default-video-poster.jpg';
 
 dayjs.extend(dayjsRelativeTime.default);
 
@@ -56,7 +57,7 @@ const VideoCardMain: FC<Props> = ({
   return (
     <div className={styles['video-card']}>
       <div className={styles['video-card-preview']}>
-        <img src={poster} alt="Preview video img" />
+        <img src={poster ? poster : defaultVideoPoster} alt="Preview video img" />
         <Link to={linkToVideoPage} className={styles['video-card-play']}>
           <div className={styles['video-card-play-btn']}>
             <Icon name={IconName.PLAY} />
