@@ -1,5 +1,3 @@
-import { MouseEvent } from 'react';
-import clsx from 'clsx';
 import dayjs from 'dayjs';
 import * as dayjsRelativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
@@ -8,7 +6,9 @@ import { AppRoutes, IconName, StreamingStatus, VideoTagName } from 'common/enums
 import { useState, useCallback, useEffect } from 'hooks/hooks';
 import { Icon } from 'components/common/common';
 import { VideoTag } from '../common/common';
-import { getDividedViewsString, getFormatDurationString, getHowLongAgoString } from 'helpers/helpers';
+import { MetaDataVideo, MetaDataWait, ScheduledVideoBadge } from './components/components';
+import { IS_NEW_VIDEO_TIME_DELAY, UPDATE_CARD_TIME_DELAY } from './config';
+import { getDividedViewsString, getFormatDurationString } from 'helpers/helpers';
 import styles from './styles.module.scss';
 
 dayjs.extend(dayjsRelativeTime.default);
@@ -28,7 +28,7 @@ const VideoCard: FC<Props> = ({
   const isLive = status === StreamingStatus.LIVE;
   const isFinished = status === StreamingStatus.FINISHED;
 
-  const updateTimeDelay = 60 * 1000; // 1 minute
+  const updateTimeDelay = UPDATE_CARD_TIME_DELAY;
 
   const linkToVideoPage = `${AppRoutes.VIDEO}/${id}`;
   const linkToChannelPage = `${AppRoutes.CHANNEL}/${id}`;
@@ -38,7 +38,7 @@ const VideoCard: FC<Props> = ({
   const views = getDividedViewsString(isFinished ? videoViews : liveViews);
 
   const isNew = useCallback((): boolean => {
-    const maxTimeFromNowIsNew = 4 * 60 * 60 * 1000; // 4 hours
+    const maxTimeFromNowIsNew = IS_NEW_VIDEO_TIME_DELAY;
     return timeNow.diff(dayjs(publishedAt)) <= maxTimeFromNowIsNew;
   }, [timeNow, publishedAt]);
 
@@ -50,14 +50,8 @@ const VideoCard: FC<Props> = ({
   const getFormatScheduledStreamDateLiveIn = useCallback((): string => {
     return timeNow.to(dayjs(scheduledStreamDate));
   }, [timeNow, scheduledStreamDate]);
-  const getFormatScheduledStreamDateAt = (): string => {
-    const d = dayjs(scheduledStreamDate);
-    return `${d.format('D MMMM')} at ${d.format('H:mm')}`;
-  };
 
-  const handleClickNotifyBtn = (e: MouseEvent<HTMLDivElement>): void => {
-    e.preventDefault();
-  };
+  const handleClickNotifyBtn = (): void => void 0;
 
   useEffect(() => {
     const updateTimeInterval = setInterval(() => {
@@ -65,39 +59,6 @@ const VideoCard: FC<Props> = ({
     }, updateTimeDelay);
     return () => clearInterval(updateTimeInterval);
   }, [updateTimeDelay]);
-
-  const MetaData: FC = () => {
-    if (isWaiting) {
-      if (!isSchedulePassed()) {
-        return (
-          <div className={clsx(styles['video-card-meta'], styles['video-card-meta-scheduled'])}>
-            <div className={styles['video-card-meta-data']}>
-              <span>{`Scheduled for ${getFormatScheduledStreamDateFor()}`}</span>
-            </div>
-            <div className={styles['video-card-meta-data']}>
-              <div className={styles['video-card-meta-data-scheduled']} onClick={handleClickNotifyBtn}>
-                <Icon name={IconName.BELL_OUTLINE} />
-                <span>Notify me</span>
-              </div>
-            </div>
-          </div>
-        );
-      }
-      return null;
-    }
-    return (
-      <div className={styles['video-card-meta']}>
-        <div className={styles['video-card-meta-data']}>
-          <Icon name={IconName.WATCH} />
-          {views}
-        </div>
-        <div className={styles['video-card-meta-data']}>
-          <Icon name={IconName.TIME_AGO} />
-          {getHowLongAgoString(new Date(publishedAt))}
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className={styles['video-card']}>
@@ -110,23 +71,13 @@ const VideoCard: FC<Props> = ({
           {isFinished && <span className={styles['video-card-badge-duration']}>{videoDuration}</span>}
         </Link>
         {isWaiting && (
-          <div className={styles['video-card-badge-scheduled']}>
-            <Icon name={IconName.ONLINE_STREAMING} />
-            <div className={styles['video-card-badge-scheduled-data']}>
-              {isSchedulePassed() ? (
-                <span>{`Waiting for ${channel.name}`}</span>
-              ) : (
-                <span>{`Live ${getFormatScheduledStreamDateLiveIn()}`}</span>
-              )}
-              <span>{getFormatScheduledStreamDateAt()}</span>
-            </div>
-            {!isSchedulePassed() && (
-              <div className={styles['video-card-badge-scheduled-btn']} onClick={handleClickNotifyBtn}>
-                <Icon name={IconName.BELL_OUTLINE} />
-                <span>Notify me</span>
-              </div>
-            )}
-          </div>
+          <ScheduledVideoBadge
+            channelName={channel.name}
+            isSchedulePassed={isSchedulePassed()}
+            scheduledStreamDate={scheduledStreamDate}
+            isLiveIn={getFormatScheduledStreamDateLiveIn()}
+            handleClickNotifyBtn={handleClickNotifyBtn}
+          />
         )}
       </div>
       <div className={styles['video-card-info']}>
@@ -137,7 +88,12 @@ const VideoCard: FC<Props> = ({
           <Link to={linkToVideoPage} className={styles['video-card-title']}>
             {name}
           </Link>
-          <MetaData />
+          {isWaiting && !isSchedulePassed() && (
+            <MetaDataWait
+              scheduledStreamDateFor={getFormatScheduledStreamDateFor()}
+              handleClickNotifyBtn={handleClickNotifyBtn}
+            />
+          )}
           <div className={styles['video-card-author']}>
             <Link to={linkToChannelPage} className={styles['video-card-author-avatar']}>
               <img className={styles['avatar']} src={channelAvatar} alt="Channels avatar" />
@@ -161,7 +117,7 @@ const VideoCard: FC<Props> = ({
               <VideoTag name={VideoTagName.LIVE} />
             </div>
           )}
-          {!isWaiting && <MetaData />}
+          {!isWaiting && <MetaDataVideo views={views} publishedAt={publishedAt} />}
         </div>
       </div>
     </div>
