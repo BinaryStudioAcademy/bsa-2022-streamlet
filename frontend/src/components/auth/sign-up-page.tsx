@@ -6,6 +6,7 @@ import { signUp } from 'store/auth/actions';
 import { createToastNotification } from 'components/common/common';
 import { AuthContainer, SignUpForm } from './components/components';
 import { allAuthNotifications, AuthNotification } from './config/config';
+import { ErrorBox } from 'components/common/errors/errors';
 
 const SignUpPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -46,7 +47,7 @@ const SignUpPage: FC = () => {
       pageTitle="Sign up"
       className="sign-up"
       children={<SignUpForm onSubmit={handleSignUpSubmit} isLoading={isLoading} />}
-      topLevelError={error}
+      topLevelErrorComponent={error && <ErrorBox message={error} />}
     />
   );
 };

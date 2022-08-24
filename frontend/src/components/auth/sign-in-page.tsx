@@ -5,6 +5,8 @@ import { store } from 'store/store';
 import { signIn } from 'store/auth/actions';
 import { SignInForm, AuthContainer } from './components/components';
 import { SignInFormValues } from './components/sign-in-form/sign-in-form';
+import { ErrorBox } from 'components/common/errors/errors';
+import { ErrorDisplayWithCode } from './components/error-display-with-code/error-display-with-code';
 
 const SignInPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -16,6 +18,7 @@ const SignInPage: FC = () => {
   // if there is an error in store, it doesn't mean it's wanted on SignIn page
   // it could be from previous operations (SignUp)
   const [error, setError] = useState<string | undefined>(undefined);
+  const errorCode = useAppSelector((state) => state.auth.errorCode);
 
   const hasUser = Boolean(user);
 
@@ -42,7 +45,9 @@ const SignInPage: FC = () => {
       pageTitle="Sign in"
       className="sign-in"
       children={<SignInForm onSubmit={handleSignInSubmit} isLoading={isLoading} />}
-      topLevelError={error}
+      topLevelErrorComponent={
+        error && <ErrorBox message={<ErrorDisplayWithCode message={error} errorCode={errorCode} />} />
+      }
     />
   );
 };
