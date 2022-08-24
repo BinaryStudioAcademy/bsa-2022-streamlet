@@ -42,7 +42,7 @@ const RestorePasswordPage: FC = () => {
     <AuthContainer
       pageTitle="Restore password"
       children={<RestorePasswordForm onSubmit={handleRestorePasswordSubmit} isLoading={isLoading} />}
-      topLevelError={error}
+      topLevelErrorComponent={error}
     />
   );
 };

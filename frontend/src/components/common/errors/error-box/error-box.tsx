@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import styles from './error-box.module.scss';
 
 type Props = {
-  message: string;
+  message: ReactNode;
 };
 
 const ErrorBox: FC<Props> = ({ message }) => {
