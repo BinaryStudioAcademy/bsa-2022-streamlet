@@ -3,3 +3,4 @@ export { DuplicationError } from './duplication-error';
 export { Forbidden } from './forbidden';
 export { NotFound } from './not-found';
 export { Unauthorized } from './unauthorized';
+export { errorCodes } from './error-codes';
