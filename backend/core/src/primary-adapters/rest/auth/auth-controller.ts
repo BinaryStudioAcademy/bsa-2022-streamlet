@@ -294,6 +294,7 @@ export class AuthController extends BaseHttpController {
     if (!tokenUser) {
       throw new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN);
     }
+
     const newRefreshToken = await this.userService.createRefreshToken(tokenUser.id);
     const newAccessToken = await generateJwt({
       payload: trimUser(tokenUser),
