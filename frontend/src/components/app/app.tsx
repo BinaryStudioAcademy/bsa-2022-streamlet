@@ -32,7 +32,6 @@ const App: FC = () => {
 
   const { theme: isLightTheme } = useAppSelector((state) => ({
     theme: state.theme.isLightTheme,
-    scrollStyle: state.layout.isScrollLocked ? { overflow: 'hidden' } : { overflow: 'auto' },
   }));
 
   useEffect(() => {

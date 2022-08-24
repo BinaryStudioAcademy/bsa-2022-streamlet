@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, RefObject } from 'react';
-import { lockScroll, unlockScroll } from 'store/layout/actions';
 import { useAppDispatch } from '../hooks';
 
 interface UseOutsideClickResult<RefType extends HTMLElement> {
@@ -17,15 +16,9 @@ const useOutsideClick = <RefType extends HTMLElement = HTMLElement>(
   const ref = useRef<RefType>(null);
   const [isOpened, setIsOpened] = useState(defaultIsOpened);
 
-  const open = (): void => {
-    setIsOpened(true);
-    dispatch(lockScroll());
-  };
+  const open = (): void => setIsOpened(true);
 
-  const close = (): void => {
-    setIsOpened(false);
-    dispatch(unlockScroll());
-  };
+  const close = (): void => setIsOpened(false);
 
   const toggle = (): void => setIsOpened(!isOpened);
 
@@ -39,18 +32,31 @@ const useOutsideClick = <RefType extends HTMLElement = HTMLElement>(
       if (!(e.target instanceof Node)) {
         return;
       }
-
       if (!element.contains(e.target)) {
+        e.preventDefault();
         e.stopPropagation();
         setIsOpened(false);
       }
     };
 
+    const disableScroll = (e: Event): void => {
+      if (!(e.target instanceof Node)) {
+        return;
+      }
+      if (!element.contains(e.target)) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+    window.addEventListener('wheel', disableScroll, { passive: false });
+    window.addEventListener('touchmove', disableScroll, { passive: false });
+
     window.addEventListener('click', handleClick, true);
 
     return (): void => {
       window.removeEventListener('click', handleClick, true);
-      dispatch(unlockScroll());
+      window.removeEventListener('wheel', disableScroll);
+      window.removeEventListener('touchmove', disableScroll);
     };
   }, [isOpened, dispatch]);
 

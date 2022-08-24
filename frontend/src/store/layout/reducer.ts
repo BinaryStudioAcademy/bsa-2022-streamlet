@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { openSidebar, closeSidebar, lockScroll, unlockScroll } from './actions';
+import { openSidebar, closeSidebar } from './actions';
 
 interface InitState {
   isOpenSidebar: boolean;
@@ -18,12 +18,6 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(closeSidebar, (state) => {
       state.isOpenSidebar = false;
-    })
-    .addCase(lockScroll, (state) => {
-      state.isScrollLocked = true;
-    })
-    .addCase(unlockScroll, (state) => {
-      state.isScrollLocked = false;
     });
 });
 
