@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Button, Loader } from 'components/common/common';
 import styles from './styles.module.scss';
+import clsx from 'clsx';
 
 type Props = {
   isLoading: boolean;
@@ -11,12 +12,13 @@ type Props = {
   // so it's two different properties here, for flexibility
   disabled: boolean;
   name: string;
+  className?: string;
 };
 
-const AuthSubmitButton: FC<Props> = ({ isLoading, name, disabled }) => {
+const AuthSubmitButton: FC<Props> = ({ isLoading, name, disabled, className }) => {
   return (
     <Button
-      className={styles['auth-submit-btn']}
+      className={clsx(styles['auth-submit-btn'], className)}
       type="submit"
       content={isLoading ? <Loader spinnerSize="25px" vCentered={false} /> : name}
       disabled={disabled}

@@ -485,6 +485,8 @@
   --auth-modal-background: rgba(52 79 62 / 47%);
   --auth-modal-border-color-1: rgb(34 240 0 / 47%);
   --auth-modal-border-color-2: rgb(146 255 229 / 47%);
+  --link-color: rgb(146 255 230);
+  --password-eye-color: rgb(104 104 104);
 
   /* channel page */
   --banner-background: #27292c;
@@ -511,6 +513,9 @@ body[data-theme='light'] {
   --channel-header-background: #b8c8c9;
   
   --sidebar-scrollbar-track-background: #e8e8e8;
+
+  /* auth forms */
+  --link-color: rgb(0 73 56);
 }
 
 html {
