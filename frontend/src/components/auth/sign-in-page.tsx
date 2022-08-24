@@ -5,6 +5,10 @@ import { store } from 'store/store';
 import { signIn } from 'store/auth/actions';
 import { SignInForm, AuthContainer } from './components/components';
 import { SignInFormValues } from './components/sign-in-form/sign-in-form';
+import { ErrorBox } from 'components/common/errors/errors';
+import { errorCodes } from 'exceptions/exceptions';
+import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 const SignInPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -16,6 +20,7 @@ const SignInPage: FC = () => {
   // if there is an error in store, it doesn't mean it's wanted on SignIn page
   // it could be from previous operations (SignUp)
   const [error, setError] = useState<string | undefined>(undefined);
+  const errorCode = useAppSelector((state) => state.auth.errorCode);
 
   const hasUser = Boolean(user);
 
@@ -37,12 +42,26 @@ const SignInPage: FC = () => {
     }
   }, [hasUser, navigate]);
 
+  const getErrorDisplay = (error: string): ReactNode => {
+    return (
+      <>
+        {error}
+        {errorCode === errorCodes.auth.signIn.UNVERIFIED && (
+          <>
+            <br />
+            <Link to={AppRoutes.ACCOUNT_VERIFICATION_INIT}>Receive the letter again?</Link>
+          </>
+        )}
+      </>
+    );
+  };
+
   return (
     <AuthContainer
       pageTitle="Sign in"
       className="sign-in"
       children={<SignInForm onSubmit={handleSignInSubmit} isLoading={isLoading} />}
-      topLevelError={error}
+      topLevelErrorComponent={error && <ErrorBox message={getErrorDisplay(error)} />}
     />
   );
 };

@@ -12,5 +12,6 @@ export const exceptionMessages = {
     UNAUTHORIZED_INCORRECT_ACCOUNT_VERIFICATION_LINK:
       'The token in your link for account verification has expired or was incorrect. Please, get a new one',
     INCORRECT_EMAIL: 'Wrong email. Please, try again',
+    EMAIL_NOT_VERIFIED: 'Please, verify your email before logging in',
   },
 };
