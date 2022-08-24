@@ -1,5 +1,6 @@
 import { Http } from './http/http.service';
 import { AuthApi } from './auth-api/auth-api.service';
+import { VideoApi } from './video-api/video-api.service';
 import { StorageService } from './storage/local-storage.service';
 import { TokensStorageService } from './storage/tokens-storage.service';
 import { attachAuthTokenInterceptor } from './http/interceptors/attach-auth-token-interceptor';
@@ -27,4 +28,9 @@ const notificationApi = new NotificationApi({
   http,
 });
 
-export { http, authApi, profileApi, notificationApi, storageService, tokensStorageService };
+const videoApi = new VideoApi({
+  apiPrefix: ENV.API_PATH,
+  http,
+});
+
+export { http, authApi, profileApi, notificationApi, storageService, tokensStorageService, videoApi };
