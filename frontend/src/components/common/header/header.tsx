@@ -22,7 +22,6 @@ interface HeaderProps {
   searchValue: string;
   searchInputEl: RefObject<HTMLInputElement>;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
-  handleClickGoToStream(): void;
   handleClickThemeSwitch(): void;
   handleClickSignIn(): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
@@ -30,6 +29,8 @@ interface HeaderProps {
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
   options: MenuOption[];
   userAvatar: string;
+  userName: string | undefined;
+  userEmail: string | undefined;
   menuRef: RefObject<HTMLDivElement>;
   notificationDropdownContent: React.ReactNode;
   themeValue: boolean;
@@ -42,13 +43,14 @@ const Header: FC<HeaderProps> = ({
   searchInputEl,
   handleClickSignIn,
   handleClickUserMenu,
-  handleClickGoToStream,
   handleChangeInputSearch,
   handleClearInputSearch,
   handleSubmitSearch,
   handleClickThemeSwitch,
   options,
   userAvatar,
+  userName,
+  userEmail,
   menuRef,
   notificationDropdownContent,
   themeValue,
@@ -95,9 +97,9 @@ const Header: FC<HeaderProps> = ({
         </button>
         {isLogged ? (
           <>
-            <button className={styles['btn-go-stream']} onClick={handleClickGoToStream}>
+            <Link className={styles['btn-go-stream']} to={AppRoutes.STUDIO}>
               <Icon name={IconName.CAMERA} width="30" height="24" />
-            </button>
+            </Link>
             {notificationDropdownContent}
             <button
               onClick={handleClickUserMenu}
@@ -106,6 +108,14 @@ const Header: FC<HeaderProps> = ({
             ></button>
             {isMenuOpen && (
               <div ref={menuRef} className={styles['user-menu']}>
+                <div className={styles['user-menu-header']}>
+                  <div style={{ backgroundImage: `url(${userAvatar})` }} className={styles['user-menu-avatar']} />
+                  <div className={styles['user-menu-info']}>
+                    <div className={styles['user-menu-username']}>{userName}</div>
+                    <div className={styles['user-menu-email']}>{userEmail}</div>
+                  </div>
+                </div>
+                <div className={styles['horizontal-line']} />
                 <ul className={styles['option-list']}>
                   {options.map((option) => (
                     <li key={option.type} className={styles['option']} onClick={option.onClick}>

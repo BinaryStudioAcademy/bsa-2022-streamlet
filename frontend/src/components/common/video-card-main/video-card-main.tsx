@@ -1,4 +1,3 @@
-import { MouseEvent } from 'react';
 import dayjs from 'dayjs';
 import * as dayjsRelativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
@@ -6,19 +5,24 @@ import { FC, VideoCard as VideoCardType } from 'common/types/types';
 import { AppRoutes, IconName, StreamingStatus } from 'common/enums/enums';
 import { useState, useCallback, useEffect } from 'hooks/hooks';
 import { Icon } from 'components/common/common';
+import { ScheduledVideoBadge } from './components/components';
 import { getDividedViewsString, getFormatDurationString, getHowLongAgoString } from 'helpers/helpers';
+import { UPDATE_CARD_TIME_DELAY } from './config';
 import styles from './styles.module.scss';
+import defaultVideoPosterDark from 'assets/img/default-video-poster-dark.jpg';
+import defaultVideoPosterLight from 'assets/img/default-video-poster-light.jpg';
+import defaultUserAvatar from 'assets/img/default-user-avatar.jpg';
 
 dayjs.extend(dayjsRelativeTime.default);
 
-const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
-
 type Props = {
   video: VideoCardType;
+  isLightTheme: boolean;
 };
 
 const VideoCardMain: FC<Props> = ({
   video: { id, name, status, publishedAt, scheduledStreamDate, poster, duration, videoViews, liveViews, channel },
+  isLightTheme,
 }) => {
   const [timeNow, setTimeNow] = useState(dayjs());
 
@@ -26,12 +30,13 @@ const VideoCardMain: FC<Props> = ({
   const isLive = status === StreamingStatus.LIVE;
   const isFinished = status === StreamingStatus.FINISHED;
 
-  const updateTimeDelay = 5 * 60 * 1000; // 5 minutes
+  const updateTimeDelay = UPDATE_CARD_TIME_DELAY;
 
   const linkToVideoPage = `${AppRoutes.VIDEO}/${id}`;
   const linkToChannelPage = `${AppRoutes.CHANNEL}/${id}`;
 
-  const channelAvatar = channel.avatar ? channel.avatar : FAKE_USER_AVATAR;
+  const videoPoster = poster ? poster : isLightTheme ? defaultVideoPosterLight : defaultVideoPosterDark;
+  const channelAvatar = channel.avatar ? channel.avatar : defaultUserAvatar;
   const videoDuration = getFormatDurationString(duration);
   const views = getDividedViewsString(isFinished ? videoViews : liveViews);
 
@@ -42,14 +47,8 @@ const VideoCardMain: FC<Props> = ({
   const getFormatScheduledStreamDateLiveIn = useCallback((): string => {
     return timeNow.to(dayjs(scheduledStreamDate));
   }, [timeNow, scheduledStreamDate]);
-  const getFormatScheduledStreamDateAt = (): string => {
-    const d = dayjs(scheduledStreamDate);
-    return `${d.format('D MMMM')} at ${d.format('H:mm')}`;
-  };
 
-  const handleClickNotifyBtn = (e: MouseEvent<HTMLDivElement>): void => {
-    e.preventDefault();
-  };
+  const handleClickNotifyBtn = (): void => void 0;
 
   useEffect(() => {
     const updateTimeInterval = setInterval(() => {
@@ -61,37 +60,24 @@ const VideoCardMain: FC<Props> = ({
   return (
     <div className={styles['video-card']}>
       <div className={styles['video-card-preview']}>
-        <img src={poster} alt="Preview video img" />
+        <img src={videoPoster} alt="Preview video img" />
         <Link to={linkToVideoPage} className={styles['video-card-play']}>
-          <div className={styles['video-card-play-btn']}>
-            <Icon name={IconName.PLAY} />
-          </div>
           {isFinished && <span className={styles['video-card-badge-duration']}>{videoDuration}</span>}
         </Link>
         {isWaiting && (
-          <div className={styles['video-card-badge-scheduled']}>
-            <Icon name={IconName.ONLINE_STREAMING} />
-            <div className={styles['video-card-badge-scheduled-data']}>
-              {isSchedulePassed() ? (
-                <span>{`Waiting for ${channel.name}`}</span>
-              ) : (
-                <span>{`Live ${getFormatScheduledStreamDateLiveIn()}`}</span>
-              )}
-              <span>{getFormatScheduledStreamDateAt()}</span>
-            </div>
-            {!isSchedulePassed() && (
-              <div className={styles['video-card-badge-scheduled-btn']} onClick={handleClickNotifyBtn}>
-                <Icon name={IconName.BELL_OUTLINE} />
-                <span>Notify me</span>
-              </div>
-            )}
-          </div>
+          <ScheduledVideoBadge
+            channelName={channel.name}
+            isSchedulePassed={isSchedulePassed()}
+            scheduledStreamDate={scheduledStreamDate}
+            isLiveIn={getFormatScheduledStreamDateLiveIn()}
+            handleClickNotifyBtn={handleClickNotifyBtn}
+          />
         )}
       </div>
       <div className={styles['video-card-info']}>
         <div className={styles['video-card-desc']}>
           <Link to={linkToChannelPage} className={styles['video-card-channel']}>
-            <img src={channelAvatar} alt="Channels avatar" />
+            <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
           </Link>
           <div className={styles['video-card-name']}>
             <Link to={linkToVideoPage} className={styles['video-card-title']}>
@@ -109,9 +95,8 @@ const VideoCardMain: FC<Props> = ({
             <>
               {isLive && (
                 <div className={styles['video-card-meta-tag']}>
-                  <div className={styles['video-tag']}>
-                    <span>Live</span>
-                  </div>
+                  <Icon name={IconName.CIRCLE} />
+                  <span>Live</span>
                 </div>
               )}
               <div className={styles['video-card-meta']}>

@@ -45,10 +45,10 @@
   z-index: $header-menu-z-index;
   display: flex;
   flex-direction: column;
-  width: 400px;
-  height: 300px;
+  width: 450px;
+  height: 400px;
   background-color: var(--gray-300-header-menu-background);
-  border: 1px solid var(--gray-200-header-menu-background);
+  border: 1px solid var(--gray-200-input-background);
   border-radius: 5px;
   cursor: default;
 

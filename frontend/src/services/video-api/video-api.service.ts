@@ -1,5 +1,5 @@
 import { HttpMethod, ApiPath } from 'common/enums/enums';
-import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
+import { DataVideo } from 'common/types/types';
 import { Http } from '../http/http.service';
 
 type Constructor = {

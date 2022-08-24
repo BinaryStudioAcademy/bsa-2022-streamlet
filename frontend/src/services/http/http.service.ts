@@ -81,6 +81,7 @@ class Http {
       throw new HttpError({
         status: response.status,
         message: parsedException?.message,
+        errorCode: parsedException?.errorCode,
       });
     }
 

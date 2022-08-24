@@ -11,6 +11,7 @@ import {
   UserSignInResponseDto,
   UserSignUpRequestDto,
   UserSignUpResponseDto,
+  GetCurrentUserResponseDto,
 } from 'common/types/types';
 import {
   RestorePasswordConfirmRequestDto,
@@ -81,7 +82,7 @@ class AuthApi {
     });
   }
 
-  public getCurrentUser(): Promise<UserSignInResponseDto> {
+  public getCurrentUser(): Promise<GetCurrentUserResponseDto> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.USER}`,
       options: {

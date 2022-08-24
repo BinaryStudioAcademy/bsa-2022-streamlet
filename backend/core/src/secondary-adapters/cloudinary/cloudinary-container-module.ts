@@ -11,6 +11,7 @@ const cloudinaryContainerModule = new ContainerModule((bind: interfaces.Bind) =>
     cloud_name: IMAGE_CLOUD_STORAGE.NAME,
     api_key: IMAGE_CLOUD_STORAGE.API_KEY,
     api_secret: IMAGE_CLOUD_STORAGE.API_SECRET,
+    secure: true,
   });
   cloudinary.api.create_upload_preset({
     name: 'avatar',
