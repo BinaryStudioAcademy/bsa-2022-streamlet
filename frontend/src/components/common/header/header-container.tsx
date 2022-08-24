@@ -14,7 +14,7 @@ import { authActions, searchActions, profileActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
 import { switchTheme } from 'store/theme-switch/actions';
 import { Header } from './header';
-import defaultAvatar from 'assets/img/default-user-avatar.jpg';
+import defaultAvatar from 'assets/img/default/user-avatar-default.jpg';
 
 const HeaderContainer: FC = () => {
   const dispatch = useAppDispatch();

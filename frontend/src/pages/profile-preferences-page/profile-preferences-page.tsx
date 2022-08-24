@@ -7,7 +7,7 @@ import {
   ProfileUpdateRequestDto,
 } from 'common/types/types';
 import style from './styles.module.scss';
-import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
+import defaultAvatar from '../../assets/img/default/user-avatar-default.jpg';
 import { UploadImage, ImageEditor, Loader } from '../../components/common/common';
 import React, { useCallback, useState } from 'react';
 import { profileActions } from 'store/actions';

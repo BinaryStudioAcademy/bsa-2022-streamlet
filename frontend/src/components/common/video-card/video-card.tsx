@@ -1,6 +1,6 @@
 import { FC } from '../../../common/types/react/fc.type';
 import style from './styles.module.scss';
-import DefaultUserAvatar from '../../../assets/img/default-user-avatar.jpg';
+import DefaultUserAvatar from '../../../assets/img/default/user-avatar-default.jpg';
 import { useNavigate } from 'react-router-dom';
 import { IconName } from 'common/enums/enums';
 import { Icon } from '../icon';
