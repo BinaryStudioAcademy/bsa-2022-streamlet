@@ -10,4 +10,5 @@ export {
   type AccountVerificationConfirmRequestDto,
   type AccountVerificationInitRequestDto,
   type AccountVerificationInitResponseDto,
+  type GetCurrentUserResponseDto,
 } from 'shared/build';

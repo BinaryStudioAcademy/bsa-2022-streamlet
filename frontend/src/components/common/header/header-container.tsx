@@ -9,6 +9,7 @@ import {
   useNavigate,
   useRef,
   useEffect,
+  useState,
 } from 'hooks/hooks';
 import { authActions, searchActions, profileActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
@@ -32,12 +33,14 @@ const HeaderContainer: FC = () => {
   const hasUser = Boolean(user);
   const isLightTheme = useAppSelector((store) => store.theme.isLightTheme);
   const { isOpened: isMenuOpen, open: openMenu, close: closeMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+  const [searchValue, setSearchValue] = useState(searchText);
 
   const emptyOnClickHandler = (): void => void 0;
 
   const handleClickSettings = (): void => {
     closeMenu();
     navigate(AppRoutes.PROFILE_PREFERENCE, { replace: true });
+    closeMenu();
   };
 
   const matchMenuOptionWithOnClickHandler: Record<MenuOptions, () => void> = {
@@ -45,6 +48,10 @@ const HeaderContainer: FC = () => {
     [MenuOptions.Theme]: emptyOnClickHandler, // should be () => void 0; to work properly
     [MenuOptions.SignOut]: handleClickSignOut,
   };
+
+  useEffect(() => {
+    setSearchValue(searchText);
+  }, [searchText]);
 
   useEffect(() => {
     if (!user) {
@@ -105,7 +112,9 @@ const HeaderContainer: FC = () => {
 
   const handleClearActiveFilterIds = useCallback(() => dispatch(searchActions.clearActiveFilterIds()), [dispatch]);
 
-  const handleInputSearch = useCallback((value: string) => dispatch(searchActions.setSearchText(value)), [dispatch]);
+  const handleSetInputSearch = useCallback((value: string) => dispatch(searchActions.setSearchText(value)), [dispatch]);
+
+  const handleInputSearch = (value: string): void => setSearchValue(value);
 
   const handleChangeInputSearch = ({ currentTarget }: FormEvent<HTMLInputElement>): void => {
     handleInputSearch(currentTarget.value);
@@ -118,9 +127,10 @@ const HeaderContainer: FC = () => {
 
   const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (searchText) {
+    if (searchValue) {
+      handleSetInputSearch(searchValue);
       handleClearActiveFilterIds();
-      const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
+      const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchValue });
       navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`);
     }
   };
@@ -134,7 +144,7 @@ const HeaderContainer: FC = () => {
       menuRef={menuRef}
       isLogged={hasUser}
       isMenuOpen={isMenuOpen}
-      searchValue={searchText}
+      searchValue={searchValue}
       searchInputEl={searchInputEl}
       handleClickUserMenu={handleClickUserMenu}
       handleClickSignIn={handleClickSignIn}

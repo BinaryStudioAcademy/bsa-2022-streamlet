@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { IconName } from 'common/enums/enums';
-import { useEffect, useState, useId, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
+import { useEffect, useState, useAppDispatch, useAppSelector, useCallback, useRef } from 'hooks/hooks';
 import { Icon } from 'components/common/icon';
 import {
   TypeFilterId,
@@ -36,7 +36,7 @@ const FilterSidebar: FC = () => {
 
   const [toggleAllFilters, setToggleAllFilters] = useState(false);
 
-  const filterSidebarId = useId();
+  const filterSidebarEl = useRef<HTMLDivElement>(null);
 
   const onChangeActiveFilterIds = useCallback(
     (filterIds: Partial<SearchState['activeFilterId']>) => dispatch(searchActions.setActiveFilterIds(filterIds)),
@@ -60,12 +60,11 @@ const FilterSidebar: FC = () => {
     [onChangeActiveFilterIds],
   );
 
-  const onHandleClickOutsideFilters = (e: MouseEvent): void => {
-    const sidebar = document.getElementById(filterSidebarId);
-    if (!sidebar?.contains(e.target as HTMLElement)) {
+  const onHandleClickOutsideFilters = useCallback((e: MouseEvent): void => {
+    if (!filterSidebarEl.current?.contains(e.target as HTMLElement)) {
       setToggleAllFilters(false);
     }
-  };
+  }, []);
 
   const onHandleScroll = (): void => setToggleAllFilters(false);
 
@@ -82,11 +81,10 @@ const FilterSidebar: FC = () => {
       window.removeEventListener('click', onHandleClickOutsideFilters);
       window.removeEventListener('scroll', onHandleScroll);
     };
-    // eslint-disable-next-line
-  }, [toggleAllFilters]);
+  }, [toggleAllFilters, onHandleClickOutsideFilters]);
 
   return (
-    <div className={styles['filter-sidebar']} id={filterSidebarId}>
+    <div className={styles['filter-sidebar']} ref={filterSidebarEl}>
       <div className={styles['filter-sidebar-title']}>
         <Icon name={IconName.FILTER} />
         <span>filters</span>
