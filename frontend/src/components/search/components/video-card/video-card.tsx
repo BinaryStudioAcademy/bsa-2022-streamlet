@@ -66,9 +66,6 @@ const VideoCard: FC<Props> = ({
       <div className={styles['video-card-preview']}>
         <img src={poster ? poster : defaultVideoPoster} alt="Preview video img" />
         <Link to={linkToVideoPage} className={styles['video-card-play']}>
-          <div className={styles['video-card-play-btn']}>
-            <Icon name={IconName.PLAY} />
-          </div>
           {isFinished && <span className={styles['video-card-badge-duration']}>{videoDuration}</span>}
         </Link>
         {isWaiting && (

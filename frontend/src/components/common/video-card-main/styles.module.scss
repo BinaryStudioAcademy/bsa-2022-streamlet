@@ -40,25 +40,6 @@ $base-z-index: $page-component-z-index;
   height: 100%;
 }
 
-.video-card-play-btn {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  background-color: var(--input-error-color);
-  border-radius: 50%;
-}
-
-.video-card-play-btn svg path {
-  fill: var(--white-text-color);
-}
-
-.video-card-preview:hover .video-card-play-btn,
-.video-card-preview:focus .video-card-play-btn {
-  display: flex;
-}
-
 .video-card-badge-duration {
   position: absolute;
   right: 7px;
