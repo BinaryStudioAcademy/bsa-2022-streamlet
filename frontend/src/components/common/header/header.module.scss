@@ -149,6 +149,7 @@
 
   .option {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     height: 40px;
     padding: 4px;
@@ -156,6 +157,11 @@
     text-align: start;
     border-radius: 4px;
     cursor: pointer;
+  }
+
+  .option-segment {
+    display: flex;
+    align-items: center;
   }
 
   .option:hover {
