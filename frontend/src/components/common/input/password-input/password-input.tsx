@@ -57,9 +57,20 @@ const PasswordInput = <T extends FieldValues>({
 
   return (
     <div className={clsx(styles['input-wrapper'], wrapperClassName)}>
-      <label className={clsx(styles['label'], labelClassName)} htmlFor={id}>
-        <span>{label}</span>
-      </label>
+      <div className={styles['input-labels']}>
+        <label className={clsx(styles.label, labelClassName)} htmlFor={id}>
+          <span>{label}</span>
+        </label>
+        <div className={clsx(errorBlockClassName)}>
+          <ErrorMessage
+            errors={errors}
+            name={name}
+            render={({ message }): ReactElement => {
+              return <ErrorBox message={message} />;
+            }}
+          />
+        </div>
+      </div>
       <div
         className={clsx(
           passwordStyles['password-container'],
@@ -78,15 +89,6 @@ const PasswordInput = <T extends FieldValues>({
           onClick={handleChangeInputPasswordType}
           className={clsx(passwordStyles['check-password-btn'], changeVisibilityBtnClassName)}
           content={<PasswordEye />}
-        />
-      </div>
-      <div className={clsx(styles['error-block'], errorBlockClassName)}>
-        <ErrorMessage
-          errors={errors}
-          name={name}
-          render={({ message }): ReactElement => {
-            return <ErrorBox message={message} />;
-          }}
         />
       </div>
     </div>
