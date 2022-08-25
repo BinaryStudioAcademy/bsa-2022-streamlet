@@ -18,7 +18,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit, isValid } = useAppForm<UserSignUpRequestDto>({
     defaultValues: DEFAULT_SIGN_UP_PAYLOAD,
     validationSchema: userSignUpValidationSchema,
-    mode: 'onChange',
+    mode: 'onTouched',
   });
 
   return (
@@ -61,6 +61,8 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
             name="password"
             errors={errors}
             label="Password"
+            isValidationErrorOnTop={false}
+            errorBlockClassName={formStyles['password-error']}
           />
           <PasswordInput
             inputClassName={formStyles['password']}
@@ -72,6 +74,8 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
             name="passwordConfirm"
             errors={errors}
             label="Confirm password"
+            isValidationErrorOnTop={false}
+            errorBlockClassName={formStyles['password-error']}
           />
         </div>
         <AuthSubmitButton

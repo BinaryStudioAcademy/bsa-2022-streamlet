@@ -1,4 +1,8 @@
 .continue-with-paragraph {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0 5px;
   color: var(--white-text-color);
   font-weight: 500;
   font-size: 14px;

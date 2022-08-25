@@ -22,6 +22,7 @@ type Props<T> = {
   changeVisibilityBtnClassName?: string;
   inputWrapperClassName?: string;
   inputWrapperErrorClassName?: string;
+  isValidationErrorOnTop?: boolean;
 };
 
 type PasswordType = 'password' | 'text';
@@ -39,6 +40,7 @@ const PasswordInput = <T extends FieldValues>({
   inputWrapperClassName,
   inputWrapperErrorClassName,
   changeVisibilityBtnClassName,
+  isValidationErrorOnTop = true,
 }: Props<T>): ReactElement | null => {
   const {
     field,
@@ -57,9 +59,22 @@ const PasswordInput = <T extends FieldValues>({
 
   return (
     <div className={clsx(styles['input-wrapper'], wrapperClassName)}>
-      <label className={clsx(styles['label'], labelClassName)} htmlFor={id}>
-        <span>{label}</span>
-      </label>
+      <div className={styles['input-labels']}>
+        <label className={clsx(styles.label, labelClassName)} htmlFor={id}>
+          <span>{label}</span>
+        </label>
+        {isValidationErrorOnTop && (
+          <div className={clsx(errorBlockClassName)}>
+            <ErrorMessage
+              errors={errors}
+              name={name}
+              render={({ message }): ReactElement => {
+                return <ErrorBox message={message} />;
+              }}
+            />
+          </div>
+        )}
+      </div>
       <div
         className={clsx(
           passwordStyles['password-container'],
@@ -71,7 +86,7 @@ const PasswordInput = <T extends FieldValues>({
           {...field}
           type={inputPasswordType}
           placeholder={placeholder}
-          className={clsx(styles['input'], inputClassName)}
+          className={clsx(passwordStyles['input'], inputClassName)}
           id={id}
         />
         <Button
@@ -80,15 +95,17 @@ const PasswordInput = <T extends FieldValues>({
           content={<PasswordEye />}
         />
       </div>
-      <div className={clsx(styles['error-block'], errorBlockClassName)}>
-        <ErrorMessage
-          errors={errors}
-          name={name}
-          render={({ message }): ReactElement => {
-            return <ErrorBox message={message} />;
-          }}
-        />
-      </div>
+      {!isValidationErrorOnTop && (
+        <div className={clsx(errorBlockClassName)}>
+          <ErrorMessage
+            errors={errors}
+            name={name}
+            render={({ message }): ReactElement => {
+              return <ErrorBox message={message} />;
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };

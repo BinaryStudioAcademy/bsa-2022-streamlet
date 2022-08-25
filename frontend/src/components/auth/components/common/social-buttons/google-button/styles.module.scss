@@ -4,8 +4,8 @@
   width: 100%;
   padding: 10px 15px;
   color: inherit;
-  background-color: var(--white-text-color);
-  border: none;
+  background-color: var(--always-white-color);
+  border: var(--input-border);
   border-radius: 3px;
   outline: inherit;
   cursor: pointer;
