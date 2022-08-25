@@ -489,6 +489,8 @@
   --auth-modal-background: rgba(52 79 62 / 47%);
   --auth-modal-border-color-1: rgb(34 240 0 / 47%);
   --auth-modal-border-color-2: rgb(146 255 229 / 47%);
+  --auth-border: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
+  --auth-background: var(--gray-400-primary-background);
   --auth-box-shadow: none;
 
   /* video-card */
@@ -508,8 +510,10 @@ body[data-theme='light'] {
   --gray-200-input-background: #dadada;
   --sidebar-scrollbar-track-background: #e8e8e8;
   --auth-modal-background: white;
-  --auth-box-shadow: none;
+  --auth-box-shadow: 0 0 15px 7px rgb(0 0 0 / 16%);
+  --auth-border: none;
   --input-border: 1px solid var(--brand-green-color);
+  --auth-background: #fbfffa;
 }
 
 html {

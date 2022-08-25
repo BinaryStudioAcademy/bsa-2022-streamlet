@@ -17,7 +17,7 @@ const Logo: FC<Props> = ({ size, isMobile = false, className = '' }) => {
       <Link className={styles['logo-link']} to={AppRoutes.ROOT}>
         <Icon name={IconName.MAIN_LOGO} width={`${size}`} height={`${size}`} />
         {!isMobile && (
-          <p className={styles['main-name']} style={{ fontSize: size / 1.15836 }}>
+          <p className={styles['main-name']} style={{ fontSize: size / 1.15836, lineHeight: `${size / 1.15836}px` }}>
             streamlet
           </p>
         )}

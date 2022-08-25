@@ -7,7 +7,7 @@ $base-z-index: $page-z-index;
   flex-grow: 1;
   align-items: center;
   width: 100vw;
-  background: var(--gray-400-primary-background);
+  background: var(--auth-background);
 }
 
 .auth-modal {
@@ -21,8 +21,7 @@ $base-z-index: $page-z-index;
 
 .auth-container {
   width: 100%;
-  margin: 38px 0;
-  padding: 0 20px;
+  padding: 30px 20px 50px;
 }
 
 .auth-title {
@@ -40,104 +39,89 @@ $base-z-index: $page-z-index;
 
 .background-zigzag,
 .background-zigzag2,
-.background-curve1 {
+.background-zigzag3,
+.background-curve1,
+.background-curve2 {
   display: none;
 }
 
-@media screen and (min-height: 820px) {
-  .auth-background {
-    width: 50%;
-  }
-
+@media screen and (min-width: 600px) {
   .auth-modal {
     width: 600px;
+    height: auto;
+    margin: 30px auto;
     border-radius: 3px;
-    border-image-source: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
+    border-image-source: var(--auth-border);
     border-image-slice: 1;
+    box-shadow: var(--auth-box-shadow);
+  }
+
+  .auth-container {
+    padding: 30px 60px;
+  }
+
+  .auth-header {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin: 10px 0 40px;
+  }
+
+  .auth-title {
+    line-height: 40px;
+  }
+}
+
+@media screen and (min-width: 1100px) and (min-height: 760px) {
+  .background-zigzag,
+  .background-zigzag2,
+  .background-zigzag3 {
+    position: absolute;
+    z-index: $base-z-index + 2;
+    display: block;
+    filter: drop-shadow(0 0 15px rgb(0 0 0 / 16%));
+  }
+
+  .zigzag1-container {
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    width: 170px;
   }
 
   .background-zigzag {
-    position: absolute;
-    top: 20vh;
-    left: 5vw;
-    z-index: $base-z-index;
-    display: block;
     width: 100%;
   }
 
-  .background-zigzag-2 {
+  .zigzag3-container {
     position: absolute;
-    top: 44vh;
-    left: 0;
-    z-index: $base-z-index;
-    display: block;
-    width: 155px;
+    top: 5%;
+    left: 18%;
+    width: 170px;
+  }
+
+  .background-zigzag3 {
+    width: 65%;
+  }
+
+  .background-zigzag2 {
+    top: 72%;
+    left: 70%;
+    width: 200px;
   }
 
   .background-curve1 {
     position: absolute;
-    top: -2vh;
-    right: 1vw;
+    top: 0;
+    right: 0;
+    z-index: $base-z-index - 1;
+    display: block;
+  }
+
+  .background-curve2 {
+    position: absolute;
+    bottom: 5%;
+    left: 10%;
     z-index: $base-z-index - 1;
     display: block;
   }
 }
-
-// @media screen and (min-width: 600px) {
-//   .auth-modal {
-//     // width: 80vw;
-//     // height: auto;
-//   }
-//   .auth-modal {
-//     width: 600px;
-//   }
-
-//   .auth-container {
-//     margin: 38px 46px;
-//   }
-
-//   .background-zigzag {
-//     left: -30vw;
-//     z-index: $base-z-index + 2;
-//   }
-
-//   .background-zigzag-2 {
-//     left: -20vw;
-//     z-index: $base-z-index + 2;
-//   }
-// }
-
-// @media screen and (min-width: 850px) {
-
-//   .auth-container {
-//     margin: 38px 96px;
-//   }
-
-//   .background-zigzag {
-//     left: -3vw;
-//   }
-
-//   .background-zigzag-2 {
-//     left: 0;
-//   }
-// }
-
-// @media screen and (min-width: 980px) {
-//   .background-zigzag {
-//     left: 2vw;
-//   }
-
-//   .background-curve1 {
-//     z-index: $base-z-index;
-//   }
-// }
-
-// @media screen and (min-width: 1200px) {
-//   .background-zigzag {
-//     left: 10vw;
-//   }
-
-//   .background-zigzag-2 {
-//     left: 10vw;
-//   }
-// }
