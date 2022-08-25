@@ -68,7 +68,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
       <GoogleButton disabled={isLoading} />
 
       <ContinueWithParagraph
-        className={formStyles['upper-space-regular']}
+        className={clsx(formStyles['upper-space-regular'], formStyles['paragraph-mobile'])}
         prompt="Don't have an account yet?"
         linkTitle="Sign up for free"
         route={AppRoutes.SIGN_UP}
