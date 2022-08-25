@@ -14,4 +14,7 @@ export const exceptionMessages = {
     INCORRECT_EMAIL: 'Wrong email. Please, try again',
     EMAIL_NOT_VERIFIED: 'Please, verify your email before logging in',
   },
+  channelCrud: {
+    CHANNEL_ID_NOT_FOUND: 'Channel with such id wasn`t found',
+  },
 };

@@ -1,10 +1,10 @@
 import { PrismaClient, StreamingKey, Video } from '@prisma/client';
 import { inject, injectable } from 'inversify';
-import { ChannelRepository } from '~/core/channel/port/channel-repository';
+import { ChannelStreamingRepository } from '~/core/channel-streaming/port/channel-streaming-repository';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 
 @injectable()
-export class ChannelRepositoryAdapter implements ChannelRepository {
+export class ChannelStreamingRepositoryAdapter implements ChannelStreamingRepository {
   private prismaClient: PrismaClient;
 
   constructor(@inject(CONTAINER_TYPES.PrismaClient) prismaClient: PrismaClient) {

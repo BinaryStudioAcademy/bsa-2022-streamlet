@@ -1,3 +1,16 @@
+.button {
+  padding: 5px 10px;
+  color: var(--text-white-color);
+  font-size: 14px;
+  background-color: var(--brand-green-color);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: var(--brand-green-color-hover);
+}
+
 .button:disabled {
   cursor: not-allowed;
 }

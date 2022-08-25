@@ -1,4 +1,4 @@
-enum ChannelApiPath {
+enum ChannelStreamingApiPath {
   ROOT = '/',
   $ID = '/:id',
   LIVE = '/live',
@@ -7,4 +7,4 @@ enum ChannelApiPath {
   RESET_STREAMING_KEY = '/reset_streaming_key',
 }
 
-export { ChannelApiPath };
+export { ChannelStreamingApiPath };

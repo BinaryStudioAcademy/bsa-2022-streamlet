@@ -2,17 +2,17 @@ import { inject, injectable } from 'inversify';
 import { LiveStartResponseDto, StreamingKeyResponseDto } from '~/shared/types/types';
 import { AmqpQueue, StreamingStatus } from '~/shared/enums/enums';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
-import { ChannelRepository } from '../port/channel-repository';
+import { ChannelStreamingRepository } from '../port/channel-streaming-repository';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
 import { generateUuid } from '~/shared/helpers';
 
 @injectable()
-export class ChannelService {
-  private channelRepository: ChannelRepository;
+export class ChannelStreamingService {
+  private channelRepository: ChannelStreamingRepository;
   private amqpChannel: AmqpChannelPort;
 
   constructor(
-    @inject(CONTAINER_TYPES.ChannelRepository) channelRepository: ChannelRepository,
+    @inject(CONTAINER_TYPES.ChannelStreamingRepository) channelRepository: ChannelStreamingRepository,
     @inject(CONTAINER_TYPES.AmqpChannelAdapter) amqpChannel: AmqpChannelPort,
   ) {
     this.channelRepository = channelRepository;

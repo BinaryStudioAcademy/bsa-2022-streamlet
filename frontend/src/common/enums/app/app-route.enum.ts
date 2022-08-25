@@ -1,5 +1,9 @@
 import { commonFrontendPaths } from 'shared/build/common/enums/enums';
 
+const AppParams = {
+  channelId: 'channelId',
+} as const;
+
 const AppRoutes = {
   ROOT: '/',
   BROWSE: '/browse',
@@ -14,8 +18,8 @@ const AppRoutes = {
   ANY: '*',
   VIDEO: '/video',
   VIDEO_$ID: '/video/:videoId',
+  CHANNEL_$ID: `/channel/:${AppParams.channelId}`,
   CHANNEL: '/channel',
-  CHANNEL_$ID: '/channel/:channelId',
   STUDIO: '/studio/home',
   STUDIO_ANALYTICS: '/studio/analytics',
   STUDIO_CHANNEL: '/studio/channel',
@@ -44,4 +48,4 @@ enum RoutesWithStudioHeader {
 
 type RouteWithoutHeader = typeof RoutesWithoutHeader[keyof typeof RoutesWithoutHeader];
 
-export { AppRoute, AppRoutes, RouteWithoutHeader, RoutesWithoutHeader, RoutesWithStudioHeader };
+export { AppRoute, AppRoutes, RouteWithoutHeader, RoutesWithoutHeader, RoutesWithStudioHeader, AppParams };

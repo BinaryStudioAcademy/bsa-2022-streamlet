@@ -34,3 +34,4 @@ export { type ToastNotificationParams } from './toast-notification/toast-notific
 export { BaseVideoResponseDto, DataVideo } from './video/video';
 
 declare module 'react-notifications-component';
+export * from './channel/channel';
