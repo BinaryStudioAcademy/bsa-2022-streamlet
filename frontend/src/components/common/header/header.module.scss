@@ -5,12 +5,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 82px;
-  padding: 18px 20px;
+  height: $header-height;
+  padding: 0 20px;
   background-color: var(--gray-300-header-menu-background);
 }
 
-.search-mobile {
+.control-icons > .search-mobile {
   display: none;
   background-color: transparent;
   border: none;
@@ -69,9 +69,10 @@
 
 .user-avatar,
 .user-menu-avatar {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   background-color: var(--white-text-color);
+  background-position: center;
   background-size: contain;
   border-radius: 50%;
   cursor: pointer;
@@ -182,16 +183,17 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 10px;
   margin-right: 20px;
 
   @media screen and (max-width: 560px) {
-    gap: 20px;
+    gap: 7px;
     margin-right: 0;
   }
 }
 
 .control-icons button {
+  margin: 0 8px;
   background-color: transparent;
   border: none;
   outline: none;
@@ -202,6 +204,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 40px;
 }
 
 .block-search {
