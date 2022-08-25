@@ -1,0 +1,64 @@
+.upload-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 274px;
+  margin: 0;
+  padding: 20px;
+  background-color: var(--gray-300-header-menu-background);
+}
+
+.upload-image-field {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 316px;
+  height: 176px;
+  border: 2px green dashed;
+}
+
+.upload-image-field-plus-icon {
+  position: relative;
+  width: 0;
+  height: 0;
+  color: var(--white-text-color);
+  font-size: 50px;
+}
+
+.drag-an-drop-text {
+  z-index: 0;
+}
+
+.image-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: rgb(0 0 0 / 0%);
+  background: none;
+}
+
+.upload-image-field button {
+  color: rgba(0 0 0 / 0%);
+  background: none;
+}
+
+.error-message {
+  display: block;
+  width: 100%;
+  color: var(--brand-yellow-color);
+  font-size: 16px;
+  text-align: center;
+}
+
+@media screen and (max-width: 400px) {
+  .upload-image-wrapper {
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+}

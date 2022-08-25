@@ -19,7 +19,7 @@ const RestorePasswordForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit, isValid } = useAppForm<RestorePasswordFormValues>({
     defaultValues: { email: '' },
     validationSchema: restorePasswordInit,
-    mode: 'onChange',
+    mode: 'onTouched',
   });
 
   return (
@@ -33,13 +33,24 @@ const RestorePasswordForm: FC<Props> = ({ onSubmit, isLoading }) => {
           type="email"
           inputClassName={formStyles['input']}
           inputErrorClassName={formStyles['input-error']}
+          errorBlockClassName={formStyles['error']}
           labelClassName={formStyles['label']}
           wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
-        <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Send" />
+        <AuthSubmitButton
+          isLoading={isLoading}
+          disabled={isLoading || !isValid}
+          name="Send"
+          className={formStyles['upper-space-regular']}
+        />
       </form>
-      <ContinueWithParagraph linkTitle="Back to login" prompt="Changed your mind?" route={AppRoutes.SIGN_IN} />
+      <ContinueWithParagraph
+        linkTitle="Back to login"
+        prompt="Changed your mind?"
+        route={AppRoutes.SIGN_IN}
+        className={formStyles['upper-space-regular']}
+      />
     </>
   );
 };

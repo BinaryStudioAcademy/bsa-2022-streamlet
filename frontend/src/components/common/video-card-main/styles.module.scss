@@ -1,4 +1,7 @@
 @import 'assets/css/breakpoint.scss';
+@import 'assets/css/config.scss';
+
+$base-z-index: $page-component-z-index;
 
 .video-card {
   display: flex;
@@ -9,7 +12,7 @@
 
 .video-card-preview {
   position: relative;
-  z-index: 10;
+  z-index: $base-z-index;
   height: 0;
   padding-bottom: 56.25%; /* 16:9 */
   cursor: pointer;
@@ -19,7 +22,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 11;
+  z-index: $base-z-index + 1;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -29,7 +32,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 13;
+  z-index: $base-z-index + 3;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,30 +40,11 @@
   height: 100%;
 }
 
-.video-card-play-btn {
-  display: none;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  background-color: var(--input-error-color);
-  border-radius: 50%;
-}
-
-.video-card-play-btn svg path {
-  fill: var(--white-text-color);
-}
-
-.video-card-preview:hover .video-card-play-btn,
-.video-card-preview:focus .video-card-play-btn {
-  display: flex;
-}
-
 .video-card-badge-duration {
   position: absolute;
   right: 7px;
   bottom: 7px;
-  z-index: 15;
+  z-index: $base-z-index + 5;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -78,7 +62,7 @@
   position: absolute;
   bottom: 7px;
   left: 7px;
-  z-index: 15;
+  z-index: $base-z-index + 5;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -112,7 +96,7 @@
   height: 24px;
   margin-left: 15px;
   padding: 4px 10px;
-  color: var(--white-text-color);
+  color: var(--always-white-color);
   background-color: var(--video-card-schedule-btn-background);
   border-radius: 3px;
   cursor: pointer;
@@ -133,17 +117,28 @@
   justify-content: space-between;
 }
 
+.avatar {
+  width: 100%;
+  height: 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 .video-card-desc {
   display: grid;
   grid-template-columns: 40px auto;
   gap: 5px 10px;
-  padding: 10px;
+  padding: 10px 22px 10px 10px;
 }
 
 .video-card-name {
   display: flex;
   flex-flow: column nowrap;
   gap: 5px;
+  overflow: hidden;
 }
 
 .video-card-channel img {
@@ -153,11 +148,18 @@
 }
 
 .video-card-title {
+  display: flex;
+  max-height: 48px;
+  overflow: hidden;
   color: var(--white-text-color);
   font-weight: 600;
   font-size: 14px;
   line-height: 24px;
+  white-space: normal;
   text-decoration: none;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   cursor: pointer;
 }
 
@@ -169,6 +171,7 @@
 }
 
 .video-card-author a {
+  overflow: hidden;
   color: var(--text-gray-color);
   font-weight: 400;
   font-size: 12px;
@@ -177,8 +180,10 @@
   cursor: pointer;
 }
 
-.video-card-author span {
+.video-card-author-name {
+  white-space: nowrap;
   text-transform: none;
+  text-overflow: ellipsis;
 }
 
 .video-card-meta-footer {
@@ -194,27 +199,19 @@
 
 .video-card-meta-tag {
   display: flex;
-  justify-content: center;
-  width: 40px;
-}
-
-.video-tag {
-  display: flex;
+  flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
-  margin: 5px 0;
-  padding: 2px 6px;
-  background-color: var(--gray-300-header-menu-background);
-  border: 1px solid var(--support-error-color);
-  border-radius: 16px;
+  gap: 5px;
+  width: 55px;
 }
 
-.video-tag span {
-  color: var(--support-error-color);
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 15px;
-  text-transform: capitalize;
+.video-card-meta-tag svg {
+  width: 12px;
+}
+
+.video-card-meta-tag svg path {
+  fill: var(--video-card-live-color);
 }
 
 .video-card-meta {

@@ -1,8 +1,10 @@
+@import 'assets/css/config.scss';
+
 .mobile-sidebar {
   position: absolute;
   top: 0;
   left: -100%;
-  z-index: 1;
+  z-index: $mobile-sidebar-z-index;
   width: 100%;
   height: 100vh;
   max-height: 100vh;
@@ -11,7 +13,7 @@
   opacity: 0;
   transition: 0.3s;
 
-  @media screen and (min-width: 1300px) {
+  @media screen and (min-width: 1301px) {
     display: none;
   }
 }
@@ -26,7 +28,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: $mobile-sidebar-z-index + 1;
   width: 40%;
   height: 100%;
   max-height: 100%;
@@ -107,10 +109,6 @@
 .nav-link {
   display: block;
   text-decoration: none;
-
-  &:not(:last-child) {
-    margin-bottom: 12px;
-  }
 }
 
 .nav-link li {
@@ -129,14 +127,24 @@
   line-height: 28px;
 }
 
-.nav-link.active li {
-  background-color: var(--brand-green-color);
+.nav-link:hover {
+  svg path {
+    fill: var(--white-text-color);
+  }
 
   .link-name {
     color: var(--white-text-color);
   }
+}
+
+.nav-link.active li {
+  background-color: var(--brand-green-color);
+
+  .link-name {
+    color: var(--always-white-color);
+  }
 
   svg path {
-    fill: var(--white-text-color);
+    fill: var(--always-white-color);
   }
 }

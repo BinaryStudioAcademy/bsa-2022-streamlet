@@ -1,7 +1,8 @@
 .filter-dropdown {
   margin-top: 20px;
   padding: 0 15px 0 5px;
-  font-family: Gilroy-SemiBold, sans-serif;
+  font-weight: 600;
+  font-family: Gilroy, sans-serif;
 }
 
 .filter-dropdown-title {
@@ -77,8 +78,9 @@
   fill: var(--white-text-color);
 }
 
-.filter-dropdown-item:hover label {
+.filter-dropdown-item label:hover {
   color: var(--brand-green-color);
+  cursor: pointer;
 }
 
 .filter-dropdown-item input {

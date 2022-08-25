@@ -4,7 +4,7 @@ import { Button, ErrorMessage } from 'components/common/common';
 import { FieldValues } from 'react-hook-form';
 import { ReactElement, useId, useState } from 'react';
 import { ErrorBox } from 'components/common/errors/errors';
-import passwordEye from 'assets/img/password-eye.svg';
+import { ReactComponent as PasswordEye } from 'assets/img/password-eye.svg';
 import styles from '../styles.module.scss';
 import passwordStyles from './password-input.module.scss';
 import clsx from 'clsx';
@@ -18,9 +18,11 @@ type Props<T> = {
   inputClassName?: string;
   labelClassName?: string;
   wrapperClassName?: string;
+  errorBlockClassName?: string;
   changeVisibilityBtnClassName?: string;
   inputWrapperClassName?: string;
   inputWrapperErrorClassName?: string;
+  isValidationErrorOnTop?: boolean;
 };
 
 type PasswordType = 'password' | 'text';
@@ -34,9 +36,11 @@ const PasswordInput = <T extends FieldValues>({
   inputClassName,
   labelClassName,
   wrapperClassName,
+  errorBlockClassName,
   inputWrapperClassName,
   inputWrapperErrorClassName,
   changeVisibilityBtnClassName,
+  isValidationErrorOnTop = true,
 }: Props<T>): ReactElement | null => {
   const {
     field,
@@ -55,9 +59,22 @@ const PasswordInput = <T extends FieldValues>({
 
   return (
     <div className={clsx(styles['input-wrapper'], wrapperClassName)}>
-      <label className={clsx(styles['label'], labelClassName)} htmlFor={id}>
-        <span>{label}</span>
-      </label>
+      <div className={styles['input-labels']}>
+        <label className={clsx(styles.label, labelClassName)} htmlFor={id}>
+          <span>{label}</span>
+        </label>
+        {isValidationErrorOnTop && (
+          <div className={clsx(errorBlockClassName)}>
+            <ErrorMessage
+              errors={errors}
+              name={name}
+              render={({ message }): ReactElement => {
+                return <ErrorBox message={message} />;
+              }}
+            />
+          </div>
+        )}
+      </div>
       <div
         className={clsx(
           passwordStyles['password-container'],
@@ -69,24 +86,26 @@ const PasswordInput = <T extends FieldValues>({
           {...field}
           type={inputPasswordType}
           placeholder={placeholder}
-          className={clsx(styles['input'], inputClassName)}
+          className={clsx(passwordStyles['input'], inputClassName)}
           id={id}
         />
         <Button
           onClick={handleChangeInputPasswordType}
           className={clsx(passwordStyles['check-password-btn'], changeVisibilityBtnClassName)}
-          content={<img src={passwordEye} alt="check" />}
+          content={<PasswordEye />}
         />
       </div>
-      <div className={styles['error-block']}>
-        <ErrorMessage
-          errors={errors}
-          name={name}
-          render={({ message }): ReactElement => {
-            return <ErrorBox message={message} />;
-          }}
-        />
-      </div>
+      {!isValidationErrorOnTop && (
+        <div className={clsx(errorBlockClassName)}>
+          <ErrorMessage
+            errors={errors}
+            name={name}
+            render={({ message }): ReactElement => {
+              return <ErrorBox message={message} />;
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };

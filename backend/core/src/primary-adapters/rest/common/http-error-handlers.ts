@@ -12,51 +12,53 @@ interface ErrorHandler {
   handle(error: Error, request: Request): HandlerResult;
 }
 
+type ErrorWithOptionalErrorCode = Error & { errorCode?: string };
+
 class NotFoundErrorHandler implements ErrorHandler {
-  handle(error: Error): HandlerResult {
+  handle(error: ErrorWithOptionalErrorCode): HandlerResult {
     logger.error(error, 'Not Found');
     return {
-      errors: [new ApiError(error.message)],
+      errors: [new ApiError(error.message, error.errorCode)],
       code: 404,
     };
   }
 }
 
 class BadRequestErrorHandler implements ErrorHandler {
-  handle(error: Error): HandlerResult {
+  handle(error: ErrorWithOptionalErrorCode): HandlerResult {
     logger.error(error, 'Bad request');
     return {
-      errors: [new ApiError(error.message)],
+      errors: [new ApiError(error.message, error.errorCode)],
       code: 400,
     };
   }
 }
 
 class UnauthorizedErrorHandler implements ErrorHandler {
-  handle(error: Error): HandlerResult {
+  handle(error: ErrorWithOptionalErrorCode): HandlerResult {
     logger.error(error, 'Bad request');
     return {
-      errors: [new ApiError(error.message)],
+      errors: [new ApiError(error.message, error.errorCode)],
       code: 401,
     };
   }
 }
 
 class ForbiddenErrorHandler implements ErrorHandler {
-  handle(error: Error): HandlerResult {
+  handle(error: ErrorWithOptionalErrorCode): HandlerResult {
     logger.error(error, 'Forbidden');
     return {
-      errors: [new ApiError(error.message)],
+      errors: [new ApiError(error.message, error.errorCode)],
       code: 403,
     };
   }
 }
 
 class UnhandledErrorHandler implements ErrorHandler {
-  handle(error: Error): HandlerResult {
+  handle(error: ErrorWithOptionalErrorCode): HandlerResult {
     logger.error(error, 'Unhandled exception');
     return {
-      errors: [new ApiError(error.message)],
+      errors: [new ApiError(error.message, error.errorCode)],
       code: 500,
     };
   }

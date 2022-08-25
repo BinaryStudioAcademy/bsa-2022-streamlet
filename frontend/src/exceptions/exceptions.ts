@@ -1,1 +1,1 @@
-export { HttpError } from 'shared/build';
+export { HttpError, errorCodes } from 'shared/build';

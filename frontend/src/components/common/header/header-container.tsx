@@ -1,36 +1,64 @@
 import { MouseEvent, FormEvent } from 'react';
 import { FC } from 'common/types/types';
 import { MenuOptions, AppRoutes, SearchQueryParam, IconName } from 'common/enums/enums';
-import { useOutsideClick, useAppDispatch, useAppSelector, useCallback, useNavigate, useRef } from 'hooks/hooks';
-import { authActions, searchActions } from 'store/actions';
+import {
+  useOutsideClick,
+  useAppDispatch,
+  useAppSelector,
+  useCallback,
+  useNavigate,
+  useRef,
+  useEffect,
+  useState,
+} from 'hooks/hooks';
+import { authActions, searchActions, profileActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
 import { switchTheme } from 'store/theme-switch/actions';
 import { Header } from './header';
-
-const FAKE_USER_AVATAR = 'https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745';
+import defaultAvatar from 'assets/img/default-user-avatar.jpg';
 
 const HeaderContainer: FC = () => {
   const dispatch = useAppDispatch();
   const {
     search: { searchText },
     user,
+    profile,
   } = useAppSelector((state) => ({
     search: state.search,
     user: state.auth.user,
+    profile: state.profile.profileData,
   }));
   const navigate = useNavigate();
 
   const hasUser = Boolean(user);
   const isLightTheme = useAppSelector((store) => store.theme.isLightTheme);
-  const { isOpened: isMenuOpen, open: openMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+  const { isOpened: isMenuOpen, open: openMenu, close: closeMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
+  const [searchValue, setSearchValue] = useState(searchText);
 
   const emptyOnClickHandler = (): void => void 0;
 
+  const handleClickSettings = (): void => {
+    navigate(AppRoutes.PROFILE_PREFERENCE, { replace: true });
+    closeMenu();
+  };
+
   const matchMenuOptionWithOnClickHandler: Record<MenuOptions, () => void> = {
-    [MenuOptions.Settings]: emptyOnClickHandler,
-    [MenuOptions.Theme]: emptyOnClickHandler,
+    [MenuOptions.Settings]: handleClickSettings,
+    [MenuOptions.Theme]: emptyOnClickHandler, // should be () => void 0; to work properly
     [MenuOptions.SignOut]: handleClickSignOut,
   };
+
+  useEffect(() => {
+    setSearchValue(searchText);
+  }, [searchText]);
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+    const { id: userId } = user;
+    dispatch(profileActions.getProfileByUserId({ userId }));
+  }, [dispatch, user]);
 
   const matchMenuOptionWithIconName: Record<MenuOptions, IconName> = {
     [MenuOptions.Settings]: IconName.SETTINGS,
@@ -40,7 +68,7 @@ const HeaderContainer: FC = () => {
 
   const matchMenuOptionWithText: Record<MenuOptions, string> = {
     [MenuOptions.Settings]: 'Settings',
-    [MenuOptions.Theme]: isLightTheme ? 'Light Theme' : 'Dark Theme',
+    [MenuOptions.Theme]: 'Dark mode',
     [MenuOptions.SignOut]: 'Sign Out',
   };
 
@@ -69,6 +97,7 @@ const HeaderContainer: FC = () => {
 
   function handleClickSignOut(): void {
     handleSignOut();
+    closeMenu();
   }
 
   function handleClickUserMenu(e: MouseEvent): void {
@@ -82,7 +111,9 @@ const HeaderContainer: FC = () => {
 
   const handleClearActiveFilterIds = useCallback(() => dispatch(searchActions.clearActiveFilterIds()), [dispatch]);
 
-  const handleInputSearch = useCallback((value: string) => dispatch(searchActions.setSearchText(value)), [dispatch]);
+  const handleSetInputSearch = useCallback((value: string) => dispatch(searchActions.setSearchText(value)), [dispatch]);
+
+  const handleInputSearch = (value: string): void => setSearchValue(value);
 
   const handleChangeInputSearch = ({ currentTarget }: FormEvent<HTMLInputElement>): void => {
     handleInputSearch(currentTarget.value);
@@ -95,9 +126,10 @@ const HeaderContainer: FC = () => {
 
   const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (searchText) {
+    if (searchValue) {
+      handleSetInputSearch(searchValue);
       handleClearActiveFilterIds();
-      const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchText });
+      const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchValue });
       navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`);
     }
   };
@@ -111,7 +143,7 @@ const HeaderContainer: FC = () => {
       menuRef={menuRef}
       isLogged={hasUser}
       isMenuOpen={isMenuOpen}
-      searchValue={searchText}
+      searchValue={searchValue}
       searchInputEl={searchInputEl}
       handleClickUserMenu={handleClickUserMenu}
       handleClickSignIn={handleClickSignIn}
@@ -119,9 +151,11 @@ const HeaderContainer: FC = () => {
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
       handleSubmitSearch={handleSubmitSearch}
-      userAvatar={FAKE_USER_AVATAR}
+      userAvatar={profile?.avatar ? profile.avatar : defaultAvatar}
+      userName={profile?.username}
+      userEmail={user?.email}
       options={options}
-      themeValue={isLightTheme}
+      themeValue={!isLightTheme}
       notificationDropdownContent={<NotificationDropdownContainer />}
     />
   );

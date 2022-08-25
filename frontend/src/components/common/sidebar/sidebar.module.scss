@@ -1,4 +1,7 @@
+@import 'assets/css/config.scss';
+
 .sidebar {
+  z-index: $sidebar-z-index;
   display: flex;
   flex-direction: column;
   width: 300px;
@@ -9,6 +12,7 @@
 
   @media screen and (max-width: 1300px) {
     width: 64px;
+    min-width: 64px;
   }
 
   @media screen and (max-width: 560px) {
@@ -22,18 +26,12 @@
 
 .sidebar::-webkit-scrollbar {
   display: none;
-  width: 7px;
 }
 
 .sidebar:hover {
   &::-webkit-scrollbar {
     display: block;
   }
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background-color: var(--gray-200-input-background);
-  border-radius: 2px;
 }
 
 .navigate-menu ul a {
@@ -83,20 +81,16 @@
   padding-bottom: 15px;
 }
 
-.navigate-menu ul a:not(:last-child) {
-  margin-bottom: 12px;
-}
-
 .navigate-menu ul a.active {
   background-color: var(--brand-green-color);
 }
 
 .navigate-menu ul a.active svg path {
-  fill: var(--white-text-color);
+  fill: var(--always-white-color);
 }
 
 .navigate-menu ul a.active span {
-  color: var(--white-text-color);
+  color: var(--always-white-color);
 }
 
 .navigate-menu ul li svg {

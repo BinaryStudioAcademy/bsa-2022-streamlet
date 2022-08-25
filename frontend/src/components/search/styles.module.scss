@@ -1,16 +1,17 @@
-@import '../../assets/css/breakpoint.scss';
+@import 'assets/css/breakpoint.scss';
 
 .search-page {
-  position: relative;
   display: flex;
-  flex-grow: 1;
   flex-flow: column nowrap;
-  overflow: hidden;
+  height: 100%;
   background-color: var(--gray-400-primary-background);
 }
 
 .search-page-wrapper {
   display: flex;
+  flex: 1;
+  flex-flow: column nowrap;
+  align-items: center;
   width: 100%;
 }
 
@@ -20,6 +21,7 @@
   gap: 15px;
   width: 100%;
   padding: 12px;
+  overflow: hidden;
 }
 
 @media #{$mobile-middle} {
@@ -28,22 +30,33 @@
   }
 }
 
-@media #{$tablet-middle} {
+@media #{$tablet-large} {
   .search-page {
-    padding: 15px;
+    padding: 0 10px;
+  }
+
+  .search-page-wrapper {
+    flex-flow: row nowrap;
+    align-items: flex-start;
   }
 
   .search-page-video-list {
-    padding: 15px;
+    padding: 20px;
   }
 }
 
-@media #{$tablet-large} {
+@media #{$desktop-small} {
   .search-page {
-    padding: 20px;
+    align-items: center;
   }
 
-  .search-page-video-list {
-    padding: 20px;
+  .search-page-wrapper {
+    max-width: 1080px;
+  }
+}
+
+@media #{$desktop-small} {
+  .search-page-wrapper {
+    max-width: 1150px;
   }
 }

@@ -1,0 +1,4 @@
+const IS_NEW_VIDEO_TIME_DELAY = 4 * 60 * 60 * 1000; // 4 hours
+const UPDATE_CARD_TIME_DELAY = 60 * 1000; // 1 minute
+
+export { IS_NEW_VIDEO_TIME_DELAY, UPDATE_CARD_TIME_DELAY };

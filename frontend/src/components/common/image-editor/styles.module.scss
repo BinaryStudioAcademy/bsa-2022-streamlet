@@ -1,0 +1,64 @@
+.image-editor-control-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  padding: 10px;
+}
+
+.image-editor-control-container button {
+  padding: 0 10px;
+  color: var(--always-white-color);
+  background-color: var(--brand-green-color);
+  border: none;
+  border-radius: 3px;
+}
+
+.horizontal-slider {
+  width: 90%;
+  margin: 12px 10px 0;
+}
+
+.example-thumb {
+  position: relative;
+  z-index: 100;
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: var(--brand-green-color);
+  border-radius: 100%;
+  box-shadow: 0 0 2px 0 rgb(0 0 0 / 44%);
+  cursor: pointer;
+}
+
+.example-thumb.active {
+  background-color: grey;
+}
+
+.example-track {
+  position: relative;
+  height: 3px;
+  background: var(--gray-300-header-menu-background);
+}
+
+.example-track.example-track-0 {
+  background: var(--image-editor-zoom-slider-track-color);
+}
+
+.horizontal-slider .example-track {
+  height: 4px;
+}
+
+.horizontal-slider .example-thumb {
+  position: absolute;
+  top: -5px;
+  width: 15px;
+  height: 15px;
+  line-height: 38px;
+  outline: none;
+}
+
+.image-editor-slider-container {
+  display: flex;
+  width: 50%;
+}

@@ -1,8 +1,10 @@
+@import 'assets/css/config.scss';
+
 .not-found-page-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: $modal-z-index;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,7 +22,7 @@
 .go-home-button {
   height: 50px;
   padding: 0 10px;
-  color: var(--white-text-color);
+  color: var(--always-white-color);
   font-size: 16px;
   line-height: 16px;
   letter-spacing: 1.5px;

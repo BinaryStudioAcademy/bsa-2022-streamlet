@@ -1,0 +1,247 @@
+@import 'assets/css/breakpoint.scss';
+
+.profile-page-loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.preference-page-content-container form {
+  background-color: var(--gray-300-header-menu-background);
+}
+
+.preference-page-content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.preference-page-content-container button {
+  cursor: pointer;
+}
+
+.profile-preferences-container {
+  width: 800px;
+  padding: 0 30px;
+  background-color: var(--gray-400-primary-background);
+}
+
+.profile-preferences-container h2 {
+  color: var(--white-text-color);
+}
+
+.profile-preferences-container h3 {
+  color: var(--white-text-color);
+}
+
+.profile-preferences-container label {
+  white-space: nowrap;
+}
+
+.profile-preferences-main-content-container {
+  padding: 20px 0;
+}
+
+.profile-image-header {
+  display: block;
+  margin: 0 0 20px;
+  text-align: left;
+}
+
+.profile-image-upload-container {
+  display: flex;
+  width: 100%;
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: var(--gray-300-header-menu-background);
+}
+
+.image-upload-control-container {
+  height: 96px;
+}
+
+.image-upload-control-container span {
+  display: block;
+  text-transform: none;
+}
+
+.avatar-container {
+  display: block;
+  width: 96px;
+  height: 96px;
+  margin-right: 20px;
+}
+
+.profile-image-preview {
+  width: 96px;
+  height: 96px;
+  margin-right: 20px;
+  border-radius: 100%;
+}
+
+.image-upload-button {
+  height: 30px;
+  margin-bottom: 10px;
+  padding: 0 20px;
+  color: var(--always-white-color);
+  font-size: 15px;
+  text-transform: capitalize;
+  background-color: var(--brand-green-color);
+  border: none;
+  border-radius: 3px;
+}
+
+.profile-settings-header {
+  display: block;
+  margin: 0 0 3px;
+  text-align: left;
+}
+
+.profile-settings-sub-header {
+  display: block;
+  margin: 0 0 20px;
+  text-align: left;
+}
+
+.profile-setting-change-block {
+  display: flex;
+  width: 100%;
+  padding: 20px;
+  background-color: var(--gray-300-header-menu-background);
+}
+
+.profile-setting-input-block {
+  width: 100%;
+}
+
+.profile-setting-change-label-block {
+  padding-right: 20px;
+}
+
+.profile-setting-change-description {
+  margin: 10px 0 0;
+}
+
+.save-change-button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.save-change-button {
+  height: 30px;
+  padding: 0 10px;
+  color: white;
+  font-size: 15px;
+  background-color: var(--brand-green-color);
+  border: none;
+  border-radius: 3px;
+}
+
+.error-message {
+  display: block;
+  width: 100%;
+  color: var(--brand-yellow-color);
+  font-size: 16px;
+  text-align: center;
+}
+
+@media #{$tablet-large} {
+  .profile-image-upload-container {
+    flex-direction: row;
+  }
+
+  .image-upload-control-container {
+    display: block;
+    height: 96px;
+  }
+
+  .avatar-container {
+    display: block;
+    width: 96px;
+    height: 96px;
+    margin-right: 20px;
+  }
+
+  .profile-image-preview {
+    margin-right: 20px;
+  }
+}
+
+@media #{$mobile-small} and (max-width: 768px) {
+  .profile-image-upload-container {
+    flex-direction: column;
+  }
+
+  .image-upload-control-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+  }
+
+  .image-upload-control-container span {
+    text-align: center;
+  }
+
+  .avatar-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .profile-image-preview {
+    margin: 0;
+  }
+
+  .profile-preferences-container {
+    max-width: 500px;
+    padding: 5px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+
+  .preference-page-content-container {
+    overflow-y: auto;
+  }
+
+  .profile-setting-change-block {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .profile-preferences-main-content {
+    padding-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .profile-preferences-container {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .profile-settings-sub-header {
+    line-height: 25px;
+    text-align: center;
+  }
+
+  .profile-settings-header {
+    text-align: center;
+  }
+
+  .profile-image-header {
+    text-align: center;
+  }
+
+  .profile-setting-change-block {
+    width: 100%;
+    padding: 5px;
+  }
+}

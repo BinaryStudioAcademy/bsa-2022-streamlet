@@ -7,6 +7,7 @@ import { ReactComponent as ArrowUp } from 'assets/img/arrow-up.svg';
 import { ReactComponent as ArrowLeft } from 'assets/img/arrow-left.svg';
 import { ReactComponent as BellOutline } from 'assets/img/bell-outline.svg';
 import { ReactComponent as Camera } from 'assets/img/camera.svg';
+import { ReactComponent as Circle } from 'assets/img/circle.svg';
 import { ReactComponent as Compass } from 'assets/img/compass.svg';
 import { ReactComponent as Filter } from 'assets/img/filter.svg';
 import { ReactComponent as Follow } from 'assets/img/follow.svg';
@@ -34,6 +35,9 @@ import { ReactComponent as Success } from 'assets/img/success.svg';
 import { ReactComponent as SendMessage } from 'assets/img/send-message.svg';
 import { ReactComponent as Emoji } from 'assets/img/emoji.svg';
 import { ReactComponent as OnlineStreaming } from 'assets/img/online-streaming.svg';
+import { ReactComponent as TV } from 'assets/img/tv.svg';
+import { ReactComponent as Rotate } from 'assets/img/rotate.svg';
+import { ReactComponent as ZoomIn } from 'assets/img/zoom-in.svg';
 
 import clsx from 'clsx';
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -86,6 +90,10 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.CAMERA: {
       return <Camera {...commonProps} />;
+    }
+
+    case IconName.CIRCLE: {
+      return <Circle {...commonProps} />;
     }
 
     case IconName.COMPASS: {
@@ -179,15 +187,29 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
     case IconName.EMOJI: {
       return <Emoji {...commonProps} />;
     }
+
     case IconName.SUN: {
       return <Sun {...commonProps} />;
     }
+
+    case IconName.ZOOM_IN: {
+      return <ZoomIn {...commonProps} />;
+    }
+
+    case IconName.ROTATE: {
+      return <Rotate {...commonProps} />;
+    }
+
     case IconName.ANALYTICS: {
       return <Analytics {...commonProps} />;
     }
 
     case IconName.MARK_AS_READ: {
       return <MarkAsRead {...commonProps} />;
+    }
+
+    case IconName.TV: {
+      return <TV {...commonProps} />;
     }
 
     case IconName.ONLINE_STREAMING: {

@@ -19,7 +19,7 @@ import {
   AccountVerificationConfirmResponseDto,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
-import { compareHash, generateJwt, trimUser } from '~/shared/helpers';
+import { compareHash, compareStringsInsensitive, generateJwt, trimUser } from '~/shared/helpers';
 import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
 import { authenticationMiddleware, validationMiddleware } from '../middleware';
 import {
@@ -31,15 +31,13 @@ import {
   accountVerificationInit,
 } from '~/validation-schemas/user/user';
 import { refreshTokenRequest } from '~/validation-schemas/refresh-token/refresh-token';
-import { Unauthorized } from '~/shared/exceptions/unauthorized';
 import { exceptionMessages, successMessages } from '~/shared/enums/messages';
-import { DuplicationError } from '~/shared/exceptions/duplication-error';
-import { NotFound } from '~/shared/exceptions/not-found';
 import { ResetPasswordService } from '~/core/reset-password/application/reset-password-service';
 import { AccountVerificationService } from '~/core/account-verification/application/account-verification-service';
 import { CONFIG } from '~/configuration/config';
 import { GetCurrentUserResponseDto } from 'shared/build/common/types/auth/get-current-user-response-dto';
 import { AccountVerificationInitRequestDto, AccountVerificationInitResponseDto } from 'shared/build';
+import { Forbidden, NotFound, DuplicationError, Unauthorized, errorCodes } from '~/shared/exceptions/exceptions';
 
 /**
  * @swagger
@@ -154,10 +152,10 @@ export class AuthController extends BaseHttpController {
     );
 
     if (duplicateUser) {
-      if (duplicateUser.username === userRequestDto.username) {
+      if (compareStringsInsensitive(duplicateUser.username, userRequestDto.username)) {
         throw new DuplicationError(exceptionMessages.auth.USER_USERNAME_ALREADY_EXISTS);
       }
-      if (duplicateUser.email === userRequestDto.email) {
+      if (compareStringsInsensitive(duplicateUser.email, userRequestDto.email)) {
         throw new DuplicationError(exceptionMessages.auth.USER_EMAIL_ALREADY_EXISTS);
       }
     }
@@ -228,6 +226,9 @@ export class AuthController extends BaseHttpController {
     if (!user) {
       throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS_LOGIN);
     }
+    if (!user.isActivated) {
+      throw new Forbidden(exceptionMessages.auth.EMAIL_NOT_VERIFIED, errorCodes.auth.signIn.UNVERIFIED);
+    }
     const isSameHash = await compareHash(userRequestDto.password, user.password);
     if (!isSameHash) {
       throw new Unauthorized(exceptionMessages.auth.INCORRECT_CREDENTIALS_LOGIN);
@@ -294,6 +295,7 @@ export class AuthController extends BaseHttpController {
     if (!tokenUser) {
       throw new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN);
     }
+
     const newRefreshToken = await this.userService.createRefreshToken(tokenUser.id);
     const newAccessToken = await generateJwt({
       payload: trimUser(tokenUser),
@@ -382,7 +384,10 @@ export class AuthController extends BaseHttpController {
     const tokenUser = await this.resetPasswordService.getResetTokenUser(requestDto.token);
 
     if (!tokenUser) {
-      throw new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_RESET_PASSWORD_LINK);
+      throw new Unauthorized(
+        exceptionMessages.auth.UNAUTHORIZED_INCORRECT_RESET_PASSWORD_LINK,
+        errorCodes.auth.restorePassword.INCORRECT_TOKEN,
+      );
     }
     await this.userService.changeUserPassword(tokenUser.id, requestDto.password);
     await this.resetPasswordService.removeTokensForUser(tokenUser.id);

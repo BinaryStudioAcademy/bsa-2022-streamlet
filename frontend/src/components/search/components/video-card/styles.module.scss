@@ -1,4 +1,7 @@
 @import 'assets/css/breakpoint.scss';
+@import 'assets/css/config.scss';
+
+$base-z-index: $page-component-z-index;
 
 .video-card {
   display: flex;
@@ -9,7 +12,7 @@
 
 .video-card-preview {
   position: relative;
-  z-index: 10;
+  z-index: $base-z-index;
   height: 0;
   padding-bottom: 56.25%; /* 16:9 */
   cursor: pointer;
@@ -19,7 +22,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 11;
+  z-index: $base-z-index + 1;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -29,7 +32,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 13;
+  z-index: $base-z-index + 3;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,23 +40,11 @@
   height: 100%;
 }
 
-.video-card-play-btn {
-  display: none;
-}
-
-.video-card-preview:focus .video-card-play-btn {
-  display: flex;
-}
-
-.video-card-play-btn svg path {
-  fill: var(--white-text-color);
-}
-
 .video-card-badge-duration {
   position: absolute;
   right: 7px;
   bottom: 7px;
-  z-index: 15;
+  z-index: $base-z-index + 5;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
@@ -71,7 +62,7 @@
   position: absolute;
   bottom: 7px;
   left: 7px;
-  z-index: 15;
+  z-index: $base-z-index + 5;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -105,7 +96,7 @@
   height: 24px;
   margin-left: 15px;
   padding: 4px 10px;
-  color: var(--white-text-color);
+  color: var(--always-white-color);
   background-color: var(--video-card-schedule-btn-background);
   border-radius: 3px;
   cursor: pointer;
@@ -129,28 +120,45 @@
 
 .avatar {
   width: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   border-radius: 50%;
   cursor: pointer;
 }
 
 .video-card-channel {
   justify-self: end;
+  width: 100%;
   padding-left: 10px;
+}
+
+.video-card-channel .avatar {
+  height: 40px;
 }
 
 .video-card-desc {
   display: flex;
   flex-flow: column nowrap;
-  padding-right: 10px;
+  gap: 5px;
+  padding-right: 20px;
   padding-bottom: 10px;
+  overflow: hidden;
 }
 
 .video-card-title {
+  display: flex;
+  max-height: 48px;
+  overflow: hidden;
   color: var(--white-text-color);
   font-weight: 600;
   font-size: 14px;
   line-height: 24px;
+  white-space: normal;
   text-decoration: none;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   cursor: pointer;
 }
 
@@ -185,7 +193,7 @@
   height: 20px;
   padding: 3px 6px 3px 3px;
   color: var(--white-text-color);
-  background-color: #ffffff26;
+  background-color: var(--white-background-video-card);
   border-radius: 3px;
   cursor: pointer;
 }
@@ -202,9 +210,11 @@
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  margin-bottom: 5px;
 }
 
 .video-card-author a {
+  overflow: hidden;
   color: var(--text-gray-color);
   font-weight: 400;
   font-size: 12px;
@@ -213,11 +223,13 @@
   cursor: pointer;
 }
 
-.video-card-author span {
+.video-card-author-name {
+  white-space: nowrap;
   text-transform: none;
+  text-overflow: ellipsis;
 }
 
-.video-card-author .avatar {
+.video-card-author-avatar {
   display: none;
 }
 
@@ -225,7 +237,6 @@
   display: flex;
   flex-flow: row wrap;
   gap: 8px;
-  margin-top: 8px;
 }
 
 .video-card-tag-live {
@@ -258,8 +269,19 @@
 
 .video-card-meta-tag {
   display: flex;
+  flex-flow: row nowrap;
   justify-content: center;
-  width: 40px;
+  align-items: center;
+  gap: 5px;
+  width: 55px;
+}
+
+.video-card-meta-tag svg {
+  width: 12px;
+}
+
+.video-card-meta-tag svg path {
+  fill: var(--video-card-live-color);
 }
 
 @media #{$mobile-large} {
@@ -275,13 +297,8 @@
     background: none;
   }
 
-  .video-card:focus-within,
-  .video-card:hover {
-    background-color: var(--gray-300-header-menu-background);
-  }
-
   .video-card-preview {
-    height: 150px;
+    height: 140px;
     aspect-ratio: 16 / 9;
     padding-bottom: 0;
   }
@@ -299,12 +316,12 @@
     margin-top: 0;
   }
 
-  .video-card-channel {
-    display: none;
-  }
-
   .video-card-desc {
     padding-right: 0;
+  }
+
+  .video-card-channel {
+    display: none;
   }
 
   .video-card-title {
@@ -312,16 +329,17 @@
     line-height: 24px;
   }
 
-  .video-card-meta {
+  .video-card-meta.video-card-meta-scheduled {
     display: flex;
-    flex-flow: row nowrap;
-    gap: 13px;
+  }
+
+  .video-card-meta-data {
+    padding: 0 0 7px;
   }
 
   .video-card-meta-scheduled {
     flex-flow: column nowrap;
     gap: 5px;
-    padding: 10px 0;
   }
 
   .video-card-meta-scheduled .video-card-meta-data {
@@ -329,17 +347,20 @@
   }
 
   .video-card-author {
+    display: grid;
+    grid-template-columns: 25px auto;
     gap: 10px;
-    margin-top: 5px;
+    height: 25px;
     color: var(--white-text-color);
+    font-weight: 500;
     font-size: 14px;
-    font-family: Gilroy-Medium, sans-serif;
+    font-family: Gilroy, sans-serif;
     line-height: 16px;
   }
 
-  .video-card-author .avatar {
-    display: block;
-    width: 30px;
+  .video-card-author-avatar {
+    display: flex;
+    height: 100%;
   }
 
   .video-card-tag-live {
@@ -348,6 +369,16 @@
 
   .video-card-meta-footer {
     display: none;
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .video-card-preview {
+    height: 160px;
+  }
+
+  .video-card-info {
+    padding-right: 10px;
   }
 }
 
@@ -360,25 +391,24 @@
     height: 190px;
   }
 
-  .video-card-play-btn {
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    background-color: var(--input-error-color);
-    border-radius: 50%;
-  }
-
-  .video-card:hover .video-card-play-btn {
-    display: flex;
-  }
-
-  .video-card-play-btn svg {
-    width: 15px;
-  }
-
   .video-card-title {
     font-size: 18px;
+  }
+
+  .video-card-author {
+    grid-template-columns: 30px auto;
+    height: 30px;
+  }
+
+  .video-card-meta {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 13px;
+  }
+
+  .video-card-meta.video-card-meta-scheduled {
+    flex-flow: column nowrap;
+    gap: 7px;
   }
 
   .video-card-meta-data {
@@ -390,17 +420,28 @@
   }
 }
 
+@media screen and (min-width: 850px) {
+  .video-card-preview {
+    height: 205px;
+  }
+
+  .video-card-info {
+    padding-right: 20px;
+  }
+
+  .video-card-desc {
+    gap: 10px;
+  }
+}
+
 @media #{$desktop-small} {
   .video-card-preview {
     height: 230px;
   }
+}
 
-  .video-card-play-btn {
-    width: 50px;
-    height: 50px;
-  }
-
-  .video-card-play-btn svg {
-    width: 19px;
+@media #{$desktop-middle} {
+  .video-card-info {
+    padding-right: 30px;
   }
 }
