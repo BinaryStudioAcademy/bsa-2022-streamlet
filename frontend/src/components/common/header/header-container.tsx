@@ -144,7 +144,7 @@ const HeaderContainer: FC = () => {
       navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`);
       setMobileSearchToggle(false);
     } else {
-      searchInputEl.current?.focus();
+      setFocusOnSearchInput();
     }
   };
 

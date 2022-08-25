@@ -482,10 +482,15 @@
   --input-border: none;
   --input-error-border: 1px solid var(--input-error-color);
   --input-background-color: #ffffff;
+  --always-white-color: #ffffff;
+
+  /* sidebar */
   --sidebar-scrollbar-track-background: var(--gray-300-header-menu-background);
   --sidebar-icon-color: #6a726d;
   --sidebar-icon-hover-color: #ffffff;
-  --always-white-color: #ffffff;
+
+  /* header */
+  --header-search-icon-color: #6a726d;
 
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
@@ -525,6 +530,9 @@ body[data-theme='light'] {
   --sidebar-scrollbar-track-background: #e8e8e8;
   --sidebar-icon-color: var(--brand-green-color);
   --sidebar-icon-hover-color: var(--brand-green-color-hover);
+
+  /* header */
+  --header-search-icon-color: var(--brand-green-color);
 
   /* auth forms */
   --link-color: rgb(0 73 56);
