@@ -2,10 +2,6 @@
 
 $base-z-index: $page-z-index;
 
-.auth-logo {
-  max-height: 40px;
-}
-
 .auth-background {
   display: flex;
   flex-grow: 1;
@@ -16,37 +12,50 @@ $base-z-index: $page-z-index;
 
 .auth-modal {
   z-index: $base-z-index + 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 100vw;
+  max-width: 600px;
+  height: 100vh;
   margin: auto;
+  padding: 25px 35px;
   background-color: var(--auth-modal-background);
-  border: solid 3px transparent;
   border-radius: 3px;
   border-image-source: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
   border-image-slice: 1;
 }
 
-.auth-container {
-  margin: 38px 20px;
+.auth-logo {
+  height: 28px;
 }
 
 .auth-title {
   margin-top: 0;
   color: var(--white-text-color);
-  font-size: 44px;
+  font-size: 28px;
+  line-height: 28px;
+}
+
+.heading {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
 .background-zigzag {
   position: absolute;
   top: 20vh;
   left: 5vw;
-  z-index: $base-z-index;
 }
 
 .background-zigzag-2 {
   position: absolute;
   top: 44vh;
   left: 0;
-  z-index: $base-z-index;
   width: 155px;
 }
 
@@ -54,47 +63,28 @@ $base-z-index: $page-z-index;
   position: absolute;
   top: -2vh;
   right: 1vw;
-  z-index: $base-z-index - 1;
-}
-
-@media screen and (min-height: 820px) {
-  .auth-background {
-    width: 100vw;
-  }
-
-  .auth-modal {
-    width: 100vw;
-  }
 }
 
 @media screen and (min-width: 600px) {
   .auth-modal {
     width: 80vw;
     height: auto;
-  }
-
-  .auth-container {
-    margin: 38px 46px;
+    border-width: 3px;
+    border-style: solid;
   }
 
   .background-zigzag {
     left: -30vw;
-    z-index: $base-z-index + 2;
   }
 
   .background-zigzag-2 {
     left: -20vw;
-    z-index: $base-z-index + 2;
   }
 }
 
 @media screen and (min-width: 850px) {
   .auth-modal {
     width: 60vw;
-  }
-
-  .auth-container {
-    margin: 38px 96px;
   }
 
   .background-zigzag {
@@ -109,10 +99,6 @@ $base-z-index: $page-z-index;
 @media screen and (min-width: 980px) {
   .background-zigzag {
     left: 2vw;
-  }
-
-  .background-element {
-    z-index: $base-z-index;
   }
 }
 

@@ -50,33 +50,45 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           control={control}
           errors={errors}
         />
-        <PasswordInput
-          inputClassName={formStyles['password']}
-          labelClassName={formStyles['label']}
-          wrapperClassName={formStyles['form-input']}
-          inputWrapperErrorClassName={formStyles['input-error']}
-          placeholder="Password"
-          control={control}
-          name="password"
-          errors={errors}
-          label="Password"
+        <div className={formStyles['input-row']}>
+          <PasswordInput
+            inputClassName={formStyles['password']}
+            labelClassName={formStyles['label']}
+            wrapperClassName={formStyles['form-input']}
+            inputWrapperErrorClassName={formStyles['input-error']}
+            placeholder="Password"
+            control={control}
+            name="password"
+            errors={errors}
+            label="Password"
+          />
+          <PasswordInput
+            inputClassName={formStyles['password']}
+            labelClassName={formStyles['label']}
+            wrapperClassName={formStyles['form-input']}
+            inputWrapperErrorClassName={formStyles['input-error']}
+            placeholder="Confirm password"
+            control={control}
+            name="passwordConfirm"
+            errors={errors}
+            label="Confirm password"
+          />
+        </div>
+        <AuthSubmitButton
+          isLoading={isLoading}
+          disabled={isLoading || !isValid}
+          name="Sign up"
+          className={formStyles['upper-space-regular']}
         />
-        <PasswordInput
-          inputClassName={formStyles['password']}
-          labelClassName={formStyles['label']}
-          wrapperClassName={formStyles['form-input']}
-          inputWrapperErrorClassName={formStyles['input-error']}
-          placeholder="Confirm password"
-          control={control}
-          name="passwordConfirm"
-          errors={errors}
-          label="Confirm password"
-        />
-        <ContinueWithParagraph prompt="Already have an account?" linkTitle="Sign in" route={AppRoutes.SIGN_IN} />
-        <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Sign up" />
       </form>
       <p className={formStyles['continue-with']}>or continue with</p>
       <GoogleButton disabled={isLoading} />
+      <ContinueWithParagraph
+        prompt="Already have an account?"
+        linkTitle="Sign in"
+        route={AppRoutes.SIGN_IN}
+        className={formStyles['upper-space-regular']}
+      />
     </>
   );
 };

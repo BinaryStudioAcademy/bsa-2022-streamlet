@@ -34,7 +34,12 @@ const SendVerificationLinkForm: FC<Props> = ({ onSubmit, isLoading }) => {
           wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
-        <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Resend" />
+        <AuthSubmitButton
+          isLoading={isLoading}
+          disabled={isLoading || !isValid}
+          name="Resend"
+          className={formStyles['upper-space-regular']}
+        />
       </form>
     </>
   );
