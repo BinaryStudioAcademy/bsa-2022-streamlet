@@ -484,6 +484,7 @@
   --input-background-color: #ffffff;
   --sidebar-scrollbar-track-background: var(--gray-300-header-menu-background);
   --always-white-color: #ffffff;
+  --loader-color: #ffffff;
 
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
@@ -514,6 +515,7 @@ body[data-theme='light'] {
   --hover-light-grey: var(--hover-dark-grey);
   --gray-400-primary-background: #ffffff;
   --gray-200-input-background: #dadada;
+  --loader-color: var(--brand-green-color);
 
   /* channel page */
   --banner-background: #94a098;
