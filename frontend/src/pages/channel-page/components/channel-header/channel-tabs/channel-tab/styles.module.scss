@@ -1,0 +1,14 @@
+.channel-button {
+  min-width: 100px;
+  background: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.channel-button:hover,
+.channel-button.active {
+  color: var(--brand-green-color-hover);
+  background: none;
+  border-bottom-color: var(--brand-green-color-hover);
+}
