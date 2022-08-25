@@ -38,8 +38,10 @@ div .input-error {
 }
 
 .input-row {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-bottom: 60px;
   column-gap: 20px;
 }
 
@@ -73,4 +75,11 @@ div .input-error {
     flex-direction: column;
     justify-content: center;
   }
+}
+
+.password-error {
+  position: absolute;
+  top: 110%;
+  width: 50%;
+  line-height: 15px;
 }
