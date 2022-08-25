@@ -492,6 +492,8 @@
   --auth-border: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
   --auth-background: var(--gray-400-primary-background);
   --auth-box-shadow: none;
+  --link-color: rgb(146 255 230);
+  --password-eye-color: rgb(104 104 104);
 
   /* video-card */
   --video-card-schedule-badge-background: #000000b3;
@@ -509,6 +511,9 @@ body[data-theme='light'] {
   --gray-400-primary-background: #ffffff;
   --gray-200-input-background: #dadada;
   --sidebar-scrollbar-track-background: #e8e8e8;
+
+  /* auth forms */
+  --link-color: rgb(0 73 56);
   --auth-modal-background: white;
   --auth-box-shadow: 0 0 15px 7px rgb(0 0 0 / 16%);
   --auth-border: none;

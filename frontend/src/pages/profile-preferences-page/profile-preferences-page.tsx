@@ -63,11 +63,12 @@ const ProfilePreferencesPage: FC = () => {
     });
     setIsNeedUpload(false);
     setIsNeedImageEditor(!isNeedImageEditor);
-    images.pop();
+    setImages([]);
   };
 
   const onUploadImageClose = (): void => {
     setIsNeedUpload(!isNeedUpload);
+    setImages([]);
   };
 
   const handleImageSave = useCallback(

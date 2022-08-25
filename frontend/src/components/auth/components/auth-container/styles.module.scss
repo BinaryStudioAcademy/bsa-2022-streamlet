@@ -2,6 +2,10 @@
 
 $base-z-index: $page-z-index;
 
+.auth-logo {
+  max-height: 40px;
+}
+
 .auth-background {
   display: flex;
   flex-grow: 1;
@@ -71,7 +75,7 @@ $base-z-index: $page-z-index;
   }
 }
 
-@media screen and (min-width: 1100px) and (min-height: 760px) {
+@media screen and (min-width: 1100px) and (min-height: 620px) {
   .background-zigzag,
   .background-zigzag2,
   .background-zigzag3 {

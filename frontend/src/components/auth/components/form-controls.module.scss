@@ -1,15 +1,18 @@
 .form-container {
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
 }
 
-.form-input {
-  margin-bottom: 6px;
+.link {
+  color: var(--link-color);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 14px;
+  text-decoration: none;
 }
 
-.input {
-  height: 40px;
+.link:hover {
+  color: var(--text-gray-color);
 }
 
 .password {
@@ -34,15 +37,29 @@ div .input-error {
   border: var(--input-error-border);
 }
 
+.input-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  column-gap: 20px;
+}
+
 .label {
   font-weight: 500;
+  font-size: 15px;
   font-family: Gilroy, sans-serif;
   text-transform: capitalize;
 }
 
+.upper-space-regular {
+  margin-top: 20px;
+}
+
 .continue-with {
-  margin: 5px;
+  margin: 15px 0;
   color: var(--white-text-color);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
   text-align: center;
 }
 
