@@ -17,7 +17,7 @@
   outline: none;
   cursor: pointer;
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 767px) {
     display: block;
   }
 }
@@ -31,10 +31,6 @@
 }
 
 .search-icon path {
-  fill: var(--text-gray-color);
-}
-
-.search-icon:hover path {
   fill: var(--brand-green-color);
 }
 
@@ -43,7 +39,7 @@
 }
 
 .search-input-clear:hover path {
-  fill: var(--white-text-color);
+  fill: var(--brand-green-color);
 }
 
 .search-mobile:hover svg path {
@@ -144,6 +140,13 @@
   display: block;
 }
 
+.block-search-mobile .search-input-clear svg {
+  @media screen and (max-width: 767px) {
+    width: 16px;
+    padding-bottom: 4px;
+  }
+}
+
 .user-menu .option-list {
   width: 100%;
   list-style: none;
@@ -210,15 +213,24 @@
 .block-search {
   position: relative;
   display: flex;
+  flex-flow: row nowrap;
   align-items: center;
   width: 40%;
   padding: 0 10px;
   background-color: var(--gray-400-primary-background);
   border-radius: 3px;
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 767px) {
     display: none;
   }
+}
+
+.block-search .back-btn-mobile {
+  display: none;
+}
+
+.block-search .search-btn-mobile {
+  display: none;
 }
 
 .search-icon {
@@ -242,7 +254,7 @@
   display: none;
   justify-content: center;
   align-items: center;
-  width: 40px;
+  width: 30px;
   height: 100%;
   cursor: pointer;
 }
@@ -251,6 +263,58 @@
   & ~ .search-input-clear {
     display: flex;
   }
+}
+
+.block-search-mobile {
+  @media screen and (max-width: 767px) {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: $header-search-mobile-z-index;
+    display: flex;
+    width: 100%;
+    height: $header-height;
+    margin-left: 0;
+    padding: 0 15px;
+    border-bottom: 1px solid var(--gray-200-input-background);
+  }
+}
+
+.block-search-mobile .search-btn {
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
+}
+
+.block-search-mobile .search-input {
+  @media screen and (max-width: 767px) {
+    height: 100%;
+    padding: 8px 30px 8px 15px;
+    font-size: 18px;
+    line-height: 26px;
+  }
+}
+
+.block-search-mobile .search-btn-mobile {
+  @media screen and (max-width: 767px) {
+    display: block;
+    margin-left: 10px;
+  }
+}
+
+.block-search-mobile .back-btn-mobile {
+  @media screen and (max-width: 767px) {
+    display: block;
+  }
+}
+
+.block-search-input {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-flow: row nowrap;
+  align-items: center;
 }
 
 .burger-menu {
