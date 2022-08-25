@@ -24,29 +24,35 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
   component: Component,
 }) => {
   return (
-    <div onClick={closeMobileSidebar} className={clsx({ [styles['open']]: !isSidebarOpen }, styles['mobile-sidebar'])}>
-      <div className={styles['sidebar-content']} onClick={(e): void => e.stopPropagation()}>
-        <div className={styles['sidebar-header']}>
-          <button onClick={closeMobileSidebar} className={styles['burger-menu']}>
-            <Icon name={IconName.BURGER_MENU} width="30" height="30" />
-          </button>
-          <Logo size={24} />
+    <div className={clsx(styles['shadow'], !isSidebarOpen && styles['shadow-open'])}>
+      <div className={styles['scrim']}></div>
+      <div
+        onClick={closeMobileSidebar}
+        className={clsx({ [styles['open']]: !isSidebarOpen }, styles['mobile-sidebar'])}
+      >
+        <div className={styles['sidebar-content']} onClick={(e): void => e.stopPropagation()}>
+          <div className={styles['sidebar-header']}>
+            <button onClick={closeMobileSidebar} className={styles['burger-menu']}>
+              <Icon name={IconName.BURGER_MENU} width="30" height="30" />
+            </button>
+            <Logo size={24} />
+          </div>
+          <ul className={styles['list-links']}>
+            {configRoutePages.map((page) => (
+              <Link
+                key={page.linkTo}
+                to={page.linkTo}
+                className={clsx({ [styles.active]: page.id === activeRouteId }, styles['nav-link'])}
+              >
+                <li>
+                  <Icon name={page.iconName} width="24" height="24" />
+                  <span className={styles['link-name']}>{page.textLink}</span>
+                </li>
+              </Link>
+            ))}
+          </ul>
+          {Component && <Component />}
         </div>
-        <ul className={styles['list-links']}>
-          {configRoutePages.map((page) => (
-            <Link
-              key={page.linkTo}
-              to={page.linkTo}
-              className={clsx({ [styles.active]: page.id === activeRouteId }, styles['nav-link'])}
-            >
-              <li>
-                <Icon name={page.iconName} width="24" height="24" />
-                <span className={styles['link-name']}>{page.textLink}</span>
-              </li>
-            </Link>
-          ))}
-        </ul>
-        {Component && <Component />}
       </div>
     </div>
   );
