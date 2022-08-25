@@ -78,9 +78,10 @@
 .image-upload-button {
   height: 30px;
   margin-bottom: 10px;
-  padding: 0 10px;
-  color: white;
+  padding: 0 20px;
+  color: var(--always-white-color);
   font-size: 15px;
+  text-transform: capitalize;
   background-color: var(--brand-green-color);
   border: none;
   border-radius: 3px;

@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { FC } from 'common/types/types';
 import { useId, useState, useEffect } from 'hooks/hooks';
 import { IconName } from 'common/enums/enums';
@@ -53,7 +54,7 @@ const FilterDropdown: FC<Props> = ({
 
   return (
     <div className={styles.container}>
-      <div className={styles['filter-dropdown']}>
+      <div className={clsx(styles['filter-dropdown'], toggleDropdown && styles['filter-is-open'])}>
         <div className={styles['filter-dropdown-title']} onClick={handleToggleDropdown}>
           <span>{title}</span>
           <Icon name={toggleDropdown ? IconName.ARROW_UP : IconName.ARROW_DOWN} />

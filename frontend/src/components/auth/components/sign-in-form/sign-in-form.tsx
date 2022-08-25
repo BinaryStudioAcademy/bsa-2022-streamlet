@@ -1,12 +1,13 @@
 import { AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { Input, Link, PasswordInput } from 'components/common/common';
-import formStyles from '../form-controls.module.scss';
-import styles from './styles.module.scss';
 import { useAppForm } from 'hooks/hooks';
 import { userSignIn } from 'validation-schemas/validation-schemas';
 import { AuthSubmitButton, ContinueWithParagraph, GoogleButton } from '../common/common';
 import clsx from 'clsx';
+
+import formStyles from '../form-controls.module.scss';
+import styles from './styles.module.scss';
 
 type Props = {
   onSubmit: (formValues: SignInFormValues) => void;
@@ -22,7 +23,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit, isValid } = useAppForm<SignInFormValues>({
     defaultValues: { email: '', password: '' },
     validationSchema: userSignIn,
-    mode: 'onChange',
+    mode: 'onTouched',
   });
 
   return (
@@ -67,7 +68,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
       <GoogleButton disabled={isLoading} />
 
       <ContinueWithParagraph
-        className={formStyles['upper-space-regular']}
+        className={clsx(formStyles['upper-space-regular'], formStyles['paragraph-mobile'])}
         prompt="Don't have an account yet?"
         linkTitle="Sign up for free"
         route={AppRoutes.SIGN_UP}

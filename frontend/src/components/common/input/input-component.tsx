@@ -4,8 +4,9 @@ import { ErrorMessage } from 'components/common/common';
 import { FieldValues } from 'react-hook-form';
 import { ReactElement, useId } from 'react';
 import { ErrorBox } from '../errors/errors';
-import styles from './styles.module.scss';
 import clsx from 'clsx';
+
+import styles from './styles.module.scss';
 
 type Props<T> = {
   control: FormControl<T>;
