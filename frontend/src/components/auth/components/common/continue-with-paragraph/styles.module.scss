@@ -2,27 +2,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5px;
-  margin-bottom: 20px;
-  color: var(--white-text-color);
-  font-weight: 600;
-  font-size: 14px;
-  font-family: Gilroy, sans-serif;
-  line-height: 16px;
-  letter-spacing: 0.5px;
-}
-
-.auth-link {
-  margin-left: 5px;
+  margin: 20px 0 5px;
   color: var(--white-text-color);
   font-weight: 500;
   font-size: 14px;
   font-family: Gilroy, sans-serif;
   line-height: 16px;
-  text-decoration: none;
-  cursor: pointer;
+  letter-spacing: 0.5px;
+  text-align: center;
 }
 
-.auth-link:hover {
-  color: var(--text-gray-color);
+.auth-link {
+  margin-left: 5px;
 }

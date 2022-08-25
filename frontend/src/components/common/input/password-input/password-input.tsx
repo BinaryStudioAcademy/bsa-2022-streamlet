@@ -4,7 +4,7 @@ import { Button, ErrorMessage } from 'components/common/common';
 import { FieldValues } from 'react-hook-form';
 import { ReactElement, useId, useState } from 'react';
 import { ErrorBox } from 'components/common/errors/errors';
-import passwordEye from 'assets/img/password-eye.svg';
+import { ReactComponent as PasswordEye } from 'assets/img/password-eye.svg';
 import styles from '../styles.module.scss';
 import passwordStyles from './password-input.module.scss';
 import clsx from 'clsx';
@@ -71,13 +71,13 @@ const PasswordInput = <T extends FieldValues>({
           {...field}
           type={inputPasswordType}
           placeholder={placeholder}
-          className={clsx(styles['input'], inputClassName)}
+          className={clsx(passwordStyles['input'], inputClassName)}
           id={id}
         />
         <Button
           onClick={handleChangeInputPasswordType}
           className={clsx(passwordStyles['check-password-btn'], changeVisibilityBtnClassName)}
-          content={<img src={passwordEye} alt="check" />}
+          content={<PasswordEye />}
         />
       </div>
       <div className={clsx(styles['error-block'], errorBlockClassName)}>
