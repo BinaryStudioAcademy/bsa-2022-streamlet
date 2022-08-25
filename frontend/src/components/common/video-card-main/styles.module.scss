@@ -171,6 +171,7 @@ $base-z-index: $page-component-z-index;
 }
 
 .video-card-author a {
+  overflow: hidden;
   color: var(--text-gray-color);
   font-weight: 400;
   font-size: 12px;
@@ -179,7 +180,7 @@ $base-z-index: $page-component-z-index;
   cursor: pointer;
 }
 
-.video-card-author span {
+.video-card-author-name {
   white-space: nowrap;
   text-transform: none;
   text-overflow: ellipsis;

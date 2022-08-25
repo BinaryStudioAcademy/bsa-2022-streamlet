@@ -85,7 +85,7 @@ const VideoCardMain: FC<Props> = ({
             </Link>
             <div className={styles['video-card-author']}>
               <Link to={linkToChannelPage} className={styles['video-card-author-name']}>
-                <span>{channel.name}</span>
+                {channel.name}
               </Link>
             </div>
           </div>

@@ -95,7 +95,7 @@ const VideoCard: FC<Props> = ({
               <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
             </Link>
             <Link to={linkToChannelPage} className={styles['video-card-author-name']}>
-              <span>{channel.name}</span>
+              {channel.name}
             </Link>
           </div>
           {isWaiting && !isSchedulePassed() && (
