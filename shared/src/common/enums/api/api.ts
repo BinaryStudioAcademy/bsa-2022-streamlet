@@ -3,3 +3,4 @@ export { AuthApiPath } from './auth-api-path.enum';
 export { NotificationApiPath } from './notification-api-path.enum';
 export { ChannelApiPath } from './channel-api-path.enum';
 export { TagApiPath } from './tag-api-path.enum';
+export { CategoryApiPath } from './category-api-path.enum';

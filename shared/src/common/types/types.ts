@@ -10,3 +10,4 @@ export * from './components/components';
 export * from './request/request';
 export * from './notification/notification';
 export * from './tag/tag';
+export * from './category/category';

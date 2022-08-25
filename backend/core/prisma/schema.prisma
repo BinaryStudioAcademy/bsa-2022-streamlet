@@ -105,7 +105,7 @@ model Tag {
 
 model Category {
   id        String   @id @default(uuid())
-  name      String
+  name      String   @unique
   videos    Video[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

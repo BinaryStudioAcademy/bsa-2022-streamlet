@@ -53,7 +53,11 @@ export class TagService {
     return this.tagRepository.createTag({ name });
   }
 
-  async bindTag({ name, videoId }: { name: string; videoId: string }): Promise<TagResponseDto> {
+  async bindTag({ name, videoId }: { name: string; videoId: string }): Promise<TagResponseDto | null> {
+    const isVideoExists = await this.videoRepository.getById(videoId);
+    if (!isVideoExists) {
+      return null;
+    }
     await this.createTag({ name });
     const tag = await this.tagRepository.bindTagToVideo({ name, videoId });
     return castToTagResponseDto(tag);

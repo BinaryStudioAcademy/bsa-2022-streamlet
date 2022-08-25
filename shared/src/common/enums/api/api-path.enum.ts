@@ -4,6 +4,7 @@ enum ApiPath {
   NOTIFICATION = '/notification',
   VIDEO = '/video',
   TAG = '/tag',
+  CATEGORY = '/category',
 }
 
 export { ApiPath };

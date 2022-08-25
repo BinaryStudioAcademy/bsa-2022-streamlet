@@ -13,6 +13,8 @@ import { TagRepository } from '~/core/tag/port/tag-repository';
 import { TagRepositoryAdapter } from './tag/tag-repository-adapter';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { VideoRepositoryAdapter } from './video/video-repository-adapter';
+import { CategoryRepository } from '~/core/category/port/category-repository';
+import { CategoryRepositoryAdapter } from './category/category-repository-adapter';
 
 const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const client = new PrismaClient();
@@ -24,6 +26,7 @@ const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces
   bind<ChannelRepository>(CONTAINER_TYPES.ChannelRepository).to(ChannelRepositoryAdapter);
   bind<TagRepository>(CONTAINER_TYPES.TagRepository).to(TagRepositoryAdapter);
   bind<VideoRepository>(CONTAINER_TYPES.VideoRepository).to(VideoRepositoryAdapter);
+  bind<CategoryRepository>(CONTAINER_TYPES.CategoryRepository).to(CategoryRepositoryAdapter);
 
   bind<PrismaClient>(CONTAINER_TYPES.PrismaClient)
     .toConstantValue(client)

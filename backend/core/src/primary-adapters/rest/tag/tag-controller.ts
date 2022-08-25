@@ -22,8 +22,9 @@ import { TagService } from '~/core/tag/application/tag-service';
 import { NotFound } from '~/shared/exceptions/not-found';
 import { normalizeTagPayload } from './helpers/helpers';
 import { normalizeTagFiltersPayload } from './helpers/normalize-tag-filters-helper';
+import { authenticationMiddleware } from '../middleware';
 
-@controller(ApiPath.TAG)
+@controller(ApiPath.TAG, authenticationMiddleware)
 export class TagController extends BaseHttpController {
   private tagService: TagService;
 
@@ -59,9 +60,14 @@ export class TagController extends BaseHttpController {
   ): Promise<TagResponseDto> {
     const payload = normalizeTagPayload(body);
 
-    return this.tagService.bindTag({
+    const tag = await this.tagService.bindTag({
       ...payload,
       videoId: id,
     });
+    if (!tag) {
+      throw new NotFound('Video not found');
+    }
+
+    return tag;
   }
 }
