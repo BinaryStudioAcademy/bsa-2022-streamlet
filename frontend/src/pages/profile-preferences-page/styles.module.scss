@@ -1,8 +1,15 @@
 @import 'assets/css/breakpoint.scss';
 
+.profile-page-loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
 .preference-page-content-container {
   width: 100%;
-  overflow-y: scroll;
 }
 
 .preference-page-content-container button {
@@ -11,7 +18,6 @@
 
 .profile-preferences-container {
   max-width: 1250px;
-  height: calc(100vh - 82px);
   padding: 0 30px;
   background-color: var(--gray-400-primary-background);
 }
@@ -70,10 +76,13 @@
 }
 
 .image-upload-button {
+  height: 30px;
   margin-bottom: 10px;
   padding: 0 20px;
+  color: var(--always-white-color);
+  font-size: 15px;
   text-transform: capitalize;
-  background-color: var(--text-gray-color);
+  background-color: var(--brand-green-color);
   border: none;
   border-radius: 3px;
 }

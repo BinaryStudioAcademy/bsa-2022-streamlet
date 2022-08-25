@@ -96,7 +96,7 @@ $base-z-index: $page-component-z-index;
   height: 24px;
   margin-left: 15px;
   padding: 4px 10px;
-  color: var(--white-text-color);
+  color: var(--always-white-color);
   background-color: var(--video-card-schedule-btn-background);
   border-radius: 3px;
   cursor: pointer;
@@ -117,17 +117,28 @@ $base-z-index: $page-component-z-index;
   justify-content: space-between;
 }
 
+.avatar {
+  width: 100%;
+  height: 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 .video-card-desc {
   display: grid;
   grid-template-columns: 40px auto;
   gap: 5px 10px;
-  padding: 10px;
+  padding: 10px 22px 10px 10px;
 }
 
 .video-card-name {
   display: flex;
   flex-flow: column nowrap;
   gap: 5px;
+  overflow: hidden;
 }
 
 .video-card-channel img {
@@ -137,11 +148,18 @@ $base-z-index: $page-component-z-index;
 }
 
 .video-card-title {
+  display: flex;
+  max-height: 48px;
+  overflow: hidden;
   color: var(--white-text-color);
   font-weight: 600;
   font-size: 14px;
   line-height: 24px;
+  white-space: normal;
   text-decoration: none;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   cursor: pointer;
 }
 
@@ -153,6 +171,7 @@ $base-z-index: $page-component-z-index;
 }
 
 .video-card-author a {
+  overflow: hidden;
   color: var(--text-gray-color);
   font-weight: 400;
   font-size: 12px;
@@ -161,8 +180,10 @@ $base-z-index: $page-component-z-index;
   cursor: pointer;
 }
 
-.video-card-author span {
+.video-card-author-name {
+  white-space: nowrap;
   text-transform: none;
+  text-overflow: ellipsis;
 }
 
 .video-card-meta-footer {

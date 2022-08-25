@@ -38,6 +38,7 @@ const App: FC = () => {
   useEffect(() => {
     document.body.dataset.theme = isLightTheme ? AppTheme.LIGHT : '';
   }, [isLightTheme]);
+
   useEffect(() => {
     if (hasToken) {
       dispatch(authActions.loadCurrentUser());

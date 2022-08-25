@@ -4,8 +4,9 @@ import { ErrorMessage } from 'components/common/common';
 import { FieldValues } from 'react-hook-form';
 import { ReactElement, useId } from 'react';
 import { ErrorBox } from '../errors/errors';
-import styles from './styles.module.scss';
 import clsx from 'clsx';
+
+import styles from './styles.module.scss';
 
 type Props<T> = {
   control: FormControl<T>;
@@ -42,9 +43,20 @@ const Input = <T extends FieldValues>({
 
   return (
     <div className={clsx(styles['input-wrapper'], wrapperClassName)}>
-      <label className={clsx(styles.label, labelClassName)} htmlFor={id}>
-        <span>{label}</span>
-      </label>
+      <div className={styles['input-labels']}>
+        <label className={clsx(styles.label, labelClassName)} htmlFor={id}>
+          <span>{label}</span>
+        </label>
+        <div className={clsx(errorBlockClassName)}>
+          <ErrorMessage
+            errors={errors}
+            name={name}
+            render={({ message }): ReactElement => {
+              return <ErrorBox message={message} />;
+            }}
+          />
+        </div>
+      </div>
       <input
         {...field}
         type={type}
@@ -52,15 +64,6 @@ const Input = <T extends FieldValues>({
         className={clsx(styles.input, inputClassName, error && inputErrorClassName)}
         id={id}
       />
-      <div className={clsx(styles['error-block'], errorBlockClassName)}>
-        <ErrorMessage
-          errors={errors}
-          name={name}
-          render={({ message }): ReactElement => {
-            return <ErrorBox message={message} />;
-          }}
-        />
-      </div>
     </div>
   );
 };

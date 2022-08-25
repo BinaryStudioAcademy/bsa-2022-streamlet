@@ -4,6 +4,7 @@ import React from 'react';
 import { useAppForm } from 'hooks/hooks';
 import { profileUpdateValidationSchema } from '../../../validation-schemas/validation-schemas';
 import { Input, Loader } from '../../../components/common/common';
+import { LoaderSize } from '../../../common/enums/component/loader-size.enum';
 
 type Props = {
   onSubmit: { (submitValue: UpdateProfileValue): Promise<void> };
@@ -62,7 +63,7 @@ const ProfilePreferencesPageForm: FC<Props> = ({ onSubmit, defaultFormValue, err
       <div className={style['save-change-button-container']}>
         {error && <span className={style['error-message']}>{error}</span>}
         <button type="submit" className={style['save-change-button']}>
-          {isLoading ? <Loader hCentered={true} vCentered={true} /> : 'Save changes'}
+          {isLoading ? <Loader hCentered={true} vCentered={true} spinnerSize={LoaderSize.XS} /> : 'Save changes'}
         </button>
       </div>
     </form>
