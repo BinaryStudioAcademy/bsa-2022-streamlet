@@ -16,6 +16,7 @@ import clsx from 'clsx';
 import { authApi } from 'services/services';
 import { ErrorBox } from 'components/common/errors/errors';
 import { allAuthNotifications, AuthNotification } from 'components/auth/config/config';
+import formStyles from 'components/auth/components/form-controls.module.scss';
 
 // this page is for verification link from email
 // it assumes user hasn't signed in yet and provides a way to resend link if the token expired
@@ -87,14 +88,23 @@ const AccountVerificationConfirmPage: FC = () => {
       ) : (
         <Button
           content="Resend verification link?"
-          className={clsx(authSumbitBtnStyles['auth-submit-btn'], styles['resend-prompt-btn'])}
+          className={clsx(
+            authSumbitBtnStyles['auth-submit-btn'],
+            styles['resend-prompt-btn'],
+            formStyles['upper-space-regular'],
+          )}
           onClick={(): void => {
             setShowResendForm(true);
           }}
           disabled={isLoading}
         />
       )}
-      <ContinueWithParagraph linkTitle="Back to Sign In" prompt="" route={AppRoutes.SIGN_IN} />
+      <ContinueWithParagraph
+        linkTitle="Back to Sign In"
+        prompt=""
+        route={AppRoutes.SIGN_IN}
+        className={formStyles['upper-space-regular']}
+      />
     </AuthContainer>
   );
 };

@@ -8,6 +8,7 @@ import { Icon } from 'components/common/common';
 
 import styles from './header.module.scss';
 import { ToggleSwitch } from '../toggle-switch';
+import { Logo } from '../logo/logo';
 
 interface MenuOption {
   type: MenuOptions;
@@ -72,10 +73,8 @@ const Header: FC<HeaderProps> = ({
         <button onClick={handleClickBurgerMenu} className={styles['burger-menu']}>
           <Icon name={IconName.BURGER_MENU} width="24" height="24" />
         </button>
-        <Link className={styles['logo-link']} to={AppRoutes.ROOT}>
-          <Icon name={IconName.MAIN_LOGO} width="26" height="26" />
-          <p className={styles['main-name']}>streamlet</p>
-        </Link>
+        <Logo size={24} className={styles['logo-desktop']} />
+        <Logo size={24} isMobile={true} className={styles['logo-mobile']} />
       </div>
       <form className={styles['block-search']} onSubmit={handleSubmitSearch}>
         <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
@@ -119,10 +118,14 @@ const Header: FC<HeaderProps> = ({
                 <ul className={styles['option-list']}>
                   {options.map((option) => (
                     <li key={option.type} className={styles['option']} onClick={option.onClick}>
-                      <Icon name={option.icon} />
-                      <span>{option.text}</span>
+                      <div className={styles['option-segment']}>
+                        <Icon name={option.icon} />
+                        <span>{option.text}</span>
+                      </div>
                       {option.type === MenuOptions.Theme && (
-                        <ToggleSwitch defaultValue={themeValue} onToggle={handleClickThemeSwitch} />
+                        <div className={styles['option-segment']}>
+                          <ToggleSwitch defaultValue={themeValue} onToggle={handleClickThemeSwitch} />
+                        </div>
                       )}
                     </li>
                   ))}

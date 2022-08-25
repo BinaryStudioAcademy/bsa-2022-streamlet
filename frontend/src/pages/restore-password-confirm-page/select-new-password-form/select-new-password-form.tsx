@@ -27,7 +27,7 @@ const SelectNewPasswordForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit, isValid } = useAppForm<SelectNewPasswordFormValues>({
     defaultValues: { password: '', passwordConfirm: '' },
     validationSchema: extendedSchema,
-    mode: 'onChange',
+    mode: 'onTouched',
   });
 
   return (

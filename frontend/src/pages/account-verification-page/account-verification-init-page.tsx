@@ -12,6 +12,7 @@ import { AppRoutes } from 'common/enums/enums';
 import { authApi } from 'services/services';
 import { ErrorBox } from 'components/common/errors/errors';
 import { allAuthNotifications, AuthNotification } from 'components/auth/config/config';
+import formStyles from 'components/auth/components/form-controls.module.scss';
 
 // a page for initializing verification flow
 const AccountVerificationInitPage: FC = () => {
@@ -40,7 +41,12 @@ const AccountVerificationInitPage: FC = () => {
     <AuthContainer pageTitle="Account Verification">
       {error && <ErrorBox message={error} />}
       <SendVerificationLinkForm onSubmit={handleVerificationFormSubmit} isLoading={isLoading} />
-      <ContinueWithParagraph linkTitle="Back to Sign In" prompt="" route={AppRoutes.SIGN_IN} />
+      <ContinueWithParagraph
+        linkTitle="Back to Sign In"
+        prompt=""
+        route={AppRoutes.SIGN_IN}
+        className={formStyles['upper-space-regular']}
+      />
     </AuthContainer>
   );
 };
