@@ -27,7 +27,7 @@ const VideoCard: FC<Props> = ({
 }) => {
   const [timeNow, setTimeNow] = useState(dayjs());
 
-  const isWaiting = status === StreamingStatus.WAITING;
+  const isWaiting = status === StreamingStatus.PENDING;
   const isLive = status === StreamingStatus.LIVE;
   const isFinished = status === StreamingStatus.FINISHED;
 

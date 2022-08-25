@@ -38,8 +38,10 @@ div .input-error {
 }
 
 .input-row {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-bottom: 60px;
   column-gap: 20px;
 }
 
@@ -48,6 +50,10 @@ div .input-error {
   font-size: 15px;
   font-family: Gilroy, sans-serif;
   text-transform: capitalize;
+}
+
+.input {
+  margin-bottom: 5px;
 }
 
 .upper-space-regular {
@@ -63,14 +69,17 @@ div .input-error {
   text-align: center;
 }
 
-.error {
-  line-height: 20px;
-}
-
 @media screen and (max-width: 360px) {
   .paragraph-mobile {
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
+}
+
+.password-error {
+  position: absolute;
+  top: 110%;
+  width: 50%;
+  line-height: 15px;
 }

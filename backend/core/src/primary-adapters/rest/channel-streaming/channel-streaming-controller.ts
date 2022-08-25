@@ -6,8 +6,8 @@ import {
   StreamingKeyResponseDto,
   RtmpLiveRequestDto,
 } from '~/shared/types/types';
-import { ApiPath, ChannelApiPath } from '~/shared/enums/api/api';
-import { ChannelService } from '~/core/channel/application/channel-service';
+import { ApiPath, ChannelStreamingApiPath } from '~/shared/enums/api/api';
+import { ChannelStreamingService } from '~/core/channel-streaming/application/channel-streaming-service';
 import { inject } from 'inversify';
 import { Forbidden } from '~/shared/exceptions/forbidden';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -15,7 +15,7 @@ import { NotFound } from '~/shared/exceptions/not-found';
 /**
  * @swagger
  * tags:
- *   name: channel
+ *   name: channel streaming
  *   description: Channel and streaming
  * components:
  *    schemas:
@@ -70,11 +70,11 @@ import { NotFound } from '~/shared/exceptions/not-found';
  *          - channelId
  *          - streamingKey
  */
-@controller(ApiPath.CHANNEL)
-export class ChannelController extends BaseHttpController {
-  private channelService: ChannelService;
+@controller(ApiPath.CHANNEL_STREAMING)
+export class ChannelStreamingController extends BaseHttpController {
+  private channelService: ChannelStreamingService;
 
-  constructor(@inject(CONTAINER_TYPES.ChannelService) channelService: ChannelService) {
+  constructor(@inject(CONTAINER_TYPES.ChannelStreamingService) channelService: ChannelStreamingService) {
     super();
     this.channelService = channelService;
   }
@@ -105,7 +105,7 @@ export class ChannelController extends BaseHttpController {
    *        '403':
    *          description: Streaming token is wrong or the channel doesn't have any pending streams
    */
-  @httpPost(ChannelApiPath.LIVE)
+  @httpPost(ChannelStreamingApiPath.LIVE)
   public async goLive(@requestBody() rtmpLiveRequestDto: RtmpLiveRequestDto): Promise<void> {
     const streamData = await this.channelService.checkStreamingKey(rtmpLiveRequestDto.name);
     if (streamData === null) {
@@ -138,7 +138,7 @@ export class ChannelController extends BaseHttpController {
    *        '200':
    *          description: new streaming key is given
    */
-  @httpPost(ChannelApiPath.LIVE_DONE)
+  @httpPost(ChannelStreamingApiPath.LIVE_DONE)
   public async prepareStreamEnd(@requestBody() rtmpLiveRequestDto: RtmpLiveRequestDto): Promise<void> {
     this.channelService.notifyTranscoderAboutStreamEnd(rtmpLiveRequestDto.name);
   }
@@ -173,7 +173,7 @@ export class ChannelController extends BaseHttpController {
    *        '404':
    *          description: channel not found
    */
-  @httpGet(`${ChannelApiPath.STREAMING_KEY}${ChannelApiPath.$ID}`)
+  @httpGet(`${ChannelStreamingApiPath.STREAMING_KEY}${ChannelStreamingApiPath.$ID}`)
   public async getStreamingKey(@requestParam() { id }: DefaultRequestParam): Promise<StreamingKeyResponseDto> {
     const keyData = await this.channelService.getStreamingKey(id);
     if (keyData === null) {
@@ -212,7 +212,7 @@ export class ChannelController extends BaseHttpController {
    *        '404':
    *          description: channel not found
    */
-  @httpPost(ChannelApiPath.RESET_STREAMING_KEY)
+  @httpPost(ChannelStreamingApiPath.RESET_STREAMING_KEY)
   public async resetStreamingKey(
     @requestBody() resetStreamingKeyRequestDto: ResetStreamingKeyRequestDto,
   ): Promise<StreamingKeyResponseDto> {

@@ -35,3 +35,4 @@ export { BaseVideoResponseDto, DataVideo } from './video/video';
 export { BaseSubscriptionResponseDto, DataSubscription } from './subscription/subscription';
 
 declare module 'react-notifications-component';
+export * from './channel/channel';
