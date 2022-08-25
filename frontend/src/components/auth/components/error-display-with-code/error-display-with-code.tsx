@@ -8,6 +8,7 @@ type Props = {
   message: string;
   errorCode?: string;
 };
+
 const ErrorDisplayWithCode: FC<Props> = ({ message, errorCode }) => {
   return (
     <>
@@ -17,6 +18,14 @@ const ErrorDisplayWithCode: FC<Props> = ({ message, errorCode }) => {
           <br />
           <Link to={AppRoutes.ACCOUNT_VERIFICATION_INIT} className={formStyles['link']}>
             Receive the letter again?
+          </Link>
+        </>
+      )}
+      {errorCode === errorCodes.auth.restorePassword.INCORRECT_TOKEN && (
+        <>
+          <br />
+          <Link to={AppRoutes.RESTORE_PASSWORD_INIT} className={formStyles['link']}>
+            Please, get a new letter
           </Link>
         </>
       )}
