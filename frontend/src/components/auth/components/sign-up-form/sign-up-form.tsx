@@ -61,6 +61,8 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
             name="password"
             errors={errors}
             label="Password"
+            isValidationErrorOnTop={false}
+            errorBlockClassName={formStyles['password-error']}
           />
           <PasswordInput
             inputClassName={formStyles['password']}
@@ -72,6 +74,8 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
             name="passwordConfirm"
             errors={errors}
             label="Confirm password"
+            isValidationErrorOnTop={false}
+            errorBlockClassName={formStyles['password-error']}
           />
         </div>
         <AuthSubmitButton
