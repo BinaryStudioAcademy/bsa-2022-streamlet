@@ -2,10 +2,10 @@
 
 .profile-page-loader-container {
   display: flex;
-  width: 100%;
-  height: 100%;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .preference-page-content-container {
@@ -77,12 +77,12 @@
 
 .image-upload-button {
   height: 30px;
+  margin-bottom: 10px;
   padding: 0 10px;
   color: white;
   font-size: 15px;
   background-color: var(--brand-green-color);
   border: none;
-  margin-bottom: 10px;
   border-radius: 3px;
 }
 
