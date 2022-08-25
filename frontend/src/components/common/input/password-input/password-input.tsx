@@ -71,7 +71,7 @@ const PasswordInput = <T extends FieldValues>({
           {...field}
           type={inputPasswordType}
           placeholder={placeholder}
-          className={clsx(styles['input'], inputClassName)}
+          className={clsx(passwordStyles['input'], inputClassName)}
           id={id}
         />
         <Button
