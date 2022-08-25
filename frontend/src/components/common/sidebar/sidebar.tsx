@@ -4,7 +4,8 @@ import { AppRoutes, IconName } from 'common/enums/enums';
 import { useNavigate, useState } from 'hooks/hooks';
 import { Icon } from '../icon';
 import { Channel } from 'components/sidebar/channel';
-import { Link, Promo } from '../common';
+import { Promo } from 'components/sidebar/promo';
+import { Link } from '../common';
 import { RoutePage } from './route-pages.config';
 import { MobileSidebar, MobileSidebarProps } from '../mobile-sidebar/mobile-sidebar';
 

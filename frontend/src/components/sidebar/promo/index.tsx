@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { FC } from 'common/types/types';
-import { Button } from '../common';
+import { Button } from '../../common/common';
 
 type Props = {
   text: string;

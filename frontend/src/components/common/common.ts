@@ -18,5 +18,3 @@ export { SidebarContainer } from './sidebar/sidebar-container';
 export { Loader } from './loader/loader';
 
 export { VideoCardMain } from './video-card-main/video-card-main';
-
-export { Promo } from './promo/promo';

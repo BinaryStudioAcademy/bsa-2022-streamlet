@@ -2,9 +2,10 @@ import clsx from 'clsx';
 import { AppRoutes, IconName } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { useNavigate } from 'hooks/hooks';
-import { Link, Promo } from '../common';
+import { Link } from '../common';
 import { Icon } from '../icon';
 import { Logo } from '../logo/logo';
+import { Promo } from 'components/sidebar/promo';
 import { RoutePage } from '../sidebar/route-pages.config';
 
 import styles from './mobile-sidebar.module.scss';
