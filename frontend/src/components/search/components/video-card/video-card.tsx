@@ -94,7 +94,7 @@ const VideoCard: FC<Props> = ({
             <Link to={linkToChannelPage} className={styles['video-card-author-avatar']}>
               <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
             </Link>
-            <Link to={linkToChannelPage} className={styles['video-card-author-name']}>
+            <Link to={linkToChannelPage} className={styles['video-card-author-name']} title={channel.name}>
               {channel.name}
             </Link>
           </div>
