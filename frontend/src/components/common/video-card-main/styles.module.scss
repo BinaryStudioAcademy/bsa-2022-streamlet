@@ -119,7 +119,7 @@ $base-z-index: $page-component-z-index;
 
 .avatar {
   width: 100%;
-  height: 40px;
+  height: 32px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -129,15 +129,14 @@ $base-z-index: $page-component-z-index;
 
 .video-card-desc {
   display: grid;
-  grid-template-columns: 40px auto;
-  gap: 5px 10px;
+  grid-template-columns: 32px auto;
+  gap: 5px 8px;
   padding: 10px 22px 10px 10px;
 }
 
 .video-card-name {
   display: flex;
   flex-flow: column nowrap;
-  gap: 5px;
   overflow: hidden;
 }
 
