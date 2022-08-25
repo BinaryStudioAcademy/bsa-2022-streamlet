@@ -43,7 +43,7 @@
   box-sizing: border-box;
   width: calc(var(--spinner-height) * 0.12);
   height: calc(var(--spinner-height) * 0.12);
-  background: var(--loader-color);
+  background: var(--brand-green-color);
   border-radius: calc(var(--spinner-height) * 0.1);
   animation: animloader 0.3s 0.3s linear infinite alternate;
 }
