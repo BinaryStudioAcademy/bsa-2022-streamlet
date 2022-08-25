@@ -18,6 +18,7 @@
   outline: inherit;
 }
 
-.error-block {
-  margin-top: 5px;
+.input-labels {
+  display: flex;
+  justify-content: space-between;
 }

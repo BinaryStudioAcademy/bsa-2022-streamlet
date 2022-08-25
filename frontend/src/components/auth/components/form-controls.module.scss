@@ -50,6 +50,10 @@ div .input-error {
   text-transform: capitalize;
 }
 
+.input {
+  margin-bottom: 5px;
+}
+
 .upper-space-regular {
   margin-top: 20px;
 }
@@ -61,10 +65,6 @@ div .input-error {
   font-size: 14px;
   line-height: 14px;
   text-align: center;
-}
-
-.error {
-  line-height: 20px;
 }
 
 @media screen and (max-width: 360px) {
