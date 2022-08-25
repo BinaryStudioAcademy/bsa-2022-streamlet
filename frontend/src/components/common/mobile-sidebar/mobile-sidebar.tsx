@@ -25,15 +25,12 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
 }) => {
   return (
     <div className={clsx(styles['shadow'], !isSidebarOpen && styles['shadow-open'])}>
-      <div className={styles['scrim']}></div>
-      <div
-        onClick={closeMobileSidebar}
-        className={clsx({ [styles['open']]: !isSidebarOpen }, styles['mobile-sidebar'])}
-      >
+      <div className={styles['scrim']} onClick={closeMobileSidebar}></div>
+      <div className={clsx({ [styles['open']]: !isSidebarOpen }, styles['mobile-sidebar'])}>
         <div className={styles['sidebar-content']} onClick={(e): void => e.stopPropagation()}>
           <div className={styles['sidebar-header']}>
             <button onClick={closeMobileSidebar} className={styles['burger-menu']}>
-              <Icon name={IconName.BURGER_MENU} width="30" height="30" />
+              <Icon name={IconName.BURGER_MENU} width="24" height="24" />
             </button>
             <Logo size={24} />
           </div>
