@@ -66,3 +66,11 @@ div .input-error {
 .error {
   line-height: 20px;
 }
+
+@media screen and (max-width: 360px) {
+  .paragraph-mobile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}

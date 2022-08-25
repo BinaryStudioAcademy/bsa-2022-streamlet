@@ -25,7 +25,7 @@ $base-z-index: $page-z-index;
 
 .auth-container {
   width: 100%;
-  padding: 30px 20px 50px;
+  padding: 30px 20px 60px;
 }
 
 .auth-title {
@@ -39,6 +39,7 @@ $base-z-index: $page-z-index;
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  margin-bottom: 25px;
 }
 
 .background-zigzag,
