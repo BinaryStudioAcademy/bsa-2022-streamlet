@@ -49,8 +49,28 @@
   }
 }
 
+.subscription-more span {
+  display: block;
+  flex: 1;
+  padding-right: 12px;
+  overflow: hidden;
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.subscription-more:hover span {
+  color: var(--white-text-color);
+}
+
 .navigate-menu ul a:hover .link-name {
   color: var(--white-text-color);
+}
+
+.navigate-menu ul a.active:hover span {
+  color: var(--always-white-color);
 }
 
 .subscription-more path {
@@ -80,32 +100,12 @@
   }
 }
 
-.subscription-more span {
-  display: block;
-  flex: 1;
-  padding-right: 12px;
-  overflow: hidden;
-  color: var(--text-gray-color);
-  font-size: 16px;
-  line-height: 28px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.subscription-more:hover span {
-  color: var(--white-text-color);
-}
-
 .navigate-menu ul a.active {
   background-color: var(--brand-green-color);
 }
 
 .navigate-menu ul a.active svg path {
   fill: var(--always-white-color);
-}
-
-.navigate-menu ul a.active span {
-  color: var(--always-white-color);
 }
 
 .subscription-more svg {
