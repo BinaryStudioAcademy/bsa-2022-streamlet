@@ -92,6 +92,10 @@
   overflow-y: auto;
 }
 
+.sidebar-body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
 .sidebar-body::-webkit-scrollbar-thumb {
   background-color: transparent;
 }
@@ -136,7 +140,7 @@
 }
 
 .nav-link li svg path {
-  fill: var(--text-gray-color);
+  fill: var(--sidebar-icon-color);
 }
 
 .burger-menu:hover svg path {
@@ -175,7 +179,7 @@
 
 .nav-link:hover {
   svg path {
-    fill: var(--white-text-color);
+    fill: var(--sidebar-icon-hover-color);
   }
 
   .link-name {
