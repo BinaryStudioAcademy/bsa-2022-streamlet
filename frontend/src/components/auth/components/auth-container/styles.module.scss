@@ -17,10 +17,6 @@ $base-z-index: $page-z-index;
   margin: auto;
   background-color: var(--auth-modal-background);
   border: solid 3px transparent;
-
-  // border-radius: 3px;
-  // border-image-source: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
-  // border-image-slice: 1;
 }
 
 .auth-container {
@@ -48,37 +44,44 @@ $base-z-index: $page-z-index;
   display: none;
 }
 
-// .background-zigzag {
-//   position: absolute;
-//   top: 20vh;
-//   left: 5vw;
-//   z-index: $base-z-index;
-// }
+@media screen and (min-height: 820px) {
+  .auth-background {
+    width: 50%;
+  }
 
-// .background-zigzag-2 {
-//   position: absolute;
-//   top: 44vh;
-//   left: 0;
-//   z-index: $base-z-index;
-//   width: 155px;
-// }
+  .auth-modal {
+    width: 600px;
+    border-radius: 3px;
+    border-image-source: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
+    border-image-slice: 1;
+  }
 
-// .background-curve1 {
-//   position: absolute;
-//   top: -2vh;
-//   right: 1vw;
-//   z-index: $base-z-index - 1;
-// }
+  .background-zigzag {
+    position: absolute;
+    top: 20vh;
+    left: 5vw;
+    z-index: $base-z-index;
+    display: block;
+    width: 100%;
+  }
 
-// @media screen and (min-height: 820px) {
-//   .auth-background {
-//     width: 100vw;
-//   }
+  .background-zigzag-2 {
+    position: absolute;
+    top: 44vh;
+    left: 0;
+    z-index: $base-z-index;
+    display: block;
+    width: 155px;
+  }
 
-//   .auth-modal {
-//     width: 100vw;
-//   }
-// }
+  .background-curve1 {
+    position: absolute;
+    top: -2vh;
+    right: 1vw;
+    z-index: $base-z-index - 1;
+    display: block;
+  }
+}
 
 // @media screen and (min-width: 600px) {
 //   .auth-modal {
