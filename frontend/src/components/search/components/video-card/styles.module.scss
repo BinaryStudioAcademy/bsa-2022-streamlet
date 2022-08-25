@@ -116,7 +116,6 @@ $base-z-index: $page-component-z-index;
   grid-template-columns: 50px auto;
   gap: 0 10px;
   margin-top: 10px;
-  overflow: hidden;
 }
 
 .avatar {
@@ -224,7 +223,7 @@ $base-z-index: $page-component-z-index;
   cursor: pointer;
 }
 
-.video-card-author span {
+.video-card-author-name {
   white-space: nowrap;
   text-transform: none;
   text-overflow: ellipsis;
@@ -296,11 +295,6 @@ $base-z-index: $page-component-z-index;
     flex-flow: row nowrap;
     gap: 12px;
     background: none;
-  }
-
-  .video-card:focus-within,
-  .video-card:hover {
-    background-color: var(--gray-300-header-menu-background);
   }
 
   .video-card-preview {
