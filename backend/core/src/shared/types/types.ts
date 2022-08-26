@@ -11,3 +11,4 @@ export * from './channel/channel';
 export * from './request/request';
 export * from './profile/profile';
 export * from './history/history';
+export * from './video/video';

@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
-import { ChannelInfoBeforeTrimming } from '~/shared/types/types';
+import { ChannelInfoBeforeTrimming, CreateSubscriptionResponseDto } from '~/shared/types/types';
 
 @injectable()
 export class ChannelCrudRepositoryAdapter implements ChannelCrudRepository {
@@ -37,5 +37,87 @@ export class ChannelCrudRepositoryAdapter implements ChannelCrudRepository {
         },
       },
     });
+  }
+
+  async addSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {
+    await this.prismaClient.channel.update({
+      where: {
+        id: channelId,
+      },
+      data: {
+        subscriptions: {
+          create: {
+            userId,
+          },
+        },
+      },
+      select: {
+        subscriptions: {
+          where: { userId },
+        },
+      },
+    });
+
+    return { isSubscribe: true };
+  }
+
+  async removeSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {
+    await this.prismaClient.channel.update({
+      where: {
+        id: channelId,
+      },
+      data: {
+        subscriptions: {
+          deleteMany: [{ userId }],
+        },
+      },
+      select: {
+        subscriptions: {
+          where: { userId },
+        },
+      },
+    });
+
+    return { isSubscribe: false };
+  }
+
+  async isUserSubscribe(channelId: string, userId: string): Promise<boolean> {
+    const userSubscription = await this.prismaClient.channel.findUnique({
+      where: {
+        id: channelId,
+      },
+      select: {
+        subscriptions: {
+          where: {
+            userId,
+          },
+        },
+      },
+    });
+    return !!userSubscription?.subscriptions.length;
+  }
+
+  async isUserSubscribeByVideoId(videoId: string, userId: string): Promise<boolean> {
+    const { channelId } = await this.prismaClient.video.findUniqueOrThrow({
+      where: {
+        id: videoId,
+      },
+      select: {
+        channelId: true,
+      },
+    });
+    const userSubscription = await this.prismaClient.channel.findUnique({
+      where: {
+        id: channelId,
+      },
+      select: {
+        subscriptions: {
+          where: {
+            userId,
+          },
+        },
+      },
+    });
+    return !!userSubscription?.subscriptions.length;
   }
 }

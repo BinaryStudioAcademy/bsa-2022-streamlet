@@ -1,9 +1,12 @@
 export type Comment = {
-  id: number;
-  avatar?: string;
-  userName: string;
-  firstName?: string;
-  lastName?: string;
-  dateAdded: Date;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
   text: string;
+  author: {
+    avatar?: string;
+    username: string;
+    firstName?: string;
+    lastName?: string;
+  };
 };

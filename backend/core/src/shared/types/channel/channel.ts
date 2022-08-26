@@ -4,6 +4,7 @@ export {
   type StreamingKeyResponseDto,
   type ResetStreamingKeyRequestDto,
   type ChannelInfoRequestDto,
+  type ChannelBaseResponse,
   type ChannelInfoResponseDto,
 } from 'shared/build';
 

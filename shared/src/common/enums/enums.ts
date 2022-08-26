@@ -3,6 +3,7 @@ export * from './exceptions/exceptions';
 export * from './file/file';
 export * from './http/http';
 export * from './user/user';
+export * from './auth/auth';
 export * from './refresh-token/refresh-token';
 export * from './cloudinary/cloudinary';
 export * from './amqp/amqp';

@@ -11,11 +11,19 @@ export const authenticationMiddleware = async (
   _res: express.Response,
   next: express.NextFunction,
 ): Promise<void> => {
+  const isAuthOptional = !!req.isOptionalAuth;
+
   const authHeader = req.headers['authorization'];
+  if (!authHeader && isAuthOptional) {
+    return next();
+  }
   if (!authHeader) {
     return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_NO_TOKEN));
   }
   const token = getBearerTokenFromAuthHeader(authHeader);
+  if (!token && isAuthOptional) {
+    return next();
+  }
   if (!token) {
     return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_NO_TOKEN));
   }
@@ -23,7 +31,9 @@ export const authenticationMiddleware = async (
     const payload = await verifyJwt<UserBaseResponseDto>({ jwt: token, secret: CONFIG.ENCRYPTION.ACCESS_TOKEN_SECRET });
     req.user = payload;
   } catch {
-    return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN));
+    if (!isAuthOptional) {
+      return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN));
+    }
   }
   next();
 };

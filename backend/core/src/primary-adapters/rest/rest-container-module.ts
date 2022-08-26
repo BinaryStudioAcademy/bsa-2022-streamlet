@@ -14,6 +14,7 @@ const restContainerModule = new ContainerModule((bind: interfaces.Bind) => {
   bind<AuthController>(CONTAINER_TYPES.AuthController).to(AuthController);
   bind<ChannelStreamingController>(CONTAINER_TYPES.ChannelStreamingController).to(ChannelStreamingController);
   bind<ChannelCrudController>(CONTAINER_TYPES.ChannelCrudController).to(ChannelCrudController);
+  bind<VideoController>(CONTAINER_TYPES.VideoController).to(VideoController);
   bind<ProfileController>(CONTAINER_TYPES.ProfileController).to(ProfileController);
   bind<HistoryController>(CONTAINER_TYPES.HistoryController).to(HistoryController);
 });
