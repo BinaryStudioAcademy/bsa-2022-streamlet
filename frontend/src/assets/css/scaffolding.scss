@@ -470,6 +470,7 @@
   --text-gray-color: #6a726d;
   --white-text-color: #ffffff;
   --brand-green-color: #06c149;
+  --brand-dark-green-color: #006624;
   --brand-green-color-hover: #00802d;
   --brand-yellow-color: #f6c648;
   --support-info-color: #03d8ff;
@@ -514,6 +515,17 @@
   --video-card-schedule-btn-background: #ffffff40;
   --video-card-live-color: #ba0000;
   --white-background-video-card: #ffffff26;
+
+  /* video player */
+  --container-bg: black;
+  --controls-overlay: rgba(0 0 0 / 50%);
+  --playpause-effect-bg: rgba(0 0 0 / 50%);
+  --selected-menu-item-bg: rgb(48 48 48 / 50.7%);
+  --hovered-menu-item-bg: rgb(0 0 0 / 20%);
+  --settings-modal-bg: rgb(58 58 58 / 75.3%);
+  --progress-bar-bg: rgb(100 100 100 / 50%);
+  --progress-bar-preview-bg: rgb(206 206 206 / 50%);
+  --progress-bar-done-bg: #006624;
 }
 
 body[data-theme='light'] {
