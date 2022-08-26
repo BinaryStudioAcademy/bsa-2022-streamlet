@@ -96,7 +96,7 @@ $base-z-index: $page-component-z-index;
   height: 24px;
   margin-left: 15px;
   padding: 4px 10px;
-  color: var(--white-text-color);
+  color: var(--always-white-color);
   background-color: var(--video-card-schedule-btn-background);
   border-radius: 3px;
   cursor: pointer;
@@ -113,10 +113,9 @@ $base-z-index: $page-component-z-index;
 .video-card-info {
   display: grid;
   grid-template-rows: auto auto;
-  grid-template-columns: 50px auto;
-  gap: 0 10px;
+  grid-template-columns: 40px auto;
+  gap: 0 8px;
   margin-top: 10px;
-  overflow: hidden;
 }
 
 .avatar {
@@ -131,11 +130,11 @@ $base-z-index: $page-component-z-index;
 .video-card-channel {
   justify-self: end;
   width: 100%;
-  padding-left: 10px;
+  padding-left: 8px;
 }
 
 .video-card-channel .avatar {
-  height: 40px;
+  height: 32px;
 }
 
 .video-card-desc {
@@ -195,6 +194,7 @@ $base-z-index: $page-component-z-index;
   padding: 3px 6px 3px 3px;
   color: var(--white-text-color);
   background-color: var(--white-background-video-card);
+  border: 1px solid var(--secondary-text-color);
   border-radius: 3px;
   cursor: pointer;
 }
@@ -224,7 +224,7 @@ $base-z-index: $page-component-z-index;
   cursor: pointer;
 }
 
-.video-card-author span {
+.video-card-author-name {
   white-space: nowrap;
   text-transform: none;
   text-overflow: ellipsis;
@@ -298,11 +298,6 @@ $base-z-index: $page-component-z-index;
     background: none;
   }
 
-  .video-card:focus-within,
-  .video-card:hover {
-    background-color: var(--gray-300-header-menu-background);
-  }
-
   .video-card-preview {
     height: 140px;
     aspect-ratio: 16 / 9;
@@ -335,8 +330,13 @@ $base-z-index: $page-component-z-index;
     line-height: 24px;
   }
 
+  .video-card-meta {
+    align-items: center;
+  }
+
   .video-card-meta.video-card-meta-scheduled {
     display: flex;
+    align-items: flex-start;
   }
 
   .video-card-meta-data {

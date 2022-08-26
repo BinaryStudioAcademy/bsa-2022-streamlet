@@ -1,0 +1,25 @@
+.statistics-list {
+  list-style: none;
+}
+
+.heading {
+  margin: 0;
+  padding: 0;
+  color: var(--white-text-color);
+  font-weight: normal;
+  font-style: normal;
+}
+
+.hr {
+  max-width: 400px;
+  height: 1px;
+  margin: 10px 0;
+  background-image: linear-gradient(to right, var(--brand-green-color-hover), transparent);
+  border: 0;
+}
+
+.about-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+}

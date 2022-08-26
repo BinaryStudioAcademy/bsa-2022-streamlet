@@ -1,12 +1,14 @@
 import styles from './styles.module.scss';
 import { IconName } from 'common/enums/enums';
-import { ReactComponent as ArrowDown } from '../../../assets/img/arrow-down.svg';
-import { ReactComponent as Sun } from '../../../assets/img/sun-solid.svg';
+import { ReactComponent as ArrowDown } from 'assets/img/arrow-down.svg';
+import { ReactComponent as Sun } from 'assets/img/sun-solid.svg';
 import { ReactComponent as Alarm } from 'assets/img/alarm.svg';
 import { ReactComponent as ArrowUp } from 'assets/img/arrow-up.svg';
 import { ReactComponent as ArrowLeft } from 'assets/img/arrow-left.svg';
 import { ReactComponent as BellOutline } from 'assets/img/bell-outline.svg';
 import { ReactComponent as Camera } from 'assets/img/camera.svg';
+import { ReactComponent as ChevronUp } from 'assets/img/chevron-up.svg';
+import { ReactComponent as ChevronDown } from 'assets/img/chevron-down.svg';
 import { ReactComponent as Circle } from 'assets/img/circle.svg';
 import { ReactComponent as Compass } from 'assets/img/compass.svg';
 import { ReactComponent as Filter } from 'assets/img/filter.svg';
@@ -90,6 +92,14 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.CAMERA: {
       return <Camera {...commonProps} />;
+    }
+
+    case IconName.CHEVRON_UP: {
+      return <ChevronUp {...commonProps} />;
+    }
+
+    case IconName.CHEVRON_DOWN: {
+      return <ChevronDown {...commonProps} />;
     }
 
     case IconName.CIRCLE: {

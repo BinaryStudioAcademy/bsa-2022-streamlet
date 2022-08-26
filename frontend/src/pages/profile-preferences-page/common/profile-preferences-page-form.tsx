@@ -62,7 +62,7 @@ const ProfilePreferencesPageForm: FC<Props> = ({ onSubmit, defaultFormValue, err
       <div className={style['save-change-button-container']}>
         {error && <span className={style['error-message']}>{error}</span>}
         <button type="submit" className={style['save-change-button']}>
-          {isLoading ? <Loader hCentered={true} vCentered={true} /> : 'Save changes'}
+          {isLoading ? <Loader hCentered vCentered={false} spinnerSize="16px" /> : 'Save changes'}
         </button>
       </div>
     </form>

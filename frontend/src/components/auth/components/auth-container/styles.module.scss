@@ -11,22 +11,21 @@ $base-z-index: $page-z-index;
   flex-grow: 1;
   align-items: center;
   width: 100vw;
-  background: var(--gray-400-primary-background);
+  background: var(--auth-background);
 }
 
 .auth-modal {
   z-index: $base-z-index + 1;
   width: 100vw;
+  height: 100vh;
   margin: auto;
   background-color: var(--auth-modal-background);
   border: solid 3px transparent;
-  border-radius: 3px;
-  border-image-source: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
-  border-image-slice: 1;
 }
 
 .auth-container {
-  margin: 38px 20px;
+  width: 100%;
+  padding: 30px 20px 60px;
 }
 
 .auth-title {
@@ -35,97 +34,99 @@ $base-z-index: $page-z-index;
   font-size: 44px;
 }
 
-.background-zigzag {
-  position: absolute;
-  top: 20vh;
-  left: 5vw;
-  z-index: $base-z-index;
+.auth-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
 }
 
-.background-zigzag-2 {
-  position: absolute;
-  top: 44vh;
-  left: 0;
-  z-index: $base-z-index;
-  width: 155px;
-}
-
-.background-element {
-  position: absolute;
-  top: -2vh;
-  right: 1vw;
-  z-index: $base-z-index - 1;
-}
-
-@media screen and (min-height: 820px) {
-  .auth-background {
-    width: 100vw;
-  }
-
-  .auth-modal {
-    width: 100vw;
-  }
+.background-zigzag,
+.background-zigzag2,
+.background-zigzag3,
+.background-curve1,
+.background-curve2 {
+  display: none;
 }
 
 @media screen and (min-width: 600px) {
   .auth-modal {
-    width: 80vw;
+    width: 600px;
     height: auto;
+    margin: 30px auto;
+    border-radius: 3px;
+    border-image-source: var(--auth-border);
+    border-image-slice: 1;
+    box-shadow: var(--auth-box-shadow);
   }
 
   .auth-container {
-    margin: 38px 46px;
+    padding: 30px 60px;
   }
 
-  .background-zigzag {
-    left: -30vw;
+  .auth-header {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    margin: 10px 0 40px;
+  }
+
+  .auth-title {
+    line-height: 40px;
+  }
+}
+
+@media screen and (min-width: 1100px) and (min-height: 620px) {
+  .background-zigzag,
+  .background-zigzag2,
+  .background-zigzag3 {
+    position: absolute;
     z-index: $base-z-index + 2;
+    display: block;
+    filter: drop-shadow(0 0 15px rgb(0 0 0 / 16%));
   }
 
-  .background-zigzag-2 {
-    left: -20vw;
-    z-index: $base-z-index + 2;
-  }
-}
-
-@media screen and (min-width: 850px) {
-  .auth-modal {
-    width: 60vw;
-  }
-
-  .auth-container {
-    margin: 38px 96px;
+  .zigzag1-container {
+    position: absolute;
+    top: 15%;
+    left: 10%;
+    width: 170px;
   }
 
   .background-zigzag {
-    left: -3vw;
+    width: 100%;
   }
 
-  .background-zigzag-2 {
-    left: 0;
-  }
-}
-
-@media screen and (min-width: 980px) {
-  .background-zigzag {
-    left: 2vw;
+  .zigzag3-container {
+    position: absolute;
+    top: 5%;
+    left: 18%;
+    width: 170px;
   }
 
-  .background-element {
-    z-index: $base-z-index;
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  .auth-modal {
-    width: 50vw;
+  .background-zigzag3 {
+    width: 65%;
   }
 
-  .background-zigzag {
-    left: 10vw;
+  .background-zigzag2 {
+    top: 72%;
+    left: 70%;
+    width: 200px;
   }
 
-  .background-zigzag-2 {
-    left: 10vw;
+  .background-curve1 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: $base-z-index - 1;
+    display: block;
+  }
+
+  .background-curve2 {
+    position: absolute;
+    bottom: 5%;
+    left: 10%;
+    z-index: $base-z-index - 1;
+    display: block;
   }
 }

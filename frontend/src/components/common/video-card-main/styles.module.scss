@@ -96,7 +96,7 @@ $base-z-index: $page-component-z-index;
   height: 24px;
   margin-left: 15px;
   padding: 4px 10px;
-  color: var(--white-text-color);
+  color: var(--always-white-color);
   background-color: var(--video-card-schedule-btn-background);
   border-radius: 3px;
   cursor: pointer;
@@ -119,7 +119,7 @@ $base-z-index: $page-component-z-index;
 
 .avatar {
   width: 100%;
-  height: 40px;
+  height: 32px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -129,15 +129,14 @@ $base-z-index: $page-component-z-index;
 
 .video-card-desc {
   display: grid;
-  grid-template-columns: 40px auto;
-  gap: 5px 10px;
+  grid-template-columns: 32px auto;
+  gap: 5px 8px;
   padding: 10px 22px 10px 10px;
 }
 
 .video-card-name {
   display: flex;
   flex-flow: column nowrap;
-  gap: 5px;
   overflow: hidden;
 }
 
@@ -171,6 +170,7 @@ $base-z-index: $page-component-z-index;
 }
 
 .video-card-author a {
+  overflow: hidden;
   color: var(--text-gray-color);
   font-weight: 400;
   font-size: 12px;
@@ -179,7 +179,7 @@ $base-z-index: $page-component-z-index;
   cursor: pointer;
 }
 
-.video-card-author span {
+.video-card-author-name {
   white-space: nowrap;
   text-transform: none;
   text-overflow: ellipsis;

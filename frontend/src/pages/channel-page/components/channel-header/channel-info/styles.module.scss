@@ -1,0 +1,38 @@
+.channel-info {
+  display: grid;
+  grid-template-areas:
+    'a b'
+    'a c';
+  align-items: center;
+  color: var(--white-text-color);
+  column-gap: 15px;
+}
+
+.channel-name {
+  grid-area: b;
+  overflow: hidden;
+  color: var(--white-text-color);
+  font-weight: normal;
+  font-size: medium;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.subscribers-count {
+  grid-area: c;
+  color: var(--text-gray-color);
+}
+
+.channel-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.channel-avatar-wrapper {
+  $size: 50px;
+
+  grid-area: a;
+  width: $size;
+  height: $size;
+}

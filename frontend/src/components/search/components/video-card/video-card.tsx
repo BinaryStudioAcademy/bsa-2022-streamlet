@@ -27,14 +27,14 @@ const VideoCard: FC<Props> = ({
 }) => {
   const [timeNow, setTimeNow] = useState(dayjs());
 
-  const isWaiting = status === StreamingStatus.WAITING;
+  const isWaiting = status === StreamingStatus.PENDING;
   const isLive = status === StreamingStatus.LIVE;
   const isFinished = status === StreamingStatus.FINISHED;
 
   const updateTimeDelay = UPDATE_CARD_TIME_DELAY;
 
   const linkToVideoPage = `${AppRoutes.VIDEO}/${id}`;
-  const linkToChannelPage = `${AppRoutes.CHANNEL}/${id}`;
+  const linkToChannelPage = `${AppRoutes.CHANNEL}/${channel.id}`;
 
   const videoPoster = poster ? poster : isLightTheme ? defaultVideoPosterLight : defaultVideoPosterDark;
   const channelAvatar = channel.avatar ? channel.avatar : defaultUserAvatar;
@@ -86,7 +86,7 @@ const VideoCard: FC<Props> = ({
           <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
         </Link>
         <div className={styles['video-card-desc']}>
-          <Link to={linkToVideoPage} className={styles['video-card-title']}>
+          <Link to={linkToVideoPage} className={styles['video-card-title']} title={name}>
             {name}
           </Link>
           <MetaDataVideo views={views} publishedAt={publishedAt} />
@@ -94,8 +94,8 @@ const VideoCard: FC<Props> = ({
             <Link to={linkToChannelPage} className={styles['video-card-author-avatar']}>
               <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
             </Link>
-            <Link to={linkToChannelPage} className={styles['video-card-author-name']}>
-              <span>{channel.name}</span>
+            <Link to={linkToChannelPage} className={styles['video-card-author-name']} title={channel.name}>
+              {channel.name}
             </Link>
           </div>
           {isWaiting && !isSchedulePassed() && (

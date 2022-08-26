@@ -1,10 +1,11 @@
 .filter-block {
+  position: relative;
   display: flex;
+  justify-content: center;
   width: 100%;
   margin-top: 1px;
   padding: 12px 35px;
-  overflow: auto;
-  overflow-x: overlay;
+  overflow: hidden;
   background-color: var(--gray-300-header-menu-background);
 
   @media screen and(max-width: 900px) {
@@ -12,19 +13,28 @@
   }
 }
 
-.filter-block::-webkit-scrollbar {
-  display: none;
-  height: 11px;
-}
+.filter-block-wrapper {
+  display: flex;
+  width: fit-content;
+  overflow: auto;
 
-.filter-block:hover {
-  &::-webkit-scrollbar {
-    display: block;
+  .blur-container {
+    position: absolute;
+    top: 12px;
+    right: 35px;
+    width: 40px;
+    height: 30px;
+    background: var(--gray-300-header-menu-background);
+    background: linear-gradient(270deg, var(--gray-300-header-menu-background), transparent 100%);
+
+    @media screen and (max-width: 900px) {
+      right: 20px;
+    }
   }
 }
 
-.filter-block::-webkit-scrollbar-track {
-  background: transparent;
+.filter-block-wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .filter-item {
@@ -43,7 +53,7 @@
 
   &.active,
   &:hover {
-    color: var(--white-text-color);
+    color: var(--always-white-color);
     background-color: var(--brand-green-color);
   }
 

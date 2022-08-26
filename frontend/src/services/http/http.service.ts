@@ -32,13 +32,16 @@ class Http {
     if (abortSignal) {
       requestInit.signal = abortSignal;
     }
+
+    // remember to add query params before running pre-interceptors, so that they have access to it
+    url = this.getUrl(url, query);
     for (const preInterceptor of preInterceptors) {
       [url, requestInit] = await preInterceptor({ url, options: requestInit });
     }
 
     const makeRequest = (url: string, options: RequestInit): Promise<Response> => fetch(url, options);
 
-    let response = await makeRequest(this.getUrl(url, query), requestInit);
+    let response = await makeRequest(url, requestInit);
     for (const postInterceptor of postInterceptors) {
       response = await postInterceptor({
         initialRequest: { options: requestInit, url },

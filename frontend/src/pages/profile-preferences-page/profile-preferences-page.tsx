@@ -63,11 +63,12 @@ const ProfilePreferencesPage: FC = () => {
     });
     setIsNeedUpload(false);
     setIsNeedImageEditor(!isNeedImageEditor);
-    images.pop();
+    setImages([]);
   };
 
   const onUploadImageClose = (): void => {
     setIsNeedUpload(!isNeedUpload);
+    setImages([]);
   };
 
   const handleImageSave = useCallback(
@@ -136,7 +137,7 @@ const ProfilePreferencesPage: FC = () => {
             <div className={style['profile-image-upload-container']}>
               <div className={style['avatar-container']}>
                 {isLoading ? (
-                  <Loader spinnerSize={'xs'} vCentered={true} hCentered={true} />
+                  <Loader spinnerSize={'xs'} className={style['profile-page-loader-container']} />
                 ) : (
                   <img
                     className={style['profile-image-preview']}
