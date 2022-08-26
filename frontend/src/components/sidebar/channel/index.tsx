@@ -1,17 +1,20 @@
-import { FC, ChannelSubscriptionResponseDto } from 'common/types/types';
+import { AppRoutes } from 'common/enums/enums';
+import { FC, BaseSubscriptionResponseDto } from 'common/types/types';
+import { Link } from 'react-router-dom';
 
 import styles from './channel.module.scss';
+import defaultChannelAvatar from 'assets/img/default-channel-avatar.jpg';
 
 interface ChannelProps {
-  channelInfo: ChannelSubscriptionResponseDto;
+  channelInfo: BaseSubscriptionResponseDto['channel'];
 }
 
-const Channel: FC<ChannelProps> = ({ channelInfo: channel }) => {
+const Channel: FC<ChannelProps> = ({ channelInfo: { id, name, avatar } }) => {
   return (
-    <div key={channel.id} className={styles['subscription-item']}>
-      <img src={channel.channelAvatar} alt={channel.title} className={styles['channel-avatar']} />
-      <p className={styles['channel-name']}>{channel.title}</p>
-    </div>
+    <Link to={`${AppRoutes.CHANNEL}/${id}`} className={styles['subscription-item']} title={name}>
+      <img src={avatar ? avatar : defaultChannelAvatar} alt={name} className={styles['channel-avatar']} />
+      <p className={styles['channel-name']}>{name}</p>
+    </Link>
   );
 };
 

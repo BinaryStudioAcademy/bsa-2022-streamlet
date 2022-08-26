@@ -1,6 +1,8 @@
+@import 'assets/css/config.scss';
+
 .video-page {
   display: flex;
-  height: calc(100vh - 82px);
+  height: calc(100vh - $header-height);
 
   @media screen and (max-width: 992px) {
     display: block;

@@ -384,7 +384,10 @@ export class AuthController extends BaseHttpController {
     const tokenUser = await this.resetPasswordService.getResetTokenUser(requestDto.token);
 
     if (!tokenUser) {
-      throw new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_RESET_PASSWORD_LINK);
+      throw new Unauthorized(
+        exceptionMessages.auth.UNAUTHORIZED_INCORRECT_RESET_PASSWORD_LINK,
+        errorCodes.auth.restorePassword.INCORRECT_TOKEN,
+      );
     }
     await this.userService.changeUserPassword(tokenUser.id, requestDto.password);
     await this.resetPasswordService.removeTokensForUser(tokenUser.id);

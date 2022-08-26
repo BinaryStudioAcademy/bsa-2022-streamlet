@@ -1,0 +1,17 @@
+@use 'assets/css/breakpoint';
+
+.channel-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.content {
+  width: 100%;
+  padding: 20px;
+
+  @media #{breakpoint.$tablet-small} {
+    padding: 40px 50px;
+  }
+}

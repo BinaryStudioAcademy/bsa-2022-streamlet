@@ -17,15 +17,18 @@ export interface FilterBlockProps {
 const FiltersBlock: FC<FilterBlockProps> = ({ filterList, handleClickFilter }) => {
   return (
     <div className={styles['filter-block']}>
-      {filterList.map((filter) => (
-        <button
-          onClick={handleClickFilter}
-          key={filter.id}
-          className={clsx({ [styles.active]: filter.isActive }, styles['filter-item'])}
-        >
-          {filter.filterName}
-        </button>
-      ))}
+      <div className={styles['filter-block-wrapper']}>
+        <div className={styles['blur-container']} />
+        {filterList.map((filter) => (
+          <button
+            onClick={handleClickFilter}
+            key={filter.id}
+            className={clsx({ [styles.active]: filter.isActive }, styles['filter-item'])}
+          >
+            {filter.filterName}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

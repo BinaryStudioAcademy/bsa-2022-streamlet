@@ -1,5 +1,6 @@
 import { FormEvent, MouseEvent, RefObject } from 'react';
 import { Link } from 'react-router-dom';
+import clsx from 'clsx';
 import { FC } from 'common/types/types';
 import { AppRoutes, IconName, MenuOptions } from 'common/enums/enums';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
@@ -22,11 +23,14 @@ interface HeaderProps {
   isMenuOpen: boolean;
   searchValue: string;
   searchInputEl: RefObject<HTMLInputElement>;
+  isMobileSearchOpen: boolean;
   handleClickUserMenu: (e: MouseEvent<HTMLButtonElement>) => void;
   handleClickThemeSwitch(): void;
   handleClickSignIn(): void;
   handleChangeInputSearch(e: FormEvent<HTMLInputElement>): void;
   handleClearInputSearch(e: MouseEvent<HTMLElement>): void;
+  handleClickSearchBtn(e: MouseEvent<HTMLElement>): void;
+  handleClickSearchMobileToggle(): void;
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
   options: MenuOption[];
   userAvatar: string;
@@ -42,10 +46,13 @@ const Header: FC<HeaderProps> = ({
   isMenuOpen,
   searchValue,
   searchInputEl,
+  isMobileSearchOpen,
   handleClickSignIn,
   handleClickUserMenu,
   handleChangeInputSearch,
   handleClearInputSearch,
+  handleClickSearchBtn,
+  handleClickSearchMobileToggle,
   handleSubmitSearch,
   handleClickThemeSwitch,
   options,
@@ -76,28 +83,41 @@ const Header: FC<HeaderProps> = ({
         <Logo size={24} className={styles['logo-desktop']} />
         <Logo size={24} isMobile={true} className={styles['logo-mobile']} />
       </div>
-      <form className={styles['block-search']} onSubmit={handleSubmitSearch}>
-        <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
-        <input
-          className={styles['search-input']}
-          ref={searchInputEl}
-          type="text"
-          value={searchValue}
-          onChange={handleChangeInputSearch}
-          placeholder="Search or type"
-        />
-        <div className={styles['search-input-clear']} aria-label="Clear search" onClick={handleClearInputSearch}>
-          <Icon name={IconName.X_MARK} />
+      <form
+        className={clsx(styles['block-search'], isMobileSearchOpen && styles['block-search-mobile'])}
+        onSubmit={handleSubmitSearch}
+      >
+        <div className={styles['back-btn-mobile']} onClick={handleClickSearchMobileToggle}>
+          <Icon name={IconName.ARROW_LEFT} className={styles['search-icon']} width="24" height="24" />
+        </div>
+        <div className={styles['block-search-input']}>
+          <div className={styles['search-btn']} onClick={handleClickSearchBtn}>
+            <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
+          </div>
+          <input
+            className={styles['search-input']}
+            ref={searchInputEl}
+            type="text"
+            value={searchValue}
+            onChange={handleChangeInputSearch}
+            placeholder="Search or type"
+          />
+          <div className={styles['search-input-clear']} aria-label="Clear search" onClick={handleClearInputSearch}>
+            <Icon name={IconName.X_MARK} />
+          </div>
+        </div>
+        <div className={styles['search-btn-mobile']} onClick={handleClickSearchBtn}>
+          <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
         </div>
       </form>
       <div className={styles['control-icons']}>
-        <button className={styles['search-mobile']}>
+        <button className={styles['search-mobile']} onClick={handleClickSearchMobileToggle}>
           <Icon name={IconName.SEARCH} className={styles['search-icon']} width="24" height="24" />
         </button>
         {isLogged ? (
           <>
             <Link className={styles['btn-go-stream']} to={AppRoutes.STUDIO}>
-              <Icon name={IconName.CAMERA} width="30" height="24" />
+              <Icon name={IconName.CAMERA} width="24" height="19" />
             </Link>
             {notificationDropdownContent}
             <button

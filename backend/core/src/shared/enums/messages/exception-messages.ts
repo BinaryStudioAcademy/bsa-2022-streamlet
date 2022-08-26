@@ -8,10 +8,13 @@ export const exceptionMessages = {
     UNAUTHORIZED_NO_TOKEN: 'No bearer token provided',
     UNAUTHORIZED_INCORRECT_TOKEN: 'Incorrect or expired token',
     UNAUTHORIZED_INCORRECT_RESET_PASSWORD_LINK:
-      'The token in your link for password reset has expired or was incorrect. Please, get a new one',
+      'The token in your link for password reset has expired or was incorrect.',
     UNAUTHORIZED_INCORRECT_ACCOUNT_VERIFICATION_LINK:
       'The token in your link for account verification has expired or was incorrect. Please, get a new one',
     INCORRECT_EMAIL: 'Wrong email. Please, try again',
     EMAIL_NOT_VERIFIED: 'Please, verify your email before logging in',
+  },
+  channelCrud: {
+    CHANNEL_ID_NOT_FOUND: 'Channel with such id wasn`t found',
   },
 };
