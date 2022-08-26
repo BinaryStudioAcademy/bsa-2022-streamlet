@@ -1,12 +1,20 @@
 import { DataStatus, ErrorMessage, LoaderSize } from 'common/enums/enums';
 import { Loader } from 'components/common/common';
 import { ErrorBox } from 'components/common/errors/errors';
+import { VideosBlock } from 'components/common/videos-block/videos-block';
 import { useAppSelector } from 'hooks/hooks';
 import React, { FC, ReactNode } from 'react';
 import { ChannelVideoCard } from './channel-video-card/channel-video-card';
-import styles from './styles.module.scss';
 
-const VideoSection: FC = () => {
+type Props = {
+  channelInfo: {
+    id: string;
+    name: string;
+    avatar: string;
+  };
+};
+
+const VideoSection: FC<Props> = ({ channelInfo }) => {
   // when pagination is implemented
   // this component will probably be wrapped into InfiniteScroll
   // and dispatch an action like loadMoreVideos(...) to the channel-page store slice
@@ -23,12 +31,15 @@ const VideoSection: FC = () => {
     if (dataStatus === DataStatus.REJECTED) {
       return <ErrorBox message={error || ErrorMessage.DEFAULT} />;
     }
-
-    return videoIds.map((videoId) => (
-      <ChannelVideoCard key={videoId} videoId={videoId} className={styles['video-card']} />
-    ));
+    return (
+      <VideosBlock
+        videoCards={videoIds.map((videoId) => (
+          <ChannelVideoCard key={videoId} videoId={videoId} channelInfo={channelInfo} />
+        ))}
+      />
+    );
   };
-  return <section className={styles['video-section']}>{getComponent()}</section>;
+  return <section>{getComponent()}</section>;
 };
 
 export { VideoSection };

@@ -1,3 +1,5 @@
+@use 'assets/css/breakpoint';
+
 .channel-header {
   display: flex;
   flex-direction: column;
@@ -10,10 +12,21 @@
 
 .channel-upper-section {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px 10px;
+
+  @media #{breakpoint.$tablet-small} {
+    flex-direction: row;
+    justify-content: unset;
+    align-items: center;
+  }
 }
 
 .subscribe {
-  margin-left: auto;
+  color: var(--always-white-color);
+  @media #{breakpoint.$tablet-small} {
+    margin-left: auto;
+  }
 }
