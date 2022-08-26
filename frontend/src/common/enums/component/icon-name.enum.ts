@@ -38,6 +38,7 @@ enum IconName {
   SUN = 'sun',
   ONLINE_STREAMING = 'online-streaming',
   BELL_OUTLINE = 'bell-outline',
+  PROFILE = 'profile',
 }
 
 export { IconName };
