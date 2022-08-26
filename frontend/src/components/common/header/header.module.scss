@@ -99,7 +99,7 @@
   }
 
   .user-menu-avatar {
-    width: 46px;
+    min-width: 46px;
     height: 46px;
     cursor: default;
   }
@@ -109,13 +109,18 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
+    max-width: calc(90% - 46px);
     margin-left: 10px;
   }
 
   .user-menu-username,
   .user-menu-email {
+    max-width: 100%;
+    overflow: hidden;
     color: var(--white-text-color);
     font-size: 15px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .user-menu-email {
@@ -153,7 +158,7 @@
     align-items: center;
     height: 40px;
     padding: 4px;
-    color: var(--hover-light-grey);
+    color: var(--text-gray-color);
     text-align: start;
     border-radius: 4px;
     cursor: pointer;
@@ -164,13 +169,18 @@
     align-items: center;
   }
 
-  .option:hover {
-    background-color: var(--secondary-text-color);
-  }
-
-  .option svg {
+  svg {
     margin-right: 12px;
     margin-left: 5px;
+    fill: var(--text-gray-color);
+  }
+
+  .option:hover {
+    color: var(--white-text-color);
+
+    svg {
+      fill: var(--white-text-color);
+    }
   }
 }
 
