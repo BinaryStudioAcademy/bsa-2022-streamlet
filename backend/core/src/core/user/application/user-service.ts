@@ -59,7 +59,7 @@ export class UserService {
 
   async createUser(userRequestDto: UserSignUpRequestDto): Promise<User> {
     const user = await this.userRepository.createUser(userRequestDto);
-    await this.channelCrudRepository.createDefaultForUser(user, user.username);
+    await this.channelCrudRepository.createDefaultForUser(user, `${user.username}'s channel`);
     return user;
   }
 
