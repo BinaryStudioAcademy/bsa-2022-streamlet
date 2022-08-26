@@ -27,8 +27,6 @@ enum IconName {
   ANALYTICS = 'analytics',
   MARK_AS_READ = 'mark-as-read',
   CLOSE = 'close',
-  ZOOM_IN = 'zoom_in',
-  ZOOM_OUT = 'zoom_out',
   ROTATE = 'rotate',
   EXCLAMATION = 'exclamation',
   INFO = 'info',
