@@ -1,3 +1,5 @@
+@use 'assets/css/breakpoint';
+
 .channel-page {
   display: flex;
   flex-direction: column;
@@ -6,8 +8,10 @@
 }
 
 .content {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 30px;
+  width: 100%;
+  padding: 20px;
+
+  @media #{breakpoint.$tablet-small} {
+    padding: 40px 50px;
+  }
 }

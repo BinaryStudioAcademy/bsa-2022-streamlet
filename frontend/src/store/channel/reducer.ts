@@ -4,7 +4,7 @@ import { ChannelInfoResponseDto, ChannelVideoPreviewsPageDto, RootState } from '
 import { loadChannel } from './actions';
 
 type CurrentChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
-type ChannelVideo = ChannelVideoPreviewsPageDto['videos'][number];
+type ChannelVideo = ChannelVideoPreviewsPageDto['list'][number];
 
 interface InitialState {
   currentChannel: {
@@ -21,7 +21,7 @@ interface InitialState {
 
 const channelVideosAdapter = createEntityAdapter<ChannelVideo>({
   selectId: (channelVideo) => channelVideo.id,
-  sortComparer: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  sortComparer: (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
 });
 
 const initialState: InitialState = {
@@ -56,7 +56,7 @@ const reducer = createReducer(initialState, (builder) => {
     state.currentChannel.dataStatus = DataStatus.FULFILLED;
     const { initialVideosPage, ...channelData } = payload;
     state.currentChannel.data = channelData;
-    channelVideosAdapter.setAll(state.currentChannelVideos.data, initialVideosPage.videos);
+    channelVideosAdapter.setAll(state.currentChannelVideos.data, initialVideosPage.list);
   });
 });
 
