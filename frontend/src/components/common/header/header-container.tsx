@@ -34,6 +34,7 @@ const HeaderContainer: FC = () => {
   const isLightTheme = useAppSelector((store) => store.theme.isLightTheme);
   const { isOpened: isMenuOpen, open: openMenu, close: closeMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
   const [searchValue, setSearchValue] = useState(searchText);
+  const [mobileSearchToggle, setMobileSearchToggle] = useState(false);
 
   const emptyOnClickHandler = (): void => void 0;
 
@@ -119,19 +120,37 @@ const HeaderContainer: FC = () => {
     handleInputSearch(currentTarget.value);
   };
 
-  const handleClearInputSearch = (): void => {
-    handleInputSearch('');
+  const setFocusOnSearchInput = (): void => {
     searchInputEl.current?.focus();
   };
 
-  const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
+  const handleClearInputSearch = (): void => {
+    handleInputSearch('');
+    setFocusOnSearchInput();
+  };
+
+  const handleClickSearchMobileToggle = (): void => {
+    if (!mobileSearchToggle) {
+      setTimeout(setFocusOnSearchInput, 0);
+    }
+    setMobileSearchToggle(!mobileSearchToggle);
+  };
+
+  const handleClickSearchBtn = (): void => {
     if (searchValue) {
       handleSetInputSearch(searchValue);
       handleClearActiveFilterIds();
       const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchValue });
       navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`);
+      setMobileSearchToggle(false);
+    } else {
+      setFocusOnSearchInput();
     }
+  };
+
+  const handleSubmitSearch = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    handleClickSearchBtn();
   };
 
   const handleThemeToggle = (): void => {
@@ -145,11 +164,14 @@ const HeaderContainer: FC = () => {
       isMenuOpen={isMenuOpen}
       searchValue={searchValue}
       searchInputEl={searchInputEl}
+      isMobileSearchOpen={mobileSearchToggle}
       handleClickUserMenu={handleClickUserMenu}
       handleClickSignIn={handleClickSignIn}
       handleClickThemeSwitch={handleThemeToggle}
       handleChangeInputSearch={handleChangeInputSearch}
       handleClearInputSearch={handleClearInputSearch}
+      handleClickSearchBtn={handleClickSearchBtn}
+      handleClickSearchMobileToggle={handleClickSearchMobileToggle}
       handleSubmitSearch={handleSubmitSearch}
       userAvatar={profile?.avatar ? profile.avatar : defaultAvatar}
       userName={profile?.username}

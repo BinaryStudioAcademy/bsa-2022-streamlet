@@ -482,8 +482,16 @@
   --input-border: none;
   --input-error-border: 1px solid var(--input-error-color);
   --input-background-color: #ffffff;
-  --sidebar-scrollbar-track-background: var(--gray-300-header-menu-background);
   --always-white-color: #ffffff;
+
+  /* sidebar */
+  --sidebar-scrollbar-track-background: var(--gray-300-header-menu-background);
+  --sidebar-icon-color: #6a726d;
+  --sidebar-icon-hover-color: #ffffff;
+
+  /* header */
+  --header-search-icon-color: #6a726d;
+  --logo-text-color: #ffffff;
 
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
@@ -521,6 +529,12 @@ body[data-theme='light'] {
 
   /* sidebar */
   --sidebar-scrollbar-track-background: #e8e8e8;
+  --sidebar-icon-color: var(--brand-green-color);
+  --sidebar-icon-hover-color: var(--brand-green-color-hover);
+
+  /* header */
+  --header-search-icon-color: var(--brand-green-color);
+  --logo-text-color: #363c3a;
 
   /* auth forms */
   --link-color: rgb(0 73 56);
@@ -529,6 +543,9 @@ body[data-theme='light'] {
   --auth-border: none;
   --input-border: 1px solid var(--brand-green-color);
   --auth-background: #fbfffa;
+
+  /* video-card */
+  --video-card-schedule-btn-background: #d1d1d140;
 }
 
 html {
