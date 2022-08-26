@@ -1,7 +1,9 @@
 // import { IconColor, IconName } from 'common/enums/enums';
 import clsx from 'clsx';
 import { FC } from 'common/types/types';
-import { Input, PasswordInput } from 'components/common/common';
+import { Button, Input, PasswordInput } from 'components/common/common';
+import { AreaInput } from 'components/common/input/area-input/area-input';
+import { DatetimeInput } from 'components/common/input/datetime-input/datetime-input';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import { useAppForm } from 'hooks/hooks';
 // import { Loader, UploadImage } from 'components/common/common';
@@ -12,11 +14,14 @@ import defaultPreview from '../../../assets/img/default/video-default.png';
 import styles from './styles.module.scss';
 
 const video = {
-  previewImage: 'https://i3.ytimg.com/vi/EtjDLZKL1rc/maxresdefault.jpg',
+  id: '90862886-dab4-4777-9b1d-62a0f541559e',
+  previewImage: 'https://i3.ytimg.com/vi/jfKfPfyJRdk/maxresdefault.jpg',
+  status: 'pending',
+  isLive: false,
   title: 'Test stream 12',
   description: 'Me testing stream!',
   streamingKey: 'testkey',
-  videoId: 'teststream',
+  scheduledDate: new Date('2022-08-31T03:24:00'),
 };
 
 // type UpdateStreamRequestDto = {
@@ -28,136 +33,186 @@ export interface StreamSettingsFormValues {
   streamingKey: string;
   streamingServerUrl: string;
   streamUrl: string;
-  streamTitle: string;
-  streamDescription: string;
+  title: string;
+  tags: string;
+  category: string;
+  description: string;
+  scheduledDate: Date;
+  isLive: boolean;
+  privacy: string;
 }
 
 const StudioStream: FC = () => {
   const { control, errors } = useAppForm<StreamSettingsFormValues>({
     defaultValues: {
-      streamingKey: 'test',
-      streamUrl: 'dev.streamlet.tk/video/testvideo',
+      streamingKey: '3400139d-e0fd-49ab-ac52-be4d72f9b10b',
       streamingServerUrl: 'rtmp://localhost:1935/live',
-      streamTitle: 'test stream',
-      streamDescription: 'hi its description',
+      streamUrl: `dev.streamlet.tk/video/${video.id}`,
+      title: video.title,
+      tags: '',
+      category: '',
+      description: video.description,
+      scheduledDate: video.scheduledDate,
+      isLive: video.isLive,
+      privacy: 'public',
     },
   });
 
   return (
     <div className={styles['settings-container']}>
-      <div className={styles['settings-block']}>
-        <div className={styles['col-1']}>
-          <div className={styles['preview-container']}>
-            <img className={styles['preview']} src={video.previewImage ?? defaultPreview} alt="Stream preview" />
-            <button
-              className={clsx(styles['button'], styles['preview-button'])}
-              onClick={(): void => console.warn('click')}
-            >
-              Upload Preview
-            </button>
+      <div className={styles['settings-block-container']}>
+        <div className={styles['settings-block']}>
+          <div className={styles['col-1']}>
+            <div className={styles['preview-container']}>
+              <img className={styles['preview']} src={video.previewImage ?? defaultPreview} alt="Stream preview" />
+              <Button
+                content={'Upload Preview'}
+                className={styles['button']}
+                onClick={(): void => console.warn('reset')}
+              />
+            </div>
+            <form className={styles['form-container']}>
+              <div className={styles['field-container']}>
+                <PasswordInput
+                  inputClassName={styles['input']}
+                  labelClassName={styles['label']}
+                  wrapperClassName={styles['form-input']}
+                  placeholder="Streaming key"
+                  control={control}
+                  name="streamingKey"
+                  errors={errors}
+                  label="Streaming key"
+                  isReadOnly
+                />
+                <Button content={'Reset'} className={styles['button']} onClick={(): void => console.warn('reset')} />
+                <Button content={'Copy'} className={styles['button']} onClick={(): void => console.warn('copied')} />
+              </div>
+              <div className={styles['field-container']}>
+                <Input
+                  inputClassName={styles['input']}
+                  labelClassName={styles['label']}
+                  wrapperClassName={styles['form-input']}
+                  placeholder="Streaming server URL"
+                  control={control}
+                  name="streamingServerUrl"
+                  errors={errors}
+                  label="Streaming server URL"
+                  isReadOnly
+                />
+                <Button content={'Copy'} className={styles['button']} onClick={(): void => console.warn('copied')} />
+              </div>
+              <div className={styles['field-container']}>
+                <Input
+                  inputClassName={styles['input']}
+                  labelClassName={styles['label']}
+                  wrapperClassName={styles['form-input']}
+                  placeholder="Stream URL"
+                  control={control}
+                  name="streamUrl"
+                  errors={errors}
+                  label="Stream URL"
+                  isReadOnly
+                />
+                <Button content={'Copy'} className={styles['button']} onClick={(): void => console.warn('copied')} />
+              </div>
+            </form>
           </div>
-          <form className={styles['form-container']}>
-            <div className={styles['streaming-key-container']}>
-              <PasswordInput
+          <div className={styles['col-2']}>
+            <form className={styles['form-container']}>
+              <Input
+                control={control}
+                errors={errors}
+                name="title"
+                label="Title"
+                type="text"
                 inputClassName={styles['input']}
+                inputErrorClassName={styles['input-error']}
+                labelClassName={styles['label']}
+                errorBlockClassName={styles['error']}
+                wrapperClassName={styles['form-input']}
+                placeholder="Your stream name..."
+              />
+              <div className={styles['input-row']}>
+                <Input
+                  control={control}
+                  errors={errors}
+                  name="category"
+                  label="Category"
+                  type="text"
+                  inputClassName={styles['input']}
+                  inputErrorClassName={styles['input-error']}
+                  labelClassName={styles['label']}
+                  errorBlockClassName={styles['error']}
+                  wrapperClassName={styles['form-input']}
+                  placeholder="Choose the category"
+                />
+                <Input
+                  control={control}
+                  errors={errors}
+                  name="tags"
+                  label="Tags"
+                  type="text"
+                  inputClassName={styles['input']}
+                  inputErrorClassName={styles['input-error']}
+                  labelClassName={styles['label']}
+                  errorBlockClassName={styles['error']}
+                  wrapperClassName={styles['form-input']}
+                  placeholder="Separated by commas..."
+                />
+              </div>
+              <div className={styles['input-row']}>
+                <DatetimeInput
+                  control={control}
+                  name="scheduledDate"
+                  label="Scheduled date"
+                  inputClassName={styles['input']}
+                  labelClassName={styles['label']}
+                  wrapperClassName={styles['form-input']}
+                  defaultValue={video.scheduledDate}
+                />
+                <Input
+                  control={control}
+                  errors={errors}
+                  name="privacy"
+                  label="Privacy"
+                  type="text"
+                  inputClassName={styles['input']}
+                  inputErrorClassName={styles['input-error']}
+                  labelClassName={styles['label']}
+                  errorBlockClassName={styles['error']}
+                  wrapperClassName={styles['form-input']}
+                  placeholder="Select privacy settings"
+                />
+              </div>
+
+              <AreaInput
+                control={control}
+                name="description"
+                label="Stream description"
+                inputClassName={styles['area']}
                 labelClassName={styles['label']}
                 wrapperClassName={styles['form-input']}
-                placeholder="Streaming key"
-                control={control}
-                name="streamingKey"
-                errors={errors}
-                label="Streaming key"
-                isReadOnly
+                placeholder="Stream description..."
               />
-              <button className={styles['button']} onClick={(): void => console.warn('click')}>
-                Reset
-              </button>
-            </div>
-            <Input
-              inputClassName={styles['input']}
-              labelClassName={styles['label']}
-              wrapperClassName={styles['form-input']}
-              placeholder="Streaming server URL"
-              control={control}
-              name="streamingServerUrl"
-              errors={errors}
-              label="Streaming server URL"
-              isReadOnly
-            />
-            <Input
-              inputClassName={styles['input']}
-              labelClassName={styles['label']}
-              wrapperClassName={styles['form-input']}
-              placeholder="Stream URL"
-              control={control}
-              name="streamUrl"
-              errors={errors}
-              label="Stream URL"
-              isReadOnly
-            />
-          </form>
-        </div>
-        <div className={styles['col-2']}>
-          <form className={styles['form-container']}>
-            <Input
-              control={control}
-              errors={errors}
-              name="streamTitle"
-              label="Title"
-              type="text"
-              inputClassName={styles['input']}
-              inputErrorClassName={styles['input-error']}
-              labelClassName={styles['label']}
-              errorBlockClassName={styles['error']}
-              wrapperClassName={styles['form-input']}
-              placeholder="Title"
-            />
-            <Input
-              control={control}
-              errors={errors}
-              name="streamDescription"
-              label="Tags"
-              type="text"
-              inputClassName={styles['input']}
-              inputErrorClassName={styles['input-error']}
-              labelClassName={styles['label']}
-              errorBlockClassName={styles['error']}
-              wrapperClassName={styles['form-input']}
-              placeholder="Stream description"
-            />
-            <Input
-              control={control}
-              errors={errors}
-              name="streamDescription"
-              label="Stream description"
-              type="text"
-              inputClassName={styles['input']}
-              inputErrorClassName={styles['input-error']}
-              labelClassName={styles['label']}
-              errorBlockClassName={styles['error']}
-              wrapperClassName={styles['form-input']}
-              placeholder="Stream description"
-            />
 
-            <div className={styles['button-wrapper']}>
-              <button
-                className={clsx(styles['button'], styles['preview-button'])}
-                onClick={(): void => console.warn('click')}
-              >
-                Save
-              </button>
-              <button
-                className={clsx(styles['button'], styles['preview-button'])}
-                onClick={(): void => console.warn('click')}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+              <div className={styles['button-wrapper']}>
+                <Button
+                  content={'Save'}
+                  className={clsx(styles['button'], styles['preview-button'])}
+                  onClick={(): void => console.warn('copied')}
+                />
+                <Button
+                  content={'Cancel'}
+                  className={clsx(styles['button'], styles['preview-button'])}
+                  onClick={(): void => console.warn('copied')}
+                />
+              </div>
+            </form>
+          </div>
         </div>
-        <div className={styles['col-3']}>
-          <VideoChatContainer />
-        </div>
+      </div>
+      <div className={styles['chat-container']}>
+        <VideoChatContainer />
       </div>
     </div>
   );

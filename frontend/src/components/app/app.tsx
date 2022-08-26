@@ -33,7 +33,7 @@ const App: FC = () => {
   const isHasStudioNavigation = isRouteHasStudioNavigation(pathname);
 
   const { theme: isLightTheme } = useAppSelector((state) => ({
-    theme: state.theme.isLightTheme,
+    theme: state.theme.isLightTheme && !pathname.includes('/studio'),
   }));
 
   useEffect(() => {
