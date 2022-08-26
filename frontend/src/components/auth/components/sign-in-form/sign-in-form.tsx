@@ -23,7 +23,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit, isValid } = useAppForm<SignInFormValues>({
     defaultValues: { email: '', password: '' },
     validationSchema: userSignIn,
-    mode: 'onTouched',
+    mode: 'onChange',
   });
 
   return (

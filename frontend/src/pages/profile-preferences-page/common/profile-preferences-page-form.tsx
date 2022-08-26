@@ -16,6 +16,7 @@ const ProfilePreferencesPageForm: FC<Props> = ({ onSubmit, defaultFormValue, err
   const { control, errors, handleSubmit } = useAppForm<UpdateProfileValue>({
     defaultValues: defaultFormValue,
     validationSchema: profileUpdateValidationSchema,
+    mode: 'onChange',
   });
 
   return (
