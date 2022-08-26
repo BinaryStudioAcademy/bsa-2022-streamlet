@@ -1,20 +1,58 @@
 @import 'assets/css/config.scss';
 
+.shadow {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $mobile-sidebar-z-index - 5;
+  visibility: hidden;
+  transition-duration: 200ms;
+  transition-property: visibility;
+}
+
+.shadow-open {
+  visibility: visible;
+
+  @media screen and (min-width: 1301px) {
+    visibility: hidden;
+  }
+}
+
+.scrim {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--gray-300-header-menu-background-opacity);
+  opacity: 0;
+  transition-duration: 200ms;
+  transition-property: opacity;
+}
+
+.shadow-open .scrim {
+  opacity: 1;
+}
+
 .mobile-sidebar {
   position: absolute;
   top: 0;
+  bottom: 0;
   left: -100%;
   z-index: $mobile-sidebar-z-index;
-  width: 100%;
-  height: 100vh;
-  max-height: 100vh;
-  background-color: var(--gray-300-header-menu-background-opacity);
+  width: $sidebar-width;
   visibility: hidden;
   opacity: 0;
-  transition: 0.3s;
+  transition: all 0.3s cubic-bezier(0.46, 0.03, 0.52, 0.96);
 
   @media screen and (min-width: 1301px) {
     display: none;
+  }
+
+  @media screen and (max-width: 424px) {
+    width: 100%;
   }
 }
 
@@ -27,45 +65,52 @@
 .sidebar-content {
   position: absolute;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
   z-index: $mobile-sidebar-z-index + 1;
-  width: 40%;
-  height: 100%;
-  max-height: 100%;
-  overflow: auto;
-  overflow-y: overlay;
+  display: flex;
+  flex-flow: column nowrap;
   background-color: var(--gray-300-header-menu-background);
 
-  @media screen and (max-width: 900px) {
-    width: 50%;
+  @media screen and (max-width: 424px) {
+    width: 100%;
   }
-
-  @media screen and (max-width: 560px) {
-    width: 70%;
-  }
-}
-
-.sidebar-content::-webkit-scrollbar {
-  display: none;
-  width: 7px;
-}
-
-.sidebar-content::-webkit-scrollbar-thumb {
-  background-color: var(--gray-200-input-background);
-  border-radius: 2px;
-}
-
-.sidebar-content:hover .sidebar-content::-webkit-scrollbar {
-  display: block;
 }
 
 .sidebar-header {
-  position: sticky;
-  top: 0;
   display: flex;
   align-items: center;
-  padding: 26px 20px;
+  height: $header-height;
+  padding: 0 20px;
   background: var(--gray-300-header-menu-background);
+}
+
+.sidebar-body {
+  flex: 1;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.sidebar-body::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.sidebar-body::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.sidebar-body:hover {
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-text-color);
+  }
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  margin: 10px 0;
+  background-color: var(--gray-400-primary-background);
 }
 
 .logo-link {
@@ -85,7 +130,7 @@
 
 .burger-menu {
   display: block;
-  margin-right: 14px;
+  margin-right: 20px;
   background-color: transparent;
   cursor: pointer;
 }
@@ -95,7 +140,7 @@
 }
 
 .nav-link li svg path {
-  fill: var(--text-gray-color);
+  fill: var(--sidebar-icon-color);
 }
 
 .burger-menu:hover svg path {
@@ -103,7 +148,12 @@
 }
 
 .list-links {
+  padding-top: 7px;
   list-style: none;
+
+  @media screen and (max-width: 1300px) {
+    padding-top: 9px;
+  }
 }
 
 .nav-link {
@@ -114,11 +164,11 @@
 .nav-link li {
   display: flex;
   align-items: center;
-  padding: 13px 20px;
+  padding: 6px 20px;
 }
 
 .nav-link li svg {
-  margin-right: 20px;
+  margin-right: 24px;
 }
 
 .link-name {
@@ -129,7 +179,7 @@
 
 .nav-link:hover {
   svg path {
-    fill: var(--white-text-color);
+    fill: var(--sidebar-icon-hover-color);
   }
 
   .link-name {
@@ -147,4 +197,31 @@
   svg path {
     fill: var(--always-white-color);
   }
+}
+
+.sign-in-promo-wrp {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  padding: 16px 32px;
+}
+
+.sign-in-promo-text {
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+}
+
+.sign-in-promo-btn {
+  height: fit-content;
+  margin-top: 12px;
+  padding: 11px 20px;
+  color: var(--always-white-color);
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.5px;
+  background-color: var(--brand-green-color);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
 }

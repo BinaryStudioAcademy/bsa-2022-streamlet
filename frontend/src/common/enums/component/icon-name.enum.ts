@@ -4,6 +4,8 @@ enum IconName {
   ARROW_UP = 'arrow-up',
   ARROW_LEFT = 'arrow-left',
   CAMERA = 'camera',
+  CHEVRON_UP = 'chevron-up',
+  CHEVRON_DOWN = 'chevron-down',
   CIRCLE = 'circle',
   COMPASS = 'compass',
   FILTER = 'filter',

@@ -14,7 +14,7 @@ const MainPage: FC<MainPageProps> = ({ filterBlockProps, blocksVideo }) => (
   <main className={styles.main}>
     <FiltersBlock {...filterBlockProps} />
     <div className={styles['videos-container']}>
-      {!blocksVideo.length && <VideosBlock videos={EMPTY_VIDEO_BLOCK} />}
+      {!blocksVideo.length && <VideosBlock videoCards={EMPTY_VIDEO_BLOCK} />}
       {blocksVideo.map((videoBlock, index) => (
         <VideosBlock key={index} {...videoBlock} />
       ))}
