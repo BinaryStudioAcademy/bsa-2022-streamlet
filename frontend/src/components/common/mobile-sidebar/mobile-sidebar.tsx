@@ -1,8 +1,9 @@
 import clsx from 'clsx';
-import { IconName, AppRoutes } from 'common/enums/enums';
+import { IconName } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { Link } from '../common';
 import { Icon } from '../icon';
+import { Logo } from '../logo/logo';
 import { RoutePage } from '../sidebar/route-pages.config';
 
 import styles from './mobile-sidebar.module.scss';
@@ -29,10 +30,7 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
           <button onClick={closeMobileSidebar} className={styles['burger-menu']}>
             <Icon name={IconName.BURGER_MENU} width="30" height="30" />
           </button>
-          <Link className={styles['logo-link']} to={AppRoutes.ROOT}>
-            <Icon name={IconName.MAIN_LOGO} width="23" height="23" />
-            <p className={styles['main-name']}>streamlet</p>
-          </Link>
+          <Logo size={24} />
         </div>
         <ul className={styles['list-links']}>
           {configRoutePages.map((page) => (

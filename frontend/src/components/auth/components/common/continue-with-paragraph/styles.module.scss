@@ -2,21 +2,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5px;
-  margin-bottom: 20px;
+  margin: 20px 0 5px;
   color: var(--white-text-color);
+  font-weight: 500;
+  font-size: 14px;
   font-family: Gilroy, sans-serif;
-  line-height: 20px;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+  text-align: center;
 }
 
 .auth-link {
   margin-left: 5px;
-  color: var(--white-text-color);
-  font-family: Gilroy-Medium, sans-serif;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.auth-link:hover {
-  color: var(--text-gray-color);
 }

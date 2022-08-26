@@ -1,3 +1,4 @@
+import { SerializedHttpError } from 'helpers/http/http';
 import { extraArgument } from 'store/store';
 import { AppDispatch } from './app-dispatch.type';
 import { RootState } from './root-state.type';
@@ -8,4 +9,8 @@ type AsyncThunkConfig = {
   extra: typeof extraArgument;
 };
 
-export { type AsyncThunkConfig };
+type AsyncThunkConfigHttpError = AsyncThunkConfig & {
+  rejectValue: SerializedHttpError;
+};
+
+export { type AsyncThunkConfig, type AsyncThunkConfigHttpError };

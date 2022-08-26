@@ -1,0 +1,19 @@
+.channel-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  row-gap: 30px;
+  padding: 20px 30px;
+  padding-bottom: 0;
+  background-color: var(--channel-header-background);
+}
+
+.channel-upper-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.subscribe {
+  margin-left: auto;
+}

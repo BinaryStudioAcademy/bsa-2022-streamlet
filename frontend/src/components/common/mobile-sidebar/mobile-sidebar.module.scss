@@ -13,7 +13,7 @@
   opacity: 0;
   transition: 0.3s;
 
-  @media screen and (min-width: 1300px) {
+  @media screen and (min-width: 1301px) {
     display: none;
   }
 }
@@ -109,10 +109,6 @@
 .nav-link {
   display: block;
   text-decoration: none;
-
-  &:not(:last-child) {
-    margin-bottom: 12px;
-  }
 }
 
 .nav-link li {
@@ -131,14 +127,24 @@
   line-height: 28px;
 }
 
-.nav-link.active li {
-  background-color: var(--brand-green-color);
+.nav-link:hover {
+  svg path {
+    fill: var(--white-text-color);
+  }
 
   .link-name {
     color: var(--white-text-color);
   }
+}
+
+.nav-link.active li {
+  background-color: var(--brand-green-color);
+
+  .link-name {
+    color: var(--always-white-color);
+  }
 
   svg path {
-    fill: var(--white-text-color);
+    fill: var(--always-white-color);
   }
 }

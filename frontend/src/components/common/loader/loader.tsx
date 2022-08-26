@@ -15,15 +15,15 @@ const Loader: FC<Props> = ({ hCentered = true, vCentered = true, className, spin
 
   return (
     <div
-      className={clsx(styles['loader-wrapper'], className, {
+      className={clsx(styles['loader-wrapper'], className, styles[spinnerSize], {
         [styles['h-centered']]: hCentered,
         [styles['v-centered']]: vCentered,
       })}
+      style={!isSpinnerSizeCustom ? ({ '--spinner-height': spinnerSize } as React.CSSProperties) : undefined}
     >
-      <span
-        className={clsx(styles['loader'], styles[spinnerSize])}
-        style={!isSpinnerSizeCustom ? ({ '--spinner-height': spinnerSize } as React.CSSProperties) : undefined}
-      ></span>
+      <div className={styles['loader']}></div>
+      <div className={styles['loader']}></div>
+      <div className={styles['loader']}></div>
     </div>
   );
 };

@@ -18,7 +18,7 @@ const SendVerificationLinkForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit, isValid } = useAppForm<SendVerificationLinkFormValues>({
     defaultValues: { email: '' },
     validationSchema: accountVerificationInit,
-    mode: 'onChange',
+    mode: 'onTouched',
   });
 
   return (
@@ -34,7 +34,12 @@ const SendVerificationLinkForm: FC<Props> = ({ onSubmit, isLoading }) => {
           wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"
         />
-        <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Resend" />
+        <AuthSubmitButton
+          isLoading={isLoading}
+          disabled={isLoading || !isValid}
+          name="Resend"
+          className={formStyles['upper-space-regular']}
+        />
       </form>
     </>
   );

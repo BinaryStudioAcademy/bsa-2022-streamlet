@@ -8,6 +8,7 @@ import { IconColor } from '../../../common/enums/component/icon-color.enum';
 import { Icon } from '../icon';
 import { Modal } from '../modal/modal';
 import { FC } from '../../../common/types/react/fc.type';
+import { useWindowDimensions } from '../../../hooks/hooks';
 
 type imageEditorProps = {
   avatar: AvatarImgValue;
@@ -15,7 +16,9 @@ type imageEditorProps = {
   onClose: { (): void };
   handleSave: { (base64Str: string): void };
 };
+
 const ImageEditor: FC<imageEditorProps> = ({ avatar, setAvatar, onClose, handleSave }): ReactElement => {
+  const { width } = useWindowDimensions();
   const [editor, setEditor] = useState<undefined | AvatarEditor>();
   const handleSlider = (value: number): void => {
     setAvatar({
@@ -30,14 +33,14 @@ const ImageEditor: FC<imageEditorProps> = ({ avatar, setAvatar, onClose, handleS
     if (editor) {
       const canvasScaled = editor.getImageScaledToCanvas();
       const croppedImg = canvasScaled.toDataURL();
+      handleSave(croppedImg);
 
       setAvatar({
         ...avatar,
         img: null,
         cropperOpen: false,
-        croppedImg: croppedImg,
+        croppedImg: '',
       });
-      handleSave(croppedImg);
     }
   };
   const handleRotate = (): void => {
@@ -57,9 +60,9 @@ const ImageEditor: FC<imageEditorProps> = ({ avatar, setAvatar, onClose, handleS
               : 'https://i.ibb.co/SJBq57m/404-error-page-or-file-not-found-icon-cute-green-vector-20364439.jpg'
           }
           ref={setEditorRef}
-          width={95}
-          height={95}
-          border={200}
+          width={250}
+          height={250}
+          border={width > 350 ? 50 : 35}
           color={[255, 255, 255, 0.6]} // RGBA
           scale={avatar.zoom}
           rotate={avatar.rotate}
@@ -80,9 +83,6 @@ const ImageEditor: FC<imageEditorProps> = ({ avatar, setAvatar, onClose, handleS
             />
             <Icon name={IconName.ZOOM_IN} color={IconColor.GRAY} width={'30'} height={'30'} />
           </div>
-          <button type={'button'} onClick={onClose}>
-            Close
-          </button>
           <button type={'button'} onClick={onSave}>
             Save
           </button>

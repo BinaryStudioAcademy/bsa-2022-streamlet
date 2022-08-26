@@ -32,14 +32,9 @@
   margin-top: 15px;
 }
 
-@media #{$tablet-middle} {
-  .filter-sidebar {
-    display: flex;
-  }
-}
-
 @media #{$tablet-large} {
   .filter-sidebar {
+    display: flex;
     padding: 20px;
   }
 }

@@ -16,10 +16,12 @@ import { VideoPageContainer } from 'pages/video/video-page-container';
 import { ProtectedRoute } from 'components/common/protected-route/protected-route';
 import { AccountVerificationConfirmPage } from 'pages/account-verification-page/account-verification-confirm-page';
 import { RestorePasswordConfirmPage } from 'pages/restore-password-confirm-page/restore-password-confirm-page';
+import { ChannelPage } from 'pages/channel-page/channel-page';
 import { ProfilePreferencesPage } from 'pages/profile-preferences-page/profile-preferences-page';
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
 
 import styles from './app.module.scss';
+import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +39,7 @@ const App: FC = () => {
   useEffect(() => {
     document.body.dataset.theme = isLightTheme ? AppTheme.LIGHT : '';
   }, [isLightTheme]);
+
   useEffect(() => {
     if (hasToken) {
       dispatch(authActions.loadCurrentUser());
@@ -52,6 +55,7 @@ const App: FC = () => {
           <Route path={AppRoutes.SIGN_IN} element={<SignInPage />} />
           <Route path={AppRoutes.RESTORE_PASSWORD_INIT} element={<RestorePasswordPage />} />
           <Route path={AppRoutes.ACCOUNT_VERIFICATION_CONFIRM} element={<AccountVerificationConfirmPage />} />
+          <Route path={AppRoutes.ACCOUNT_VERIFICATION_INIT} element={<AccountVerificationInitPage />} />
           <Route path={AppRoutes.RESTORE_PASSWORD_CONFIRM} element={<RestorePasswordConfirmPage />} />
         </Routes>
       )}
@@ -88,6 +92,7 @@ const App: FC = () => {
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
                 <Route path="video-page" element={<VideoPageContainer />} />
+                <Route path={AppRoutes.CHANNEL_$ID} element={<ChannelPage />} />
                 <Route path={AppRoutes.ANY} element={<NotFound />} />
               </Routes>
             </div>
