@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify';
 import { Category, PrismaClient, Video } from '@prisma/client';
-import { CONTAINER_TYPES, TagCreateRequestDto } from '~/shared/types/types';
+import { CONTAINER_TYPES } from '~/shared/types/types';
 import { CategoryRepository } from '~/core/category/port/category-repository';
-import { CategoryGetAllDto } from 'shared/build';
+import { CategoryCreateDto, CategoryGetAllDto, CategoryUpdateDto } from 'shared/build';
 
 @injectable()
 export class CategoryRepositoryAdapter implements CategoryRepository {
@@ -53,10 +53,32 @@ export class CategoryRepositoryAdapter implements CategoryRepository {
     });
   }
 
-  createCategory(tagCreateDto: TagCreateRequestDto): Promise<Category> {
-    return this.prismaClient.category.create({
-      data: tagCreateDto,
+  updateCategory({ id, name, posterPath }: CategoryUpdateDto): Promise<Category | undefined> {
+    return this.prismaClient.category.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        posterPath,
+      },
     });
+  }
+
+  createCategory(categoryCreateDto: CategoryCreateDto): Promise<Category> {
+    return this.prismaClient.category.create({
+      data: categoryCreateDto,
+    });
+  }
+
+  deleteCategory(id: string): Promise<boolean> {
+    return this.prismaClient.category
+      .delete({
+        where: {
+          id,
+        },
+      })
+      .then((category) => !!category);
   }
 
   bindCategoryToVideo({ name, videoId }: { name: string; videoId: string }): Promise<Category> {

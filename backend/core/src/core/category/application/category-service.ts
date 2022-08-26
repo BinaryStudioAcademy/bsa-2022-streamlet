@@ -8,24 +8,31 @@ import {
   CategorySearchRequestQueryDto,
   BindCategoryToVideoDto,
   CategoryGetAllDto,
+  ImageStorePresetType,
+  ImageUploadResponseDto,
+  CategoryUpdateRequestDto,
 } from 'shared/build';
 
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { CategoryRepository } from '../port/category-repository';
 import { castToCategoryResponseDto } from './dtos/cast-to-category-response-dto';
 import { castToSearchByCategoryResponseDto } from './dtos/cast-to-search-response-dto';
+import { ImageStorePort } from '~/core/common/port/image-store';
 
 @injectable()
 export class CategoryService {
   private categoryRepository: CategoryRepository;
   private videoRepository: VideoRepository;
+  private imageStore: ImageStorePort;
 
   constructor(
     @inject(CONTAINER_TYPES.CategoryRepository) categoryRepository: CategoryRepository,
     @inject(CONTAINER_TYPES.VideoRepository) videoRepository: VideoRepository,
+    @inject(CONTAINER_TYPES.ImageStoreAdapter) imageStore: ImageStorePort,
   ) {
     this.categoryRepository = categoryRepository;
     this.videoRepository = videoRepository;
+    this.imageStore = imageStore;
   }
 
   async getByName({ name }: CategoryCreateRequestDto): Promise<CategoryResponseDto | null> {
@@ -50,13 +57,51 @@ export class CategoryService {
     return videos.map((video) => castToSearchByCategoryResponseDto(video));
   }
 
-  async createCategory({ name }: CategoryCreateRequestDto): Promise<CategoryResponseDto | undefined> {
-    const isTagCreated = await this.categoryRepository.getByName(name);
-    if (isTagCreated) {
+  async uploadCategory({
+    id,
+    name,
+    posterBase64Str,
+  }: CategoryUpdateRequestDto): Promise<CategoryResponseDto | undefined> {
+    let posterPath: ImageUploadResponseDto | undefined;
+    if (posterBase64Str) {
+      posterPath = await this.imageStore.upload({
+        base64Str: posterBase64Str,
+        type: ImageStorePresetType.CATEGORY_POSTER,
+      });
+    }
+    const category = await this.categoryRepository.updateCategory({
+      id,
+      name,
+      posterPath: posterPath?.url,
+    });
+    if (!category) {
       return;
     }
-    const category = await this.categoryRepository.createCategory({ name });
+
     return castToCategoryResponseDto(category);
+  }
+
+  async createCategory({ name, posterBase64Str }: CategoryCreateRequestDto): Promise<CategoryResponseDto | undefined> {
+    const isCategoryCreated = await this.categoryRepository.getByName(name);
+    if (isCategoryCreated) {
+      return;
+    }
+    let posterPath: ImageUploadResponseDto | undefined;
+    if (posterBase64Str) {
+      posterPath = await this.imageStore.upload({
+        base64Str: posterBase64Str,
+        type: ImageStorePresetType.CATEGORY_POSTER,
+      });
+    }
+    const category = await this.categoryRepository.createCategory({
+      name,
+      posterPath: posterPath?.url,
+    });
+    return castToCategoryResponseDto(category);
+  }
+
+  deleteCategory(id: string): Promise<boolean> {
+    return this.categoryRepository.deleteCategory(id);
   }
 
   async bindCategory({ name, videoId }: BindCategoryToVideoDto): Promise<CategoryResponseDto | undefined | null> {

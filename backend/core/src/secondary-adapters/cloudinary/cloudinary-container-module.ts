@@ -16,7 +16,12 @@ const cloudinaryContainerModule = new ContainerModule((bind: interfaces.Bind) =>
   cloudinary.api.create_upload_preset({
     name: 'avatar',
     folder: 'avatar',
-    allowed_formats: 'jpg, png',
+    allowed_formats: 'jpg, png, jpeg',
+  });
+  cloudinary.api.create_upload_preset({
+    name: 'category-poster',
+    folder: 'category-poster',
+    allowed_formats: 'jpg, png, jpeg',
   });
 
   bind<ImageStorePort>(CONTAINER_TYPES.ImageStoreAdapter).to(ImageStoreAdapter);

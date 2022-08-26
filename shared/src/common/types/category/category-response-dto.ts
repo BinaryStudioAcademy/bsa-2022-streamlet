@@ -1,3 +1,5 @@
-import { TagResponseDto } from '../types';
-
-export type CategoryResponseDto = TagResponseDto;
+export type CategoryResponseDto = {
+  id: string;
+  name: string;
+  posterPath?: string;
+};

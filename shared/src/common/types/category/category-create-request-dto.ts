@@ -1,3 +1,4 @@
-import { TagCreateRequestDto } from '../types';
-
-export type CategoryCreateRequestDto = TagCreateRequestDto;
+export type CategoryCreateRequestDto = {
+  name: string;
+  posterBase64Str?: string;
+};

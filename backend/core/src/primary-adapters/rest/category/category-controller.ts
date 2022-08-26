@@ -1,8 +1,10 @@
 import {
   BaseHttpController,
   controller,
+  httpDelete,
   httpGet,
   httpPost,
+  httpPut,
   queryParam,
   requestBody,
   requestParam,
@@ -18,6 +20,7 @@ import {
   CategoryResponseDto,
   CategoryCreateRequestDto,
   CategoryGetAllDto,
+  CategoryUpdateRequestDto,
 } from 'shared/build';
 import { NotFound } from '~/shared/exceptions/not-found';
 import { CategoryService } from '~/core/category/application/category-service';
@@ -25,6 +28,7 @@ import { normalizeCategoryPayload } from './helpers/normalize-payload-helper';
 import { normalizeCategoryFiltersPayload } from './helpers/normalize-category-filters-helper';
 import { DuplicationError } from '~/shared/exceptions/duplication-error';
 import { authenticationMiddleware } from '../middleware';
+import { normalizeCategoryUpdatePayload } from './helpers/normalize-update-payload-helper';
 
 @controller(ApiPath.CATEGORY, authenticationMiddleware)
 export class CategoryController extends BaseHttpController {
@@ -76,11 +80,39 @@ export class CategoryController extends BaseHttpController {
     return category;
   }
 
+  @httpPut(CategoryApiPath.$ID)
+  public async updateCategory(
+    @requestParam() { id }: DefaultRequestParam,
+    @requestBody() body: Omit<CategoryUpdateRequestDto, 'id'>,
+  ): Promise<CategoryResponseDto> {
+    const payload = normalizeCategoryUpdatePayload(body);
+
+    const updatedCategory = await this.categoryService.uploadCategory({
+      id,
+      ...payload,
+    });
+    if (!updatedCategory) {
+      throw new NotFound('Category not found');
+    }
+
+    return updatedCategory;
+  }
+
+  @httpDelete(CategoryApiPath.$ID)
+  public async deleteCategory(@requestParam() { id }: DefaultRequestParam): Promise<boolean> {
+    const isSuccess = await this.categoryService.deleteCategory(id);
+    if (!isSuccess) {
+      throw new NotFound('Category not found');
+    }
+
+    return isSuccess;
+  }
+
   @httpPost(CategoryApiPath.$BIND)
   public async bindCategoryToVIdeo(
     @requestParam() { id }: DefaultRequestParam,
     @requestBody() body: CategoryCreateRequestDto,
-  ): Promise<CategoryResponseDto | undefined> {
+  ): Promise<CategoryResponseDto> {
     const payload = normalizeCategoryPayload(body);
 
     const category = await this.categoryService.bindCategory({
