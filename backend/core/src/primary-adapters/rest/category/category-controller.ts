@@ -17,6 +17,7 @@ import {
   SearchByCategoryResponseDto,
   CategoryResponseDto,
   CategoryCreateRequestDto,
+  CategoryGetAllDto,
 } from 'shared/build';
 import { NotFound } from '~/shared/exceptions/not-found';
 import { CategoryService } from '~/core/category/application/category-service';
@@ -33,6 +34,14 @@ export class CategoryController extends BaseHttpController {
     super();
 
     this.categoryService = categoryService;
+  }
+
+  @httpGet(CategoryApiPath.ROOT)
+  public async getAll(@queryParam() { take, skip }: CategoryGetAllDto): Promise<CategoryResponseDto[]> {
+    return this.categoryService.getAll({
+      take: Number(take) || undefined,
+      skip: Number(skip) || undefined,
+    });
   }
 
   @httpGet(CategoryApiPath.SEARCH)

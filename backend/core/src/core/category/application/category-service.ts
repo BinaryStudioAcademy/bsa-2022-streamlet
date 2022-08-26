@@ -7,6 +7,7 @@ import {
   CategoryResponseDto,
   CategorySearchRequestQueryDto,
   BindCategoryToVideoDto,
+  CategoryGetAllDto,
 } from 'shared/build';
 
 import { VideoRepository } from '~/core/video/port/video-repository';
@@ -35,6 +36,12 @@ export class CategoryService {
   async getById(id: string): Promise<CategoryResponseDto | null> {
     const category = await this.categoryRepository.getById(id);
     return category && castToCategoryResponseDto(category);
+  }
+
+  async getAll({ skip, take }: CategoryGetAllDto): Promise<CategoryResponseDto[]> {
+    const categories = await this.categoryRepository.getAll({ take, skip });
+
+    return categories.map((category) => castToCategoryResponseDto(category));
   }
 
   async search(categorySearchRequestQueryDto: CategorySearchRequestQueryDto): Promise<SearchByCategoryResponseDto[]> {

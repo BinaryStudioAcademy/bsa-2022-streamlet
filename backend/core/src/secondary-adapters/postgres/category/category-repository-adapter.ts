@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify';
 import { Category, PrismaClient, Video } from '@prisma/client';
 import { CONTAINER_TYPES, TagCreateRequestDto } from '~/shared/types/types';
 import { CategoryRepository } from '~/core/category/port/category-repository';
+import { CategoryGetAllDto } from 'shared/build';
 
 @injectable()
 export class CategoryRepositoryAdapter implements CategoryRepository {
@@ -16,6 +17,13 @@ export class CategoryRepositoryAdapter implements CategoryRepository {
       where: {
         id,
       },
+    });
+  }
+
+  getAll({ take, skip }: CategoryGetAllDto): Promise<Category[]> {
+    return this.prismaClient.category.findMany({
+      take,
+      skip,
     });
   }
 
