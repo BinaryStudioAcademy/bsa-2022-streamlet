@@ -486,13 +486,12 @@
   --always-white-color: #ffffff;
 
   /* auth forms */
-  --auth-modal-background: rgba(52 79 62 / 47%);
+  --auth-modal-background: rgb(52 79 62);
   --auth-modal-border-color-1: rgb(34 240 0 / 47%);
   --auth-modal-border-color-2: rgb(146 255 229 / 47%);
-  --auth-border: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
+  --auth-box-shadow: 0 0 15px 7px rgb(0 0 0 / 16%);
   --auth-background: var(--gray-400-primary-background);
-  --auth-box-shadow: none;
-  --link-color: rgb(146 255 230);
+  --link-color: #06c149;
   --password-eye-color: rgb(104 104 104);
 
   /* channel page */
@@ -525,8 +524,6 @@ body[data-theme='light'] {
   /* auth forms */
   --link-color: rgb(0 73 56);
   --auth-modal-background: white;
-  --auth-box-shadow: 0 0 15px 7px rgb(0 0 0 / 16%);
-  --auth-border: none;
   --input-border: 1px solid var(--brand-green-color);
   --auth-background: #fbfffa;
 }
