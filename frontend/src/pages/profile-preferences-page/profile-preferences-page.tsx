@@ -8,12 +8,12 @@ import {
 } from 'common/types/types';
 import style from './styles.module.scss';
 import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
-import { UploadImage, ImageEditor, Loader } from '../../components/common/common';
+import { UploadImage, ImageEditor, Loader, createToastNotification } from '../../components/common/common';
 import React, { useCallback, useState } from 'react';
 import { profileActions } from 'store/actions';
 import { ImageListType } from 'react-images-uploading';
 import { useAppDispatch, useAppSelector, useEffect, useNavigate } from 'hooks/hooks';
-import { AppRoutes, ErrorMessage } from '../../common/enums/enums';
+import { AppRoutes, ErrorMessage, IconName } from '../../common/enums/enums';
 import { store } from '../../store/store';
 import { ProfilePreferencesPageForm } from './common/profile-preferences-page-form';
 
@@ -99,6 +99,13 @@ const ProfilePreferencesPage: FC = () => {
       } catch {
         setFormError(store.getState().auth.error || ErrorMessage.DEFAULT);
       } finally {
+        createToastNotification({
+          iconName: IconName.PROFILE,
+          type: 'success',
+          title: 'Profile',
+          message: 'Your profile has been successfully updated',
+          durationMs: 5000,
+        });
         setFormLoading(false);
       }
     },

@@ -27,8 +27,6 @@ enum IconName {
   ANALYTICS = 'analytics',
   MARK_AS_READ = 'mark-as-read',
   CLOSE = 'close',
-  ZOOM_IN = 'zoom_in',
-  ZOOM_OUT = 'zoom_out',
   ROTATE = 'rotate',
   EXCLAMATION = 'exclamation',
   INFO = 'info',
@@ -40,6 +38,7 @@ enum IconName {
   SUN = 'sun',
   ONLINE_STREAMING = 'online-streaming',
   BELL_OUTLINE = 'bell-outline',
+  PROFILE = 'profile',
 }
 
 export { IconName };

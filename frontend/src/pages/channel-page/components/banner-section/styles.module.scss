@@ -1,18 +1,21 @@
 .banner-section {
   position: relative;
   width: 100%;
-  max-height: 200px;
-  aspect-ratio: 8 / 1;
+  padding-top: min(200px, calc(1 / 8 * 100%)); /* 1:8 Aspect Ratio */
   background-color: var(--banner-background);
 }
 
-.banner-img {
+.banner-section-aspect-ratio-container {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+.banner-img {
   height: 100%;
+  object-fit: contain;
   margin-right: auto;
   margin-left: auto;
 }
