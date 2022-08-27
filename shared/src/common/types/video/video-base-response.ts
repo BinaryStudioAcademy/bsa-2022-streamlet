@@ -8,6 +8,7 @@ type VideoBaseResponseDto = {
   likeNum: number;
   dislikeNum: number;
   liveViews: number;
+  status: string;
   videoPath: string;
   userReaction: VideoReaction | null;
   comments: VideoComment[];

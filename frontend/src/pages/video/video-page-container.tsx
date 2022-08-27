@@ -1,4 +1,4 @@
-import { FC, UserBaseResponseDto } from 'common/types/types';
+import { FC, ProfileUpdateResponseDto, UserBaseResponseDto } from 'common/types/types';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
 import styles from './video-page.module.scss';
@@ -9,6 +9,8 @@ import { videoActions, channelActions } from '../../store/actions';
 import { VideoBaseResponseDto } from '../../common/types/video/video';
 import { getReactBtnColor } from '../../helpers/video/video';
 import { CurrentChannelInfo } from '../../store/channel/reducer';
+import clsx from 'clsx';
+import { VideoPageCommentForm } from './add-comment-form/add-comment-form';
 
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +29,10 @@ const VideoPageContainer: FC = () => {
 
   const channelData: CurrentChannelInfo | null = useAppSelector((state) => {
     return state.channel.currentChannel.data;
+  });
+
+  const profile: ProfileUpdateResponseDto | null = useAppSelector((state) => {
+    return state.profile.profileData;
   });
 
   useEffect(() => {
@@ -68,13 +74,20 @@ const VideoPageContainer: FC = () => {
     dispatch(videoActions.addVideoComment({ videoId, text }));
   };
 
-  if (!videoData || !channelData) {
+  if (!videoData || !channelData || !profile) {
     return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
   }
 
-  const { userReaction } = videoData;
+  const { userReaction, status } = videoData;
+  const isVideoFinished = status === 'finished';
+
   return (
-    <div className={styles['video-page']}>
+    <div
+      className={clsx({
+        [styles['video-page']]: !isVideoFinished,
+        [styles['video-page-without-live']]: isVideoFinished,
+      })}
+    >
       <div className={styles['video-block']} />
       <div className={styles['video-info-block']}>
         <div className={styles['video-header']}>
@@ -124,10 +137,17 @@ const VideoPageContainer: FC = () => {
           </div>
         </>
       </div>
-
-      <div className={styles['chat-block']}>
-        <VideoChatContainer comments={videoData.comments} handlerSubmitMessage={handleMessageSubmit} />
-      </div>
+      {!isVideoFinished && (
+        <div className={styles['chat-block']}>
+          <VideoChatContainer comments={videoData.comments} handlerSubmitMessage={handleMessageSubmit} />
+        </div>
+      )}
+      <VideoPageCommentForm
+        avatar={profile?.avatar}
+        onSubmit={(): void => {
+          handleMessageSubmit('test');
+        }}
+      />
     </div>
   );
 };

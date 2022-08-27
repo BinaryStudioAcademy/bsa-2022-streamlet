@@ -11,6 +11,7 @@ type videoFromDbType = {
   reactions: Reaction[];
   id: string;
   name: string;
+  status: string;
   description: string;
   videoViews: number;
   liveViews: number;
