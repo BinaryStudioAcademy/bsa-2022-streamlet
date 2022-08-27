@@ -21,7 +21,7 @@ const AboutSection: FC = () => {
   }
 
   const authorNameDisplay = getUserDisplayName({
-    userName: aboutInfo.username,
+    username: aboutInfo.username,
     firstName: aboutInfo.firstName,
     lastName: aboutInfo.lastName,
   });
