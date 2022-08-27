@@ -1,6 +1,14 @@
 import { HttpMethod, ApiPath } from 'common/enums/enums';
 import { DataVideo } from 'common/types/types';
-import { VideoExpandedResponseDto } from 'shared/build';
+import {
+  ContentType,
+  CreateReactionRequestDto,
+  CreateReactionResponseDto,
+  VideoApiPath,
+  VideoCommentRequestDto,
+  VideoCommentResponseDto,
+  VideoExpandedResponseDto,
+} from 'shared/build';
 import { Http } from '../http/http.service';
 
 type Constructor = {
@@ -31,6 +39,28 @@ class VideoApi {
       url: `${this.#apiPrefix}${ApiPath.VIDEOS}/${videoId}`,
       options: {
         method: HttpMethod.GET,
+      },
+    });
+  }
+
+  public react(payload: CreateReactionRequestDto & { videoId: string }): Promise<CreateReactionResponseDto> {
+    const { videoId, isLike } = payload;
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.REACTION}${VideoApiPath.ROOT}${videoId}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify({ isLike }),
+      },
+    });
+  }
+  public comment(payload: VideoCommentRequestDto): Promise<VideoCommentResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.COMMENT}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
       },
     });
   }

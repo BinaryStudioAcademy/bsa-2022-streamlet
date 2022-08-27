@@ -14,6 +14,23 @@
   cursor: pointer;
 }
 
+.video-page-without-live {
+  display: grid;
+  grid-template:
+    'video video'
+    'video video'
+    'info info'
+    'comment comment';
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  height: calc(100vh - 82px);
+  padding: 22px 43px 0;
+  overflow-y: auto;
+  @media screen and (max-width: 992px) {
+    display: block;
+  }
+}
+
 .video-page {
   display: grid;
   grid-template:
@@ -21,7 +38,7 @@
     'video video chat'
     'info info chat';
   grid-template-rows: 1fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr fit-content(40%);
+  grid-template-columns: 1fr 1fr 300px;
   grid-gap: 17px;
   height: calc(100vh - 82px);
   padding: 22px 43px 0;
@@ -176,4 +193,38 @@
   .description-container {
     width: 100%;
   }
+}
+
+.add-comment-block {
+  display: flex;
+  grid-area: comment;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.add-comment-block-user-avatar {
+  width: 96px;
+  height: 96px;
+  margin-right: 10px;
+  border-radius: 100%;
+}
+
+.add-comment-block-user-avatar img {
+  border-radius: 100%;
+}
+
+.add-comment-input {
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-bottom: #06c149 3px solid;
+}
+
+.add-comment-input-wrapper {
+  width: 100%;
+}
+
+.add-comment-submit-active {
+  width: 100px;
+  height: 36px;
 }

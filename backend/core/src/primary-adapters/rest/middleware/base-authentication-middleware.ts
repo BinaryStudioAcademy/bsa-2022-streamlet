@@ -31,7 +31,7 @@ export const baseAthenticationMiddleware = async (
     req.user = payload;
   } catch {
     if (!isOptional) {
-      return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_NO_TOKEN));
+      return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN));
     }
     return next();
   }

@@ -2,13 +2,15 @@ import clsx from 'clsx';
 import { AppRoutes } from 'common/enums/enums';
 import { ReactComponent as ThumbUp } from 'assets/img/thumb-up.svg';
 import { ReactComponent as ThumbDown } from 'assets/img/thumb-down.svg';
-import { Button, Loader } from 'components/common/common';
+import { Loader } from 'components/common/common';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import { useAppDispatch, useAppSelector, useNavigate, useParams } from 'hooks/hooks';
 import { FC, useEffect } from 'react';
 import { videoPageActions } from 'store/actions';
 import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
 import styles from './video-page.module.scss';
+import { VideoPageCommentForm } from './add-comment-form/add-comment-form';
+import { getReactBtnColor } from 'helpers/helpers';
 
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +27,10 @@ const VideoPageContainer: FC = () => {
     return state.videoPage.video;
   });
 
+  const profile = useAppSelector((state) => {
+    return state.profile.profileData;
+  });
+
   useEffect(() => {
     dispatch(videoPageActions.getVideo(videoId));
   }, [videoId, dispatch]);
@@ -37,55 +43,66 @@ const VideoPageContainer: FC = () => {
     return state.videoPage.video?.channel;
   });
 
-  // const handleLikeReact = (): void => {
-  //   if (!user) {
-  //     navigate(AppRoutes.SIGN_IN);
-  //     return;
-  //   }
-  //   dispatch(videoActions.videoReact({ videoId, isLike: true }));
-  // };
-
-  // const handleDisLikeReact = (): void => {
-  //   if (!user) {
-  //     navigate(AppRoutes.SIGN_IN);
-  //     return;
-  //   }
-  //   dispatch(videoPageActions.videoReact({ videoId, isLike: false }));
-  // };
-
-  const handleMessageSubmit = (_text: string): void => {
-    return;
-  };
-
-  const handleSubscribe = (): void => {
+  const handleLikeReact = (): void => {
     if (!user) {
       navigate(AppRoutes.SIGN_IN);
       return;
     }
-    if (!videoData) {
+    dispatch(videoPageActions.videoReact({ videoId, isLike: true }));
+  };
+
+  const handleDislikeReact = (): void => {
+    if (!user) {
+      navigate(AppRoutes.SIGN_IN);
       return;
     }
-    return;
+    dispatch(videoPageActions.videoReact({ videoId, isLike: false }));
+  };
+
+  const handleMessageSubmit = (text: string): void => {
+    if (!user) {
+      navigate(AppRoutes.SIGN_IN, { replace: true });
+      return;
+    }
+    dispatch(videoPageActions.addVideoComment({ videoId, text }));
   };
 
   if (!videoData || !channel) {
     return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
   }
 
-  const { isUserSubscribedOnChannel } = videoData;
+  const { status } = videoData;
+  const isVideoFinished = status === 'finished';
+
+  const { userReaction } = videoData;
   return (
-    <div className={styles['video-page']}>
+    <div
+      className={clsx({
+        [styles['video-page']]: !isVideoFinished,
+        [styles['video-page-without-live']]: isVideoFinished,
+      })}
+    >
       <div className={styles['video-block']} />
       <div className={styles['video-info-block']}>
         <div className={styles['video-header']}>
           <h2 className={styles['video-block-header']}>{videoData.name}</h2>
           <div className={styles['reaction-block']}>
             <div className={styles['reaction-container']}>
-              <ThumbUp height={'25'} width={'25'} />
+              <ThumbUp
+                height={'25'}
+                width={'25'}
+                onClick={handleLikeReact}
+                color={getReactBtnColor(userReaction, true)}
+              />
               <span>{videoData.likeNum}</span>
             </div>
             <div className={styles['reaction-container']}>
-              <ThumbDown height={'25'} width={'25'} />
+              <ThumbDown
+                height={'25'}
+                width={'25'}
+                onClick={handleDislikeReact}
+                color={getReactBtnColor(userReaction, true)}
+              />
               <span>{videoData.dislikeNum}</span>
             </div>
           </div>
@@ -103,28 +120,26 @@ const VideoPageContainer: FC = () => {
               <img
                 className={styles['channel-banner']}
                 alt={'user avatar'}
-                src={channel.avatar ? channel.avatar : defaultAvatar}
+                src={videoData.channel.avatar ? videoData.channel.avatar : defaultAvatar}
               />
               <div className={styles['channel-description']}>
-                <span>{channel.name}</span>
+                <span>{videoData.channel.name}</span>
               </div>
             </div>
-            <Button
-              content={'subscribe'}
-              className={clsx({
-                [styles['subscribe-button-basic']]: true,
-                [styles['subscribe-button-default']]: !isUserSubscribedOnChannel,
-                [styles['subscribe-button-subscribed']]: isUserSubscribedOnChannel,
-              })}
-              onClick={handleSubscribe}
-            />
           </div>
         </>
       </div>
-
-      <div className={styles['chat-block']}>
-        <VideoChatContainer comments={videoData.comments} handlerSubmitMessage={handleMessageSubmit} />
-      </div>
+      {!isVideoFinished && (
+        <div className={styles['chat-block']}>
+          <VideoChatContainer comments={videoData.comments} handlerSubmitMessage={handleMessageSubmit} />
+        </div>
+      )}
+      <VideoPageCommentForm
+        avatar={profile?.avatar}
+        onSubmit={(): void => {
+          handleMessageSubmit('test');
+        }}
+      />
     </div>
   );
 };
