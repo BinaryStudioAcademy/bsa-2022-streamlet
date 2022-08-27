@@ -74,7 +74,7 @@ services:
         max-size: "10m"
         max-file: "5"
     healthcheck:
-      test: [ "CMD", "wget", "-q", "http://localhost:5001/${API_PREFIX}/videos" ]
+      test: [ "CMD", "wget", "-q", "-O -", "http://localhost:5001/${API_PREFIX}/videos" ]
       interval: 2s
       timeout: 1s
       retries: 5
@@ -98,7 +98,7 @@ services:
         max-size: "10m"
         max-file: "5"
     healthcheck:
-      test: [ "CMD", "wget", "-q", "http://localhost:5002/healthcheck" ]
+      test: [ "CMD", "wget", "-q", "-O -", "http://localhost:5002/healthcheck" ]
       interval: 2s
       timeout: 1s
       retries: 5
