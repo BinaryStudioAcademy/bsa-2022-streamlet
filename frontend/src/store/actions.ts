@@ -5,3 +5,4 @@ export * as layoutActions from './layout/actions';
 export * as profileActions from './profile/action';
 export * as themeActions from './theme-switch/actions';
 export * as videoActions from './videos/actions';
+export * as channelActions from './channel/actions';

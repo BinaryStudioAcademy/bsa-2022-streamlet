@@ -3,7 +3,7 @@ import { DataStatus, ErrorMessage } from 'common/enums/enums';
 import { ChannelInfoResponseDto, ChannelVideoPreviewsPageDto, RootState } from 'common/types/types';
 import { loadChannel } from './actions';
 
-type CurrentChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
+export type CurrentChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
 type ChannelVideo = ChannelVideoPreviewsPageDto['list'][number];
 
 interface InitialState {

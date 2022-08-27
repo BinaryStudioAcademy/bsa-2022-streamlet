@@ -1,13 +1,14 @@
 import { FC, UserBaseResponseDto } from 'common/types/types';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
-
+import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
 import styles from './video-page.module.scss';
 import { Icon, Loader } from '../../components/common/common';
 import { AppRoutes, IconName } from '../../common/enums/enums';
 import { useAppDispatch, useAppSelector, useEffect, useNavigate, useParams } from '../../hooks/hooks';
-import { videoActions } from '../../store/actions';
+import { videoActions, channelActions } from '../../store/actions';
 import { VideoBaseResponseDto } from '../../common/types/video/video';
 import { getReactBtnColor } from '../../helpers/video/video';
+import { CurrentChannelInfo } from '../../store/channel/reducer';
 
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -24,9 +25,20 @@ const VideoPageContainer: FC = () => {
     return state.videos.videoForVideoPage;
   });
 
+  const channelData: CurrentChannelInfo | null = useAppSelector((state) => {
+    return state.channel.currentChannel.data;
+  });
+
   useEffect(() => {
     dispatch(videoActions.getVideo(videoId as string));
   }, [videoId, dispatch]);
+
+  useEffect(() => {
+    if (videoData?.channelId) {
+      const id = videoData.channelId;
+      dispatch(channelActions.loadChannel({ id }));
+    }
+  }, [dispatch, videoData?.channelId]);
 
   const user: UserBaseResponseDto | null = useAppSelector((state) => {
     return state.auth.user;
@@ -56,7 +68,7 @@ const VideoPageContainer: FC = () => {
     dispatch(videoActions.addVideoComment({ videoId, text }));
   };
 
-  if (!videoData) {
+  if (!videoData || !channelData) {
     return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
   }
 
@@ -98,6 +110,18 @@ const VideoPageContainer: FC = () => {
             <span>{`${videoData.description}`}</span>
           </div>
           <hr />
+          <div className={styles['channel-info-container']}>
+            <div className={styles['about-channel-block']}>
+              <img
+                className={styles['channel-banner']}
+                alt={'user avatar'}
+                src={channelData?.avatar ? channelData.avatar : defaultAvatar}
+              />
+              <div className={styles['channel-description']}>
+                <span>{channelData?.name}</span>
+              </div>
+            </div>
+          </div>
         </>
       </div>
 
