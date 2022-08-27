@@ -40,6 +40,8 @@ import { ReactComponent as OnlineStreaming } from 'assets/img/online-streaming.s
 import { ReactComponent as TV } from 'assets/img/tv.svg';
 import { ReactComponent as Rotate } from 'assets/img/rotate.svg';
 import { ReactComponent as Profile } from 'assets/img/profile.svg';
+import { ReactComponent as ThumbUp } from '../../../assets/img/thumb-up.svg';
+import { ReactComponent as ThumbDown } from '../../../assets/img/thumb-down.svg';
 
 import clsx from 'clsx';
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -228,6 +230,14 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.PROFILE: {
       return <Profile {...commonProps} />;
+    }
+
+    case IconName.THUMB_UP: {
+      return <ThumbUp {...commonProps} />;
+    }
+
+    case IconName.THUMB_DOWN: {
+      return <ThumbDown {...commonProps} />;
     }
 
     default: {

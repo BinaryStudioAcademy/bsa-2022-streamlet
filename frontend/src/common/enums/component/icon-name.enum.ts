@@ -39,6 +39,8 @@ enum IconName {
   ONLINE_STREAMING = 'online-streaming',
   BELL_OUTLINE = 'bell-outline',
   PROFILE = 'profile',
+  THUMB_UP = 'thumb-up',
+  THUMB_DOWN = 'thumb-down',
 }
 
 export { IconName };

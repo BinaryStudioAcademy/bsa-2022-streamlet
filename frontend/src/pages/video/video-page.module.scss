@@ -1,36 +1,179 @@
-@import 'assets/css/config.scss';
+.video-page svg {
+  cursor: pointer;
+}
+
+.video-page button {
+  cursor: pointer;
+}
+
+.video-page img {
+  cursor: pointer;
+}
+
+.channel-description span {
+  cursor: pointer;
+}
 
 .video-page {
-  display: flex;
-  height: calc(100vh - $header-height);
-
+  display: grid;
+  grid-template:
+    'video video chat'
+    'video video chat'
+    'info info chat';
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr fit-content(40%);
+  grid-gap: 17px;
+  height: calc(100vh - 82px);
+  padding: 22px 43px 0;
+  overflow-y: auto;
   @media screen and (max-width: 992px) {
     display: block;
   }
 }
 
-.video-block {
+.video-page h2 {
+  display: block;
   width: 70%;
-  height: 100%;
+  color: var(--white-text-color);
+  font-size: 24px;
+  font-family: Gilroy-SemiBold, sans-serif;
+  line-height: 48px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
 
-  @media screen and (max-width: 1100px) {
-    width: 60%;
-  }
-
+.video-block {
+  grid-area: video;
+  background-color: var(--brand-green-color);
   @media screen and (max-width: 992px) {
     height: fit-content;
   }
 }
 
+.reaction-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.reaction-container span {
+  margin-left: 10px;
+}
+
+.reaction-block {
+  display: flex;
+}
+
 .chat-block {
-  width: 30%;
+  grid-area: chat;
   height: 100%;
 
-  @media screen and (max-width: 1100px) {
-    width: 40%;
+  @media screen and (max-width: 992px) {
+    width: 100%;
+  }
+}
+
+.video-info-block {
+  display: flex;
+  grid-area: info;
+  flex-direction: column;
+}
+
+.video-header {
+  display: flex;
+}
+
+.description-container {
+  max-width: 85%;
+  margin: 11px 0 8px;
+  color: var(--text-gray-color);
+  font-weight: 400;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 19px;
+}
+
+.video-page hr {
+  width: 100%;
+  height: 1px;
+  margin-bottom: 19px;
+  color: var(--gray-200-input-background);
+  background-color: var(--gray-200-input-background);
+  border-color: var(--gray-200-input-background);
+  outline-color: var(--gray-200-input-background);
+}
+
+.subscribe-button-default {
+  color: var(--text-gray-color);
+  background-color: var(--green-300-primary-background);
+}
+
+.subscribe-button-subscribed {
+  color: var(--white-text-color);
+  background-color: var(--brand-green-color);
+}
+
+.subscribe-button-basic {
+  width: 100px;
+  height: 35px;
+  border-radius: 2px;
+}
+
+.channel-banner {
+  width: 34px;
+  height: 34px;
+  border-radius: 100%;
+}
+
+.channel-info-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.channel-description {
+  min-width: 350px;
+  margin-left: 10px;
+}
+
+.about-channel-block {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .channel-info-container {
+    flex-direction: column;
+    align-items: center;
   }
 
-  @media screen and (max-width: 992px) {
+  .channel-info-container button {
+    width: 100%;
+  }
+
+  .about-channel-block {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .about-channel-block span {
+    width: fit-content;
+  }
+
+  .channel-description {
+    width: fit-content;
+    min-width: fit-content;
+  }
+
+  .description-container {
     width: 100%;
   }
 }
