@@ -1,4 +1,4 @@
-import { StreamingStatus } from '../enums/enums';
+import { StreamStatus } from '../enums/enums';
 import { ChannelInfoBeforeTrimming, ChannelInfoResponseDto } from '../types/types';
 
 export const trimChannelInfo = (channel: ChannelInfoBeforeTrimming): ChannelInfoResponseDto => {
@@ -13,7 +13,7 @@ export const trimChannelInfo = (channel: ChannelInfoBeforeTrimming): ChannelInfo
       videos: channel.videos.map((video) => ({
         ...video,
         tags: video.tags.map((tag) => tag.name),
-        status: video.status as StreamingStatus,
+        status: video.status as StreamStatus,
         categories: video.categories.map((category) => category.name),
         createdAt: video.createdAt.toISOString(),
         updatedAt: video.updatedAt.toISOString(),

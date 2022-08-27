@@ -1,1 +1,1 @@
-export { StreamingStatus } from 'shared/build';
+export { StreamStatus } from 'shared/build';

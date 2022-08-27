@@ -12,3 +12,4 @@ export * from './profile/profile';
 export * from './history';
 export * from './notification/notification';
 export * from './video/video';
+export * from './stream/stream';

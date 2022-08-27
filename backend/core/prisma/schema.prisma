@@ -67,36 +67,36 @@ model ResetPasswordToken {
   updatedAt DateTime @updatedAt
 }
 
-enum StreamingStatus {
-  pending
-  ready
+enum StreamStatus {
+  waiting
   live
   finished
 }
 
 model Video {
-  id                  String          @id @default(uuid())
+  id                  String         @id @default(uuid())
   name                String
-  description         String          @default("")
-  status              StreamingStatus @default(pending)
-  publishedAt         DateTime        @default(now())
-  scheduledStreamDate DateTime        @default(now())
-  poster              String          @default("")
-  duration            Int             @default(0)
+  description         String         @default("")
+  status              StreamStatus   @default(waiting)
+  isReadyToStream     Boolean        @default(false)
+  publishedAt         DateTime       @default(now())
+  scheduledStreamDate DateTime       @default(now())
+  poster              String         @default("")
+  duration            Int            @default(0)
   videoPath           String
-  liveViews           Int             @default(0)
-  videoViews          Int             @default(0)
+  liveViews           Int            @default(0)
+  videoViews          Int            @default(0)
   tags                Tag[]
   categories          Category[]
   comments            VideoComment[]
-  channel             Channel         @relation(fields: [channelId], references: [id])
+  channel             Channel        @relation(fields: [channelId], references: [id])
   channelId           String
   chatMessages        ChatMessage[]
   notifications       Notification[]
   historyRecords      History[]
   reactions           Reaction[]
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 }
 
 model Tag {
