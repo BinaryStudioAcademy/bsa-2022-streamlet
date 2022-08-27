@@ -8,7 +8,9 @@ type Props = {
 const BannerSection: FC<Props> = ({ imageLink }) => {
   return (
     <section className={styles['banner-section']}>
-      <img src={imageLink} alt="channel`s banner" className={styles['banner-img']} />
+      <div className={styles['banner-section-aspect-ratio-container']}>
+        <img src={imageLink} alt="channel`s banner" className={styles['banner-img']} />
+      </div>
     </section>
   );
 };

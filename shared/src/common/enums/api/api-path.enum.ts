@@ -5,6 +5,9 @@ enum ApiPath {
   MY_CHANNEL = '/my-channel',
   PROFILE = '/profile',
   NOTIFICATION = '/notification',
+  VIDEO = '/video',
+  TAG = '/tag',
+  CATEGORY = '/category',
   VIDEOS = '/videos',
 }
 

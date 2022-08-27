@@ -44,7 +44,7 @@ const ChannelPage: FC = () => {
             <ChannelHeader setTab={setCurrentTab} currentTab={currentTab} />
             <div className={styles['content']}>
               {currentTab === Tabs.About && <AboutSection />}
-              {currentTab === Tabs.Videos && <VideoSection />}
+              {currentTab === Tabs.Videos && <VideoSection channelInfo={channelInfo} />}
             </div>
           </>
         )}

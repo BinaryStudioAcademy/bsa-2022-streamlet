@@ -10,15 +10,17 @@ export const trimChannelInfo = (channel: ChannelInfoBeforeTrimming): ChannelInfo
       lastName: channel.author.profile?.lastName ?? '',
     },
     initialVideosPage: {
-      videos: channel.videos.map((video) => ({
+      list: channel.videos.map((video) => ({
         ...video,
         tags: video.tags.map((tag) => tag.name),
         status: video.status as StreamStatus,
         categories: video.categories.map((category) => category.name),
-        createdAt: video.createdAt.toISOString(),
+        publishedAt: video.publishedAt.toISOString(),
+        scheduledStreamDate: video.scheduledStreamDate.toISOString(),
         updatedAt: video.updatedAt.toISOString(),
         durationSec: video.duration,
       })),
+      total: channel.videos.length,
     },
     bannerImage: channel.bannerImage,
     avatar: channel.avatar,

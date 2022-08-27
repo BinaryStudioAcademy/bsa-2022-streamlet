@@ -32,6 +32,7 @@ export { ValidationSchema } from './validation/validation';
 export { type ToastNotificationParams } from './toast-notification/toast-notifications';
 
 export { BaseVideoResponseDto, DataVideo } from './video/video';
+export { BaseSubscriptionResponseDto, DataSubscription } from './subscription/subscription';
 
 export * from './channel/channel';
 

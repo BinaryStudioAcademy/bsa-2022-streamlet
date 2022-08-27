@@ -34,7 +34,7 @@ const VideoCard: FC<Props> = ({
   const updateTimeDelay = UPDATE_CARD_TIME_DELAY;
 
   const linkToVideoPage = `${AppRoutes.VIDEO}/${id}`;
-  const linkToChannelPage = `${AppRoutes.CHANNEL}/${id}`;
+  const linkToChannelPage = `${AppRoutes.CHANNEL}/${channel.id}`;
 
   const videoPoster = poster ? poster : isLightTheme ? defaultVideoPosterLight : defaultVideoPosterDark;
   const channelAvatar = channel.avatar ? channel.avatar : defaultUserAvatar;
@@ -94,7 +94,7 @@ const VideoCard: FC<Props> = ({
             <Link to={linkToChannelPage} className={styles['video-card-author-avatar']}>
               <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
             </Link>
-            <Link to={linkToChannelPage} className={styles['video-card-author-name']}>
+            <Link to={linkToChannelPage} className={styles['video-card-author-name']} title={channel.name}>
               {channel.name}
             </Link>
           </div>

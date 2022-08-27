@@ -1,8 +1,11 @@
+// ------ z-index ------
+
 // header & sidebars
 $mobile-sidebar-z-index: 300;
 $sidebar-z-index: 200;
 $header-z-index: 250;
 $header-menu-z-index: 260;
+$header-search-mobile-z-index: 270;
 
 // app pages
 $page-z-index: 100;
@@ -12,3 +15,7 @@ $page-component-z-index: 150;
 
 // modals
 $modal-z-index: 1000;
+
+// ------ sizes ------
+$header-height: 56px;
+$sidebar-width: 250px;

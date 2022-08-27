@@ -10,9 +10,12 @@
 
 .channel-name {
   grid-area: b;
+  overflow: hidden;
   color: var(--white-text-color);
   font-weight: normal;
   font-size: medium;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .subscribers-count {

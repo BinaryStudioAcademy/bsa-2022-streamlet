@@ -1,8 +1,10 @@
 import { inject, injectable } from 'inversify';
-import { VideoRepository } from '~/core/video/port/video-repository';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Video } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
+import { CategorySearchRequestQueryDto, TagSearchRequestQueryDto } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
+import { VideoRepository } from '~/core/video/port/video-repository';
+import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
@@ -12,6 +14,63 @@ export class VideoRepositoryAdapter implements VideoRepository {
     this.prismaClient = prismaClient;
   }
 
+  getById(id: string): Promise<Video | null> {
+    return this.prismaClient.video.findFirst({
+      where: {
+        id,
+      },
+    });
+  }
+
+  searchByTags({ take, skip, tags }: TagSearchRequestQueryDto): Promise<VideoWithChannel[]> {
+    return this.prismaClient.video.findMany({
+      where: {
+        tags: {
+          some: {
+            name: {
+              in: tags,
+            },
+          },
+        },
+      },
+      take,
+      skip,
+      include: {
+        channel: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+    });
+  }
+
+  searchByCatergories({ skip, take, categories }: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]> {
+    return this.prismaClient.video.findMany({
+      where: {
+        categories: {
+          some: {
+            name: {
+              in: categories,
+            },
+          },
+        },
+      },
+      take,
+      skip,
+      include: {
+        channel: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+    });
+  }
   async getAll(): Promise<DataVideo> {
     const items = await this.prismaClient.video.findMany({
       include: {

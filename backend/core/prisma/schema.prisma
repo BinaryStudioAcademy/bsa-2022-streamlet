@@ -101,18 +101,19 @@ model Video {
 
 model Tag {
   id        String   @id @default(uuid())
-  name      String
+  name      String   @unique
   videos    Video[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Category {
-  id        String   @id @default(uuid())
-  name      String
-  videos    Video[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(uuid())
+  name       String   @unique
+  posterPath String?
+  videos     Video[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model VideoComment {

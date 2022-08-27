@@ -48,7 +48,7 @@ const PasswordInput = <T extends FieldValues>({
 }: Props<T>): ReactElement | null => {
   const {
     field,
-    fieldState: { error },
+    fieldState: { error, isTouched },
   } = useFormControl({ name, control });
   const id = useId();
 
@@ -69,13 +69,15 @@ const PasswordInput = <T extends FieldValues>({
         </label>
         {isValidationErrorOnTop && (
           <div className={clsx(errorBlockClassName)}>
-            <ErrorMessage
-              errors={errors}
-              name={name}
-              render={({ message }): ReactElement => {
-                return <ErrorBox message={message} />;
-              }}
-            />
+            {isTouched && (
+              <ErrorMessage
+                errors={errors}
+                name={name}
+                render={({ message }): ReactElement => {
+                  return <ErrorBox message={message} />;
+                }}
+              />
+            )}
           </div>
         )}
       </div>
@@ -83,7 +85,7 @@ const PasswordInput = <T extends FieldValues>({
         className={clsx(
           passwordStyles['password-container'],
           inputWrapperClassName,
-          error && inputWrapperErrorClassName,
+          error && isTouched && inputWrapperErrorClassName,
         )}
       >
         <input
@@ -103,13 +105,15 @@ const PasswordInput = <T extends FieldValues>({
       </div>
       {!isValidationErrorOnTop && (
         <div className={clsx(errorBlockClassName)}>
-          <ErrorMessage
-            errors={errors}
-            name={name}
-            render={({ message }): ReactElement => {
-              return <ErrorBox message={message} />;
-            }}
-          />
+          {isTouched && (
+            <ErrorMessage
+              errors={errors}
+              name={name}
+              render={({ message }): ReactElement => {
+                return <ErrorBox message={message} />;
+              }}
+            />
+          )}
         </div>
       )}
     </div>
