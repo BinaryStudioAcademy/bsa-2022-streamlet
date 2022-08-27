@@ -52,7 +52,7 @@ export class CategoryService {
   }
 
   async search(categorySearchRequestQueryDto: CategorySearchRequestQueryDto): Promise<BaseVideoResponseDto[]> {
-    const videos = await this.videoRepository.searchByCatergories(categorySearchRequestQueryDto);
+    const videos = await this.videoRepository.searchByCategories(categorySearchRequestQueryDto);
     return videos.map((video) => castToSearchByCategoryResponseDto(video));
   }
 

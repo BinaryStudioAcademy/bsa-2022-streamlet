@@ -47,7 +47,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
   }
 
-  searchByCatergories({ skip, take, categories }: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]> {
+  searchByCategories({ skip, take, categories }: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]> {
     return this.prismaClient.video.findMany({
       where: {
         categories: {
@@ -71,6 +71,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       },
     });
   }
+
   async getAll(): Promise<DataVideo> {
     const items = await this.prismaClient.video.findMany({
       include: {
@@ -103,5 +104,18 @@ export class VideoRepositoryAdapter implements VideoRepository {
       list,
       total,
     };
+  }
+
+  async getAuthorById(id: string): Promise<string | undefined> {
+    const searchResult = await this.prismaClient.video.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        channel: true,
+      },
+    });
+
+    return searchResult?.channel.authorId;
   }
 }
