@@ -3,7 +3,8 @@ import { CloudinaryApi, CONTAINER_TYPES } from '~/shared/types/types';
 import { v2 as cloudinary } from 'cloudinary';
 import { CONFIG } from '~/configuration/config';
 import { ImageStorePort } from '~/core/common/port/image-store';
-import { ImageStoreAdapter } from './cloud/clodinary-adapter';
+import { ImageStoreAdapter } from './cloud/cloudinary-adapter';
+import { ImageStorePresetType } from 'shared/build';
 
 const cloudinaryContainerModule = new ContainerModule((bind: interfaces.Bind) => {
   const { IMAGE_CLOUD_STORAGE } = CONFIG;
@@ -14,13 +15,23 @@ const cloudinaryContainerModule = new ContainerModule((bind: interfaces.Bind) =>
     secure: true,
   });
   cloudinary.api.create_upload_preset({
-    name: 'avatar',
-    folder: 'avatar',
+    name: ImageStorePresetType.AVATAR,
+    folder: ImageStorePresetType.AVATAR,
     allowed_formats: 'jpg, png, jpeg',
   });
   cloudinary.api.create_upload_preset({
-    name: 'category-poster',
-    folder: 'category-poster',
+    name: ImageStorePresetType.CATEGORY_POSTER,
+    folder: ImageStorePresetType.CATEGORY_POSTER,
+    allowed_formats: 'jpg, png, jpeg',
+  });
+  cloudinary.api.create_upload_preset({
+    name: ImageStorePresetType.STREAM_POSTER,
+    folder: ImageStorePresetType.STREAM_POSTER,
+    allowed_formats: 'jpg, png, jpeg',
+  });
+  cloudinary.api.create_upload_preset({
+    name: ImageStorePresetType.CHANNEL_BANNER,
+    folder: ImageStorePresetType.CHANNEL_BANNER,
     allowed_formats: 'jpg, png, jpeg',
   });
 
