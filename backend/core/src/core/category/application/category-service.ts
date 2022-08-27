@@ -5,12 +5,12 @@ import {
   CategoryCreateRequestDto,
   CategoryResponseDto,
   CategorySearchRequestQueryDto,
-  BindCategoryToVideoDto,
   CategoryGetAllDto,
   ImageStorePresetType,
   ImageUploadResponseDto,
   CategoryUpdateRequestDto,
   BaseVideoResponseDto,
+  CategoryCreateDto,
 } from 'shared/build';
 
 import { VideoRepository } from '~/core/video/port/video-repository';
@@ -103,16 +103,30 @@ export class CategoryService {
     return this.categoryRepository.deleteCategory(id);
   }
 
-  async bindCategory({ name, videoId }: BindCategoryToVideoDto): Promise<CategoryResponseDto | undefined | null> {
+  async bindCategories({
+    categoryPayload,
+    videoId,
+  }: {
+    categoryPayload: Omit<CategoryCreateDto, 'posterPath'>[];
+    videoId: string;
+  }): Promise<CategoryResponseDto[] | undefined | null> {
     const isVideoExists = await this.videoRepository.getById(videoId);
     if (!isVideoExists) {
       return null;
     }
-    const isCategoryExists = await this.getByName({ name });
-    if (!isCategoryExists) {
-      return;
+    const categories: string[] = [];
+    for (const { name } of categoryPayload) {
+      const category = await this.categoryRepository.getByName(name);
+      if (!category) {
+        return;
+      }
+      categories.push(category.id);
     }
-    const category = await this.categoryRepository.bindCategoryToVideo({ name, videoId });
-    return castToCategoryResponseDto(category);
+
+    const bindedCategories = await this.categoryRepository.bindCategoriesToVideo({
+      categories,
+      videoId,
+    });
+    return bindedCategories.map((category) => castToCategoryResponseDto(category));
   }
 }

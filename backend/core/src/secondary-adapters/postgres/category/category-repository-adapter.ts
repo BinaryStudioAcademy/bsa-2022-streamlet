@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 import { Category, PrismaClient } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { CategoryRepository } from '~/core/category/port/category-repository';
-import { CategoryCreateDto, CategoryGetAllDto, CategoryUpdateDto } from 'shared/build';
+import { BindCategoryToVideoDto, CategoryCreateDto, CategoryGetAllDto, CategoryUpdateDto } from 'shared/build';
 
 @injectable()
 export class CategoryRepositoryAdapter implements CategoryRepository {
@@ -63,18 +63,19 @@ export class CategoryRepositoryAdapter implements CategoryRepository {
       .then((category) => !!category);
   }
 
-  bindCategoryToVideo({ name, videoId }: { name: string; videoId: string }): Promise<Category> {
-    return this.prismaClient.category.update({
-      where: {
-        name,
-      },
-      data: {
-        videos: {
-          connect: {
-            id: videoId,
+  bindCategoriesToVideo({ categories, videoId }: BindCategoryToVideoDto): Promise<Category[]> {
+    const values = categories.map((categoryId) => {
+      return `('${categoryId}', '${videoId}')`;
+    });
+    const query = `insert into "_CategoryToVideo" ("A", "B") values ${values.join(',')} on conflict do nothing`;
+    return this.prismaClient.$queryRawUnsafe(query).then(() => {
+      return this.prismaClient.category.findMany({
+        where: {
+          id: {
+            in: categories,
           },
         },
-      },
+      });
     });
   }
 }

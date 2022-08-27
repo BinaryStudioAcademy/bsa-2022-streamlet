@@ -21,6 +21,7 @@ import {
   CategoryGetAllDto,
   CategoryUpdateRequestDto,
   BaseVideoResponseDto,
+  BindCategoryToVideoRequestDto,
 } from 'shared/build';
 import { NotFound } from '~/shared/exceptions/not-found';
 import { CategoryService } from '~/core/category/application/category-service';
@@ -30,6 +31,10 @@ import { DuplicationError } from '~/shared/exceptions/duplication-error';
 import { authenticationMiddleware } from '../middleware';
 import { normalizeCategoryUpdatePayload } from './helpers/normalize-update-payload-helper';
 
+/**
+ * all routes except bind categories to video, get all and search
+ * should be role based (role admin or something like that)
+ */
 @controller(ApiPath.CATEGORY, authenticationMiddleware)
 export class CategoryController extends BaseHttpController {
   private categoryService: CategoryService;
@@ -111,21 +116,21 @@ export class CategoryController extends BaseHttpController {
   @httpPost(CategoryApiPath.$BIND)
   public async bindCategoryToVIdeo(
     @requestParam() { id }: DefaultRequestParam,
-    @requestBody() body: CategoryCreateRequestDto,
-  ): Promise<CategoryResponseDto> {
-    const payload = normalizeCategoryPayload(body);
+    @requestBody() { categories }: BindCategoryToVideoRequestDto,
+  ): Promise<CategoryResponseDto[]> {
+    const payload = categories.map((category) => normalizeCategoryPayload(category));
 
-    const category = await this.categoryService.bindCategory({
-      ...payload,
+    const bindedCategories = await this.categoryService.bindCategories({
+      categoryPayload: payload,
       videoId: id,
     });
-    if (category === null) {
+    if (bindedCategories === null) {
       throw new NotFound('Video not found');
     }
-    if (!category) {
+    if (!bindedCategories) {
       throw new NotFound('Category not found');
     }
 
-    return category;
+    return bindedCategories;
   }
 }

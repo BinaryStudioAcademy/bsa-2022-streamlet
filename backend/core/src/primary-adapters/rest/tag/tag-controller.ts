@@ -14,9 +14,9 @@ import {
   BaseVideoResponseDto,
   DefaultRequestParam,
   TagApiPath,
-  TagCreateRequestDto,
   TagResponseDto,
   TagSearchRequestQueryDto,
+  BindTagToVideoRequestDto,
 } from 'shared/build';
 import { TagService } from '~/core/tag/application/tag-service';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -56,18 +56,18 @@ export class TagController extends BaseHttpController {
   @httpPost(TagApiPath.$BIND)
   public async bindTagToVIdeo(
     @requestParam() { id }: DefaultRequestParam,
-    @requestBody() body: TagCreateRequestDto[],
+    @requestBody() { tags }: BindTagToVideoRequestDto,
   ): Promise<TagResponseDto[]> {
-    const payload = body.map((body) => normalizeTagPayload(body));
+    const payload = tags.map((tag) => normalizeTagPayload(tag));
 
-    const tags = await this.tagService.bindTags({
+    const bindedTags = await this.tagService.bindTags({
       tagPayload: payload,
       videoId: id,
     });
-    if (!tags) {
+    if (!bindedTags) {
       throw new NotFound('Video not found');
     }
 
-    return tags;
+    return bindedTags;
   }
 }

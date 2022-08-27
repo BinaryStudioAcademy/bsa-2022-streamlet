@@ -8,5 +8,5 @@ export interface CategoryRepository {
   updateCategory(updateCategoryDto: CategoryUpdateDto): Promise<Category | undefined>;
   createCategory(createCategoryDto: CategoryCreateDto): Promise<Category>;
   deleteCategory(id: string): Promise<boolean>;
-  bindCategoryToVideo(bindCategoryToVideoDto: BindCategoryToVideoDto): Promise<Category>;
+  bindCategoriesToVideo(bindCategoryToVideoDto: BindCategoryToVideoDto): Promise<Category[]>;
 }

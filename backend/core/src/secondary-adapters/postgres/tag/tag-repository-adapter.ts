@@ -46,7 +46,7 @@ export class TagRepositoryAdapter implements TagRepository {
     const values = tags.map((tagId) => {
       return `('${tagId}', '${videoId}')`;
     });
-    const query = `insert into "_TagToVideo" ("A", "B") values ${values.join(',')}`;
+    const query = `insert into "_TagToVideo" ("A", "B") values ${values.join(',')} on conflict do nothing`;
     return this.prismaClient.$queryRawUnsafe(query).then(() => {
       return this.prismaClient.tag.findMany({
         where: {
