@@ -3,7 +3,7 @@ import { VideoCard } from 'components/common/video-card/video-card';
 import React, { FC } from 'react';
 import { selectChannelVideoById } from 'store/channel/reducer';
 import { store } from 'store/store';
-import { StreamingStatus } from 'common/enums/enums';
+import { StreamStatus } from 'common/enums/enums';
 import { getFormatDurationString } from 'helpers/helpers';
 
 type Props = {
@@ -25,9 +25,9 @@ const ChannelVideoCard: FC<Props> = ({ videoId, className }) => {
       poster={videoData.poster}
       duration={videoData.durationSec ? getFormatDurationString(videoData.durationSec) : null}
       viewerNum={
-        videoData.status === StreamingStatus.LIVE ? videoData.liveViews : videoData.liveViews + videoData.videoViews
+        videoData.status === StreamStatus.LIVE ? videoData.liveViews : videoData.liveViews + videoData.videoViews
       }
-      isLive={videoData.status === StreamingStatus.LIVE}
+      isLive={videoData.status === StreamStatus.LIVE}
     />
   );
 };

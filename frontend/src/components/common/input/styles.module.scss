@@ -18,6 +18,10 @@
   outline: inherit;
 }
 
+.input:disabled {
+  background-color: var(--input-disabled-color);
+}
+
 .input-labels {
   display: flex;
   justify-content: space-between;

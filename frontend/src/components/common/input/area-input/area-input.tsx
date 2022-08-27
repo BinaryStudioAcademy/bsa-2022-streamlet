@@ -14,7 +14,8 @@ type Props<T> = {
   inputClassName?: string;
   labelClassName?: string;
   wrapperClassName?: string;
-  isReadOnly?: boolean;
+  readOnly?: boolean;
+  disabled?: boolean;
 };
 
 const AreaInput = <T extends FieldValues>({
@@ -25,7 +26,8 @@ const AreaInput = <T extends FieldValues>({
   inputClassName,
   labelClassName,
   wrapperClassName,
-  isReadOnly = false,
+  readOnly = false,
+  disabled = false,
 }: Props<T>): ReactElement | null => {
   const { field } = useFormControl({ name, control });
   const id = useId();
@@ -40,7 +42,8 @@ const AreaInput = <T extends FieldValues>({
         placeholder={placeholder}
         className={clsx(styles['input'], inputClassName)}
         id={id}
-        readOnly={isReadOnly}
+        readOnly={readOnly}
+        disabled={disabled}
       />
     </div>
   );

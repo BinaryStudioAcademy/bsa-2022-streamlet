@@ -23,4 +23,4 @@ export { ProfileApiPath } from './api/api';
 
 export { ImageUploadErrorMessage } from './image/image';
 
-export { StreamingStatus } from './stream/stream';
+export { StreamStatus } from './stream/stream';

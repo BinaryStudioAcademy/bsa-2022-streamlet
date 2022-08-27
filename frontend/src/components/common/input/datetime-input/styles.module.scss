@@ -17,3 +17,7 @@
   border-radius: 3px;
   outline: inherit;
 }
+
+.input:disabled {
+  background-color: var(--input-disabled-color);
+}

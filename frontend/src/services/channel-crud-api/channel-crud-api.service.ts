@@ -21,6 +21,12 @@ class ChannelCrudApi {
       url: `${this.#apiPrefix}${ApiPath.CHANNEL_CRUD}/${request.id}`,
     });
   }
+
+  async getMyChannelInfo(): Promise<ChannelInfoResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.MY_CHANNEL}`,
+    });
+  }
 }
 
 export { ChannelCrudApi };

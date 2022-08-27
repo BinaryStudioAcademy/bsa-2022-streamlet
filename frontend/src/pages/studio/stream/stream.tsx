@@ -1,11 +1,13 @@
 // import { IconColor, IconName } from 'common/enums/enums';
 import clsx from 'clsx';
+import { IconName } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Button, Input, PasswordInput } from 'components/common/common';
+import { Button, createToastNotification, Input, PasswordInput } from 'components/common/common';
 import { AreaInput } from 'components/common/input/area-input/area-input';
 import { DatetimeInput } from 'components/common/input/datetime-input/datetime-input';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
-import { useAppForm } from 'hooks/hooks';
+import { useAppForm, useState } from 'hooks/hooks';
+import CopyToClipboard from 'react-copy-to-clipboard';
 // import { Loader, UploadImage } from 'components/common/common';
 // import { Icon } from 'components/common/icon';
 // import { useState } from 'react';
@@ -18,18 +20,18 @@ const video = {
   previewImage: 'https://i3.ytimg.com/vi/jfKfPfyJRdk/maxresdefault.jpg',
   status: 'pending',
   isLive: false,
+  isReadyToStream: false,
   title: 'Test stream 12',
   description: 'Me testing stream!',
   streamingKey: 'testkey',
   scheduledDate: new Date('2022-08-31T03:24:00'),
 };
 
-// type UpdateStreamRequestDto = {
-//   title?: string,
-//   description?: string,
-// }
+const streamingKey = '3400139d-e0fd-49ab-ac52-be4d72f9b10b';
+const streamUrl = `dev.streamlet.tk/video/${video.id}`;
+const streamingServerUrl = 'rtmp://localhost:1935/live';
 
-export interface StreamSettingsFormValues {
+export type StreamSettingsFormValues = {
   streamingKey: string;
   streamingServerUrl: string;
   streamUrl: string;
@@ -39,24 +41,61 @@ export interface StreamSettingsFormValues {
   description: string;
   scheduledDate: Date;
   isLive: boolean;
+  isReadyToStream: boolean;
   privacy: string;
-}
+};
 
 const StudioStream: FC = () => {
   const { control, errors } = useAppForm<StreamSettingsFormValues>({
     defaultValues: {
-      streamingKey: '3400139d-e0fd-49ab-ac52-be4d72f9b10b',
-      streamingServerUrl: 'rtmp://localhost:1935/live',
-      streamUrl: `dev.streamlet.tk/video/${video.id}`,
+      streamingKey: streamingKey,
+      streamingServerUrl: streamingServerUrl,
+      streamUrl: streamUrl,
       title: video.title,
       tags: '',
       category: '',
       description: video.description,
       scheduledDate: video.scheduledDate,
       isLive: video.isLive,
+      isReadyToStream: video.isReadyToStream,
       privacy: 'public',
     },
   });
+
+  const [isEditingForm, setIsEditingForm] = useState(false);
+
+  const handleFormEdit = (): void => {
+    setIsEditingForm(true);
+  };
+
+  const handleFormSave = (): void => {
+    console.warn('saved');
+  };
+
+  const handleFormCancel = (): void => {
+    setIsEditingForm(false);
+  };
+
+  const handleChangeStreamStatus = (): void => {
+    console.warn('streaming changed');
+  };
+
+  const handleCopy = (): void => {
+    createToastNotification({
+      type: 'success',
+      message: 'Copied!',
+      iconName: IconName.INFO,
+      title: '',
+    });
+  };
+
+  const handleKeyReset = (): void => {
+    console.warn('reset');
+  };
+
+  const handleUploadPoster = (): void => {
+    console.warn('upload');
+  };
 
   return (
     <div className={styles['settings-container']}>
@@ -65,16 +104,13 @@ const StudioStream: FC = () => {
           <div className={styles['col-1']}>
             <div className={styles['preview-container']}>
               <img className={styles['preview']} src={video.previewImage ?? defaultPreview} alt="Stream preview" />
-              <Button
-                content={'Upload Preview'}
-                className={styles['button']}
-                onClick={(): void => console.warn('reset')}
-              />
+              <Button content={'Upload Preview'} className={styles['button']} onClick={handleUploadPoster} />
             </div>
             <form className={styles['form-container']}>
               <div className={styles['field-container']}>
                 <PasswordInput
                   inputClassName={styles['input']}
+                  changeVisibilityBtnClassName={styles['input-eye']}
                   labelClassName={styles['label']}
                   wrapperClassName={styles['form-input']}
                   placeholder="Streaming key"
@@ -82,10 +118,12 @@ const StudioStream: FC = () => {
                   name="streamingKey"
                   errors={errors}
                   label="Streaming key"
-                  isReadOnly
+                  readOnly
                 />
-                <Button content={'Reset'} className={styles['button']} onClick={(): void => console.warn('reset')} />
-                <Button content={'Copy'} className={styles['button']} onClick={(): void => console.warn('copied')} />
+                <Button content={'Reset'} className={styles['button']} onClick={handleKeyReset} />
+                <CopyToClipboard onCopy={handleCopy} text={streamingKey}>
+                  <Button content={'Copy'} className={styles['button']} />
+                </CopyToClipboard>
               </div>
               <div className={styles['field-container']}>
                 <Input
@@ -97,9 +135,11 @@ const StudioStream: FC = () => {
                   name="streamingServerUrl"
                   errors={errors}
                   label="Streaming server URL"
-                  isReadOnly
+                  readOnly
                 />
-                <Button content={'Copy'} className={styles['button']} onClick={(): void => console.warn('copied')} />
+                <CopyToClipboard onCopy={handleCopy} text={streamingServerUrl}>
+                  <Button content={'Copy'} className={styles['button']} />
+                </CopyToClipboard>
               </div>
               <div className={styles['field-container']}>
                 <Input
@@ -111,13 +151,29 @@ const StudioStream: FC = () => {
                   name="streamUrl"
                   errors={errors}
                   label="Stream URL"
-                  isReadOnly
+                  readOnly
                 />
-                <Button content={'Copy'} className={styles['button']} onClick={(): void => console.warn('copied')} />
+                <CopyToClipboard onCopy={handleCopy} text={streamUrl}>
+                  <Button content={'Copy'} className={styles['button']} />
+                </CopyToClipboard>
               </div>
             </form>
           </div>
           <div className={styles['col-2']}>
+            <div className={styles['status-container']}>
+              <div className={styles['status']}>
+                <div className={clsx(styles['status-indicator'], video.isLive && styles['live'])} />
+                <p className={styles['status-text']}>
+                  {video.isLive ? 'Live' : video.isReadyToStream ? 'Ready to stream' : 'Not connected'}
+                </p>
+              </div>
+              <Button
+                content={video.isLive ? 'End stream' : 'Go live'}
+                className={clsx(styles['button'], styles['preview-button'], styles['live-button'])}
+                onClick={handleChangeStreamStatus}
+                disabled={!video.isReadyToStream}
+              />
+            </div>
             <form className={styles['form-container']}>
               <Input
                 control={control}
@@ -131,6 +187,7 @@ const StudioStream: FC = () => {
                 errorBlockClassName={styles['error']}
                 wrapperClassName={styles['form-input']}
                 placeholder="Your stream name..."
+                disabled={!isEditingForm}
               />
               <div className={styles['input-row']}>
                 <Input
@@ -145,6 +202,7 @@ const StudioStream: FC = () => {
                   errorBlockClassName={styles['error']}
                   wrapperClassName={styles['form-input']}
                   placeholder="Choose the category"
+                  disabled={!isEditingForm}
                 />
                 <Input
                   control={control}
@@ -157,7 +215,8 @@ const StudioStream: FC = () => {
                   labelClassName={styles['label']}
                   errorBlockClassName={styles['error']}
                   wrapperClassName={styles['form-input']}
-                  placeholder="Separated by commas..."
+                  placeholder="Press enter to add tag..."
+                  disabled={!isEditingForm}
                 />
               </div>
               <div className={styles['input-row']}>
@@ -169,6 +228,7 @@ const StudioStream: FC = () => {
                   labelClassName={styles['label']}
                   wrapperClassName={styles['form-input']}
                   defaultValue={video.scheduledDate}
+                  disabled={!isEditingForm}
                 />
                 <Input
                   control={control}
@@ -182,6 +242,7 @@ const StudioStream: FC = () => {
                   errorBlockClassName={styles['error']}
                   wrapperClassName={styles['form-input']}
                   placeholder="Select privacy settings"
+                  disabled={!isEditingForm}
                 />
               </div>
 
@@ -193,19 +254,30 @@ const StudioStream: FC = () => {
                 labelClassName={styles['label']}
                 wrapperClassName={styles['form-input']}
                 placeholder="Stream description..."
+                disabled={!isEditingForm}
               />
 
               <div className={styles['button-wrapper']}>
-                <Button
-                  content={'Save'}
-                  className={clsx(styles['button'], styles['preview-button'])}
-                  onClick={(): void => console.warn('copied')}
-                />
-                <Button
-                  content={'Cancel'}
-                  className={clsx(styles['button'], styles['preview-button'])}
-                  onClick={(): void => console.warn('copied')}
-                />
+                {!isEditingForm ? (
+                  <Button
+                    content={'Edit'}
+                    className={clsx(styles['button'], styles['preview-button'])}
+                    onClick={handleFormEdit}
+                  />
+                ) : (
+                  <>
+                    <Button
+                      content={'Save'}
+                      className={clsx(styles['button'], styles['preview-button'])}
+                      onClick={handleFormSave}
+                    />
+                    <Button
+                      content={'Cancel'}
+                      className={clsx(styles['button'], styles['preview-button'])}
+                      onClick={handleFormCancel}
+                    />
+                  </>
+                )}
               </div>
             </form>
           </div>

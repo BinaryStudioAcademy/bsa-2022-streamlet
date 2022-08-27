@@ -19,3 +19,7 @@
   outline: inherit;
   resize: none;
 }
+
+.input:disabled {
+  background-color: var(--input-disabled-color);
+}

@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import * as dayjsRelativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
 import { FC, VideoCard as VideoCardType } from 'common/types/types';
-import { AppRoutes, IconName, StreamingStatus, VideoTagName } from 'common/enums/enums';
+import { AppRoutes, IconName, StreamStatus, VideoTagName } from 'common/enums/enums';
 import { useState, useCallback, useEffect } from 'hooks/hooks';
 import { Icon } from 'components/common/common';
 import { VideoTag } from '../common/common';
@@ -27,9 +27,9 @@ const VideoCard: FC<Props> = ({
 }) => {
   const [timeNow, setTimeNow] = useState(dayjs());
 
-  const isWaiting = status === StreamingStatus.PENDING;
-  const isLive = status === StreamingStatus.LIVE;
-  const isFinished = status === StreamingStatus.FINISHED;
+  const isWaiting = status === StreamStatus.WAITING;
+  const isLive = status === StreamStatus.LIVE;
+  const isFinished = status === StreamStatus.FINISHED;
 
   const updateTimeDelay = UPDATE_CARD_TIME_DELAY;
 

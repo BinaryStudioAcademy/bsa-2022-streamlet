@@ -7,10 +7,12 @@
   cursor: pointer;
 }
 
-.button:hover {
-  background-color: var(--brand-green-color-hover);
+.button:disabled {
+  background-color: var(--text-gray-color);
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
-.button:disabled {
-  cursor: not-allowed;
+.button:hover {
+  background-color: var(--brand-green-color-hover);
 }

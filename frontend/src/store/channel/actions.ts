@@ -9,4 +9,11 @@ const loadChannel = createAsyncThunk<ChannelInfoResponseDto, ChannelInfoRequestD
   },
 );
 
-export { loadChannel };
+const loadMyChannel = createAsyncThunk<ChannelInfoResponseDto, null, AsyncThunkConfig>(
+  ActionsTypes.LOAD_MY_CHANNEL,
+  async (_payload, { extra: { channelCrudApi } }): Promise<ChannelInfoResponseDto> => {
+    return channelCrudApi.getMyChannelInfo();
+  },
+);
+
+export { loadChannel, loadMyChannel };

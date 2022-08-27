@@ -1,9 +1,10 @@
 import { createEntityAdapter, createReducer } from '@reduxjs/toolkit';
 import { DataStatus, ErrorMessage } from 'common/enums/enums';
 import { ChannelInfoResponseDto, ChannelVideoPreviewsPageDto, RootState } from 'common/types/types';
-import { loadChannel } from './actions';
+import { loadChannel, loadMyChannel } from './actions';
 
 type CurrentChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
+type MyChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
 type ChannelVideo = ChannelVideoPreviewsPageDto['videos'][number];
 
 interface InitialState {
@@ -13,6 +14,16 @@ interface InitialState {
     error: string | undefined;
   };
   currentChannelVideos: {
+    data: ReturnType<typeof channelVideosAdapter.getInitialState>;
+    dataStatus: DataStatus;
+    error: string | undefined;
+  };
+  myChannel: {
+    data: MyChannelInfo | null;
+    dataStatus: DataStatus;
+    error: string | undefined;
+  };
+  myChannelVideos: {
     data: ReturnType<typeof channelVideosAdapter.getInitialState>;
     dataStatus: DataStatus;
     error: string | undefined;
@@ -31,6 +42,12 @@ const initialState: InitialState = {
     error: undefined,
   },
   currentChannelVideos: { data: channelVideosAdapter.getInitialState(), dataStatus: DataStatus.IDLE, error: undefined },
+  myChannel: {
+    data: null,
+    dataStatus: DataStatus.IDLE,
+    error: undefined,
+  },
+  myChannelVideos: { data: channelVideosAdapter.getInitialState(), dataStatus: DataStatus.IDLE, error: undefined },
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -47,9 +64,19 @@ const reducer = createReducer(initialState, (builder) => {
     };
   });
 
+  builder.addCase(loadMyChannel.pending, (state) => {
+    state.myChannel.dataStatus = DataStatus.PENDING;
+    state.myChannel.error = undefined;
+  });
+
   builder.addCase(loadChannel.rejected, (state, { error }) => {
     state.currentChannel.dataStatus = DataStatus.REJECTED;
     state.currentChannel.error = error.message || ErrorMessage.DEFAULT;
+  });
+
+  builder.addCase(loadMyChannel.rejected, (state, { error }) => {
+    state.myChannel.dataStatus = DataStatus.REJECTED;
+    state.myChannel.error = error.message || ErrorMessage.DEFAULT;
   });
 
   builder.addCase(loadChannel.fulfilled, (state, { payload }) => {
@@ -58,10 +85,21 @@ const reducer = createReducer(initialState, (builder) => {
     state.currentChannel.data = channelData;
     channelVideosAdapter.setAll(state.currentChannelVideos.data, initialVideosPage.videos);
   });
+
+  builder.addCase(loadMyChannel.fulfilled, (state, { payload }) => {
+    state.myChannel.dataStatus = DataStatus.FULFILLED;
+    const { initialVideosPage, ...channelData } = payload;
+    state.myChannel.data = channelData;
+    channelVideosAdapter.setAll(state.myChannelVideos.data, initialVideosPage.videos);
+  });
 });
 
 export const { selectById: selectChannelVideoById } = channelVideosAdapter.getSelectors<RootState>(
   (state) => state.channel.currentChannelVideos.data,
+);
+
+export const { selectById: selectMyChannelVideo } = channelVideosAdapter.getSelectors<RootState>(
+  (state) => state.channel.myChannelVideos.data,
 );
 
 export { reducer };

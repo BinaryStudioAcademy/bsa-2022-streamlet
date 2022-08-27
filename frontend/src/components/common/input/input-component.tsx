@@ -20,7 +20,8 @@ type Props<T> = {
   labelClassName?: string;
   errorBlockClassName?: string;
   wrapperClassName?: string;
-  isReadOnly?: boolean;
+  readOnly?: boolean;
+  disabled?: boolean;
 };
 
 const Input = <T extends FieldValues>({
@@ -35,7 +36,8 @@ const Input = <T extends FieldValues>({
   labelClassName,
   errorBlockClassName,
   wrapperClassName,
-  isReadOnly = false,
+  readOnly = false,
+  disabled = false,
 }: Props<T>): ReactElement | null => {
   const {
     field,
@@ -65,7 +67,8 @@ const Input = <T extends FieldValues>({
         placeholder={placeholder}
         className={clsx(styles.input, inputClassName, error && inputErrorClassName)}
         id={id}
-        readOnly={isReadOnly}
+        readOnly={readOnly}
+        disabled={disabled}
       />
     </div>
   );

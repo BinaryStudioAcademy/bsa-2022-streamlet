@@ -15,7 +15,8 @@ type Props<T> = {
   labelClassName?: string;
   wrapperClassName?: string;
   defaultValue: Date;
-  isReadOnly?: boolean;
+  readOnly?: boolean;
+  disabled?: boolean;
 };
 
 const DatetimeInput = <T extends FieldValues>({
@@ -26,7 +27,8 @@ const DatetimeInput = <T extends FieldValues>({
   labelClassName,
   wrapperClassName,
   defaultValue,
-  isReadOnly = false,
+  readOnly = false,
+  disabled = false,
 }: Props<T>): ReactElement | null => {
   const { field } = useFormControl({ name, control });
   const id = useId();
@@ -43,7 +45,8 @@ const DatetimeInput = <T extends FieldValues>({
         timeInputLabel="Time:"
         dateFormat="MM/dd/yyyy h:mm aa"
         showTimeInput
-        readOnly={isReadOnly}
+        readOnly={readOnly}
+        disabled={disabled}
       />
     </div>
   );
