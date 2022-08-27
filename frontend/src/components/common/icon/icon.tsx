@@ -39,7 +39,7 @@ import { ReactComponent as Emoji } from 'assets/img/emoji.svg';
 import { ReactComponent as OnlineStreaming } from 'assets/img/online-streaming.svg';
 import { ReactComponent as TV } from 'assets/img/tv.svg';
 import { ReactComponent as Rotate } from 'assets/img/rotate.svg';
-import { ReactComponent as ZoomIn } from 'assets/img/zoom-in.svg';
+import { ReactComponent as Profile } from 'assets/img/profile.svg';
 
 import clsx from 'clsx';
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -202,10 +202,6 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
       return <Sun {...commonProps} />;
     }
 
-    case IconName.ZOOM_IN: {
-      return <ZoomIn {...commonProps} />;
-    }
-
     case IconName.ROTATE: {
       return <Rotate {...commonProps} />;
     }
@@ -228,6 +224,10 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.BELL_OUTLINE: {
       return <BellOutline {...commonProps} />;
+    }
+
+    case IconName.PROFILE: {
+      return <Profile {...commonProps} />;
     }
 
     default: {

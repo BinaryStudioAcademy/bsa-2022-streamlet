@@ -1,0 +1,28 @@
+.modal-item {
+  padding: 5px 15px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.header {
+  border-bottom: 1px solid var(--white-text-color);
+}
+
+.selected,
+.selectable {
+  display: grid;
+  grid-template-columns: 25px auto;
+}
+
+.icon-modal-item {
+  display: grid;
+  grid-template-columns: 30px auto;
+}
+
+.selected {
+  background-color: var(--selected-menu-item-bg);
+}
+
+.modal-item:hover {
+  background-color: var(--hovered-menu-item-bg);
+}

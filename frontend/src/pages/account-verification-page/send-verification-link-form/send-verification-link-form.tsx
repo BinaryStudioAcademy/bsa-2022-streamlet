@@ -18,7 +18,7 @@ const SendVerificationLinkForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit, isValid } = useAppForm<SendVerificationLinkFormValues>({
     defaultValues: { email: '' },
     validationSchema: accountVerificationInit,
-    mode: 'onTouched',
+    mode: 'onChange',
   });
 
   return (
