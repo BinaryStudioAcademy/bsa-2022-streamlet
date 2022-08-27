@@ -15,6 +15,8 @@ import { ProfileRepository } from '~/core/profile/port/profile-repository';
 import { ProfileRepositoryAdapter } from '~/secondary-adapters/postgres/profile/profile-repositoty-adapter';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { VideoRepositoryAdapter } from './video/video-repository-adapter';
+import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/channel-subscription-repository';
+import { ChannelSubscriptionRepositoryAdapter } from './channel-subscription/channel-subscription-repository-adapter';
 import { ChannelStreamingRepositoryAdapter } from './channel-streaming/channel-streaming-repository-adapter';
 import { ChannelStreamingRepository } from '~/core/channel-streaming/port/channel-streaming-repository';
 import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
@@ -36,6 +38,9 @@ const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces
 
   bind<ChannelStreamingRepository>(CONTAINER_TYPES.ChannelStreamingRepository).to(ChannelStreamingRepositoryAdapter);
   bind<ChannelCrudRepository>(CONTAINER_TYPES.ChannelCrudRepository).to(ChannelCrudRepositoryAdapter);
+  bind<ChannelSubscriptionRepository>(CONTAINER_TYPES.ChannelSubscriptionRepository).to(
+    ChannelSubscriptionRepositoryAdapter,
+  );
   bind<HistoryRepository>(CONTAINER_TYPES.HistoryRepository).to(HistoryRepositoryAdapter);
   bind<PrismaClient>(CONTAINER_TYPES.PrismaClient)
     .toConstantValue(client)

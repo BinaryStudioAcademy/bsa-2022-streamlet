@@ -15,3 +15,4 @@ export * from './tag/tag';
 export * from './category/category';
 export * from './video/video';
 export * from './subscription/subscription';
+export * from './comment';
