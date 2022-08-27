@@ -1,4 +1,4 @@
-import { BaseHttpController, controller, httpGet, requestBody } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, requestParam } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { ChatInfoRequestDto, ChatInfoResponseDto, CONTAINER_TYPES } from '~/shared/types/types';
 import { exceptionMessages } from '~/shared/enums/enums';
@@ -13,8 +13,8 @@ export class ChatController extends BaseHttpController {
     super();
   }
 
-  @httpGet(ChatApiPath.ROOT)
-  public async createHistoryItem(@requestBody() { id }: ChatInfoRequestDto): Promise<ChatInfoResponseDto> {
+  @httpGet(ChatApiPath.$ID)
+  public async getChatInfo(@requestParam() { id }: ChatInfoRequestDto): Promise<ChatInfoResponseDto> {
     const video = await this.chatService.getChatMessagesByVideoId(id);
     if (!video) {
       throw new NotFound(exceptionMessages.chat.CHAT_ID_NOT_FOUND);
