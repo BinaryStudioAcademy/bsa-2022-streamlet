@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - development
-      - feature/deployment-pipeline
   workflow_dispatch:
 
 jobs:
