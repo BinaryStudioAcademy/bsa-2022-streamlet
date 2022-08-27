@@ -1,9 +1,12 @@
-import { BaseHttpController, controller, httpGet } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, request, requestParam } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES } from '~/shared/types/types';
+import { CONTAINER_TYPES, ExtendedRequest } from '~/shared/types/types';
 import { VideoService } from '~/core/video/application/video-service';
-import { ApiPath } from 'shared/build';
+import { ApiPath, VideoExpandedResponseDto } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
+import { NotFound } from '~/shared/exceptions/not-found';
+import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/channel-subscription-repository';
+import { optionalAuthenticationMiddleware } from '../middleware/optional-authentication-middleware';
 
 /**
  * @swagger
@@ -59,7 +62,11 @@ import { DataVideo } from 'shared/build/common/types/video/base-video-response-d
 export class VideoController extends BaseHttpController {
   private videoService: VideoService;
 
-  constructor(@inject(CONTAINER_TYPES.VideoService) videoService: VideoService) {
+  constructor(
+    @inject(CONTAINER_TYPES.VideoService) videoService: VideoService,
+    @inject(CONTAINER_TYPES.ChannelSubscriptionRepository)
+    private channelSubscriptionRepository: ChannelSubscriptionRepository,
+  ) {
     super();
 
     this.videoService = videoService;
@@ -87,5 +94,22 @@ export class VideoController extends BaseHttpController {
   @httpGet('/')
   public getAllVideos(): Promise<DataVideo> {
     return this.videoService.getAllVideos();
+  }
+
+  @httpGet('/:id', optionalAuthenticationMiddleware)
+  public async get(@requestParam('id') id: string, @request() req: ExtendedRequest): Promise<VideoExpandedResponseDto> {
+    const video = await this.videoService.getById(id);
+
+    if (!video) {
+      throw new NotFound('Such video doesn`t exist');
+    }
+    const { user } = req;
+    let isSubscribed: boolean;
+    if (user) {
+      isSubscribed = await this.channelSubscriptionRepository.isUserSubscribed(video.channel.id, user.id);
+    } else {
+      isSubscribed = false;
+    }
+    return { ...video, isUserSubscribedOnChannel: isSubscribed };
   }
 }

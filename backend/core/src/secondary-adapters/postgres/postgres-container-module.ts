@@ -17,6 +17,8 @@ import { HistoryRepository } from '../../core/history/port/history-repository';
 import { HistoryRepositoryAdapter } from './history/history-repository-adapter';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { VideoRepositoryAdapter } from './video/video-repository-adapter';
+import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/channel-subscription-repository';
+import { ChannelSubscriptionRepositoryAdapter } from './channel-subscription/channel-subscription-repository-adapter';
 
 const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const client = new PrismaClient();
@@ -29,6 +31,9 @@ const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces
   bind<ResetPasswordRepository>(CONTAINER_TYPES.ResetPasswordRepository).to(ResetPasswordRepositoryAdapter);
   bind<ChannelStreamingRepository>(CONTAINER_TYPES.ChannelStreamingRepository).to(ChannelStreamingRepositoryAdapter);
   bind<ChannelCrudRepository>(CONTAINER_TYPES.ChannelCrudRepository).to(ChannelCrudRepositoryAdapter);
+  bind<ChannelSubscriptionRepository>(CONTAINER_TYPES.ChannelSubscriptionRepository).to(
+    ChannelSubscriptionRepositoryAdapter,
+  );
   bind<HistoryRepository>(CONTAINER_TYPES.HistoryRepository).to(HistoryRepositoryAdapter);
   bind<PrismaClient>(CONTAINER_TYPES.PrismaClient)
     .toConstantValue(client)

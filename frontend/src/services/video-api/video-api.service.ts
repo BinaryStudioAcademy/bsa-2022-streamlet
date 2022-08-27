@@ -1,5 +1,6 @@
 import { HttpMethod, ApiPath } from 'common/enums/enums';
 import { DataVideo } from 'common/types/types';
+import { VideoExpandedResponseDto } from 'shared/build';
 import { Http } from '../http/http.service';
 
 type Constructor = {
@@ -19,6 +20,15 @@ class VideoApi {
   public getVideos(): Promise<DataVideo> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.VIDEOS}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+    });
+  }
+
+  public getSingleVideo(videoId: string): Promise<VideoExpandedResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}/${videoId}`,
       options: {
         method: HttpMethod.GET,
       },
