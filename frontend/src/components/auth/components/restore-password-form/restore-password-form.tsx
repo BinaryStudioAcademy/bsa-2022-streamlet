@@ -46,7 +46,7 @@ const RestorePasswordForm: FC<Props> = ({ onSubmit, isLoading }) => {
         />
       </form>
       <ContinueWithParagraph
-        linkTitle="Back to login"
+        linkTitle="Back to sign in"
         prompt="Changed your mind?"
         route={AppRoutes.SIGN_IN}
         className={formStyles['upper-space-regular']}
