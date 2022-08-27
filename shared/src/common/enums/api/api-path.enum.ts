@@ -5,7 +5,7 @@ enum ApiPath {
   PROFILE = '/profile',
   NOTIFICATION = '/notification',
   VIDEOS = '/videos',
-  CHAT = '/chat',
+  CHAT = '/chats',
 }
 
 export { ApiPath };
