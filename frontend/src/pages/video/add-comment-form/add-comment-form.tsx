@@ -6,6 +6,7 @@ import { Button } from '../../../components/common/common';
 import defaultAvatar from 'assets/img/default-user-avatar.jpg';
 import * as Joi from 'joi';
 import clsx from 'clsx';
+import { useState } from '../../../hooks/hooks';
 
 type Props = {
   avatar: string | undefined;
@@ -20,6 +21,7 @@ const extendedSchema = Joi.object<AddNewCommentFormValues, true>({
 });
 
 export const VideoPageCommentForm: FC<Props> = ({ avatar = defaultAvatar, onSubmit }) => {
+  const [isNeedFormControlElenent, setIsNeedFormControlElement] = useState(false);
   const { control, errors, isValid } = useAppForm({
     defaultValues: { comment: '' },
     mode: 'onChange',
@@ -29,6 +31,15 @@ export const VideoPageCommentForm: FC<Props> = ({ avatar = defaultAvatar, onSubm
     if (isValid) {
       onSubmit();
     }
+  };
+  const handleCancel = (): void => {
+    setIsNeedFormControlElement(false);
+  };
+  const handleInputFocus = (): void => {
+    setIsNeedFormControlElement(true);
+  };
+  const handleInputBlur = (): void => {
+    setIsNeedFormControlElement(false);
   };
   return (
     <div className={styles['add-comment-block']}>
@@ -43,17 +54,29 @@ export const VideoPageCommentForm: FC<Props> = ({ avatar = defaultAvatar, onSubm
         label={'Add comment'}
         name={'comment'}
         placeholder={'Enter new comment text'}
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
       />
       <div className={styles['add-comment-form-control']}>
-        <Button
-          onClick={handleSubmit}
-          type={'submit'}
-          content={'Submit'}
-          className={clsx({
-            [styles['add-comment-submit-active']]: isValid,
-            [styles['add-comment-submit-npt-active']]: !isValid,
-          })}
-        />
+        {isNeedFormControlElenent && (
+          <>
+            <Button
+              onClick={handleCancel}
+              type={'button'}
+              content={'Cancel'}
+              className={styles['.add-comment-cancel-button']}
+            />
+            <Button
+              onClick={handleSubmit}
+              type={'submit'}
+              content={'Submit'}
+              className={clsx({
+                [styles['add-comment-submit-active']]: isValid,
+                [styles['add-comment-submit-npt-active']]: !isValid,
+              })}
+            />
+          </>
+        )}
       </div>
     </div>
   );
