@@ -2,6 +2,7 @@ FROM node:16.16.0-slim as backend-build
 
 RUN apt-get update
 RUN apt-get install -y openssl
+RUN apt-get install -y ca-certificates wget
 
 WORKDIR /app
 
