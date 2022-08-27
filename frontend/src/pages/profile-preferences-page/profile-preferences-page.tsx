@@ -169,7 +169,7 @@ const ProfilePreferencesPage: FC = () => {
                   {error ? (
                     <span className={style['error-message']}>{error}</span>
                   ) : (
-                    'File format: JPEG/PNG, max size: 10MB'
+                    'File format: JPG/PNG, max size: 10MB'
                   )}
                 </span>
               </div>
