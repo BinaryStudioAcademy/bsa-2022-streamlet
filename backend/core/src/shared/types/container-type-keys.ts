@@ -25,6 +25,9 @@ const CONTAINER_TYPES = {
   VideoService: Symbol.for('VideoService'),
   VideoRepository: Symbol.for('VideoRepository'),
   VideoController: Symbol.for('VideoController'),
+  ChatService: Symbol.for('ChatService'),
+  ChatRepository: Symbol.for('ChatRepository'),
+  ChatController: Symbol.for('ChatController'),
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),

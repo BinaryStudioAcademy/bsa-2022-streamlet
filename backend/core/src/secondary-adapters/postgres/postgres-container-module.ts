@@ -17,6 +17,8 @@ import { HistoryRepository } from '../../core/history/port/history-repository';
 import { HistoryRepositoryAdapter } from './history/history-repository-adapter';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { VideoRepositoryAdapter } from './video/video-repository-adapter';
+import { ChatRepository } from '~/core/chat/port/chat-repository';
+import { ChatRepositoryAdapter } from './chat/chat-repository-adapter';
 
 const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const client = new PrismaClient();
@@ -29,6 +31,7 @@ const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces
   bind<ResetPasswordRepository>(CONTAINER_TYPES.ResetPasswordRepository).to(ResetPasswordRepositoryAdapter);
   bind<ChannelStreamingRepository>(CONTAINER_TYPES.ChannelStreamingRepository).to(ChannelStreamingRepositoryAdapter);
   bind<ChannelCrudRepository>(CONTAINER_TYPES.ChannelCrudRepository).to(ChannelCrudRepositoryAdapter);
+  bind<ChatRepository>(CONTAINER_TYPES.ChatRepository).to(ChatRepositoryAdapter);
   bind<HistoryRepository>(CONTAINER_TYPES.HistoryRepository).to(HistoryRepositoryAdapter);
   bind<PrismaClient>(CONTAINER_TYPES.PrismaClient)
     .toConstantValue(client)

@@ -13,3 +13,4 @@ export * from './history';
 export * from './notification/notification';
 export * from './video/video';
 export * from './subscription/subscription';
+export * from './chat/chat';
