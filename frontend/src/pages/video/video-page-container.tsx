@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { AppRoutes } from 'common/enums/enums';
+import { AppRoutes, StreamingStatus } from 'common/enums/enums';
 import { ReactComponent as ThumbUp } from 'assets/img/thumb-up.svg';
 import { ReactComponent as ThumbDown } from 'assets/img/thumb-down.svg';
 import { Loader } from 'components/common/common';
@@ -11,6 +11,7 @@ import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
 import styles from './video-page.module.scss';
 import { VideoPageCommentForm } from './add-comment-form/add-comment-form';
 import { getReactBtnColor } from 'helpers/helpers';
+import { VideoPlayer } from 'components/common/video-player/video-player';
 
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -75,6 +76,7 @@ const VideoPageContainer: FC = () => {
   const isVideoFinished = status === 'finished';
 
   const { userReaction } = videoData;
+
   return (
     <div
       className={clsx({
@@ -82,7 +84,14 @@ const VideoPageContainer: FC = () => {
         [styles['video-page-without-live']]: isVideoFinished,
       })}
     >
-      <div className={styles['video-block']} />
+      <div className={styles['video-block']}>
+        <VideoPlayer
+          sizingProps={{ aspectRatio: '16 / 9' }}
+          url={videoData.videoPath}
+          isLive={videoData.status === StreamingStatus.LIVE}
+          videoAttributes={{ poster: videoData.poster }}
+        />
+      </div>
       <div className={styles['video-info-block']}>
         <div className={styles['video-header']}>
           <h2 className={styles['video-block-header']}>{videoData.name}</h2>
