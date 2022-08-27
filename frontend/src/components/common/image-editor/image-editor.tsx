@@ -70,7 +70,7 @@ const ImageEditor: FC<imageEditorProps> = ({ avatar, setAvatar, onClose, handleS
         <div className={style['image-editor-control-container']}>
           <Icon name={IconName.ROTATE} color={IconColor.GRAY} width={'20'} height={'20'} onClick={handleRotate} />
           <div className={style['image-editor-slider-container']}>
-            <Icon name={IconName.ZOOM_IN} color={IconColor.GRAY} width={'30'} height={'30'} />
+            <span className={style['zoom-indicator']}>-</span>
             <ReactSlider
               className={style['horizontal-slider']}
               thumbClassName={style['example-thumb']}
@@ -81,7 +81,7 @@ const ImageEditor: FC<imageEditorProps> = ({ avatar, setAvatar, onClose, handleS
               min={1}
               renderThumb={(props): ReactElement => <div {...props}></div>}
             />
-            <Icon name={IconName.ZOOM_IN} color={IconColor.GRAY} width={'30'} height={'30'} />
+            <span className={style['zoom-indicator']}>+</span>
           </div>
           <button type={'button'} onClick={onSave}>
             Save

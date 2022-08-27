@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Channel, PrismaClient, User } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
@@ -7,6 +7,16 @@ import { ChannelInfoBeforeTrimming, CreateSubscriptionResponseDto } from '~/shar
 @injectable()
 export class ChannelCrudRepositoryAdapter implements ChannelCrudRepository {
   constructor(@inject(CONTAINER_TYPES.PrismaClient) private prismaClient: PrismaClient) {}
+
+  createDefaultForUser(user: User, channelName: string): Promise<Channel> {
+    return this.prismaClient.channel.create({
+      data: {
+        name: channelName,
+        authorId: user.id,
+        contactEmail: user.email,
+      },
+    });
+  }
 
   async getChannelById(id: string): Promise<ChannelInfoBeforeTrimming | null> {
     return this.prismaClient.channel.findUnique({

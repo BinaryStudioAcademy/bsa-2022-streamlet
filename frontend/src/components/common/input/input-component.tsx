@@ -37,7 +37,7 @@ const Input = <T extends FieldValues>({
 }: Props<T>): ReactElement | null => {
   const {
     field,
-    fieldState: { error },
+    fieldState: { error, isTouched },
   } = useFormControl({ name, control });
   const id = useId();
 
@@ -48,20 +48,22 @@ const Input = <T extends FieldValues>({
           <span>{label}</span>
         </label>
         <div className={clsx(errorBlockClassName)}>
-          <ErrorMessage
-            errors={errors}
-            name={name}
-            render={({ message }): ReactElement => {
-              return <ErrorBox message={message} />;
-            }}
-          />
+          {isTouched && (
+            <ErrorMessage
+              errors={errors}
+              name={name}
+              render={({ message }): ReactElement => {
+                return <ErrorBox message={message} />;
+              }}
+            />
+          )}
         </div>
       </div>
       <input
         {...field}
         type={type}
         placeholder={placeholder}
-        className={clsx(styles.input, inputClassName, error && inputErrorClassName)}
+        className={clsx(styles.input, inputClassName, error && isTouched && inputErrorClassName)}
         id={id}
       />
     </div>
