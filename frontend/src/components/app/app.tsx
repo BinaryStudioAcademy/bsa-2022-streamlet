@@ -91,6 +91,7 @@ const App: FC = () => {
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
                 <Route path="video-page" element={<VideoPageContainer />} />
                 <Route path={AppRoutes.CHANNEL_$ID} element={<ChannelPage />} />
+                <Route path={AppRoutes.VIDEO_$ID} element={<VideoPageContainer />} />
                 <Route path={AppRoutes.ANY} element={<NotFound />} />
               </Routes>
             </div>

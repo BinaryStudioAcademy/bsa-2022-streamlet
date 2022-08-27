@@ -20,7 +20,7 @@ const AuthSubmitButton: FC<Props> = ({ isLoading, name, disabled, className }) =
     <Button
       className={clsx(styles['auth-submit-btn'], className)}
       type="submit"
-      content={isLoading ? <Loader spinnerSize="25px" vCentered={false} /> : name}
+      content={isLoading ? <Loader spinnerSize="25px" vCentered={false} color="white" /> : name}
       disabled={disabled}
     />
   );
