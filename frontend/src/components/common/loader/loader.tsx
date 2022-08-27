@@ -8,10 +8,14 @@ type Props = {
   vCentered?: boolean;
   className?: string;
   spinnerSize?: LoaderSize | string;
+  color?: string;
 };
 
-const Loader: FC<Props> = ({ hCentered = true, vCentered = true, className, spinnerSize = LoaderSize.MD }) => {
+const Loader: FC<Props> = ({ hCentered = true, vCentered = true, className, spinnerSize = LoaderSize.MD, color }) => {
   const isSpinnerSizeCustom = Object.values(LoaderSize).includes(spinnerSize as LoaderSize);
+  const styleProps = {
+    background: color ?? 'unset',
+  };
 
   return (
     <div
@@ -21,9 +25,9 @@ const Loader: FC<Props> = ({ hCentered = true, vCentered = true, className, spin
       })}
       style={!isSpinnerSizeCustom ? ({ '--spinner-height': spinnerSize } as React.CSSProperties) : undefined}
     >
-      <div className={styles['loader']}></div>
-      <div className={styles['loader']}></div>
-      <div className={styles['loader']}></div>
+      <div className={styles['loader']} style={{ ...styleProps }}></div>
+      <div className={styles['loader']} style={{ ...styleProps }}></div>
+      <div className={styles['loader']} style={{ ...styleProps }}></div>
     </div>
   );
 };
