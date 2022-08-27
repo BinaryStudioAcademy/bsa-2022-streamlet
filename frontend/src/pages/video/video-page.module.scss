@@ -62,7 +62,6 @@
 
 .video-block {
   grid-area: video;
-  background-color: var(--brand-green-color);
   @media screen and (max-width: 992px) {
     height: fit-content;
   }
