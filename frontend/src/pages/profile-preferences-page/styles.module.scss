@@ -15,9 +15,8 @@
 .preference-page-content-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
-  height: 100%;
 }
 
 .preference-page-content-container button {
@@ -84,7 +83,7 @@
 }
 
 .image-upload-button {
-  height: 30px;
+  height: 40px;
   margin-bottom: 10px;
   padding: 0 20px;
   color: var(--always-white-color);
@@ -133,7 +132,7 @@
 }
 
 .save-change-button {
-  width: 120px;
+  width: 150px;
   height: 40px;
   padding: 0 10px;
   color: white;

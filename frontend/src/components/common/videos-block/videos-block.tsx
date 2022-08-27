@@ -1,5 +1,4 @@
-import { FC, BaseVideoResponseDto } from 'common/types/types';
-import { VideoCardMain } from '../common';
+import { FC } from 'common/types/types';
 import { VideoSkeleton } from '../video-skeleton/video-skeleton';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import { useAppSelector } from 'hooks/hooks';
@@ -13,12 +12,13 @@ import {
 } from '../video-skeleton/video-skeleton.config';
 
 import styles from './videos-block.module.scss';
+import { ReactNode } from 'react';
 export interface VideoBlockProps {
   blockTitle?: string;
-  videos: Array<BaseVideoResponseDto>;
+  videoCards: ReactNode[];
 }
 
-const VideosBlock: FC<VideoBlockProps> = ({ videos, blockTitle }) => {
+const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards }) => {
   const { statusVideoLoading, isLightTheme } = useAppSelector((state) => ({
     statusVideoLoading: state.videos.dataStatus,
     isLightTheme: state.theme.isLightTheme,
@@ -36,9 +36,7 @@ const VideosBlock: FC<VideoBlockProps> = ({ videos, blockTitle }) => {
         <div className={styles['videos-block']}>
           {statusVideoLoading === DataStatus.PENDING &&
             ARRAY_FAKE_VIDEOS.map((_, index) => <VideoSkeleton key={index} />)}
-          {videos.map((video) => (
-            <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />
-          ))}
+          {videoCards}
         </div>
       </SkeletonTheme>
     </div>

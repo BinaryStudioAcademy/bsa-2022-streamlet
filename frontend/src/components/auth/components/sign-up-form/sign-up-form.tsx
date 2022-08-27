@@ -18,7 +18,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
   const { control, errors, handleSubmit, isValid } = useAppForm<UserSignUpRequestDto>({
     defaultValues: DEFAULT_SIGN_UP_PAYLOAD,
     validationSchema: userSignUpValidationSchema,
-    mode: 'onTouched',
+    mode: 'onChange',
   });
 
   return (

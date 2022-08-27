@@ -1,0 +1,16 @@
+.button {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  padding: 0;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 150ms ease-in-out;
+
+  &:hover {
+    opacity: 1;
+  }
+}
