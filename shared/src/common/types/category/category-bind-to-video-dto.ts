@@ -1,3 +1,4 @@
-import { BindTagToVideoDto } from '../types';
-
-export type BindCategoryToVideoDto = BindTagToVideoDto;
+export type BindCategoryToVideoDto = {
+  name: string;
+  videoId: string;
+};

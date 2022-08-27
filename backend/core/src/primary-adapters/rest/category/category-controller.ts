@@ -16,11 +16,11 @@ import {
   DefaultRequestParam,
   CategoryApiPath,
   CategorySearchRequestQueryDto,
-  SearchByCategoryResponseDto,
   CategoryResponseDto,
   CategoryCreateRequestDto,
   CategoryGetAllDto,
   CategoryUpdateRequestDto,
+  BaseVideoResponseDto,
 } from 'shared/build';
 import { NotFound } from '~/shared/exceptions/not-found';
 import { CategoryService } from '~/core/category/application/category-service';
@@ -51,7 +51,7 @@ export class CategoryController extends BaseHttpController {
   @httpGet(CategoryApiPath.SEARCH)
   public async search(
     @queryParam() { take, skip, categories }: CategorySearchRequestQueryDto,
-  ): Promise<SearchByCategoryResponseDto[]> {
+  ): Promise<BaseVideoResponseDto[]> {
     return this.categoryService.search({
       take: Number(take) || undefined,
       skip: Number(skip) || undefined,
@@ -87,7 +87,7 @@ export class CategoryController extends BaseHttpController {
   ): Promise<CategoryResponseDto> {
     const payload = normalizeCategoryUpdatePayload(body);
 
-    const updatedCategory = await this.categoryService.uploadCategory({
+    const updatedCategory = await this.categoryService.updateCategory({
       id,
       ...payload,
     });

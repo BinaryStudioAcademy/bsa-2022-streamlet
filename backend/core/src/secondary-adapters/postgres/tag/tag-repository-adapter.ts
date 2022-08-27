@@ -1,7 +1,8 @@
 import { inject, injectable } from 'inversify';
-import { PrismaClient, Tag, Video } from '@prisma/client';
+import { PrismaClient, Tag } from '@prisma/client';
 import { CONTAINER_TYPES, TagCreateRequestDto } from '~/shared/types/types';
 import { TagRepository } from '~/core/tag/port/tag-repository';
+import { BindTagToVideoDto } from 'shared/build';
 
 @injectable()
 export class TagRepositoryAdapter implements TagRepository {
@@ -27,42 +28,33 @@ export class TagRepositoryAdapter implements TagRepository {
     });
   }
 
-  search({ take, tags }: { take: number; tags: string[] }): Promise<Video[]> {
-    return this.prismaClient.video.findMany({
-      where: {
-        tags: {
-          some: {
-            name: {
-              in: tags,
-            },
+  createTags(tagCreateDto: TagCreateRequestDto[]): Promise<Tag[]> {
+    return this.prismaClient.$transaction(
+      tagCreateDto.map((tag) =>
+        this.prismaClient.tag.upsert({
+          where: {
+            name: tag.name,
           },
-        },
-      },
-      take,
-      include: {
-        tags: true,
-      },
-    });
+          update: {},
+          create: tag,
+        }),
+      ),
+    );
   }
 
-  createTag(tagCreateDto: TagCreateRequestDto): Promise<Tag> {
-    return this.prismaClient.tag.create({
-      data: tagCreateDto,
+  bindTagToVideo({ tags, videoId }: BindTagToVideoDto): Promise<Tag[]> {
+    const values = tags.map((tagId) => {
+      return `('${tagId}', '${videoId}')`;
     });
-  }
-
-  bindTagToVideo({ name, videoId }: { name: string; videoId: string }): Promise<Tag> {
-    return this.prismaClient.tag.update({
-      where: {
-        name,
-      },
-      data: {
-        videos: {
-          connect: {
-            id: videoId,
+    const query = `insert into "_TagToVideo" ("A", "B") values ${values.join(',')}`;
+    return this.prismaClient.$queryRawUnsafe(query).then(() => {
+      return this.prismaClient.tag.findMany({
+        where: {
+          id: {
+            in: tags,
           },
         },
-      },
+      });
     });
   }
 }

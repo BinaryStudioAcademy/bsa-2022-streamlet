@@ -11,8 +11,8 @@ import { inject } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import {
   ApiPath,
+  BaseVideoResponseDto,
   DefaultRequestParam,
-  SearchByTagResponseDto,
   TagApiPath,
   TagCreateRequestDto,
   TagResponseDto,
@@ -35,7 +35,7 @@ export class TagController extends BaseHttpController {
   }
 
   @httpGet(TagApiPath.SEARCH)
-  public async search(@queryParam() { take, skip, tags }: TagSearchRequestQueryDto): Promise<SearchByTagResponseDto[]> {
+  public async search(@queryParam() { take, skip, tags }: TagSearchRequestQueryDto): Promise<BaseVideoResponseDto[]> {
     return this.tagService.search({
       take: Number(take) || undefined,
       skip: Number(skip) || undefined,
@@ -56,18 +56,18 @@ export class TagController extends BaseHttpController {
   @httpPost(TagApiPath.$BIND)
   public async bindTagToVIdeo(
     @requestParam() { id }: DefaultRequestParam,
-    @requestBody() body: TagCreateRequestDto,
-  ): Promise<TagResponseDto> {
-    const payload = normalizeTagPayload(body);
+    @requestBody() body: TagCreateRequestDto[],
+  ): Promise<TagResponseDto[]> {
+    const payload = body.map((body) => normalizeTagPayload(body));
 
-    const tag = await this.tagService.bindTag({
-      ...payload,
+    const tags = await this.tagService.bindTags({
+      tagPayload: payload,
       videoId: id,
     });
-    if (!tag) {
+    if (!tags) {
       throw new NotFound('Video not found');
     }
 
-    return tag;
+    return tags;
   }
 }

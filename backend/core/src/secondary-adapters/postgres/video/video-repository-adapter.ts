@@ -4,6 +4,7 @@ import { CONTAINER_TYPES } from '~/shared/types/types';
 import { CategorySearchRequestQueryDto, TagSearchRequestQueryDto } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { VideoRepository } from '~/core/video/port/video-repository';
+import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
@@ -21,7 +22,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
   }
 
-  searchByTags({ take, skip, tags }: TagSearchRequestQueryDto): Promise<Video[]> {
+  searchByTags({ take, skip, tags }: TagSearchRequestQueryDto): Promise<VideoWithChannel[]> {
     return this.prismaClient.video.findMany({
       where: {
         tags: {
@@ -34,10 +35,19 @@ export class VideoRepositoryAdapter implements VideoRepository {
       },
       take,
       skip,
+      include: {
+        channel: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
     });
   }
 
-  searchByCatergories({ skip, take, categories }: CategorySearchRequestQueryDto): Promise<Video[]> {
+  searchByCatergories({ skip, take, categories }: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]> {
     return this.prismaClient.video.findMany({
       where: {
         categories: {
@@ -50,6 +60,15 @@ export class VideoRepositoryAdapter implements VideoRepository {
       },
       take,
       skip,
+      include: {
+        channel: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
     });
   }
   async getAll(): Promise<DataVideo> {

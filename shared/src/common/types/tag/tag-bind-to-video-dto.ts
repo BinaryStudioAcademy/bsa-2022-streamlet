@@ -1,4 +1,4 @@
 export type BindTagToVideoDto = {
-  name: string;
+  tags: Array<string>;
   videoId: string;
 };

@@ -2,7 +2,6 @@ import { inject, injectable } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 
 import {
-  SearchByCategoryResponseDto,
   CategoryCreateRequestDto,
   CategoryResponseDto,
   CategorySearchRequestQueryDto,
@@ -11,6 +10,7 @@ import {
   ImageStorePresetType,
   ImageUploadResponseDto,
   CategoryUpdateRequestDto,
+  BaseVideoResponseDto,
 } from 'shared/build';
 
 import { VideoRepository } from '~/core/video/port/video-repository';
@@ -51,13 +51,12 @@ export class CategoryService {
     return categories.map((category) => castToCategoryResponseDto(category));
   }
 
-  async search(categorySearchRequestQueryDto: CategorySearchRequestQueryDto): Promise<SearchByCategoryResponseDto[]> {
+  async search(categorySearchRequestQueryDto: CategorySearchRequestQueryDto): Promise<BaseVideoResponseDto[]> {
     const videos = await this.videoRepository.searchByCatergories(categorySearchRequestQueryDto);
-
     return videos.map((video) => castToSearchByCategoryResponseDto(video));
   }
 
-  async uploadCategory({
+  async updateCategory({
     id,
     name,
     posterBase64Str,

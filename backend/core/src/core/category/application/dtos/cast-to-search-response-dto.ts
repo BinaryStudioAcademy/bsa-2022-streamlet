@@ -1,22 +1,28 @@
-import { Video } from '@prisma/client';
-import { SearchByCategoryResponseDto } from 'shared/build';
+import { BaseVideoResponseDto } from 'shared/build';
+import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 
 export const castToSearchByCategoryResponseDto = ({
   id,
   name,
-  description,
   status,
-  videoPath,
+  publishedAt,
+  scheduledStreamDate,
+  poster,
+  duration,
   liveViews,
   videoViews,
-}: Video): SearchByCategoryResponseDto => {
+  channel,
+}: VideoWithChannel): BaseVideoResponseDto => {
   return {
     id,
     name,
-    description,
     status,
-    videoPath,
+    publishedAt: publishedAt.toString(),
+    scheduledStreamDate: scheduledStreamDate.toString(),
     liveViews,
     videoViews,
+    poster,
+    duration,
+    channel,
   };
 };

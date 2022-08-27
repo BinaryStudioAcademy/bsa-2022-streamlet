@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { Category, PrismaClient, Video } from '@prisma/client';
+import { Category, PrismaClient } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { CategoryRepository } from '~/core/category/port/category-repository';
 import { CategoryCreateDto, CategoryGetAllDto, CategoryUpdateDto } from 'shared/build';
@@ -31,24 +31,6 @@ export class CategoryRepositoryAdapter implements CategoryRepository {
     return this.prismaClient.category.findFirst({
       where: {
         name,
-      },
-    });
-  }
-
-  search({ take, categories }: { take: number; categories: string[] }): Promise<Video[]> {
-    return this.prismaClient.video.findMany({
-      where: {
-        categories: {
-          some: {
-            name: {
-              in: categories,
-            },
-          },
-        },
-      },
-      take,
-      include: {
-        categories: true,
       },
     });
   }

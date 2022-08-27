@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 
-import { SearchByTagResponseDto, TagCreateRequestDto, TagResponseDto } from 'shared/build';
+import { BaseVideoResponseDto, TagCreateRequestDto, TagResponseDto, TagSearchRequestQueryDto } from 'shared/build';
 
 import { TagRepository } from '~/core/tag/port/tag-repository';
 import { castToTagResponseDto } from './dtos/cast-to-tag-response-dto';
@@ -31,35 +31,32 @@ export class TagService {
     return tag && castToTagResponseDto(tag);
   }
 
-  async search({
-    take,
-    skip,
-    tags,
-  }: {
-    take: number | undefined;
-    skip: number | undefined;
-    tags: string[];
-  }): Promise<SearchByTagResponseDto[]> {
+  async search({ take, skip, tags }: TagSearchRequestQueryDto): Promise<BaseVideoResponseDto[]> {
     const videos = await this.videoRepository.searchByTags({ take, skip, tags });
 
     return videos.map((video) => castToSearchByTagResponseDto(video));
   }
 
-  async createTag({ name }: TagCreateRequestDto): Promise<TagResponseDto | undefined> {
-    const isTagCreated = await this.tagRepository.getByName(name);
-    if (isTagCreated) {
-      return;
-    }
-    return this.tagRepository.createTag({ name });
+  async createTags(payload: TagCreateRequestDto[]): Promise<TagResponseDto[]> {
+    return (await this.tagRepository.createTags(payload)).map((tag) => castToTagResponseDto(tag));
   }
 
-  async bindTag({ name, videoId }: { name: string; videoId: string }): Promise<TagResponseDto | null> {
+  async bindTags({
+    tagPayload,
+    videoId,
+  }: {
+    tagPayload: TagCreateRequestDto[];
+    videoId: string;
+  }): Promise<TagResponseDto[] | null> {
     const isVideoExists = await this.videoRepository.getById(videoId);
     if (!isVideoExists) {
       return null;
     }
-    await this.createTag({ name });
-    const tag = await this.tagRepository.bindTagToVideo({ name, videoId });
-    return castToTagResponseDto(tag);
+    const createdTags = await this.createTags(tagPayload);
+    const tags = await this.tagRepository.bindTagToVideo({
+      tags: createdTags.map((tag) => tag.id),
+      videoId,
+    });
+    return tags.map((tag) => castToTagResponseDto(tag));
   }
 }
