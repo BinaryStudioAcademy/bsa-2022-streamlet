@@ -38,11 +38,19 @@ const VideoPageContainer: FC = () => {
   });
 
   // const handleLikeReact = (): void => {
-  //   return;
+  //   if (!user) {
+  //     navigate(AppRoutes.SIGN_IN);
+  //     return;
+  //   }
+  //   dispatch(videoActions.videoReact({ videoId, isLike: true }));
   // };
 
   // const handleDisLikeReact = (): void => {
-  //   return;
+  //   if (!user) {
+  //     navigate(AppRoutes.SIGN_IN);
+  //     return;
+  //   }
+  //   dispatch(videoPageActions.videoReact({ videoId, isLike: false }));
   // };
 
   const handleMessageSubmit = (_text: string): void => {
@@ -51,7 +59,7 @@ const VideoPageContainer: FC = () => {
 
   const handleSubscribe = (): void => {
     if (!user) {
-      navigate(AppRoutes.SIGN_IN, { replace: true });
+      navigate(AppRoutes.SIGN_IN);
       return;
     }
     if (!videoData) {
@@ -74,9 +82,11 @@ const VideoPageContainer: FC = () => {
           <div className={styles['reaction-block']}>
             <div className={styles['reaction-container']}>
               <ThumbUp height={'25'} width={'25'} />
+              <span>{videoData.likeNum}</span>
             </div>
             <div className={styles['reaction-container']}>
               <ThumbDown height={'25'} width={'25'} />
+              <span>{videoData.dislikeNum}</span>
             </div>
           </div>
         </div>

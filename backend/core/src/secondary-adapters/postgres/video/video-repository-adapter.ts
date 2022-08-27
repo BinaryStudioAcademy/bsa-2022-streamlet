@@ -15,7 +15,11 @@ export class VideoRepositoryAdapter implements VideoRepository {
     this.prismaClient = prismaClient;
   }
 
-  async getById(id: string): Promise<(BaseVideoResponseDto & { comments: Comment[]; description: string }) | null> {
+  async getById(
+    id: string,
+  ): Promise<
+    (BaseVideoResponseDto & { comments: Comment[]; description: string; likeNum: number; dislikeNum: number }) | null
+  > {
     const video = await this.prismaClient.video.findUnique({
       where: {
         id,
@@ -42,7 +46,19 @@ export class VideoRepositoryAdapter implements VideoRepository {
     if (video === null) {
       return video;
     }
-    return trimVideoWithComments(video);
+    const likeCount = await this.prismaClient.reaction.count({
+      where: {
+        videoId: id,
+        isLike: true,
+      },
+    });
+    const dislikeCount = await this.prismaClient.reaction.count({
+      where: {
+        videoId: id,
+        isLike: false,
+      },
+    });
+    return { ...trimVideoWithComments(video), likeNum: likeCount, dislikeNum: dislikeCount };
   }
 
   async getAll(): Promise<DataVideo> {

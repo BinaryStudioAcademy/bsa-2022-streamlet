@@ -4,5 +4,9 @@ import { DataVideo } from 'shared/build/common/types/video/base-video-response-d
 
 export interface VideoRepository {
   getAll(): Promise<DataVideo>;
-  getById(id: string): Promise<(BaseVideoResponseDto & { comments: Comment[]; description: string }) | null>;
+  getById(
+    id: string,
+  ): Promise<
+    (BaseVideoResponseDto & { comments: Comment[]; description: string; likeNum: number; dislikeNum: number }) | null
+  >;
 }

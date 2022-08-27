@@ -20,6 +20,8 @@ export class VideoService {
     | (BaseVideoResponseDto & {
         comments: Comment[];
         description: string;
+        likeNum: number;
+        dislikeNum: number;
       })
     | null
   > {
