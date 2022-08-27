@@ -11,5 +11,7 @@ export * from './request/request';
 export * from './profile/profile';
 export * from './history';
 export * from './notification/notification';
+export * from './tag/tag';
+export * from './category/category';
 export * from './video/video';
 export * from './subscription/subscription';
