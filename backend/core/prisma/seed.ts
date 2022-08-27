@@ -110,11 +110,11 @@ async function seedTags(): Promise<void> {
 async function seedCategories(): Promise<void> {
   const videos = await prisma.video.findMany();
   const videosPerCategory = 20;
-  const totalCategories = 20;
-  for (let i = 0; i < totalCategories; i++) {
+  const categories = ['Just talking', 'Gaming', 'Vlog', 'Music', 'ASMR'];
+  categories.forEach(async (category) => {
     await prisma.category.create({
       data: {
-        name: 'Just talking',
+        name: category,
         posterPath: 'https://static-cdn.jtvnw.net/ttv-boxart/509658-285x380.jpg',
         videos: {
           connect: getRandomSample(videos, videosPerCategory).map((video) => ({
@@ -123,7 +123,7 @@ async function seedCategories(): Promise<void> {
         },
       },
     });
-  }
+  });
 }
 
 async function seedVideoComments(): Promise<void> {

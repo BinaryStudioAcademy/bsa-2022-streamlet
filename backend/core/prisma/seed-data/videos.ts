@@ -14,6 +14,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 2790,
       'videoViews': 5580,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -27,6 +28,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 98577,
       'videoViews': 197154,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -40,6 +42,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 47476,
       'videoViews': 94952,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -53,6 +56,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 78980,
       'videoViews': 157960,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -65,6 +69,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 6849,
       'videoViews': 13698,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -78,6 +83,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 86107,
       'videoViews': 172214,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -91,6 +97,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 68910,
       'videoViews': 137820,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -104,6 +111,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 83592,
       'videoViews': 167184,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -117,6 +125,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 57016,
       'videoViews': 114032,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -129,6 +138,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 58127,
       'videoViews': 116254,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -142,6 +152,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 16241,
       'videoViews': 32482,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -154,6 +165,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 46736,
       'videoViews': 93472,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -167,6 +179,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 16165,
       'videoViews': 32330,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -179,6 +192,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 45399,
       'videoViews': 90798,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -191,6 +205,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 90525,
       'videoViews': 181050,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -203,6 +218,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 33827,
       'videoViews': 67654,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -215,6 +231,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 15351,
       'videoViews': 30702,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -228,6 +245,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 89837,
       'videoViews': 179674,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -240,6 +258,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 93333,
       'videoViews': 186666,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -252,6 +271,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 55181,
       'videoViews': 110362,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -265,6 +285,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 75702,
       'videoViews': 151404,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -277,6 +298,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 55576,
       'videoViews': 111152,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -290,6 +312,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 7829,
       'videoViews': 15658,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -303,6 +326,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 68388,
       'videoViews': 136776,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -316,6 +340,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 55038,
       'videoViews': 110076,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -329,6 +354,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 20165,
       'videoViews': 40330,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -341,6 +367,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 17266,
       'videoViews': 34532,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -353,6 +380,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 50613,
       'videoViews': 101226,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -365,6 +393,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 92539,
       'videoViews': 185078,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -378,6 +407,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 73511,
       'videoViews': 147022,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -390,6 +420,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 53179,
       'videoViews': 106358,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -402,6 +433,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 49697,
       'videoViews': 99394,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -415,6 +447,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 32703,
       'videoViews': 65406,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -428,6 +461,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 80020,
       'videoViews': 160040,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -440,6 +474,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 46751,
       'videoViews': 93502,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -452,6 +487,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 31705,
       'videoViews': 63410,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -464,6 +500,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 31657,
       'videoViews': 63314,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -476,6 +513,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 13514,
       'videoViews': 27028,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -488,6 +526,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 41260,
       'videoViews': 82520,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -501,6 +540,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 69224,
       'videoViews': 138448,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -514,6 +554,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 19473,
       'videoViews': 38946,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -526,6 +567,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 49895,
       'videoViews': 99790,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -539,6 +581,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 71654,
       'videoViews': 143308,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -551,6 +594,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 16585,
       'videoViews': 33170,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -563,6 +607,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 62127,
       'videoViews': 124254,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -576,6 +621,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 1546,
       'videoViews': 3092,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -588,6 +634,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 46040,
       'videoViews': 92080,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -601,6 +648,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 49188,
       'videoViews': 98376,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -614,6 +662,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 34769,
       'videoViews': 69538,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -627,6 +676,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 68755,
       'videoViews': 137510,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -640,6 +690,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 76005,
       'videoViews': 152010,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -652,6 +703,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 59255,
       'videoViews': 118510,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -665,6 +717,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 24090,
       'videoViews': 48180,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -677,6 +730,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 30652,
       'videoViews': 61304,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -690,6 +744,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 93418,
       'videoViews': 186836,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -702,6 +757,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 12190,
       'videoViews': 24380,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -715,6 +771,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 64756,
       'videoViews': 129512,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -728,6 +785,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 17584,
       'videoViews': 35168,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -740,6 +798,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 57968,
       'videoViews': 115936,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -753,6 +812,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 65344,
       'videoViews': 130688,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -765,6 +825,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 77132,
       'videoViews': 154264,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -777,6 +838,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 72242,
       'videoViews': 144484,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -789,6 +851,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 78072,
       'videoViews': 156144,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -801,6 +864,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 5825,
       'videoViews': 11650,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -814,6 +878,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 16936,
       'videoViews': 33872,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -826,6 +891,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 46392,
       'videoViews': 92784,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -839,6 +905,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 84436,
       'videoViews': 168872,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -852,6 +919,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 89755,
       'videoViews': 179510,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -865,6 +933,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 59987,
       'videoViews': 119974,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -878,6 +947,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 13195,
       'videoViews': 26390,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -890,6 +960,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 65313,
       'videoViews': 130626,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -902,6 +973,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 86358,
       'videoViews': 172716,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -914,6 +986,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 6467,
       'videoViews': 12934,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -926,6 +999,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 30103,
       'videoViews': 60206,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -938,6 +1012,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 57490,
       'videoViews': 114980,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -951,6 +1026,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 20372,
       'videoViews': 40744,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -964,6 +1040,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 30175,
       'videoViews': 60350,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -977,6 +1054,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 96532,
       'videoViews': 193064,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -990,6 +1068,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 58497,
       'videoViews': 116994,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1002,6 +1081,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 9125,
       'videoViews': 18250,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1015,6 +1095,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 58396,
       'videoViews': 116792,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1028,6 +1109,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 6788,
       'videoViews': 13576,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1041,6 +1123,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 20202,
       'videoViews': 40404,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1053,6 +1136,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 76708,
       'videoViews': 153416,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1065,6 +1149,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 66792,
       'videoViews': 133584,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1077,6 +1162,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 44021,
       'videoViews': 88042,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1090,6 +1176,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 83967,
       'videoViews': 167934,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1102,6 +1189,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 3258,
       'videoViews': 6516,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1114,6 +1202,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 88127,
       'videoViews': 176254,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1127,6 +1216,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 31345,
       'videoViews': 62690,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1139,6 +1229,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 43333,
       'videoViews': 86666,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1151,6 +1242,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 4543,
       'videoViews': 9086,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1164,6 +1256,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 2653,
       'videoViews': 5306,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1176,6 +1269,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 45832,
       'videoViews': 91664,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1189,6 +1283,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 10545,
       'videoViews': 21090,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1201,6 +1296,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 73800,
       'videoViews': 147600,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1213,6 +1309,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 24830,
       'videoViews': 49660,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1225,6 +1322,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 92743,
       'videoViews': 185486,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1238,6 +1336,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 10593,
       'videoViews': 21186,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
     {
@@ -1250,6 +1349,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'liveViews': 44713,
       'videoViews': 89426,
       'duration': 180,
+      'privacy': 'public',
       'poster': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzcCJosdCgn3CvYIut7gLnZsgE8ZP932vcQ&usqp=CAU',
     },
   ];

@@ -73,9 +73,15 @@ enum StreamStatus {
   finished
 }
 
+enum Privacy {
+  public
+  unlisted
+  private
+}
+
 model Video {
   id                  String         @id @default(uuid())
-  name                String
+  name                String         @default("")
   description         String         @default("")
   status              StreamStatus   @default(waiting)
   isReadyToStream     Boolean        @default(false)
@@ -84,6 +90,7 @@ model Video {
   poster              String         @default("")
   duration            Int            @default(0)
   videoPath           String
+  privacy             Privacy        @default(unlisted)
   liveViews           Int            @default(0)
   videoViews          Int            @default(0)
   tags                Tag[]
