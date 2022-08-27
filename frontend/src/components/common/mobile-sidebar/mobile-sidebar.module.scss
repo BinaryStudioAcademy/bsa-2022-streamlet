@@ -1,5 +1,7 @@
 @import 'assets/css/config.scss';
 
+$animation-duration: 200ms;
+
 .shadow {
   position: fixed;
   top: 0;
@@ -8,7 +10,7 @@
   left: 0;
   z-index: $mobile-sidebar-z-index - 5;
   visibility: hidden;
-  transition-duration: 200ms;
+  transition-duration: $animation-duration;
   transition-property: visibility;
 }
 
@@ -28,7 +30,7 @@
   left: 0;
   background: var(--gray-300-header-menu-background-opacity);
   opacity: 0;
-  transition-duration: 200ms;
+  transition-duration: $animation-duration;
   transition-property: opacity;
 }
 
@@ -40,12 +42,12 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: -100%;
+  left: -$sidebar-width;
   z-index: $mobile-sidebar-z-index;
   width: $sidebar-width;
   visibility: hidden;
   opacity: 0;
-  transition: all 0.3s cubic-bezier(0.46, 0.03, 0.52, 0.96);
+  transition: all $animation-duration cubic-bezier(0.46, 0.03, 0.52, 0.96);
 
   @media screen and (min-width: 1301px) {
     display: none;
