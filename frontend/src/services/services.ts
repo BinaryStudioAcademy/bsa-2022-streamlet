@@ -9,6 +9,7 @@ import { ENV } from 'common/enums/enums';
 import { ProfileApi } from './profile/profile-api.service';
 import { NotificationApi } from './notification/notification.service';
 import { ChannelCrudApi } from './channel-crud-api/channel-crud-api.service';
+import { ChatApi } from './chat-api/chat-api.service';
 
 const storageService = new StorageService();
 const tokensStorageService = new TokensStorageService(storageService);
@@ -39,4 +40,19 @@ const videoApi = new VideoApi({
   http,
 });
 
-export { http, authApi, profileApi, notificationApi, storageService, tokensStorageService, videoApi, channelCrudApi };
+const chatApi = new ChatApi({
+  apiPrefix: ENV.API_PATH,
+  http,
+});
+
+export {
+  http,
+  authApi,
+  profileApi,
+  notificationApi,
+  storageService,
+  tokensStorageService,
+  videoApi,
+  channelCrudApi,
+  chatApi,
+};
