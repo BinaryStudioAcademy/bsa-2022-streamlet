@@ -1,6 +1,7 @@
 import { createEntityAdapter, createReducer } from '@reduxjs/toolkit';
 import { DataStatus, ErrorMessage } from 'common/enums/enums';
-import { ChannelInfoResponseDto, ChannelVideoPreviewsPageDto, RootState } from 'common/types/types';
+import { ChannelInfoResponseDto, RootState } from 'common/types/types';
+import { ChannelVideoPreviewsPageDto, OwnChannelResponseDto } from 'shared/build';
 import { loadChannel, loadMyChannel } from './actions';
 
 type ChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
@@ -18,9 +19,10 @@ interface InitialState {
     error: string | undefined;
   };
   myChannel: {
-    data: ChannelInfo | null;
+    data: OwnChannelResponseDto | null;
     dataStatus: DataStatus;
     error: string | undefined;
+    streamingKey: string | null;
   };
   // myChannelVideos: {
   //   data: ReturnType<typeof channelVideosAdapter.getInitialState>;
@@ -45,6 +47,7 @@ const initialState: InitialState = {
     data: null,
     dataStatus: DataStatus.IDLE,
     error: undefined,
+    streamingKey: null,
   },
   // myChannelVideos: { data: channelVideosAdapter.getInitialState(), dataStatus: DataStatus.IDLE, error: undefined },
 };

@@ -4,6 +4,8 @@ import {
   ChannelInfoRequestDto,
   ChannelInfoResponseDto,
   DefaultRequestParam,
+  OwnChannelResponseDto,
+  ResetStreamingKeyRequestDto,
   StreamingKeyResponseDto,
 } from 'common/types/types';
 import { ActionsTypes } from './common';
@@ -15,7 +17,7 @@ const loadChannel = createAsyncThunk<ChannelInfoResponseDto, ChannelInfoRequestD
   },
 );
 
-const loadMyChannel = createAsyncThunk<ChannelInfoResponseDto, null, AsyncThunkConfig>(
+const loadMyChannel = createAsyncThunk<OwnChannelResponseDto, void, AsyncThunkConfig>(
   ActionsTypes.LOAD_MY_CHANNEL,
   async (_payload, { extra: { channelCrudApi } }) => {
     return channelCrudApi.getMyChannelInfo();
@@ -29,7 +31,7 @@ const getStreamingKey = createAsyncThunk<StreamingKeyResponseDto, DefaultRequest
   },
 );
 
-const resetStreamingKey = createAsyncThunk<StreamingKeyResponseDto, DefaultRequestParam, AsyncThunkConfig>(
+const resetStreamingKey = createAsyncThunk<StreamingKeyResponseDto, ResetStreamingKeyRequestDto, AsyncThunkConfig>(
   ActionsTypes.LOAD_MY_CHANNEL,
   async (payload, { extra: { channelStreamingApi } }) => {
     return channelStreamingApi.resetStreamingKey(payload);

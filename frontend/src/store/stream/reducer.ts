@@ -1,6 +1,6 @@
 import { createReducer, isAnyOf } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
-import { createStream, uploadPoster, updateStreamData, getStreamData, setStreamStatus } from './actions';
+import { createStream, uploadPoster, editStream, getStreamData, setStreamStatus } from './actions';
 import { VideoStreamResponseDto } from 'common/types/types';
 
 type State = {
@@ -20,7 +20,7 @@ const reducer = createReducer(initialState, (builder) => {
     isAnyOf(
       createStream.pending,
       uploadPoster.pending,
-      updateStreamData.pending,
+      editStream.pending,
       getStreamData.pending,
       setStreamStatus.pending,
     ),
@@ -36,7 +36,7 @@ const reducer = createReducer(initialState, (builder) => {
     isAnyOf(
       createStream.fulfilled,
       uploadPoster.fulfilled,
-      updateStreamData.fulfilled,
+      editStream.fulfilled,
       getStreamData.fulfilled,
       setStreamStatus.fulfilled,
     ),
@@ -52,7 +52,7 @@ const reducer = createReducer(initialState, (builder) => {
     isAnyOf(
       createStream.rejected,
       uploadPoster.rejected,
-      updateStreamData.rejected,
+      editStream.rejected,
       getStreamData.rejected,
       setStreamStatus.rejected,
     ),

@@ -3,6 +3,7 @@ import { AsyncThunkConfig } from 'common/types/types';
 import {
   CreateStreamRequestDto,
   DefaultRequestParam,
+  StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
   StreamUpdateRequestDto,
   VideoStreamResponseDto,
@@ -23,25 +24,25 @@ const uploadPoster = createAsyncThunk<VideoStreamResponseDto, StreamPosterUpload
   },
 );
 
-const updateStreamData = createAsyncThunk<VideoStreamResponseDto, StreamUpdateRequestDto, AsyncThunkConfig>(
+const editStream = createAsyncThunk<VideoStreamResponseDto, StreamUpdateRequestDto, AsyncThunkConfig>(
   ActionType.UPDATE_STREAM_DATA,
   async (payload, { extra: { channelStreamingApi } }) => {
-    return channelStreamingApi.updateStreamData(payload);
+    return channelStreamingApi.editStream(payload);
   },
 );
 
 const getStreamData = createAsyncThunk<VideoStreamResponseDto, DefaultRequestParam, AsyncThunkConfig>(
   ActionType.GET_STREAM_DATA,
   async ({ id }, { extra: { channelStreamingApi } }) => {
-    return channelStreamingApi.getStreamData(id);
+    return channelStreamingApi.getCurrentStream({ id });
   },
 );
 
-const setStreamStatus = createAsyncThunk<VideoStreamResponseDto, StreamUpdateRequestDto, AsyncThunkConfig>(
+const setStreamStatus = createAsyncThunk<VideoStreamResponseDto, StreamLiveStatusRequestDto, AsyncThunkConfig>(
   ActionType.SET_STREAMING_STATUS,
   async (payload, { extra: { channelStreamingApi } }) => {
     return channelStreamingApi.setStreamStatus(payload);
   },
 );
 
-export { createStream, uploadPoster, updateStreamData, getStreamData, setStreamStatus };
+export { createStream, uploadPoster, editStream, getStreamData, setStreamStatus };

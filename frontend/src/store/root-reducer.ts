@@ -7,6 +7,7 @@ import { reducer as layout } from './layout/reducer';
 import { reducer as channel } from './channel/reducer';
 import { reducer as theme } from './theme-switch/reducer';
 import { reducer as videos } from './videos/reducer';
+import { reducer as stream } from './stream/reducer';
 
 const rootReducer = combineReducers({
   auth,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   notification,
   channel,
   videos,
+  stream,
 });
 
 export { rootReducer };
