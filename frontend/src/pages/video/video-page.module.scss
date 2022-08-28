@@ -7,14 +7,13 @@
 .video-page {
   display: grid;
   grid-template-columns: 1fr;
-  max-width: 2000px;
+  max-width: 1200px;
   margin: auto;
   padding: 20px;
   column-gap: 10px;
-
   @media #{breakpoint.$tablet-middle} {
     grid-template-columns: 2fr 1fr;
-    padding: 40px;
+    padding: 20px;
   }
 }
 
@@ -48,6 +47,7 @@
 }
 
 .reaction-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -75,6 +75,11 @@
   flex-direction: column;
   row-gap: 10px;
   min-width: 0;
+  padding: 0;
+}
+
+.video-comment-block {
+  padding: 0;
 }
 
 .video-header {
@@ -85,7 +90,7 @@
 }
 
 .description-container {
-  max-width: 85%;
+  max-width: 65%;
   margin: 11px 0 8px;
   color: var(--text-gray-color);
   font-weight: 400;
@@ -119,6 +124,10 @@
   border-radius: 2px;
 }
 
+.views-container {
+  margin: 10px 0 0;
+}
+
 .channel-banner {
   width: 34px;
   height: 34px;
@@ -146,9 +155,34 @@
 }
 
 @media screen and (max-width: 768px) {
+  .video-page {
+    padding: 0;
+  }
+
+  .video-info-block {
+    padding: 10px;
+  }
+
+  .video-comment-block {
+    padding: 10px;
+  }
+
+  .chat-block {
+    padding: 10px;
+  }
+
   .channel-info-container {
     flex-direction: column;
-    align-items: center;
+    align-items: initial;
+  }
+
+  .video-header {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .reaction-block {
+    margin-left: auto;
   }
 
   .channel-info-container button {
@@ -173,6 +207,10 @@
   }
 
   .description-container {
-    width: 100%;
+    max-width: 100%;
   }
+}
+
+.dislike-icon {
+  padding-top: 5px;
 }
