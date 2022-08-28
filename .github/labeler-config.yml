@@ -1,0 +1,15 @@
+root: '*'
+
+ci/cd: .github/**/*
+
+docker: .docker/**/*
+
+frontend: frontend/**/*
+
+core-server: backend/core/**/*
+
+push-server: backend/push/**/*
+
+transcoding-server: backend/video-transcoding-server/**/*
+
+shared: shared/**/*
