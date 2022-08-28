@@ -1,22 +1,21 @@
 import { ChatMessageResponseDto, FC } from 'common/types/types';
 import { socket } from 'common/config/config';
-import { useEffect, useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { useEffect, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
 import { chatActions } from 'store/actions';
 import { VideoChat } from './video-chat';
 import { SendMessageProps } from 'components/common/send-message/send-message';
 import { SocketEvents } from 'common/enums/enums';
 import { store } from 'store/store';
 
-const videoId = '04ca1a9f-1425-48fc-8c15-f2ee0f8eb2f7';
+socket.on(SocketEvents.chat.NEW_MESSAGE_TO_CHAT_ROOM_DONE, (message: ChatMessageResponseDto) => {
+  store.dispatch(chatActions.appendMessage(message));
+});
 
-socket.on(
-  SocketEvents.chat.NOTIFY_CHAT_ROOM_DONE,
-  ({ data: { message } }: { data: { message: ChatMessageResponseDto } }) => {
-    store.dispatch(chatActions.appendMessage(message));
-  },
-);
+type Props = {
+  videoId: string | undefined;
+};
 
-const VideoChatContainer: FC = () => {
+const VideoChatContainer: FC<Props> = ({ videoId }) => {
   const dispatch = useAppDispatch();
   const {
     chat: {
@@ -41,13 +40,21 @@ const VideoChatContainer: FC = () => {
     handleChooseEmoji,
   };
 
+  const joinChatRoom = useCallback(async () => {
+    if (videoId) {
+      await dispatch(chatActions.loadChat({ id: videoId }));
+      socket.emit(SocketEvents.chat.JOIN_ROOM, videoId);
+    }
+  }, [videoId, dispatch]);
+
   useEffect(() => {
-    dispatch(chatActions.loadChat({ id: videoId }));
+    joinChatRoom();
 
     return () => {
       dispatch(chatActions.closeChat());
+      socket.emit(SocketEvents.chat.LEAVE_ROOM, videoId);
     };
-  }, [dispatch]);
+  }, [dispatch, joinChatRoom, videoId]);
 
   return <VideoChat sendMessageProps={sendMessageProps} messages={messages.list} />;
 };

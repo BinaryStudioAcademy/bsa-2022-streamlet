@@ -53,7 +53,7 @@ export class ChatController extends BaseHttpController {
     if (!chatMessage) {
       throw new NotFound(exceptionMessages.chat.CHAT_MESSAGE_NOT_FOUND);
     }
-    this.chatService.notifyChatRoom({ data: { message: trimChatMessage(chatMessage) } });
+    this.chatService.sendMessageToChatRoom({ data: { roomId: id, message: trimChatMessage(chatMessage) } });
     return trimChatMessage(chatMessage);
   }
 }

@@ -131,7 +131,7 @@ const VideoPageContainer: FC = () => {
       </div>
       {!isVideoFinished && (
         <div className={styles['chat-block']}>
-          <VideoChatContainer comments={videoData.comments} handlerSubmitMessage={handleMessageSubmit} />
+          <VideoChatContainer videoId={videoId} />
         </div>
       )}
       <VideoPageCommentForm

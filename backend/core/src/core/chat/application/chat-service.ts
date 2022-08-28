@@ -29,9 +29,9 @@ export class ChatService {
     return this.chatRepository.createChatMessage(chatMessageData);
   }
 
-  notifyChatRoom(body: { data: { message: ChatMessageResponseDto } }): Promise<boolean> {
+  sendMessageToChatRoom(body: { data: { roomId: string; message: ChatMessageResponseDto } }): Promise<boolean> {
     return this.amqpChannel.sendToQueue({
-      queue: AmqpQueue.NOTIFY_CHAT_ROOM,
+      queue: AmqpQueue.NEW_MESSAGE_TO_CHAT_ROOM,
       content: Buffer.from(JSON.stringify(body)),
     });
   }

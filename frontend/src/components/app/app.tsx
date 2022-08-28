@@ -22,7 +22,6 @@ import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers
 
 import styles from './app.module.scss';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
-import { StreamChatTest } from './tests/stream-chat/stream-chat';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -90,7 +89,6 @@ const App: FC = () => {
                 />
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
-                <Route path={'test/stream-chat'} element={<StreamChatTest />} />
                 <Route path="video-page" element={<VideoPageContainer />} />
                 <Route path={AppRoutes.CHANNEL_$ID} element={<ChannelPage />} />
                 <Route path={AppRoutes.VIDEO_$ID} element={<VideoPageContainer />} />

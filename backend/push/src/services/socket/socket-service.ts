@@ -35,14 +35,26 @@ class SocketService {
       });
 
       amqpService.consume({
-        queue: AmqpQueue.NOTIFY_CHAT_ROOM,
+        queue: AmqpQueue.NEW_MESSAGE_TO_CHAT_ROOM,
         onMessage: (data) => {
           if (data && this.io) {
-            const message = JSON.parse(data.toString('utf-8'));
+            const {
+              data: { roomId, message },
+            } = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(message)}`);
-            this.io.emit(SocketEvents.chat.NOTIFY_CHAT_ROOM_DONE, message);
+            this.io.to(roomId).emit(SocketEvents.chat.NEW_MESSAGE_TO_CHAT_ROOM_DONE, message);
           }
         },
+      });
+
+      socket.on(SocketEvents.chat.JOIN_ROOM, (roomId: string) => {
+        socket.join(roomId);
+        socket.emit(SocketEvents.chat.JOIN_ROOM_DONE, 'success');
+      });
+
+      socket.on(SocketEvents.chat.LEAVE_ROOM, (roomId: string) => {
+        socket.leave(roomId);
+        socket.emit(SocketEvents.chat.LEAVE_ROOM_DONE, 'success');
       });
 
       socket.on('disconnect', async () => {

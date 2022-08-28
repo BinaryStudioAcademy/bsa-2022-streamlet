@@ -4,6 +4,10 @@ export const SocketEvents = {
     NOTIFY_BROADCAST_DONE: 'notify-broadcast-done',
   },
   chat: {
-    NOTIFY_CHAT_ROOM_DONE: 'notify-chat-room-done',
+    NEW_MESSAGE_TO_CHAT_ROOM_DONE: 'send-message-to-chat-room-done',
+    JOIN_ROOM: 'join-room',
+    JOIN_ROOM_DONE: 'join-room-done',
+    LEAVE_ROOM: 'leave-room',
+    LEAVE_ROOM_DONE: 'leave-room-done',
   },
 };
