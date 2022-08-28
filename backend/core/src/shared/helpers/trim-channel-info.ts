@@ -1,7 +1,9 @@
 import { StreamingStatus } from '../enums/enums';
 import { ChannelInfoBeforeTrimming, ChannelInfoResponseDto } from '../types/types';
 
-export const trimChannelInfo = (channel: ChannelInfoBeforeTrimming): ChannelInfoResponseDto => {
+export const trimChannelInfo = (
+  channel: ChannelInfoBeforeTrimming,
+): Omit<ChannelInfoResponseDto, 'isCurrentUserSubscriber'> => {
   return {
     authorInfo: {
       id: channel.author.id,

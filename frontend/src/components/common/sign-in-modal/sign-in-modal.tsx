@@ -1,9 +1,10 @@
 import { FC } from 'common/types/types';
 import styles from './styles.module.scss';
 import React, { useEffect, RefObject } from 'react';
-import { useRef } from '../../../../hooks/hooks';
+import { useRef } from '../../../hooks/hooks';
 import { Link } from 'react-router-dom';
-import { AppRoutes } from '../../../../common/enums/app/app';
+import { AppRoutes } from '../../../common/enums/app/app';
+import clsx from 'clsx';
 type Event = MouseEvent | TouchEvent;
 
 const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
@@ -33,27 +34,26 @@ const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
 type Props = {
   headerText: string;
   mainText: string;
+  className?: string;
   onClose: { (): void };
 };
 
-const NeedSignInModal: FC<Props> = ({ headerText, mainText, onClose }) => {
+const NeedSignInModal: FC<Props> = ({ headerText, mainText, onClose, className }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const clickOutsideHandle = (): void => {
     onClose();
   };
   useOnClickOutside(modalRef, clickOutsideHandle);
   return (
-    <>
-      <div className={styles['need-sign-in-modal']} ref={modalRef}>
-        <div className={styles['need-sign-in-modal-header']}>{headerText}</div>
-        <div className={styles['need-sign-in-main-text']}>{mainText}</div>
-        <div className={styles['redirect-to-sign-in']}>
-          <Link to={AppRoutes.SIGN_IN} className={styles['redirect-to-sign-in-link']}>
-            Sign in
-          </Link>
-        </div>
+    <div className={clsx(styles['need-sign-in-modal'], className)} ref={modalRef}>
+      <div className={styles['need-sign-in-modal-header']}>{headerText}</div>
+      <div className={styles['need-sign-in-main-text']}>{mainText}</div>
+      <div className={styles['redirect-to-sign-in']}>
+        <Link to={AppRoutes.SIGN_IN} className={styles['redirect-to-sign-in-link']}>
+          Sign in
+        </Link>
       </div>
-    </>
+    </div>
   );
 };
 

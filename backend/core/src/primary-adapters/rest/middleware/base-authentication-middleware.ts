@@ -30,10 +30,7 @@ export const baseAthenticationMiddleware = async (
     const payload = await verifyJwt<UserBaseResponseDto>({ jwt: token, secret: CONFIG.ENCRYPTION.ACCESS_TOKEN_SECRET });
     req.user = payload;
   } catch {
-    if (!isOptional) {
-      return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN));
-    }
-    return next();
+    return next(new Unauthorized(exceptionMessages.auth.UNAUTHORIZED_INCORRECT_TOKEN));
   }
   next();
 };
