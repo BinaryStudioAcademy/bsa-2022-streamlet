@@ -28,15 +28,17 @@
 }
 
 .video-title {
+  overflow: hidden;
   color: var(--white-text-color);
   font-size: 24px;
   line-height: 48px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .video-block {
   width: 100%;
+  min-width: 0;
   max-width: 1200px;
   aspect-ratio: 16 / 9;
   object-fit: contain;
@@ -71,10 +73,15 @@
 .video-info-block {
   display: flex;
   flex-direction: column;
+  row-gap: 10px;
+  min-width: 0;
 }
 
 .video-header {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
 }
 
 .description-container {
@@ -90,7 +97,6 @@
 .video-page hr {
   width: 100%;
   height: 1px;
-  margin-bottom: 19px;
   color: var(--gray-200-input-background);
   background-color: var(--gray-200-input-background);
   border-color: var(--gray-200-input-background);
