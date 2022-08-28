@@ -27,6 +27,7 @@ export class VideoService {
         comments: Comment[];
         description: string;
         likeNum: number;
+        videoPath: string;
         dislikeNum: number;
       })
     | null

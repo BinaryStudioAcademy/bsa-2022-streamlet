@@ -7,6 +7,7 @@ export type VideoExpandedResponseDto = BaseVideoResponseDto & {
   description: string;
   likeNum: number;
   dislikeNum: number;
+  videoPath: string;
   userReaction: VideoReaction | null;
   isUserSubscribedOnChannel: boolean;
 };
