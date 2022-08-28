@@ -1,13 +1,12 @@
 import clsx from 'clsx';
 import { FC } from 'common/types/types';
+import { CategoryResponseDto } from 'shared/build';
 
 import styles from './filters-block.module.scss';
 
-export interface FilterItem {
-  id: number;
-  filterName: string;
+export type FilterItem = CategoryResponseDto & {
   isActive: boolean;
-}
+};
 
 export interface FilterBlockProps {
   filterList: Array<FilterItem>;
@@ -25,7 +24,7 @@ const FiltersBlock: FC<FilterBlockProps> = ({ filterList, handleClickFilter }) =
             key={filter.id}
             className={clsx({ [styles.active]: filter.isActive }, styles['filter-item'])}
           >
-            {filter.filterName}
+            {filter.name}
           </button>
         ))}
       </div>
