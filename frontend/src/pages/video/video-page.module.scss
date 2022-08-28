@@ -30,9 +30,7 @@
 .video-title {
   color: var(--white-text-color);
   font-size: 24px;
-  line-height: 48px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  line-height: 29px;
 }
 
 .video-block {
@@ -78,7 +76,7 @@
 }
 
 .description-container {
-  max-width: 85%;
+  max-width: 65%;
   margin: 11px 0 8px;
   color: var(--text-gray-color);
   font-weight: 400;
@@ -145,6 +143,15 @@
     align-items: center;
   }
 
+  .video-header {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .reaction-block {
+    margin-left: auto;
+  }
+
   .channel-info-container button {
     width: 100%;
   }
@@ -169,4 +176,8 @@
   .description-container {
     width: 100%;
   }
+}
+
+.dislike-icon {
+  padding-top: 5px;
 }

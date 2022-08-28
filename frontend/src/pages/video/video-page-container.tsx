@@ -111,7 +111,7 @@ const VideoPageContainer: FC = () => {
                   height={'25'}
                   width={'25'}
                   onClick={handleDislikeReact}
-                  className={styles['reaction-button']}
+                  className={clsx(styles['reaction-button'], styles['dislike-icon'])}
                   color={getReactBtnColor(userReaction, false)}
                 />
                 <span>{videoData.dislikeNum}</span>
