@@ -48,13 +48,13 @@ $base-z-index: $page-component-z-index;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-  align-items: center;
+  align-items: var(--always-white-color);
   padding: 2px 8px;
-  color: var(--white-text-color);
+  color: #ffffff;
   font-size: 12px;
   line-height: 16px;
   text-align: center;
-  background-color: var(--gray-300-header-menu-background);
+  background-color: var(--always-primary-text-color);
   border-radius: 16px;
 }
 
