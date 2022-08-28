@@ -1,4 +1,4 @@
-export type ChatMessage = {
+export type ChatMessageResponseDto = {
   id: string;
   text: string;
   createdAt: string;

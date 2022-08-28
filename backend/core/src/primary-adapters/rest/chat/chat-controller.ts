@@ -1,11 +1,26 @@
-import { BaseHttpController, controller, httpGet, requestParam } from 'inversify-express-utils';
+import {
+  BaseHttpController,
+  controller,
+  httpGet,
+  httpPost,
+  request,
+  requestBody,
+  requestParam,
+} from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { ChatInfoRequestDto, ChatInfoResponseDto, CONTAINER_TYPES } from '~/shared/types/types';
+import {
+  ChatInfoRequestDto,
+  ChatInfoResponseDto,
+  ChatMessageRequestDto,
+  CONTAINER_TYPES,
+  ExtendedAuthenticatedRequest,
+} from '~/shared/types/types';
 import { exceptionMessages } from '~/shared/enums/enums';
 import { NotFound } from '~/shared/exceptions/exceptions';
 import { ChatService } from '~/core/chat/application/chat-service';
-import { trimVideoToChatInfo } from '~/shared/helpers/trim-video-to-chat-info';
-import { ApiPath, ChatApiPath } from 'shared/build';
+import { trimChatMessage, trimVideoToChatInfo } from '~/shared/helpers';
+import { ApiPath, ChatApiPath, ChatMessageResponseDto } from 'shared/build';
+import { authenticationMiddleware } from '../middleware';
 
 @controller(ApiPath.CHAT)
 export class ChatController extends BaseHttpController {
@@ -20,5 +35,25 @@ export class ChatController extends BaseHttpController {
       throw new NotFound(exceptionMessages.chat.CHAT_ID_NOT_FOUND);
     }
     return trimVideoToChatInfo(video);
+  }
+
+  @httpPost(ChatApiPath.$ID, authenticationMiddleware)
+  public async createChatMessage(
+    @request() req: ExtendedAuthenticatedRequest,
+    @requestParam() { id }: ChatInfoRequestDto,
+    @requestBody() message: ChatMessageRequestDto,
+  ): Promise<ChatMessageResponseDto> {
+    const user = req.user;
+    const { id: messageId } = await this.chatService.createChatMessage({
+      videoId: id,
+      authorId: user.id,
+      text: message.text,
+    });
+    const chatMessage = await this.chatService.getChatMessagesById(messageId);
+    if (!chatMessage) {
+      throw new NotFound(exceptionMessages.chat.CHAT_MESSAGE_NOT_FOUND);
+    }
+    this.chatService.notifyChatRoom({ data: { message: trimChatMessage(chatMessage) } });
+    return trimChatMessage(chatMessage);
   }
 }

@@ -19,5 +19,6 @@ export const exceptionMessages = {
   },
   chat: {
     CHAT_ID_NOT_FOUND: 'Chat to the video with such id wasn`t found',
+    CHAT_MESSAGE_NOT_FOUND: 'Chat message with such id wasn`t found',
   },
 };

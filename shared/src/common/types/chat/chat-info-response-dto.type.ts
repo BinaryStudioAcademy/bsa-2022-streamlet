@@ -1,9 +1,9 @@
-import { ChatMessage } from './chat-message.type';
+import { ChatMessageResponseDto } from './chat-message-response-dto.type';
 
 export type ChatInfoResponseDto = {
   id: string;
   initialMessages: {
-    list: ChatMessage[];
+    list: ChatMessageResponseDto[];
     total: number;
   };
 };
