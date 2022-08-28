@@ -21,5 +21,6 @@ const getCategories = createAsyncThunk<CategoryResponseDto[], void, AsyncThunkCo
 );
 
 const activeCategory = createAction<{ id: string }>(ActionType.ACTIVE_CATEGORY);
+const clearFilters = createAction(ActionType.CLEAR_FILTERS);
 
-export { activeCategory, getCategories };
+export { activeCategory, getCategories, clearFilters };
