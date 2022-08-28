@@ -39,10 +39,10 @@ const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseE
       />
       <div className={styles['group-buttons-reactions']}>
         <button onClick={handleChooseEmoji} className={styles['choose-emoji']}>
-          <Icon name={IconName.EMOJI} width="26" height="26" />
+          <Icon name={IconName.EMOJI} width="28" height="28" />
         </button>
         <button onClick={handleSubmitMessage} className={styles['send-message']}>
-          <Icon name={IconName.SEND_MESSAGE} width="24" height="20" />
+          <Icon name={IconName.SEND_MESSAGE} width="18" height="16" />
         </button>
       </div>
     </form>

@@ -21,7 +21,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .add-comments .group-buttons-reactions button {
@@ -39,7 +39,6 @@
 }
 
 .add-comments .group-buttons-reactions .choose-emoji {
-  margin-left: 10px;
   background-color: transparent;
 }
 
@@ -48,7 +47,7 @@
 }
 
 .add-comments .group-buttons-reactions .send-message {
-  padding: 10px 18px;
+  padding: 5px 10px;
   background-color: var(--brand-green-color);
   border-radius: 3px;
 }

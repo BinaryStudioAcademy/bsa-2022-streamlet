@@ -12,22 +12,15 @@ interface VideoChatProps {
 
 const VideoChat: FC<VideoChatProps> = ({ messages, sendMessageProps }) => {
   const chatEndEl = useRef<HTMLDivElement>(null);
-
-  // const scrollToBottom = (): void => {
-  //   chatEndEl.current?.scrollIntoView({ behavior: 'smooth' });
-  // };
-
-  // useEffect(() => {
-  //   scrollToBottom();
-  // },[messages]);
+  const chatViewEl = useRef<HTMLDivElement>(null);
 
   return (
     <div className={styles['video-chat-wrapper']}>
-      <div className={styles['video-chat']}>
+      <div className={styles['video-chat']} ref={chatViewEl}>
+        <div ref={chatEndEl}></div>
         {messages.map((message) => (
           <VideoComment key={message.id} message={message} />
         ))}
-        <div ref={chatEndEl}></div>
       </div>
       <SendMessage {...sendMessageProps} />
     </div>

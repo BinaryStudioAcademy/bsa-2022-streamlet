@@ -7,7 +7,9 @@
 }
 
 .video-chat-wrapper .video-chat {
+  display: flex;
   flex: 1;
+  flex-flow: column-reverse nowrap;
   margin-bottom: 3px;
   padding: 20px 20px 0;
   overflow: auto;

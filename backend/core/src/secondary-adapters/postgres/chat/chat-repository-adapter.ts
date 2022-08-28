@@ -16,7 +16,7 @@ export class ChatRepositoryAdapter implements ChatRepository {
       include: {
         chatMessages: {
           orderBy: {
-            createdAt: 'asc',
+            createdAt: 'desc',
           },
           include: {
             author: {

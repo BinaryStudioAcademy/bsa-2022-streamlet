@@ -41,7 +41,7 @@ const reducer = createReducer(initialState, (builder) => {
   });
 
   builder.addCase(appendMessage, (state: State, { payload }) => {
-    state.currentChat.messages.list = [...state.currentChat.messages.list, payload];
+    state.currentChat.messages.list = [payload, ...state.currentChat.messages.list];
     state.currentChat.messages.total = state.currentChat.messages.total + 1;
   });
 

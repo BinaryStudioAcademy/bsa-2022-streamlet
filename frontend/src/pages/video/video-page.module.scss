@@ -59,7 +59,9 @@
 }
 
 .chat-block {
+  max-width: 350px;
   height: 100%;
+  max-height: 560px;
 
   @media screen and (max-width: 992px) {
     width: 100%;
