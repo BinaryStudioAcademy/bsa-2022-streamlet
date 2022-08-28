@@ -4,7 +4,6 @@ import {
   httpGet,
   httpPost,
   httpPut,
-  request,
   requestBody,
   requestParam,
 } from 'inversify-express-utils';
@@ -14,7 +13,6 @@ import {
   ResetStreamingKeyRequestDto,
   StreamingKeyResponseDto,
   RtmpLiveRequestDto,
-  ExtendedAuthenticatedRequest,
 } from '~/shared/types/types';
 import { ApiPath, ChannelStreamingApiPath } from '~/shared/enums/api/api';
 import { ChannelStreamingService } from '~/core/channel-streaming/application/channel-streaming-service';
@@ -254,19 +252,7 @@ export class ChannelStreamingController extends BaseHttpController {
   }
 
   @httpPost(ChannelStreamingApiPath.ROOT, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
-  public async createStream(
-    @requestBody() { channelId }: CreateStreamRequestDto,
-    @request() req: ExtendedAuthenticatedRequest,
-  ): Promise<VideoStreamResponseDto> {
-    const { id: userId } = req.user;
-    const authorId = await this.videoService.getAuthorByChannelId(channelId);
-    if (!authorId) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
-    }
-    if (userId !== authorId) {
-      throw new Forbidden(exceptionMessages.channelCrud.FORBIDDEN);
-    }
-
+  public async createStream(@requestBody() { channelId }: CreateStreamRequestDto): Promise<VideoStreamResponseDto> {
     const newStream = await this.channelStreamingService.createStream(channelId);
     if (!newStream) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);

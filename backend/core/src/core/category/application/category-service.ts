@@ -71,7 +71,7 @@ export class CategoryService {
     const category = await this.categoryRepository.updateCategory({
       id,
       name,
-      posterPath: posterPath?.url,
+      posterPath: posterPath?.url ?? '',
     });
     if (!category) {
       return;
@@ -94,7 +94,7 @@ export class CategoryService {
     }
     const category = await this.categoryRepository.createCategory({
       name,
-      posterPath: posterPath?.url,
+      posterPath: posterPath?.url ?? '',
     });
     return castToCategoryResponseDto(category);
   }

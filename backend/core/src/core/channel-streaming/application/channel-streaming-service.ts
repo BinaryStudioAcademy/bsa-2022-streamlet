@@ -5,26 +5,31 @@ import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { ChannelStreamingRepository } from '../port/channel-streaming-repository';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
 import { generateUuid } from '~/shared/helpers';
+// import { VideoStreamResponseDto } from 'shared/build';
+import { VideoRepository } from '~/core/video/port/video-repository';
 
 @injectable()
 export class ChannelStreamingService {
-  private channelRepository: ChannelStreamingRepository;
+  private channelStreamingRepository: ChannelStreamingRepository;
+  private videoRepository: VideoRepository;
   private amqpChannel: AmqpChannelPort;
 
   constructor(
-    @inject(CONTAINER_TYPES.ChannelStreamingRepository) channelRepository: ChannelStreamingRepository,
+    @inject(CONTAINER_TYPES.ChannelStreamingRepository) channelStreamingRepository: ChannelStreamingRepository,
+    @inject(CONTAINER_TYPES.VideoRepository) videoRepository: VideoRepository,
     @inject(CONTAINER_TYPES.AmqpChannelAdapter) amqpChannel: AmqpChannelPort,
   ) {
-    this.channelRepository = channelRepository;
+    this.channelStreamingRepository = channelStreamingRepository;
+    this.videoRepository = videoRepository;
     this.amqpChannel = amqpChannel;
   }
 
   async checkStreamingKey(key: string): Promise<LiveStartResponseDto | null> {
-    const keyRecord = await this.channelRepository.getStreamingKey({ key });
+    const keyRecord = await this.channelStreamingRepository.getStreamingKey({ key });
     if (!keyRecord) {
       return null;
     }
-    const pendingStream = await this.channelRepository.getPendingStream(keyRecord.channelId);
+    const pendingStream = await this.channelStreamingRepository.getPendingStream(keyRecord.channelId);
     if (!pendingStream) {
       return null;
     }
@@ -57,7 +62,7 @@ export class ChannelStreamingService {
   }
 
   async getStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
-    const keyRecord = await this.channelRepository.getStreamingKey({ channelId });
+    const keyRecord = await this.channelStreamingRepository.getStreamingKey({ channelId });
     if (!keyRecord) {
       return null;
     }
@@ -69,7 +74,7 @@ export class ChannelStreamingService {
 
   async resetStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {
     const newKey = generateUuid();
-    const updatedKeyRecord = await this.channelRepository.updateStreamingKey(channelId, newKey);
+    const updatedKeyRecord = await this.channelStreamingRepository.updateStreamingKey(channelId, newKey);
     if (!updatedKeyRecord) {
       return null;
     }
@@ -78,4 +83,8 @@ export class ChannelStreamingService {
       streamingKey: updatedKeyRecord.key,
     };
   }
+
+  // async createStream(channelId: string): Promise<VideoStreamResponseDto | null> {
+  //   const video = await this.videoRepository.create(channelId);
+  // }
 }

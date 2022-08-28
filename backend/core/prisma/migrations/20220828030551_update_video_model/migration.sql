@@ -11,15 +11,14 @@ CREATE TYPE "StreamStatus" AS ENUM ('waiting', 'live', 'finished');
 CREATE TYPE "Privacy" AS ENUM ('public', 'unlisted', 'private');
 
 -- AlterTable
-ALTER TABLE "Category" ALTER COLUMN "posterPath" DROP NOT NULL,
-ALTER COLUMN "posterPath" DROP DEFAULT;
-
--- AlterTable
 ALTER TABLE "Video" ADD COLUMN     "isReadyToStream" BOOLEAN NOT NULL DEFAULT false,
 ADD COLUMN     "privacy" "Privacy" NOT NULL DEFAULT 'unlisted',
-ALTER COLUMN "name" SET DEFAULT '',
+ALTER COLUMN "name" SET DEFAULT 'My new stream',
+ALTER COLUMN "videoPath" SET DEFAULT '',
 DROP COLUMN "status",
-ADD COLUMN     "status" "StreamStatus" NOT NULL DEFAULT 'waiting';
+ADD COLUMN     "status" "StreamStatus" NOT NULL DEFAULT 'waiting',
+ALTER COLUMN "publishedAt" DROP NOT NULL,
+ALTER COLUMN "publishedAt" DROP DEFAULT;
 
 UPDATE "Video" SET "status" = 'finished';
 

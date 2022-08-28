@@ -118,4 +118,12 @@ export class VideoRepositoryAdapter implements VideoRepository {
 
     return searchResult?.channel.authorId;
   }
+
+  create(channelId: string): Promise<Video | null> {
+    return this.prismaClient.video.create({
+      data: {
+        channelId: channelId,
+      },
+    });
+  }
 }

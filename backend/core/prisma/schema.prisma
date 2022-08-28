@@ -81,15 +81,15 @@ enum Privacy {
 
 model Video {
   id                  String         @id @default(uuid())
-  name                String         @default("")
+  name                String         @default("My new stream")
   description         String         @default("")
   status              StreamStatus   @default(waiting)
   isReadyToStream     Boolean        @default(false)
-  publishedAt         DateTime       @default(now())
+  publishedAt         DateTime?
   scheduledStreamDate DateTime       @default(now())
   poster              String         @default("")
   duration            Int            @default(0)
-  videoPath           String
+  videoPath           String         @default("")
   privacy             Privacy        @default(unlisted)
   liveViews           Int            @default(0)
   videoViews          Int            @default(0)
@@ -117,7 +117,7 @@ model Tag {
 model Category {
   id         String   @id @default(uuid())
   name       String   @unique
-  posterPath String?
+  posterPath String   @default("")
   videos     Video[]
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
