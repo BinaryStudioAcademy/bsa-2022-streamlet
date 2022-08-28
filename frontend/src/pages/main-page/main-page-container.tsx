@@ -1,12 +1,11 @@
 import { FC } from 'common/types/types';
 import { MainPage } from './main-page';
-// import { filterList } from '../../components/common/filters-block/filter-list.mock';
 import { FilterBlockProps } from 'components/common/filters-block';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { getVideos, getVideosByCategory } from 'store/videos/actions';
 import { VideoCardMain } from 'components/common/common';
-import { activeCategory, getCategories } from 'store/categories/actions';
+import { activeCategory, clearFilters, getCategories } from 'store/categories/actions';
 
 const MainPageContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -20,9 +19,15 @@ const MainPageContainer: FC = () => {
     dispatch(getVideosByCategory());
   }
 
+  function handleClickClearFilters(): void {
+    dispatch(clearFilters());
+    dispatch(getVideosByCategory());
+  }
+
   const filterBlock: FilterBlockProps = {
     filterList: categories,
     handleClickFilter,
+    handleClickClearFilters,
   };
   const blockVideo = [
     { videoCards: videos.map((video) => <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />) },
