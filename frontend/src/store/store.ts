@@ -5,6 +5,7 @@ import {
   profileApi,
   notificationApi,
   videoApi,
+  categoryApi,
   channelCrudApi,
   channelSubscriptionApi,
 } from 'services/services';
@@ -20,6 +21,7 @@ const extraArgument = {
   channelCrudApi,
   channelSubscriptionApi,
   videoApi,
+  categoryApi,
 };
 
 const persistConfig = {
