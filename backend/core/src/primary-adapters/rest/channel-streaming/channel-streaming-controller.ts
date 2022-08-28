@@ -13,21 +13,18 @@ import {
   ResetStreamingKeyRequestDto,
   StreamingKeyResponseDto,
   RtmpLiveRequestDto,
-} from '~/shared/types/types';
-import { ApiPath, ChannelStreamingApiPath } from '~/shared/enums/api/api';
-import { ChannelStreamingService } from '~/core/channel-streaming/application/channel-streaming-service';
-import { inject } from 'inversify';
-import { Forbidden } from '~/shared/exceptions/forbidden';
-import { NotFound } from '~/shared/exceptions/not-found';
-import {
   CreateStreamRequestDto,
   OwnChannelResponseDto,
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
   StreamUpdateRequestDto,
-  VideoApiPath,
   VideoStreamResponseDto,
-} from 'shared/build';
+} from '~/shared/types/types';
+import { ApiPath, ChannelStreamingApiPath, VideoApiPath } from '~/shared/enums/enums';
+import { ChannelStreamingService } from '~/core/channel-streaming/application/channel-streaming-service';
+import { inject } from 'inversify';
+import { Forbidden } from '~/shared/exceptions/forbidden';
+import { NotFound } from '~/shared/exceptions/not-found';
 import { authenticationMiddleware } from '../middleware';
 import { exceptionMessages } from '~/shared/enums/messages';
 import { VideoService } from '~/core/video/application/video-service';
