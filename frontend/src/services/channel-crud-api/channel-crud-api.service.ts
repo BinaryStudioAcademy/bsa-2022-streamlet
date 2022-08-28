@@ -24,7 +24,7 @@ class ChannelCrudApi {
 
   async getMyChannelInfo(): Promise<OwnChannelResponseDto> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.MY_CHANNEL}`,
+      url: `${this.#apiPrefix}${ApiPath.CHANNEL_STREAMING}`,
     });
   }
 }

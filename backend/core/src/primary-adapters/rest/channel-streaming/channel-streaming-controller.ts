@@ -4,6 +4,7 @@ import {
   httpGet,
   httpPost,
   httpPut,
+  request,
   requestBody,
   requestParam,
 } from 'inversify-express-utils';
@@ -19,6 +20,7 @@ import {
   StreamPosterUploadRequestDto,
   StreamUpdateRequestDto,
   VideoStreamResponseDto,
+  ExtendedAuthenticatedRequest,
 } from '~/shared/types/types';
 import { ApiPath, ChannelStreamingApiPath } from '~/shared/enums/enums';
 import { ChannelStreamingService } from '~/core/channel-streaming/application/channel-streaming-service';
@@ -28,6 +30,7 @@ import { NotFound } from '~/shared/exceptions/not-found';
 import { authenticationMiddleware } from '../middleware';
 import { exceptionMessages } from '~/shared/enums/messages';
 import { VideoService } from '~/core/video/application/video-service';
+import { errorCodes } from 'shared/build';
 
 /**
  * @swagger
@@ -292,11 +295,12 @@ export class ChannelStreamingController extends BaseHttpController {
     return keyData;
   }
 
-  @httpGet(ChannelStreamingApiPath.$USER_ID, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
-  public async getOwnChannel(@requestParam() { id }: DefaultRequestParam): Promise<OwnChannelResponseDto | null> {
+  @httpGet(ChannelStreamingApiPath.ROOT, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
+  public async getOwnChannel(@request() req: ExtendedAuthenticatedRequest): Promise<OwnChannelResponseDto | null> {
+    const { id } = req.user;
     const channel = await this.channelStreamingService.getOwnChannel(id);
     if (!channel) {
-      throw new NotFound(exceptionMessages.channelCrud.NO_CHANNELS);
+      throw new NotFound(exceptionMessages.channelCrud.NO_CHANNELS, errorCodes.stream.NO_CHANNELS);
     }
     return channel;
   }

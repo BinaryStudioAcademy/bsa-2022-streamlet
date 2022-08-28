@@ -1,8 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit/dist';
-import { AsyncThunkConfig } from 'common/types/types';
+import { AsyncThunkConfigHttpError } from 'common/types/app/async-thunk-config.type';
+import { serializeHttpError } from 'helpers/helpers';
 import {
   CreateStreamRequestDto,
   DefaultRequestParam,
+  HttpError,
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
   StreamUpdateRequestDto,
@@ -10,38 +12,73 @@ import {
 } from 'shared/build';
 import { ActionType } from './common';
 
-const createStream = createAsyncThunk<VideoStreamResponseDto, CreateStreamRequestDto, AsyncThunkConfig>(
+const createStream = createAsyncThunk<VideoStreamResponseDto, CreateStreamRequestDto, AsyncThunkConfigHttpError>(
   ActionType.CREATE_STREAM,
-  async (payload, { extra: { channelStreamingApi } }) => {
-    return channelStreamingApi.createStream(payload);
+  async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
+    try {
+      return channelStreamingApi.createStream(payload);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return rejectWithValue(serializeHttpError(error));
+      }
+      throw error;
+    }
   },
 );
 
-const uploadPoster = createAsyncThunk<VideoStreamResponseDto, StreamPosterUploadRequestDto, AsyncThunkConfig>(
+const uploadPoster = createAsyncThunk<VideoStreamResponseDto, StreamPosterUploadRequestDto, AsyncThunkConfigHttpError>(
   ActionType.UPLOAD_POSTER,
-  async (payload, { extra: { channelStreamingApi } }) => {
-    return channelStreamingApi.uploadPoster(payload);
+  async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
+    try {
+      return channelStreamingApi.uploadPoster(payload);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return rejectWithValue(serializeHttpError(error));
+      }
+      throw error;
+    }
   },
 );
 
-const editStream = createAsyncThunk<VideoStreamResponseDto, StreamUpdateRequestDto, AsyncThunkConfig>(
+const editStream = createAsyncThunk<VideoStreamResponseDto, StreamUpdateRequestDto, AsyncThunkConfigHttpError>(
   ActionType.UPDATE_STREAM_DATA,
-  async (payload, { extra: { channelStreamingApi } }) => {
-    return channelStreamingApi.editStream(payload);
+  async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
+    try {
+      return channelStreamingApi.editStream(payload);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return rejectWithValue(serializeHttpError(error));
+      }
+      throw error;
+    }
   },
 );
 
-const getStreamData = createAsyncThunk<VideoStreamResponseDto, DefaultRequestParam, AsyncThunkConfig>(
+const getStreamData = createAsyncThunk<VideoStreamResponseDto, DefaultRequestParam, AsyncThunkConfigHttpError>(
   ActionType.GET_STREAM_DATA,
-  async ({ id }, { extra: { channelStreamingApi } }) => {
-    return channelStreamingApi.getCurrentStream({ id });
+  async ({ id }, { extra: { channelStreamingApi }, rejectWithValue }) => {
+    try {
+      return channelStreamingApi.getCurrentStream({ id });
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return rejectWithValue(serializeHttpError(error));
+      }
+      throw error;
+    }
   },
 );
 
-const setStreamStatus = createAsyncThunk<VideoStreamResponseDto, StreamLiveStatusRequestDto, AsyncThunkConfig>(
+const setStreamStatus = createAsyncThunk<VideoStreamResponseDto, StreamLiveStatusRequestDto, AsyncThunkConfigHttpError>(
   ActionType.SET_STREAMING_STATUS,
-  async (payload, { extra: { channelStreamingApi } }) => {
-    return channelStreamingApi.setStreamStatus(payload);
+  async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
+    try {
+      return channelStreamingApi.setStreamStatus(payload);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return rejectWithValue(serializeHttpError(error));
+      }
+      throw error;
+    }
   },
 );
 

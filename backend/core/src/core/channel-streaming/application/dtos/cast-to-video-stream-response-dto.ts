@@ -16,12 +16,14 @@ const castToVideoStreamResponseDto = ({
   tags,
   categories,
   channelId,
+  privacy,
 }: VideoStreamResponseBeforeTrimming): VideoStreamResponseDto => {
   return {
     id,
     name,
     description,
     status,
+    privacy,
     isReadyToStream,
     publishedAt: publishedAt?.toISOString() ?? '',
     scheduledStreamDate: scheduledStreamDate?.toISOString() ?? '',

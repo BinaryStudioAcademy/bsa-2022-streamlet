@@ -231,6 +231,7 @@ const StudioStream: FC<Props> = ({
                     content={'Edit'}
                     className={clsx(styles['button'], styles['preview-button'])}
                     onClick={handleFormEdit}
+                    type="button"
                   />
                 ) : (
                   <>

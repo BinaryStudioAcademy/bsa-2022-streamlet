@@ -33,30 +33,30 @@ export class ChannelActionMiddleware extends BaseMiddleware {
 
     if ('videoId' in req.body) {
       authorId = await this.videoService.getAuthorByVideoId(req.body.videoId);
-      this.validate(userId, authorId);
+      this.validate(userId, authorId, next);
     }
     if ('channelId' in req.body) {
       authorId = await this.channelCrudService.getAuthorByChannelId(req.body.channelId);
-      this.validate(userId, authorId);
+      this.validate(userId, authorId, next);
     }
     if ('videoId' in req.params) {
       authorId = await this.videoService.getAuthorByVideoId(req.params.videoId);
-      this.validate(userId, authorId);
+      this.validate(userId, authorId, next);
     }
     if ('channelId' in req.params) {
       authorId = await this.channelCrudService.getAuthorByChannelId(req.params.channelId);
-      this.validate(userId, authorId);
+      this.validate(userId, authorId, next);
     }
 
     next();
   }
 
-  private validate(userId: string, authorId: string | undefined): void {
+  private validate(userId: string, authorId: string | undefined, next: express.NextFunction): void {
     if (!authorId) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
+      return next(new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND));
     }
     if (userId !== authorId) {
-      throw new Forbidden(exceptionMessages.channelCrud.FORBIDDEN);
+      return next(new Forbidden(exceptionMessages.channelCrud.FORBIDDEN));
     }
   }
 }

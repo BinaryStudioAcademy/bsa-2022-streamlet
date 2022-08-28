@@ -55,5 +55,8 @@
   ],
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
+  },
+  "dependencies": {
+    "postinstall": "^0.7.4"
   }
 }

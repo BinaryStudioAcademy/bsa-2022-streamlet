@@ -2,13 +2,16 @@ import { STREAMING_SERVER_URL } from 'common/constants/constants';
 import { IconName, StreamStatus } from 'common/enums/enums';
 import { FC, StreamPosterUploadRequestDto, StreamUpdateRequestDto } from 'common/types/types';
 import { createToastNotification } from 'components/common/toast-notification';
+import { NotFound } from 'components/not-found-page/not-found';
+import { errorCodes } from 'exceptions/exceptions';
 import { useAppDispatch, useAppForm, useAppSelector } from 'hooks/hooks';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { channelActions, streamActions } from 'store/actions';
 import { StreamInfoFormValues, StreamSettingsFormValues } from './common/stream-settings-form-values';
 import { StudioStream } from './stream';
+import { SerializedHttpError } from 'helpers/helpers';
 
-const StreamContainer: FC = () => {
+const StudioStreamContainer: FC = () => {
   const dispatch = useAppDispatch();
   const { stream, channel, streamingKey } = useAppSelector((state) => ({
     stream: state.stream.currentStreamData,
@@ -17,6 +20,7 @@ const StreamContainer: FC = () => {
   }));
 
   const [isEditingForm, setIsEditingForm] = useState(false);
+  const [isAccessError, setIsAccessError] = useState(false);
 
   const handleFormEdit = (): void => {
     setIsEditingForm(true);
@@ -113,12 +117,33 @@ const StreamContainer: FC = () => {
       scheduledStreamDate,
       privacy,
       videoId: stream?.id ?? '',
-      tags: tags.map((tag) => ({ name: tag.label })),
-      categories: categories.map((category) => ({ name: category.label })),
+      tags: tags?.map((tag) => ({ name: tag.label })) ?? [],
+      categories: categories?.map((category) => ({ name: category.label })) ?? [],
     });
   };
 
-  return (
+  useEffect(() => {
+    const fetch = async (): Promise<void> => {
+      try {
+        if (!channel) {
+          await dispatch(channelActions.loadMyChannel()).unwrap();
+        }
+        await dispatch(channelActions.getStreamingKey({ id: channel?.id ?? '' })).unwrap();
+        await dispatch(streamActions.createStream({ channelId: channel?.id ?? '' })).unwrap();
+      } catch (err) {
+        if ((err as SerializedHttpError).errorCode === errorCodes.stream.NO_CHANNELS) {
+          setIsAccessError(true);
+          console.error(404);
+        }
+        console.error(err as SerializedHttpError);
+      }
+    };
+    fetch();
+  }, [channel, dispatch]);
+
+  return isAccessError ? (
+    <NotFound />
+  ) : (
     <StudioStream
       handleChangeStreamStatus={handleChangeStreamStatus}
       handleCopy={handleCopy}
@@ -140,4 +165,4 @@ const StreamContainer: FC = () => {
   );
 };
 
-export { StreamContainer };
+export { StudioStreamContainer };
