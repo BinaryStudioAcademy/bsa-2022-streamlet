@@ -262,16 +262,16 @@ export class ChannelStreamingController extends BaseHttpController {
 
   @httpPost(VideoApiPath.UPLOAD_POSTER, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
   public async uploadPoster(@requestBody() payload: StreamPosterUploadRequestDto): Promise<VideoStreamResponseDto> {
-    const newStream = await this.channelStreamingService.uploadPoster(payload);
-    if (!newStream) {
+    const update = await this.channelStreamingService.uploadStreamPoster(payload);
+    if (!update) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
     }
-    return newStream;
+    return update;
   }
 
   @httpPut(VideoApiPath.$ID, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
   public async updateStream(@requestBody() payload: StreamUpdateRequestDto): Promise<VideoStreamResponseDto> {
-    const update = await this.channelStreamingService.updateStream(payload);
+    const update = await this.channelStreamingService.update(payload);
     if (!update) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
     }

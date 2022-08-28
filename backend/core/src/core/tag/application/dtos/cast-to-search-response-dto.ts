@@ -19,7 +19,7 @@ export const castToSearchByTagResponseDto = ({
     status,
     liveViews,
     videoViews,
-    publishedAt: publishedAt.toString(),
+    publishedAt: publishedAt?.toString() ?? '',
     scheduledStreamDate: scheduledStreamDate.toString(),
     poster,
     duration,

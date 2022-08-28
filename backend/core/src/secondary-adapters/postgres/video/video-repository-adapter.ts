@@ -92,7 +92,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
         scheduledStreamDate: scheduledStreamDate.toString(),
         status,
         name,
-        publishedAt: publishedAt.toString(),
+        publishedAt: publishedAt?.toString() ?? '',
         duration,
         videoViews,
         liveViews,
@@ -117,13 +117,5 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
 
     return searchResult?.channel.authorId;
-  }
-
-  create(channelId: string): Promise<Video | null> {
-    return this.prismaClient.video.create({
-      data: {
-        channelId: channelId,
-      },
-    });
   }
 }
