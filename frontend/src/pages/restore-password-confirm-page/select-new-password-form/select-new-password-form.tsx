@@ -5,7 +5,7 @@ import formStyles from 'components/auth/components/form-controls.module.scss';
 import { AuthSubmitButton } from 'components/auth/components/common/common';
 import * as Joi from 'joi';
 import { UserValidationMessage } from 'shared/build/common/enums/enums';
-import { restorePasswordConfirmBase } from 'shared/build/validation-schemas/user/restore-password-confirm-base-validation-schema';
+import { restorePasswordConfirmBase } from 'shared/build';
 
 type Props = {
   onSubmit: (data: SelectNewPasswordFormValues) => void;

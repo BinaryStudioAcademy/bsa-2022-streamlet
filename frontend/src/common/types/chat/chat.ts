@@ -1,1 +1,1 @@
-export { ChatInfoRequestDto, ChatInfoResponseDto, ChatMessage } from 'shared/build';
+export { ChatInfoRequestDto, ChatInfoResponseDto, ChatMessageRequestDto, ChatMessageResponseDto } from 'shared/build';

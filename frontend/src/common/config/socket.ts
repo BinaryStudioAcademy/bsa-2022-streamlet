@@ -1,5 +1,5 @@
-import socketIOClient from 'socket.io-client';
+import { io } from 'socket.io-client';
 
-const socket = socketIOClient();
+const socket = io();
 
 export { socket };

@@ -1,11 +1,11 @@
-import { ChatMessage, FC } from 'common/types/types';
+import { ChatMessageResponseDto, FC } from 'common/types/types';
 import { generateAbbreviatureNameUser, getUserDisplayName } from 'helpers/user';
 import { getHowLongAgoString } from 'helpers/helpers';
 
 import styles from './video-comment.module.scss';
 
 type Props = {
-  message: ChatMessage;
+  message: ChatMessageResponseDto;
 };
 
 const VideoComment: FC<Props> = ({ message: { text, createdAt, author } }) => {
