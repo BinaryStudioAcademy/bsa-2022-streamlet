@@ -1,17 +1,16 @@
 import clsx from 'clsx';
 import { FC } from 'common/types/types';
+import { CategoryResponseDto } from 'shared/build';
 
 import styles from './filters-block.module.scss';
 
-export interface FilterItem {
-  id: number;
-  filterName: string;
+export type FilterItem = CategoryResponseDto & {
   isActive: boolean;
-}
+};
 
 export interface FilterBlockProps {
   filterList: Array<FilterItem>;
-  handleClickFilter: () => void;
+  handleClickFilter: (id: string) => void;
 }
 
 const FiltersBlock: FC<FilterBlockProps> = ({ filterList, handleClickFilter }) => {
@@ -21,11 +20,11 @@ const FiltersBlock: FC<FilterBlockProps> = ({ filterList, handleClickFilter }) =
         <div className={styles['blur-container']} />
         {filterList.map((filter) => (
           <button
-            onClick={handleClickFilter}
+            onClick={(): void => handleClickFilter(filter.id)}
             key={filter.id}
             className={clsx({ [styles.active]: filter.isActive }, styles['filter-item'])}
           >
-            {filter.filterName}
+            {filter.name}
           </button>
         ))}
       </div>

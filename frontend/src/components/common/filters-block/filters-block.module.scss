@@ -54,6 +54,10 @@
   &.active,
   &:hover {
     color: var(--always-white-color);
+    background-color: var(--brand-green-color-hover);
+  }
+
+  &.active {
     background-color: var(--brand-green-color);
   }
 
