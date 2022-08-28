@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 
 import { DataStatus } from 'common/enums/enums';
 import { VideoExpandedResponseDto } from 'shared/build';
-import { addVideoComment, getVideo, videoChannelSubscribe, videoReact } from './actions';
+import { addVideoComment, getVideo, videoChannelSubscribe, videoReact, updateLiveViews } from './actions';
 
 type State = {
   dataStatus: DataStatus;
@@ -59,6 +59,12 @@ const reducer = createReducer(initialState, (builder) => {
       state.video.dislikeNum = dislikeNum;
     }
     state.dataStatus = DataStatus.FULFILLED;
+  });
+
+  builder.addCase(updateLiveViews, (state, { payload }) => {
+    if (state.video) {
+      state.video.liveViews = payload;
+    }
   });
 });
 

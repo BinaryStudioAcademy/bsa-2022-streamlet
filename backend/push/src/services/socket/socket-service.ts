@@ -4,6 +4,7 @@ import { createIoInstance } from '~/websockets/io';
 import { amqpService } from '../services';
 import { AmqpQueue, SocketEvents } from '~/shared/enums/enums';
 import { logger } from '~/config/logger';
+import { debounce } from '~/helpers/debounce';
 
 class SocketService {
   private io: SocketIo | undefined;
@@ -50,11 +51,21 @@ class SocketService {
       socket.on(SocketEvents.chat.JOIN_ROOM, (roomId: string) => {
         socket.join(roomId);
         socket.emit(SocketEvents.chat.JOIN_ROOM_DONE, 'success');
+
+        debounce(() => {
+          const countIsLive = this.io?.sockets.adapter.rooms.get(roomId)?.size;
+          socket.emit(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, { live: countIsLive });
+        }, 5000);
       });
 
       socket.on(SocketEvents.chat.LEAVE_ROOM, (roomId: string) => {
         socket.leave(roomId);
         socket.emit(SocketEvents.chat.LEAVE_ROOM_DONE, 'success');
+
+        debounce(() => {
+          const countIsLive = this.io?.sockets.adapter.rooms.get(roomId)?.size;
+          socket.emit(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, { live: countIsLive });
+        }, 5000);
       });
 
       socket.on('disconnect', async () => {

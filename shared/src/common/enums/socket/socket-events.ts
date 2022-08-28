@@ -10,4 +10,7 @@ export const SocketEvents = {
     LEAVE_ROOM: 'leave-room',
     LEAVE_ROOM_DONE: 'leave-room-done',
   },
+  video: {
+    UPDATE_LIVE_VIEWS_DONE: 'update-live-views-done',
+  },
 };
