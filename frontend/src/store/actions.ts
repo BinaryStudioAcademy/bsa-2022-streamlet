@@ -4,4 +4,5 @@ export * as notificationActions from './notification/actions';
 export * as layoutActions from './layout/actions';
 export * as profileActions from './profile/action';
 export * as themeActions from './theme-switch/actions';
+export * as videoPageActions from './video-page/actions';
 export * as chatActions from './chat/actions';

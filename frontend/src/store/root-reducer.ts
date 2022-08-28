@@ -7,6 +7,7 @@ import { reducer as layout } from './layout/reducer';
 import { reducer as channel } from './channel/reducer';
 import { reducer as theme } from './theme-switch/reducer';
 import { reducer as videos } from './videos/reducer';
+import { reducer as videoPage } from './video-page/reducer';
 import { reducer as chat } from './chat/reducer';
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   notification,
   channel,
   videos,
+  videoPage,
   chat,
 });
 

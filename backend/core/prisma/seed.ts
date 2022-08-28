@@ -114,7 +114,8 @@ async function seedCategories(): Promise<void> {
   for (let i = 0; i < totalCategories; i++) {
     await prisma.category.create({
       data: {
-        name: faker.random.word(),
+        name: 'Just talking' + i,
+        posterPath: 'https://static-cdn.jtvnw.net/ttv-boxart/509658-285x380.jpg',
         videos: {
           connect: getRandomSample(videos, videosPerCategory).map((video) => ({
             id: video.id,

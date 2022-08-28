@@ -16,6 +16,7 @@ const ProfilePreferencesPageForm: FC<Props> = ({ onSubmit, defaultFormValue, err
   const { control, errors, handleSubmit } = useAppForm<UpdateProfileValue>({
     defaultValues: defaultFormValue,
     validationSchema: profileUpdateValidationSchema,
+    mode: 'onChange',
   });
 
   return (
@@ -62,7 +63,7 @@ const ProfilePreferencesPageForm: FC<Props> = ({ onSubmit, defaultFormValue, err
       <div className={style['save-change-button-container']}>
         {error && <span className={style['error-message']}>{error}</span>}
         <button type="submit" className={style['save-change-button']}>
-          {isLoading ? <Loader hCentered vCentered={false} spinnerSize="16px" /> : 'Save changes'}
+          {isLoading ? <Loader hCentered={true} vCentered={true} spinnerSize="16px" color="white" /> : 'Save changes'}
         </button>
       </div>
     </form>
