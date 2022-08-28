@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
-import { getVideos } from './actions';
+import { getVideos, getVideosByCategory } from './actions';
 
 type State = {
   data: DataVideo;
@@ -31,6 +31,21 @@ const reducer = createReducer(initialState, (builder) => {
   });
 
   builder.addCase(getVideos.rejected, (state) => {
+    state.error = true;
+  });
+
+  builder.addCase(getVideosByCategory.pending, (state) => {
+    state.error = false;
+    state.dataStatus = DataStatus.PENDING;
+  });
+
+  builder.addCase(getVideosByCategory.fulfilled, (state, { payload }) => {
+    state.dataStatus = DataStatus.FULFILLED;
+    state.data.list = payload.list;
+    state.data.total = payload.total;
+  });
+
+  builder.addCase(getVideosByCategory.rejected, (state) => {
     state.error = true;
   });
 });

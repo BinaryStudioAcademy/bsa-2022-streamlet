@@ -5,6 +5,7 @@ import {
   profileApi,
   notificationApi,
   videoApi,
+  categoryApi,
   channelCrudApi,
   channelSubscriptionApi,
   chatApi,
@@ -21,6 +22,7 @@ const extraArgument = {
   channelCrudApi,
   channelSubscriptionApi,
   videoApi,
+  categoryApi,
   chatApi,
 };
 

@@ -1,9 +1,8 @@
-import { FormControl, FormControlErrors, FormControlPath } from 'common/types/types';
 import { useFormControl } from 'hooks/hooks';
-import { ErrorMessage } from 'components/common/common';
+import { FormControl, FormControlErrors, FormControlPath } from 'common/types/types';
 import { FieldValues } from 'react-hook-form';
 import { ReactElement, useId } from 'react';
-import { ErrorBox } from '../errors/errors';
+import TextareaAutosize from 'react-textarea-autosize';
 import clsx from 'clsx';
 
 import styles from './styles.module.scss';
@@ -24,17 +23,12 @@ type Props<T> = {
   onBlur?: { (): void };
 };
 
-const Input = <T extends FieldValues>({
+const Textarea = <T extends FieldValues>({
   control,
-  errors,
-  label,
   name,
   placeholder = '',
-  type = 'text',
   inputClassName,
   inputErrorClassName,
-  labelClassName,
-  errorBlockClassName,
   wrapperClassName,
   onFocus,
   onBlur,
@@ -46,34 +40,17 @@ const Input = <T extends FieldValues>({
   const id = useId();
 
   return (
-    <div className={clsx(styles['input-wrapper'], wrapperClassName)}>
-      <div className={styles['input-labels']}>
-        <label className={clsx(styles.label, labelClassName)} htmlFor={id}>
-          <span>{label}</span>
-        </label>
-        <div className={clsx(errorBlockClassName)}>
-          {isTouched && (
-            <ErrorMessage
-              errors={errors}
-              name={name}
-              render={({ message }): ReactElement => {
-                return <ErrorBox message={message} />;
-              }}
-            />
-          )}
-        </div>
-      </div>
-      <input
+    <div className={clsx(styles['textarea-wrapper'], wrapperClassName)}>
+      <TextareaAutosize
         {...field}
-        type={type}
         onFocus={onFocus}
         onBlur={onBlur}
         placeholder={placeholder}
-        className={clsx(styles.input, inputClassName, error && isTouched && inputErrorClassName)}
+        className={clsx(styles.textarea, inputClassName, error && isTouched && inputErrorClassName)}
         id={id}
       />
     </div>
   );
 };
 
-export { Input };
+export { Textarea };

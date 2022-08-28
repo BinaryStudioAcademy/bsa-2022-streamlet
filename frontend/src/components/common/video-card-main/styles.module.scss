@@ -48,13 +48,13 @@ $base-z-index: $page-component-z-index;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-  align-items: center;
+  align-items: var(--always-white-color);
   padding: 2px 8px;
-  color: var(--white-text-color);
+  color: #ffffff;
   font-size: 12px;
   line-height: 16px;
   text-align: center;
-  background-color: var(--gray-300-header-menu-background);
+  background-color: var(--always-primary-text-color);
   border-radius: 16px;
 }
 
@@ -137,6 +137,7 @@ $base-z-index: $page-component-z-index;
 .video-card-name {
   display: flex;
   flex-flow: column nowrap;
+  gap: 2px;
   overflow: hidden;
 }
 
@@ -147,13 +148,14 @@ $base-z-index: $page-component-z-index;
 }
 
 .video-card-title {
-  display: flex;
-  max-height: 48px;
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  display: -webkit-box;
+  max-height: 40px;
   overflow: hidden;
   color: var(--white-text-color);
   font-weight: 600;
   font-size: 14px;
-  line-height: 24px;
+  line-height: 20px;
   white-space: normal;
   text-decoration: none;
   text-overflow: ellipsis;
@@ -203,10 +205,11 @@ $base-z-index: $page-component-z-index;
   align-items: center;
   gap: 5px;
   width: 55px;
+  font-size: 13px;
 }
 
 .video-card-meta-tag svg {
-  width: 12px;
+  width: 10px;
 }
 
 .video-card-meta-tag svg path {

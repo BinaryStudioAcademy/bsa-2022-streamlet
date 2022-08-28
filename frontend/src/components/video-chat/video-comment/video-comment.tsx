@@ -17,10 +17,10 @@ const VideoComment: FC<Props> = ({ message: { text, createdAt, author } }) => {
         )}
         {!author.profile.avatar && (
           <div className={styles['default-avatar']}>
-            {generateAbbreviatureNameUser(getUserDisplayName({ username: author.username }))}
+            {generateAbbreviatureNameUser(getUserDisplayName({ userName: author.username }))}
           </div>
         )}
-        <p className={styles['commentators-name']}>{getUserDisplayName({ username: author.username })}</p>
+        <p className={styles['commentators-name']}>{getUserDisplayName({ userName: author.username })}</p>
         <span className={styles['dispatch-time']}>{getHowLongAgoString(new Date(createdAt))}</span>
       </div>
       <div className={styles['content-part-comment']}>
