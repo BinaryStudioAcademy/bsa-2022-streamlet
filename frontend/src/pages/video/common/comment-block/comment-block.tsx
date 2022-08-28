@@ -12,12 +12,12 @@ type Props = {
 
 const VideoCommentBlock: FC<Props> = ({ comments, userAvatar, onNewComment }) => {
   return (
-    <div className={styles['video-comment-block']}>
-      <VideoPageCommentForm avatar={userAvatar} onSubmit={onNewComment} />
+    <>
+      <VideoPageCommentForm avatar={userAvatar} onSubmit={onNewComment} className={styles['comment-form']} />
       {comments.map((comment: Comment) => {
         return <VideoComment key={comment.id} comment={comment} />;
       })}
-    </div>
+    </>
   );
 };
 

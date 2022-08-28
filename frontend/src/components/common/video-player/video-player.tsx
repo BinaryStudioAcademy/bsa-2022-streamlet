@@ -18,11 +18,12 @@ type VideoPlayerProps = {
   };
   url: string;
   isLive?: boolean;
+  className?: string;
 };
 
 const FULLSCREEN_INACTIVE_TIME_MS = 2000;
 
-const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps = {}, isLive = false }) => {
+const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps = {}, isLive = false, className }) => {
   const videoContainerRef = useRef<HTMLVideoElement | null>(null);
   const videoContainerWrapperRef = useRef<HTMLElement | null>(null);
   const hlsRef = useRef<Hls | null>(null);
@@ -135,7 +136,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
   return (
     <div
       ref={videoContainerWrapperCallbackRef}
-      className={clsx({ [styles['fullscreen']]: isFullscreen }, styles['video-container-wrapper'])}
+      className={clsx({ [styles['fullscreen']]: isFullscreen }, styles['video-container-wrapper'], className)}
       style={{ height: sizingProps.height, width: sizingProps.width, aspectRatio: sizingProps.aspectRatio }}
       data-paused="true"
     >
