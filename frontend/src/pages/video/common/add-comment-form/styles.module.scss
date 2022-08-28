@@ -16,7 +16,7 @@
   width: 100%;
   height: auto;
   padding: 0;
-  overflow-y: hidden;
+  overflow: hidden;
   white-space: normal;
   background: none;
   border: none;
@@ -49,10 +49,17 @@
 .add-comment-form-control {
   display: flex;
   justify-content: flex-end;
+  height: 48px;
   padding-top: 10px;
 }
 
 .add-comment-cancel-button:hover {
   height: min-content;
   background: none;
+}
+
+.add-comment-submit-disabled {
+  background-color: var(--gray-200-input-background);
+  cursor: not-allowed;
+  pointer-events: none;
 }
