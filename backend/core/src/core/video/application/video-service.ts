@@ -14,4 +14,8 @@ export class VideoService {
   getAllVideos(): Promise<DataVideo> {
     return this.videoRepository.getAll();
   }
+
+  getAuthorByVideoId(id: string): Promise<string | undefined> {
+    return this.videoRepository.getAuthorById(id);
+  }
 }

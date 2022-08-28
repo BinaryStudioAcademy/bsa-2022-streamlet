@@ -33,6 +33,8 @@ const CONTAINER_TYPES = {
   VideoRepository: Symbol.for('VideoRepository'),
   VideoController: Symbol.for('VideoController'),
 
+  ChannelActionMiddleware: Symbol.for('ChannelActionMiddleware'),
+
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),
   ImageStoreAdapter: Symbol.for('CloudinaryAdapter'),

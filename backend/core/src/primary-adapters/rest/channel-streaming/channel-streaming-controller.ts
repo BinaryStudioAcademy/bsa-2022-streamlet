@@ -31,7 +31,7 @@ import {
 } from 'shared/build';
 import { authenticationMiddleware } from '../middleware';
 import { exceptionMessages } from '~/shared/enums/messages';
-import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud-service';
+import { VideoService } from '~/core/video/application/video-service';
 
 /**
  * @swagger
@@ -94,15 +94,15 @@ import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud
 @controller(ApiPath.CHANNEL_STREAMING)
 export class ChannelStreamingController extends BaseHttpController {
   private channelStreamingService: ChannelStreamingService;
-  private channelCrudService: ChannelCrudService;
+  private videoService: VideoService;
 
   constructor(
     @inject(CONTAINER_TYPES.ChannelStreamingService) channelStreamingService: ChannelStreamingService,
-    @inject(CONTAINER_TYPES.ChannelCrudService) channelCrudService: ChannelCrudService,
+    @inject(CONTAINER_TYPES.VideoService) videoService: VideoService,
   ) {
     super();
     this.channelStreamingService = channelStreamingService;
-    this.channelCrudService = channelCrudService;
+    this.videoService = videoService;
   }
 
   /**
@@ -238,7 +238,11 @@ export class ChannelStreamingController extends BaseHttpController {
    *        '404':
    *          description: channel not found
    */
-  @httpPost(ChannelStreamingApiPath.RESET_STREAMING_KEY, authenticationMiddleware)
+  @httpPost(
+    ChannelStreamingApiPath.RESET_STREAMING_KEY,
+    authenticationMiddleware,
+    CONTAINER_TYPES.ChannelActionMiddleware,
+  )
   public async resetStreamingKey(
     @requestBody() { channelId }: ResetStreamingKeyRequestDto,
   ): Promise<StreamingKeyResponseDto> {
@@ -249,13 +253,13 @@ export class ChannelStreamingController extends BaseHttpController {
     return keyData;
   }
 
-  @httpPost(ChannelStreamingApiPath.ROOT, authenticationMiddleware)
+  @httpPost(ChannelStreamingApiPath.ROOT, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
   public async createStream(
     @requestBody() { channelId }: CreateStreamRequestDto,
     @request() req: ExtendedAuthenticatedRequest,
   ): Promise<VideoStreamResponseDto> {
     const { id: userId } = req.user;
-    const authorId = await this.channelCrudService.getAuthorByChannelId(channelId);
+    const authorId = await this.videoService.getAuthorByChannelId(channelId);
     if (!authorId) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
     }
@@ -270,7 +274,7 @@ export class ChannelStreamingController extends BaseHttpController {
     return newStream;
   }
 
-  @httpPost(VideoApiPath.UPLOAD_POSTER, authenticationMiddleware)
+  @httpPost(VideoApiPath.UPLOAD_POSTER, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
   public async uploadPoster(@requestBody() payload: StreamPosterUploadRequestDto): Promise<VideoStreamResponseDto> {
     const newStream = await this.channelStreamingService.uploadPoster(payload);
     if (!newStream) {
@@ -279,7 +283,7 @@ export class ChannelStreamingController extends BaseHttpController {
     return newStream;
   }
 
-  @httpPut(VideoApiPath.$ID, authenticationMiddleware)
+  @httpPut(VideoApiPath.$ID, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
   public async updateStream(@requestBody() payload: StreamUpdateRequestDto): Promise<VideoStreamResponseDto> {
     const update = await this.channelStreamingService.updateStream(payload);
     if (!update) {
@@ -288,7 +292,7 @@ export class ChannelStreamingController extends BaseHttpController {
     return update;
   }
 
-  @httpGet(ChannelStreamingApiPath.$ID, authenticationMiddleware)
+  @httpGet(ChannelStreamingApiPath.$ID, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
   public async getCurrentStream(@requestParam() { id }: DefaultRequestParam): Promise<VideoStreamResponseDto> {
     const keyData = await this.channelStreamingService.getCurrentStream(id);
     if (!keyData) {
@@ -297,7 +301,7 @@ export class ChannelStreamingController extends BaseHttpController {
     return keyData;
   }
 
-  @httpPost(ChannelStreamingApiPath.LIVE, authenticationMiddleware)
+  @httpPost(ChannelStreamingApiPath.LIVE, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
   public async goLive(@requestBody() payload: StreamLiveStatusRequestDto): Promise<VideoStreamResponseDto> {
     const update = await this.channelStreamingService.liveControl(payload);
     if (!update) {
