@@ -7,7 +7,7 @@
 .video-page {
   display: grid;
   grid-template-columns: 1fr;
-  max-width: 2000px;
+  max-width: 1300px;
   margin: auto;
   padding: 20px;
   column-gap: 10px;
@@ -111,6 +111,10 @@
   border-radius: 2px;
 }
 
+.views-container {
+  margin: 10px 0 0;
+}
+
 .channel-banner {
   width: 34px;
   height: 34px;
@@ -140,7 +144,7 @@
 @media screen and (max-width: 768px) {
   .channel-info-container {
     flex-direction: column;
-    align-items: center;
+    align-items: initial;
   }
 
   .video-header {
@@ -174,7 +178,7 @@
   }
 
   .description-container {
-    width: 100%;
+    max-width: 100%;
   }
 }
 
