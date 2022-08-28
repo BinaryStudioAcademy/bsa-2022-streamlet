@@ -43,6 +43,7 @@
 }
 
 .reaction-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -155,6 +156,10 @@
   }
 
   .video-comment-block {
+    padding: 10px;
+  }
+
+  .chat-block {
     padding: 10px;
   }
 
