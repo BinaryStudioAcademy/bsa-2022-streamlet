@@ -1,5 +1,5 @@
 import { Http } from 'services/http/http.service';
-import { ChannelInfoRequestDto, ChannelInfoResponseDto } from 'common/types/types';
+import { ChannelInfoRequestDto, ChannelInfoResponseDto, OwnChannelResponseDto } from 'common/types/types';
 import { ApiPath } from 'common/enums/enums';
 
 type Constructor = {
@@ -22,7 +22,7 @@ class ChannelCrudApi {
     });
   }
 
-  async getMyChannelInfo(): Promise<ChannelInfoResponseDto> {
+  async getMyChannelInfo(): Promise<OwnChannelResponseDto> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.MY_CHANNEL}`,
     });
