@@ -91,7 +91,7 @@ jobs:
           host: ${{ secrets.DEPLOYMENT_HOST }}
           username: ${{ secrets.DEPLOYMENT_USERNAME }}
           password: ${{ secrets.DEPLOYMENT_SSH_PASSWORD }}
-          source: ".docker/docker-compose.dev.yml,.docker/healthcheck.sh,nginx/nginx.rtmp.conf"
+          source: ".docker/docker-compose.dev.yml,.docker/healthcheck.sh,nginx/nginx.rtmp.conf,backend/core/prisma"
           target: app
 
       - name: Run docker-compose.dev.yml on deployment server
