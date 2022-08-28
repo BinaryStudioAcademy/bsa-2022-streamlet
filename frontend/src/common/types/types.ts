@@ -36,6 +36,14 @@ export { BaseSubscriptionResponseDto, DataSubscription } from './subscription/su
 
 export * from './channel/channel';
 
-export { VideoStreamResponseDto } from './stream/stream';
+export {
+  StreamingKeyResponseDto,
+  ResetStreamingKeyRequestDto,
+  CreateStreamRequestDto,
+  VideoStreamResponseDto,
+  StreamPosterUploadRequestDto,
+  StreamUpdateRequestDto,
+  StreamLiveStatusRequestDto,
+} from './stream/stream';
 
 declare module 'react-notifications-component';
