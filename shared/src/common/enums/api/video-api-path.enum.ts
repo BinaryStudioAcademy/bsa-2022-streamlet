@@ -1,6 +1,6 @@
 enum VideoApiPath {
   ROOT = '/',
-  $ID = '/:id',
+  $ID = '/:videoId',
   UPLOAD_POSTER = '/upload-poster',
 }
 

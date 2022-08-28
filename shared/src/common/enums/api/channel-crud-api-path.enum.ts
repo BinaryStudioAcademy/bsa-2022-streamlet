@@ -1,6 +1,6 @@
 enum ChannelCrudApiPath {
   ROOT = '/',
-  $ID = '/:id',
+  $ID = '/:channelId',
 }
 
 export { ChannelCrudApiPath };

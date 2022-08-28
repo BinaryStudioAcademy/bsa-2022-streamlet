@@ -31,23 +31,32 @@ export class ChannelActionMiddleware extends BaseMiddleware {
     const { id: userId } = req.user;
     let authorId: string | undefined;
 
-    if ('streamId' in req.body) {
-      authorId = await this.videoService.getAuthorByVideoId(req.body.streamId);
+    if ('videoId' in req.body) {
+      authorId = await this.videoService.getAuthorByVideoId(req.body.videoId);
+      this.validate(userId, authorId);
     }
     if ('channelId' in req.body) {
       authorId = await this.channelCrudService.getAuthorByChannelId(req.body.channelId);
+      this.validate(userId, authorId);
     }
-    if ('id' in req.params) {
-      authorId = await this.channelCrudService.getAuthorByChannelId(req.params.id);
+    if ('videoId' in req.params) {
+      authorId = await this.videoService.getAuthorByVideoId(req.params.videoId);
+      this.validate(userId, authorId);
+    }
+    if ('channelId' in req.params) {
+      authorId = await this.channelCrudService.getAuthorByChannelId(req.params.channelId);
+      this.validate(userId, authorId);
     }
 
+    next();
+  }
+
+  private validate(userId: string, authorId: string | undefined): void {
     if (!authorId) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
     }
     if (userId !== authorId) {
       throw new Forbidden(exceptionMessages.channelCrud.FORBIDDEN);
     }
-
-    next();
   }
 }

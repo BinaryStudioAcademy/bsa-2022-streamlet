@@ -1,7 +1,7 @@
 enum TagApiPath {
   ROOT = '/',
-  $ID = '/:id',
-  $BIND = '/bind/:id',
+  $ID = '/:tagId',
+  $BIND = '/bind/:tagId',
   SEARCH = '/search',
 }
 

@@ -1,6 +1,6 @@
 enum ChannelStreamingApiPath {
   ROOT = '/',
-  $ID = '/:id',
+  $ID = '/:channelId',
   CONNECT = '/connect',
   DISCONNECT = '/disconnect',
   STREAMING_KEY = '/streaming_key',
