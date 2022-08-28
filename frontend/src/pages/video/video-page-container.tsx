@@ -13,7 +13,7 @@ import { getReactBtnColor } from 'helpers/helpers';
 import { VideoPlayer } from 'components/common/video-player/video-player';
 import { VideoCommentBlock } from './common/comment-block/comment-block';
 import { Link } from 'react-router-dom';
-import { NeedSignInModal } from './common/sign-in-modal/sign-in-modal';
+import { NeedSignInModal } from '../../components/common/sign-in-modal/sign-in-modal';
 
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -106,6 +106,7 @@ const VideoPageContainer: FC = () => {
                 {isUserNotAuthAndReact && (
                   <NeedSignInModal
                     headerText={'Like this video?'}
+                    className={styles['sign-in-modal']}
                     mainText={'Sign in so we can take your opinion into account.'}
                     onClose={(): void => {
                       setIsUserNotAuthAndReact(false);
