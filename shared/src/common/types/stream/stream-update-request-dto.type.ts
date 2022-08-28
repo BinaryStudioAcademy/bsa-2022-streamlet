@@ -5,7 +5,7 @@ type StreamUpdateRequestDto = {
   videoId: string;
   name: string;
   description: string;
-  scheduledStreamDate: string;
+  scheduledStreamDate: Date;
   tags: TagResponseDto[];
   categories: CategoryResponseDto[];
   privacy: StreamPrivacy;

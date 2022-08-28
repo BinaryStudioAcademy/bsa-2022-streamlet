@@ -1,2 +1,2 @@
-export { StreamStatus } from './stream-status.enum';
-export { StreamPrivacy } from './stream-privacy.enum';
+export { type StreamStatus } from './stream-status.enum';
+export { type StreamPrivacy } from './stream-privacy.enum';

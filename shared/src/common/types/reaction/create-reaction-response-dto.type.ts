@@ -5,4 +5,4 @@ type CreateReactionResponseDto = {
   dislikeNum: number;
 };
 
-export { CreateReactionResponseDto };
+export { type CreateReactionResponseDto };
