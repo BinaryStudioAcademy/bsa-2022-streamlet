@@ -1,13 +1,13 @@
 import { StreamPrivacy } from '~/common/enums/enums';
-import { TagResponseDto, CategoryResponseDto } from '../types';
+import { TagCreateRequestDto, CategoryCreateRequestDto } from '../types';
 
 type StreamUpdateRequestDto = {
   videoId: string;
   name: string;
   description: string;
   scheduledStreamDate: Date;
-  tags: TagResponseDto[];
-  categories: CategoryResponseDto[];
+  tags: TagCreateRequestDto[];
+  categories: CategoryCreateRequestDto[];
   privacy: StreamPrivacy;
 };
 
