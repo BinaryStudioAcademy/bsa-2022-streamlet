@@ -21,8 +21,6 @@
     'video video'
     'info info'
     'comment comment';
-  grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
   height: calc(100vh - 82px);
   padding: 22px 43px 0;
   overflow-y: auto;
@@ -37,8 +35,8 @@
     'video video chat'
     'video video chat'
     'info info chat';
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr 300px;
+  grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   grid-gap: 17px;
   height: calc(100vh - 82px);
   padding: 22px 43px 0;
@@ -62,7 +60,9 @@
 
 .video-block {
   grid-area: video;
-  background-color: var(--brand-green-color);
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  object-fit: contain;
   @media screen and (max-width: 992px) {
     height: fit-content;
   }
@@ -203,21 +203,27 @@
 }
 
 .add-comment-block-user-avatar {
+  display: block;
   width: 96px;
   height: 96px;
   margin-right: 10px;
   border-radius: 100%;
 }
 
-.add-comment-block-user-avatar img {
-  border-radius: 100%;
-}
-
 .add-comment-input {
   width: 100%;
+  height: auto;
   padding: 0;
+  overflow-y: hidden;
+  white-space: normal;
+  background: none;
   border: none;
-  border-bottom: #06c149 3px solid;
+  border-bottom: var(--text-gray-color) 3px solid;
+  resize: none;
+}
+
+.add-comment-input-in-focus {
+  border-bottom: var(--brand-green-color) 3px solid;
 }
 
 .add-comment-input-wrapper {
@@ -227,4 +233,24 @@
 .add-comment-submit-active {
   width: 100px;
   height: 36px;
+}
+
+.add-comment-cancel-button {
+  background: none;
+  border: 0;
+}
+
+.input-block {
+  width: 100%;
+}
+
+.add-comment-form-control {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+}
+
+.add-comment-cancel-button:hover {
+  height: min-content;
+  background: none;
 }

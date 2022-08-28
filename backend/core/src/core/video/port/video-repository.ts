@@ -11,10 +11,15 @@ import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 
 export interface VideoRepository {
-  getById(
-    id: string,
-  ): Promise<
-    (BaseVideoResponseDto & { comments: Comment[]; description: string; likeNum: number; dislikeNum: number }) | null
+  getById(id: string): Promise<
+    | (BaseVideoResponseDto & {
+        comments: Comment[];
+        description: string;
+        likeNum: number;
+        dislikeNum: number;
+        videoPath: string;
+      })
+    | null
   >;
   searchByTags(searchByTagsDto: TagSearchRequestQueryDto): Promise<VideoWithChannel[]>;
   searchByCatergories(searchByCategoryDto: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]>;
