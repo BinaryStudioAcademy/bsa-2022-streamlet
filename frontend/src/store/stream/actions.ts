@@ -11,45 +11,35 @@ import { ActionType } from './common';
 
 const createStream = createAsyncThunk<VideoStreamResponseDto, CreateStreamRequestDto, AsyncThunkConfig>(
   ActionType.CREATE_STREAM,
-  async (payload, { extra }) => {
-    const { channelStreamingApi } = extra;
-
+  async (payload, { extra: { channelStreamingApi } }) => {
     return channelStreamingApi.createStream(payload);
   },
 );
 
 const uploadPoster = createAsyncThunk<VideoStreamResponseDto, StreamPosterUploadRequestDto, AsyncThunkConfig>(
   ActionType.UPLOAD_POSTER,
-  async (payload, { extra }) => {
-    const { channelStreamingApi } = extra;
-
+  async (payload, { extra: { channelStreamingApi } }) => {
     return channelStreamingApi.uploadPoster(payload);
   },
 );
 
 const updateStreamData = createAsyncThunk<VideoStreamResponseDto, StreamUpdateRequestDto, AsyncThunkConfig>(
   ActionType.UPDATE_STREAM_DATA,
-  async (payload, { extra }) => {
-    const { channelStreamingApi } = extra;
-
+  async (payload, { extra: { channelStreamingApi } }) => {
     return channelStreamingApi.updateStreamData(payload);
   },
 );
 
 const getStreamData = createAsyncThunk<VideoStreamResponseDto, DefaultRequestParam, AsyncThunkConfig>(
   ActionType.GET_STREAM_DATA,
-  async ({ id }, { extra }) => {
-    const { channelStreamingApi } = extra;
-
+  async ({ id }, { extra: { channelStreamingApi } }) => {
     return channelStreamingApi.getStreamData(id);
   },
 );
 
 const setStreamStatus = createAsyncThunk<VideoStreamResponseDto, StreamUpdateRequestDto, AsyncThunkConfig>(
   ActionType.SET_STREAMING_STATUS,
-  async (payload, { extra }) => {
-    const { channelStreamingApi } = extra;
-
+  async (payload, { extra: { channelStreamingApi } }) => {
     return channelStreamingApi.setStreamStatus(payload);
   },
 );
