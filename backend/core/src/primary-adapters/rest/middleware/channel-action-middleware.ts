@@ -1,6 +1,7 @@
 import express from 'express';
 import { inject, injectable } from 'inversify';
 import { BaseMiddleware } from 'inversify-express-utils';
+import { errorCodes } from 'shared/build';
 import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud-service';
 import { VideoService } from '~/core/video/application/video-service';
 import { exceptionMessages } from '~/shared/enums/messages';
@@ -53,10 +54,10 @@ export class ChannelActionMiddleware extends BaseMiddleware {
 
   private validate(userId: string, authorId: string | undefined, next: express.NextFunction): void {
     if (!authorId) {
-      return next(new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND));
+      return next(new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND));
     }
     if (userId !== authorId) {
-      return next(new Forbidden(exceptionMessages.channelCrud.FORBIDDEN));
+      return next(new Forbidden(exceptionMessages.channelCrud.FORBIDDEN, errorCodes.stream.FORBIDDEN));
     }
   }
 }

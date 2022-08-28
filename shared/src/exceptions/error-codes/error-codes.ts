@@ -9,5 +9,8 @@ export const errorCodes = {
   },
   stream: {
     NO_CHANNELS: 'NO_CHANNELS_CREATED_TO_STREAM',
+    FORBIDDEN: 'FORBIDDEN_CHANNEL_ACTION',
+    NOT_FOUND: 'CHANNEL_NOT_FOUND',
+    ACTIVE_STREAM_EXISTS: 'ACTIVE_STREAM_EXISTS',
   },
 } as const;

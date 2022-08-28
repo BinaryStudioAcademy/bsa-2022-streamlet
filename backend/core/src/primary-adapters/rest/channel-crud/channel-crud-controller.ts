@@ -17,7 +17,7 @@ export class ChannelCrudController extends BaseHttpController {
   public async getOne(@requestParam() { id }: ChannelInfoRequestDto): Promise<ChannelInfoResponseDto> {
     const channel = await this.channelService.getChannelById({ id });
     if (!channel) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
     return trimChannelInfo(channel);
   }

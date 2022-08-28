@@ -202,7 +202,7 @@ export class ChannelStreamingController extends BaseHttpController {
   public async getStreamingKey(@requestParam() { id }: DefaultRequestParam): Promise<StreamingKeyResponseDto> {
     const keyData = await this.channelStreamingService.getStreamingKey(id);
     if (keyData === null) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
     return keyData;
   }
@@ -247,7 +247,7 @@ export class ChannelStreamingController extends BaseHttpController {
   ): Promise<StreamingKeyResponseDto> {
     const keyData = await this.channelStreamingService.resetStreamingKey(channelId);
     if (keyData === null) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
     return keyData;
   }
@@ -256,7 +256,7 @@ export class ChannelStreamingController extends BaseHttpController {
   public async createStream(@requestBody() { channelId }: CreateStreamRequestDto): Promise<VideoStreamResponseDto> {
     const newStream = await this.channelStreamingService.createStream(channelId);
     if (newStream === null) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
     if (!newStream) {
       throw new Forbidden(exceptionMessages.channelCrud.ACTIVE_STREAM_EXISTS);
@@ -268,7 +268,7 @@ export class ChannelStreamingController extends BaseHttpController {
   public async uploadPoster(@requestBody() payload: StreamPosterUploadRequestDto): Promise<VideoStreamResponseDto> {
     const update = await this.channelStreamingService.uploadStreamPoster(payload);
     if (!update) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
     return update;
   }
@@ -277,7 +277,7 @@ export class ChannelStreamingController extends BaseHttpController {
   public async updateStream(@requestBody() payload: StreamUpdateRequestDto): Promise<VideoStreamResponseDto> {
     const update = await this.channelStreamingService.update(payload);
     if (!update) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
     return update;
   }
@@ -290,7 +290,7 @@ export class ChannelStreamingController extends BaseHttpController {
   public async getCurrentStream(@requestParam() { id }: DefaultRequestParam): Promise<VideoStreamResponseDto> {
     const keyData = await this.channelStreamingService.getCurrentStream(id);
     if (!keyData) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
     return keyData;
   }
@@ -309,7 +309,7 @@ export class ChannelStreamingController extends BaseHttpController {
   public async liveControl(@requestBody() payload: StreamLiveStatusRequestDto): Promise<VideoStreamResponseDto> {
     const update = await this.channelStreamingService.liveControl(payload);
     if (!update) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
     return update;
   }
