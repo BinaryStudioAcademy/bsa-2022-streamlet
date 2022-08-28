@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { AsyncThunkConfig } from 'common/types/types';
 import { CategoryResponseDto } from 'shared/build';
 import { ActionType } from './common';
@@ -11,4 +11,6 @@ const getCategories = createAsyncThunk<CategoryResponseDto[], void, AsyncThunkCo
   },
 );
 
-export { getCategories };
+const activeCategory = createAction<{ id: string }>(ActionType.ACTIVE_CATEGORY);
+
+export { activeCategory, getCategories };

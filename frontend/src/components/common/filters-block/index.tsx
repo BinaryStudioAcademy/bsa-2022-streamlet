@@ -10,7 +10,7 @@ export type FilterItem = CategoryResponseDto & {
 
 export interface FilterBlockProps {
   filterList: Array<FilterItem>;
-  handleClickFilter: () => void;
+  handleClickFilter: (id: string) => void;
 }
 
 const FiltersBlock: FC<FilterBlockProps> = ({ filterList, handleClickFilter }) => {
@@ -20,7 +20,7 @@ const FiltersBlock: FC<FilterBlockProps> = ({ filterList, handleClickFilter }) =
         <div className={styles['blur-container']} />
         {filterList.map((filter) => (
           <button
-            onClick={handleClickFilter}
+            onClick={(): void => handleClickFilter(filter.id)}
             key={filter.id}
             className={clsx({ [styles.active]: filter.isActive }, styles['filter-item'])}
           >

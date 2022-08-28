@@ -10,7 +10,7 @@ import { ProfileApi } from './profile/profile-api.service';
 import { NotificationApi } from './notification/notification.service';
 import { ChannelCrudApi } from './channel-crud-api/channel-crud-api.service';
 import { ChannelSubscriptionApi } from './channel-subscription-api/channel-subscription-api.service';
-import { CategoryApi } from './category-api/video-api.service';
+import { CategoryApi } from './category-api/category-api.service';
 
 const storageService = new StorageService();
 const tokensStorageService = new TokensStorageService(storageService);

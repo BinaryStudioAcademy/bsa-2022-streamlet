@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 import { CategoryResponseDto } from 'shared/build';
-import { getCategories } from './actions';
+import { activeCategory, getCategories } from './actions';
 
 type State = {
   data: Array<
@@ -24,7 +24,6 @@ const reducer = createReducer(initialState, (builder) => {
     state.error = false;
     state.dataStatus = DataStatus.PENDING;
   });
-
   builder.addCase(getCategories.fulfilled, (state, { payload }) => {
     state.dataStatus = DataStatus.FULFILLED;
     state.data = payload.map((category) => ({
@@ -32,11 +31,19 @@ const reducer = createReducer(initialState, (builder) => {
       isActive: false,
     }));
   });
-
   builder.addCase(getCategories.rejected, (state) => {
     state.error = true;
     state.data = [];
     state.dataStatus = DataStatus.REJECTED;
+  });
+
+  builder.addCase(activeCategory, (state, { payload }) => {
+    state.data = state.data.map((category) => {
+      return {
+        ...category,
+        isActive: category.id === payload.id ? !category.isActive : category.isActive,
+      };
+    });
   });
 });
 

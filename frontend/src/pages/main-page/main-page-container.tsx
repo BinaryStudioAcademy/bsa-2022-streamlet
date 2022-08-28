@@ -4,19 +4,22 @@ import { MainPage } from './main-page';
 import { FilterBlockProps } from 'components/common/filters-block';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { getVideos } from 'store/videos/actions';
+import { getVideos, getVideosByCategory } from 'store/videos/actions';
 import { VideoCardMain } from 'components/common/common';
-import { getCategories } from 'store/categories/actions';
-
-function handleClickFilter(): void {
-  void 1;
-}
+import { activeCategory, getCategories } from 'store/categories/actions';
 
 const MainPageContainer: FC = () => {
   const dispatch = useAppDispatch();
   const videos = useAppSelector((state) => state.videos.data.list);
   const categories = useAppSelector((state) => state.category.data);
+
   const isLightTheme = useAppSelector((state) => state.theme.isLightTheme);
+
+  function handleClickFilter(id: string): void {
+    dispatch(activeCategory({ id }));
+    dispatch(getVideosByCategory());
+  }
+
   const filterBlock: FilterBlockProps = {
     filterList: categories,
     handleClickFilter,
