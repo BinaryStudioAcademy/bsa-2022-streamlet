@@ -3,7 +3,7 @@
   width: 10px;
   height: 10px;
   margin-right: 5px;
-  background: var(--white-text-color);
+  background: var(--always-white-color);
   border-radius: 50%;
 }
 
@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   padding: 0 7px;
-  color: var(--white-text-color);
+  color: var(--always-white-color);
   font-weight: bold;
   font-size: 12px;
   text-transform: uppercase;
