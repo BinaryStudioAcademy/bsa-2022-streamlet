@@ -135,7 +135,7 @@ const VideoPageContainer: FC = () => {
                     src={videoData.channel.avatar ? videoData.channel.avatar : defaultAvatar}
                   />
                   <div className={styles['channel-description']}>
-                    <span>{videoData.channel.name}</span>
+                    <div>{videoData.channel.name}</div>
                   </div>
                 </div>
               </Link>
@@ -148,11 +148,13 @@ const VideoPageContainer: FC = () => {
           <VideoChatContainer comments={videoData.comments} handlerSubmitMessage={handleMessageSubmit} />
         </div>
       ) : (
-        <VideoCommentBlock
-          onNewComment={handleMessageSubmit}
-          userAvatar={profile?.avatar}
-          comments={videoData.comments}
-        />
+        <div className={styles['video-comment-block']}>
+          <VideoCommentBlock
+            onNewComment={handleMessageSubmit}
+            userAvatar={profile?.avatar}
+            comments={videoData.comments}
+          />
+        </div>
       )}
     </div>
   );
