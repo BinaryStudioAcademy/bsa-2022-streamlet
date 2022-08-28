@@ -23,15 +23,15 @@ const extendedSchema = Joi.object<AddNewCommentFormValues, true>({
 export const VideoPageCommentForm: FC<Props> = ({ avatar, onSubmit, className }) => {
   const [isNeedFormControlElement, setIsNeedFormControlElement] = useState(false);
   const [isInputInFocus, setIsInputInFocus] = useState(false);
-  const { control, errors, isValid, reset } = useAppForm({
+  const { control, errors, isValid, reset, handleSubmit } = useAppForm({
     defaultValues: { comment: '' },
     mode: 'onChange',
     validationSchema: extendedSchema,
   });
-  const handleSubmit = (): void => {
+  const handleSubmitEvent = ({ comment }: { comment: string }): void => {
     reset({ comment: '' });
     if (isValid) {
-      onSubmit('test');
+      onSubmit(comment);
     }
   };
   const handleCancel = (): void => {
@@ -46,7 +46,7 @@ export const VideoPageCommentForm: FC<Props> = ({ avatar, onSubmit, className })
     setIsInputInFocus(false);
   };
   return (
-    <div className={clsx(styles['add-comment-block'], className)}>
+    <form onSubmit={handleSubmit(handleSubmitEvent)} className={clsx(styles['add-comment-block'], className)}>
       <img alt={'you'} src={avatar || defaultAvatar} className={styles['add-comment-block-user-avatar']} />
       <div className={styles['input-block']}>
         <Textarea
@@ -75,7 +75,6 @@ export const VideoPageCommentForm: FC<Props> = ({ avatar, onSubmit, className })
                 className={styles['add-comment-cancel-button']}
               />
               <Button
-                onClick={handleSubmit}
                 type={'submit'}
                 content={'Submit'}
                 className={clsx({
@@ -87,6 +86,6 @@ export const VideoPageCommentForm: FC<Props> = ({ avatar, onSubmit, className })
           )}
         </div>
       </div>
-    </div>
+    </form>
   );
 };
