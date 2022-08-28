@@ -111,7 +111,6 @@ async function seedTags(): Promise<void> {
 }
 
 async function seedCategories(): Promise<void> {
-  const videos = await prisma.video.findMany();
   const categories = Array.from(
     new Set([
       'gaming',
@@ -126,17 +125,44 @@ async function seedCategories(): Promise<void> {
       'programming',
     ]),
   );
+
+  const videosByCategory = new Map<string, string[]>();
+  videosByCategory.set('gaming', ['e7b87m91-4ade-4209-9222-24dfe45b08s9']);
+  videosByCategory.set('education', ['b3b82a26-4ade-4209-9222-24dfe36b08f5', 'e7b87a21-4ase-4209-0022-24dfe36b08f5']);
+  videosByCategory.set('music', ['w7b87a26-4adw-4211-9222-24dfe36b08f5']);
+  videosByCategory.set('pets&animal', ['f5c7b2e5-fd35-4092-80ac-a1cea1d7cacb']);
+  videosByCategory.set('sports', ['e7b87a26-4ade-4209-9422-24dff36b08f5']);
+  videosByCategory.set('travel&events', [
+    '67105c20-233e-48de-a8b6-c9a10be83824',
+    'e7b87a26-4ade-4209-9222-24dfe36b08f5',
+  ]);
+  videosByCategory.set('people&blogs', [
+    '90862886-dab4-4777-9b1d-62a0f541559e',
+    'rt787a26-4ade-4201-9222-24dfe36b08f5',
+    'e7b87a26-4add-1229-9222-24dfe36b08f5',
+    'e7b87a26-4ade-4209-9222-24dfe36b00c7',
+  ]);
+  videosByCategory.set('film&animation', [
+    'sh787a26-4adv-4209-9173-24dfe36b08f5',
+    'e7b87a26-4ade-4209-0122-24dfe36n08e5',
+  ]);
+  videosByCategory.set('programming', [
+    '34165be6-6ac0-4537-a857-cc0646d2620e',
+    '3400139d-e0fd-49ab-ac52-be4d72f9b10b',
+    '76746c5b-e552-40ba-8d9a-247428386caf',
+    'h4a87a26-4ade-4209-9222-24dfe36b08f5',
+    'e7b87l09-4ade-4209-9111-12dfs34b08f5',
+  ]);
+
   const totalCategories = categories.length;
-  const videosPerCategory = categories.length;
-  const uniqueCategories = Array.from(categories);
   for (let i = 0; i < totalCategories; i++) {
     await prisma.category.create({
       data: {
-        name: uniqueCategories[i],
+        name: categories[i],
         posterPath: 'https://static-cdn.jtvnw.net/ttv-boxart/509658-285x380.jpg',
         videos: {
-          connect: getRandomSample(videos, videosPerCategory).map((video) => ({
-            id: video.id,
+          connect: videosByCategory.get(categories[i])?.map((videoId) => ({
+            id: videoId,
           })),
         },
       },
