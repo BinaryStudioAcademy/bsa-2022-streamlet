@@ -1,23 +1,31 @@
-import { AppRoutes } from 'common/enums/enums';
-import { Button } from 'components/common/common';
-import { useAppSelector } from 'hooks/hooks';
+import { SubscribeButton } from 'components/common/subscribe-button/subscribe-button';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import React, { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { channelSubscribeToggle } from 'store/channel/actions';
 
 type Props = {
   className?: string;
 };
 
 const Subscribe: FC<Props> = ({ className }) => {
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const isCurrentUserSubscribed =
+    useAppSelector((state) => state.channel.currentChannel.data?.isCurrentUserSubscriber) ?? false;
+  const channelId = useAppSelector((state) => state.channel.currentChannel.data?.id);
   const user = useAppSelector((state) => state.auth.user);
-  const handleSubscribeClick = (): void => {
-    if (!user) {
-      navigate(AppRoutes.SIGN_IN);
-      return;
-    }
-  };
-  return <Button content={'Subscribe'} className={className} onClick={handleSubscribeClick} />;
+  return (
+    <SubscribeButton
+      hasUser={Boolean(user)}
+      isCurrentUserSubscribed={isCurrentUserSubscribed}
+      isDisabled={channelId === undefined}
+      onSubscribeClick={(): void => {
+        if (channelId !== undefined) {
+          dispatch(channelSubscribeToggle(channelId));
+        }
+      }}
+      className={className}
+    />
+  );
 };
 
 export { Subscribe };
