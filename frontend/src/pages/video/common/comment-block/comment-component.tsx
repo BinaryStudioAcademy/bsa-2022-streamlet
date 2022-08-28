@@ -1,9 +1,9 @@
-import { FC } from 'common/types/types';
 import { generateAbbreviatureNameUser, getUserDisplayName } from 'helpers/user';
 import { getHowLongAgoString } from 'helpers/helpers';
+import { FC } from 'common/types/types';
 import { Comment } from 'shared/src/common/types/comment';
 
-import styles from './video-comment.module.scss';
+import styles from './styles.module.scss';
 
 type Props = {
   comment: Comment;
@@ -20,7 +20,7 @@ const VideoComment: FC<Props> = ({ comment }) => {
           <div className={styles['default-avatar']}>{generateAbbreviatureNameUser(getUserDisplayName(comment))}</div>
         )}
         <p className={styles['commentators-name']}>{getUserDisplayName(comment)}</p>
-        <div className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</div>
+        <span className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</span>
       </div>
       <div className={styles['content-part-comment']}>
         <p className={styles['text-comment']}>{comment.text}</p>

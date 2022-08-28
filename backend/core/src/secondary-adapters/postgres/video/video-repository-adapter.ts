@@ -36,10 +36,15 @@ export class VideoRepositoryAdapter implements VideoRepository {
     return reaction ? reaction.isLike : null;
   }
 
-  async getById(
-    id: string,
-  ): Promise<
-    (BaseVideoResponseDto & { comments: Comment[]; description: string; likeNum: number; dislikeNum: number }) | null
+  async getById(id: string): Promise<
+    | (BaseVideoResponseDto & {
+        comments: Comment[];
+        description: string;
+        likeNum: number;
+        dislikeNum: number;
+        videoPath: string;
+      })
+    | null
   > {
     const video = await this.prismaClient.video.findUnique({
       where: {
