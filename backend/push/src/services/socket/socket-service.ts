@@ -48,24 +48,25 @@ class SocketService {
         },
       });
 
+      const updateLiveViews = debounce((roomId: string) => {
+        if (this.io) {
+          const countIsLive = this.io.sockets.adapter.rooms.get(roomId)?.size;
+          this.io.to(roomId).emit(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, { live: countIsLive });
+        }
+      }, 2000);
+
       socket.on(SocketEvents.chat.JOIN_ROOM, (roomId: string) => {
         socket.join(roomId);
         socket.emit(SocketEvents.chat.JOIN_ROOM_DONE, 'success');
 
-        debounce(() => {
-          const countIsLive = this.io?.sockets.adapter.rooms.get(roomId)?.size;
-          socket.emit(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, { live: countIsLive });
-        }, 5000);
+        updateLiveViews(roomId);
       });
 
       socket.on(SocketEvents.chat.LEAVE_ROOM, (roomId: string) => {
         socket.leave(roomId);
         socket.emit(SocketEvents.chat.LEAVE_ROOM_DONE, 'success');
 
-        debounce(() => {
-          const countIsLive = this.io?.sockets.adapter.rooms.get(roomId)?.size;
-          socket.emit(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, { live: countIsLive });
-        }, 5000);
+        updateLiveViews(roomId);
       });
 
       socket.on('disconnect', async () => {
