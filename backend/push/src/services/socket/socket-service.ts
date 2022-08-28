@@ -2,7 +2,7 @@ import { SocketIo } from '~/shared/types/socket/socket-io.type';
 import * as http from 'http';
 import { createIoInstance } from '~/websockets/io';
 import { amqpService } from '../services';
-import { AmqpQueue } from 'shared/build';
+import { AmqpQueue, SocketEvents } from '~/shared/enums/enums';
 import { logger } from '~/config/logger';
 
 class SocketService {
@@ -18,7 +18,7 @@ class SocketService {
           if (data) {
             const message = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(message)}`);
-            socket.emit('notify-done', message);
+            socket.emit(SocketEvents.notify.NOTIFY_USER_DONE, message);
           }
         },
       });
@@ -29,7 +29,18 @@ class SocketService {
           if (data && this.io) {
             const message = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(message)}`);
-            this.io.emit('notify-broadcast-done', message);
+            this.io.emit(SocketEvents.notify.NOTIFY_BROADCAST_DONE, message);
+          }
+        },
+      });
+
+      amqpService.consume({
+        queue: AmqpQueue.NOTIFY_CHAT_ROOM,
+        onMessage: (data) => {
+          if (data && this.io) {
+            const message = JSON.parse(data.toString('utf-8'));
+            logger.info(`Rabbitmq -> ${JSON.stringify(message)}`);
+            this.io.emit(SocketEvents.chat.NOTIFY_CHAT_ROOM_DONE, message);
           }
         },
       });
