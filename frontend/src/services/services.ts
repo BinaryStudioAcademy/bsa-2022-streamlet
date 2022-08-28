@@ -10,6 +10,7 @@ import { ProfileApi } from './profile/profile-api.service';
 import { NotificationApi } from './notification/notification.service';
 import { ChannelCrudApi } from './channel-crud-api/channel-crud-api.service';
 import { ChannelSubscriptionApi } from './channel-subscription-api/channel-subscription-api.service';
+import { CategoryApi } from './category-api/category-api.service';
 
 const storageService = new StorageService();
 const tokensStorageService = new TokensStorageService(storageService);
@@ -40,6 +41,11 @@ const videoApi = new VideoApi({
   http,
 });
 
+const categoryApi = new CategoryApi({
+  apiPrefix: ENV.API_PATH,
+  http,
+});
+
 const channelSubscriptionApi = new ChannelSubscriptionApi({
   apiPrefix: ENV.API_PATH,
   http,
@@ -53,6 +59,7 @@ export {
   storageService,
   tokensStorageService,
   videoApi,
+  categoryApi,
   channelCrudApi,
   channelSubscriptionApi,
 };
