@@ -66,6 +66,9 @@ export class VideoRepositoryAdapter implements VideoRepository {
               },
             },
           },
+          orderBy: {
+            createdAt: 'desc',
+          },
         },
       },
     });
@@ -140,6 +143,9 @@ export class VideoRepositoryAdapter implements VideoRepository {
                 profile: true,
               },
             },
+          },
+          orderBy: {
+            createdAt: 'desc',
           },
         },
       },
