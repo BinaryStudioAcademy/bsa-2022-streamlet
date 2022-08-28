@@ -7,7 +7,16 @@ const getCategories = createAsyncThunk<CategoryResponseDto[], void, AsyncThunkCo
   ActionType.GET_CATEGORIES,
   async (_payload, { extra: { categoryApi } }) => {
     const data = await categoryApi.getCategories();
-    return data;
+    const categories = data.map((category) => {
+      return {
+        ...category,
+        name: category.name
+          .split('&')
+          .map((x) => x.charAt(0).toUpperCase() + x.slice(1))
+          .join(' & '),
+      };
+    });
+    return categories;
   },
 );
 

@@ -91,12 +91,15 @@ async function seedSubscriptions(): Promise<void> {
 
 async function seedTags(): Promise<void> {
   const videos = await prisma.video.findMany();
-  const videosPerTag = 20;
-  const totalTags = 20;
+  const tags = Array.from(
+    new Set(['fps', 'moba', 'indie', 'strategy', 'simulation', 'platformer', 'irl', 'physics', 'medicine']),
+  );
+  const totalTags = tags.length;
+  const videosPerTag = 4;
   for (let i = 0; i < totalTags; i++) {
     await prisma.tag.create({
       data: {
-        name: faker.random.word(),
+        name: tags[i],
         videos: {
           connect: getRandomSample(videos, videosPerTag).map((video) => ({
             id: video.id,
@@ -109,12 +112,27 @@ async function seedTags(): Promise<void> {
 
 async function seedCategories(): Promise<void> {
   const videos = await prisma.video.findMany();
-  const videosPerCategory = 20;
-  const totalCategories = 20;
+  const categories = Array.from(
+    new Set([
+      'gaming',
+      'education',
+      'music',
+      'pets&animal',
+      'sports',
+      'travel&events',
+      'comedy',
+      'people&blogs',
+      'film&animation',
+      'programming',
+    ]),
+  );
+  const totalCategories = categories.length;
+  const videosPerCategory = categories.length;
+  const uniqueCategories = Array.from(categories);
   for (let i = 0; i < totalCategories; i++) {
     await prisma.category.create({
       data: {
-        name: 'Just talking' + i,
+        name: uniqueCategories[i],
         posterPath: 'https://static-cdn.jtvnw.net/ttv-boxart/509658-285x380.jpg',
         videos: {
           connect: getRandomSample(videos, videosPerCategory).map((video) => ({
