@@ -12,6 +12,7 @@ import styles from './video-page.module.scss';
 import { getReactBtnColor } from 'helpers/helpers';
 import { VideoPlayer } from 'components/common/video-player/video-player';
 import { VideoCommentBlock } from './common/comment-block/comment-block';
+import { Link } from 'react-router-dom';
 
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -79,9 +80,8 @@ const VideoPageContainer: FC = () => {
 
   return (
     <div
-      className={clsx({
-        [styles['video-page']]: !isVideoFinished,
-        [styles['video-page-without-live']]: isVideoFinished,
+      className={clsx(styles['video-page'], {
+        [styles['finished']]: isVideoFinished,
       })}
     >
       <div className={styles['video-block']}>
@@ -90,53 +90,58 @@ const VideoPageContainer: FC = () => {
           url={videoData.videoPath}
           isLive={videoData.status === StreamingStatus.LIVE}
           videoAttributes={{ poster: videoData.poster }}
+          className={styles['video-player']}
         />
-      </div>
-      <div className={styles['video-info-block']}>
-        <div className={styles['video-header']}>
-          <h2 className={styles['video-block-header']}>{videoData.name}</h2>
-          <div className={styles['reaction-block']}>
-            <div className={styles['reaction-container']}>
-              <ThumbUp
-                height={'25'}
-                width={'25'}
-                onClick={handleLikeReact}
-                color={getReactBtnColor(userReaction, true)}
-              />
-              <span>{videoData.likeNum}</span>
-            </div>
-            <div className={styles['reaction-container']}>
-              <ThumbDown
-                height={'25'}
-                width={'25'}
-                onClick={handleDislikeReact}
-                color={getReactBtnColor(userReaction, true)}
-              />
-              <span>{videoData.dislikeNum}</span>
-            </div>
-          </div>
-        </div>
-        <>
-          <div className={styles['views-container']}>
-            <span>{`${videoData.videoViews} views`}</span>
-          </div>
-          <div className={styles['description-container']}>
-            <span>{`${videoData.description}`}</span>
-          </div>
-          <hr />
-          <div className={styles['channel-info-container']}>
-            <div className={styles['about-channel-block']}>
-              <img
-                className={styles['channel-banner']}
-                alt={'user avatar'}
-                src={videoData.channel.avatar ? videoData.channel.avatar : defaultAvatar}
-              />
-              <div className={styles['channel-description']}>
-                <span>{videoData.channel.name}</span>
+        <div className={styles['video-info-block']}>
+          <div className={styles['video-header']}>
+            <h2 className={styles['video-title']}>{videoData.name}</h2>
+            <div className={styles['reaction-block']}>
+              <div className={styles['reaction-container']}>
+                <ThumbUp
+                  height={'25'}
+                  width={'25'}
+                  onClick={handleLikeReact}
+                  className={styles['reaction-button']}
+                  color={getReactBtnColor(userReaction, true)}
+                />
+                <span>{videoData.likeNum}</span>
+              </div>
+              <div className={styles['reaction-container']}>
+                <ThumbDown
+                  height={'25'}
+                  width={'25'}
+                  onClick={handleDislikeReact}
+                  className={styles['reaction-button']}
+                  color={getReactBtnColor(userReaction, false)}
+                />
+                <span>{videoData.dislikeNum}</span>
               </div>
             </div>
           </div>
-        </>
+          <>
+            <div className={styles['views-container']}>
+              <span>{`${videoData.videoViews} views`}</span>
+            </div>
+            <div className={styles['description-container']}>
+              <span>{`${videoData.description}`}</span>
+            </div>
+            <hr />
+            <div className={styles['channel-info-container']}>
+              <Link to={`${AppRoutes.CHANNEL}/${videoData.channel.id}`} style={{ textDecoration: 'none' }}>
+                <div className={styles['about-channel-block']}>
+                  <img
+                    className={styles['channel-banner']}
+                    alt={'user avatar'}
+                    src={videoData.channel.avatar ? videoData.channel.avatar : defaultAvatar}
+                  />
+                  <div className={styles['channel-description']}>
+                    <span>{videoData.channel.name}</span>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </>
+        </div>
       </div>
       {!isVideoFinished ? (
         <div className={styles['chat-block']}>

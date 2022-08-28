@@ -1,4 +1,4 @@
-import styles from '../../video-page.module.scss';
+import styles from './styles.module.scss';
 import { useAppForm } from '../../../../hooks/use-app-form/use-app-form.hook';
 import { FC } from '../../../../common/types/react/fc.type';
 import { Button, Textarea } from '../../../../components/common/common';
@@ -10,6 +10,7 @@ import { useState } from '../../../../hooks/hooks';
 type Props = {
   avatar: string | undefined;
   onSubmit: { (text: string): void };
+  className?: string;
 };
 interface AddNewCommentFormValues {
   comment: string;
@@ -19,7 +20,7 @@ const extendedSchema = Joi.object<AddNewCommentFormValues, true>({
   comment: Joi.string().required(),
 });
 
-export const VideoPageCommentForm: FC<Props> = ({ avatar = defaultAvatar, onSubmit }) => {
+export const VideoPageCommentForm: FC<Props> = ({ avatar, onSubmit, className }) => {
   const [isNeedFormControlElement, setIsNeedFormControlElement] = useState(false);
   const [isInputInFocus, setIsInputInFocus] = useState(false);
   const { control, errors, isValid, reset } = useAppForm({
@@ -45,8 +46,8 @@ export const VideoPageCommentForm: FC<Props> = ({ avatar = defaultAvatar, onSubm
     setIsInputInFocus(false);
   };
   return (
-    <div className={styles['add-comment-block']}>
-      <img alt={'you avatar'} src={avatar} className={styles['add-comment-block-user-avatar']} />
+    <div className={clsx(styles['add-comment-block'], className)}>
+      <img alt={'you'} src={avatar || defaultAvatar} className={styles['add-comment-block-user-avatar']} />
       <div className={styles['input-block']}>
         <Textarea
           control={control}

@@ -20,7 +20,7 @@ const VideoComment: FC<Props> = ({ comment }) => {
           <div className={styles['default-avatar']}>{generateAbbreviatureNameUser(getUserDisplayName(comment))}</div>
         )}
         <p className={styles['commentators-name']}>{getUserDisplayName(comment)}</p>
-        <span className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</span>
+        <div className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</div>
       </div>
       <div className={styles['content-part-comment']}>
         <p className={styles['text-comment']}>{comment.text}</p>
