@@ -46,7 +46,7 @@ const getHowLongAgoString = (date: Date): string => {
     return `${nowDate.diff(inputDate, moreThanMinute)} ${matchTimeUnitWithTimeTitle[moreThanMinute]}(s) ago`;
   }
 
-  return 'less than min ago';
+  return 'less than a min ago';
 };
 
 export { getHowLongAgoString };
