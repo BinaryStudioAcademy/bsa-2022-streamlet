@@ -33,7 +33,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
         videoId,
       },
     });
-    return reaction ? reaction.isLike : null;
+    return reaction !== null ? reaction.isLike : null;
   }
 
   async getById(id: string): Promise<
@@ -65,6 +65,9 @@ export class VideoRepositoryAdapter implements VideoRepository {
                 profile: true,
               },
             },
+          },
+          orderBy: {
+            createdAt: 'desc',
           },
         },
       },
@@ -140,6 +143,9 @@ export class VideoRepositoryAdapter implements VideoRepository {
                 profile: true,
               },
             },
+          },
+          orderBy: {
+            createdAt: 'desc',
           },
         },
       },

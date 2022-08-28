@@ -1,8 +1,6 @@
 import clsx from 'clsx';
-import { AppRoutes } from 'common/enums/enums';
 import { Button } from 'components/common/common';
 import React, { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
 
 type Props = {
@@ -10,14 +8,21 @@ type Props = {
   isCurrentUserSubscribed: boolean;
   onSubscribeClick: () => void;
   hasUser: boolean;
+  onUserUnauthenticated: () => void;
   isDisabled: boolean;
 };
 
-const SubscribeButton: FC<Props> = ({ className, isCurrentUserSubscribed, onSubscribeClick, hasUser, isDisabled }) => {
-  const navigate = useNavigate();
+const SubscribeButton: FC<Props> = ({
+  className,
+  isCurrentUserSubscribed,
+  onSubscribeClick,
+  hasUser,
+  isDisabled,
+  onUserUnauthenticated,
+}) => {
   const handleSubscribeClick = (): void => {
     if (!hasUser) {
-      navigate(AppRoutes.SIGN_IN);
+      onUserUnauthenticated();
       return;
     }
     onSubscribeClick();

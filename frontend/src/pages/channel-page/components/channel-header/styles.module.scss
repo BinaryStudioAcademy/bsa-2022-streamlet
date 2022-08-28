@@ -24,8 +24,21 @@
   }
 }
 
-.subscribe {
+.subscribe-wrapper {
+  position: relative;
   @media #{breakpoint.$tablet-small} {
+    margin-left: auto;
+  }
+}
+
+.signin-modal {
+  position: absolute;
+  top: 120%;
+  left: 0;
+  width: 200px;
+  @media #{breakpoint.$tablet-small} {
+    right: 0;
+    left: unset;
     margin-left: auto;
   }
 }

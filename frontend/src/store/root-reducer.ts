@@ -8,6 +8,7 @@ import { reducer as channel } from './channel/reducer';
 import { reducer as theme } from './theme-switch/reducer';
 import { reducer as videos } from './videos/reducer';
 import { reducer as videoPage } from './video-page/reducer';
+import { reducer as category } from './categories/reducer';
 
 const rootReducer = combineReducers({
   auth,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   channel,
   videos,
   videoPage,
+  category,
 });
 
 export { rootReducer };
