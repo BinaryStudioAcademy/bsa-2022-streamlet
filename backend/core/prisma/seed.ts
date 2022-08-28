@@ -92,11 +92,11 @@ async function seedSubscriptions(): Promise<void> {
 async function seedTags(): Promise<void> {
   const videos = await prisma.video.findMany();
   const videosPerTag = 20;
-  const totalTags = 20;
-  for (let i = 0; i < totalTags; i++) {
+  const tags = ['Minecraft', 'BF4', 'VA-11 Hall-A', 'Portal 2', 'FFIX'];
+  tags.forEach(async (tag) => {
     await prisma.tag.create({
       data: {
-        name: faker.random.word(),
+        name: tag,
         videos: {
           connect: getRandomSample(videos, videosPerTag).map((video) => ({
             id: video.id,
@@ -104,7 +104,7 @@ async function seedTags(): Promise<void> {
         },
       },
     });
-  }
+  });
 }
 
 async function seedCategories(): Promise<void> {

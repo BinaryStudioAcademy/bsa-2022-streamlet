@@ -68,29 +68,29 @@ model ResetPasswordToken {
 }
 
 enum StreamStatus {
-  waiting
-  live
-  finished
+  WAITING
+  LIVE
+  FINISHED
 }
 
 enum Privacy {
-  public
-  unlisted
-  private
+  PUBLIC
+  UNLISTED
+  PRIVATE
 }
 
 model Video {
   id                  String         @id @default(uuid())
   name                String         @default("My new stream")
   description         String         @default("")
-  status              StreamStatus   @default(waiting)
+  status              StreamStatus   @default(WAITING)
   isReadyToStream     Boolean        @default(false)
   publishedAt         DateTime?
   scheduledStreamDate DateTime       @default(now())
   poster              String         @default("")
   duration            Int            @default(0)
   videoPath           String         @default("")
-  privacy             Privacy        @default(unlisted)
+  privacy             Privacy        @default(UNLISTED)
   liveViews           Int            @default(0)
   videoViews          Int            @default(0)
   tags                Tag[]

@@ -15,7 +15,7 @@ export const trimChannelInfo = (channel: ChannelInfoBeforeTrimming): ChannelInfo
         tags: video.tags.map((tag) => tag.name),
         status: video.status as StreamStatus,
         categories: video.categories.map((category) => category.name),
-        publishedAt: video.publishedAt.toISOString(),
+        publishedAt: video.publishedAt?.toISOString() ?? '',
         scheduledStreamDate: video.scheduledStreamDate.toISOString(),
         updatedAt: video.updatedAt.toISOString(),
         durationSec: video.duration,

@@ -5,22 +5,22 @@
 
 */
 -- CreateEnum
-CREATE TYPE "StreamStatus" AS ENUM ('waiting', 'live', 'finished');
+CREATE TYPE "StreamStatus" AS ENUM ('WAITING', 'LIVE', 'FINISHED');
 
 -- CreateEnum
-CREATE TYPE "Privacy" AS ENUM ('public', 'unlisted', 'private');
+CREATE TYPE "Privacy" AS ENUM ('PUBLIC', 'UNLISTED', 'PRIVATE');
 
 -- AlterTable
 ALTER TABLE "Video" ADD COLUMN     "isReadyToStream" BOOLEAN NOT NULL DEFAULT false,
-ADD COLUMN     "privacy" "Privacy" NOT NULL DEFAULT 'unlisted',
+ADD COLUMN     "privacy" "Privacy" NOT NULL DEFAULT 'UNLISTED',
 ALTER COLUMN "name" SET DEFAULT 'My new stream',
 ALTER COLUMN "videoPath" SET DEFAULT '',
 DROP COLUMN "status",
-ADD COLUMN     "status" "StreamStatus" NOT NULL DEFAULT 'waiting',
+ADD COLUMN     "status" "StreamStatus" NOT NULL DEFAULT 'WAITING',
 ALTER COLUMN "publishedAt" DROP NOT NULL,
 ALTER COLUMN "publishedAt" DROP DEFAULT;
 
-UPDATE "Video" SET "status" = 'finished';
+UPDATE "Video" SET "status" = 'FINISHED';
 
 -- DropEnum
 DROP TYPE "StreamingStatus";
