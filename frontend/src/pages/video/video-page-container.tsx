@@ -9,9 +9,9 @@ import { FC, useEffect } from 'react';
 import { videoPageActions } from 'store/actions';
 import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
 import styles from './video-page.module.scss';
-import { VideoPageCommentForm } from './add-comment-form/add-comment-form';
 import { getReactBtnColor } from 'helpers/helpers';
 import { VideoPlayer } from 'components/common/video-player/video-player';
+import { VideoCommentBlock } from './common/comment-block/comment-block';
 
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -138,17 +138,17 @@ const VideoPageContainer: FC = () => {
           </div>
         </>
       </div>
-      {!isVideoFinished && (
+      {!isVideoFinished ? (
         <div className={styles['chat-block']}>
           <VideoChatContainer comments={videoData.comments} handlerSubmitMessage={handleMessageSubmit} />
         </div>
+      ) : (
+        <VideoCommentBlock
+          onNewComment={handleMessageSubmit}
+          userAvatar={profile?.avatar}
+          comments={videoData.comments}
+        />
       )}
-      <VideoPageCommentForm
-        avatar={profile?.avatar}
-        onSubmit={(): void => {
-          handleMessageSubmit('test');
-        }}
-      />
     </div>
   );
 };
