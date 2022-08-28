@@ -33,6 +33,7 @@ export const VideoPageCommentForm: FC<Props> = ({ avatar, onSubmit, className })
     if (isValid) {
       onSubmit(comment);
     }
+    setIsNeedFormControlElement(false);
   };
   const handleCancel = (): void => {
     reset({ comment: '' });
@@ -77,10 +78,12 @@ export const VideoPageCommentForm: FC<Props> = ({ avatar, onSubmit, className })
               <Button
                 type={'submit'}
                 content={'Submit'}
-                className={clsx({
-                  [styles['add-comment-submit-active']]: isValid,
-                  [styles['add-comment-submit-npt-active']]: !isValid,
-                })}
+                className={clsx(
+                  {
+                    [styles['add-comment-submit-disabled']]: !isValid,
+                  },
+                  styles['add-comment-submit-active'],
+                )}
               />
             </>
           )}
