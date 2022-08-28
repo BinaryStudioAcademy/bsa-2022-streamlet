@@ -22,11 +22,11 @@ interface InitialState {
     dataStatus: DataStatus;
     error: string | undefined;
   };
-  myChannelVideos: {
-    data: ReturnType<typeof channelVideosAdapter.getInitialState>;
-    dataStatus: DataStatus;
-    error: string | undefined;
-  };
+  // myChannelVideos: {
+  //   data: ReturnType<typeof channelVideosAdapter.getInitialState>;
+  //   dataStatus: DataStatus;
+  //   error: string | undefined;
+  // };
 }
 
 const channelVideosAdapter = createEntityAdapter<ChannelVideo>({
@@ -46,7 +46,7 @@ const initialState: InitialState = {
     dataStatus: DataStatus.IDLE,
     error: undefined,
   },
-  myChannelVideos: { data: channelVideosAdapter.getInitialState(), dataStatus: DataStatus.IDLE, error: undefined },
+  // myChannelVideos: { data: channelVideosAdapter.getInitialState(), dataStatus: DataStatus.IDLE, error: undefined },
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -87,9 +87,9 @@ const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(loadMyChannel.fulfilled, (state, { payload }) => {
     state.myChannel.dataStatus = DataStatus.FULFILLED;
-    const { initialVideosPage, ...channelData } = payload;
+    const { /* initialVideosPage, */ ...channelData } = payload;
     state.myChannel.data = channelData;
-    channelVideosAdapter.setAll(state.myChannelVideos.data, initialVideosPage.list);
+    // channelVideosAdapter.setAll(state.myChannelVideos.data, initialVideosPage.list);
   });
 });
 
@@ -97,8 +97,8 @@ export const { selectById: selectChannelVideoById } = channelVideosAdapter.getSe
   (state) => state.channel.currentChannelVideos.data,
 );
 
-export const { selectById: selectMyChannelVideo } = channelVideosAdapter.getSelectors<RootState>(
-  (state) => state.channel.myChannelVideos.data,
-);
+// export const { selectById: selectMyChannelVideo } = channelVideosAdapter.getSelectors<RootState>(
+//   (state) => state.channel.myChannelVideos.data,
+// );
 
 export { reducer };

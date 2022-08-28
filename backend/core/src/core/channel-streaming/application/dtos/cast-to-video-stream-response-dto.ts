@@ -1,7 +1,7 @@
 import { VideoStreamResponseDto } from 'shared/build';
 import { VideoStreamResponseBeforeTrimming } from '~/shared/types/stream/stream-info-before-trimming.type';
 
-export const castToVideoStreamResponseDto = ({
+const castToVideoStreamResponseDto = ({
   id,
   name,
   description,
@@ -34,3 +34,5 @@ export const castToVideoStreamResponseDto = ({
     channelId,
   };
 };
+
+export { castToVideoStreamResponseDto };

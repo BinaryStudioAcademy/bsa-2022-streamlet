@@ -8,13 +8,14 @@ import { generateUuid } from '~/shared/helpers';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import {
   ImageStorePresetType,
+  OwnChannelResponseDto,
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
   StreamStatus,
   StreamUpdateRequestDto,
   VideoStreamResponseDto,
 } from 'shared/build';
-import { castToVideoStreamResponseDto } from './dtos/cast-to-video-stream-response-dto';
+import { castToVideoStreamResponseDto, castToOwnChannelDto } from './dtos/dtos';
 import { ImageStorePort } from '~/core/common/port/image-store';
 import { VideoStreamResponseBeforeTrimming } from '~/shared/types/stream/stream-info-before-trimming.type';
 
@@ -97,7 +98,21 @@ export class ChannelStreamingService {
     };
   }
 
-  async createStream(channelId: string): Promise<VideoStreamResponseDto> {
+  async getOwnChannel(userId: string): Promise<OwnChannelResponseDto | null> {
+    const ownChannel = await this.channelStreamingRepository.getOwnChannel(userId);
+    if (!ownChannel) {
+      return null;
+    }
+
+    return castToOwnChannelDto(ownChannel);
+  }
+
+  async createStream(channelId: string): Promise<VideoStreamResponseDto | undefined | null> {
+    const existingStream = this.getCurrentStream(channelId);
+    if (existingStream !== null) {
+      return null;
+    }
+
     const stream = await this.channelStreamingRepository.createStream(channelId);
     return castToVideoStreamResponseDto(stream);
   }

@@ -1,4 +1,4 @@
-import { PrismaClient, StreamingKey, Video } from '@prisma/client';
+import { Channel, PrismaClient, StreamingKey, Video } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { StreamStatus } from 'shared/build';
 import { ChannelStreamingRepository } from '~/core/channel-streaming/port/channel-streaming-repository';
@@ -88,6 +88,14 @@ export class ChannelStreamingRepositoryAdapter implements ChannelStreamingReposi
       include: {
         categories: true,
         tags: true,
+      },
+    });
+  }
+
+  getOwnChannel(authorId: string): Promise<Channel | null> {
+    return this.prismaClient.channel.findFirst({
+      where: {
+        authorId,
       },
     });
   }

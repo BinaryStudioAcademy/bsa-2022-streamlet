@@ -15,7 +15,9 @@ export const exceptionMessages = {
     EMAIL_NOT_VERIFIED: 'Please verify your email before logging in',
   },
   channelCrud: {
-    CHANNEL_ID_NOT_FOUND: 'Channel with such id wasnt found',
+    NO_CHANNELS: 'You dont have any channels',
+    CHANNEL_NOT_FOUND: 'Channel with such id wasnt found',
     FORBIDDEN: 'You are trying to do a forbidden channel action',
+    ACTIVE_STREAM_EXISTS: 'You cant start a new stream while having another active one',
   },
 };

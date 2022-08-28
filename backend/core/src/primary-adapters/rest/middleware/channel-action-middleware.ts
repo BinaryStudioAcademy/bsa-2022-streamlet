@@ -29,24 +29,23 @@ export class ChannelActionMiddleware extends BaseMiddleware {
     next: express.NextFunction,
   ): Promise<void> {
     const { id: userId } = req.user;
+    let authorId: string | undefined;
 
     if ('streamId' in req.body) {
-      const authorId = await this.videoService.getAuthorByVideoId(req.body.streamId);
-      if (!authorId) {
-        throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
-      }
-      if (userId !== authorId) {
-        throw new Forbidden(exceptionMessages.channelCrud.FORBIDDEN);
-      }
+      authorId = await this.videoService.getAuthorByVideoId(req.body.streamId);
     }
     if ('channelId' in req.body) {
-      const authorId = await this.channelCrudService.getAuthorByChannelId(req.body.channelId);
-      if (!authorId) {
-        throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
-      }
-      if (userId !== authorId) {
-        throw new Forbidden(exceptionMessages.channelCrud.FORBIDDEN);
-      }
+      authorId = await this.channelCrudService.getAuthorByChannelId(req.body.channelId);
+    }
+    if ('id' in req.params) {
+      authorId = await this.channelCrudService.getAuthorByChannelId(req.params.id);
+    }
+
+    if (!authorId) {
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
+    }
+    if (userId !== authorId) {
+      throw new Forbidden(exceptionMessages.channelCrud.FORBIDDEN);
     }
 
     next();

@@ -21,6 +21,7 @@ import { Forbidden } from '~/shared/exceptions/forbidden';
 import { NotFound } from '~/shared/exceptions/not-found';
 import {
   CreateStreamRequestDto,
+  OwnChannelResponseDto,
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
   StreamUpdateRequestDto,
@@ -201,7 +202,7 @@ export class ChannelStreamingController extends BaseHttpController {
   public async getStreamingKey(@requestParam() { id }: DefaultRequestParam): Promise<StreamingKeyResponseDto> {
     const keyData = await this.channelStreamingService.getStreamingKey(id);
     if (keyData === null) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
     }
     return keyData;
   }
@@ -246,7 +247,7 @@ export class ChannelStreamingController extends BaseHttpController {
   ): Promise<StreamingKeyResponseDto> {
     const keyData = await this.channelStreamingService.resetStreamingKey(channelId);
     if (keyData === null) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
     }
     return keyData;
   }
@@ -254,8 +255,11 @@ export class ChannelStreamingController extends BaseHttpController {
   @httpPost(ChannelStreamingApiPath.ROOT, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
   public async createStream(@requestBody() { channelId }: CreateStreamRequestDto): Promise<VideoStreamResponseDto> {
     const newStream = await this.channelStreamingService.createStream(channelId);
+    if (newStream === null) {
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
+    }
     if (!newStream) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
+      throw new Forbidden(exceptionMessages.channelCrud.ACTIVE_STREAM_EXISTS);
     }
     return newStream;
   }
@@ -264,7 +268,7 @@ export class ChannelStreamingController extends BaseHttpController {
   public async uploadPoster(@requestBody() payload: StreamPosterUploadRequestDto): Promise<VideoStreamResponseDto> {
     const update = await this.channelStreamingService.uploadStreamPoster(payload);
     if (!update) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
     }
     return update;
   }
@@ -273,25 +277,38 @@ export class ChannelStreamingController extends BaseHttpController {
   public async updateStream(@requestBody() payload: StreamUpdateRequestDto): Promise<VideoStreamResponseDto> {
     const update = await this.channelStreamingService.update(payload);
     if (!update) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
     }
     return update;
   }
 
-  @httpGet(ChannelStreamingApiPath.$ID, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
+  @httpGet(
+    `${ChannelStreamingApiPath.LIVE}${ChannelStreamingApiPath.$ID}`,
+    authenticationMiddleware,
+    CONTAINER_TYPES.ChannelActionMiddleware,
+  )
   public async getCurrentStream(@requestParam() { id }: DefaultRequestParam): Promise<VideoStreamResponseDto> {
     const keyData = await this.channelStreamingService.getCurrentStream(id);
     if (!keyData) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
     }
     return keyData;
+  }
+
+  @httpGet(ChannelStreamingApiPath.$ID, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
+  public async getOwnChannel(@requestParam() { id }: DefaultRequestParam): Promise<OwnChannelResponseDto | null> {
+    const channel = await this.channelStreamingService.getOwnChannel(id);
+    if (!channel) {
+      throw new NotFound(exceptionMessages.channelCrud.NO_CHANNELS);
+    }
+    return channel;
   }
 
   @httpPost(ChannelStreamingApiPath.LIVE, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
   public async goLive(@requestBody() payload: StreamLiveStatusRequestDto): Promise<VideoStreamResponseDto> {
     const update = await this.channelStreamingService.liveControl(payload);
     if (!update) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND);
     }
     return update;
   }
