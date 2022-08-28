@@ -11,13 +11,26 @@ export type FilterItem = CategoryResponseDto & {
 export interface FilterBlockProps {
   filterList: Array<FilterItem>;
   handleClickFilter: (id: string) => void;
+  handleClickClearFilters: () => void;
 }
 
-const FiltersBlock: FC<FilterBlockProps> = ({ filterList, handleClickFilter }) => {
+const FiltersBlock: FC<FilterBlockProps> = ({ filterList, handleClickFilter, handleClickClearFilters }) => {
+  const clearFilters: FilterItem = {
+    id: '1',
+    name: 'All',
+    isActive: filterList.filter((filter) => filter.isActive).length ? false : true,
+  };
   return (
     <div className={styles['filter-block']}>
       <div className={styles['filter-block-wrapper']}>
         <div className={styles['blur-container']} />
+        <button
+          onClick={handleClickClearFilters}
+          key={clearFilters.id}
+          className={clsx({ [styles.active]: clearFilters.isActive }, styles['filter-item'])}
+        >
+          {clearFilters.name}
+        </button>
         {filterList.map((filter) => (
           <button
             onClick={(): void => handleClickFilter(filter.id)}
