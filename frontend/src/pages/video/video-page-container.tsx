@@ -106,7 +106,7 @@ const VideoPageContainer: FC = () => {
                 {isUserNotAuthAndReact && (
                   <NeedSignInModal
                     headerText={'Like this video?'}
-                    className={styles['sign-in-modal-video-live']}
+                    className={styles['sign-in-modal']}
                     mainText={'Sign in so we can take your opinion into account.'}
                     onClose={(): void => {
                       setIsUserNotAuthAndReact(false);
