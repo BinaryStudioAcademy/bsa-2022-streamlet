@@ -132,7 +132,7 @@ export class VideoController extends BaseHttpController {
     return {
       ...video,
       isUserSubscribedOnChannel: isSubscribed,
-      userReaction: userReaction ? { isLike: userReaction } : null,
+      userReaction: userReaction !== null ? { isLike: userReaction } : null,
     };
   }
   /**

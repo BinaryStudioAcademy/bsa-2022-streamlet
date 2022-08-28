@@ -33,7 +33,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
         videoId,
       },
     });
-    return reaction ? reaction.isLike : null;
+    return reaction !== null ? reaction.isLike : null;
   }
 
   async getById(id: string): Promise<
