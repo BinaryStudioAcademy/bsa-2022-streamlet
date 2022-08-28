@@ -1,4 +1,4 @@
-const NUMBER_OF_FAKE_VIDEOS = 16;
+const NUMBER_OF_FAKE_VIDEOS = 10;
 const ARRAY_FAKE_VIDEOS = Array(NUMBER_OF_FAKE_VIDEOS).fill(null);
 const EMPTY_VIDEO_BLOCK: [] = [];
 const DARK_THEME_BASE_COLOR = '#1f222a';
