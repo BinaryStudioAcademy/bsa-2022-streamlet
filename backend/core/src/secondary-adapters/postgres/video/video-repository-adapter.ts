@@ -109,6 +109,9 @@ export class VideoRepositoryAdapter implements VideoRepository {
           },
         },
       },
+      orderBy: {
+        publishedAt: 'desc',
+      },
     });
     const total = items.length;
     const list = items.map(trimVideo);
