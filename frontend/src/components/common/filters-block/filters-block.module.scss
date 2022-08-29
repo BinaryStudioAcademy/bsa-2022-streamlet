@@ -51,6 +51,10 @@
   border-radius: 16px;
   cursor: pointer;
 
+  &:hover {
+    border: 1px solid var(--brand-green-color-hover);
+  }
+
   &.active,
   &:hover {
     color: var(--always-white-color);
@@ -59,6 +63,10 @@
 
   &.active {
     background-color: var(--brand-green-color);
+
+    &:hover {
+      background-color: var(--brand-green-color-hover);
+    }
   }
 
   &:not(:last-child) {
