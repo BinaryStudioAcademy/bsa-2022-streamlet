@@ -31,6 +31,7 @@ import { authenticationMiddleware } from '../middleware';
 import { exceptionMessages } from '~/shared/enums/messages';
 import { VideoService } from '~/core/video/application/video-service';
 import { errorCodes } from 'shared/build';
+import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud-service';
 
 /**
  * @swagger
@@ -93,14 +94,17 @@ import { errorCodes } from 'shared/build';
 @controller(ApiPath.CHANNEL_STREAMING)
 export class ChannelStreamingController extends BaseHttpController {
   private channelStreamingService: ChannelStreamingService;
+  private channelCrudService: ChannelCrudService;
   private videoService: VideoService;
 
   constructor(
     @inject(CONTAINER_TYPES.ChannelStreamingService) channelStreamingService: ChannelStreamingService,
+    @inject(CONTAINER_TYPES.ChannelCrudService) channelCrudService: ChannelCrudService,
     @inject(CONTAINER_TYPES.VideoService) videoService: VideoService,
   ) {
     super();
     this.channelStreamingService = channelStreamingService;
+    this.channelCrudService = channelCrudService;
     this.videoService = videoService;
   }
 
@@ -136,7 +140,11 @@ export class ChannelStreamingController extends BaseHttpController {
     if (streamData === null) {
       throw new Forbidden('Invalid streaming key or no video created to stream on');
     }
-    this.channelStreamingService.notifyTranscoderAboutStreamStart(streamData);
+    const authorId = await this.channelCrudService.getAuthorByChannelId(streamData.channelId);
+    if (!authorId) {
+      throw new NotFound('Author of stream not found.');
+    }
+    this.channelStreamingService.notifyTranscoderAboutStreamStart({ authorId, streamData });
   }
 
   /**
@@ -165,7 +173,14 @@ export class ChannelStreamingController extends BaseHttpController {
    */
   @httpPost(ChannelStreamingApiPath.DISCONNECT)
   public async disconnectObs(@requestBody() rtmpLiveRequestDto: RtmpLiveRequestDto): Promise<void> {
-    this.channelStreamingService.notifyTranscoderAboutStreamEnd(rtmpLiveRequestDto.name);
+    const streamData = await this.channelStreamingService.getAuthorIdByStreamingKey(rtmpLiveRequestDto.name);
+    if (streamData === null) {
+      throw new Forbidden('Invalid streaming key or no channel with this key.');
+    }
+    this.channelStreamingService.notifyTranscoderAboutStreamEnd({
+      authorId: streamData.authorId,
+      streamingKey: streamData.streamingKey,
+    });
   }
 
   /**

@@ -1,9 +1,10 @@
 import { Channel, PrismaClient, StreamingKey, Video } from '@prisma/client';
 import { inject, injectable } from 'inversify';
-import { StreamStatus } from 'shared/build';
+import { StreamStatus } from '~/shared/enums/enums';
 import { ChannelStreamingRepository } from '~/core/channel-streaming/port/channel-streaming-repository';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { VideoStreamResponseBeforeTrimming } from '~/shared/types/stream/stream-info-before-trimming.type';
+import { StreamKeyResponseBeforeTrimming } from '~/shared/types/types';
 
 @injectable()
 export class ChannelStreamingRepositoryAdapter implements ChannelStreamingRepository {
@@ -42,6 +43,21 @@ export class ChannelStreamingRepositoryAdapter implements ChannelStreamingReposi
       include: {
         categories: true,
         tags: true,
+      },
+    });
+  }
+
+  getAuthorlId(props: Partial<StreamingKey>): Promise<StreamKeyResponseBeforeTrimming | null> {
+    return this.prismaClient.streamingKey.findFirst({
+      where: {
+        ...props,
+      },
+      include: {
+        channel: {
+          include: {
+            author: true,
+          },
+        },
       },
     });
   }
