@@ -8,6 +8,7 @@ import {
   ChannelProfileUpdateResponseDto,
   ImageStorePresetType,
 } from 'shared/build';
+import { castToChannelProfileUpdateResponseDto } from './dtos/cast-to-channel-update-response-dtp';
 
 @injectable()
 export class ChannelCrudService {
@@ -29,11 +30,7 @@ export class ChannelCrudService {
     base64Str,
   }: ChannelProfileUpdateMediaRequestDto & {
     id: string;
-  }): Promise<ChannelProfileUpdateResponseDto | undefined> {
-    const isChannelExists = await this.channelRepository.getChannelById(id);
-    if (!isChannelExists) {
-      return;
-    }
+  }): Promise<ChannelProfileUpdateResponseDto> {
     const { url } = await this.imageStore.upload({
       base64Str,
       type: ImageStorePresetType.CHANNEL_AVATAR,
@@ -43,8 +40,8 @@ export class ChannelCrudService {
       id,
       url,
     });
-    //TODO: add cast
-    return updatedChannel;
+
+    return castToChannelProfileUpdateResponseDto(updatedChannel);
   }
 
   async updateBanner({
@@ -62,8 +59,8 @@ export class ChannelCrudService {
       id,
       url,
     });
-    //TODO: add cast
-    return updatedChannel;
+
+    return castToChannelProfileUpdateResponseDto(updatedChannel);
   }
 
   async updateSettings({
@@ -78,7 +75,7 @@ export class ChannelCrudService {
       name,
       description,
     });
-    //TODO: add cast
-    return updatedChannel;
+
+    return castToChannelProfileUpdateResponseDto(updatedChannel);
   }
 }

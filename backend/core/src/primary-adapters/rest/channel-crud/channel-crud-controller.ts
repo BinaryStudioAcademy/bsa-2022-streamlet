@@ -4,11 +4,16 @@ import {
   controller,
   httpGet,
   httpPost,
+  httpPut,
   request,
   requestBody,
   requestParam,
 } from 'inversify-express-utils';
-import { ChannelProfileUpdateMediaRequestDto, ChannelProfileUpdateResponseDto } from 'shared/build';
+import {
+  ChannelProfileUpdateMediaRequestDto,
+  ChannelProfileUpdateRequestDto,
+  ChannelProfileUpdateResponseDto,
+} from 'shared/build';
 import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud-service';
 import { ApiPath, ChannelCrudApiPath } from '~/shared/enums/api/api';
 import { exceptionMessages } from '~/shared/enums/messages';
@@ -55,9 +60,6 @@ export class ChannelCrudController extends BaseHttpController {
       id,
       base64Str,
     });
-    if (!updatedChannel) {
-      throw new NotFound('Channel not found');
-    }
 
     return updatedChannel;
   }
@@ -80,9 +82,30 @@ export class ChannelCrudController extends BaseHttpController {
       id,
       base64Str,
     });
-    if (!updatedChannel) {
-      throw new NotFound('Channel not found');
+
+    return updatedChannel;
+  }
+
+  @httpPut(ChannelCrudApiPath.$ID, authenticationMiddleware)
+  public async updateSettings(
+    @requestParam() { id }: ChannelInfoRequestDto,
+    @requestBody() { name, description }: ChannelProfileUpdateRequestDto,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<ChannelProfileUpdateResponseDto> {
+    const { id: userId } = req.user;
+    const isUserOwner = await this.channelService.isUserChannelOwner({
+      channelId: id,
+      userId,
+    });
+    if (!isUserOwner) {
+      throw new Forbidden();
     }
+
+    const updatedChannel = await this.channelService.updateSettings({
+      id,
+      name,
+      description,
+    });
 
     return updatedChannel;
   }
