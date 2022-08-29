@@ -44,6 +44,7 @@ const initialState: InitialState = {
 const reducer = createReducer(initialState, (builder) => {
   builder.addCase(loadChannel.pending, (state) => {
     state.currentChannel.dataStatus = DataStatus.PENDING;
+    state.currentChannelVideos.dataStatus = DataStatus.PENDING;
 
     // be sure to reset state, so that no stale data is displayed
     state.currentChannel.error = undefined;
@@ -57,11 +58,13 @@ const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(loadChannel.rejected, (state, { error }) => {
     state.currentChannel.dataStatus = DataStatus.REJECTED;
+    state.currentChannelVideos.dataStatus = DataStatus.REJECTED;
     state.currentChannel.error = error.message || ErrorMessage.DEFAULT;
   });
 
   builder.addCase(loadChannel.fulfilled, (state, { payload }) => {
     state.currentChannel.dataStatus = DataStatus.FULFILLED;
+    state.currentChannelVideos.dataStatus = DataStatus.FULFILLED;
     const { initialVideosPage, ...channelData } = payload;
     state.currentChannel.data = channelData;
     channelVideosAdapter.setAll(state.currentChannelVideos.data, initialVideosPage.list);
