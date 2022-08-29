@@ -73,10 +73,12 @@ const Sidebar: FC<SidebarProps> = ({
               {subscriptionList.list.slice(0, showCount).map((sub: BaseSubscriptionResponseDto) => (
                 <Channel key={sub.id} channelInfo={sub.channel} />
               ))}
-              <div className={styles['subscription-more']} onClick={handleSetSubscriptionDropdownShow}>
-                <Icon name={subscriptionDropdownShow ? IconName.CHEVRON_UP : IconName.CHEVRON_DOWN} width="24" />
-                <span>{subscriptionDropdownShow ? 'Show fewer' : `Show ${hideCount} more`}</span>
-              </div>
+              {subscriptionList.total > showCount && (
+                <div className={styles['subscription-more']} onClick={handleSetSubscriptionDropdownShow}>
+                  <Icon name={subscriptionDropdownShow ? IconName.CHEVRON_UP : IconName.CHEVRON_DOWN} width="24" />
+                  <span>{subscriptionDropdownShow ? 'Show fewer' : `Show ${hideCount} more`}</span>
+                </div>
+              )}
             </div>
           </div>
         )}
