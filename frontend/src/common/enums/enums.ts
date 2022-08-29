@@ -22,3 +22,5 @@ export * from './channel/channel';
 export { ImageUploadErrorMessage } from './image/image';
 
 export { StreamingStatus } from './stream/stream';
+
+export { SocketEvents } from './socket/socket';
