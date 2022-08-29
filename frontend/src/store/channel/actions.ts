@@ -24,21 +24,22 @@ const loadMyChannel = createAsyncThunk<OwnChannelResponseDto, void, AsyncThunkCo
   ActionsTypes.LOAD_MY_CHANNEL,
   async (_payload, { extra: { channelCrudApi }, rejectWithValue }) => {
     try {
-      return channelCrudApi.getMyChannelInfo();
+      return await channelCrudApi.getMyChannelInfo();
     } catch (error) {
       if (error instanceof HttpError) {
         return rejectWithValue(serializeHttpError(error));
       }
+      console.warn(error);
       throw error;
     }
   },
 );
 
 const getStreamingKey = createAsyncThunk<StreamingKeyResponseDto, DefaultRequestParam, AsyncThunkConfigHttpError>(
-  ActionsTypes.LOAD_MY_CHANNEL,
+  ActionsTypes.GET_STREAMING_KEY,
   async (id, { extra: { channelStreamingApi }, rejectWithValue }) => {
     try {
-      return channelStreamingApi.getStreamingKey(id);
+      return await channelStreamingApi.getStreamingKey(id);
     } catch (error) {
       if (error instanceof HttpError) {
         return rejectWithValue(serializeHttpError(error));
@@ -52,9 +53,9 @@ const resetStreamingKey = createAsyncThunk<
   StreamingKeyResponseDto,
   ResetStreamingKeyRequestDto,
   AsyncThunkConfigHttpError
->(ActionsTypes.LOAD_MY_CHANNEL, async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
+>(ActionsTypes.RESET_STREAMING_KEY, async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
   try {
-    return channelStreamingApi.resetStreamingKey(payload);
+    return await channelStreamingApi.resetStreamingKey(payload);
   } catch (error) {
     if (error instanceof HttpError) {
       return rejectWithValue(serializeHttpError(error));

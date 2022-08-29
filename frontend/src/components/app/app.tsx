@@ -7,7 +7,7 @@ import { MainPageContainer } from 'pages/main-page/main-page-container';
 import { Routes, Route, HeaderContainer, SidebarContainer } from 'components/common/common';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 import { Search } from 'components/search/search';
-import { NotFound } from 'components/not-found-page/not-found';
+import { NotFound } from 'components/placeholder-page/not-found';
 import { ReactNotifications } from 'react-notifications-component';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
 import { StudioHome, StudioAnalytics, StudioSidebar, StudioChannel } from '../../pages/studio';

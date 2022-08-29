@@ -2,25 +2,26 @@ import { STREAMING_SERVER_URL } from 'common/constants/constants';
 import { IconName, StreamStatus } from 'common/enums/enums';
 import { FC, StreamPosterUploadRequestDto, StreamUpdateRequestDto } from 'common/types/types';
 import { createToastNotification } from 'components/common/toast-notification';
-import { NotFound } from 'components/not-found-page/not-found';
+import { Forbidden } from 'components/placeholder-page';
+import { NotFound } from 'components/placeholder-page/not-found';
 import { errorCodes } from 'exceptions/exceptions';
 import { useAppDispatch, useAppForm, useAppSelector } from 'hooks/hooks';
 import { useCallback, useEffect, useState } from 'react';
 import { channelActions, streamActions } from 'store/actions';
 import { StreamInfoFormValues, StreamSettingsFormValues } from './common/stream-settings-form-values';
 import { StudioStream } from './stream';
-import { SerializedHttpError } from 'helpers/helpers';
 
 const StudioStreamContainer: FC = () => {
   const dispatch = useAppDispatch();
-  const { stream, channel, streamingKey } = useAppSelector((state) => ({
+  const { stream, channel, streamingKey, channelErrorCode, streamErrorCode } = useAppSelector((state) => ({
     stream: state.stream.currentStreamData,
     channel: state.channel.myChannel.data,
     streamingKey: state.channel.myChannel.streamingKey,
+    channelErrorCode: state.channel.myChannel.errorCode,
+    streamErrorCode: state.stream.errorCode,
   }));
 
   const [isEditingForm, setIsEditingForm] = useState(false);
-  const [isAccessError, setIsAccessError] = useState(false);
 
   const handleFormEdit = (): void => {
     setIsEditingForm(true);
@@ -122,27 +123,29 @@ const StudioStreamContainer: FC = () => {
     });
   };
 
+  const isNotFound = [channelErrorCode, streamErrorCode].some(
+    (errorCode) => errorCode === errorCodes.stream.NOT_FOUND || errorCode === errorCodes.stream.NO_CHANNELS,
+  );
+
+  const isForbidden = [channelErrorCode, streamErrorCode].some(
+    (errorCode) => errorCode === errorCodes.stream.FORBIDDEN || errorCode === errorCodes.stream.ACTIVE_STREAM_EXISTS,
+  );
+
   useEffect(() => {
     const fetch = async (): Promise<void> => {
-      try {
-        if (!channel) {
-          await dispatch(channelActions.loadMyChannel()).unwrap();
-        }
-        await dispatch(channelActions.getStreamingKey({ id: channel?.id ?? '' })).unwrap();
-        await dispatch(streamActions.createStream({ channelId: channel?.id ?? '' })).unwrap();
-      } catch (err) {
-        if ((err as SerializedHttpError).errorCode === errorCodes.stream.NO_CHANNELS) {
-          setIsAccessError(true);
-          console.error(404);
-        }
-        console.error(err as SerializedHttpError);
+      if (!channel) {
+        await dispatch(channelActions.loadMyChannel()).unwrap();
       }
+      await dispatch(channelActions.getStreamingKey({ id: channel?.id ?? '' })).unwrap();
+      await dispatch(streamActions.createStream({ channelId: channel?.id ?? '' })).unwrap();
     };
     fetch();
   }, [channel, dispatch]);
 
-  return isAccessError ? (
+  return isNotFound ? (
     <NotFound />
+  ) : isForbidden ? (
+    <Forbidden />
   ) : (
     <StudioStream
       handleChangeStreamStatus={handleChangeStreamStatus}

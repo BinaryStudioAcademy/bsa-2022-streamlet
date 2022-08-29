@@ -16,7 +16,7 @@ const createStream = createAsyncThunk<VideoStreamResponseDto, CreateStreamReques
   ActionType.CREATE_STREAM,
   async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
     try {
-      return channelStreamingApi.createStream(payload);
+      return await channelStreamingApi.createStream(payload);
     } catch (error) {
       if (error instanceof HttpError) {
         return rejectWithValue(serializeHttpError(error));
@@ -30,7 +30,7 @@ const uploadPoster = createAsyncThunk<VideoStreamResponseDto, StreamPosterUpload
   ActionType.UPLOAD_POSTER,
   async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
     try {
-      return channelStreamingApi.uploadPoster(payload);
+      return await channelStreamingApi.uploadPoster(payload);
     } catch (error) {
       if (error instanceof HttpError) {
         return rejectWithValue(serializeHttpError(error));
@@ -44,7 +44,7 @@ const editStream = createAsyncThunk<VideoStreamResponseDto, StreamUpdateRequestD
   ActionType.UPDATE_STREAM_DATA,
   async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
     try {
-      return channelStreamingApi.editStream(payload);
+      return await channelStreamingApi.editStream(payload);
     } catch (error) {
       if (error instanceof HttpError) {
         return rejectWithValue(serializeHttpError(error));
@@ -58,7 +58,7 @@ const getStreamData = createAsyncThunk<VideoStreamResponseDto, DefaultRequestPar
   ActionType.GET_STREAM_DATA,
   async ({ id }, { extra: { channelStreamingApi }, rejectWithValue }) => {
     try {
-      return channelStreamingApi.getCurrentStream({ id });
+      return await channelStreamingApi.getCurrentStream({ id });
     } catch (error) {
       if (error instanceof HttpError) {
         return rejectWithValue(serializeHttpError(error));
@@ -72,7 +72,7 @@ const setStreamStatus = createAsyncThunk<VideoStreamResponseDto, StreamLiveStatu
   ActionType.SET_STREAMING_STATUS,
   async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
     try {
-      return channelStreamingApi.setStreamStatus(payload);
+      return await channelStreamingApi.setStreamStatus(payload);
     } catch (error) {
       if (error instanceof HttpError) {
         return rejectWithValue(serializeHttpError(error));

@@ -15,6 +15,10 @@ export const getRejectedErrorData = (
   error: SerializedError,
   rejectedPayload: SerializedHttpError | undefined,
 ): RejectedErrorData => {
+  // console.log('error');
+  // console.warn(error);
+  // console.log('payload');
+  // console.warn(rejectedPayload);
   return {
     errorCode: rejectedPayload?.errorCode,
     message: rejectedPayload?.message || error.message,
