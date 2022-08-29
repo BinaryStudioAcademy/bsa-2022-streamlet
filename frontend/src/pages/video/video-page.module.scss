@@ -208,9 +208,4 @@
   top: 120%;
   left: 0;
   width: 200px;
-  @media #{breakpoint.$tablet-small} {
-    right: 0;
-    left: unset;
-    margin-left: auto;
-  }
 }
