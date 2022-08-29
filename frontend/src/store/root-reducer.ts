@@ -9,6 +9,7 @@ import { reducer as theme } from './theme-switch/reducer';
 import { reducer as videos } from './videos/reducer';
 import { reducer as videoPage } from './video-page/reducer';
 import { reducer as category } from './categories/reducer';
+import { reducer as chat } from './chat/reducer';
 
 const rootReducer = combineReducers({
   auth,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   videos,
   videoPage,
   category,
+  chat,
 });
 
 export { rootReducer };

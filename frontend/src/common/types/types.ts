@@ -36,3 +36,5 @@ export { BaseSubscriptionResponseDto, DataSubscription } from './subscription/su
 
 declare module 'react-notifications-component';
 export * from './channel/channel';
+
+export * from './chat/chat';

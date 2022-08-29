@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
   AsyncThunkConfig,
@@ -47,4 +47,6 @@ const videoChannelSubscribe = createAsyncThunk<CreateSubscriptionResponseDto, st
   },
 );
 
-export { getVideo, videoChannelSubscribe, videoReact, addVideoComment };
+const updateLiveViews = createAction<number>(ActionType.UPDATE_LIVE_VIEWS);
+
+export { getVideo, videoChannelSubscribe, videoReact, addVideoComment, updateLiveViews };

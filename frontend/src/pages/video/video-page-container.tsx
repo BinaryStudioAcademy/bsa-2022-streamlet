@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { AppRoutes, StreamingStatus } from 'common/enums/enums';
+import { AppRoutes, SocketEvents, StreamingStatus } from 'common/enums/enums';
 import { ReactComponent as ThumbUp } from 'assets/img/thumb-up.svg';
 import { ReactComponent as ThumbDown } from 'assets/img/thumb-down.svg';
 import { Loader } from 'components/common/common';
@@ -14,6 +14,12 @@ import { VideoPlayer } from 'components/common/video-player/video-player';
 import { VideoCommentBlock } from './common/comment-block/comment-block';
 import { Link } from 'react-router-dom';
 import { NeedSignInModal } from '../../components/common/sign-in-modal/sign-in-modal';
+import { socket } from 'common/config/config';
+import { store } from 'store/store';
+
+socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
+  store.dispatch(videoPageActions.updateLiveViews(live));
+});
 
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -129,7 +135,7 @@ const VideoPageContainer: FC = () => {
           </div>
           <>
             <div className={styles['views-container']}>
-              <span>{`${videoData.videoViews} views`}</span>
+              <span>{`${isVideoFinished ? videoData.videoViews : videoData.liveViews} views`}</span>
             </div>
             <div className={styles['description-container']}>
               <span>{`${videoData.description}`}</span>
@@ -154,7 +160,7 @@ const VideoPageContainer: FC = () => {
       </div>
       {!isVideoFinished ? (
         <div className={styles['chat-block']}>
-          <VideoChatContainer comments={videoData.comments} handlerSubmitMessage={handleMessageSubmit} />
+          <VideoChatContainer videoId={videoId} />
         </div>
       ) : (
         <div className={styles['video-comment-block']}>
