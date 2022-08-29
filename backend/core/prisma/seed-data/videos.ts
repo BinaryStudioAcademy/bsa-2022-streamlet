@@ -9,7 +9,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'description':
         'In this video, our CEO Artem Goncharov talks about our different types of services and explains how Binary Studio delivers business value to customers by fostering strategic long-term partnerships.',
       'status': 'finished',
-      'videoPath': 'https://www.youtube.com/watch?v=sklTbGT4EDk',
+      'videoPath': 'https://dev.streamlet.tk/segments/1/master.m3u8',
       'liveViews': 0,
       'videoViews': 180,
       'duration': 173,
@@ -22,7 +22,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'description':
         'FanAngel is a crowdfunding platform for sport enthusiasts that allows to pledge donations based on the performance of athletes. Binary Studio played a key role in transforming the project from its initial version into a high-performance platform, capable to serve more than 3000 users per second. Being an extension of FanAngels internal team for more than 3 years, our engineers managed to: - rebuild the RESTful API; - extend it with new capabilities; - re-design the project architecture; - set up a scalable database environment.',
       'status': 'finished',
-      'videoPath': 'https://www.youtube.com/watch?v=wxRfGOJE778',
+      'videoPath': 'https://dev.streamlet.tk/segments/2/master.m3u8',
       'liveViews': 0,
       'videoViews': 154,
       'duration': 121,
@@ -34,7 +34,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'description':
         'Hackolade is a revolutionary data modeling tool that introduces traditional database design concepts to NoSQL databases based on JSON Documents. Binary Studio has been working with Hackolade for more than 3 years. Our engineers were responsible for the entire development of the application, including: - Conception and management of adequate development and release processes that ensured the timely delivery of the MVP application; - Implementation of a complex, highly performant desktop application for Windows, macOS and Linux; - Development of reverse engineering functionality; - Implementation of a rich user interface for visual modeling tools; - Integrations for different version of MongoDB. See case study here: https://binary-studio.com/case-studie...',
       'status': 'finished',
-      'videoPath': 'https://www.youtube.com/watch?v=jWgeulczY4o',
+      'videoPath': 'https://dev.streamlet.tk/segments/3/master.m3u8',
       'liveViews': 0,
       'videoViews': 201,
       'duration': 161,
@@ -47,7 +47,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'description':
         'MassageBook is the leading online platform for massage therapists and bodywork professionals in the US. It offers an all-in-one business management solution with tools for practice management, online scheduling, intake forms, email campaigns and more. 6-years collaboration of Binary Studio and MassageBook has evolved into strategic partnership. As integral part of MassageBooks development team, Binary Studio engineers are responsible for entire software development process: - Planning and developing application modules architecture. - Implementing business logic on the back-end. - Developing API services and front-end functionality. - Developing native applications for mobile devices. - Building modules to connect Massage Book with',
       'status': 'finished',
-      'videoPath': 'https://www.youtube.com/watch?v=M25h9FGQ1BU',
+      'videoPath': 'https://dev.streamlet.tk/segments/4/master.m3u8',
       'liveViews': 0,
       'videoViews': 268,
       'duration': 148,
@@ -59,7 +59,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'description':
         'Binary Studio team travels to one of the peaks of Koprowski Shtit, near the Slovak region. Prepare to watch our journey - 18 kilometers of trekking, 10 hours under the rain, hail and the stinging sun',
       'status': 'finished',
-      'videoPath': 'https://www.youtube.com/watch?v=teyjpbvxB3I',
+      'videoPath': 'https://dev.streamlet.tk/segments/5/master.m3u8',
       'liveViews': 0,
       'videoViews': 1369,
       'duration': 62,
@@ -71,7 +71,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'description':
         'Every December, Binary Studio sets off on a week-long adventure. This years Eurotrip included opulent Vienna, cozy Stuttgart, savory Strasbourg and fantastisch Frankfurt. We believe weve learned how to correctly identify a city just by tasting its particular version of glühwein :D Dive into this 80 second adventure with us!',
       'status': 'finished',
-      'videoPath': 'https://www.youtube.com/watch?v=B322okjRyoo',
+      'videoPath': 'https://dev.streamlet.tk/segments/6/master.m3u8',
       'liveViews': 0,
       'videoViews': 172,
       'duration': 78,
