@@ -13,7 +13,7 @@ $thumb-size: 12px;
 @mixin thumb-styles {
   width: $thumb-size;
   height: $thumb-size;
-  background: var(--white-text-color);
+  background: var(--always-white-color);
   border: none;
   border-radius: 50%;
 }

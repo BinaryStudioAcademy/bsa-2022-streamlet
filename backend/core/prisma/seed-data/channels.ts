@@ -9,7 +9,7 @@ const channelsNoAuthors: Omit<Channel, 'createdAt' | 'updatedAt' | 'authorId'>[]
       'Hi! 👋 Welcome to my channel — Im a 24 year old, recent graduate working at a high growth startup! Follow along for insights into the tech industry, all things startup, and what to expect as a recent-grad remote software engineer. I also dabble in sketch-comedy and investing. Thanks for being here!',
     'contactEmail': 'alistair-sa@ukr.net',
     'bannerImage': 'http://dummyimage.com/1252x401.png/5fa2dd/ffffff',
-    'avatar': 'http://dummyimage.com/252x401.png/5fa2dd/ffffff',
+    'avatar': 'https://career.comarch.com/files-com/file_45/good_programmer_comarch.jpg',
   },
   {
     'id': '916c02ea-ece7-4704-9b15-1376fb7f55f0',
@@ -18,7 +18,7 @@ const channelsNoAuthors: Omit<Channel, 'createdAt' | 'updatedAt' | 'authorId'>[]
       'This year was amazing and I wouldnt have wished for it to have gone any other way. I traveled to a bunch of countries Ive only dreamed of visiting like Mongolia, Kenya, The Philippines, Norway, and many more. Thanks to everyone for sticking around all this time, and I hope you enjoy the videos!',
     'contactEmail': 'binary-trip@ukr.net',
     'bannerImage': '',
-    'avatar': 'http://dummyimage.com/252x401.png/5fa2dd/ffffff',
+    'avatar': 'https://static.posters.cz/image/750/road-trip-i107313.jpg',
   },
   {
     'id': 'b541916b-d132-4739-a041-a9110b462c40',
@@ -26,7 +26,7 @@ const channelsNoAuthors: Omit<Channel, 'createdAt' | 'updatedAt' | 'authorId'>[]
     'description': 'Hello! Subscribe to our channel and start learning programming with us',
     'contactEmail': '',
     'bannerImage': '',
-    'avatar': 'http://dummyimage.com/252x401.png/5fa2dd/ffffff',
+    'avatar': 'https://www.mooc.org/hubfs/applications-of-computer-programming.jpg',
   },
   {
     'id': 'a312816b-d122-4739-a041-a9110b462c40',
@@ -35,7 +35,7 @@ const channelsNoAuthors: Omit<Channel, 'createdAt' | 'updatedAt' | 'authorId'>[]
       'Hello everyone who has come to my channel and listen to comfortable and pleasant music. Like and subscribe to the channel to support me!',
     'contactEmail': 'my-music@ukr.net',
     'bannerImage': '',
-    'avatar': 'http://dummyimage.com/252x401.png/5fa2dd/ffffff',
+    'avatar': 'https://img.freepik.com/free-vector/musical-melody-symbols-bright-blue-splotch_1308-70426.jpg',
   },
   {
     'id': 'c162816b-d122-4739-a041-a9110b462c40',
@@ -43,7 +43,8 @@ const channelsNoAuthors: Omit<Channel, 'createdAt' | 'updatedAt' | 'authorId'>[]
     'description': 'Find out who we are and what we are doing!',
     'contactEmail': 'binary-sudio@ukr.net',
     'bannerImage': '',
-    'avatar': 'http://dummyimage.com/252x401.png/5fa2dd/ffffff',
+    'avatar':
+      'https://s.dou.ua/CACHE/images/img/static/companies/dou-logo_cjGiCVW/253030c28d218b03478db06cbefafb44.png',
   },
 ];
 

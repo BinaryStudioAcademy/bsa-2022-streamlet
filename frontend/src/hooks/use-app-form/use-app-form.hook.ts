@@ -1,4 +1,4 @@
-import { DeepPartial, Mode, useForm, UseFormHandleSubmit, UseFormRegister } from 'react-hook-form';
+import { DeepPartial, Mode, useForm, UseFormHandleSubmit, UseFormRegister, UseFormReset } from 'react-hook-form';
 
 import { FormControl, FormControlErrors, FormControlValues, ValidationSchema } from 'common/types/types';
 import { getFormValidationResolver } from 'helpers/helpers';
@@ -12,6 +12,7 @@ type UseAppFormResult<T extends FormControlValues = FormControlValues> = {
   control: FormControl<T>;
   errors: FormControlErrors;
   isValid: boolean;
+  reset: UseFormReset<T>;
   register: UseFormRegister<T>;
   handleSubmit: UseFormHandleSubmit<T>;
 };
@@ -25,6 +26,7 @@ const useAppForm = <T extends FormControlValues = FormControlValues>({
     control,
     handleSubmit,
     register,
+    reset,
     formState: { errors, isValid },
   } = useForm<T>({
     defaultValues,
@@ -37,6 +39,7 @@ const useAppForm = <T extends FormControlValues = FormControlValues>({
     control,
     register,
     errors,
+    reset,
     isValid,
   };
 };

@@ -9,6 +9,7 @@ enum ApiPath {
   TAG = '/tag',
   CATEGORY = '/category',
   VIDEOS = '/videos',
+  CHAT = '/chats',
 }
 
 export { ApiPath };

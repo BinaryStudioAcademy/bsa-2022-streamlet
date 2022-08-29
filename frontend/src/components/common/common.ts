@@ -8,6 +8,7 @@ export { Icon } from './icon';
 export { ToggleSwitch } from './toggle-switch';
 export { ConfirmationModal } from './confirmation-modal/confirmation-modal';
 export { Modal } from './modal/modal';
+export { Textarea } from './text-area/text-area';
 export { ImageEditor } from './image-editor/image-editor';
 export { UploadImage } from './upload-image/upload-image';
 export { createToastNotification } from './toast-notification';

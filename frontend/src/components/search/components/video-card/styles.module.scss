@@ -147,13 +147,14 @@ $base-z-index: $page-component-z-index;
 }
 
 .video-card-title {
-  display: flex;
-  max-height: 48px;
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  display: -webkit-box;
+  max-height: 40px;
   overflow: hidden;
   color: var(--white-text-color);
   font-weight: 600;
   font-size: 14px;
-  line-height: 24px;
+  line-height: 20px;
   white-space: normal;
   text-decoration: none;
   text-overflow: ellipsis;
@@ -326,6 +327,7 @@ $base-z-index: $page-component-z-index;
   }
 
   .video-card-title {
+    max-height: 48px;
     font-size: 16px;
     line-height: 24px;
   }

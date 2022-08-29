@@ -36,7 +36,7 @@ export const trimVideoWithComments = (
     };
     comments: (VideoComment & { author: User & { profile: UserProfile | null } })[];
   },
-): BaseVideoResponseDto & { comments: Comment[]; description: string } => {
+): BaseVideoResponseDto & { comments: Comment[]; description: string; videoPath: string } => {
   const {
     id,
     poster,
@@ -50,10 +50,12 @@ export const trimVideoWithComments = (
     channel,
     comments,
     description,
+    videoPath,
   } = video;
   return {
     id,
     poster,
+    videoPath,
     scheduledStreamDate: scheduledStreamDate.toString(),
     status,
     name,
