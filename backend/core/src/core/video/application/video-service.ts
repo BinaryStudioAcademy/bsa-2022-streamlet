@@ -51,4 +51,8 @@ export class VideoService {
     }
     return this.videoRepository.addReaction(request, videoId, userId);
   }
+
+  getVideosBySearch(searchText: string): Promise<DataVideo> {
+    return this.videoRepository.getVideosBySearch(searchText);
+  }
 }

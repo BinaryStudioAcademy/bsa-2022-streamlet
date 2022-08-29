@@ -3,6 +3,7 @@ import {
   controller,
   httpGet,
   httpPost,
+  queryParam,
   request,
   requestBody,
   requestParam,
@@ -228,5 +229,10 @@ export class VideoController extends BaseHttpController {
     }
 
     return res;
+  }
+
+  @httpGet('/search')
+  public getVideosBySearch(@queryParam('search') search: string): Promise<DataVideo> {
+    return this.videoRepository.getVideosBySearch(search);
   }
 }

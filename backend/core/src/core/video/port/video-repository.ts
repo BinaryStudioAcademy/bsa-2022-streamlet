@@ -32,4 +32,5 @@ export interface VideoRepository {
     userId: string,
   ): Promise<CreateReactionResponseDto | null>;
   addComment(request: VideoCommentRequestDto, authorId: string): Promise<VideoCommentResponseDto | null>;
+  getVideosBySearch(searchText: string): Promise<DataVideo>;
 }

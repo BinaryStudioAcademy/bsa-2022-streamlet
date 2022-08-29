@@ -277,4 +277,31 @@ export class VideoRepositoryAdapter implements VideoRepository {
       },
     });
   }
+
+  async getVideosBySearch(searchText: string): Promise<DataVideo> {
+    const items = await this.prismaClient.video.findMany({
+      where: {
+        name: {
+          contains: searchText,
+        },
+      },
+      include: {
+        channel: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+    });
+
+    const total = items.length;
+    const list = items.map(trimVideo);
+
+    return {
+      total,
+      list,
+    };
+  }
 }
