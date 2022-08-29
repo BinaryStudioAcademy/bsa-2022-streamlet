@@ -1,11 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { PrismaClient } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
-import {
-  BaseSearchVideoResponseDto,
-  BaseVideoResponseDto,
-  DataVideo,
-} from 'shared/build/common/types/video/base-video-response-dto.type';
+import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimVideo } from '~/shared/helpers';
 import { Comment } from 'shared/build/common/types/comment';
 import { trimVideoWithComments } from '~/shared/helpers/trim-video';
@@ -283,48 +279,35 @@ export class VideoRepositoryAdapter implements VideoRepository {
   }
 
   async getVideosBySearch(searchText: string): Promise<DataVideo> {
-    const result: BaseSearchVideoResponseDto[] | [] = await this.prismaClient.$queryRaw`
-        SELECT video.*, channel.name as "channelName", channel.avatar as "channelAvatar"
-        FROM "Video" AS video JOIN "Channel" AS channel ON video."channelId" = channel.id
-        WHERE video.name % ${searchText}
-      `;
-
-    const total = result.length;
-    const list = result.map(
-      ({
-        id,
-        name,
-        status,
-        publishedAt,
-        scheduledStreamDate,
-        poster,
-        duration,
-        liveViews,
-        videoViews,
-        videoPath,
-        description,
-        channelName,
-        channelAvatar,
-        channelId,
-      }) => ({
-        id,
-        name,
-        status,
-        publishedAt,
-        scheduledStreamDate,
-        poster,
-        duration,
-        liveViews,
-        videoViews,
-        videoPath,
-        description,
+    const result = await this.prismaClient.video.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              search: searchText,
+              mode: 'insensitive',
+            },
+          },
+          {
+            description: {
+              search: searchText,
+              mode: 'insensitive',
+            },
+          },
+        ],
+      },
+      include: {
         channel: {
-          id: channelId,
-          name: channelName,
-          avatar: channelAvatar,
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
         },
-      }),
-    );
+      },
+    });
+    const total = result.length;
+    const list = result.map(trimVideo);
 
     return {
       list,

@@ -111,15 +111,15 @@ export class VideoController extends BaseHttpController {
    *                items:
    *                  $ref: '#/components/schemas/Video'
    */
-  @httpGet('/')
+  @httpGet(VideoApiPath.ROOT)
   public getAllVideos(): Promise<DataVideo> {
     return this.videoService.getAllVideos();
   }
 
-  @httpGet('/search')
+  @httpGet(VideoApiPath.SEARCH)
   public async getVideosBySearch(@queryParam('search') search: string): Promise<DataVideo> {
     if (search) {
-      return await this.videoRepository.getVideosBySearch(search.trim());
+      return await this.videoRepository.getVideosBySearch(search.trim().split(' ').join(' & '));
     }
 
     return {
