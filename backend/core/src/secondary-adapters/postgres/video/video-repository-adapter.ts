@@ -1,7 +1,11 @@
 import { inject, injectable } from 'inversify';
 import { PrismaClient } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
-import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
+import {
+  BaseSearchVideoResponseDto,
+  BaseVideoResponseDto,
+  DataVideo,
+} from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimVideo } from '~/shared/helpers';
 import { Comment } from 'shared/build/common/types/comment';
 import { trimVideoWithComments } from '~/shared/helpers/trim-video';
@@ -279,29 +283,52 @@ export class VideoRepositoryAdapter implements VideoRepository {
   }
 
   async getVideosBySearch(searchText: string): Promise<DataVideo> {
-    const items = await this.prismaClient.video.findMany({
-      where: {
-        name: {
-          contains: searchText,
-        },
-      },
-      include: {
-        channel: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-          },
-        },
-      },
-    });
+    const result: BaseSearchVideoResponseDto[] | [] = await this.prismaClient.$queryRaw`
+        SELECT video.*, channel.name as "channelName", channel.avatar as "channelAvatar"
+        FROM "Video" AS video JOIN "Channel" AS channel ON video."channelId" = channel.id
+        WHERE video.name % ${searchText}
+      `;
 
-    const total = items.length;
-    const list = items.map(trimVideo);
+    const total = result.length;
+    const list = result.map(
+      ({
+        id,
+        name,
+        status,
+        publishedAt,
+        scheduledStreamDate,
+        poster,
+        duration,
+        liveViews,
+        videoViews,
+        videoPath,
+        description,
+        channelName,
+        channelAvatar,
+        channelId,
+      }) => ({
+        id,
+        name,
+        status,
+        publishedAt,
+        scheduledStreamDate,
+        poster,
+        duration,
+        liveViews,
+        videoViews,
+        videoPath,
+        description,
+        channel: {
+          id: channelId,
+          name: channelName,
+          avatar: channelAvatar,
+        },
+      }),
+    );
 
     return {
-      total,
       list,
+      total,
     };
   }
 }

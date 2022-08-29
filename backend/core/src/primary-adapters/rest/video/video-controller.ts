@@ -116,6 +116,18 @@ export class VideoController extends BaseHttpController {
     return this.videoService.getAllVideos();
   }
 
+  @httpGet('/search')
+  public async getVideosBySearch(@queryParam('search') search: string): Promise<DataVideo> {
+    if (search) {
+      return await this.videoRepository.getVideosBySearch(search.trim());
+    }
+
+    return {
+      list: [],
+      total: 0,
+    };
+  }
+
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware)
   public async get(@requestParam('id') id: string, @request() req: ExtendedRequest): Promise<VideoExpandedResponseDto> {
     const video = await this.videoService.getById(id);
@@ -229,10 +241,5 @@ export class VideoController extends BaseHttpController {
     }
 
     return res;
-  }
-
-  @httpGet('/search')
-  public getVideosBySearch(@queryParam('search') search: string): Promise<DataVideo> {
-    return this.videoRepository.getVideosBySearch(search);
   }
 }
