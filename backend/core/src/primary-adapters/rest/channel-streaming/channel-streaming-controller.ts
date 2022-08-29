@@ -255,11 +255,8 @@ export class ChannelStreamingController extends BaseHttpController {
   @httpPost(ChannelStreamingApiPath.ROOT, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
   public async createStream(@requestBody() { channelId }: CreateStreamRequestDto): Promise<VideoStreamResponseDto> {
     const newStream = await this.channelStreamingService.createStream(channelId);
-    if (newStream === null) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
-    }
     if (!newStream) {
-      throw new Forbidden(exceptionMessages.channelCrud.ACTIVE_STREAM_EXISTS);
+      throw new Forbidden(exceptionMessages.channelCrud.ACTIVE_STREAM_EXISTS, errorCodes.stream.ACTIVE_STREAM_EXISTS);
     }
     return newStream;
   }

@@ -108,7 +108,7 @@ export class ChannelStreamingService {
   }
 
   async createStream(channelId: string): Promise<VideoStreamResponseDto | undefined | null> {
-    const existingStream = this.getCurrentStream(channelId);
+    const existingStream = await this.getCurrentStream(channelId);
     if (existingStream !== null) {
       return null;
     }

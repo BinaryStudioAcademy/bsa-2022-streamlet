@@ -8,7 +8,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'name': 'application',
       'description':
         'Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.\n\nInteger ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.',
-      'status': 'WAITING',
+      'status': 'FINISHED',
       'isReadyToStream': false,
       'videoPath': 'http://techslides.com/demos/sample-videos/small.mp4',
       'liveViews': 2790,
