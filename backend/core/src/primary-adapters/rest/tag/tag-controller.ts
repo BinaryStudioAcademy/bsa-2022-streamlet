@@ -24,7 +24,7 @@ import { normalizeTagPayload } from './helpers/helpers';
 import { normalizeTagFiltersPayload } from './helpers/normalize-tag-filters-helper';
 import { authenticationMiddleware } from '../middleware';
 
-@controller(ApiPath.TAG, authenticationMiddleware)
+@controller(ApiPath.TAG)
 export class TagController extends BaseHttpController {
   private tagService: TagService;
 
@@ -53,7 +53,7 @@ export class TagController extends BaseHttpController {
     return tag;
   }
 
-  @httpPost(TagApiPath.$BIND)
+  @httpPost(TagApiPath.$BIND, authenticationMiddleware)
   public async bindTagToVIdeo(
     @requestParam() { id }: DefaultRequestParam,
     @requestBody() { tags }: BindTagToVideoRequestDto,
