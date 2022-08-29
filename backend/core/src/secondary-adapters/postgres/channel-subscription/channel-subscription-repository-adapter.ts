@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { PrismaClient } from '@prisma/client';
+import { Channel, PrismaClient, Subscription } from '@prisma/client';
 import { CONTAINER_TYPES, CreateSubscriptionResponseDto } from '~/shared/types/types';
 import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/channel-subscription-repository';
 
@@ -9,6 +9,23 @@ export class ChannelSubscriptionRepositoryAdapter implements ChannelSubscription
 
   constructor(@inject(CONTAINER_TYPES.PrismaClient) prismaClient: PrismaClient) {
     this.prismaClient = prismaClient;
+  }
+
+  async getUserSubscriptions(userId: string): Promise<{
+    list: (Subscription & {
+      channel: Channel;
+    })[];
+    total: number;
+  }> {
+    const subscriptions = await this.prismaClient.subscription.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        channel: true,
+      },
+    });
+    return { list: subscriptions, total: subscriptions.length };
   }
 
   async addSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {

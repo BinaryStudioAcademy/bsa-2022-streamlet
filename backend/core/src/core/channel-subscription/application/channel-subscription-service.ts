@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify';
 import { CONTAINER_TYPES, CreateSubscriptionResponseDto } from '~/shared/types/types';
 import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/channel-subscription-repository';
 import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
+import { Channel, Subscription } from '@prisma/client';
 
 @injectable()
 export class ChannelSubscriptionService {
@@ -23,5 +24,14 @@ export class ChannelSubscriptionService {
       return this.channelSubscriptionRepository.removeSubscription(userId, channelId);
     }
     return this.channelSubscriptionRepository.addSubscription(userId, channelId);
+  }
+
+  async getUserSubscriptions(userId: string): Promise<{
+    list: (Subscription & {
+      channel: Channel;
+    })[];
+    total: number;
+  }> {
+    return this.channelSubscriptionRepository.getUserSubscriptions(userId);
   }
 }

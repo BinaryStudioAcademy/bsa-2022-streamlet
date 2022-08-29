@@ -1,6 +1,5 @@
 import { FC } from 'common/types/types';
 import { Sidebar } from './sidebar';
-import { subscriptionList } from './subscription-list.mock';
 import { configRoutePages, RoutePage } from './route-pages.config';
 import { useLocation } from 'react-router-dom';
 import { useAppSelector, useAppDispatch, useEffect } from 'hooks/hooks';
@@ -54,7 +53,6 @@ const SidebarContainer: FC = () => {
     <Sidebar
       isSidebarOpen={isSidebarOpen}
       isLogged={hasUser}
-      subscriptionList={subscriptionList}
       configRoutePages={configRoutePages}
       activeRouteId={returnIdActiveRoute(pathname)}
       mobileSidebarProps={mobileSidebarProps}

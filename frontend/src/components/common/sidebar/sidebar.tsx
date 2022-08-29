@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import { FC, DataSubscription, BaseSubscriptionResponseDto } from 'common/types/types';
+import { FC, BaseSubscriptionResponseDto } from 'common/types/types';
 import { AppRoutes, IconName } from 'common/enums/enums';
-import { useNavigate, useState } from 'hooks/hooks';
+import { useAppSelector, useNavigate, useState } from 'hooks/hooks';
 import { Icon } from '../icon';
 import { Channel } from 'components/sidebar/channel';
 import { Promo } from 'components/sidebar/promo';
@@ -15,14 +15,12 @@ import { MIN_CHANNEL_ADD_NUMBER, MIN_CHANNEL_SHOW_NUMBER } from './config';
 interface SidebarProps {
   isSidebarOpen: boolean;
   isLogged: boolean;
-  subscriptionList: DataSubscription;
   configRoutePages: RoutePage[];
   activeRouteId: number;
   mobileSidebarProps: MobileSidebarProps;
 }
 
 const Sidebar: FC<SidebarProps> = ({
-  subscriptionList,
   configRoutePages,
   activeRouteId,
   isSidebarOpen,
@@ -43,6 +41,7 @@ const Sidebar: FC<SidebarProps> = ({
   const [subscriptionDropdownShow, setSubscriptionDropdownShow] = useState(false);
 
   const handleSetSubscriptionDropdownShow = (): void => setSubscriptionDropdownShow(!subscriptionDropdownShow);
+  const subscriptionList = useAppSelector((state) => state.sidebar.subscriptions) ?? { list: [], total: 0 };
 
   const minCount = subscriptionList.total < MIN_CHANNEL_SHOW_NUMBER ? subscriptionList.total : MIN_CHANNEL_SHOW_NUMBER;
   const hideCount = subscriptionList.total - minCount;
@@ -65,11 +64,11 @@ const Sidebar: FC<SidebarProps> = ({
           </ul>
         </nav>
         <div className={styles['divider']} />
-        {!isLogged && <Promo {...promoProps} />}
-        {isLogged && (
+        {isLogged ? (
           <div className={styles['block-subscription']}>
             <p className={styles['subscription-title']}>Subscriptions</p>
             <div className={styles['subscription-list']}>
+              {subscriptionList.total === 0 && 'No subscriptions yet'}
               {subscriptionList.list.slice(0, showCount).map((sub: BaseSubscriptionResponseDto) => (
                 <Channel key={sub.id} channelInfo={sub.channel} />
               ))}
@@ -81,6 +80,8 @@ const Sidebar: FC<SidebarProps> = ({
               )}
             </div>
           </div>
+        ) : (
+          <Promo {...promoProps} />
         )}
       </div>
     </>
