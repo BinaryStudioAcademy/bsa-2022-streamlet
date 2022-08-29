@@ -1,1 +1,7 @@
-export { type ChannelInfoRequestDto, type ChannelInfoResponseDto, type OwnChannelResponseDto } from 'shared/build';
+export {
+  ChannelInfoResponseDto,
+  ChannelVideoPreviewsPageDto,
+  ChannelInfoRequestDto,
+  CreateSubscriptionResponseDto,
+  OwnChannelResponseDto,
+} from 'shared/build';

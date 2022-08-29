@@ -7,3 +7,5 @@ export { CategoryApiPath } from './category-api-path.enum';
 export { ChannelStreamingApiPath } from './channel-streaming-api-path.enum';
 export { ChannelCrudApiPath } from './channel-crud-api-path.enum';
 export { VideoApiPath } from './video-api-path.enum';
+export { ChannelSubscriptionApiPath } from './channel-subscription-api-path.enum';
+export { ChatApiPath } from './chat-api-path.enum';

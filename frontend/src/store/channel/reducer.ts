@@ -3,7 +3,7 @@ import { DataStatus, ErrorMessage } from 'common/enums/enums';
 import { ChannelInfoResponseDto, RootState } from 'common/types/types';
 import { getRejectedErrorData } from 'helpers/redux/get-rejected-error-data';
 import { ChannelVideoPreviewsPageDto, OwnChannelResponseDto } from 'shared/build';
-import { getStreamingKey, loadChannel, loadMyChannel, resetStreamingKey } from './actions';
+import { getStreamingKey, loadChannel, channelSubscribeToggle, loadMyChannel, resetStreamingKey } from './actions';
 
 type ChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
 type ChannelVideo = ChannelVideoPreviewsPageDto['list'][number];
@@ -13,6 +13,10 @@ interface InitialState {
     data: ChannelInfo | null;
     dataStatus: DataStatus;
     error: string | undefined;
+    subscription: {
+      dataStatus: DataStatus;
+      error: string | undefined;
+    };
   };
   currentChannelVideos: {
     data: ReturnType<typeof channelVideosAdapter.getInitialState>;
@@ -38,6 +42,10 @@ const initialState: InitialState = {
     data: null,
     dataStatus: DataStatus.IDLE,
     error: undefined,
+    subscription: {
+      dataStatus: DataStatus.IDLE,
+      error: undefined,
+    },
   },
   currentChannelVideos: {
     data: channelVideosAdapter.getInitialState(),
@@ -114,6 +122,13 @@ const reducer = createReducer(initialState, (builder) => {
     state.myChannel.dataStatus = DataStatus.REJECTED;
     state.myChannel.error = message;
     state.myChannel.errorCode = errorCode;
+  });
+  builder.addCase(channelSubscribeToggle.fulfilled, (state, { payload }) => {
+    if (state.currentChannel.data) {
+      state.currentChannel.data.isCurrentUserSubscriber = payload.isSubscribed;
+    }
+    state.currentChannel.subscription.dataStatus = DataStatus.FULFILLED;
+    state.currentChannel.subscription.error = undefined;
   });
 });
 

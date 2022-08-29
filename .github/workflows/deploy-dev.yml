@@ -57,7 +57,7 @@ jobs:
           registry: ghcr.io
           image_tag: latest
           context: ./
-          dockerfile: ./.docker/video-transcoding-server.Dockerfile   
+          dockerfile: ./.docker/video-transcoding-server.Dockerfile
   build-frontend:
     runs-on: ubuntu-latest
     environment: development
@@ -91,7 +91,7 @@ jobs:
           host: ${{ secrets.DEPLOYMENT_HOST }}
           username: ${{ secrets.DEPLOYMENT_USERNAME }}
           password: ${{ secrets.DEPLOYMENT_SSH_PASSWORD }}
-          source: ".docker/docker-compose.dev.yml,nginx/nginx.rtmp.conf"
+          source: ".docker/docker-compose.dev.yml,.docker/healthcheck.sh,nginx/nginx.rtmp.conf,backend/core/prisma"
           target: app
 
       - name: Run docker-compose.dev.yml on deployment server
@@ -109,9 +109,11 @@ jobs:
             export GITHUB_USERNAME=$GITHUB_USERNAME
             export GITHUB_TOKEN=$GITHUB_TOKEN
             echo "$GITHUB_TOKEN" | sudo docker login ghcr.io -u $GITHUB_USERNAME --password-stdin
+            sudo docker compose -f docker-compose.dev.yml rm --force --stop
             sudo docker compose -f docker-compose.dev.yml pull
-            sudo docker compose -f docker-compose.dev.yml stop
-            sudo docker compose -f docker-compose.dev.yml up -d --build
+            sudo docker compose -f docker-compose.dev.yml --env-file ../.env/healthcheck.env up -d
+            sudo chmod +x healthcheck.sh
+            sudo ./healthcheck.sh
 
   notify:
     needs: deploy

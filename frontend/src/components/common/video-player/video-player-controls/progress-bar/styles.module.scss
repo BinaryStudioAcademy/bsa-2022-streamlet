@@ -54,7 +54,7 @@
   left: calc(var(--preview-position, 0) * 100%);
   display: none;
   padding: 0 10px;
-  color: var(--white-text-color);
+  color: var(--always-white-color);
   background-color: var(--settings-modal-bg);
   border-radius: 10px;
   transform: translateY(-120%) translateX(-50%);

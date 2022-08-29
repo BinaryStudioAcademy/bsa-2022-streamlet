@@ -1,4 +1,4 @@
-export { ApiPath, AuthApiPath, NotificationApiPath } from './api/api';
+export * from './api/api';
 
 export * from './app/app';
 
@@ -19,8 +19,8 @@ export { NotificationType } from './notification/notification';
 export { ToastNotificationType } from './toast-notification/toast-notification';
 export * from './channel/channel';
 
-export { ProfileApiPath } from './api/api';
-
 export { ImageUploadErrorMessage } from './image/image';
 
 export { StreamStatus } from './stream/stream';
+
+export { SocketEvents } from './socket/socket';

@@ -1,1 +1,8 @@
-export { BaseVideoResponseDto, DataVideo } from 'shared/build';
+export {
+  BaseVideoResponseDto,
+  DataVideo,
+  VideoCommentRequestDto,
+  VideoCommentResponseDto,
+  CreateReactionRequestDto,
+  CreateReactionResponseDto,
+} from 'shared/build';

@@ -1,36 +1,219 @@
-@import 'assets/css/config.scss';
+@use 'assets/css/breakpoint';
+
+.reaction-button {
+  cursor: pointer;
+}
 
 .video-page {
-  display: flex;
-  height: calc(100vh - $header-height);
-
-  @media screen and (max-width: 992px) {
-    display: block;
+  display: grid;
+  grid-template-columns: 1fr;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  column-gap: 10px;
+  @media #{breakpoint.$tablet-middle} {
+    grid-template-columns: 2fr 1fr;
+    padding: 20px;
   }
 }
 
+.finished {
+  grid-template-columns: 1fr;
+}
+
+.video-player {
+  max-width: 1200px;
+  margin-bottom: 20px;
+}
+
+.video-title {
+  color: var(--white-text-color);
+  font-size: 24px;
+  line-height: 29px;
+}
+
 .video-block {
-  width: 70%;
-  height: 100%;
-
-  @media screen and (max-width: 1100px) {
-    width: 60%;
-  }
-
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
   @media screen and (max-width: 992px) {
     height: fit-content;
   }
 }
 
-.chat-block {
-  width: 30%;
-  height: 100%;
+.sign-in-modal {
+  position: absolute;
+  top: 35px;
+  left: -90px;
+  width: 378px;
+  height: 200px;
+}
 
-  @media screen and (max-width: 1100px) {
-    width: 40%;
-  }
+.reaction-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.reaction-container span {
+  margin-left: 10px;
+}
+
+.reaction-block {
+  display: flex;
+}
+
+.chat-block {
+  max-width: 350px;
+  height: 100%;
+  max-height: 560px;
 
   @media screen and (max-width: 992px) {
     width: 100%;
+  }
+}
+
+.video-info-block {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.video-comment-block {
+  padding: 0;
+}
+
+.video-header {
+  display: flex;
+}
+
+.description-container {
+  max-width: 65%;
+  margin: 11px 0 8px;
+  color: var(--text-gray-color);
+  font-weight: 400;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 19px;
+}
+
+.video-page hr {
+  width: 100%;
+  height: 1px;
+  margin-bottom: 19px;
+  color: var(--gray-200-input-background);
+  background-color: var(--gray-200-input-background);
+  border-color: var(--gray-200-input-background);
+  outline-color: var(--gray-200-input-background);
+}
+
+.subscribe-button-default {
+  color: var(--text-gray-color);
+  background-color: var(--green-300-primary-background);
+}
+
+.subscribe-button-subscribed {
+  color: var(--white-text-color);
+  background-color: var(--brand-green-color);
+}
+
+.subscribe-button-basic {
+  width: 100px;
+  height: 35px;
+  border-radius: 2px;
+}
+
+.views-container {
+  margin: 10px 0 0;
+}
+
+.channel-banner {
+  width: 34px;
+  height: 34px;
+  border-radius: 100%;
+}
+
+.channel-info-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.channel-description {
+  min-width: 350px;
+  margin-left: 10px;
+}
+
+.about-channel-block {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+  color: var(--white-text-color);
+}
+
+@media screen and (max-width: 768px) {
+  .sign-in-modal {
+    left: -170px;
+    width: 280px;
+  }
+
+  .video-page {
+    padding: 0;
+  }
+
+  .video-info-block {
+    padding: 10px;
+  }
+
+  .video-comment-block {
+    padding: 10px;
+  }
+
+  .chat-block {
+    padding: 10px;
+  }
+
+  .channel-info-container {
+    flex-direction: column;
+    align-items: initial;
+  }
+
+  .video-header {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .reaction-block {
+    margin-left: auto;
+  }
+
+  .channel-info-container button {
+    width: 100%;
+  }
+
+  .about-channel-block {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .about-channel-block span {
+    width: fit-content;
+  }
+
+  .channel-description {
+    width: fit-content;
+    min-width: fit-content;
+  }
+
+  .description-container {
+    max-width: 100%;
   }
 }

@@ -10,6 +10,7 @@ export type ChannelInfoResponseDto = {
   subscribersCount: number;
   authorInfo: ChannelAuthorPreviewInfo;
   createdAt: string;
+  isCurrentUserSubscriber: boolean;
   // when pagination is implemented
   // will return only n first videos for initial page, currently returns all at once
   initialVideosPage: ChannelVideoPreviewsPageDto;

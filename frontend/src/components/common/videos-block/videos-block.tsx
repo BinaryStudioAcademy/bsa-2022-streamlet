@@ -36,7 +36,7 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards }) => {
         <div className={styles['videos-block']}>
           {statusVideoLoading === DataStatus.PENDING &&
             ARRAY_FAKE_VIDEOS.map((_, index) => <VideoSkeleton key={index} />)}
-          {videoCards}
+          {statusVideoLoading === DataStatus.FULFILLED && videoCards}
         </div>
       </SkeletonTheme>
     </div>

@@ -8,6 +8,7 @@ import {
   OwnChannelResponseDto,
   ResetStreamingKeyRequestDto,
   StreamingKeyResponseDto,
+  CreateSubscriptionResponseDto,
 } from 'common/types/types';
 import { serializeHttpError } from 'helpers/http/http';
 import { HttpError } from 'shared/build';
@@ -17,6 +18,15 @@ const loadChannel = createAsyncThunk<ChannelInfoResponseDto, ChannelInfoRequestD
   ActionsTypes.LOAD_CHANNEL,
   async ({ id }, { extra: { channelCrudApi } }) => {
     return channelCrudApi.getChannelInfo({ id });
+  },
+);
+
+const channelSubscribeToggle = createAsyncThunk<CreateSubscriptionResponseDto, string, AsyncThunkConfig>(
+  ActionsTypes.SUBSCRIBE_TOGGLE,
+  async (channelId: string, { extra }) => {
+    const { channelSubscriptionApi } = extra;
+
+    return await channelSubscriptionApi.createSubscription(channelId);
   },
 );
 
@@ -64,4 +74,4 @@ const resetStreamingKey = createAsyncThunk<
   }
 });
 
-export { loadChannel, loadMyChannel, getStreamingKey, resetStreamingKey };
+export { loadChannel, loadMyChannel, getStreamingKey, resetStreamingKey, channelSubscribeToggle };

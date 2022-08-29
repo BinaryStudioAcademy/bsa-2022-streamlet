@@ -34,7 +34,9 @@ const ChannelHeader: FC<Props> = ({ setTab, currentTab }) => {
           subscribersCount={channelInfo.subscribersCount}
           className={styles['channel-info']}
         />
-        <Subscribe className={styles['subscribe']} />
+        <div className={styles['subscribe-wrapper']}>
+          <Subscribe className={styles['subscribe']} signinModalClassname={styles['signin-modal']} />
+        </div>
       </div>
       <ChannelTabs setTab={setTab} currentTab={currentTab} />
     </section>

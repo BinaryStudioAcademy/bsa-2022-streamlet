@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   rtmp:
     image: tiangolo/nginx-rtmp
@@ -9,11 +9,18 @@ services:
       - ../nginx/nginx.rtmp.conf:/etc/nginx/nginx.conf
   rabbitmq:
     image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
     ports:
       # AMQP protocol port
       - "5672:5672"
       # HTTP management UI
       - "15672:15672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q status
+      interval: 2s
+      timeout: 1s
+      retries: 5
+      start_period: 3s
   api-db:
     image: postgres:14
     hostname: postgres
@@ -31,6 +38,12 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
+      interval: 2s
+      timeout: 1s
+      retries: 5
+      start_period: 3s
 volumes:
   pgdata_api:
     driver: local

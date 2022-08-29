@@ -12,4 +12,5 @@ export * from './request/request';
 export * from './tag/tag';
 export * from './profile/profile';
 export * from './history/history';
+export * from './chat/chat';
 export * from './stream/stream';

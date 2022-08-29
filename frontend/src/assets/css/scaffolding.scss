@@ -466,6 +466,7 @@
   --green-200-header-menu-background: #344f3e;
   --green-100-header-menu-background: #ebefe8;
   --primary-text-color: #181a20;
+  --always-primary-text-color: #181a20;
   --secondary-text-color: #505565;
   --text-gray-color: #6a726d;
   --white-text-color: #ffffff;
@@ -509,6 +510,10 @@
   --auth-box-shadow: none;
   --link-color: rgb(146 255 230);
   --password-eye-color: rgb(104 104 104);
+
+  /* subscription */
+  --subscribed-btn-background-color: rgb(104 104 104);
+  --subscribed-btn-hover-background-color: rgb(145 145 145);
 
   /* channel page */
   --banner-background: #27292c;

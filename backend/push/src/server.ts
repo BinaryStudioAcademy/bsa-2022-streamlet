@@ -15,7 +15,8 @@ server.on('error', (error: Error) => {
 server.listen(CONFIG.port, async () => {
   logger.info(`Server started on ${CONFIG.port} PORT`);
   try {
-    amqpService.connect(await amqpConnect());
+    const amqpConnection = await amqpConnect();
+    amqpService.connect(amqpConnection);
   } catch (err) {
     logger.error(err, 'Amqp connection initialization error: ');
     process.exit(1);

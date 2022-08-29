@@ -1,0 +1,24 @@
+.need-sign-in-modal {
+  color: var(--text-gray-color);
+  background-color: var(--gray-300-header-menu-background);
+}
+
+.need-sign-in-modal-header {
+  margin: 24px 0 15px;
+  padding: 0 24px;
+}
+
+.need-sign-in-main-text {
+  margin: 4px 0 32px;
+  padding: 0 24px;
+}
+
+.redirect-to-sign-in {
+  padding: 8px 8px 8px 24px;
+  border-top: 2px var(--text-gray-color) solid;
+}
+
+.redirect-to-sign-in-link {
+  color: var(--brand-green-color);
+  text-decoration: none;
+}

@@ -20,4 +20,8 @@ export const exceptionMessages = {
     FORBIDDEN: 'You are trying to do a forbidden channel action',
     ACTIVE_STREAM_EXISTS: 'You cant start a new stream while having another active one',
   },
+  chat: {
+    CHAT_ID_NOT_FOUND: 'Chat to the video with such id wasn`t found',
+    CHAT_MESSAGE_NOT_FOUND: 'Chat message with such id wasn`t found',
+  },
 };
