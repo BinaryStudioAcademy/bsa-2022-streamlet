@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { loadChannel } from 'store/channel/actions';
+import { getVideos } from 'store/videos/actions';
 import { AboutSection } from './components/about-section/about-section';
 import { ChannelHeader } from './components/channel-header/channel-header';
 import { Tabs } from './components/channel-header/channel-tabs/tabs.enum';
@@ -24,6 +25,13 @@ const ChannelPage: FC = () => {
   const channelDataStatus = useAppSelector((state) => state.channel.currentChannel.dataStatus);
   const channelInfo = useAppSelector((state) => state.channel.currentChannel.data);
   const channelError = useAppSelector((state) => state.channel.currentChannel.error);
+  const totalVideos = useAppSelector((state) => state.videos.data.total);
+
+  useEffect(() => {
+    if (!totalVideos) {
+      dispatch(getVideos());
+    }
+  }, [dispatch, totalVideos]);
 
   const [currentTab, setCurrentTab] = useState<Tabs>(Tabs.About);
 
