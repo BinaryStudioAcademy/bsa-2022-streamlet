@@ -22,11 +22,11 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'description':
         'FanAngel is a crowdfunding platform for sport enthusiasts that allows to pledge donations based on the performance of athletes. Binary Studio played a key role in transforming the project from its initial version into a high-performance platform, capable to serve more than 3000 users per second. Being an extension of FanAngels internal team for more than 3 years, our engineers managed to: - rebuild the RESTful API; - extend it with new capabilities; - re-design the project architecture; - set up a scalable database environment.',
       'status': 'finished',
-      'videoPath': 'https://www.youtube.com/watch?v=wxRfGOJE778',
+      'videoPath': 'https://dev.streamlet.tk/segments/2/master.m3u8',
       'liveViews': 0,
       'videoViews': 154,
       'duration': 121,
-      'poster': 'https://dev.streamlet.tk/segments/2/master.m3u8',
+      'poster': 'https://img.youtube.com/vi/wxRfGOJE778/maxresdefault.jpg',
     },
     {
       'id': '3400139d-e0fd-49ab-ac52-be4d72f9b10b',
