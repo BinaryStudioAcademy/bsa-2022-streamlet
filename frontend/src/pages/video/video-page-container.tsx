@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { AppRoutes, SocketEvents, StreamingStatus } from 'common/enums/enums';
+import { AppRoutes, SocketEvents, StreamStatus } from 'common/enums/enums';
 import { ReactComponent as ThumbUp } from 'assets/img/thumb-up.svg';
 import { ReactComponent as ThumbDown } from 'assets/img/thumb-down.svg';
 import { Loader } from 'components/common/common';
@@ -7,7 +7,7 @@ import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import { useAppDispatch, useAppSelector, useNavigate, useParams, useState } from 'hooks/hooks';
 import { FC, useEffect } from 'react';
 import { videoPageActions } from 'store/actions';
-import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
+import defaultAvatar from '../../assets/img/default/user-avatar-default.jpg';
 import styles from './video-page.module.scss';
 import { getReactBtnColor } from 'helpers/helpers';
 import { VideoPlayer } from 'components/common/video-player/video-player';
@@ -79,7 +79,7 @@ const VideoPageContainer: FC = () => {
   }
 
   const { status } = videoData;
-  const isVideoFinished = status === 'finished';
+  const isVideoFinished = status === StreamStatus.FINISHED;
 
   const { userReaction } = videoData;
 
@@ -93,7 +93,7 @@ const VideoPageContainer: FC = () => {
         <VideoPlayer
           sizingProps={{ aspectRatio: '16 / 9' }}
           url={videoData.videoPath}
-          isLive={videoData.status === StreamingStatus.LIVE}
+          isLive={videoData.status === StreamStatus.LIVE}
           videoAttributes={{ poster: videoData.poster }}
           className={styles['video-player']}
         />

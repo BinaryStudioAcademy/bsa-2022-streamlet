@@ -1,7 +1,9 @@
+import { StreamStatus } from '.prisma/client';
+
 type BaseVideoResponseDto = {
   id: string;
   name: string;
-  status: string;
+  status: StreamStatus;
   publishedAt: string;
   scheduledStreamDate: string;
   poster: string;

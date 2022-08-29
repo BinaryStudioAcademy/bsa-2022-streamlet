@@ -184,7 +184,7 @@ export class ChannelStreamingService {
 
       update = await this.channelStreamingRepository.updateStream(videoId, {
         status,
-        duration: Math.abs((currentStream.publishedAt.getTime() - new Date().getTime()) / 1000),
+        duration: Math.abs((new Date(currentStream.publishedAt).getTime() - new Date().getTime()) / 1000),
       });
     }
 

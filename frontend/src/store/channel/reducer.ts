@@ -107,6 +107,14 @@ const reducer = createReducer(initialState, (builder) => {
     state.myChannel.data = channelData;
   });
 
+  builder.addCase(channelSubscribeToggle.fulfilled, (state, { payload }) => {
+    if (state.currentChannel.data) {
+      state.currentChannel.data.isCurrentUserSubscriber = payload.isSubscribed;
+    }
+    state.currentChannel.subscription.dataStatus = DataStatus.FULFILLED;
+    state.currentChannel.subscription.error = undefined;
+  });
+
   builder.addMatcher(isAnyOf(getStreamingKey.pending, resetStreamingKey.pending), (state) => {
     state.myChannel.dataStatus = DataStatus.PENDING;
     state.myChannel.error = undefined;
@@ -122,13 +130,6 @@ const reducer = createReducer(initialState, (builder) => {
     state.myChannel.dataStatus = DataStatus.REJECTED;
     state.myChannel.error = message;
     state.myChannel.errorCode = errorCode;
-  });
-  builder.addCase(channelSubscribeToggle.fulfilled, (state, { payload }) => {
-    if (state.currentChannel.data) {
-      state.currentChannel.data.isCurrentUserSubscriber = payload.isSubscribed;
-    }
-    state.currentChannel.subscription.dataStatus = DataStatus.FULFILLED;
-    state.currentChannel.subscription.error = undefined;
   });
 });
 

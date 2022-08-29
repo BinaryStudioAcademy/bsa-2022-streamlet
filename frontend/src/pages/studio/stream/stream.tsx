@@ -253,7 +253,7 @@ const StudioStream: FC<Props> = ({
         </div>
       </div>
       <div className={styles['chat-container']}>
-        <VideoChatContainer />
+        <VideoChatContainer videoId={stream?.id} />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import styles from './styles.module.scss';
 import { useAppForm } from '../../../../hooks/use-app-form/use-app-form.hook';
 import { FC } from '../../../../common/types/react/fc.type';
 import { Button, Textarea } from '../../../../components/common/common';
-import defaultAvatar from 'assets/img/default-user-avatar.jpg';
+import defaultAvatar from 'assets/img/default/user-avatar-default.jpg';
 import * as Joi from 'joi';
 import clsx from 'clsx';
 import { useState } from '../../../../hooks/hooks';
