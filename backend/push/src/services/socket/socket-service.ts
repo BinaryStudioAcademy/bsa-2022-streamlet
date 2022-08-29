@@ -4,7 +4,7 @@ import { createIoInstance } from '~/websockets/io';
 import { amqpService } from '../services';
 import { AmqpQueue, SocketEvents } from '~/shared/enums/enums';
 import { logger } from '~/config/logger';
-import { debounce } from '~/helpers/debounce';
+import { throttle } from '~/helpers/throttle';
 
 class SocketService {
   private io: SocketIo | undefined;
@@ -48,7 +48,7 @@ class SocketService {
         },
       });
 
-      const updateLiveViews = debounce((roomId: string) => {
+      const updateLiveViews = throttle((roomId: string) => {
         if (this.io) {
           const countIsLive = this.io.sockets.adapter.rooms.get(roomId)?.size;
           this.io.to(roomId).emit(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, { live: countIsLive });
