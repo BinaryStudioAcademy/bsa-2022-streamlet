@@ -9,3 +9,4 @@ export * as channelActions from './channel/actions';
 export * as videoPageActions from './video-page/actions';
 export * as categoryActions from './categories/actions';
 export * as chatActions from './chat/actions';
+export * as socketActions from './socket/actions';
