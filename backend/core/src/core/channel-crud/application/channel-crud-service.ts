@@ -20,12 +20,20 @@ export class ChannelCrudService {
     return this.channelRepository.getChannelById(id);
   }
 
+  async isUserChannelOwner({ channelId, userId }: { channelId: string; userId: string }): Promise<boolean> {
+    return (await this.channelRepository.getChannelById(channelId))?.authorId === userId;
+  }
+
   async updateAvatar({
     id,
     base64Str,
   }: ChannelProfileUpdateMediaRequestDto & {
     id: string;
-  }): Promise<ChannelProfileUpdateResponseDto> {
+  }): Promise<ChannelProfileUpdateResponseDto | undefined> {
+    const isChannelExists = await this.channelRepository.getChannelById(id);
+    if (!isChannelExists) {
+      return;
+    }
     const { url } = await this.imageStore.upload({
       base64Str,
       type: ImageStorePresetType.CHANNEL_AVATAR,

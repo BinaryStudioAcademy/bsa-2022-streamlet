@@ -1,6 +1,6 @@
 import { Channel, PrismaClient, User } from '@prisma/client';
 import { inject, injectable } from 'inversify';
-import { ChannelProfileUpdateDto, ChannelProfileUpdateMediaDto, ChannelProfileUpdateResponseDto } from 'shared/build';
+import { ChannelProfileUpdateDto, ChannelProfileUpdateMediaDto } from 'shared/build';
 import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { ChannelInfoBeforeTrimming } from '~/shared/types/types';
@@ -8,7 +8,8 @@ import { ChannelInfoBeforeTrimming } from '~/shared/types/types';
 @injectable()
 export class ChannelCrudRepositoryAdapter implements ChannelCrudRepository {
   constructor(@inject(CONTAINER_TYPES.PrismaClient) private prismaClient: PrismaClient) {}
-  updateAvatar({ id, url }: ChannelProfileUpdateMediaDto): Promise<ChannelProfileUpdateResponseDto> {
+
+  updateAvatar({ id, url }: ChannelProfileUpdateMediaDto): Promise<Channel> {
     return this.prismaClient.channel.update({
       where: {
         id,
@@ -18,7 +19,7 @@ export class ChannelCrudRepositoryAdapter implements ChannelCrudRepository {
       },
     });
   }
-  updateBanner({ id, url }: ChannelProfileUpdateMediaDto): Promise<ChannelProfileUpdateResponseDto> {
+  updateBanner({ id, url }: ChannelProfileUpdateMediaDto): Promise<Channel> {
     return this.prismaClient.channel.update({
       where: {
         id,
@@ -28,7 +29,7 @@ export class ChannelCrudRepositoryAdapter implements ChannelCrudRepository {
       },
     });
   }
-  updateSettings({ id, name, description }: ChannelProfileUpdateDto): Promise<ChannelProfileUpdateResponseDto> {
+  updateSettings({ id, name, description }: ChannelProfileUpdateDto): Promise<Channel> {
     return this.prismaClient.channel.update({
       where: {
         id,
