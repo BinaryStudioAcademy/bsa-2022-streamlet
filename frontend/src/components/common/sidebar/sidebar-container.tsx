@@ -26,12 +26,10 @@ function returnIdActiveRoute(currentRoute: string): number {
 const SidebarContainer: FC = () => {
   const { pathname } = useLocation();
   const dispatch = useAppDispatch();
-  const { isSidebarOpen, user } = useAppSelector((state) => ({
+  const { isSidebarOpen } = useAppSelector((state) => ({
     isSidebarOpen: state.layout.isOpenSidebar,
     user: state.auth.user,
   }));
-
-  const hasUser = Boolean(user);
 
   useEffect(() => {
     dispatch(openSidebar());
@@ -43,7 +41,6 @@ const SidebarContainer: FC = () => {
 
   const mobileSidebarProps: MobileSidebarProps = {
     isSidebarOpen: isSidebarOpen,
-    isLogged: hasUser,
     configRoutePages: configRoutePages,
     activeRouteId: returnIdActiveRoute(pathname),
     closeMobileSidebar,
@@ -52,7 +49,6 @@ const SidebarContainer: FC = () => {
   return (
     <Sidebar
       isSidebarOpen={isSidebarOpen}
-      isLogged={hasUser}
       configRoutePages={configRoutePages}
       activeRouteId={returnIdActiveRoute(pathname)}
       mobileSidebarProps={mobileSidebarProps}

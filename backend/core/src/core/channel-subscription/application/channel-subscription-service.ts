@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { CONTAINER_TYPES, CreateSubscriptionResponseDto } from '~/shared/types/types';
+import { CONTAINER_TYPES } from '~/shared/types/types';
 import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/channel-subscription-repository';
 import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
 import { Channel, Subscription } from '@prisma/client';
@@ -14,7 +14,7 @@ export class ChannelSubscriptionService {
   ) {
     this.channelSubscriptionRepository = channelSubscriptionRepository;
   }
-  async toggleSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {
+  async toggleSubscription(userId: string, channelId: string): Promise<{ isSubscribed: boolean } | null> {
     const channel = this.channelCrudRepository.getChannelById(channelId);
     if (!channel) {
       return null;

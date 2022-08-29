@@ -10,7 +10,7 @@ import { reducer as videos } from './videos/reducer';
 import { reducer as videoPage } from './video-page/reducer';
 import { reducer as category } from './categories/reducer';
 import { reducer as chat } from './chat/reducer';
-import { reducer as sidebar } from './sidebar/reducer';
+import { reducer as subscriptions } from './subscriptions/reducer';
 
 const rootReducer = combineReducers({
   auth,
@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
   videoPage,
   category,
   chat,
-  sidebar,
+  subscriptions,
 });
 
 export { rootReducer };

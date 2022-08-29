@@ -110,26 +110,6 @@
   outline-color: var(--gray-200-input-background);
 }
 
-.subscribe-button-default {
-  color: var(--text-gray-color);
-  background-color: var(--green-300-primary-background);
-}
-
-.subscribe-button-subscribed {
-  color: var(--white-text-color);
-  background-color: var(--brand-green-color);
-}
-
-.subscribe-button-basic {
-  width: 100px;
-  height: 35px;
-  border-radius: 2px;
-}
-
-.views-container {
-  margin: 10px 0 0;
-}
-
 .channel-banner {
   width: 34px;
   height: 34px;
@@ -215,5 +195,22 @@
 
   .description-container {
     max-width: 100%;
+  }
+}
+
+.subscribe-wrapper {
+  position: relative;
+  margin: 20px 0;
+}
+
+.subscribe-signin-modal {
+  position: absolute;
+  top: 120%;
+  left: 0;
+  width: 200px;
+  @media #{breakpoint.$tablet-small} {
+    right: 0;
+    left: unset;
+    margin-left: auto;
   }
 }

@@ -2,7 +2,8 @@ import { createReducer } from '@reduxjs/toolkit';
 
 import { DataStatus } from 'common/enums/enums';
 import { VideoExpandedResponseDto } from 'shared/build';
-import { addVideoComment, getVideo, videoChannelSubscribe, videoReact, updateLiveViews } from './actions';
+import { channelSubscribe } from 'store/subscriptions/actions';
+import { addVideoComment, getVideo, videoReact, updateLiveViews } from './actions';
 
 type State = {
   dataStatus: DataStatus;
@@ -37,7 +38,7 @@ const reducer = createReducer(initialState, (builder) => {
     state.dataStatus = DataStatus.REJECTED;
     state.error = error.message;
   });
-  builder.addCase(videoChannelSubscribe.fulfilled, (state, { payload }) => {
+  builder.addCase(channelSubscribe.fulfilled, (state, { payload }) => {
     if (state.video) {
       state.video.isUserSubscribedOnChannel = payload.isSubscribed;
     }
