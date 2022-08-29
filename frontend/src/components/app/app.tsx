@@ -23,6 +23,7 @@ import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers
 import styles from './app.module.scss';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
 import { StudioStreamContainer } from 'pages/studio/stream/stream-container';
+import { StudioNewStream } from 'pages/studio/new-stream/new-stream';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -68,6 +69,7 @@ const App: FC = () => {
               <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHome />} />} />
               <Route path={AppRoutes.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />
               <Route path={AppRoutes.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />} />
+              <Route path={AppRoutes.STUDIO_STREAM} element={<ProtectedRoute element={<StudioNewStream />} />} />
               <Route
                 path={AppRoutes.STUDIO_STREAM_$ID}
                 element={<ProtectedRoute element={<StudioStreamContainer />} />}

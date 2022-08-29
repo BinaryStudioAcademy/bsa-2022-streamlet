@@ -131,16 +131,20 @@ const StudioStreamContainer: FC = () => {
     (errorCode) => errorCode === errorCodes.stream.FORBIDDEN || errorCode === errorCodes.stream.ACTIVE_STREAM_EXISTS,
   );
 
+  // NOT DONE
   useEffect(() => {
     const fetch = async (): Promise<void> => {
+      console.error(channel);
       if (!channel) {
         await dispatch(channelActions.loadMyChannel()).unwrap();
       }
-      await dispatch(channelActions.getStreamingKey({ id: channel?.id ?? '' })).unwrap();
+      await dispatch(channelActions.getStreamingKey({ id: channel?.id ?? 'ERROR' })).unwrap();
+      await dispatch(streamActions.getStreamData({ id: channel?.id ?? '' })).unwrap();
+
       await dispatch(streamActions.createStream({ channelId: channel?.id ?? '' })).unwrap();
     };
     fetch();
-  }, [channel, dispatch]);
+  }, [dispatch, channel]);
 
   return isNotFound ? (
     <NotFound />

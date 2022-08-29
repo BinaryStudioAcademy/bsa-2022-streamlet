@@ -1,15 +1,17 @@
-import { AppRoutes, IconColor, IconName } from 'common/enums/enums';
+import { AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Icon } from 'components/common/icon';
-import { useAppDispatch, useAppSelector, useEffect, useNavigate } from 'hooks/hooks';
+import { Loader } from 'components/common/common';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { channelActions, streamActions } from 'store/actions';
 
 import styles from './styles.module.scss';
 
-const StudioHome: FC = () => {
+const StudioNewStream: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { channel } = useAppSelector((state) => ({
+  const { stream, channel } = useAppSelector((state) => ({
     stream: state.stream.currentStreamData,
     channel: state.channel.myChannel.data,
     streamingKey: state.channel.myChannel.streamingKey,
@@ -17,31 +19,29 @@ const StudioHome: FC = () => {
     streamErrorCode: state.stream.errorCode,
   }));
 
-  // NOT DONE (?)
+  // NOT DONE
   useEffect(() => {
     const fetch = async (): Promise<void> => {
       let loadedChannel;
       if (!channel) {
         loadedChannel = await dispatch(channelActions.loadMyChannel()).unwrap();
       }
-      const currentStream = await dispatch(streamActions.getStreamData({ id: loadedChannel?.id ?? 'ERROR' })).unwrap();
+      if (stream) {
+        navigate(`${AppRoutes.STUDIO_STREAM}/${stream.id}`);
+      }
+      const currentStream = await dispatch(streamActions.getStreamData({ id: loadedChannel?.id ?? '' })).unwrap();
       if (currentStream) {
         navigate(`${AppRoutes.STUDIO_STREAM}/${currentStream.id}`, { replace: true });
       }
+      await dispatch(streamActions.createStream({ channelId: loadedChannel?.id ?? '' })).unwrap();
     };
     fetch();
-  }, [dispatch, channel, navigate]);
+  }, [dispatch, channel, navigate, stream]);
 
   return (
     <div className={styles['studio']}>
-      <h1 className={styles['header']}>Welcome to Studio!</h1>
-      <div className={styles['controls']}>
-        <button className={styles['button']}>
-          <Icon name={IconName.CAMERA} color={IconColor.WHITE} width="60" height="60" />
-          <p>Start streaming</p>
-        </button>
-      </div>
+      <Loader />
     </div>
   );
 };
-export { StudioHome };
+export { StudioNewStream };

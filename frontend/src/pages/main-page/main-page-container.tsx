@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { getVideos } from 'store/videos/actions';
 import { VideoCardMain } from 'components/common/common';
+import { loadMyChannel } from 'store/channel/actions';
 
 function handleClickFilter(): void {
   void 1;
@@ -26,6 +27,7 @@ const MainPageContainer: FC = () => {
 
   useEffect(() => {
     dispatch(getVideos());
+    dispatch(loadMyChannel());
   }, [dispatch]);
 
   return <MainPage filterBlockProps={filterBlockProps} blocksVideo={blockVideo} />;

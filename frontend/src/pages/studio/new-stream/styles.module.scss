@@ -1,0 +1,10 @@
+@import 'assets/css/styles.scss';
+
+.studio {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  background: var(--green-300-primary-background);
+}
