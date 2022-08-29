@@ -1,4 +1,4 @@
-import { VideoStreamResponseDto } from 'shared/build';
+import { StreamPrivacy, StreamStatus, VideoStreamResponseDto } from 'shared/build';
 import { VideoStreamResponseBeforeTrimming } from '~/shared/types/stream/stream-info-before-trimming.type';
 
 const castToVideoStreamResponseDto = ({
@@ -22,8 +22,8 @@ const castToVideoStreamResponseDto = ({
     id,
     name,
     description,
-    status,
-    privacy,
+    status: status as StreamStatus,
+    privacy: privacy as StreamPrivacy,
     isReadyToStream,
     publishedAt: publishedAt?.toISOString() ?? '',
     scheduledStreamDate: scheduledStreamDate?.toISOString() ?? '',

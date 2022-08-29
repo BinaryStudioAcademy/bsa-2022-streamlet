@@ -1,4 +1,4 @@
-import { BaseVideoResponseDto } from 'shared/build';
+import { BaseVideoResponseDto, StreamStatus } from 'shared/build';
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 
 export const castToSearchByCategoryResponseDto = ({
@@ -16,7 +16,7 @@ export const castToSearchByCategoryResponseDto = ({
   return {
     id,
     name,
-    status,
+    status: status as StreamStatus,
     publishedAt: publishedAt ? publishedAt.toString() : '',
     scheduledStreamDate: scheduledStreamDate.toString(),
     liveViews,
