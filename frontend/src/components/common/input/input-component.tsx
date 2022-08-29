@@ -20,8 +20,6 @@ type Props<T> = {
   labelClassName?: string;
   errorBlockClassName?: string;
   wrapperClassName?: string;
-  onFocus?: { (): void };
-  onBlur?: { (): void };
 };
 
 const Input = <T extends FieldValues>({
@@ -36,8 +34,6 @@ const Input = <T extends FieldValues>({
   labelClassName,
   errorBlockClassName,
   wrapperClassName,
-  onFocus,
-  onBlur,
 }: Props<T>): ReactElement | null => {
   const {
     field,
@@ -66,8 +62,6 @@ const Input = <T extends FieldValues>({
       <input
         {...field}
         type={type}
-        onFocus={onFocus}
-        onBlur={onBlur}
         placeholder={placeholder}
         className={clsx(styles.input, inputClassName, error && isTouched && inputErrorClassName)}
         id={id}
