@@ -28,8 +28,10 @@
 
 .video-title {
   color: var(--white-text-color);
+  font-weight: 600;
   font-size: 24px;
-  line-height: 29px;
+  font-family: Gilroy, sans-serif;
+  line-height: 48px;
 }
 
 .video-block {
@@ -45,7 +47,7 @@
 .sign-in-modal {
   position: absolute;
   top: 35px;
-  left: -90px;
+  right: -50px;
   width: 378px;
   height: 200px;
 }
@@ -88,6 +90,7 @@
 
 .video-header {
   display: flex;
+  justify-content: space-between;
 }
 
 .description-container {
@@ -127,7 +130,7 @@
 }
 
 .views-container {
-  margin: 10px 0 0;
+  margin: 6px 0 0;
 }
 
 .channel-banner {
