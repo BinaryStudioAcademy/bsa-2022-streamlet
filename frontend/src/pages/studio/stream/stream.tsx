@@ -18,8 +18,11 @@ import { StreamStatus } from 'shared/build';
 // import { Icon } from 'components/common/icon';
 import defaultPreview from '../../../assets/img/default/video-default.png';
 import { StreamInfoFormValues, StreamSettingsFormValues } from './common/stream-settings-form-values';
+import { UploadImage } from '../../../components/common/common';
 
 import styles from './styles.module.scss';
+import React, { useState } from 'react';
+import { ImageListType } from 'react-images-uploading';
 
 type Props = {
   isEditingForm: boolean;
@@ -57,205 +60,230 @@ const StudioStream: FC<Props> = ({
   settingsFormHandleSubmit,
   onSubmit,
 }) => {
+  const [images, setImages] = useState([]);
+  const [isNeedUploadPosterModal, setIsNeedUploadPosterModal] = useState(false);
+  const onPosterSave = (): void => {
+    setIsNeedUploadPosterModal(true);
+  };
+  const onUploadImageClose = (): void => {
+    setIsNeedUploadPosterModal(!isNeedUploadPosterModal);
+    setImages([]);
+  };
+  const onUploadPoster = (imageList: ImageListType): void => {
+    setImages(imageList as never[]);
+    const posterBase64 = imageList[0].dataURL;
+    if (posterBase64) {
+      handleUploadPoster({
+        base64Str: posterBase64,
+        videoId: stream?.id as string,
+      });
+    }
+    setIsNeedUploadPosterModal(false);
+  };
   return (
-    <div className={styles['settings-container']}>
-      <div className={styles['settings-block-container']}>
-        <div className={styles['settings-block']}>
-          <div className={styles['col-1']}>
-            <div className={styles['preview-container']}>
-              <img className={styles['preview']} src={stream?.poster ?? defaultPreview} alt="Stream preview" />
-              <Button content={'Upload Preview'} className={styles['button']} onClick={handleUploadPoster} />
-            </div>
-            <form className={styles['form-container']}>
-              <div className={styles['field-container']}>
-                <PasswordInput
-                  inputClassName={styles['input']}
-                  changeVisibilityBtnClassName={styles['input-eye']}
-                  labelClassName={styles['label']}
-                  wrapperClassName={styles['form-input']}
-                  placeholder="Streaming key"
-                  control={infoFormControl}
-                  name="streamingKey"
-                  errors={infoFormErrors}
-                  label="Streaming key"
-                  readOnly
-                />
-                <Button content={'Reset'} className={styles['button']} onClick={handleStreamingKeyReset} />
-                <CopyToClipboard onCopy={handleCopy} text={infoFormValues('streamingKey')}>
-                  <Button content={'Copy'} className={styles['button']} />
-                </CopyToClipboard>
+    <>
+      {isNeedUploadPosterModal && (
+        <UploadImage images={images} onUpload={onUploadPoster} onClose={onUploadImageClose} />
+      )}
+      <div className={styles['settings-container']}>
+        <div className={styles['settings-block-container']}>
+          <div className={styles['settings-block']}>
+            <div className={styles['col-1']}>
+              <div className={styles['preview-container']}>
+                <img className={styles['preview']} src={stream?.poster ?? defaultPreview} alt="Stream preview" />
+                <Button content={'Upload Preview'} className={styles['button']} onClick={onPosterSave} />
               </div>
-              <div className={styles['field-container']}>
-                <Input
-                  inputClassName={styles['input']}
-                  labelClassName={styles['label']}
-                  wrapperClassName={styles['form-input']}
-                  placeholder="Streaming server URL"
-                  control={infoFormControl}
-                  name="streamingServerUrl"
-                  errors={infoFormErrors}
-                  label="Streaming server URL"
-                  readOnly
-                />
-                <CopyToClipboard onCopy={handleCopy} text={infoFormValues('streamingServerUrl')}>
-                  <Button content={'Copy'} className={styles['button']} />
-                </CopyToClipboard>
-              </div>
-              <div className={styles['field-container']}>
-                <Input
-                  inputClassName={styles['input']}
-                  labelClassName={styles['label']}
-                  wrapperClassName={styles['form-input']}
-                  placeholder="Stream URL"
-                  control={infoFormControl}
-                  name="streamUrl"
-                  errors={infoFormErrors}
-                  label="Stream URL"
-                  readOnly
-                />
-                <CopyToClipboard onCopy={handleCopy} text={infoFormValues('streamUrl')}>
-                  <Button content={'Copy'} className={styles['button']} />
-                </CopyToClipboard>
-              </div>
-            </form>
-          </div>
-          <div className={styles['col-2']}>
-            <div className={styles['status-container']}>
-              <div className={styles['status']}>
-                <div
-                  className={clsx(styles['status-indicator'], stream?.status === StreamStatus.LIVE && styles['live'])}
-                />
-                <p className={styles['status-text']}>
-                  {!stream?.isReadyToStream
-                    ? 'Not connected'
-                    : stream?.status === StreamStatus.WAITING
-                    ? 'Ready to stream'
-                    : stream?.status === StreamStatus.LIVE
-                    ? 'Live'
-                    : 'Offline'}
-                </p>
-              </div>
-              <Button
-                content={stream?.status === StreamStatus.WAITING ? 'Go live' : 'End stream'}
-                className={clsx(styles['button'], styles['preview-button'], styles['live-button'])}
-                onClick={handleChangeStreamStatus}
-                disabled={!stream?.isReadyToStream}
-              />
-            </div>
-            <form className={styles['form-container']} onSubmit={settingsFormHandleSubmit(onSubmit)}>
-              <Input
-                control={settingsFormControl}
-                errors={settingsFormErrors}
-                name="name"
-                label="Title"
-                type="text"
-                inputClassName={styles['input']}
-                inputErrorClassName={styles['input-error']}
-                labelClassName={styles['label']}
-                errorBlockClassName={styles['error']}
-                wrapperClassName={styles['form-input']}
-                placeholder="Your stream name..."
-                disabled={!isEditingForm}
-              />
-              <div className={styles['input-row']}>
-                <Input
-                  control={settingsFormControl}
-                  errors={settingsFormErrors}
-                  name="categories"
-                  label="Categories"
-                  type="text"
-                  inputClassName={styles['input']}
-                  inputErrorClassName={styles['input-error']}
-                  labelClassName={styles['label']}
-                  errorBlockClassName={styles['error']}
-                  wrapperClassName={styles['form-input']}
-                  placeholder="Choose the categories"
-                  disabled={!isEditingForm}
-                />
-                <Input
-                  control={settingsFormControl}
-                  errors={settingsFormErrors}
-                  name="tags"
-                  label="Tags"
-                  type="text"
-                  inputClassName={styles['input']}
-                  inputErrorClassName={styles['input-error']}
-                  labelClassName={styles['label']}
-                  errorBlockClassName={styles['error']}
-                  wrapperClassName={styles['form-input']}
-                  placeholder="Press enter to add tags..."
-                  disabled={!isEditingForm}
-                />
-              </div>
-              <div className={styles['input-row']}>
-                <DatetimeInput
-                  control={settingsFormControl}
-                  name="scheduledStreamDate"
-                  label="Scheduled date"
-                  inputClassName={styles['input']}
-                  labelClassName={styles['label']}
-                  wrapperClassName={styles['form-input']}
-                  defaultValue={new Date()}
-                  disabled={!isEditingForm}
-                />
-                <Input
-                  control={settingsFormControl}
-                  errors={settingsFormErrors}
-                  name="privacy"
-                  label="Privacy"
-                  type="text"
-                  inputClassName={styles['input']}
-                  inputErrorClassName={styles['input-error']}
-                  labelClassName={styles['label']}
-                  errorBlockClassName={styles['error']}
-                  wrapperClassName={styles['form-input']}
-                  placeholder="Select privacy settings"
-                  disabled={!isEditingForm}
-                />
-              </div>
-
-              <AreaInput
-                control={settingsFormControl}
-                name="description"
-                label="Stream description"
-                inputClassName={styles['area']}
-                labelClassName={styles['label']}
-                wrapperClassName={styles['form-input']}
-                placeholder="Stream description..."
-                disabled={!isEditingForm}
-              />
-
-              <div className={styles['button-wrapper']}>
-                {!isEditingForm ? (
-                  <Button
-                    content={'Edit'}
-                    className={clsx(styles['button'], styles['preview-button'])}
-                    onClick={handleFormEdit}
-                    type="button"
+              <form className={styles['form-container']}>
+                <div className={styles['field-container']}>
+                  <PasswordInput
+                    inputClassName={styles['input']}
+                    changeVisibilityBtnClassName={styles['input-eye']}
+                    labelClassName={styles['label']}
+                    wrapperClassName={styles['form-input']}
+                    placeholder="Streaming key"
+                    control={infoFormControl}
+                    name="streamingKey"
+                    errors={infoFormErrors}
+                    label="Streaming key"
+                    readOnly
                   />
-                ) : (
-                  <>
-                    <Button
-                      content={'Save'}
-                      className={clsx(styles['button'], styles['preview-button'])}
-                      type="submit"
-                    />
-                    <Button
-                      content={'Cancel'}
-                      className={clsx(styles['button'], styles['preview-button'])}
-                      onClick={handleFormCancel}
-                    />
-                  </>
-                )}
+                  <Button content={'Reset'} className={styles['button']} onClick={handleStreamingKeyReset} />
+                  <CopyToClipboard onCopy={handleCopy} text={infoFormValues('streamingKey')}>
+                    <Button content={'Copy'} className={styles['button']} />
+                  </CopyToClipboard>
+                </div>
+                <div className={styles['field-container']}>
+                  <Input
+                    inputClassName={styles['input']}
+                    labelClassName={styles['label']}
+                    wrapperClassName={styles['form-input']}
+                    placeholder="Streaming server URL"
+                    control={infoFormControl}
+                    name="streamingServerUrl"
+                    errors={infoFormErrors}
+                    label="Streaming server URL"
+                    readOnly
+                  />
+                  <CopyToClipboard onCopy={handleCopy} text={infoFormValues('streamingServerUrl')}>
+                    <Button content={'Copy'} className={styles['button']} />
+                  </CopyToClipboard>
+                </div>
+                <div className={styles['field-container']}>
+                  <Input
+                    inputClassName={styles['input']}
+                    labelClassName={styles['label']}
+                    wrapperClassName={styles['form-input']}
+                    placeholder="Stream URL"
+                    control={infoFormControl}
+                    name="streamUrl"
+                    errors={infoFormErrors}
+                    label="Stream URL"
+                    readOnly
+                  />
+                  <CopyToClipboard onCopy={handleCopy} text={infoFormValues('streamUrl')}>
+                    <Button content={'Copy'} className={styles['button']} />
+                  </CopyToClipboard>
+                </div>
+              </form>
+            </div>
+            <div className={styles['col-2']}>
+              <div className={styles['status-container']}>
+                <div className={styles['status']}>
+                  <div
+                    className={clsx(styles['status-indicator'], stream?.status === StreamStatus.LIVE && styles['live'])}
+                  />
+                  <p className={styles['status-text']}>
+                    {!stream?.isReadyToStream
+                      ? 'Not connected'
+                      : stream?.status === StreamStatus.WAITING
+                      ? 'Ready to stream'
+                      : stream?.status === StreamStatus.LIVE
+                      ? 'Live'
+                      : 'Offline'}
+                  </p>
+                </div>
+                <Button
+                  content={stream?.status === StreamStatus.WAITING ? 'Go live' : 'End stream'}
+                  className={clsx(styles['button'], styles['preview-button'], styles['live-button'])}
+                  onClick={handleChangeStreamStatus}
+                  disabled={!stream?.isReadyToStream}
+                />
               </div>
-            </form>
+              <form className={styles['form-container']} onSubmit={settingsFormHandleSubmit(onSubmit)}>
+                <Input
+                  control={settingsFormControl}
+                  errors={settingsFormErrors}
+                  name="name"
+                  label="Title"
+                  type="text"
+                  inputClassName={styles['input']}
+                  inputErrorClassName={styles['input-error']}
+                  labelClassName={styles['label']}
+                  errorBlockClassName={styles['error']}
+                  wrapperClassName={styles['form-input']}
+                  placeholder="Your stream name..."
+                  disabled={!isEditingForm}
+                />
+                <div className={styles['input-row']}>
+                  <Input
+                    control={settingsFormControl}
+                    errors={settingsFormErrors}
+                    name="categories"
+                    label="Categories"
+                    type="text"
+                    inputClassName={styles['input']}
+                    inputErrorClassName={styles['input-error']}
+                    labelClassName={styles['label']}
+                    errorBlockClassName={styles['error']}
+                    wrapperClassName={styles['form-input']}
+                    placeholder="Choose the categories"
+                    disabled={!isEditingForm}
+                  />
+                  <Input
+                    control={settingsFormControl}
+                    errors={settingsFormErrors}
+                    name="tags"
+                    label="Tags"
+                    type="text"
+                    inputClassName={styles['input']}
+                    inputErrorClassName={styles['input-error']}
+                    labelClassName={styles['label']}
+                    errorBlockClassName={styles['error']}
+                    wrapperClassName={styles['form-input']}
+                    placeholder="Press enter to add tags..."
+                    disabled={!isEditingForm}
+                  />
+                </div>
+                <div className={styles['input-row']}>
+                  <DatetimeInput
+                    control={settingsFormControl}
+                    name="scheduledStreamDate"
+                    label="Scheduled date"
+                    inputClassName={styles['input']}
+                    labelClassName={styles['label']}
+                    wrapperClassName={styles['form-input']}
+                    defaultValue={new Date()}
+                    disabled={!isEditingForm}
+                  />
+                  <Input
+                    control={settingsFormControl}
+                    errors={settingsFormErrors}
+                    name="privacy"
+                    label="Privacy"
+                    type="text"
+                    inputClassName={styles['input']}
+                    inputErrorClassName={styles['input-error']}
+                    labelClassName={styles['label']}
+                    errorBlockClassName={styles['error']}
+                    wrapperClassName={styles['form-input']}
+                    placeholder="Select privacy settings"
+                    disabled={!isEditingForm}
+                  />
+                </div>
+
+                <AreaInput
+                  control={settingsFormControl}
+                  name="description"
+                  label="Stream description"
+                  inputClassName={styles['area']}
+                  labelClassName={styles['label']}
+                  wrapperClassName={styles['form-input']}
+                  placeholder="Stream description..."
+                  disabled={!isEditingForm}
+                />
+
+                <div className={styles['button-wrapper']}>
+                  {!isEditingForm ? (
+                    <Button
+                      content={'Edit'}
+                      className={clsx(styles['button'], styles['preview-button'])}
+                      onClick={handleFormEdit}
+                      type="button"
+                    />
+                  ) : (
+                    <>
+                      <Button
+                        content={'Save'}
+                        className={clsx(styles['button'], styles['preview-button'])}
+                        type="submit"
+                      />
+                      <Button
+                        content={'Cancel'}
+                        className={clsx(styles['button'], styles['preview-button'])}
+                        onClick={handleFormCancel}
+                      />
+                    </>
+                  )}
+                </div>
+              </form>
+            </div>
           </div>
         </div>
+        <div className={styles['chat-container']}>
+          <VideoChatContainer videoId={stream?.id} />
+        </div>
       </div>
-      <div className={styles['chat-container']}>
-        <VideoChatContainer videoId={stream?.id} />
-      </div>
-    </div>
+    </>
   );
 };
 export { StudioStream };
