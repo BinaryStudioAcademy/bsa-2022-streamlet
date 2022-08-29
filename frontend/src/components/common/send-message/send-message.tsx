@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
+import clsx from 'clsx';
 import { ChatMessageResponseDto, FC } from 'common/types/types';
 import { Icon } from '../icon';
 import { IconName } from 'common/enums/enums';
@@ -12,15 +13,22 @@ export interface SendMessageProps {
 
 const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseEmoji }) => {
   const [messageText, setMessageText] = useState('');
+  const [error, setError] = useState(false);
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>): void {
     setMessageText(e.target.value);
+    setError(false);
   }
 
   const handleSubmitMessage = (): void => {
-    handlerSubmitMessage(messageText).then(() => {
-      setMessageText('');
-    });
+    handlerSubmitMessage(messageText)
+      .then(() => {
+        setMessageText('');
+        setError(false);
+      })
+      .catch(() => {
+        setError(true);
+      });
   };
 
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>): void => {
@@ -33,7 +41,7 @@ const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseE
       <input
         value={messageText}
         onChange={handleInputChange}
-        className={styles['input-add-comments']}
+        className={clsx(styles['input-add-comments'], error && styles['input-error'])}
         type="text"
         placeholder="Add comments"
       />

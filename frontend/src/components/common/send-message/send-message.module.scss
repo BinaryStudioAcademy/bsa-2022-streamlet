@@ -12,9 +12,13 @@
   line-height: 24px;
   letter-spacing: -0.16px;
   background-color: var(--gray-400-primary-background);
-  border: none;
+  border: 1px solid transparent;
   border-radius: 6px;
   outline: none;
+}
+
+.add-comments .input-error {
+  border: var(--input-error-border);
 }
 
 .add-comments .group-buttons-reactions {
