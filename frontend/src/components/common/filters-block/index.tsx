@@ -24,13 +24,15 @@ const FiltersBlock: FC<FilterBlockProps> = ({ filterList, handleClickFilter, han
     <div className={styles['filter-block']}>
       <div className={styles['filter-block-wrapper']}>
         <div className={styles['blur-container']} />
-        <button
-          onClick={handleClickClearFilters}
-          key={clearFilters.id}
-          className={clsx({ [styles.active]: clearFilters.isActive }, styles['filter-item'])}
-        >
-          {clearFilters.name}
-        </button>
+        {filterList.length !== 0 && (
+          <button
+            onClick={handleClickClearFilters}
+            key={clearFilters.id}
+            className={clsx({ [styles.active]: clearFilters.isActive }, styles['filter-item'])}
+          >
+            {clearFilters.name}
+          </button>
+        )}
         {filterList.map((filter) => (
           <button
             onClick={(): void => handleClickFilter(filter.id)}
