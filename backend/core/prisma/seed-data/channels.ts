@@ -8,7 +8,7 @@ const channelsNoAuthors: Omit<Channel, 'createdAt' | 'updatedAt' | 'authorId'>[]
     'description':
       'Hi! 👋 Welcome to my channel — Im a 24 year old, recent graduate working at a high growth startup! Follow along for insights into the tech industry, all things startup, and what to expect as a recent-grad remote software engineer. I also dabble in sketch-comedy and investing. Thanks for being here!',
     'contactEmail': 'alistair-sa@ukr.net',
-    'bannerImage': 'http://dummyimage.com/1252x401.png/5fa2dd/ffffff',
+    'bannerImage': '',
     'avatar': 'https://career.comarch.com/files-com/file_45/good_programmer_comarch.jpg',
   },
   {
