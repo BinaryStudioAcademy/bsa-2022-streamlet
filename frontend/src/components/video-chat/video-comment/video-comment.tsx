@@ -12,10 +12,9 @@ const VideoComment: FC<Props> = ({ message: { text, createdAt, author } }) => {
   return (
     <div className={styles['video-comment']}>
       <div className={styles['main-part-comment']}>
-        {author.profile.avatar && (
+        {author.profile.avatar ? (
           <img className={styles['commentators-avatar']} src={author.profile.avatar} alt={author.username} />
-        )}
-        {!author.profile.avatar && (
+        ) : (
           <div className={styles['default-avatar']}>
             {generateAbbreviatureNameUser(getUserDisplayName({ userName: author.username }))}
           </div>
