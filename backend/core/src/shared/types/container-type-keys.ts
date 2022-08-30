@@ -40,6 +40,8 @@ const CONTAINER_TYPES = {
   ChatRepository: Symbol.for('ChatRepository'),
   ChatController: Symbol.for('ChatController'),
 
+  ChannelOwnerMiddleWare: Symbol.for('ChannelOwnerMiddleware'),
+
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),
   ImageStoreAdapter: Symbol.for('CloudinaryAdapter'),
