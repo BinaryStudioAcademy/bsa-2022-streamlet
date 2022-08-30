@@ -26,9 +26,9 @@ class HistoryApi {
       },
     });
   }
-  public getAllUserHVideoHistoryRecord(): Promise<HistoryResponseDto[]> {
+  public getUserHVideoHistoryRecord(page: number): Promise<HistoryResponseDto> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.HISTORY}${HistoryApiPath.ROOT}`,
+      url: `${this.#apiPrefix}${ApiPath.HISTORY}${HistoryApiPath.ROOT}${page}`,
       options: {
         method: HttpMethod.GET,
       },

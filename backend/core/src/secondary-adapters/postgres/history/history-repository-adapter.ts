@@ -3,6 +3,7 @@ import { HistoryRepository } from '~/core/history/port/history-repository';
 import { PrismaClient, History } from '@prisma/client';
 import { CONTAINER_TYPES, HistoryResponseDto, HistoryRequestDto } from '~/shared/types/types';
 import { trimHistory } from '~/shared/helpers/trim-history';
+import { HistoryListType } from 'shared/build';
 
 @injectable()
 export class HistoryRepositoryAdapter implements HistoryRepository {
@@ -12,8 +13,18 @@ export class HistoryRepositoryAdapter implements HistoryRepository {
     this.prismaClient = prismaClient;
   }
 
-  async getAllUserHistory(userId: string): Promise<History[]> {
+  async getAllUserHistoryLength(userId: string): Promise<number> {
+    return this.prismaClient.history.count({
+      where: {
+        userId,
+      },
+    });
+  }
+
+  async getUserHistory(userId: string, take: number, skip: number, lastPage: number): Promise<HistoryResponseDto> {
     const history = await this.prismaClient.history.findMany({
+      take,
+      skip,
       where: {
         userId,
       },
@@ -30,15 +41,24 @@ export class HistoryRepositoryAdapter implements HistoryRepository {
           },
         },
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
-    return history.map((historyRecord) => {
-      return trimHistory(historyRecord);
-    });
+    const list: HistoryListType[] = history.map((historyRecord) => trimHistory(historyRecord));
+
+    return {
+      list,
+      lastPage,
+      currentPage: skip / 10 + 1,
+    };
   }
 
-  async createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<HistoryResponseDto> {
-    const history = await this.prismaClient.history.create({
-      data: { ...historyRequestDto },
+  async createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<History> {
+    const isHistoryAlreadyExist = await this.prismaClient.history.findFirst({
+      where: {
+        ...historyRequestDto,
+      },
       include: {
         video: {
           include: {
@@ -54,6 +74,25 @@ export class HistoryRepositoryAdapter implements HistoryRepository {
       },
     });
 
-    return trimHistory(history);
+    if (!isHistoryAlreadyExist) {
+      const history = await this.prismaClient.history.create({
+        data: { ...historyRequestDto },
+        include: {
+          video: {
+            include: {
+              channel: {
+                select: {
+                  id: true,
+                  name: true,
+                  avatar: true,
+                },
+              },
+            },
+          },
+        },
+      });
+      return trimHistory(history);
+    }
+    return trimHistory(isHistoryAlreadyExist);
   }
 }

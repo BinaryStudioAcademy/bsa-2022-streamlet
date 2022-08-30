@@ -1,5 +1,5 @@
 import { Video, History } from '@prisma/client';
-import { HistoryResponseDto } from 'shared/build';
+import { HistoryListType } from 'shared/build';
 import { trimVideo } from '~/shared/helpers/index';
 
 export const trimHistory = (
@@ -12,7 +12,7 @@ export const trimHistory = (
       };
     };
   },
-): HistoryResponseDto => {
+): HistoryListType => {
   return {
     id: history.id,
     userId: history.userId,

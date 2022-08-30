@@ -1,6 +1,6 @@
 import { VideoCard } from '~/common/types/components/video-card/video-card.type';
 
-type HistoryResponseDto = {
+type HistoryListType = {
   id: string;
   userId: string;
   videoId: string;
@@ -9,4 +9,10 @@ type HistoryResponseDto = {
   updatedAt: Date;
 };
 
-export { type HistoryResponseDto };
+type HistoryResponseDto = {
+  list: HistoryListType[];
+  currentPage: number;
+  lastPage: number;
+};
+
+export { type HistoryResponseDto, type HistoryListType };

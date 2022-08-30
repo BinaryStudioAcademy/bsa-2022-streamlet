@@ -1,8 +1,15 @@
-import { BaseHttpController, controller, httpGet, httpPost, requestBody, request } from 'inversify-express-utils';
+import {
+  BaseHttpController,
+  controller,
+  httpGet,
+  httpPost,
+  requestBody,
+  request,
+  requestParam,
+} from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { CONTAINER_TYPES, HistoryResponseDto, ExtendedAuthenticatedRequest } from '~/shared/types/types';
 import { HistoryService } from '~/core/history/application/history-service';
-import { History } from '@prisma/client';
 import { authenticationMiddleware } from '../middleware';
 import { ApiPath, HistoryApiPath } from '~/shared/enums/api/api';
 
@@ -61,10 +68,13 @@ export class HistoryController extends BaseHttpController {
    *        401:
    *          $ref: '#/components/responses/NotFound'
    */
-  @httpGet(HistoryApiPath.ROOT, authenticationMiddleware)
-  public getAllUserHistory(@request() req: ExtendedAuthenticatedRequest): Promise<History[]> {
+  @httpGet(`${HistoryApiPath.ROOT}:id`, authenticationMiddleware)
+  public getAllUserHistory(
+    @request() req: ExtendedAuthenticatedRequest,
+    @requestParam() { id: page }: { id: string },
+  ): Promise<HistoryResponseDto> {
     const { id: userId } = req.user;
-    return this.historyService.getAllUserHistory(userId);
+    return this.historyService.getUserHistory(userId, page);
   }
 
   /**

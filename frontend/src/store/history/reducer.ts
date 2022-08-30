@@ -1,20 +1,24 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 
-import { addVideoHistoryRecord, getAllUserVideoHistoryRecord } from './actions';
-import { HistoryResponseDto } from 'shared/build';
+import { addVideoHistoryRecord, getUserVideoHistoryRecord } from './actions';
+import { HistoryListType } from 'shared/build';
 
 type State = {
-  history: {
-    data: HistoryResponseDto[];
+  data: {
+    currentPage: number;
+    lastPage: number;
     dataStatus: DataStatus;
     error: string | undefined;
+    list: HistoryListType[];
   };
 };
 
 const initialState: State = {
-  history: {
-    data: [],
+  data: {
+    list: [],
+    lastPage: 1,
+    currentPage: 1,
     dataStatus: DataStatus.IDLE,
     error: undefined,
   },
@@ -22,21 +26,29 @@ const initialState: State = {
 
 const reducer = createReducer(initialState, (builder) => {
   builder.addCase(addVideoHistoryRecord.pending, (state) => {
-    state.history.dataStatus = DataStatus.PENDING;
+    state.data.dataStatus = DataStatus.PENDING;
   });
 
-  builder.addCase(getAllUserVideoHistoryRecord.pending, (state) => {
-    state.history.dataStatus = DataStatus.PENDING;
+  builder.addCase(getUserVideoHistoryRecord.pending, (state) => {
+    state.data.dataStatus = DataStatus.PENDING;
   });
 
   builder.addCase(addVideoHistoryRecord.fulfilled, (state, { payload }) => {
-    state.history.data.push(payload);
-    state.history.error = undefined;
+    state.data = {
+      ...payload,
+      dataStatus: DataStatus.FULFILLED,
+      error: undefined,
+    };
   });
 
-  builder.addCase(getAllUserVideoHistoryRecord.fulfilled, (state, { payload }) => {
-    state.history.data = payload;
-    state.history.error = undefined;
+  builder.addCase(getUserVideoHistoryRecord.fulfilled, (state, { payload }) => {
+    const newList = state.data.list.concat(payload.list);
+    state.data = {
+      ...payload,
+      list: newList,
+      error: undefined,
+      dataStatus: DataStatus.FULFILLED,
+    };
   });
 });
 
