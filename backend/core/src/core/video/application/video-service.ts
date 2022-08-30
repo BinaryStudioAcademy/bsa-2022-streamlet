@@ -27,6 +27,7 @@ export class VideoService {
         comments: Comment[];
         description: string;
         likeNum: number;
+        videoPath: string;
         dislikeNum: number;
       })
     | null
@@ -44,6 +45,7 @@ export class VideoService {
     userId: string,
   ): Promise<CreateReactionResponseDto | null> {
     const userReaction = await this.videoRepository.reactionByUser(videoId, userId);
+
     if (userReaction !== null) {
       return this.videoRepository.removeReactionAndAddNew(videoId, userId, request.isLike);
     }

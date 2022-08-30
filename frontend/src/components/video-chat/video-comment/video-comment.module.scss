@@ -5,6 +5,7 @@
 .video-comment .main-part-comment {
   position: relative;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
 
@@ -43,6 +44,7 @@
   font-size: 14px;
   font-style: normal;
   line-height: 19px;
+  overflow-wrap: break-word;
 }
 
 .default-avatar {

@@ -35,6 +35,9 @@ const CONTAINER_TYPES = {
   VideoService: Symbol.for('VideoService'),
   VideoRepository: Symbol.for('VideoRepository'),
   VideoController: Symbol.for('VideoController'),
+  ChatService: Symbol.for('ChatService'),
+  ChatRepository: Symbol.for('ChatRepository'),
+  ChatController: Symbol.for('ChatController'),
 
   ChannelOwnerMiddleWare: Symbol.for('ChannelOwnerMiddleware'),
 

@@ -11,6 +11,7 @@ import { HistoryController } from '~/primary-adapters/rest/history/history-contr
 import { VideoController } from './video/video-controller';
 import { ChannelSubscriptionController } from './channel-subscription/channel-subscription-controller';
 import { ChannelOwnerMiddleWare } from './middleware';
+import { ChatController } from './chat/chat-controller';
 
 const restContainerModule = new ContainerModule((bind: interfaces.Bind) => {
   bind<UserController>(CONTAINER_TYPES.UserController).to(UserController);
@@ -20,6 +21,7 @@ const restContainerModule = new ContainerModule((bind: interfaces.Bind) => {
   bind<CategoryController>(CONTAINER_TYPES.CategoryController).to(CategoryController);
   bind<ChannelStreamingController>(CONTAINER_TYPES.ChannelStreamingController).to(ChannelStreamingController);
   bind<ChannelCrudController>(CONTAINER_TYPES.ChannelCrudController).to(ChannelCrudController);
+  bind<ChatController>(CONTAINER_TYPES.ChatController).to(ChatController);
   bind<ProfileController>(CONTAINER_TYPES.ProfileController).to(ProfileController);
   bind<HistoryController>(CONTAINER_TYPES.HistoryController).to(HistoryController);
   bind<ChannelSubscriptionController>(CONTAINER_TYPES.ChannelSubscriptionController).to(ChannelSubscriptionController);

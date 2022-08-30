@@ -16,3 +16,4 @@ export * from './category/category';
 export * from './video/video';
 export * from './subscription/subscription';
 export * from './comment';
+export * from './chat/chat';

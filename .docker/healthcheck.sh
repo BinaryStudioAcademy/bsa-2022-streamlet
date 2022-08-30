@@ -1,8 +1,5 @@
 #!/bin/bash
 
-CONTAINER_IS_READY='Instance is ready to test!'
-CONTAINER_IS_NOT_READY='Instance did not start!'
-
 function wait_until_healthy () {
 	CONTAINER=$1
 	counter=0
@@ -15,9 +12,8 @@ function wait_until_healthy () {
 	done
 
 	if [[ $status != "\"healthy\"" ]]; then
-		echo "$CONTAINER was not started!"
+		printf "\nERROR: %s was not started!\n\n" "$CONTAINER"
 		docker ps
-		echo "$CONTAINER_IS_NOT_READY"
 		exit 1
 	else
 	  echo "$CONTAINER: was started successfully!"

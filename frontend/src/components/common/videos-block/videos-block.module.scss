@@ -12,14 +12,6 @@
   @media screen and (max-width: 1900px) {
     grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
   }
-
-  @media screen and (max-width: 1400px) {
-    grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
-  }
-
-  @media screen and (max-width: 1400px) {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
 }
 
 .separate-video-block:not(:last-child) {

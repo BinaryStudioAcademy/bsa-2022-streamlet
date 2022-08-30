@@ -33,13 +33,18 @@ export class VideoRepositoryAdapter implements VideoRepository {
         videoId,
       },
     });
-    return reaction ? reaction.isLike : null;
+    return reaction !== null ? reaction.isLike : null;
   }
 
-  async getById(
-    id: string,
-  ): Promise<
-    (BaseVideoResponseDto & { comments: Comment[]; description: string; likeNum: number; dislikeNum: number }) | null
+  async getById(id: string): Promise<
+    | (BaseVideoResponseDto & {
+        comments: Comment[];
+        description: string;
+        likeNum: number;
+        dislikeNum: number;
+        videoPath: string;
+      })
+    | null
   > {
     const video = await this.prismaClient.video.findUnique({
       where: {
@@ -60,6 +65,9 @@ export class VideoRepositoryAdapter implements VideoRepository {
                 profile: true,
               },
             },
+          },
+          orderBy: {
+            createdAt: 'desc',
           },
         },
       },
@@ -101,6 +109,9 @@ export class VideoRepositoryAdapter implements VideoRepository {
           },
         },
       },
+      orderBy: {
+        publishedAt: 'desc',
+      },
     });
     const total = items.length;
     const list = items.map(trimVideo);
@@ -135,6 +146,9 @@ export class VideoRepositoryAdapter implements VideoRepository {
                 profile: true,
               },
             },
+          },
+          orderBy: {
+            createdAt: 'desc',
           },
         },
       },
