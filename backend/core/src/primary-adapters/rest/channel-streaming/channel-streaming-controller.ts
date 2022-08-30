@@ -93,7 +93,7 @@ export class ChannelStreamingController extends BaseHttpController {
 
   /**
    * @swagger
-   * /live:
+   * /channel-streaming/live:
    *    post:
    *      tags:
    *        - channel
@@ -128,7 +128,7 @@ export class ChannelStreamingController extends BaseHttpController {
 
   /**
    * @swagger
-   * /live_done:
+   * /channel-streaming/live_done:
    *    post:
    *      tags:
    *        - channel
@@ -157,7 +157,7 @@ export class ChannelStreamingController extends BaseHttpController {
 
   /**
    * @swagger
-   * /streaming_key/{id}:
+   * /channel-streaming/streaming_key/{id}:
    *    get:
    *      tags:
    *        - channel
@@ -196,7 +196,7 @@ export class ChannelStreamingController extends BaseHttpController {
 
   /**
    * @swagger
-   * /reset_streaming_key:
+   * /channel-streaming/reset_streaming_key:
    *    post:
    *      tags:
    *        - channel
@@ -237,7 +237,7 @@ export class ChannelStreamingController extends BaseHttpController {
 
   /**
    * @swagger
-   * /change_chat_toggle:
+   * /channel-streaming/change_chat_toggle:
    *    post:
    *      tags:
    *      - channel

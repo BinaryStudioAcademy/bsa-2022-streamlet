@@ -7,9 +7,6 @@ import { authenticationMiddleware } from '../middleware';
 
 /**
  * @swagger
- * tags:
- *   name: user
- *   description: User management
  * components:
  *    schemas:
  *      User:
