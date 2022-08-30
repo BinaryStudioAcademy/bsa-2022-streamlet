@@ -5,7 +5,6 @@ import {
   httpGet,
   httpPost,
   httpPut,
-  request,
   requestBody,
   requestParam,
 } from 'inversify-express-utils';
@@ -17,14 +16,9 @@ import {
 import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud-service';
 import { ApiPath, ChannelCrudApiPath } from '~/shared/enums/api/api';
 import { exceptionMessages } from '~/shared/enums/messages';
-import { Forbidden, NotFound } from '~/shared/exceptions/exceptions';
+import { NotFound } from '~/shared/exceptions/exceptions';
 import { trimChannelInfo } from '~/shared/helpers';
-import {
-  ChannelInfoRequestDto,
-  ChannelInfoResponseDto,
-  CONTAINER_TYPES,
-  ExtendedAuthenticatedRequest,
-} from '~/shared/types/types';
+import { ChannelInfoRequestDto, ChannelInfoResponseDto, CONTAINER_TYPES } from '~/shared/types/types';
 import { authenticationMiddleware } from '../middleware';
 
 @controller(ApiPath.CHANNEL_CRUD)
@@ -42,20 +36,15 @@ export class ChannelCrudController extends BaseHttpController {
     return trimChannelInfo(channel);
   }
 
-  @httpPost(`${ChannelCrudApiPath.AVATAR}${ChannelCrudApiPath.$ID}`, authenticationMiddleware)
+  @httpPost(
+    `${ChannelCrudApiPath.AVATAR}${ChannelCrudApiPath.$ID}`,
+    authenticationMiddleware,
+    CONTAINER_TYPES.ChannelOwnerMiddleWare,
+  )
   public async updateAvatar(
     @requestParam() { id }: ChannelInfoRequestDto,
     @requestBody() { base64Str }: ChannelProfileUpdateMediaRequestDto,
-    @request() req: ExtendedAuthenticatedRequest,
   ): Promise<ChannelProfileUpdateResponseDto> {
-    const { id: userId } = req.user;
-    const isUserOwner = await this.channelService.isUserChannelOwner({
-      channelId: id,
-      userId,
-    });
-    if (!isUserOwner) {
-      throw new Forbidden();
-    }
     const updatedChannel = await this.channelService.updateAvatar({
       id,
       base64Str,
@@ -64,20 +53,15 @@ export class ChannelCrudController extends BaseHttpController {
     return updatedChannel;
   }
 
-  @httpPost(`${ChannelCrudApiPath.BANNER}${ChannelCrudApiPath.$ID}`, authenticationMiddleware)
+  @httpPost(
+    `${ChannelCrudApiPath.BANNER}${ChannelCrudApiPath.$ID}`,
+    authenticationMiddleware,
+    CONTAINER_TYPES.ChannelOwnerMiddleWare,
+  )
   public async updateBanner(
     @requestParam() { id }: ChannelInfoRequestDto,
     @requestBody() { base64Str }: ChannelProfileUpdateMediaRequestDto,
-    @request() req: ExtendedAuthenticatedRequest,
   ): Promise<ChannelProfileUpdateResponseDto> {
-    const { id: userId } = req.user;
-    const isUserOwner = await this.channelService.isUserChannelOwner({
-      channelId: id,
-      userId,
-    });
-    if (!isUserOwner) {
-      throw new Forbidden();
-    }
     const updatedChannel = await this.channelService.updateBanner({
       id,
       base64Str,
@@ -86,21 +70,11 @@ export class ChannelCrudController extends BaseHttpController {
     return updatedChannel;
   }
 
-  @httpPut(ChannelCrudApiPath.$ID, authenticationMiddleware)
+  @httpPut(ChannelCrudApiPath.$ID, authenticationMiddleware, CONTAINER_TYPES.ChannelOwnerMiddleWare)
   public async updateSettings(
     @requestParam() { id }: ChannelInfoRequestDto,
     @requestBody() { name, description }: ChannelProfileUpdateRequestDto,
-    @request() req: ExtendedAuthenticatedRequest,
   ): Promise<ChannelProfileUpdateResponseDto> {
-    const { id: userId } = req.user;
-    const isUserOwner = await this.channelService.isUserChannelOwner({
-      channelId: id,
-      userId,
-    });
-    if (!isUserOwner) {
-      throw new Forbidden();
-    }
-
     const updatedChannel = await this.channelService.updateSettings({
       id,
       name,
