@@ -5,11 +5,12 @@ import { amqpService } from '../services';
 import { AmqpQueue, SocketEvents } from '~/shared/enums/enums';
 import { logger } from '~/config/logger';
 import { throttle } from '~/helpers/throttle';
+import { getUserIdBySocketId } from '~/helpers/get-user-id-by-socket-id.helper';
 
 class SocketService {
   private io: SocketIo | undefined;
 
-  private clients = new Map();
+  private socketClients = new Map<string, string>();
 
   subscribe(httpServer: http.Server): void {
     this.io = createIoInstance(httpServer);
@@ -44,8 +45,10 @@ class SocketService {
           if (data && this.io) {
             const { authorId, streamData } = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(streamData)}`);
-            if (this.clients.has(authorId)) {
-              this.io.to(this.clients.get(authorId)).emit(SocketEvents.notify.STREAM_TRANSCODER_DONE, streamData);
+            if (this.socketClients.has(authorId)) {
+              this.io
+                .to(this.socketClients.get(authorId) as string)
+                .emit(SocketEvents.notify.STREAM_TRANSCODER_DONE, streamData);
             }
           }
         },
@@ -57,8 +60,10 @@ class SocketService {
           if (data && this.io) {
             const { authorId, streamingKey } = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(streamingKey)}`);
-            if (this.clients.has(authorId)) {
-              this.io.to(this.clients.get(authorId)).emit(SocketEvents.notify.STREAM_TRANSCODER_DONE, streamingKey);
+            if (this.socketClients.has(authorId)) {
+              this.io
+                .to(this.socketClients.get(authorId) as string)
+                .emit(SocketEvents.notify.STREAM_TRANSCODER_DONE, streamingKey);
             }
           }
         },
@@ -86,7 +91,7 @@ class SocketService {
 
       socket.on(SocketEvents.socket.HANDSHAKE, (userId: string) => {
         if (userId) {
-          this.clients.set(userId, socket.id);
+          this.socketClients.set(userId, socket.id);
           logger.info(`CLient ${socket.id} = ${userId} handshaked`);
           if (this.io) {
             this.io.to(socket.id).emit(SocketEvents.socket.HANDSHAKE_DONE, { id: socket.id });
@@ -109,6 +114,11 @@ class SocketService {
       });
 
       socket.on('disconnect', async () => {
+        const userId = getUserIdBySocketId(this.socketClients, socket.id);
+        if (userId) {
+          this.socketClients.delete(userId);
+        }
+
         logger.info(`${socket.id} connection lost`);
       });
 
