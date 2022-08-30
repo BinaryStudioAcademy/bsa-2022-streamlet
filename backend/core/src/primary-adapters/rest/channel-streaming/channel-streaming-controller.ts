@@ -1,16 +1,28 @@
-import { BaseHttpController, controller, httpGet, httpPost, requestBody, requestParam } from 'inversify-express-utils';
+import {
+  BaseHttpController,
+  controller,
+  httpGet,
+  httpPost,
+  request,
+  requestBody,
+  requestParam,
+} from 'inversify-express-utils';
 import {
   CONTAINER_TYPES,
   DefaultRequestParam,
   ResetStreamingKeyRequestDto,
   StreamingKeyResponseDto,
   RtmpLiveRequestDto,
+  ChangeChatToggleRequestDto,
+  ExtendedRequest,
+  ChangeChatToggleResponseDto,
 } from '~/shared/types/types';
 import { ApiPath, ChannelStreamingApiPath } from '~/shared/enums/api/api';
 import { ChannelStreamingService } from '~/core/channel-streaming/application/channel-streaming-service';
 import { inject } from 'inversify';
 import { Forbidden } from '~/shared/exceptions/forbidden';
 import { NotFound } from '~/shared/exceptions/not-found';
+import { authenticationMiddleware } from '../middleware';
 
 /**
  * @swagger
@@ -221,5 +233,27 @@ export class ChannelStreamingController extends BaseHttpController {
       throw new NotFound('Invalid channel id');
     }
     return keyData;
+  }
+
+  @httpPost(ChannelStreamingApiPath.CHANGE_CHAT_TOGGLE, authenticationMiddleware)
+  public async changeChatToggle(
+    @requestBody() changeChatToggleRequestDto: ChangeChatToggleRequestDto,
+    @request() req: ExtendedRequest,
+  ): Promise<ChangeChatToggleResponseDto> {
+    const video = await this.channelService.getVideoById(changeChatToggleRequestDto.videoId);
+    if (!video) {
+      throw new NotFound('Invalid video id');
+    }
+    if (video.channel.authorId !== req.user?.id) {
+      throw new Forbidden('This video does not belong to you.');
+    }
+    const videoData = await this.channelService.changeChatToggle(
+      changeChatToggleRequestDto.videoId,
+      changeChatToggleRequestDto.isChatEnabled,
+    );
+    if (!videoData) {
+      throw new NotFound('Invalid video id');
+    }
+    return videoData;
   }
 }
