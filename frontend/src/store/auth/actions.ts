@@ -9,6 +9,8 @@ import {
   RefreshTokenRequestDto,
   UserBaseResponseDto,
   RefreshTokenResponseDto,
+  GoogleResponseDto,
+  GoogleRequestDto,
   GetCurrentUserResponseDto,
 } from 'common/types/types';
 import { HttpError } from 'exceptions/exceptions';
@@ -92,4 +94,25 @@ const loadCurrentUser = createAsyncThunk<GetCurrentUserResponseDto, void, AsyncT
   },
 );
 
-export { signUp, signIn, refreshTokens, signOut, loadCurrentUser };
+const signInGoogle = createAsyncThunk<GoogleResponseDto, void, AsyncThunkConfig>(
+  ActionType.SIGN_IN_GOOGLE,
+  async (_request, { extra }) => {
+    const { authApi } = extra;
+
+    const authorizationUrl = await authApi.signInGoogle();
+    return authorizationUrl;
+  },
+);
+
+const googleAuthorization = createAsyncThunk<UserBaseResponseDto, GoogleRequestDto, AsyncThunkConfig>(
+  ActionType.GOOGLE_ATHORIZATION,
+  async (registerPayload, { extra }) => {
+    const { authApi } = extra;
+
+    const { tokens, user } = await authApi.googleAuthorization(registerPayload);
+    tokensStorageService.saveTokens(tokens);
+    return user;
+  },
+);
+
+export { signUp, signIn, refreshTokens, signOut, loadCurrentUser, signInGoogle, googleAuthorization };

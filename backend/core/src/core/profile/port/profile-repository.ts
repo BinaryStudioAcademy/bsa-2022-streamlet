@@ -7,4 +7,5 @@ export interface ProfileRepository {
   updateAvatar(url: string, userId: string): Promise<ProfileUpdateResponseDto>;
   checkProfileExist(userId: string): Promise<UserProfile | null>;
   createDefaultProfile(userId: string): Promise<UserProfile>;
+  createGoogleProfile(userId: string, firstName: string, lastName: string, avatar: string): Promise<UserProfile>;
 }
