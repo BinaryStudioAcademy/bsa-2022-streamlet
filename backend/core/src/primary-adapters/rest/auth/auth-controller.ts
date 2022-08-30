@@ -39,14 +39,9 @@ import { ResetPasswordService } from '~/core/reset-password/application/reset-pa
 import { AccountVerificationService } from '~/core/account-verification/application/account-verification-service';
 import { CONFIG } from '~/configuration/config';
 import { GetCurrentUserResponseDto } from 'shared/build/common/types/auth/get-current-user-response-dto';
-import {
-  AccountVerificationInitRequestDto,
-  AccountVerificationInitResponseDto,
-  UserBaseResponseDto,
-} from 'shared/build';
+import { AccountVerificationInitRequestDto, AccountVerificationInitResponseDto } from 'shared/build';
 import { Forbidden, NotFound, DuplicationError, Unauthorized, errorCodes } from '~/shared/exceptions/exceptions';
 import { oauth2Client } from '~/configuration/google-oauth';
-import { ProfileRepository } from '~/core/profile/port/profile-repository';
 
 /**
  * @swagger
@@ -104,10 +99,8 @@ export class AuthController extends BaseHttpController {
     @inject(CONTAINER_TYPES.RefreshTokenService) private refreshTokenService: RefreshTokenService,
     @inject(CONTAINER_TYPES.ResetPasswordService) private resetPasswordService: ResetPasswordService,
     @inject(CONTAINER_TYPES.AccountVerificationService) private accountVerificationService: AccountVerificationService,
-    @inject(CONTAINER_TYPES.ProfileRepository) private profileRepository: ProfileRepository,
   ) {
     super();
-    this.profileRepository = profileRepository;
   }
 
   /**
@@ -743,8 +736,6 @@ export class AuthController extends BaseHttpController {
    */
   @httpPost(AuthApiPath.GOOGLE_ATHORIZATION)
   public async googleAuthorization(@requestBody() googleRequestDto: GoogleRequestDto): Promise<UserSignInResponseDto> {
-    let newUser = {} as UserBaseResponseDto;
-
     const {
       tokens: { id_token, access_token },
     } = await oauth2Client.getToken(googleRequestDto.code);
@@ -753,27 +744,7 @@ export class AuthController extends BaseHttpController {
       throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
     }
 
-    const {
-      id: password,
-      email,
-      name: username,
-      given_name,
-      family_name,
-      picture,
-    } = await this.userService.getGoogleUser({ id_token, access_token });
-
-    const googleUser = await this.userService.getUserByEmail(email);
-
-    if (!googleUser) {
-      newUser = await this.userService.createUser({
-        email,
-        username,
-        password,
-      });
-      this.profileRepository.createGoogleProfile(newUser.id, given_name, family_name, picture);
-    }
-
-    const user = googleUser ? trimUser(googleUser) : newUser;
+    const user = await this.userService.createGoogleUser(id_token, access_token);
 
     const accessToken = await generateJwt({
       payload: user,

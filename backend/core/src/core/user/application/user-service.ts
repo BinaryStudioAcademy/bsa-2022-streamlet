@@ -19,6 +19,7 @@ import { ImageStorePort } from '~/core/common/port/image-store';
 import { MailRepository } from '~/core/mail/port/mail-repository';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
 import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
+import { ProfileRepository } from '~/core/profile/port/profile-repository';
 
 @injectable()
 export class UserService {
@@ -28,6 +29,7 @@ export class UserService {
   private imageStore: ImageStorePort;
   private amqpChannel: AmqpChannelPort;
   @inject(CONTAINER_TYPES.ChannelCrudRepository) private channelCrudRepository!: ChannelCrudRepository;
+  @inject(CONTAINER_TYPES.ProfileRepository) private profileRepository!: ProfileRepository;
 
   constructor(
     @inject(CONTAINER_TYPES.UserRepository) userRepository: UserRepository,
@@ -122,5 +124,30 @@ export class UserService {
       },
     );
     return res.data;
+  }
+
+  async createGoogleUser(id_token: string, access_token: string): Promise<User> {
+    let newUser = {} as User;
+
+    const {
+      id: password,
+      email,
+      name: username,
+      given_name,
+      family_name,
+      picture,
+    } = await this.getGoogleUser({ id_token, access_token });
+
+    const googleUser = await this.getUserByEmail(email);
+
+    if (!googleUser) {
+      newUser = await this.createUser({
+        email,
+        username,
+        password,
+      });
+      this.profileRepository.createGoogleProfile(newUser.id, given_name, family_name, picture);
+    }
+    return !googleUser ? newUser : googleUser;
   }
 }
