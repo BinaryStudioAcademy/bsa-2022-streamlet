@@ -235,6 +235,58 @@ export class ChannelStreamingController extends BaseHttpController {
     return keyData;
   }
 
+  /**
+   * @swagger
+   * /change_chat_toggle:
+   *    post:
+   *      tags:
+   *      - channel
+   *      operationId: changeVideoChatToggle
+   *      description: Changes isChatEnabled in video
+   *      security:
+   *      - bearerAuth: []
+   *      requestBody:
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                videoId:
+   *                  type: string
+   *                  format: uuid
+   *                isChatEnabled:
+   *                  type: boolean
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  videoId:
+   *                    type: string
+   *                    format: uuid
+   *                  isChatEnabled:
+   *                    type: boolean
+   *        403:
+   *          description: Video does not belong to this user.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   *        404:
+   *          description: Video with such id is not found.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   */
   @httpPost(ChannelStreamingApiPath.CHANGE_CHAT_TOGGLE, authenticationMiddleware)
   public async changeChatToggle(
     @requestBody() changeChatToggleRequestDto: ChangeChatToggleRequestDto,
