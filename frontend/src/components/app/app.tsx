@@ -22,6 +22,7 @@ import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers
 
 import styles from './app.module.scss';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
+import { HistoryPage } from '../../pages/history-page/history-page';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -80,7 +81,7 @@ const App: FC = () => {
               <Routes>
                 <Route path={AppRoutes.ROOT} element={<MainPageContainer />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />
-                <Route path={AppRoutes.HISTORY} element="History" />
+                <Route path={AppRoutes.HISTORY} element={<HistoryPage />} />
                 <Route path={AppRoutes.FOLLOWING} element="Following" />
                 <Route path={AppRoutes.BROWSE} element="Browse" />
                 <Route
