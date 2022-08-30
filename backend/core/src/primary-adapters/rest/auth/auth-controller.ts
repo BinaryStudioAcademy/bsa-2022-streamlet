@@ -17,11 +17,14 @@ import {
   RestorePasswordConfirmRequestDto,
   AccountVerificationConfirmRequestDto,
   AccountVerificationConfirmResponseDto,
+  GoogleResponseDto,
+  GoogleRequestDto,
+  GoogleExtendedRequest,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { compareHash, compareStringsInsensitive, generateJwt, trimUser } from '~/shared/helpers';
 import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
-import { authenticationMiddleware, validationMiddleware } from '../middleware';
+import { authenticationMiddleware, googleMiddleware, validationMiddleware } from '../middleware';
 import {
   userSignIn,
   userSignUp,
@@ -36,8 +39,14 @@ import { ResetPasswordService } from '~/core/reset-password/application/reset-pa
 import { AccountVerificationService } from '~/core/account-verification/application/account-verification-service';
 import { CONFIG } from '~/configuration/config';
 import { GetCurrentUserResponseDto } from 'shared/build/common/types/auth/get-current-user-response-dto';
-import { AccountVerificationInitRequestDto, AccountVerificationInitResponseDto } from 'shared/build';
+import {
+  AccountVerificationInitRequestDto,
+  AccountVerificationInitResponseDto,
+  UserBaseResponseDto,
+} from 'shared/build';
 import { Forbidden, NotFound, DuplicationError, Unauthorized, errorCodes } from '~/shared/exceptions/exceptions';
+import { oauth2Client } from '~/configuration/google-oauth';
+import { ProfileRepository } from '~/core/profile/port/profile-repository';
 
 /**
  * @swagger
@@ -95,8 +104,10 @@ export class AuthController extends BaseHttpController {
     @inject(CONTAINER_TYPES.RefreshTokenService) private refreshTokenService: RefreshTokenService,
     @inject(CONTAINER_TYPES.ResetPasswordService) private resetPasswordService: ResetPasswordService,
     @inject(CONTAINER_TYPES.AccountVerificationService) private accountVerificationService: AccountVerificationService,
+    @inject(CONTAINER_TYPES.ProfileRepository) private profileRepository: ProfileRepository,
   ) {
     super();
+    this.profileRepository = profileRepository;
   }
 
   /**
@@ -653,5 +664,127 @@ export class AuthController extends BaseHttpController {
   @httpPost('/mail-test')
   public testMail(@requestBody() mailTestRequestDto: MailTestRequestDto): Promise<MailResponseDto> {
     return this.userService.testSendingEmail(mailTestRequestDto);
+  }
+
+  /**
+   * @swagger
+   * /auth/sign-in-google:
+   *    post:
+   *      tags:
+   *      - auth
+   *      security: []
+   *      operationId: signInGoogleUser
+   *      description: Getting google link to a google user profile
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  url:
+   *                    $ref: '#/components/schemas/GoogleResponse'
+   */
+  @httpGet(AuthApiPath.SIGN_IN_GOOGLE, googleMiddleware(oauth2Client))
+  public async signInGoogleUser(@request() req: GoogleExtendedRequest): Promise<GoogleResponseDto> {
+    return {
+      url: req.url,
+    };
+  }
+
+  /**
+   * @swagger
+   * /auth/google-athorization:
+   *    post:
+   *      tags:
+   *      - auth
+   *      security: []
+   *      operationId: googleAuthorization
+   *      description: Sign in/up google user into the system
+   *      requestBody:
+   *        description: User auth data
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                email:
+   *                  type: string
+   *                  format: email
+   *                username:
+   *                  type: string
+   *                password:
+   *                  type: string
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  user:
+   *                    $ref: '#/components/schemas/UserBaseResponse'
+   *                  tokens:
+   *                    $ref: '#/components/schemas/TokenPair'
+   *        400:
+   *          description: Email is already taken.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   */
+  @httpPost(AuthApiPath.GOOGLE_ATHORIZATION)
+  public async googleAuthorization(@requestBody() googleRequestDto: GoogleRequestDto): Promise<UserSignInResponseDto> {
+    let newUser = {} as UserBaseResponseDto;
+
+    const {
+      tokens: { id_token, access_token },
+    } = await oauth2Client.getToken(googleRequestDto.code);
+
+    if (!id_token || !access_token) {
+      throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
+    }
+
+    const {
+      id: password,
+      email,
+      name: username,
+      given_name,
+      family_name,
+      picture,
+    } = await this.userService.getGoogleUser({ id_token, access_token });
+
+    const googleUser = await this.userService.getUserByEmail(email);
+
+    if (!googleUser) {
+      newUser = await this.userService.createUser({
+        email,
+        username,
+        password,
+      });
+      this.profileRepository.createGoogleProfile(newUser.id, given_name, family_name, picture);
+    }
+
+    const user = googleUser ? trimUser(googleUser) : newUser;
+
+    const accessToken = await generateJwt({
+      payload: user,
+      lifetime: CONFIG.ENCRYPTION.ACCESS_TOKEN_LIFETIME,
+      secret: CONFIG.ENCRYPTION.ACCESS_TOKEN_SECRET,
+    });
+
+    return {
+      user,
+      tokens: {
+        accessToken,
+        refreshToken: await this.userService.createRefreshToken(user.id),
+      },
+      message: successMessages.auth.SUCCESS_SIGN_IN,
+    };
   }
 }

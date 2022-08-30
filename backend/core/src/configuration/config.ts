@@ -50,6 +50,11 @@ interface ClientInfo {
   URL: string;
 }
 
+interface GoogleGSI {
+  CLIENT_ID: string;
+  SECRET: string;
+}
+
 export interface ConfigInterface {
   APP: AppConfig;
   DATABASE: DatabaseConfig;
@@ -58,6 +63,7 @@ export interface ConfigInterface {
   ENCRYPTION: EncryptionConfig;
   MAIL_SERVICE: MailServiceConfig;
   CLIENT_INFO: ClientInfo;
+  GOOGLE_GSI: GoogleGSI;
 }
 
 const isDevEnvironment = (nodeEnv = ''): boolean => nodeEnv === AppEnvironment.DEVELOPMENT;
@@ -82,6 +88,8 @@ const configuration = (): ConfigInterface => {
     RABBITMQ_PORT,
     RABBITMQ_HOST,
     CLIENT_URL,
+    GOOGLE_CLIENT_ID_GSI,
+    GOOGLE_SECRET_GSI,
   } = process.env;
 
   const host = HOST || 'localhost';
@@ -126,6 +134,10 @@ const configuration = (): ConfigInterface => {
     },
     CLIENT_INFO: {
       URL: CLIENT_URL || 'http://localhost:3000',
+    },
+    GOOGLE_GSI: {
+      CLIENT_ID: GOOGLE_CLIENT_ID_GSI || '',
+      SECRET: GOOGLE_SECRET_GSI || '',
     },
   };
 };

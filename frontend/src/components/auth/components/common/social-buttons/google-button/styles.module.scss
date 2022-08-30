@@ -4,7 +4,7 @@
   width: 100%;
   padding: 10px 15px;
   color: inherit;
-  background-color: var(--white-text-color);
+  background-color: var(--hover-light-grey);
   border: none;
   border-radius: 3px;
   outline: inherit;
@@ -12,5 +12,9 @@
 }
 
 .google-btn:hover {
-  background-color: var(--text-gray-color);
+  background-color: var(--brand-green-color);
+}
+
+.messages {
+  color: var(--secondary-text-color);
 }

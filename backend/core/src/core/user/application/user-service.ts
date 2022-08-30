@@ -11,11 +11,13 @@ import {
   ImageUploadResponseDto,
   UserUploadRequestDto,
   AmqpQueue,
+  GoogleUserResultDto,
 } from 'shared/build';
 import { ImageStorePort } from '~/core/common/port/image-store';
 
 import { MailRepository } from '~/core/mail/port/mail-repository';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
+import axios from 'axios';
 
 @injectable()
 export class UserService {
@@ -98,5 +100,23 @@ export class UserService {
       queue: AmqpQueue.NOTIFY_USER_BROADCAST,
       content: Buffer.from(JSON.stringify(body)),
     });
+  }
+
+  async getGoogleUser({
+    id_token,
+    access_token,
+  }: {
+    id_token: string;
+    access_token: string;
+  }): Promise<GoogleUserResultDto> {
+    const res = await axios.get<GoogleUserResultDto>(
+      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
+      {
+        headers: {
+          Authorization: `Bearer ${id_token}`,
+        },
+      },
+    );
+    return res.data;
   }
 }

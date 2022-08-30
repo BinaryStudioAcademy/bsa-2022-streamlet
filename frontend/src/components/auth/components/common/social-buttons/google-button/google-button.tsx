@@ -1,22 +1,46 @@
-import { Button } from 'components/common/common';
+import clsx from 'clsx';
 import { FC } from 'react';
 
+import { Button, Loader } from 'components/common/common';
+import { useCallback, useAppDispatch, useState } from 'hooks/hooks';
+
 import googleLogo from 'assets/img/google.svg';
-import { ENV } from 'common/enums/enums';
-import { getGoogleOAuthURL } from 'helpers/user';
+import { ErrorMessage } from 'common/enums/enums';
+import { signInGoogle } from 'store/auth/actions';
+import { store } from 'store/store';
 
 import styles from './styles.module.scss';
 
 const GoogleButton: FC<{ disabled: boolean }> = ({ disabled }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const [error, setError] = useState<string | undefined>(undefined);
+
+  const handleSignUpGoogle = useCallback(async (): Promise<void> => {
+    setError(undefined);
+    try {
+      setIsLoading(true);
+      await dispatch(signInGoogle())
+        .unwrap()
+        .then((data) => window.location.replace(data.url));
+    } catch {
+      setError(store.getState().auth.error || ErrorMessage.DEFAULT);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [dispatch]);
+
   return (
-    <a href={getGoogleOAuthURL(ENV.GOOGLE_CLIENT_ID as string)}>
+    <>
+      <span className={clsx(styles['messages'])}>{error}</span>
       <Button
-        className={styles['google-btn']}
+        onClick={handleSignUpGoogle}
+        className={clsx(styles['google-btn'])}
         type="button"
-        content={<img src={googleLogo} alt="Google" />}
+        content={isLoading ? <Loader spinnerSize="xs" /> : <img src={googleLogo} alt="Google" />}
         disabled={disabled}
       />
-    </a>
+    </>
   );
 };
 
