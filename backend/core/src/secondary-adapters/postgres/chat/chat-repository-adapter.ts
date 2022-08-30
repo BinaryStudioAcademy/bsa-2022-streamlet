@@ -1,4 +1,4 @@
-import { ChatMessage, PrismaClient } from '@prisma/client';
+import { ChatMessage, PrismaClient, Video } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { ChatRepository } from '~/core/chat/port/chat-repository';
@@ -38,7 +38,15 @@ export class ChatRepositoryAdapter implements ChatRepository {
     return message;
   }
 
-  async getChatMessagesById(id: string): Promise<ChatMessageBeforeTrimming | null> {
+  async getVideoById(id: string): Promise<Video | null> {
+    return this.prismaClient.video.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async getChatMessageById(id: string): Promise<ChatMessageBeforeTrimming | null> {
     return this.prismaClient.chatMessage.findUnique({
       where: {
         id,
