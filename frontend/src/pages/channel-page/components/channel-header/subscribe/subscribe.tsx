@@ -2,7 +2,7 @@ import { NeedSignInModal } from 'components/common/sign-in-modal/sign-in-modal';
 import { SubscribeButton } from 'components/common/subscribe-button/subscribe-button';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import React, { FC, useState } from 'react';
-import { channelSubscribeToggle } from 'store/channel/actions';
+import { channelSubscribe } from 'store/subscriptions/actions';
 
 type Props = {
   className?: string;
@@ -24,7 +24,7 @@ const Subscribe: FC<Props> = ({ className, signinModalClassname }) => {
         isDisabled={channelId === undefined}
         onSubscribeClick={(): void => {
           if (channelId !== undefined) {
-            dispatch(channelSubscribeToggle(channelId));
+            dispatch(channelSubscribe(channelId));
           }
         }}
         onUserUnauthenticated={(): void => setShowSigninModal(true)}

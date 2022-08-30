@@ -2,7 +2,6 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import {
   AsyncThunkConfig,
-  CreateSubscriptionResponseDto,
   VideoCommentRequestDto,
   VideoCommentResponseDto,
   CreateReactionRequestDto,
@@ -38,15 +37,6 @@ const videoReact = createAsyncThunk<
   return await videoApi.react(payload);
 });
 
-const videoChannelSubscribe = createAsyncThunk<CreateSubscriptionResponseDto, string, AsyncThunkConfig>(
-  ActionType.SUBSCRIBE_TOGGLE,
-  async (channelId: string, { extra }) => {
-    const { channelSubscriptionApi } = extra;
-
-    return await channelSubscriptionApi.createSubscription(channelId);
-  },
-);
-
 const updateLiveViews = createAction<number>(ActionType.UPDATE_LIVE_VIEWS);
 
-export { getVideo, videoChannelSubscribe, videoReact, addVideoComment, updateLiveViews };
+export { getVideo, videoReact, addVideoComment, updateLiveViews };

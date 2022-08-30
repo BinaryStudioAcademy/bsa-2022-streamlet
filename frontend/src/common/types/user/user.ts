@@ -11,4 +11,7 @@ export {
   type AccountVerificationInitRequestDto,
   type AccountVerificationInitResponseDto,
   type GetCurrentUserResponseDto,
+  type GoogleRequestDto,
+  type GoogleResponseDto,
+  type GoogleUserResultDto,
 } from 'shared/build';

@@ -4,6 +4,7 @@ const CONTAINER_TYPES = {
   AuthController: Symbol.for('AuthController'),
   TagController: Symbol.for('TagController'),
   CategoryController: Symbol.for('CategoryController'),
+  HealthcheckController: Symbol.for('HealthcheckController'),
 
   ChannelStreamingController: Symbol.for('ChannelStreamingController'),
   ChannelCrudController: Symbol.for('ChannelCrudController'),
