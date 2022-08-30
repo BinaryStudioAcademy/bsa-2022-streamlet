@@ -11,6 +11,7 @@ import { HistoryController } from '~/primary-adapters/rest/history/history-contr
 import { VideoController } from './video/video-controller';
 import { ChannelSubscriptionController } from './channel-subscription/channel-subscription-controller';
 import { ChatController } from './chat/chat-controller';
+import { HealthcheckController } from '~/primary-adapters/rest/healthcheck/healthcheck-controller';
 
 const restContainerModule = new ContainerModule((bind: interfaces.Bind) => {
   bind<UserController>(CONTAINER_TYPES.UserController).to(UserController);
@@ -24,6 +25,7 @@ const restContainerModule = new ContainerModule((bind: interfaces.Bind) => {
   bind<ProfileController>(CONTAINER_TYPES.ProfileController).to(ProfileController);
   bind<HistoryController>(CONTAINER_TYPES.HistoryController).to(HistoryController);
   bind<ChannelSubscriptionController>(CONTAINER_TYPES.ChannelSubscriptionController).to(ChannelSubscriptionController);
+  bind<HealthcheckController>(CONTAINER_TYPES.HealthcheckController).to(HealthcheckController);
 });
 
 export { restContainerModule };
