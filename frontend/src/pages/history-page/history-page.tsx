@@ -9,6 +9,8 @@ import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { DataStatus } from '../../common/enums/app/data-status.enum';
 import { generateHistorySkeletons } from './common/skeleton/skeleton';
 
+import styles from './styles.module.scss';
+
 const HistoryPage: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -52,13 +54,13 @@ const HistoryPage: FC = () => {
   }
 
   return (
-    <div>
+    <div className={styles['history-page-container']}>
       {historyData.list.map((historyRecord) => {
         return <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={true} />;
       })}
       {historyData.dataStatus === DataStatus.PENDING ? generateHistorySkeletons() : null}
       <div ref={sentryRef}>
-        <h3>Loading.....</h3>
+        <Loader hCentered={true} vCentered={true} spinnerSize={'md'} />
       </div>
     </div>
   );

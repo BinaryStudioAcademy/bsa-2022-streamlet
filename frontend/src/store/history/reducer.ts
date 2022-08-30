@@ -3,6 +3,7 @@ import { DataStatus } from 'common/enums/enums';
 
 import { addVideoHistoryRecord, getUserVideoHistoryRecord } from './actions';
 import { HistoryListType } from 'shared/build';
+import { isObjectUniqueIdContainInTwoArray } from '../../helpers/helpers';
 
 type State = {
   data: {
@@ -42,7 +43,12 @@ const reducer = createReducer(initialState, (builder) => {
   });
 
   builder.addCase(getUserVideoHistoryRecord.fulfilled, (state, { payload }) => {
-    const newList = state.data.list.concat(payload.list);
+    let newList: HistoryListType[] = state.data.list;
+
+    if (!isObjectUniqueIdContainInTwoArray(newList, payload.list)) {
+      newList = state.data.list.concat(payload.list);
+    }
+
     state.data = {
       ...payload,
       list: newList,
