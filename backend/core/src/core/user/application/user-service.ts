@@ -130,7 +130,6 @@ export class UserService {
     let newUser = {} as User;
 
     const {
-      id: password,
       email,
       name: username,
       given_name,
@@ -144,7 +143,7 @@ export class UserService {
       newUser = await this.createUser({
         email,
         username,
-        password,
+        password: '',
       });
       this.profileRepository.createGoogleProfile(newUser.id, given_name, family_name, picture);
     }
