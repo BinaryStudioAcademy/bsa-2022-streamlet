@@ -25,6 +25,7 @@ const AppRoutes = {
   STUDIO_ANALYTICS: '/studio/analytics',
   STUDIO_CHANNEL: '/studio/channel',
   STUDIO_STREAM: '/studio/stream',
+  STUDIO_NEW_STREAM: '/studio/new-stream',
   STUDIO_STREAM_$ID: `/studio/stream/:${AppParams.videoId}`,
   SEARCH: '/search',
   PROFILE_PREFERENCE: '/profile-preference',
@@ -46,6 +47,7 @@ const RoutesWithStudioHeader = {
   STUDIO_ANALYTICS: '/studio/analytics',
   STUDIO_CHANNEL: '/studio/channel',
   STUDIO_STREAM: '/studio/stream',
+  STUDIO_NEW_STREAM: '/studio/new-stream',
   STUDIO_STREAM_$ID: `/studio/stream/:${AppParams.videoId}`,
 };
 

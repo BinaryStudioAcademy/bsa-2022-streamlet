@@ -7,18 +7,17 @@ import { NotFound } from 'components/placeholder-page/not-found';
 import { errorCodes } from 'exceptions/exceptions';
 import { useAppDispatch, useAppForm, useAppSelector } from 'hooks/hooks';
 import { useCallback, useEffect, useState } from 'react';
-import { channelActions, streamActions } from 'store/actions';
+import { streamActions } from 'store/actions';
 import { StreamInfoFormValues, StreamSettingsFormValues } from './common/stream-settings-form-values';
 import { StudioStream } from './stream';
 
 const StudioStreamContainer: FC = () => {
   const dispatch = useAppDispatch();
-  const { stream, channel, streamingKey, channelErrorCode, streamErrorCode } = useAppSelector((state) => ({
-    stream: state.stream.currentStreamData,
-    channel: state.channel.myChannel.data,
-    streamingKey: state.channel.myChannel.streamingKey,
-    channelErrorCode: state.channel.myChannel.errorCode,
-    streamErrorCode: state.stream.errorCode,
+  const { stream, channel, streamingKey, errorCode } = useAppSelector((state) => ({
+    stream: state.stream.stream,
+    channel: state.stream.channel,
+    streamingKey: state.stream.streamingKey,
+    errorCode: state.stream.status.errorCode,
   }));
 
   const [isEditingForm, setIsEditingForm] = useState(false);
@@ -68,7 +67,7 @@ const StudioStreamContainer: FC = () => {
   };
 
   const handleStreamingKeyReset = useCallback(() => {
-    dispatch(channelActions.resetStreamingKey({ channelId: channel?.id ?? '' }));
+    dispatch(streamActions.resetStreamingKey({ channelId: channel?.id ?? '' }));
   }, [dispatch, channel]);
 
   const handleUploadPoster = useCallback(
@@ -123,28 +122,13 @@ const StudioStreamContainer: FC = () => {
     });
   };
 
-  const isNotFound = [channelErrorCode, streamErrorCode].some(
-    (errorCode) => errorCode === errorCodes.stream.NOT_FOUND || errorCode === errorCodes.stream.NO_CHANNELS,
-  );
+  const isNotFound = errorCode === errorCodes.stream.NOT_FOUND || errorCode === errorCodes.stream.NO_CHANNELS;
 
-  const isForbidden = [channelErrorCode, streamErrorCode].some(
-    (errorCode) => errorCode === errorCodes.stream.FORBIDDEN || errorCode === errorCodes.stream.ACTIVE_STREAM_EXISTS,
-  );
+  const isForbidden = errorCode === errorCodes.stream.FORBIDDEN || errorCode === errorCodes.stream.ACTIVE_STREAM_EXISTS;
 
-  // NOT DONE
   useEffect(() => {
-    const fetch = async (): Promise<void> => {
-      console.error(channel);
-      if (!channel) {
-        await dispatch(channelActions.loadMyChannel()).unwrap();
-      }
-      await dispatch(channelActions.getStreamingKey({ id: channel?.id ?? 'ERROR' })).unwrap();
-      await dispatch(streamActions.getStreamData({ id: channel?.id ?? '' })).unwrap();
-
-      await dispatch(streamActions.createStream({ channelId: channel?.id ?? '' })).unwrap();
-    };
-    fetch();
-  }, [dispatch, channel]);
+    dispatch(streamActions.getStreamData());
+  }, [dispatch]);
 
   return isNotFound ? (
     <NotFound />

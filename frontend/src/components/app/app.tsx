@@ -69,7 +69,7 @@ const App: FC = () => {
               <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHome />} />} />
               <Route path={AppRoutes.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />
               <Route path={AppRoutes.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />} />
-              <Route path={AppRoutes.STUDIO_STREAM} element={<ProtectedRoute element={<StudioNewStream />} />} />
+              <Route path={AppRoutes.STUDIO_NEW_STREAM} element={<ProtectedRoute element={<StudioNewStream />} />} />
               <Route
                 path={AppRoutes.STUDIO_STREAM_$ID}
                 element={<ProtectedRoute element={<StudioStreamContainer />} />}

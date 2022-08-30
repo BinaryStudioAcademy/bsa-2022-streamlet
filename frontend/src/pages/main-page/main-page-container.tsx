@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { getVideos, getVideosByCategory } from 'store/videos/actions';
 import { VideoCardMain } from 'components/common/common';
-import { loadMyChannel } from 'store/channel/actions';
 import { activeCategory, clearFilters, getCategories } from 'store/categories/actions';
 
 const MainPageContainer: FC = () => {
@@ -37,7 +36,6 @@ const MainPageContainer: FC = () => {
   useEffect(() => {
     dispatch(getVideos());
     dispatch(getCategories());
-    dispatch(loadMyChannel());
   }, [dispatch]);
 
   return <MainPage filterBlockProps={filterBlock} blocksVideo={blockVideo} />;
