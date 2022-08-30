@@ -11,9 +11,8 @@ type Props = {
 
 const Subscribe: FC<Props> = ({ className, signinModalClassname }) => {
   const dispatch = useAppDispatch();
-  const isCurrentUserSubscribed =
-    useAppSelector((state) => state.channel.currentChannel.data?.isCurrentUserSubscriber) ?? false;
-  const channelId = useAppSelector((state) => state.channel.currentChannel.data?.id);
+  const isCurrentUserSubscribed = useAppSelector((state) => state.videoPage.video?.isUserSubscribedOnChannel) ?? false;
+  const channelId = useAppSelector((state) => state.videoPage.video?.channel.id);
   const user = useAppSelector((state) => state.auth.user);
   const [showSigninModal, setShowSigninModal] = useState(false);
   return (

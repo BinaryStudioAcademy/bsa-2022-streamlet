@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { CONTAINER_TYPES, CreateSubscriptionResponseDto } from '~/shared/types/types';
+import { CONTAINER_TYPES, SubscriptionListBeforeTrimming } from '~/shared/types/types';
 import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/channel-subscription-repository';
 import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
 
@@ -13,7 +13,7 @@ export class ChannelSubscriptionService {
   ) {
     this.channelSubscriptionRepository = channelSubscriptionRepository;
   }
-  async toggleSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {
+  async toggleSubscription(userId: string, channelId: string): Promise<{ isSubscribed: boolean } | null> {
     const channel = this.channelCrudRepository.getChannelById(channelId);
     if (!channel) {
       return null;
@@ -23,5 +23,9 @@ export class ChannelSubscriptionService {
       return this.channelSubscriptionRepository.removeSubscription(userId, channelId);
     }
     return this.channelSubscriptionRepository.addSubscription(userId, channelId);
+  }
+
+  async getUserSubscriptions(userId: string): Promise<SubscriptionListBeforeTrimming> {
+    return this.channelSubscriptionRepository.getUserSubscriptions(userId);
   }
 }
