@@ -12,6 +12,8 @@ import {
   UserSignUpRequestDto,
   UserSignUpResponseDto,
   GetCurrentUserResponseDto,
+  GoogleRequestDto,
+  GoogleResponseDto,
 } from 'common/types/types';
 import {
   RestorePasswordConfirmRequestDto,
@@ -140,6 +142,28 @@ class AuthApi {
   public confirmPasswordReset(payload: RestorePasswordConfirmRequestDto): Promise<void> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.RESTORE_PASSWORD_CONFIRM}`,
+      options: {
+        method: HttpMethod.POST,
+        payload: JSON.stringify(payload),
+      },
+      preInterceptors: [],
+      postInterceptors: [],
+    });
+  }
+
+  public async signInGoogle(): Promise<GoogleResponseDto> {
+    const res: GoogleResponseDto = await this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.SIGN_IN_GOOGLE}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+    });
+    return res;
+  }
+
+  public googleAuthorization(payload: GoogleRequestDto): Promise<UserSignInResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.AUTH}${AuthApiPath.GOOGLE_ATHORIZATION}`,
       options: {
         method: HttpMethod.POST,
         payload: JSON.stringify(payload),
