@@ -1,11 +1,7 @@
-import { Channel, Subscription } from '@prisma/client';
 import { BaseSubscriptionResponseDto } from 'shared/build';
+import { SubscribtionWithChannelBeforeTrim } from '../types/subscription/subscription-with-channel-before-trim';
 
-export const trimSubscriptionInfo = (
-  subscription: Subscription & {
-    channel: Channel;
-  },
-): BaseSubscriptionResponseDto => ({
+export const trimSubscriptionInfo = (subscription: SubscribtionWithChannelBeforeTrim): BaseSubscriptionResponseDto => ({
   id: subscription.id,
   channel: {
     id: subscription.channel.id,
