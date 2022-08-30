@@ -4,6 +4,7 @@ import { CONTAINER_TYPES, HistoryResponseDto, ExtendedAuthenticatedRequest } fro
 import { HistoryService } from '~/core/history/application/history-service';
 import { History } from '@prisma/client';
 import { authenticationMiddleware } from '../middleware';
+import { ApiPath, HistoryApiPath } from '~/shared/enums/api/api';
 
 /**
  * @swagger
@@ -28,7 +29,7 @@ import { authenticationMiddleware } from '../middleware';
  *            type: string
  *            format: date-time
  */
-@controller('/history')
+@controller(ApiPath.HISTORY)
 export class HistoryController extends BaseHttpController {
   private historyService: HistoryService;
 
@@ -60,7 +61,7 @@ export class HistoryController extends BaseHttpController {
    *        401:
    *          $ref: '#/components/responses/NotFound'
    */
-  @httpGet('/', authenticationMiddleware)
+  @httpGet(HistoryApiPath.ROOT, authenticationMiddleware)
   public getAllUserHistory(@request() req: ExtendedAuthenticatedRequest): Promise<History[]> {
     const { id: userId } = req.user;
     return this.historyService.getAllUserHistory(userId);
@@ -101,7 +102,7 @@ export class HistoryController extends BaseHttpController {
    *                  user:
    *                    $ref: '#/components/schemas/HistoryResponse'
    */
-  @httpPost('/', authenticationMiddleware)
+  @httpPost(HistoryApiPath.ROOT, authenticationMiddleware)
   public async createHistoryItem(
     @requestBody() { videoId }: { videoId: string },
     @request() req: ExtendedAuthenticatedRequest,
