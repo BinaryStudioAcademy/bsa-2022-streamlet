@@ -12,11 +12,27 @@ export class HistoryRepositoryAdapter implements HistoryRepository {
     this.prismaClient = prismaClient;
   }
 
-  getAllUserHistory(userId: string): Promise<History[]> {
-    return this.prismaClient.history.findMany({
+  async getAllUserHistory(userId: string): Promise<History[]> {
+    const history = await this.prismaClient.history.findMany({
       where: {
         userId,
       },
+      include: {
+        video: {
+          include: {
+            channel: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return history.map((historyRecord) => {
+      return trimHistory(historyRecord);
     });
   }
 
