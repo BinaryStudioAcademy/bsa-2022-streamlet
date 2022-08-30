@@ -2,6 +2,10 @@
   --spinner-height: 40px;
 
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: calc(var(--spinner-height) * 0.35);
   width: calc(var(--spinner-height) * 1.2);
 }
 
@@ -11,8 +15,8 @@
 }
 
 .v-centered {
-  margin-top: auto;
-  margin-bottom: auto;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .xl {
@@ -36,36 +40,20 @@
 }
 
 .loader {
-  position: relative;
-  display: block;
   box-sizing: border-box;
   width: calc(var(--spinner-height) * 0.12);
   height: calc(var(--spinner-height) * 0.12);
-  margin: calc(var(--spinner-height) * 0.5) auto;
-  color: var(--white-text-color);
-  background: currentcolor;
+  background: var(--brand-green-color);
   border-radius: calc(var(--spinner-height) * 0.1);
   animation: animloader 0.3s 0.3s linear infinite alternate;
 }
 
-.loader::after,
-.loader::before {
-  position: absolute;
-  top: calc(var(--spinner-height) * 0.4);
-  left: 50%;
-  box-sizing: border-box;
-  width: calc(var(--spinner-height) * 0.12);
-  height: calc(var(--spinner-height) * 0.12);
-  background: currentcolor;
-  border-radius: calc(var(--spinner-height) * 0.1);
-  transform: translateX(-50%);
-  animation: animloader 0.3s 0.45s linear infinite alternate;
-  content: '';
+.loader:nth-of-type(2) {
+  animation-delay: 0.45s;
 }
 
-.loader::after {
-  top: calc(var(--spinner-height) * -0.4);
-  animation-delay: 0s;
+.loader:nth-of-type(1) {
+  animation-delay: 0.1s;
 }
 
 @keyframes animloader {

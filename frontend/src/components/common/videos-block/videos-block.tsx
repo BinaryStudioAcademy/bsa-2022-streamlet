@@ -1,5 +1,4 @@
-import { FC, BaseVideoResponseDto } from 'common/types/types';
-import { VideoCardMain } from '../common';
+import { FC } from 'common/types/types';
 import { VideoSkeleton } from '../video-skeleton/video-skeleton';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import { useAppSelector } from 'hooks/hooks';
@@ -13,14 +12,15 @@ import {
 } from '../video-skeleton/video-skeleton.config';
 
 import styles from './videos-block.module.scss';
+import { ReactNode } from 'react';
 export interface VideoBlockProps {
   blockTitle?: string;
-  videos: Array<BaseVideoResponseDto>;
+  videoCards: ReactNode[];
+  loadingStatus: DataStatus;
 }
 
-const VideosBlock: FC<VideoBlockProps> = ({ videos, blockTitle }) => {
-  const { statusVideoLoading, isLightTheme } = useAppSelector((state) => ({
-    statusVideoLoading: state.videos.dataStatus,
+const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, loadingStatus }) => {
+  const { isLightTheme } = useAppSelector((state) => ({
     isLightTheme: state.theme.isLightTheme,
   }));
 
@@ -34,11 +34,8 @@ const VideosBlock: FC<VideoBlockProps> = ({ videos, blockTitle }) => {
       {blockTitle && <h2 className={styles['video-block-title']}>{blockTitle}</h2>}
       <SkeletonTheme baseColor={colorForSkeleton.baseColor} highlightColor={colorForSkeleton.highlightColor}>
         <div className={styles['videos-block']}>
-          {statusVideoLoading === DataStatus.PENDING &&
-            ARRAY_FAKE_VIDEOS.map((_, index) => <VideoSkeleton key={index} />)}
-          {videos.map((video) => (
-            <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />
-          ))}
+          {loadingStatus === DataStatus.PENDING && ARRAY_FAKE_VIDEOS.map((_, index) => <VideoSkeleton key={index} />)}
+          {loadingStatus === DataStatus.FULFILLED && videoCards}
         </div>
       </SkeletonTheme>
     </div>

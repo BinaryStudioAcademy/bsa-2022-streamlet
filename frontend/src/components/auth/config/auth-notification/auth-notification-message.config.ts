@@ -5,7 +5,7 @@ enum AuthNotificationMessage {
   ACCOUNT_VERIFICATION_LETTER_SENT_DEFAULT = 'The letter has been sent! Check your inbox',
   ACCOUNT_VERIFICATION_DONE_DEFAULT = 'Your email has been confirmed! You can now sign in',
   PASSWORD_RESET_LETTER_SENT_SUCCESS_DEFAULT = 'The letter has been sent! Check your inbox',
-  PASSWORD_RESET_SUCCESS = 'Your password has successfully been reset! Feel free to login now',
+  PASSWORD_RESET_SUCCESS = 'Your password has successfully been reset! Feel free to sign in now',
 }
 
 const matchAuthNotificationWithMessage: Record<AuthNotification, AuthNotificationMessage> = {

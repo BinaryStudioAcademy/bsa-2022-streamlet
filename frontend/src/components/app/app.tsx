@@ -16,6 +16,7 @@ import { VideoPageContainer } from 'pages/video/video-page-container';
 import { ProtectedRoute } from 'components/common/protected-route/protected-route';
 import { AccountVerificationConfirmPage } from 'pages/account-verification-page/account-verification-confirm-page';
 import { RestorePasswordConfirmPage } from 'pages/restore-password-confirm-page/restore-password-confirm-page';
+import { ChannelPage } from 'pages/channel-page/channel-page';
 import { ProfilePreferencesPage } from 'pages/profile-preferences-page/profile-preferences-page';
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
 import { GoogleAuthorization } from 'components/auth/components/common/social-buttons/google-button/google-authorization';
@@ -91,6 +92,8 @@ const App: FC = () => {
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
                 <Route path="video-page" element={<VideoPageContainer />} />
+                <Route path={AppRoutes.CHANNEL_$ID} element={<ChannelPage />} />
+                <Route path={AppRoutes.VIDEO_$ID} element={<VideoPageContainer />} />
                 <Route path={AppRoutes.ANY} element={<NotFound />} />
               </Routes>
             </div>

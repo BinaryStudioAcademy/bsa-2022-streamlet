@@ -9,5 +9,7 @@ export * from './mail-test/mail-test';
 export * from './rtmp/rtmp';
 export * from './channel/channel';
 export * from './request/request';
+export * from './tag/tag';
 export * from './profile/profile';
 export * from './history/history';
+export * from './chat/chat';

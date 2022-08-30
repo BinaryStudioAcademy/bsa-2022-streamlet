@@ -1,6 +1,21 @@
 @import 'assets/css/breakpoint.scss';
 
+.profile-page-loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.preference-page-content-container form {
+  background-color: var(--gray-300-header-menu-background);
+}
+
 .preference-page-content-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
 }
 
@@ -9,7 +24,7 @@
 }
 
 .profile-preferences-container {
-  max-width: 1250px;
+  width: 800px;
   padding: 0 30px;
   background-color: var(--gray-400-primary-background);
 }
@@ -68,10 +83,13 @@
 }
 
 .image-upload-button {
+  height: 40px;
   margin-bottom: 10px;
   padding: 0 20px;
+  color: var(--always-white-color);
+  font-size: 15px;
   text-transform: capitalize;
-  background-color: var(--text-gray-color);
+  background-color: var(--brand-green-color);
   border: none;
   border-radius: 3px;
 }
@@ -95,19 +113,6 @@
   background-color: var(--gray-300-header-menu-background);
 }
 
-.input {
-  width: 100%;
-  height: 30px;
-  padding: 10px;
-  color: (var(--white-text-color));
-  background-color: var(--gray-200-input-background);
-  border: none;
-}
-
-.input:focus {
-  outline: 3px green solid;
-}
-
 .profile-setting-input-block {
   width: 100%;
 }
@@ -120,28 +125,15 @@
   margin: 10px 0 0;
 }
 
-.profile-settings-block > div:nth-child(2n) {
-  border-top: 1px var(--brand-green-color) solid;
-  border-bottom: 1px var(--brand-green-color) solid;
-}
-
-.profile-settings-block > div:first-child {
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
-}
-
-.preference-page-content-container .profile-settings-block .save-change-button-container {
+.save-change-button-container {
   display: flex;
   justify-content: flex-end;
   padding: 20px;
-  background-color: var(--gray-200-input-background);
-  border-bottom: none;
-  border-bottom-right-radius: 7px;
-  border-bottom-left-radius: 7px;
 }
 
 .save-change-button {
-  height: 30px;
+  width: 150px;
+  height: 40px;
   padding: 0 10px;
   color: white;
   font-size: 15px;
@@ -209,12 +201,47 @@
   }
 
   .profile-preferences-container {
+    max-width: 500px;
     padding: 5px;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: hidden;
   }
 
   .preference-page-content-container {
-    overflow-y: hidden;
+    overflow-y: auto;
+  }
+
+  .profile-setting-change-block {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .profile-preferences-main-content {
+    padding-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .profile-preferences-container {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .profile-settings-sub-header {
+    line-height: 25px;
+    text-align: center;
+  }
+
+  .profile-settings-header {
+    text-align: center;
+  }
+
+  .profile-image-header {
+    text-align: center;
+  }
+
+  .profile-setting-change-block {
+    width: 100%;
+    padding: 5px;
   }
 }

@@ -16,6 +16,7 @@
 }
 
 .password {
+  height: 40px;
   border-radius: 3px 0 0 3px;
 }
 
@@ -28,14 +29,19 @@
 }
 
 .input-error {
-  border: 1px solid var(--input-error-color);
   border-radius: 3px;
   box-shadow: 0 0 3px 0 rgb(var(--input-error-color) / 80%), 0 0 5px 0 rgb(var(--input-error-color) / 50%);
 }
 
+div .input-error {
+  border: var(--input-error-border);
+}
+
 .input-row {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-bottom: 60px;
   column-gap: 20px;
 }
 
@@ -44,6 +50,10 @@
   font-size: 15px;
   font-family: Gilroy, sans-serif;
   text-transform: capitalize;
+}
+
+.input {
+  margin-bottom: 5px;
 }
 
 .upper-space-regular {
@@ -59,6 +69,17 @@
   text-align: center;
 }
 
-.error {
-  line-height: 20px;
+@media screen and (max-width: 360px) {
+  .paragraph-mobile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.password-error {
+  position: absolute;
+  top: 110%;
+  width: 50%;
+  line-height: 15px;
 }

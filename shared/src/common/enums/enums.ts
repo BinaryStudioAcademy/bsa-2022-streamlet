@@ -13,3 +13,4 @@ export * from './toast-notification/toast-notification';
 export * from './image/image';
 export * from './profile/profile';
 export * from './frontend/frontend';
+export * from './socket/socket';

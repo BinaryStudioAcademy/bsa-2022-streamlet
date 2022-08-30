@@ -9,23 +9,33 @@
 }
 
 .button path {
-  fill: white;
+  fill: var(--sidebar-studio-icon-color);
 }
 
-.button,
-.logo-button {
+.active svg path {
+  fill: var(--brand-green-color);
+}
+
+.button {
   padding: 15px;
 
   &:hover {
-    background-color: var(--brand-green-color);
     cursor: pointer;
 
     & path {
-      fill: white;
+      fill: var(--sidebar-studio-icon-hover-color);
     }
   }
 }
 
-.active {
-  background-color: var(--brand-green-color);
+.active:hover svg path {
+  fill: var(--brand-green-color);
+}
+
+.logo-button {
+  padding: 15px;
+
+  &:hover {
+    cursor: pointer;
+  }
 }

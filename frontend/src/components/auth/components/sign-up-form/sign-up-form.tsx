@@ -61,6 +61,8 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
             name="password"
             errors={errors}
             label="Password"
+            isValidationErrorOnTop={false}
+            errorBlockClassName={formStyles['password-error']}
           />
           <PasswordInput
             inputClassName={formStyles['password']}
@@ -72,14 +74,11 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
             name="passwordConfirm"
             errors={errors}
             label="Confirm password"
+            isValidationErrorOnTop={false}
+            errorBlockClassName={formStyles['password-error']}
           />
         </div>
-        <AuthSubmitButton
-          isLoading={isLoading}
-          disabled={isLoading || !isValid}
-          name="Sign up"
-          className={formStyles['upper-space-regular']}
-        />
+        <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Sign up" />
       </form>
       <p className={formStyles['continue-with']}>or continue with</p>
       <GoogleButton disabled={isLoading} />

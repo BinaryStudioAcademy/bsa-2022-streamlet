@@ -4,7 +4,7 @@ import { AmqpConsumeDto, AmqpSendToQueueDto } from '~/shared/types/ampq/ampq';
 class AmqpService {
   public amqpChannel!: Channel;
 
-  async connect(channel: Channel): Promise<void> {
+  connect(channel: Channel): void {
     this.amqpChannel = channel;
   }
 

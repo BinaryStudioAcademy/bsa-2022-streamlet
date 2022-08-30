@@ -5,7 +5,7 @@ import formStyles from 'components/auth/components/form-controls.module.scss';
 import { AuthSubmitButton } from 'components/auth/components/common/common';
 import * as Joi from 'joi';
 import { UserValidationMessage } from 'shared/build/common/enums/enums';
-import { restorePasswordConfirmBase } from 'shared/build/validation-schemas/user/restore-password-confirm-base-validation-schema';
+import { restorePasswordConfirmBase } from 'shared/build';
 
 type Props = {
   onSubmit: (data: SelectNewPasswordFormValues) => void;
@@ -33,24 +33,28 @@ const SelectNewPasswordForm: FC<Props> = ({ onSubmit, isLoading }) => {
   return (
     <>
       <form className={formStyles['form-container']} onSubmit={handleSubmit(onSubmit)}>
-        <PasswordInput
-          wrapperClassName={formStyles['form-input']}
-          inputWrapperErrorClassName={formStyles['input-error']}
-          placeholder="Password"
-          control={control}
-          name="password"
-          errors={errors}
-          label="Select new password"
-        />
-        <PasswordInput
-          wrapperClassName={formStyles['form-input']}
-          inputWrapperErrorClassName={formStyles['input-error']}
-          placeholder="Confirm password"
-          control={control}
-          name="passwordConfirm"
-          errors={errors}
-          label="Confirm password"
-        />
+        <div className={formStyles['input-row']}>
+          <PasswordInput
+            wrapperClassName={formStyles['form-input']}
+            inputWrapperErrorClassName={formStyles['input-error']}
+            errorBlockClassName={formStyles['password-error']}
+            placeholder="Password"
+            control={control}
+            name="password"
+            errors={errors}
+            label="Select new password"
+          />
+          <PasswordInput
+            wrapperClassName={formStyles['form-input']}
+            inputWrapperErrorClassName={formStyles['input-error']}
+            errorBlockClassName={formStyles['password-error']}
+            placeholder="Confirm password"
+            control={control}
+            name="passwordConfirm"
+            errors={errors}
+            label="Confirm password"
+          />
+        </div>
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Submit" />
       </form>
     </>

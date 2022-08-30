@@ -8,7 +8,7 @@
 
 .image-editor-control-container button {
   padding: 0 10px;
-  color: var(--white-text-color);
+  color: var(--always-white-color);
   background-color: var(--brand-green-color);
   border: none;
   border-radius: 3px;
@@ -61,4 +61,9 @@
 .image-editor-slider-container {
   display: flex;
   width: 50%;
+}
+
+.zoom-indicator {
+  color: var(--text-gray-color);
+  font-size: 30px;
 }

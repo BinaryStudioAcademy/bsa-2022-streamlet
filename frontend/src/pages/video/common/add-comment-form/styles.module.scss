@@ -1,0 +1,65 @@
+.add-comment-block {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.add-comment-block-user-avatar {
+  display: block;
+  width: 50px;
+  height: 50px;
+  margin-right: 30px;
+  border-radius: 100%;
+}
+
+.add-comment-input {
+  width: 100%;
+  height: auto;
+  padding: 0;
+  overflow: hidden;
+  white-space: normal;
+  background: none;
+  border: none;
+  border-bottom: var(--text-gray-color) 3px solid;
+  resize: none;
+}
+
+.add-comment-input-in-focus {
+  border-bottom: var(--brand-green-color) 3px solid;
+}
+
+.add-comment-input-wrapper {
+  width: 100%;
+}
+
+.add-comment-submit-active {
+  width: 100px;
+  height: 36px;
+}
+
+.add-comment-cancel-button {
+  background: none;
+  border: 0;
+}
+
+.input-block {
+  width: 100%;
+}
+
+.add-comment-form-control {
+  display: flex;
+  justify-content: flex-end;
+  height: 48px;
+  padding-top: 10px;
+}
+
+.add-comment-cancel-button:hover {
+  height: min-content;
+  background: none;
+}
+
+.add-comment-submit-disabled {
+  background-color: var(--gray-200-input-background);
+  cursor: not-allowed;
+  pointer-events: none;
+}

@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { AuthContainer } from 'components/auth/components/components';
-import { Button, Loader, createToastNotification } from 'components/common/common';
+import { Button, createToastNotification } from 'components/common/common';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { commonFrontendPaths } from 'shared/build/common/enums/enums';
@@ -82,7 +82,6 @@ const AccountVerificationConfirmPage: FC = () => {
   return (
     <AuthContainer pageTitle="Account Verification">
       {error && <ErrorBox message={error} />}
-      {isLoading && <Loader hCentered spinnerSize="md" />}
       {showResendForm ? (
         <SendVerificationLinkForm onSubmit={handleVerificationFormSubmit} isLoading={isLoading} />
       ) : (

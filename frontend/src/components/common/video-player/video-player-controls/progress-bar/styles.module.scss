@@ -1,0 +1,79 @@
+.progress-bar-wrapper {
+  display: flex;
+  align-items: flex-end;
+  height: 15px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background-color: var(--progress-bar-bg);
+}
+
+.progress-bar::before {
+  position: absolute;
+  top: 0;
+  right: calc(100% - var(--preview-position, 0) * 100%);
+  bottom: 0;
+  left: 0;
+  display: none;
+  background-color: var(--progress-bar-preview-bg);
+  content: '';
+}
+
+.progress-bar::after {
+  position: absolute;
+  top: 0;
+  right: calc(100% - var(--progress-position, 0) * 100%);
+  bottom: 0;
+  left: 0;
+  background-color: var(--progress-bar-done-bg);
+  content: '';
+}
+
+.thumb-indicator {
+  --scale: 0;
+
+  position: absolute;
+  top: -50%;
+  left: calc(var(--progress-position, 0) * 100%);
+  height: 200%;
+  background-color: var(--progress-bar-done-bg);
+  border-radius: 50%;
+  transform: translateX(-50%) scale(var(--scale));
+  transition: transform 150ms ease-in-out;
+  aspect-ratio: 1 / 1;
+}
+
+.preview-modal {
+  position: absolute;
+  top: 0;
+  left: calc(var(--preview-position, 0) * 100%);
+  display: none;
+  padding: 0 10px;
+  color: var(--always-white-color);
+  background-color: var(--settings-modal-bg);
+  border-radius: 10px;
+  transform: translateY(-120%) translateX(-50%);
+}
+
+.progress-bar-wrapper:hover {
+  .thumb-indicator {
+    --scale: 1;
+  }
+
+  .progress-bar {
+    height: 7px;
+  }
+
+  .progress-bar::before {
+    display: block;
+  }
+
+  .preview-modal {
+    display: block;
+  }
+}

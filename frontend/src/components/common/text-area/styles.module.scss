@@ -1,0 +1,25 @@
+.textarea-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: 2px;
+  color: var(--white-text-color);
+  cursor: pointer;
+}
+
+.textarea {
+  width: 100%;
+  height: 47px;
+  padding-left: 23px;
+  color: var(--white-text-color);
+  border: var(--input-border);
+  border-radius: 3px;
+  outline: inherit;
+}
+
+.textarea-labels {
+  display: flex;
+  justify-content: space-between;
+}

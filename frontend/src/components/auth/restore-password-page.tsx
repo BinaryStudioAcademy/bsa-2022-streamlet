@@ -1,6 +1,7 @@
 import { AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { createToastNotification } from 'components/common/common';
+import { ErrorBox } from 'components/common/errors/errors';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from 'services/services';
@@ -42,7 +43,7 @@ const RestorePasswordPage: FC = () => {
     <AuthContainer
       pageTitle="Restore password"
       children={<RestorePasswordForm onSubmit={handleRestorePasswordSubmit} isLoading={isLoading} />}
-      topLevelErrorComponent={error}
+      topLevelErrorComponent={error && <ErrorBox message={error} />}
     />
   );
 };

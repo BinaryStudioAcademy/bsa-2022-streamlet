@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { User } from '@prisma/client';
+import axios from 'axios';
 import { CONTAINER_TYPES, MailTestRequestDto, UserSignUpRequestDto } from '~/shared/types/types';
 import { UserRepository } from '~/core/user/port/user-repository';
 import { RefreshTokenRepository } from '~/core/refresh-token/port/refresh-token-repository';
@@ -17,7 +18,7 @@ import { ImageStorePort } from '~/core/common/port/image-store';
 
 import { MailRepository } from '~/core/mail/port/mail-repository';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
-import axios from 'axios';
+import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
 
 @injectable()
 export class UserService {
@@ -26,6 +27,7 @@ export class UserService {
   private mailRepository: MailRepository;
   private imageStore: ImageStorePort;
   private amqpChannel: AmqpChannelPort;
+  @inject(CONTAINER_TYPES.ChannelCrudRepository) private channelCrudRepository!: ChannelCrudRepository;
 
   constructor(
     @inject(CONTAINER_TYPES.UserRepository) userRepository: UserRepository,
@@ -57,8 +59,10 @@ export class UserService {
     return this.userRepository.getUserByUsernameOrEmail(email, username);
   }
 
-  createUser(userRequestDto: UserSignUpRequestDto): Promise<User> {
-    return this.userRepository.createUser(userRequestDto);
+  async createUser(userRequestDto: UserSignUpRequestDto): Promise<User> {
+    const user = await this.userRepository.createUser(userRequestDto);
+    await this.channelCrudRepository.createDefaultForUser(user, `${user.username}'s channel`);
+    return user;
   }
 
   setIsActivated(shouldBeActivated: boolean, userId: string): Promise<void> {

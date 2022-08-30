@@ -1,0 +1,44 @@
+/* this module styles sliders and so needs non-standard rules */
+/* stylelint-disable property-no-vendor-prefix */
+
+.volume-input {
+  height: 100%;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+$thumb-size: 12px;
+
+@mixin thumb-styles {
+  width: $thumb-size;
+  height: $thumb-size;
+  background: var(--always-white-color);
+  border: none;
+  border-radius: 50%;
+}
+
+.volume-input::-moz-range-thumb {
+  @include thumb-styles;
+}
+
+.volume-input::-webkit-slider-thumb {
+  @include thumb-styles;
+
+  margin-top: calc($thumb-size / (-2) + 2px);
+  -webkit-appearance: none;
+}
+
+@mixin slider-track-styles {
+  width: 100%;
+  height: 4px;
+  background: white;
+}
+
+.volume-input::-webkit-slider-runnable-track {
+  @include slider-track-styles;
+}
+
+.volume-input::-moz-range-track {
+  @include slider-track-styles;
+}

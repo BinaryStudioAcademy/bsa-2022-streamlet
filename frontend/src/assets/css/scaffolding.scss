@@ -466,10 +466,12 @@
   --green-200-header-menu-background: #344f3e;
   --green-100-header-menu-background: #ebefe8;
   --primary-text-color: #181a20;
+  --always-primary-text-color: #181a20;
   --secondary-text-color: #505565;
   --text-gray-color: #6a726d;
   --white-text-color: #ffffff;
   --brand-green-color: #06c149;
+  --brand-dark-green-color: #006624;
   --brand-green-color-hover: #00802d;
   --brand-yellow-color: #f6c648;
   --support-info-color: #03d8ff;
@@ -479,20 +481,56 @@
   --input-error-color: #f41b3b;
   --input-placeholder-color: #c4c4c4;
   --input-password-placeholder-color: #bcbec0;
+  --input-border: none;
+  --input-error-border: 1px solid var(--input-error-color);
+  --input-background-color: #ffffff;
+  --always-white-color: #ffffff;
+
+  /* sidebar */
   --sidebar-scrollbar-track-background: var(--gray-300-header-menu-background);
+  --sidebar-icon-color: #6a726d;
+  --sidebar-icon-hover-color: #ffffff;
+  --sidebar-studio-icon-color: #6a726d;
+  --sidebar-studio-icon-hover-color: #ffffff;
+
+  /* header */
+  --header-search-icon-color: #6a726d;
+  --logo-text-color: #ffffff;
 
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
   --auth-modal-border-color-1: rgb(34 240 0 / 47%);
   --auth-modal-border-color-2: rgb(146 255 229 / 47%);
+  --auth-border: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
+  --auth-background: var(--gray-400-primary-background);
+  --auth-box-shadow: none;
   --link-color: rgb(146 255 230);
   --password-eye-color: rgb(104 104 104);
+
+  /* subscription */
+  --subscribed-btn-background-color: rgb(104 104 104);
+  --subscribed-btn-hover-background-color: rgb(145 145 145);
+
+  /* channel page */
+  --banner-background: #27292c;
+  --channel-header-background: #1f222a99;
 
   /* video-card */
   --video-card-schedule-badge-background: #000000b3;
   --video-card-schedule-btn-background: #ffffff40;
   --video-card-live-color: #ba0000;
   --white-background-video-card: #ffffff26;
+
+  /* video player */
+  --container-bg: black;
+  --controls-overlay: rgba(0 0 0 / 50%);
+  --playpause-effect-bg: rgba(0 0 0 / 50%);
+  --selected-menu-item-bg: rgb(48 48 48 / 50.7%);
+  --hovered-menu-item-bg: rgb(0 0 0 / 20%);
+  --settings-modal-bg: rgb(58 58 58 / 75.3%);
+  --progress-bar-bg: rgb(100 100 100 / 50%);
+  --progress-bar-preview-bg: rgb(206 206 206 / 50%);
+  --progress-bar-done-bg: #006624;
 }
 
 body[data-theme='light'] {
@@ -503,10 +541,30 @@ body[data-theme='light'] {
   --hover-light-grey: var(--hover-dark-grey);
   --gray-400-primary-background: #ffffff;
   --gray-200-input-background: #dadada;
+
+  /* channel page */
+  --banner-background: #94a098;
+  --channel-header-background: #b8c8c9;
+
+  /* sidebar */
   --sidebar-scrollbar-track-background: #e8e8e8;
+  --sidebar-icon-color: var(--brand-green-color);
+  --sidebar-icon-hover-color: var(--brand-green-color-hover);
+
+  /* header */
+  --header-search-icon-color: var(--brand-green-color);
+  --logo-text-color: #363c3a;
 
   /* auth forms */
   --link-color: rgb(0 73 56);
+  --auth-modal-background: white;
+  --auth-box-shadow: 0 0 15px 7px rgb(0 0 0 / 16%);
+  --auth-border: none;
+  --input-border: 1px solid var(--brand-green-color);
+  --auth-background: #fbfffa;
+
+  /* video-card */
+  --video-card-schedule-btn-background: #d1d1d140;
 }
 
 html {

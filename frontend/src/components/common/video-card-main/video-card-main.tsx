@@ -12,17 +12,20 @@ import styles from './styles.module.scss';
 import defaultVideoPosterDark from 'assets/img/default-video-poster-dark.jpg';
 import defaultVideoPosterLight from 'assets/img/default-video-poster-light.jpg';
 import defaultUserAvatar from 'assets/img/default-user-avatar.jpg';
+import clsx from 'clsx';
 
 dayjs.extend(dayjsRelativeTime.default);
 
 type Props = {
   video: VideoCardType;
   isLightTheme: boolean;
+  className?: string;
 };
 
 const VideoCardMain: FC<Props> = ({
   video: { id, name, status, publishedAt, scheduledStreamDate, poster, duration, videoViews, liveViews, channel },
   isLightTheme,
+  className,
 }) => {
   const [timeNow, setTimeNow] = useState(dayjs());
 
@@ -33,7 +36,7 @@ const VideoCardMain: FC<Props> = ({
   const updateTimeDelay = UPDATE_CARD_TIME_DELAY;
 
   const linkToVideoPage = `${AppRoutes.VIDEO}/${id}`;
-  const linkToChannelPage = `${AppRoutes.CHANNEL}/${id}`;
+  const linkToChannelPage = `${AppRoutes.CHANNEL}/${channel.id}`;
 
   const videoPoster = poster ? poster : isLightTheme ? defaultVideoPosterLight : defaultVideoPosterDark;
   const channelAvatar = channel.avatar ? channel.avatar : defaultUserAvatar;
@@ -58,7 +61,7 @@ const VideoCardMain: FC<Props> = ({
   }, [updateTimeDelay]);
 
   return (
-    <div className={styles['video-card']}>
+    <div className={clsx(styles['video-card'], className)}>
       <div className={styles['video-card-preview']}>
         <img src={videoPoster} alt="Preview video img" />
         <Link to={linkToVideoPage} className={styles['video-card-play']}>
@@ -80,12 +83,12 @@ const VideoCardMain: FC<Props> = ({
             <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
           </Link>
           <div className={styles['video-card-name']}>
-            <Link to={linkToVideoPage} className={styles['video-card-title']}>
+            <Link to={linkToVideoPage} className={styles['video-card-title']} title={name}>
               {name}
             </Link>
             <div className={styles['video-card-author']}>
-              <Link to={linkToChannelPage} className={styles['video-card-author-name']}>
-                <span>{channel.name}</span>
+              <Link to={linkToChannelPage} className={styles['video-card-author-name']} title={channel.name}>
+                {channel.name}
               </Link>
             </div>
           </div>

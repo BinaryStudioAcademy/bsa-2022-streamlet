@@ -8,22 +8,26 @@ type Props = {
   vCentered?: boolean;
   className?: string;
   spinnerSize?: LoaderSize | string;
+  color?: string;
 };
 
-const Loader: FC<Props> = ({ hCentered = true, vCentered = true, className, spinnerSize = LoaderSize.MD }) => {
+const Loader: FC<Props> = ({ hCentered = true, vCentered = true, className, spinnerSize = LoaderSize.MD, color }) => {
   const isSpinnerSizeCustom = Object.values(LoaderSize).includes(spinnerSize as LoaderSize);
+  const styleProps = {
+    background: color ?? 'unset',
+  };
 
   return (
     <div
-      className={clsx(styles['loader-wrapper'], className, {
+      className={clsx(styles['loader-wrapper'], className, styles[spinnerSize], {
         [styles['h-centered']]: hCentered,
         [styles['v-centered']]: vCentered,
       })}
+      style={!isSpinnerSizeCustom ? ({ '--spinner-height': spinnerSize } as React.CSSProperties) : undefined}
     >
-      <span
-        className={clsx(styles['loader'], styles[spinnerSize])}
-        style={!isSpinnerSizeCustom ? ({ '--spinner-height': spinnerSize } as React.CSSProperties) : undefined}
-      ></span>
+      <div className={styles['loader']} style={{ ...styleProps }}></div>
+      <div className={styles['loader']} style={{ ...styleProps }}></div>
+      <div className={styles['loader']} style={{ ...styleProps }}></div>
     </div>
   );
 };

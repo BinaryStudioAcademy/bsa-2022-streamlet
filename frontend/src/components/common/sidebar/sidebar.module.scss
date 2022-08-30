@@ -4,7 +4,7 @@
   z-index: $sidebar-z-index;
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: $sidebar-width;
   height: 100%;
   overflow: auto;
   overflow-y: overlay;
@@ -24,13 +24,17 @@
   width: 64px;
 }
 
-.sidebar::-webkit-scrollbar {
-  display: none;
+.sidebar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: transparent;
 }
 
 .sidebar:hover {
-  &::-webkit-scrollbar {
-    display: block;
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--secondary-text-color);
   }
 }
 
@@ -49,20 +53,48 @@
   }
 }
 
+.subscription-more span {
+  display: block;
+  flex: 1;
+  padding-right: 12px;
+  overflow: hidden;
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.subscription-more:hover span {
+  color: var(--white-text-color);
+}
+
 .navigate-menu ul a:hover .link-name {
   color: var(--white-text-color);
 }
 
-.sidebar.close .navigate-menu ul li .link-name {
-  display: none;
+.navigate-menu ul a.active span {
+  color: var(--always-white-color);
 }
 
-.navigate-menu ul li svg path {
+.navigate-menu ul a.active:hover span {
+  color: var(--always-white-color);
+}
+
+.subscription-more path {
   fill: var(--text-gray-color);
 }
 
-.navigate-menu ul a:hover svg path {
+.navigate-menu ul li svg path {
+  fill: var(--sidebar-icon-color);
+}
+
+.subscription-more:hover path {
   fill: var(--white-text-color);
+}
+
+.navigate-menu ul a:hover svg path {
+  fill: var(--sidebar-icon-hover-color);
 }
 
 .navigate-menu ul li {
@@ -76,21 +108,16 @@
   }
 }
 
-.sidebar.close .navigate-menu ul li {
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
-
 .navigate-menu ul a.active {
   background-color: var(--brand-green-color);
 }
 
 .navigate-menu ul a.active svg path {
-  fill: var(--white-text-color);
+  fill: var(--always-white-color);
 }
 
-.navigate-menu ul a.active span {
-  color: var(--white-text-color);
+.subscription-more svg {
+  margin-right: 20px;
 }
 
 .navigate-menu ul li svg {
@@ -101,37 +128,35 @@
   }
 }
 
+.sidebar.close .navigate-menu ul li {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.sidebar.close .navigate-menu ul li .link-name {
+  display: none;
+}
+
 .sidebar.close .navigate-menu ul li svg {
   margin: 0;
 }
 
-.block-subscriptions {
-  margin-top: 25px;
-  padding-bottom: 24px;
-}
-
-.horizontal-line {
-  width: 70%;
-  height: 2px;
-  margin: 0 auto;
-  background-color: var(--primary-text-color);
+.sidebar.close .block-subscription {
+  display: none;
 }
 
 .subscription-list {
-  padding-top: 25px;
-  padding-left: 20px;
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 0 20px;
 
   @media screen and(max-width: 1300px) {
     display: none;
   }
 }
 
-.sidebar.close .subscription-list {
-  display: none;
-}
-
 .subscription-title {
-  margin-bottom: 18px;
+  padding: 0 20px;
   color: var(--text-gray-color);
   font-size: 16px;
   line-height: 28px;
@@ -141,6 +166,55 @@
   }
 }
 
-.sidebar.close .subscription-title {
+.subscription-more {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.subscription-more:hover {
+  cursor: pointer;
+}
+
+.sign-in-promo-wrp {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  padding: 16px 32px;
+
+  @media screen and(max-width: 1300px) {
+    display: none;
+  }
+}
+
+.sidebar.close .sign-in-promo-wrp {
   display: none;
+}
+
+.sign-in-promo-text {
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+}
+
+.sign-in-promo-btn {
+  height: fit-content;
+  margin-top: 12px;
+  padding: 11px 20px;
+  color: var(--always-white-color);
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.5px;
+  background-color: var(--brand-green-color);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  margin: 10px 0;
+  background-color: var(--gray-400-primary-background);
 }

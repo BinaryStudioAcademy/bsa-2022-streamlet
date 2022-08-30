@@ -24,9 +24,16 @@ export class ProfileRepositoryAdapter implements ProfileRepository {
       data: {
         avatar: url,
       },
+      include: {
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
     });
-
-    return createUpdateProfileResponse(userId, updatedProfile);
+    const { username } = updatedProfile.user;
+    return createUpdateProfileResponse(username, updatedProfile);
   }
 
   async update(updateData: ProfileUpdateRequestDto): Promise<ProfileUpdateResponseDto> {

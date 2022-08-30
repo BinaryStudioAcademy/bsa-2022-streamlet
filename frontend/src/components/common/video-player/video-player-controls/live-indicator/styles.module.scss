@@ -1,0 +1,33 @@
+.circle {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  background: var(--always-white-color);
+  border-radius: 50%;
+}
+
+.indicator {
+  display: flex;
+  align-items: center;
+  padding: 0 7px;
+  color: var(--always-white-color);
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+.blink {
+  animation: blinker 1s cubic-bezier(0.5, 0, 1, 1) infinite alternate;
+}
+
+@keyframes blinker {
+  from {
+    opacity: 0.9;
+  }
+
+  to {
+    opacity: 0.1;
+  }
+}
