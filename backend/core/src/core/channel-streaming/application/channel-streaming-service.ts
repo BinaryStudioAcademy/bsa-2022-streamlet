@@ -97,4 +97,11 @@ export class ChannelStreamingService {
       isChatEnabled: updatedVideo.isChatEnabled,
     };
   }
+
+  notifyViewersAboutChatToggleChanged(body: { roomId: string; isChatEnabled: boolean }): Promise<boolean> {
+    return this.amqpChannel.sendToQueue({
+      queue: AmqpQueue.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED,
+      content: Buffer.from(JSON.stringify(body)),
+    });
+  }
 }

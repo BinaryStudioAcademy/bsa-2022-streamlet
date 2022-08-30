@@ -299,6 +299,7 @@ export class ChannelStreamingController extends BaseHttpController {
     if (video.channel.authorId !== req.user?.id) {
       throw new Forbidden('This video does not belong to you.');
     }
+
     const videoData = await this.channelService.changeChatToggle(
       changeChatToggleRequestDto.videoId,
       changeChatToggleRequestDto.isChatEnabled,
@@ -306,6 +307,11 @@ export class ChannelStreamingController extends BaseHttpController {
     if (!videoData) {
       throw new NotFound('Invalid video id');
     }
+
+    this.channelService.notifyViewersAboutChatToggleChanged({
+      roomId: videoData.videoId,
+      isChatEnabled: videoData.isChatEnabled,
+    });
     return videoData;
   }
 }
