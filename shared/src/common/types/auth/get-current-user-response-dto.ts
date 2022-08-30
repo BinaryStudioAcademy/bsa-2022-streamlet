@@ -1,5 +1,5 @@
-import { UserBaseResponseDto } from '../types';
+import { DataSubscription, UserBaseResponseDto } from '../types';
 
-type GetCurrentUserResponseDto = { user: UserBaseResponseDto };
+type GetCurrentUserResponseDto = { user: UserBaseResponseDto; subscriptions: DataSubscription };
 
 export { type GetCurrentUserResponseDto };

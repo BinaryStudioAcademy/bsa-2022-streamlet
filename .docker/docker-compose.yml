@@ -38,12 +38,6 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-    healthcheck:
-      test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
-      interval: 2s
-      timeout: 1s
-      retries: 5
-      start_period: 3s
 volumes:
   pgdata_api:
     driver: local

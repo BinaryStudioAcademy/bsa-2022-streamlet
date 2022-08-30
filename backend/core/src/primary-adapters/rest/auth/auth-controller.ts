@@ -22,7 +22,7 @@ import {
   GoogleExtendedRequest,
 } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
-import { compareHash, compareStringsInsensitive, generateJwt, trimUser } from '~/shared/helpers';
+import { compareHash, compareStringsInsensitive, generateJwt, trimSubscriptionInfo, trimUser } from '~/shared/helpers';
 import { RefreshTokenService } from '~/core/refresh-token/application/refresh-token-service';
 import { authenticationMiddleware, googleMiddleware, validationMiddleware } from '../middleware';
 import {
@@ -42,6 +42,7 @@ import { GetCurrentUserResponseDto } from 'shared/build/common/types/auth/get-cu
 import { AccountVerificationInitRequestDto, AccountVerificationInitResponseDto } from 'shared/build';
 import { Forbidden, NotFound, DuplicationError, Unauthorized, errorCodes } from '~/shared/exceptions/exceptions';
 import { oauth2Client } from '~/configuration/google-oauth';
+import { ChannelSubscriptionService } from '~/core/channel-subscription/application/channel-subscription-service';
 
 /**
  * @swagger
@@ -99,6 +100,7 @@ export class AuthController extends BaseHttpController {
     @inject(CONTAINER_TYPES.RefreshTokenService) private refreshTokenService: RefreshTokenService,
     @inject(CONTAINER_TYPES.ResetPasswordService) private resetPasswordService: ResetPasswordService,
     @inject(CONTAINER_TYPES.AccountVerificationService) private accountVerificationService: AccountVerificationService,
+    @inject(CONTAINER_TYPES.ChannelSubscriptionService) private subscriptionService: ChannelSubscriptionService,
   ) {
     super();
   }
@@ -618,8 +620,14 @@ export class AuthController extends BaseHttpController {
     if (!user) {
       throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
     }
+    const userSubscriptions = await this.subscriptionService.getUserSubscriptions(user.id);
+
     return {
       user: trimUser(user),
+      subscriptions: {
+        ...userSubscriptions,
+        list: userSubscriptions.list.map(trimSubscriptionInfo),
+      },
     };
   }
 
