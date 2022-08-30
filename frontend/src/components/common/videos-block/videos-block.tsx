@@ -16,11 +16,11 @@ import { ReactNode } from 'react';
 export interface VideoBlockProps {
   blockTitle?: string;
   videoCards: ReactNode[];
+  loadingStatus: DataStatus;
 }
 
-const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards }) => {
-  const { statusVideoLoading, isLightTheme } = useAppSelector((state) => ({
-    statusVideoLoading: state.videos.dataStatus,
+const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, loadingStatus }) => {
+  const { isLightTheme } = useAppSelector((state) => ({
     isLightTheme: state.theme.isLightTheme,
   }));
 
@@ -34,9 +34,8 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards }) => {
       {blockTitle && <h2 className={styles['video-block-title']}>{blockTitle}</h2>}
       <SkeletonTheme baseColor={colorForSkeleton.baseColor} highlightColor={colorForSkeleton.highlightColor}>
         <div className={styles['videos-block']}>
-          {statusVideoLoading === DataStatus.PENDING &&
-            ARRAY_FAKE_VIDEOS.map((_, index) => <VideoSkeleton key={index} />)}
-          {statusVideoLoading === DataStatus.FULFILLED && videoCards}
+          {loadingStatus === DataStatus.PENDING && ARRAY_FAKE_VIDEOS.map((_, index) => <VideoSkeleton key={index} />)}
+          {loadingStatus === DataStatus.FULFILLED && videoCards}
         </div>
       </SkeletonTheme>
     </div>

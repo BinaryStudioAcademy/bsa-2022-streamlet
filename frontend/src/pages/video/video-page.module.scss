@@ -28,8 +28,10 @@
 
 .video-title {
   color: var(--white-text-color);
+  font-weight: 600;
   font-size: 24px;
-  line-height: 29px;
+  font-family: Gilroy, sans-serif;
+  line-height: 48px;
 }
 
 .video-block {
@@ -45,7 +47,7 @@
 .sign-in-modal {
   position: absolute;
   top: 35px;
-  left: -90px;
+  right: -50px;
   width: 378px;
   height: 200px;
 }
@@ -88,6 +90,7 @@
 
 .video-header {
   display: flex;
+  justify-content: space-between;
 }
 
 .description-container {
@@ -108,26 +111,6 @@
   background-color: var(--gray-200-input-background);
   border-color: var(--gray-200-input-background);
   outline-color: var(--gray-200-input-background);
-}
-
-.subscribe-button-default {
-  color: var(--text-gray-color);
-  background-color: var(--green-300-primary-background);
-}
-
-.subscribe-button-subscribed {
-  color: var(--white-text-color);
-  background-color: var(--brand-green-color);
-}
-
-.subscribe-button-basic {
-  width: 100px;
-  height: 35px;
-  border-radius: 2px;
-}
-
-.views-container {
-  margin: 10px 0 0;
 }
 
 .channel-banner {
@@ -216,4 +199,16 @@
   .description-container {
     max-width: 100%;
   }
+}
+
+.subscribe-wrapper {
+  position: relative;
+  margin: 20px 0;
+}
+
+.subscribe-signin-modal {
+  position: absolute;
+  top: 120%;
+  left: 0;
+  width: 200px;
 }
