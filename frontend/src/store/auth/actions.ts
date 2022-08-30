@@ -9,6 +9,7 @@ import {
   RefreshTokenRequestDto,
   UserBaseResponseDto,
   RefreshTokenResponseDto,
+  GetCurrentUserResponseDto,
 } from 'common/types/types';
 import { HttpError } from 'exceptions/exceptions';
 import { serializeHttpError } from 'helpers/http/http';
@@ -73,12 +74,12 @@ const signOut = createAsyncThunk<void, { hitApi: boolean } | undefined>(
   },
 );
 
-const loadCurrentUser = createAsyncThunk<UserBaseResponseDto, void, AsyncThunkConfig>(
+const loadCurrentUser = createAsyncThunk<GetCurrentUserResponseDto, void, AsyncThunkConfig>(
   ActionType.LOAD_CURRENT_USER,
   async (_request, { dispatch, extra: { authApi } }) => {
     try {
-      const { user } = await authApi.getCurrentUser();
-      return user;
+      const data = await authApi.getCurrentUser();
+      return data;
     } catch (err) {
       const isHttpError = err instanceof HttpError;
 

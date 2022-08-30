@@ -1,0 +1,101 @@
+.subscription-title {
+  padding: 0 20px;
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+
+  @media screen and (max-width: 1300px) {
+    display: none;
+  }
+}
+
+.subscription-list {
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 0 20px;
+
+  @media screen and(max-width: 1300px) {
+    display: none;
+  }
+}
+
+.subscription-more {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.subscription-more:hover {
+  cursor: pointer;
+}
+
+.subscription-more span {
+  display: block;
+  flex: 1;
+  padding-right: 12px;
+  overflow: hidden;
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.subscription-more:hover span {
+  color: var(--white-text-color);
+}
+
+.subscription-more path {
+  fill: var(--text-gray-color);
+}
+
+.subscription-more:hover path {
+  fill: var(--white-text-color);
+}
+
+.subscription-more svg {
+  margin-right: 20px;
+}
+
+.sign-in-promo-wrp {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  padding: 16px 32px;
+
+  @media screen and(max-width: 1300px) {
+    display: none;
+  }
+}
+
+.sign-in-promo-text {
+  color: var(--text-gray-color);
+  font-size: 16px;
+  line-height: 28px;
+}
+
+.sign-in-promo-btn {
+  height: fit-content;
+  margin-top: 12px;
+  padding: 11px 20px;
+  color: var(--always-white-color);
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.5px;
+  background-color: var(--brand-green-color);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.keep-visible {
+  .sign-in-promo-wrp,
+  .subscription-list {
+    display: flex;
+  }
+
+  .subscription-title {
+    display: block;
+  }
+}
