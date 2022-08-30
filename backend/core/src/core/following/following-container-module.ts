@@ -3,7 +3,7 @@ import { CONTAINER_TYPES } from '~/shared/types/types';
 import { FollowingService } from './application/following-service';
 
 const followingContainerModule = new ContainerModule((bind: interfaces.Bind) => {
-  bind<FollowingService>(CONTAINER_TYPES.HistoryService).to(FollowingService);
+  bind<FollowingService>(CONTAINER_TYPES.FollowingService).to(FollowingService);
 });
 
 export { followingContainerModule };

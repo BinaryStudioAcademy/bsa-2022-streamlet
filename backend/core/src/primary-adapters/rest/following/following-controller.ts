@@ -1,8 +1,13 @@
 import { inject } from 'inversify';
-import { BaseHttpController, controller, httpGet } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, request } from 'inversify-express-utils';
 import { FollowingService } from '~/core/following/application/following-service';
 import { ApiPath, FollowingApiPath } from '~/shared/enums/api/api';
-import { CONTAINER_TYPES, VideosLiveResponseDto, VideosOfflineResponseDto } from '~/shared/types/types';
+import {
+  CONTAINER_TYPES,
+  ExtendedAuthenticatedRequest,
+  VideosLiveResponseDto,
+  VideosOfflineResponseDto,
+} from '~/shared/types/types';
 import { authenticationMiddleware } from '../middleware';
 
 @controller(ApiPath.FOLLOWING)
@@ -13,13 +18,13 @@ export class FollowingController extends BaseHttpController {
 
   // TODO: pagination
   @httpGet(FollowingApiPath.VIDEOS_OFFLINE, authenticationMiddleware)
-  public async videosOffline(): Promise<VideosOfflineResponseDto> {
-    return { videos: await this.followingService.getOfflineVideos() };
+  public async videosOffline(@request() req: ExtendedAuthenticatedRequest): Promise<VideosOfflineResponseDto> {
+    return { videos: await this.followingService.getOfflineVideos(req.user.id) };
   }
 
   // TODO: pagination
-  @httpGet(FollowingApiPath.VIDEOS_OFFLINE, authenticationMiddleware)
-  public async videosLive(): Promise<VideosLiveResponseDto> {
-    return { videos: await this.followingService.getOfflineVideos() };
+  @httpGet(FollowingApiPath.VIDEOS_LIVE, authenticationMiddleware)
+  public async videosLive(@request() req: ExtendedAuthenticatedRequest): Promise<VideosLiveResponseDto> {
+    return { videos: await this.followingService.getLiveideos(req.user.id) };
   }
 }

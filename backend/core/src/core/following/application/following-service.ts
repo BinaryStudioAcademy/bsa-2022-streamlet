@@ -8,13 +8,17 @@ import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 export class FollowingService {
   constructor(@inject(CONTAINER_TYPES.VideoRepository) private videoRepository: VideoRepository) {}
 
-  async getOfflineVideos(): Promise<BaseVideoResponseDto[]> {
-    const videos = await this.videoRepository.getAll({ filters: { streamingStatus: StreamingStatus.finished } });
+  async getOfflineVideos(userId: string): Promise<BaseVideoResponseDto[]> {
+    const videos = await this.videoRepository.getAll({
+      filters: { streamingStatus: StreamingStatus.finished, fromChannelSubscribedByUserWithId: userId },
+    });
     return videos.list;
   }
 
-  async getLiveideos(): Promise<BaseVideoResponseDto[]> {
-    const videos = await this.videoRepository.getAll({ filters: { streamingStatus: StreamingStatus.live } });
+  async getLiveideos(userId: string): Promise<BaseVideoResponseDto[]> {
+    const videos = await this.videoRepository.getAll({
+      filters: { streamingStatus: StreamingStatus.live, fromChannelSubscribedByUserWithId: userId },
+    });
     return videos.list;
   }
 }

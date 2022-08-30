@@ -103,6 +103,17 @@ export class VideoRepositoryAdapter implements VideoRepository {
     const items = await this.prismaClient.video.findMany({
       where: {
         ...(queryParams?.filters?.streamingStatus ? { status: queryParams.filters.streamingStatus } : {}),
+        ...(queryParams?.filters?.fromChannelSubscribedByUserWithId
+          ? {
+              channel: {
+                subscriptions: {
+                  some: {
+                    userId: queryParams.filters.fromChannelSubscribedByUserWithId,
+                  },
+                },
+              },
+            }
+          : {}),
       },
       include: {
         channel: {

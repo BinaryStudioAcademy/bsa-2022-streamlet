@@ -1,0 +1,8 @@
+@use 'assets/css/breakpoint';
+
+.tab-container {
+  padding: 20px;
+  @media #{breakpoint.$mobile-large} {
+    padding: 20px 40px;
+  }
+}

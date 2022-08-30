@@ -23,6 +23,7 @@ import { GoogleAuthorization } from 'components/auth/components/common/social-bu
 
 import styles from './app.module.scss';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
+import { FollowingPage } from 'pages/following-page/following-page';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -82,7 +83,8 @@ const App: FC = () => {
                 <Route path={AppRoutes.ROOT} element={<MainPageContainer />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />
                 <Route path={AppRoutes.HISTORY} element="History" />
-                <Route path={AppRoutes.FOLLOWING} element="Following" />
+                <Route path={AppRoutes.FOLLOWING} element={<ProtectedRoute element={<FollowingPage />} />} />
+
                 <Route path={AppRoutes.BROWSE} element="Browse" />
                 <Route path={AppRoutes.GOOGLE_ATHORIZATION} element={<GoogleAuthorization query={search} />} />
                 <Route
