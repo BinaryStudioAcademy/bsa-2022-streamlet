@@ -10,6 +10,7 @@ import { reducer as videos } from './videos/reducer';
 import { reducer as videoPage } from './video-page/reducer';
 import { reducer as category } from './categories/reducer';
 import { reducer as chat } from './chat/reducer';
+import { reducer as history } from './history/reducer';
 
 const rootReducer = combineReducers({
   auth,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   videoPage,
   category,
   chat,
+  history,
 });
 
 export { rootReducer };

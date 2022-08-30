@@ -12,4 +12,13 @@ const addVideoHistoryRecord = createAsyncThunk<HistoryResponseDto, HistoryReques
   },
 );
 
-export { addVideoHistoryRecord };
+const getAllUserVideoHistoryRecord = createAsyncThunk<HistoryResponseDto[], null, AsyncThunkConfig>(
+  ActionType.GET_USER_HISTORY,
+  async (payload, { extra }) => {
+    const { historyApi } = extra;
+
+    return historyApi.getAllUserHVideoHistoryRecord();
+  },
+);
+
+export { addVideoHistoryRecord, getAllUserVideoHistoryRecord };

@@ -1,4 +1,4 @@
-import { ApiPath, ProfileApiPath, ContentType, HttpMethod } from 'common/enums/enums';
+import { ApiPath, ContentType, HttpMethod, HistoryApiPath } from 'common/enums/enums';
 import { Http } from '../http/http.service';
 import { HistoryRequestDto, HistoryResponseDto } from '../../common/types/history/history';
 
@@ -18,11 +18,19 @@ class HistoryApi {
 
   public addHVideoHistoryRecord(payload: HistoryRequestDto): Promise<HistoryResponseDto> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.HISTORY}${ProfileApiPath}`,
+      url: `${this.#apiPrefix}${ApiPath.HISTORY}${HistoryApiPath.ROOT}`,
       options: {
         method: HttpMethod.POST,
         contentType: ContentType.JSON,
         payload: JSON.stringify(payload),
+      },
+    });
+  }
+  public getAllUserHVideoHistoryRecord(): Promise<HistoryResponseDto[]> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.HISTORY}${HistoryApiPath.ROOT}`,
+      options: {
+        method: HttpMethod.GET,
       },
     });
   }
