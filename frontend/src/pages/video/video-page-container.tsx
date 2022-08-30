@@ -17,7 +17,7 @@ import { NeedSignInModal } from '../../components/common/sign-in-modal/sign-in-m
 import { socket } from 'common/config/config';
 import { store } from 'store/store';
 
-socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
+socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }: { live: number }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
 });
 

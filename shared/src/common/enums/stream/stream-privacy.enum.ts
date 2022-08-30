@@ -1,1 +1,7 @@
-export { Privacy as StreamPrivacy } from '@prisma/client';
+enum StreamPrivacy {
+  PUBLIC = 'PUBLIC',
+  UNLISTED = 'UNLISTED',
+  PRIVATE = 'PRIVATE',
+}
+
+export { StreamPrivacy };

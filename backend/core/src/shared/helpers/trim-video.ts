@@ -1,5 +1,5 @@
 import { User, UserProfile, Video, VideoComment } from '@prisma/client';
-import { BaseVideoResponseDto } from 'shared/build';
+import { BaseVideoResponseDto, StreamStatus } from 'shared/build';
 import { Comment } from 'shared/build/common/types/comment';
 
 export const trimVideoToBase = (
@@ -17,7 +17,7 @@ export const trimVideoToBase = (
     id,
     poster,
     scheduledStreamDate: scheduledStreamDate.toISOString(),
-    status,
+    status: status as StreamStatus,
     name,
     publishedAt: publishedAt?.toISOString() ?? '',
     duration,
@@ -57,7 +57,7 @@ export const trimVideoWithComments = (
     poster,
     videoPath,
     scheduledStreamDate: scheduledStreamDate.toISOString(),
-    status,
+    status: status as StreamStatus,
     name,
     publishedAt: publishedAt?.toISOString() ?? '',
     duration,

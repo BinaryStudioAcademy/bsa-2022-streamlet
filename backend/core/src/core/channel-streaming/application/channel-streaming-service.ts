@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
-import { LiveStartResponseDto, StreamingKeyResponseDto } from '~/shared/types/types';
-import { AmqpQueue } from '~/shared/enums/enums';
+import { LiveStartResponseDto, StreamingKeyResponseDto, StreamingKeyWithAuthorResponseDto } from '~/shared/types/types';
+import { AmqpQueue, StreamStatus } from '~/shared/enums/enums';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { ChannelStreamingRepository } from '../port/channel-streaming-repository';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
@@ -11,7 +11,6 @@ import {
   OwnChannelResponseDto,
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
-  StreamStatus,
   StreamUpdateRequestDto,
   VideoStreamResponseDto,
 } from 'shared/build';
@@ -49,30 +48,35 @@ export class ChannelStreamingService {
     }
     return {
       videoId: pendingStream.id,
+      channelId: keyRecord.channelId,
       streamingKey: key,
     };
   }
 
-  notifyTranscoderAboutStreamStart(streamData: LiveStartResponseDto): Promise<boolean> {
+  notifyTranscoderAboutStreamStart(body: { authorId: string; streamData: LiveStartResponseDto }): Promise<boolean> {
     return this.amqpChannel.sendToQueue({
       queue: AmqpQueue.STREAM_TRANSCODER,
-      content: Buffer.from(
-        JSON.stringify({
-          ...streamData,
-        }),
-      ),
+      content: Buffer.from(JSON.stringify(body)),
     });
   }
 
-  notifyTranscoderAboutStreamEnd(streamingKey: string): Promise<boolean> {
+  notifyTranscoderAboutStreamEnd(body: { authorId: string; streamingKey: string }): Promise<boolean> {
     return this.amqpChannel.sendToQueue({
       queue: AmqpQueue.STREAM_INTERRUPTED,
-      content: Buffer.from(
-        JSON.stringify({
-          streamingKey,
-        }),
-      ),
+      content: Buffer.from(JSON.stringify(body)),
     });
+  }
+
+  async getAuthorIdByStreamingKey(key: string): Promise<StreamingKeyWithAuthorResponseDto | null> {
+    const keyRecord = await this.channelStreamingRepository.getAuthorlId({ key });
+    if (!keyRecord) {
+      return null;
+    }
+    return {
+      authorId: keyRecord.channel.authorId,
+      channelId: keyRecord.channelId,
+      streamingKey: keyRecord.key,
+    };
   }
 
   async getStreamingKey(channelId: string): Promise<StreamingKeyResponseDto | null> {

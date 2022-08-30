@@ -11,6 +11,7 @@ import { reducer as videoPage } from './video-page/reducer';
 import { reducer as category } from './categories/reducer';
 import { reducer as chat } from './chat/reducer';
 import { reducer as stream } from './stream/reducer';
+import { reducer as socket } from './socket/reducer';
 
 const rootReducer = combineReducers({
   auth,
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   category,
   chat,
   stream,
+  socket,
 });
 
 export { rootReducer };

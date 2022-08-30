@@ -9,10 +9,13 @@ import { throttle } from '~/helpers/throttle';
 class SocketService {
   private io: SocketIo | undefined;
 
+  private clients = new Map();
+
   subscribe(httpServer: http.Server): void {
     this.io = createIoInstance(httpServer);
     this.io.on('connection', (socket) => {
       logger.info(`CLient ${socket.id} connected`);
+
       amqpService.consume({
         queue: AmqpQueue.NOTIFY_USER,
         onMessage: (data) => {
@@ -36,6 +39,32 @@ class SocketService {
       });
 
       amqpService.consume({
+        queue: AmqpQueue.STREAM_TRANSCODER,
+        onMessage: (data) => {
+          if (data && this.io) {
+            const { authorId, streamData } = JSON.parse(data.toString('utf-8'));
+            logger.info(`Rabbitmq -> ${JSON.stringify(streamData)}`);
+            if (this.clients.has(authorId)) {
+              this.io.to(this.clients.get(authorId)).emit(SocketEvents.notify.STREAM_TRANSCODER_DONE, streamData);
+            }
+          }
+        },
+      });
+
+      amqpService.consume({
+        queue: AmqpQueue.STREAM_INTERRUPTED,
+        onMessage: (data) => {
+          if (data && this.io) {
+            const { authorId, streamingKey } = JSON.parse(data.toString('utf-8'));
+            logger.info(`Rabbitmq -> ${JSON.stringify(streamingKey)}`);
+            if (this.clients.has(authorId)) {
+              this.io.to(this.clients.get(authorId)).emit(SocketEvents.notify.STREAM_TRANSCODER_DONE, streamingKey);
+            }
+          }
+        },
+      });
+
+      amqpService.consume({
         queue: AmqpQueue.NEW_MESSAGE_TO_CHAT_ROOM,
         onMessage: (data) => {
           if (data && this.io) {
@@ -54,6 +83,16 @@ class SocketService {
           this.io.to(roomId).emit(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, { live: countIsLive });
         }
       }, 2000);
+
+      socket.on(SocketEvents.socket.HANDSHAKE, (userId: string) => {
+        if (userId) {
+          this.clients.set(userId, socket.id);
+          logger.info(`CLient ${socket.id} = ${userId} handshaked`);
+          if (this.io) {
+            this.io.to(socket.id).emit(SocketEvents.socket.HANDSHAKE_DONE, { id: socket.id });
+          }
+        }
+      });
 
       socket.on(SocketEvents.chat.JOIN_ROOM, (roomId: string) => {
         socket.join(roomId);

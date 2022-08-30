@@ -1,4 +1,4 @@
-import { StreamStatus } from '.prisma/client';
+import { StreamStatus } from '~/common/enums/enums';
 
 type BaseVideoResponseDto = {
   id: string;
