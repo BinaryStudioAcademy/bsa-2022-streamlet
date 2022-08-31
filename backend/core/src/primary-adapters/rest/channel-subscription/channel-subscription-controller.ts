@@ -5,6 +5,8 @@ import { ApiPath, ChannelSubscriptionApiPath, CreateSubscriptionResponseDto } fr
 import { authenticationMiddleware } from '~/primary-adapters/rest/middleware';
 import { ChannelSubscriptionService } from '~/core/channel-subscription/application/channel-subscription-service';
 import { NotFound } from '~/shared/exceptions/not-found';
+import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud-service';
+import { trimChannelToSubscriptionChannel } from '~/shared/helpers';
 
 /**
  * @swagger
@@ -32,12 +34,15 @@ import { NotFound } from '~/shared/exceptions/not-found';
  */
 @controller(ApiPath.CHANNEL_SUBSCRIPTION)
 export class ChannelSubscriptionController extends BaseHttpController {
-  private channelService: ChannelSubscriptionService;
+  private channelSubscriptionService: ChannelSubscriptionService;
 
-  constructor(@inject(CONTAINER_TYPES.ChannelSubscriptionService) channelService: ChannelSubscriptionService) {
+  constructor(
+    @inject(CONTAINER_TYPES.ChannelSubscriptionService) channelSubscriptionService: ChannelSubscriptionService,
+    @inject(CONTAINER_TYPES.ChannelCrudService) private channelCrudService: ChannelCrudService,
+  ) {
     super();
 
-    this.channelService = channelService;
+    this.channelSubscriptionService = channelSubscriptionService;
   }
 
   @httpPost(`${ChannelSubscriptionApiPath.SUBSCRIBE}${ChannelSubscriptionApiPath.$ID}`, authenticationMiddleware)
@@ -47,12 +52,13 @@ export class ChannelSubscriptionController extends BaseHttpController {
   ): Promise<CreateSubscriptionResponseDto | null> {
     const { id: userId } = req.user;
 
-    const res = this.channelService.toggleSubscription(userId, id);
+    const res = await this.channelSubscriptionService.toggleSubscription(userId, id);
+    const channel = await this.channelCrudService.getChannelById({ id });
 
-    if (res === null) {
+    if (res === null || channel === null) {
       throw new NotFound('Such channel doesn`t exist');
     }
 
-    return res;
+    return { ...res, channel: trimChannelToSubscriptionChannel(channel) };
   }
 }

@@ -27,11 +27,14 @@ const reducer = createReducer(initialState, (builder) => {
     state.error = message;
     state.errorCode = errorCode;
   });
+  builder.addCase(loadCurrentUser.fulfilled, (state, { payload }) => {
+    state.user = payload.user;
+  });
+  builder.addCase(signIn.fulfilled, (state, { payload }) => {
+    state.user = payload;
+  });
   builder.addMatcher(isAnyOf(signOut.rejected, signOut.fulfilled), (state) => {
     state.user = null;
-  });
-  builder.addMatcher(isAnyOf(loadCurrentUser.fulfilled, signIn.fulfilled), (state, { payload }) => {
-    state.user = payload;
   });
   builder.addMatcher(
     isAnyOf(signUp.pending, signIn.pending, refreshTokens.pending, signOut.pending, loadCurrentUser.pending),

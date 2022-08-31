@@ -170,7 +170,7 @@ export class VideoController extends BaseHttpController {
   }
   /**
    * @swagger
-   * /comment:
+   * /videos/react/{id}:
    *    post:
    *      tags:
    *        - video
@@ -221,7 +221,7 @@ export class VideoController extends BaseHttpController {
 
   /**
    * @swagger
-   * /comment:
+   * /videos/comment:
    *    post:
    *      tags:
    *        - video

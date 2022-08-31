@@ -19,13 +19,14 @@ import { RestorePasswordConfirmPage } from 'pages/restore-password-confirm-page/
 import { ChannelPage } from 'pages/channel-page/channel-page';
 import { ProfilePreferencesPage } from 'pages/profile-preferences-page/profile-preferences-page';
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
+import { GoogleAuthorization } from 'components/auth/components/common/social-buttons/google-button/google-authorization';
 
 import styles from './app.module.scss';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
 
   const hasToken = Boolean(tokensStorageService.getTokens().accessToken);
 
@@ -83,6 +84,7 @@ const App: FC = () => {
                 <Route path={AppRoutes.HISTORY} element="History" />
                 <Route path={AppRoutes.FOLLOWING} element="Following" />
                 <Route path={AppRoutes.BROWSE} element="Browse" />
+                <Route path={AppRoutes.GOOGLE_ATHORIZATION} element={<GoogleAuthorization query={search} />} />
                 <Route
                   path={AppRoutes.PROFILE_PREFERENCE}
                   element={<ProtectedRoute element={<ProfilePreferencesPage />} />}
