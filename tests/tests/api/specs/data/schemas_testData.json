@@ -1,0 +1,160 @@
+{
+  "schema_videos": {
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": ["list", "total"],
+    "examples": [
+      {
+        "list": [
+          {
+            "id": "90862886-dab4-4777-9b1d-62a0f541559e",
+            "poster": "https://scontent.flwo6-1.fna.fbcdn.net/v/t39.30808-6/285270507_1483328318791583_463444811077561983_n.jpg?_nc_cat=106\u0026ccb=1-7\u0026_nc_sid=730e14\u0026_nc_ohc=EUXjv97KYh8AX9XNIbB\u0026_nc_ht=scontent.flwo6-1.fna\u0026oh=00_AT_5vuylsFZYcRnSkcgL71DPpQuzjvK0fP8vJltbfNv8yQ\u0026oe=630EA310",
+            "scheduledStreamDate": "Mon Aug 29 2022 00:30:35 GMT+0000 (Coordinated Universal Time)",
+            "status": "finished",
+            "name": "Meet the CEO: Artem Goncharov (Binary Studio Official Video)",
+            "publishedAt": "Mon Aug 29 2022 00:30:35 GMT+0000 (Coordinated Universal Time)",
+            "duration": 173,
+            "videoViews": 180,
+            "liveViews": 0,
+            "channel": {
+              "id": "c162816b-d122-4739-a041-a9110b462c40",
+              "name": "BSA",
+              "avatar": "https://s.dou.ua/CACHE/images/img/static/companies/dou-logo_cjGiCVW/253030c28d218b03478db06cbefafb44.png"
+            }
+          },
+          {
+            "id": "e7b87l09-4ade-4209-9111-12dfs34b08f5",
+            "poster": "https://img.youtube.com/vi/roHLJEoC2H8/maxresdefault.jpg",
+            "scheduledStreamDate": "Mon Aug 29 2022 00:30:35 GMT+0000 (Coordinated Universal Time)",
+            "status": "finished",
+            "name": "Binary Studio Academy",
+            "publishedAt": "Mon Aug 29 2022 00:30:35 GMT+0000 (Coordinated Universal Time)",
+            "duration": 49,
+            "videoViews": 362,
+            "liveViews": 0,
+            "channel": {
+              "id": "9c6a0001-d379-43e1-9c07-48ab3a5f35bd",
+              "name": "Alistair Sandoval",
+              "avatar": "https://career.comarch.com/files-com/file_45/good_programmer_comarch.jpg"
+            }
+          }
+        ],
+        "total": 2
+      }
+    ]
+  },
+  "schema_signIn": {
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": ["user", "tokens", "message"],
+    "examples": [
+      {
+        "user": {
+          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "email": "user@example.com"
+        },
+        "tokens": {
+          "accessToken": "string",
+          "refreshToken": "string"
+        },
+        "message": "string"
+      }
+    ]
+  },
+  "schema_refreshToken": {
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": ["tokens"],
+    "examples": [
+      {
+        "tokens": {
+          "accessToken": "string",
+          "refreshToken": "string"
+        }
+      }
+    ]
+  },
+  "schema_userInfo": {
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "default": {},
+    "title": "Root Schema",
+    "required": ["user", "subscriptions"],
+    "examples": [
+      {
+        "user": {
+          "email": "ozirna.margo@gmail.com",
+          "id": "001722bb-c10b-4a11-a5b7-0f9178760f37"
+        },
+        "subscriptions": {
+          "list": [],
+          "total": 0
+        }
+      }
+    ]
+  },
+  "schema_users": {
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "array",
+    "default": [],
+    "title": "Root Schema",
+    "items": {
+      "type": "object",
+      "title": "A Schema",
+      "required": ["id", "username", "email", "password", "isActivated", "createdAt", "updatedAt"],
+      "examples": [
+        {
+          "id": "aa1a1f26-6837-4551-ba06-4660b02adab1",
+          "username": "GLuke",
+          "email": "lufifth@mailsac.com",
+          "password": "$2b$12$XT59kDNxMZEWARYglgyqTeNJllsrKX180IAE2Z87dmLGgI6DRY.YG",
+          "isActivated": true,
+          "createdAt": "2022-08-29T00:30:35.742Z",
+          "updatedAt": "2022-08-29T00:30:35.743Z"
+        },
+        {
+          "id": "de44b9bd-dbba-40a7-afdb-54186d07d6e8",
+          "username": "JameNorm",
+          "email": "jayno@mailsac.com",
+          "password": "$2b$12$PVdfJxVxsbChlRLFG9G/xuvEJEL56EwHNfsYlxFF7g7QVTvC0h.0a",
+          "isActivated": true,
+          "createdAt": "2022-08-29T00:30:35.742Z",
+          "updatedAt": "2022-08-29T00:30:35.743Z"
+        }
+      ]
+    },
+    "examples": [
+      [
+        {
+          "id": "aa1a1f26-6837-4551-ba06-4660b02adab1",
+          "username": "GLuke",
+          "email": "lufifth@mailsac.com",
+          "password": "$2b$12$XT59kDNxMZEWARYglgyqTeNJllsrKX180IAE2Z87dmLGgI6DRY.YG",
+          "isActivated": true,
+          "createdAt": "2022-08-29T00:30:35.742Z",
+          "updatedAt": "2022-08-29T00:30:35.743Z"
+        },
+        {
+          "id": "de44b9bd-dbba-40a7-afdb-54186d07d6e8",
+          "username": "JameNorm",
+          "email": "jayno@mailsac.com",
+          "password": "$2b$12$PVdfJxVxsbChlRLFG9G/xuvEJEL56EwHNfsYlxFF7g7QVTvC0h.0a",
+          "isActivated": true,
+          "createdAt": "2022-08-29T00:30:35.742Z",
+          "updatedAt": "2022-08-29T00:30:35.743Z"
+        }
+      ]
+    ]
+  }
+}
