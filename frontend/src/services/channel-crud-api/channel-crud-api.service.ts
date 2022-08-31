@@ -4,8 +4,10 @@ import { ApiPath } from 'common/enums/enums';
 import {
   ChannelCrudApiPath,
   ChannelProfileUpdateDto,
+  ChannelProfileUpdateMediaRequestDto,
   ChannelProfileUpdateResponseDto,
   ContentType,
+  DefaultRequestParam,
   HttpMethod,
 } from 'shared/build';
 
@@ -42,6 +44,20 @@ class ChannelCrudApi {
         method: HttpMethod.PUT,
         contentType: ContentType.JSON,
         payload: JSON.stringify({ id, ...payload }),
+      },
+    });
+  }
+
+  async updateChannelAvatar({
+    id,
+    base64Str,
+  }: ChannelProfileUpdateMediaRequestDto & DefaultRequestParam): Promise<ChannelProfileUpdateResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.CHANNEL_CRUD}${ChannelCrudApiPath.AVATAR}/${id}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify({ id, base64Str }),
       },
     });
   }

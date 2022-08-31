@@ -77,11 +77,24 @@
   margin-right: 20px;
 }
 
+.banner-container {
+  display: block;
+  width: calc(1251px / 4);
+  height: calc(401px / 4);
+  margin-right: 20px;
+}
+
 .channel-image-preview {
   width: 96px;
   height: 96px;
   margin-right: 20px;
   border-radius: 100%;
+}
+
+.channel-banner-preview {
+  min-width: calc(1251px / 4);
+  height: calc(401px / 4);
+  margin-right: 20px;
 }
 
 .image-upload-button {

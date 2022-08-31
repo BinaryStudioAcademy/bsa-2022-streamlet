@@ -1,6 +1,11 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { AsyncThunkConfig, ChannelInfoRequestDto, ChannelInfoResponseDto } from 'common/types/types';
-import { ChannelProfileUpdateDto, ChannelProfileUpdateResponseDto } from 'shared/build';
+import {
+  ChannelProfileUpdateDto,
+  ChannelProfileUpdateMediaRequestDto,
+  ChannelProfileUpdateResponseDto,
+  DefaultRequestParam,
+} from 'shared/build';
 import { ActionsTypes } from './common';
 
 const loadChannel = createAsyncThunk<ChannelInfoResponseDto, ChannelInfoRequestDto, AsyncThunkConfig>(
@@ -30,6 +35,21 @@ const updateChannelInfo = createAsyncThunk<ChannelProfileUpdateResponseDto, Chan
   },
 );
 
+const updateChannelAvatar = createAsyncThunk<
+  ChannelProfileUpdateResponseDto,
+  ChannelProfileUpdateMediaRequestDto & DefaultRequestParam,
+  AsyncThunkConfig
+>(
+  ActionsTypes.UPDATE_CHANNEL_AVATAR,
+  async ({ id, base64Str }, { extra: { channelCrudApi } }): Promise<ChannelProfileUpdateResponseDto> => {
+    const channelInfo = await channelCrudApi.updateChannelAvatar({
+      id,
+      base64Str,
+    });
+    return channelInfo;
+  },
+);
+
 const unloadChannelInfo = createAction(ActionsTypes.UNLOAD_CHANNEL_SETTINGS);
 
-export { loadChannel, loadMyChannelInfo, unloadChannelInfo, updateChannelInfo };
+export { loadChannel, loadMyChannelInfo, unloadChannelInfo, updateChannelInfo, updateChannelAvatar };

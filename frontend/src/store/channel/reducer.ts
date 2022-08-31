@@ -3,7 +3,7 @@ import { DataStatus, ErrorMessage } from 'common/enums/enums';
 import { ChannelInfoResponseDto, ChannelVideoPreviewsPageDto, RootState } from 'common/types/types';
 import { ChannelProfileUpdateResponseDto } from 'shared/build';
 import { channelSubscribe } from 'store/subscriptions/actions';
-import { loadChannel, loadMyChannelInfo, unloadChannelInfo, updateChannelInfo } from './actions';
+import { loadChannel, loadMyChannelInfo, unloadChannelInfo, updateChannelAvatar, updateChannelInfo } from './actions';
 
 type CurrentChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
 type ChannelVideo = ChannelVideoPreviewsPageDto['list'][number];
@@ -105,6 +105,17 @@ const reducer = createReducer(initialState, (builder) => {
     state.channelSettings.error = undefined;
   });
   builder.addCase(updateChannelInfo.rejected, (state, { error }) => {
+    state.channelSettings.dataStatus = DataStatus.REJECTED;
+    state.channelSettings.data = null;
+    state.channelSettings.error = error.message || ErrorMessage.DEFAULT;
+  });
+
+  builder.addCase(updateChannelAvatar.fulfilled, (state, { payload }) => {
+    state.channelSettings.dataStatus = DataStatus.FULFILLED;
+    state.channelSettings.data = payload;
+    state.channelSettings.error = undefined;
+  });
+  builder.addCase(updateChannelAvatar.rejected, (state, { error }) => {
     state.channelSettings.dataStatus = DataStatus.REJECTED;
     state.channelSettings.data = null;
     state.channelSettings.error = error.message || ErrorMessage.DEFAULT;
