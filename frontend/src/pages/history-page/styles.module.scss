@@ -1,10 +1,13 @@
 .history-page-container {
   height: 100%;
-  margin-bottom: 20px;
   padding: 20px;
 }
 
-.date {
+.history-page-container > div {
+  margin: 20px 0;
+}
+
+.history-page-container > .date {
   margin: 10px;
   color: var(--white-text-color);
   font-weight: 600;

@@ -10,7 +10,7 @@ import { DataStatus } from '../../common/enums/app/data-status.enum';
 import { generateHistorySkeletons } from './common/skeleton/skeleton';
 
 import styles from './styles.module.scss';
-import { isDateSameByDayMonthYear, getDateStringAtDdMmYyyyFormat } from '../../helpers/date/date';
+import { getDateStringAtDdMmYyyyFormat, isDateSameByDayMonthYear } from '../../helpers/date/date';
 
 const HistoryPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -82,7 +82,9 @@ const HistoryPage: FC = () => {
       })}
       {historyData.dataStatus === DataStatus.PENDING ? generateHistorySkeletons() : null}
       <div ref={sentryRef}>
-        <Loader hCentered={true} vCentered={true} spinnerSize={'md'} />
+        {historyData.dataStatus === DataStatus.PENDING && (
+          <Loader hCentered={true} vCentered={true} spinnerSize={'md'} />
+        )}
       </div>
     </div>
   );
