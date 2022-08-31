@@ -1,13 +1,19 @@
 import { createEntityAdapter, createReducer } from '@reduxjs/toolkit';
 import { DataStatus, ErrorMessage } from 'common/enums/enums';
 import { ChannelInfoResponseDto, ChannelVideoPreviewsPageDto, RootState } from 'common/types/types';
+import { ChannelProfileUpdateResponseDto } from 'shared/build';
 import { channelSubscribe } from 'store/subscriptions/actions';
-import { loadChannel } from './actions';
+import { loadChannel, loadMyChannelInfo, unloadChannelInfo, updateChannelInfo } from './actions';
 
 type CurrentChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
 type ChannelVideo = ChannelVideoPreviewsPageDto['list'][number];
 
 interface InitialState {
+  channelSettings: {
+    data: ChannelProfileUpdateResponseDto | null;
+    dataStatus: DataStatus;
+    error: string | undefined;
+  };
   currentChannel: {
     data: CurrentChannelInfo | null;
     dataStatus: DataStatus;
@@ -30,6 +36,11 @@ const channelVideosAdapter = createEntityAdapter<ChannelVideo>({
 });
 
 const initialState: InitialState = {
+  channelSettings: {
+    data: null,
+    dataStatus: DataStatus.IDLE,
+    error: undefined,
+  },
   currentChannel: {
     data: null,
     dataStatus: DataStatus.IDLE,
@@ -70,6 +81,35 @@ const reducer = createReducer(initialState, (builder) => {
     state.currentChannel.data = channelData;
     channelVideosAdapter.setAll(state.currentChannelVideos.data, initialVideosPage.list);
   });
+
+  builder.addCase(loadMyChannelInfo.fulfilled, (state, { payload }) => {
+    state.channelSettings.dataStatus = DataStatus.FULFILLED;
+    state.channelSettings.data = payload;
+    state.channelSettings.error = undefined;
+  });
+  builder.addCase(loadMyChannelInfo.rejected, (state, { error }) => {
+    state.channelSettings.dataStatus = DataStatus.REJECTED;
+    state.channelSettings.data = null;
+    state.channelSettings.error = error.message || ErrorMessage.DEFAULT;
+  });
+
+  builder.addCase(unloadChannelInfo, (state) => {
+    state.channelSettings.dataStatus = DataStatus.IDLE;
+    state.channelSettings.data = null;
+    state.channelSettings.error = undefined;
+  });
+
+  builder.addCase(updateChannelInfo.fulfilled, (state, { payload }) => {
+    state.channelSettings.dataStatus = DataStatus.FULFILLED;
+    state.channelSettings.data = payload;
+    state.channelSettings.error = undefined;
+  });
+  builder.addCase(updateChannelInfo.rejected, (state, { error }) => {
+    state.channelSettings.dataStatus = DataStatus.REJECTED;
+    state.channelSettings.data = null;
+    state.channelSettings.error = error.message || ErrorMessage.DEFAULT;
+  });
+
   builder.addCase(channelSubscribe.fulfilled, (state, { payload }) => {
     if (state.currentChannel.data) {
       state.currentChannel.data.isCurrentUserSubscriber = payload.isSubscribed;

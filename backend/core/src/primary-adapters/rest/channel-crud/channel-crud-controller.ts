@@ -20,7 +20,13 @@ import { ApiPath, ChannelCrudApiPath } from '~/shared/enums/api/api';
 import { exceptionMessages } from '~/shared/enums/messages';
 import { NotFound } from '~/shared/exceptions/exceptions';
 import { trimChannelInfo } from '~/shared/helpers';
-import { ChannelInfoRequestDto, ChannelInfoResponseDto, CONTAINER_TYPES, ExtendedRequest } from '~/shared/types/types';
+import {
+  ChannelInfoRequestDto,
+  ChannelInfoResponseDto,
+  CONTAINER_TYPES,
+  ExtendedAuthenticatedRequest,
+  ExtendedRequest,
+} from '~/shared/types/types';
 import { optionalAuthenticationMiddleware } from '../middleware/optional-authentication-middleware';
 import { authenticationMiddleware } from '../middleware';
 
@@ -32,6 +38,20 @@ export class ChannelCrudController extends BaseHttpController {
     private channelSubscriptionRepository: ChannelSubscriptionRepository,
   ) {
     super();
+  }
+
+  //TODO:create enum for this route
+  @httpGet('/author', authenticationMiddleware)
+  public async getChannelByAuthorId(
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<ChannelProfileUpdateResponseDto> {
+    const { id } = req.user;
+    const channel = await this.channelService.getChannelByAuthorId({ id });
+    if (!channel) {
+      throw new NotFound('Channel not found');
+    }
+
+    return channel;
   }
 
   @httpGet(ChannelCrudApiPath.$ID, optionalAuthenticationMiddleware)
