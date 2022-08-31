@@ -1,4 +1,7 @@
 .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 5px 10px;
   color: var(--text-white-color);
   font-size: 14px;

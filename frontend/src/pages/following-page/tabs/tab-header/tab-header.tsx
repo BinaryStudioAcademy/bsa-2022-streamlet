@@ -1,16 +1,17 @@
 import React, { FC } from 'react';
 import { TabButton } from '../tab-button/tab-button';
 import { TabInfo } from '../tab-info';
-import { Tab } from '../tabs.enum';
+import { Tab } from '../tab';
 import styles from './styles.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   tabs: Readonly<TabInfo[]>;
   currentTab: Tab;
-  setTab: (tab: Tab) => void;
 };
 
-const TabHeader: FC<Props> = ({ setTab, tabs, currentTab }) => {
+const TabHeader: FC<Props> = ({ tabs, currentTab }) => {
+  const navigate = useNavigate();
   return (
     <nav className={styles['main-container']}>
       {tabs.map((tabInfo) => {
@@ -19,7 +20,7 @@ const TabHeader: FC<Props> = ({ setTab, tabs, currentTab }) => {
             key={tabInfo.tab}
             content={tabInfo.title}
             onClick={(): void => {
-              setTab(tabInfo.tab);
+              navigate(tabInfo.tab);
             }}
             isActive={tabInfo.tab === currentTab}
           />

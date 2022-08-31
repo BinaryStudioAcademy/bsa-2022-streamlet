@@ -1,5 +1,10 @@
 @use 'assets/css/breakpoint';
 
+.page-container {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
 .tab-container {
   padding: 20px;
   @media #{breakpoint.$mobile-large} {

@@ -24,7 +24,7 @@ const OfflineVideosTab: FC = () => {
   return (
     <div>
       {dataStatus === DataStatus.REJECTED && <ErrorBox message={error || ErrorMessage.DEFAULT} />}
-      {videos.length > 0 ? (
+      {videos.length > 0 || dataStatus !== DataStatus.FULFILLED ? (
         <VideosBlock
           loadingStatus={dataStatus}
           videoCards={videos.map((video) => {
