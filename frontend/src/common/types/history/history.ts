@@ -1,1 +1,1 @@
-export { type HistoryRequestDto, type HistoryResponseDto } from 'shared/build/common/types/types';
+export { type HistoryResponseDto } from 'shared/build/common/types/types';
