@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 
-import { addVideoHistoryRecord, getUserVideoHistoryRecord } from './actions';
+import { getUserVideoHistoryRecord } from './actions';
 import { HistoryListType } from 'shared/build';
 import { isObjectUniqueIdContainInTwoArray } from '../../helpers/helpers';
 
@@ -26,17 +26,8 @@ const initialState: State = {
 };
 
 const reducer = createReducer(initialState, (builder) => {
-  builder.addCase(addVideoHistoryRecord.pending, (state) => {
-    state.data.dataStatus = DataStatus.PENDING;
-  });
-
   builder.addCase(getUserVideoHistoryRecord.pending, (state) => {
     state.data.dataStatus = DataStatus.PENDING;
-    state.data.error = undefined;
-  });
-
-  builder.addCase(addVideoHistoryRecord.fulfilled, (state) => {
-    state.data.dataStatus = DataStatus.FULFILLED;
     state.data.error = undefined;
   });
 
@@ -53,6 +44,11 @@ const reducer = createReducer(initialState, (builder) => {
       error: undefined,
       dataStatus: DataStatus.FULFILLED,
     };
+  });
+
+  builder.addCase(getUserVideoHistoryRecord.rejected, (state, { error }) => {
+    state.data.dataStatus = DataStatus.REJECTED;
+    state.data.error = error.message;
   });
 });
 
