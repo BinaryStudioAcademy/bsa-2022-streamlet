@@ -1,4 +1,4 @@
-import { ChatMessage } from '@prisma/client';
+import { ChatMessage, Video } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { AmqpQueue, ChatMessageResponseDto } from 'shared/build';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
@@ -21,8 +21,12 @@ export class ChatService {
     return this.chatRepository.getChatMessagesByVideoId(id);
   }
 
-  getChatMessagesById(id: string): Promise<ChatMessageBeforeTrimming | null> {
-    return this.chatRepository.getChatMessagesById(id);
+  getVideoById(id: string): Promise<Video | null> {
+    return this.chatRepository.getVideoById(id);
+  }
+
+  getChatMessageById(id: string): Promise<ChatMessageBeforeTrimming | null> {
+    return this.chatRepository.getChatMessageById(id);
   }
 
   createChatMessage(chatMessageData: ChatMessageBeforeCreating): Promise<ChatMessage> {
