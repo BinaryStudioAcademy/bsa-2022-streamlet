@@ -10,21 +10,21 @@ const FollowingPage: FC = () => {
   const activeSegment = pathname.slice(1).split('/').at(-1);
   const pageContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const [currentTab, setCurrentTab] = useState<Tab>('overview');
+  const [currentTab, setCurrentTab] = useState<Tab>(Tab.OVERVIEW);
 
   const tabs: Readonly<Record<Tab, TabInfo>> = useMemo(
     () =>
       ({
-        overview: {
-          tab: 'overview',
+        [Tab.OVERVIEW]: {
+          tab: Tab.OVERVIEW,
           title: 'Overview',
         },
-        live: {
-          tab: 'live',
+        [Tab.LIVE]: {
+          tab: Tab.LIVE,
           title: 'Live',
         },
-        offline: {
-          tab: 'offline',
+        [Tab.OFFLINE]: {
+          tab: Tab.OFFLINE,
           title: 'Videos',
         },
       } as const),

@@ -1,1 +1,5 @@
-export type Tab = 'live' | 'offline' | 'overview';
+export enum Tab {
+  LIVE = 'live',
+  OFFLINE = 'offline',
+  OVERVIEW = 'overview',
+}

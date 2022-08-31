@@ -4,16 +4,23 @@ import { ErrorBox } from 'components/common/errors/errors';
 import { VideosBlock } from 'components/common/videos-block/videos-block';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import React, { FC, useEffect } from 'react';
+import { shallowEqual } from 'react-redux';
 import { loadOfflineVideos } from 'store/following-page/actions';
 import { NoVideosYet } from '../common/no-videos-yet/no-videos-yet';
 
 const OfflineVideosTab: FC = () => {
   const dispatch = useAppDispatch();
-  const dataStatus = useAppSelector((state) => state.followingPage.offlineVideos.dataStatus);
-  const areSubscriptionsStale = useAppSelector((state) => state.followingPage.offlineVideos.areSubscriptionsStale);
-  const videos = useAppSelector((state) => state.followingPage.offlineVideos.videos);
-  const error = useAppSelector((state) => state.followingPage.offlineVideos.error);
-  const isLightTheme = useAppSelector((state) => state.theme.isLightTheme);
+
+  const { areSubscriptionsStale, dataStatus, error, isLightTheme, videos } = useAppSelector(
+    (state) => ({
+      dataStatus: state.followingPage.offlineVideos.dataStatus,
+      areSubscriptionsStale: state.followingPage.offlineVideos.areSubscriptionsStale,
+      videos: state.followingPage.offlineVideos.videos,
+      error: state.followingPage.offlineVideos.error,
+      isLightTheme: state.theme.isLightTheme,
+    }),
+    shallowEqual,
+  );
 
   useEffect(() => {
     if (dataStatus === DataStatus.IDLE || areSubscriptionsStale) {

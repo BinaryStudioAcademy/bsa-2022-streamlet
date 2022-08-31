@@ -15,7 +15,7 @@ export class FollowingService {
     return videos.list;
   }
 
-  async getLiveideos(userId: string): Promise<BaseVideoResponseDto[]> {
+  async getLiveVideos(userId: string): Promise<BaseVideoResponseDto[]> {
     const videos = await this.videoRepository.getAll({
       filters: { streamingStatus: StreamingStatus.live, fromChannelSubscribedByUserWithId: userId },
     });

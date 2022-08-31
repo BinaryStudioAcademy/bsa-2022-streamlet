@@ -28,6 +28,7 @@ import { Navigate } from 'react-router-dom';
 import { OverviewTab } from 'pages/following-page/tabs/overview/overview-tab';
 import { LiveVideosTab } from 'pages/following-page/tabs/live-videos/live-videos-tab';
 import { OfflineVideosTab } from 'pages/following-page/tabs/offline-videos/offline-videos-tab';
+import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -89,10 +90,13 @@ const App: FC = () => {
                 <Route path={AppRoutes.HISTORY} element="History" />
                 <Route path={AppRoutes.FOLLOWING} element={<ProtectedRoute element={<FollowingPage />} />}>
                   <Route index element={<OverviewTab />} />
-                  <Route path="overview" element={<OverviewTab />} />
-                  <Route path="live" element={<LiveVideosTab />} />
-                  <Route path="offline" element={<OfflineVideosTab />} />
-                  <Route path="*" element={<Navigate to={`${AppRoutes.FOLLOWING}/overview`} replace />} />
+                  <Route path={FollowingTab.OVERVIEW} element={<OverviewTab />} />
+                  <Route path={FollowingTab.LIVE} element={<LiveVideosTab />} />
+                  <Route path={FollowingTab.OFFLINE} element={<OfflineVideosTab />} />
+                  <Route
+                    path="*"
+                    element={<Navigate to={`${AppRoutes.FOLLOWING}/${FollowingTab.OVERVIEW}`} replace />}
+                  />
                 </Route>
 
                 <Route path={AppRoutes.BROWSE} element="Browse" />

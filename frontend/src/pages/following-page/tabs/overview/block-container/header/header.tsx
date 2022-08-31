@@ -10,9 +10,9 @@ type Props = {
 const Header: FC<Props> = ({ title, className }) => {
   return (
     <div className={clsx(styles['header-wrapper'], className)}>
-      <div className={clsx(styles['line-segment'], styles['left'])}></div>
+      <div className={clsx(styles['line-segment'], styles['left'])} />
       <h2 className={styles['header']}>{title}</h2>
-      <div className={clsx(styles['line-segment'], styles['right'])}></div>
+      <div className={clsx(styles['line-segment'], styles['right'])} />
     </div>
   );
 };
