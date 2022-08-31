@@ -10,6 +10,7 @@ enum ChannelStreamingApiPath {
   LIVE = '/live',
   UPLOAD_POSTER = '/upload-poster',
   EDIT_STREAM = '/edit-stream',
+  STREAMING_INFO = '/streaming-info',
 }
 
 export { ChannelStreamingApiPath };
