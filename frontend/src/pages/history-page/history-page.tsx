@@ -10,6 +10,7 @@ import { DataStatus } from '../../common/enums/app/data-status.enum';
 import { generateHistorySkeletons } from './common/skeleton/skeleton';
 
 import styles from './styles.module.scss';
+import { isDateSameByDayMonthYear, getDateStringAtDdMmYyyyFormat } from '../../helpers/date/date';
 
 const HistoryPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -55,8 +56,29 @@ const HistoryPage: FC = () => {
 
   return (
     <div className={styles['history-page-container']}>
-      {historyData.list.map((historyRecord) => {
-        return <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={true} />;
+      {historyData.list.map((historyRecord, index) => {
+        if (!index) {
+          return (
+            <div key={historyRecord.id}>
+              <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(historyRecord.updatedAt)}</p>
+              <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={true} />;
+            </div>
+          );
+        }
+        const prevHistoryRecordUpdatedAt = historyData.list[index - 1].updatedAt;
+        const currentHistoryUpdatedAt = historyRecord.updatedAt;
+        const isPrevAndCurrentHistoryUpdatedAtSame = isDateSameByDayMonthYear(
+          prevHistoryRecordUpdatedAt,
+          currentHistoryUpdatedAt,
+        );
+        return isPrevAndCurrentHistoryUpdatedAtSame ? (
+          <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={true} />
+        ) : (
+          <div key={historyRecord.id}>
+            <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(prevHistoryRecordUpdatedAt)}</p>
+            <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={true} />;
+          </div>
+        );
       })}
       {historyData.dataStatus === DataStatus.PENDING ? generateHistorySkeletons() : null}
       <div ref={sentryRef}>

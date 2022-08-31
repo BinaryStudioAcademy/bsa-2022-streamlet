@@ -1,9 +1,11 @@
 .history-page-container {
-  align-items: center;
   height: 100%;
+  margin-bottom: 20px;
   padding: 20px;
 }
 
-.history-page-container > div {
-  margin: 20px 0;
+.date {
+  margin: 10px;
+  color: var(--white-text-color);
+  font-weight: 600;
 }
