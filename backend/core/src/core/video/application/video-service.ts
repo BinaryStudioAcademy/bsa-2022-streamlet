@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { CONTAINER_TYPES } from '~/shared/types/types';
+import { CONTAINER_TYPES, VideoSearch } from '~/shared/types/types';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { Comment } from 'shared/build/common/types/comment';
@@ -52,7 +52,7 @@ export class VideoService {
     return this.videoRepository.addReaction(request, videoId, userId);
   }
 
-  getVideosBySearch(searchText: string): Promise<DataVideo> {
-    return this.videoRepository.getVideosBySearch(searchText);
+  getVideosBySearch(queryParams: VideoSearch): Promise<DataVideo> {
+    return this.videoRepository.getVideosBySearch(queryParams);
   }
 }

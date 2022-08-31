@@ -16,8 +16,7 @@ import {
 import { createVideoCommentResponse } from '~/shared/helpers/video/create-video-comment-response';
 import { createAddReactionResponse } from '~/shared/helpers/video/create-add-reaction-response';
 import { VideoRepository } from '~/core/video/port/video-repository';
-import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
-
+import { VideoSearch, VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
   private prismaClient: PrismaClient;
@@ -278,34 +277,59 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
   }
 
-  async getVideosBySearch(searchText: string): Promise<DataVideo> {
-    const result = await this.prismaClient.video.findMany({
+  async getVideosBySearch({ searchText, duration, date, type, sortBy }: VideoSearch): Promise<DataVideo> {
+    const queryOrderByObject = {
+      orderBy: sortBy.map((arr) => ({
+        [arr[0]]: arr[1],
+      })),
+    };
+    const queryObject = {
       where: {
-        OR: [
-          {
-            name: {
-              search: searchText,
-              mode: 'insensitive',
+        ...(searchText && {
+          OR: [
+            {
+              name: {
+                search: searchText,
+              },
             },
-          },
-          {
-            description: {
-              search: searchText,
-              mode: 'insensitive',
+            {
+              description: {
+                search: searchText,
+              },
             },
-          },
-        ],
-      },
-      include: {
-        channel: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-          },
+          ],
+        }),
+        duration: {
+          gte: duration.gte,
+          lte: duration.lte,
+        },
+        publishedAt: {
+          gte: date,
+        },
+        status: {
+          in: type,
         },
       },
+      include: {
+        ...(type.length === 1
+          ? {
+              channel: {
+                select: {
+                  id: true,
+                  name: true,
+                  avatar: true,
+                },
+              },
+            }
+          : { channel: true }),
+      },
+    };
+
+    const result = await this.prismaClient.video.findMany({
+      ...queryObject,
+      ...queryOrderByObject,
     });
+
     const total = result.length;
     const list = result.map(trimVideo);
 

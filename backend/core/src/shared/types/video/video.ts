@@ -1,1 +1,1 @@
-export { VideoWithChannel } from './video-with-channel-dto.type';
+export { VideoWithChannel, VideoSearch } from './video-with-channel-dto.type';

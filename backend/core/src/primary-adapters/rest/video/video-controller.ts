@@ -9,7 +9,7 @@ import {
   requestParam,
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES, ExtendedAuthenticatedRequest, ExtendedRequest } from '~/shared/types/types';
+import { CONTAINER_TYPES, ExtendedAuthenticatedRequest, ExtendedRequest, VideoSearch } from '~/shared/types/types';
 import { VideoService } from '~/core/video/application/video-service';
 import {
   ApiPath,
@@ -26,6 +26,19 @@ import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/
 import { optionalAuthenticationMiddleware } from '../middleware/optional-authentication-middleware';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { authenticationMiddleware } from '../middleware';
+import {
+  DateFilterId,
+  DurationFilterId,
+  SearchQueryParam,
+  SortByFilterId,
+  TypeFilterId,
+} from '~/../../../frontend/src/store/search/models';
+import {
+  matchVideoFilterDate,
+  matchVideoFilterDuration,
+  matchVideoFilterSortBy,
+  matchVideoFilterType,
+} from '~/shared/enums/enums';
 
 /**
  * @swagger
@@ -117,15 +130,22 @@ export class VideoController extends BaseHttpController {
   }
 
   @httpGet(VideoApiPath.SEARCH)
-  public async getVideosBySearch(@queryParam('search') search: string): Promise<DataVideo> {
-    if (search) {
-      return await this.videoRepository.getVideosBySearch(search.trim().split(' ').join(' & '));
-    }
-
-    return {
-      list: [],
-      total: 0,
+  public async getVideosBySearch(
+    @queryParam(SearchQueryParam.SEARCH_TEXT) search: string | undefined,
+    @queryParam(SearchQueryParam.DURATION) duration: DurationFilterId,
+    @queryParam(SearchQueryParam.DATE) date: DateFilterId,
+    @queryParam(SearchQueryParam.TYPE) type: TypeFilterId,
+    @queryParam(SearchQueryParam.SORT_BY) sortBy: SortByFilterId,
+  ): Promise<DataVideo> {
+    const queryParams: VideoSearch = {
+      searchText: search ? search.trim().split(' ').join(' & ') : undefined,
+      duration: matchVideoFilterDuration[duration] || matchVideoFilterDuration[DurationFilterId.ANY],
+      date: matchVideoFilterDate[date] || matchVideoFilterDate[DateFilterId.ANYTIME],
+      type: matchVideoFilterType[type] || matchVideoFilterType[TypeFilterId.ALL],
+      sortBy: matchVideoFilterSortBy[sortBy] || matchVideoFilterSortBy[SortByFilterId.DEFAULT],
     };
+
+    return await this.videoRepository.getVideosBySearch(queryParams);
   }
 
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware)

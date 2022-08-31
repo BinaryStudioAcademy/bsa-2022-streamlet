@@ -9,6 +9,7 @@ import {
 } from 'shared/build';
 import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
+import { VideoSearch } from '~/shared/types/types';
 
 export interface VideoRepository {
   getById(id: string): Promise<
@@ -32,5 +33,5 @@ export interface VideoRepository {
     userId: string,
   ): Promise<CreateReactionResponseDto | null>;
   addComment(request: VideoCommentRequestDto, authorId: string): Promise<VideoCommentResponseDto | null>;
-  getVideosBySearch(searchText: string): Promise<DataVideo>;
+  getVideosBySearch(queryParams: VideoSearch): Promise<DataVideo>;
 }
