@@ -6,6 +6,7 @@ const CONTAINER_TYPES = {
   CategoryController: Symbol.for('CategoryController'),
 
   ChannelStreamingController: Symbol.for('ChannelStreamingController'),
+  CreateVideoHistoryRecordMiddleware: Symbol.for('createVideoHistoryRecordMiddleware'),
   ChannelCrudController: Symbol.for('ChannelCrudController'),
   ChannelSubscriptionController: Symbol.for('ChannelSubscriptionController'),
   UserService: Symbol.for('UserService'),

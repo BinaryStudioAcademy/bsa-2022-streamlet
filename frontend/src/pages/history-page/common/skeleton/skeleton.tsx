@@ -19,7 +19,7 @@ const HistoryLoader = (): ReactElement => (
 );
 
 const generateHistorySkeletons = (): ReactElement[] => {
-  return new Array(10).fill('skeleton').map((value, index) => <HistoryLoader key={`${value}-${index}`} />);
+  return new Array(10).fill('skeleton').map((value, index) => <HistoryLoader key={`${value}${index}`} />);
 };
 
 export { generateHistorySkeletons };

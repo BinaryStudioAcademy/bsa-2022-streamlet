@@ -24,7 +24,7 @@ import { NotFound } from '~/shared/exceptions/not-found';
 import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/channel-subscription-repository';
 import { optionalAuthenticationMiddleware } from '../middleware/optional-authentication-middleware';
 import { VideoRepository } from '~/core/video/port/video-repository';
-import { authenticationMiddleware } from '../middleware';
+import { authenticationMiddleware, CreateVideoHistoryRecordMiddleware } from '../middleware';
 
 /**
  * @swagger
@@ -115,7 +115,7 @@ export class VideoController extends BaseHttpController {
     return this.videoService.getAllVideos();
   }
 
-  @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware)
+  @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware, CreateVideoHistoryRecordMiddleware)
   public async get(@requestParam('id') id: string, @request() req: ExtendedRequest): Promise<VideoExpandedResponseDto> {
     const video = await this.videoService.getById(id);
 

@@ -32,14 +32,12 @@ const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(getUserVideoHistoryRecord.pending, (state) => {
     state.data.dataStatus = DataStatus.PENDING;
+    state.data.error = undefined;
   });
 
-  builder.addCase(addVideoHistoryRecord.fulfilled, (state, { payload }) => {
-    state.data = {
-      ...payload,
-      dataStatus: DataStatus.FULFILLED,
-      error: undefined,
-    };
+  builder.addCase(addVideoHistoryRecord.fulfilled, (state) => {
+    state.data.dataStatus = DataStatus.FULFILLED;
+    state.data.error = undefined;
   });
 
   builder.addCase(getUserVideoHistoryRecord.fulfilled, (state, { payload }) => {

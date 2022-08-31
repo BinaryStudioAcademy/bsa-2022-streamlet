@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { CONTAINER_TYPES, HistoryRequestDto, HistoryResponseDto } from '~/shared/types/types';
+import { History } from '@prisma/client';
 import { HistoryRepository } from '~/core/history/port/history-repository';
 
 @injectable()
@@ -20,9 +21,12 @@ export class HistoryService {
     return this.historyRepository.getUserHistory(userId, 10, skip, lastPage);
   }
 
-  async createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<HistoryResponseDto> {
-    const { userId } = historyRequestDto;
-    await this.historyRepository.createHistoryItem(historyRequestDto);
-    return this.getUserHistory(userId, '1');
+  async createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<History> {
+    const isHistoryExist = await this.historyRepository.isHistoryAlreadyExist(historyRequestDto);
+    if (isHistoryExist) {
+      return this.historyRepository.updateHistoryRecord(isHistoryExist.id);
+    }
+
+    return this.historyRepository.createHistoryItem(historyRequestDto);
   }
 }

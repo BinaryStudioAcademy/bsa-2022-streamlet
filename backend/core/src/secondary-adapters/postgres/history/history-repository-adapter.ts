@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { HistoryRepository } from '~/core/history/port/history-repository';
-import { PrismaClient, History } from '@prisma/client';
-import { CONTAINER_TYPES, HistoryResponseDto, HistoryRequestDto } from '~/shared/types/types';
+import { History, PrismaClient } from '@prisma/client';
+import { CONTAINER_TYPES, HistoryRequestDto, HistoryResponseDto } from '~/shared/types/types';
 import { trimHistory } from '~/shared/helpers/trim-history';
 import { HistoryListType } from 'shared/build';
 
@@ -42,7 +42,7 @@ export class HistoryRepositoryAdapter implements HistoryRepository {
         },
       },
       orderBy: {
-        createdAt: 'desc',
+        updatedAt: 'desc',
       },
     });
     const list: HistoryListType[] = history.map((historyRecord) => trimHistory(historyRecord));
@@ -54,11 +54,27 @@ export class HistoryRepositoryAdapter implements HistoryRepository {
     };
   }
 
-  async createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<History> {
-    const isHistoryAlreadyExist = await this.prismaClient.history.findFirst({
+  isHistoryAlreadyExist(historyRequestDto: HistoryRequestDto): Promise<History | null> {
+    return this.prismaClient.history.findFirst({
       where: {
-        ...historyRequestDto,
+        userId: historyRequestDto.userId,
+        videoId: historyRequestDto.videoId,
       },
+    });
+  }
+
+  updateHistoryRecord(id: string): Promise<History> {
+    return this.prismaClient.history.update({
+      where: {
+        id,
+      },
+      data: { updatedAt: new Date() },
+    });
+  }
+
+  createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<History> {
+    return this.prismaClient.history.create({
+      data: { ...historyRequestDto },
       include: {
         video: {
           include: {
@@ -73,26 +89,5 @@ export class HistoryRepositoryAdapter implements HistoryRepository {
         },
       },
     });
-
-    if (!isHistoryAlreadyExist) {
-      const history = await this.prismaClient.history.create({
-        data: { ...historyRequestDto },
-        include: {
-          video: {
-            include: {
-              channel: {
-                select: {
-                  id: true,
-                  name: true,
-                  avatar: true,
-                },
-              },
-            },
-          },
-        },
-      });
-      return trimHistory(history);
-    }
-    return trimHistory(isHistoryAlreadyExist);
   }
 }
