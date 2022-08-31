@@ -13,6 +13,7 @@ import { ChannelSubscriptionApi } from './channel-subscription-api/channel-subsc
 import { CategoryApi } from './category-api/category-api.service';
 import { ChatApi } from './chat-api/chat-api.service';
 import { HistoryApi } from './history/history-api.service';
+import { FollowingApi } from './following-api/following-api.service';
 
 const storageService = new StorageService();
 const tokensStorageService = new TokensStorageService(storageService);
@@ -63,6 +64,11 @@ const historyApi = new HistoryApi({
   http,
 });
 
+const followingApi = new FollowingApi({
+  apiPrefix: ENV.API_PATH,
+  http,
+});
+
 export {
   http,
   authApi,
@@ -75,5 +81,6 @@ export {
   channelCrudApi,
   channelSubscriptionApi,
   chatApi,
+  followingApi,
   historyApi,
 };

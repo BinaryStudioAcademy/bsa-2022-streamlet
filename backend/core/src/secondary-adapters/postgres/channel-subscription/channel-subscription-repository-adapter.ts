@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
-import { PrismaClient } from '@prisma/client';
-import { CONTAINER_TYPES, CreateSubscriptionResponseDto } from '~/shared/types/types';
+import { Channel, PrismaClient, Subscription } from '@prisma/client';
+import { CONTAINER_TYPES } from '~/shared/types/types';
 import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/channel-subscription-repository';
 
 @injectable()
@@ -11,7 +11,24 @@ export class ChannelSubscriptionRepositoryAdapter implements ChannelSubscription
     this.prismaClient = prismaClient;
   }
 
-  async addSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {
+  async getUserSubscriptions(userId: string): Promise<{
+    list: (Subscription & {
+      channel: Channel;
+    })[];
+    total: number;
+  }> {
+    const subscriptions = await this.prismaClient.subscription.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        channel: true,
+      },
+    });
+    return { list: subscriptions, total: subscriptions.length };
+  }
+
+  async addSubscription(userId: string, channelId: string): Promise<{ isSubscribed: boolean } | null> {
     await this.prismaClient.channel.update({
       where: {
         id: channelId,
@@ -32,7 +49,7 @@ export class ChannelSubscriptionRepositoryAdapter implements ChannelSubscription
 
     return { isSubscribed: true };
   }
-  async removeSubscription(userId: string, channelId: string): Promise<CreateSubscriptionResponseDto | null> {
+  async removeSubscription(userId: string, channelId: string): Promise<{ isSubscribed: boolean } | null> {
     await this.prismaClient.channel.update({
       where: {
         id: channelId,

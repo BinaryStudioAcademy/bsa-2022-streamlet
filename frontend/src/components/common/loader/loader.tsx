@@ -14,7 +14,7 @@ type Props = {
 const Loader: FC<Props> = ({ hCentered = true, vCentered = true, className, spinnerSize = LoaderSize.MD, color }) => {
   const isSpinnerSizeCustom = Object.values(LoaderSize).includes(spinnerSize as LoaderSize);
   const styleProps = {
-    background: color ?? 'unset',
+    background: color ?? 'var(--brand-green-color)',
   };
 
   return (

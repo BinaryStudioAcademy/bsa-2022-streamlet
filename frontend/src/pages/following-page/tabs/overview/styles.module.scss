@@ -1,0 +1,19 @@
+@use 'assets/css/config';
+
+.blocks {
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+}
+
+.see-all-btn {
+  min-width: 80px;
+  height: 30px;
+  margin: auto;
+  margin-top: 10px;
+}
+
+.spinner {
+  z-index: config.$page-component-z-index;
+  margin-top: 50px;
+}

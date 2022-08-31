@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { NeedSignInModal } from '../../components/common/sign-in-modal/sign-in-modal';
 import { socket } from 'common/config/config';
 import { store } from 'store/store';
+import { Subscribe } from './common/subscribe/subscribe';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -133,10 +134,11 @@ const VideoPageContainer: FC = () => {
               </div>
             </div>
           </div>
+          <div className={styles['subscribe-wrapper']}>
+            <Subscribe signinModalClassname={styles['subscribe-signin-modal']} />
+          </div>
           <>
-            <div className={styles['views-container']}>
-              <span>{`${isVideoFinished ? videoData.videoViews : videoData.liveViews} views`}</span>
-            </div>
+            <span>{`${isVideoFinished ? videoData.videoViews : videoData.liveViews} views`}</span>
             <div className={styles['description-container']}>
               <span>{`${videoData.description}`}</span>
             </div>

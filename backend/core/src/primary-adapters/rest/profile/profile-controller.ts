@@ -83,7 +83,7 @@ export class ProfileController extends BaseHttpController {
   }
   /**
    * @swagger
-   * /profile:
+   * /profile/update:
    *    post:
    *      tags:
    *      - profile
@@ -124,7 +124,7 @@ export class ProfileController extends BaseHttpController {
   }
   /**
    * @swagger
-   * /upload:
+   * /profile/upload:
    *    post:
    *      tags:
    *      - profile
@@ -156,7 +156,7 @@ export class ProfileController extends BaseHttpController {
   }
   /**
    * @swagger
-   * /get/{id}:
+   * /profile/get/{id}:
    *    get:
    *      tags:
    *        - profile

@@ -8,3 +8,7 @@ export type ExtendedRequest = express.Request & {
 export type ExtendedAuthenticatedRequest = express.Request & {
   user: UserBaseResponseDto;
 };
+
+export type GoogleExtendedRequest = express.Request & {
+  url: string;
+};

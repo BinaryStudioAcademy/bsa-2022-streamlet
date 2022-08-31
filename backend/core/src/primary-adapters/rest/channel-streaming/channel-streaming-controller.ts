@@ -1,16 +1,28 @@
-import { BaseHttpController, controller, httpGet, httpPost, requestBody, requestParam } from 'inversify-express-utils';
+import {
+  BaseHttpController,
+  controller,
+  httpGet,
+  httpPost,
+  request,
+  requestBody,
+  requestParam,
+} from 'inversify-express-utils';
 import {
   CONTAINER_TYPES,
   DefaultRequestParam,
   ResetStreamingKeyRequestDto,
   StreamingKeyResponseDto,
   RtmpLiveRequestDto,
+  ChangeChatToggleRequestDto,
+  ExtendedRequest,
+  ChangeChatToggleResponseDto,
 } from '~/shared/types/types';
 import { ApiPath, ChannelStreamingApiPath } from '~/shared/enums/api/api';
 import { ChannelStreamingService } from '~/core/channel-streaming/application/channel-streaming-service';
 import { inject } from 'inversify';
 import { Forbidden } from '~/shared/exceptions/forbidden';
 import { NotFound } from '~/shared/exceptions/not-found';
+import { authenticationMiddleware } from '../middleware';
 
 /**
  * @swagger
@@ -81,7 +93,7 @@ export class ChannelStreamingController extends BaseHttpController {
 
   /**
    * @swagger
-   * /live:
+   * /channel-streaming/live:
    *    post:
    *      tags:
    *        - channel
@@ -116,7 +128,7 @@ export class ChannelStreamingController extends BaseHttpController {
 
   /**
    * @swagger
-   * /live_done:
+   * /channel-streaming/live_done:
    *    post:
    *      tags:
    *        - channel
@@ -145,7 +157,7 @@ export class ChannelStreamingController extends BaseHttpController {
 
   /**
    * @swagger
-   * /streaming_key/{id}:
+   * /channel-streaming/streaming_key/{id}:
    *    get:
    *      tags:
    *        - channel
@@ -184,7 +196,7 @@ export class ChannelStreamingController extends BaseHttpController {
 
   /**
    * @swagger
-   * /reset_streaming_key:
+   * /channel-streaming/reset_streaming_key:
    *    post:
    *      tags:
    *        - channel
@@ -221,5 +233,85 @@ export class ChannelStreamingController extends BaseHttpController {
       throw new NotFound('Invalid channel id');
     }
     return keyData;
+  }
+
+  /**
+   * @swagger
+   * /channel-streaming/change_chat_toggle:
+   *    post:
+   *      tags:
+   *      - channel
+   *      operationId: changeVideoChatToggle
+   *      description: Changes isChatEnabled in video
+   *      security:
+   *      - bearerAuth: []
+   *      requestBody:
+   *        required: true
+   *        content:
+   *          application/json:
+   *            schema:
+   *              type: object
+   *              properties:
+   *                videoId:
+   *                  type: string
+   *                  format: uuid
+   *                isChatEnabled:
+   *                  type: boolean
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  videoId:
+   *                    type: string
+   *                    format: uuid
+   *                  isChatEnabled:
+   *                    type: boolean
+   *        403:
+   *          description: Video does not belong to this user.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   *        404:
+   *          description: Video with such id is not found.
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
+   */
+  @httpPost(ChannelStreamingApiPath.CHANGE_CHAT_TOGGLE, authenticationMiddleware)
+  public async changeChatToggle(
+    @requestBody() changeChatToggleRequestDto: ChangeChatToggleRequestDto,
+    @request() req: ExtendedRequest,
+  ): Promise<ChangeChatToggleResponseDto> {
+    const video = await this.channelService.getVideoById(changeChatToggleRequestDto.videoId);
+    if (!video) {
+      throw new NotFound('Invalid video id');
+    }
+    if (video.channel.authorId !== req.user?.id) {
+      throw new Forbidden('This video does not belong to you.');
+    }
+
+    const videoData = await this.channelService.changeChatToggle(
+      changeChatToggleRequestDto.videoId,
+      changeChatToggleRequestDto.isChatEnabled,
+    );
+    if (!videoData) {
+      throw new NotFound('Invalid video id');
+    }
+
+    this.channelService.notifyViewersAboutChatToggleChanged({
+      roomId: videoData.videoId,
+      isChatEnabled: videoData.isChatEnabled,
+    });
+    return videoData;
   }
 }

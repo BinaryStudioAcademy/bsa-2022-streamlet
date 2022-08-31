@@ -9,6 +9,9 @@ import {
   RefreshTokenRequestDto,
   UserBaseResponseDto,
   RefreshTokenResponseDto,
+  GoogleResponseDto,
+  GoogleRequestDto,
+  GetCurrentUserResponseDto,
 } from 'common/types/types';
 import { HttpError } from 'exceptions/exceptions';
 import { serializeHttpError } from 'helpers/http/http';
@@ -73,12 +76,12 @@ const signOut = createAsyncThunk<void, { hitApi: boolean } | undefined>(
   },
 );
 
-const loadCurrentUser = createAsyncThunk<UserBaseResponseDto, void, AsyncThunkConfig>(
+const loadCurrentUser = createAsyncThunk<GetCurrentUserResponseDto, void, AsyncThunkConfig>(
   ActionType.LOAD_CURRENT_USER,
   async (_request, { dispatch, extra: { authApi } }) => {
     try {
-      const { user } = await authApi.getCurrentUser();
-      return user;
+      const data = await authApi.getCurrentUser();
+      return data;
     } catch (err) {
       const isHttpError = err instanceof HttpError;
 
@@ -91,4 +94,25 @@ const loadCurrentUser = createAsyncThunk<UserBaseResponseDto, void, AsyncThunkCo
   },
 );
 
-export { signUp, signIn, refreshTokens, signOut, loadCurrentUser };
+const signInGoogle = createAsyncThunk<GoogleResponseDto, void, AsyncThunkConfig>(
+  ActionType.SIGN_IN_GOOGLE,
+  async (_request, { extra }) => {
+    const { authApi } = extra;
+
+    const authorizationUrl = await authApi.signInGoogle();
+    return authorizationUrl;
+  },
+);
+
+const googleAuthorization = createAsyncThunk<UserBaseResponseDto, GoogleRequestDto, AsyncThunkConfig>(
+  ActionType.GOOGLE_ATHORIZATION,
+  async (registerPayload, { extra }) => {
+    const { authApi } = extra;
+
+    const { tokens, user } = await authApi.googleAuthorization(registerPayload);
+    tokensStorageService.saveTokens(tokens);
+    return user;
+  },
+);
+
+export { signUp, signIn, refreshTokens, signOut, loadCurrentUser, signInGoogle, googleAuthorization };

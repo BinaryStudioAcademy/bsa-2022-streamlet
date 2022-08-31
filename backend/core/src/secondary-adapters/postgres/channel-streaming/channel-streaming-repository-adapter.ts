@@ -2,6 +2,7 @@ import { PrismaClient, StreamingKey, Video } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { ChannelStreamingRepository } from '~/core/channel-streaming/port/channel-streaming-repository';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
+import { VideoWithChannelAndAuthorDto } from '~/shared/types/video/video-with-channel-and-author-dto.type';
 
 @injectable()
 export class ChannelStreamingRepositoryAdapter implements ChannelStreamingRepository {
@@ -34,6 +35,32 @@ export class ChannelStreamingRepositoryAdapter implements ChannelStreamingReposi
       },
       data: {
         key,
+      },
+    });
+  }
+
+  getVideoById(videoId: string): Promise<VideoWithChannelAndAuthorDto | null> {
+    return this.prismaClient.video.findUnique({
+      where: {
+        id: videoId,
+      },
+      include: {
+        channel: {
+          include: {
+            author: true,
+          },
+        },
+      },
+    });
+  }
+
+  changeChatToggle(videoId: string, chatToggle: boolean): Promise<Video | null> {
+    return this.prismaClient.video.update({
+      where: {
+        id: videoId,
+      },
+      data: {
+        isChatEnabled: chatToggle,
       },
     });
   }

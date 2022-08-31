@@ -26,6 +26,7 @@ const AppRoutes = {
   STUDIO_STREAM_$ID: '/studio/stream/:id',
   SEARCH: '/search',
   PROFILE_PREFERENCE: '/profile-preference',
+  GOOGLE_ATHORIZATION: '/google-athorization',
 } as const;
 
 type AppRoute = typeof AppRoutes[keyof typeof AppRoutes];

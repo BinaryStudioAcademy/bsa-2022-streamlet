@@ -4,6 +4,7 @@ const CONTAINER_TYPES = {
   AuthController: Symbol.for('AuthController'),
   TagController: Symbol.for('TagController'),
   CategoryController: Symbol.for('CategoryController'),
+  HealthcheckController: Symbol.for('HealthcheckController'),
 
   ChannelStreamingController: Symbol.for('ChannelStreamingController'),
   CreateVideoHistoryRecordMiddleware: Symbol.for('createVideoHistoryRecordMiddleware'),
@@ -39,6 +40,11 @@ const CONTAINER_TYPES = {
   ChatService: Symbol.for('ChatService'),
   ChatRepository: Symbol.for('ChatRepository'),
   ChatController: Symbol.for('ChatController'),
+
+  FollowingService: Symbol.for('FollowingService'),
+  FollowingController: Symbol.for('FollowingController'),
+
+  ChannelOwnerMiddleWare: Symbol.for('ChannelOwnerMiddleware'),
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),
