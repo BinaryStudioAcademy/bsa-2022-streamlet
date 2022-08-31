@@ -16,7 +16,6 @@ import { Link } from 'react-router-dom';
 import { NeedSignInModal } from '../../components/common/sign-in-modal/sign-in-modal';
 import { socket } from 'common/config/config';
 import { store } from 'store/store';
-import { historyActions } from '../../store/actions';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -48,13 +47,6 @@ const VideoPageContainer: FC = () => {
   useEffect(() => {
     dispatch(videoPageActions.getVideo(videoId));
   }, [videoId, dispatch]);
-
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-    dispatch(historyActions.addVideoHistoryRecord({ videoId, userId: user.id }));
-  }, [user, dispatch, videoId]);
 
   const channel = useAppSelector((state) => {
     return state.videoPage.video?.channel;
