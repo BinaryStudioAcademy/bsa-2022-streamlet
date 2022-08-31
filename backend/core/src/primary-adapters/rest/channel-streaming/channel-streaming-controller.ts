@@ -30,7 +30,7 @@ import { NotFound } from '~/shared/exceptions/not-found';
 import { authenticationMiddleware } from '../middleware';
 import { exceptionMessages } from '~/shared/enums/messages';
 import { VideoService } from '~/core/video/application/video-service';
-import { errorCodes } from 'shared/build';
+import { errorCodes, StreamingInfoResponseDto } from 'shared/build';
 import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud-service';
 
 /**
@@ -300,21 +300,40 @@ export class ChannelStreamingController extends BaseHttpController {
     CONTAINER_TYPES.ChannelActionMiddleware,
   )
   public async getCurrentStream(@requestParam() { id }: DefaultRequestParam): Promise<VideoStreamResponseDto> {
-    const keyData = await this.channelStreamingService.getCurrentStream(id);
-    if (!keyData) {
+    const currentStream = await this.channelStreamingService.getCurrentStream(id);
+    if (!currentStream) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
-    return keyData;
+    return currentStream;
   }
 
   @httpGet(ChannelStreamingApiPath.ROOT, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
-  public async getOwnChannel(@request() req: ExtendedAuthenticatedRequest): Promise<OwnChannelResponseDto | null> {
+  public async getOwnChannel(@request() req: ExtendedAuthenticatedRequest): Promise<OwnChannelResponseDto> {
     const { id } = req.user;
     const channel = await this.channelStreamingService.getOwnChannel(id);
     if (!channel) {
       throw new NotFound(exceptionMessages.channelCrud.NO_CHANNELS, errorCodes.stream.NO_CHANNELS);
     }
     return channel;
+  }
+
+  @httpGet(ChannelStreamingApiPath.STREAMING_INFO, authenticationMiddleware)
+  public async getStreamingInfo(@request() req: ExtendedAuthenticatedRequest): Promise<StreamingInfoResponseDto> {
+    const { id } = req.user;
+    const channel = await this.channelStreamingService.getOwnChannel(id);
+    if (!channel) {
+      throw new NotFound(exceptionMessages.channelCrud.NO_CHANNELS, errorCodes.stream.NO_CHANNELS);
+    }
+    const keyData = await this.channelStreamingService.getStreamingKey(channel.id);
+    if (keyData === null) {
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
+    }
+    const stream = await this.channelStreamingService.getCurrentStream(channel.id);
+    return {
+      channel,
+      streamingKey: keyData.streamingKey,
+      stream,
+    };
   }
 
   @httpPost(ChannelStreamingApiPath.LIVE, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)

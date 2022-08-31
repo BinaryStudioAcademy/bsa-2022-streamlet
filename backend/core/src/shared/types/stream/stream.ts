@@ -9,6 +9,7 @@ export {
   StreamPosterUploadRequestDto,
   StreamUpdateRequestDto,
   StreamLiveStatusRequestDto,
+  StreamingInfoResponseDto,
 } from 'shared/build';
 
 export { VideoStreamResponseBeforeTrimming } from './stream-info-before-trimming.type';

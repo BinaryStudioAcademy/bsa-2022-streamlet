@@ -81,6 +81,14 @@ export class ChannelStreamingRepositoryAdapter implements ChannelStreamingReposi
     });
   }
 
+  createStreamingKey(channelId: string): Promise<StreamingKey> {
+    return this.prismaClient.streamingKey.create({
+      data: {
+        channelId,
+      },
+    });
+  }
+
   createStream(channelId: string): Promise<VideoStreamResponseBeforeTrimming> {
     return this.prismaClient.video.create({
       data: {
