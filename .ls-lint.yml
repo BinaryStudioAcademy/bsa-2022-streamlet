@@ -25,3 +25,4 @@ ignore:
   - backend/video-transcoding-server/playback
   - playback
   - Compiled-HTML
+  - tests
