@@ -35,13 +35,6 @@ const initialState: State = {
 };
 
 const reducer = createReducer(initialState, (builder) => {
-  builder.addCase(getStreamData.rejected, (state, { error, payload }) => {
-    const { errorCode, message } = getRejectedErrorData(error, payload);
-
-    state.status.dataStatus = DataStatus.REJECTED;
-    state.status.error = message;
-    state.status.errorCode = errorCode;
-  });
   builder.addCase(getStreamData.fulfilled, (state, { payload }) => {
     state.status.dataStatus = DataStatus.FULFILLED;
     state.channel = payload.channel;
@@ -87,6 +80,7 @@ const reducer = createReducer(initialState, (builder) => {
       resetStreamingKey.rejected,
       setStreamStatus.rejected,
       getMyChannel.rejected,
+      getStreamData.rejected,
     ),
     (state, { error, payload }) => {
       const { errorCode, message } = getRejectedErrorData(error, payload);

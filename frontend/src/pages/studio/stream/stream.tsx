@@ -47,7 +47,7 @@ const StudioStream: FC<Props> = ({
   handleChangeStreamStatus,
   handleCopy,
   handleStreamingKeyReset,
-  handleUploadPoster,
+  // handleUploadPoster,
   stream,
   infoFormControl,
   infoFormErrors,
@@ -64,7 +64,7 @@ const StudioStream: FC<Props> = ({
           <div className={styles['col-1']}>
             <div className={styles['preview-container']}>
               <img className={styles['preview']} src={stream?.poster ?? defaultPreview} alt="Stream preview" />
-              <Button content={'Upload Preview'} className={styles['button']} onClick={handleUploadPoster} />
+              <Button content={'Upload Preview'} className={styles['button']} /*onClick={handleUploadPoster}*/ />
             </div>
             <form className={styles['form-container']}>
               <div className={styles['field-container']}>
