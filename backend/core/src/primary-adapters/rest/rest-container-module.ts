@@ -13,6 +13,7 @@ import { ChannelSubscriptionController } from './channel-subscription/channel-su
 import { ChannelOwnerMiddleWare } from './middleware';
 import { ChatController } from './chat/chat-controller';
 import { HealthcheckController } from '~/primary-adapters/rest/healthcheck/healthcheck-controller';
+import { FollowingController } from './following/following-controller';
 
 const restContainerModule = new ContainerModule((bind: interfaces.Bind) => {
   bind<UserController>(CONTAINER_TYPES.UserController).to(UserController);
@@ -29,6 +30,7 @@ const restContainerModule = new ContainerModule((bind: interfaces.Bind) => {
 
   bind<ChannelOwnerMiddleWare>(CONTAINER_TYPES.ChannelOwnerMiddleWare).to(ChannelOwnerMiddleWare);
   bind<HealthcheckController>(CONTAINER_TYPES.HealthcheckController).to(HealthcheckController);
+  bind<FollowingController>(CONTAINER_TYPES.FollowingController).to(FollowingController);
 });
 
 export { restContainerModule };

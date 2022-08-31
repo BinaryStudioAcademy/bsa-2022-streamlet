@@ -23,6 +23,12 @@ import { GoogleAuthorization } from 'components/auth/components/common/social-bu
 
 import styles from './app.module.scss';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
+import { FollowingPage } from 'pages/following-page/following-page';
+import { Navigate } from 'react-router-dom';
+import { OverviewTab } from 'pages/following-page/tabs/overview/overview-tab';
+import { LiveVideosTab } from 'pages/following-page/tabs/live-videos/live-videos-tab';
+import { OfflineVideosTab } from 'pages/following-page/tabs/offline-videos/offline-videos-tab';
+import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -82,7 +88,17 @@ const App: FC = () => {
                 <Route path={AppRoutes.ROOT} element={<MainPageContainer />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />
                 <Route path={AppRoutes.HISTORY} element="History" />
-                <Route path={AppRoutes.FOLLOWING} element="Following" />
+                <Route path={AppRoutes.FOLLOWING} element={<ProtectedRoute element={<FollowingPage />} />}>
+                  <Route index element={<OverviewTab />} />
+                  <Route path={FollowingTab.OVERVIEW} element={<OverviewTab />} />
+                  <Route path={FollowingTab.LIVE} element={<LiveVideosTab />} />
+                  <Route path={FollowingTab.OFFLINE} element={<OfflineVideosTab />} />
+                  <Route
+                    path="*"
+                    element={<Navigate to={`${AppRoutes.FOLLOWING}/${FollowingTab.OVERVIEW}`} replace />}
+                  />
+                </Route>
+
                 <Route path={AppRoutes.BROWSE} element="Browse" />
                 <Route path={AppRoutes.GOOGLE_ATHORIZATION} element={<GoogleAuthorization query={search} />} />
                 <Route
