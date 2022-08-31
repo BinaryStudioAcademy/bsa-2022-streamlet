@@ -28,7 +28,7 @@ const StudioStreamContainer: FC = () => {
 
   const handleFormCancel = (): void => {
     setIsEditingForm(false);
-    settingsFormReset(defaultSettingsFormValues);
+    settingsFormReset(defaultSettingsFormValues());
   };
 
   const handleFormSave = useCallback(
@@ -77,27 +77,34 @@ const StudioStreamContainer: FC = () => {
     [dispatch],
   );
 
-  const defaultSettingsFormValues = {
-    name: stream?.name,
-    tags: stream?.tags.map((tag) => ({ value: tag.id, label: tag.name })),
-    categories: stream?.categories.map((category) => ({ value: category.id, label: category.name })),
-    description: stream?.description,
-    scheduledStreamDate: stream?.scheduledStreamDate ? new Date(stream?.scheduledStreamDate) : new Date(),
-    privacy: stream?.privacy,
-  };
+  const defaultInfoFormValues = useCallback(
+    () => ({
+      streamingKey: streamingKey ?? '',
+      streamingServerUrl: STREAMING_SERVER_URL,
+      streamUrl: `https://dev.streamlet.tk/video/${stream?.id}`,
+    }),
+    [stream?.id, streamingKey],
+  );
 
-  const defaultInfoFormValues = {
-    streamingKey: streamingKey ?? '',
-    streamingServerUrl: STREAMING_SERVER_URL,
-    streamUrl: `https://dev.streamlet.tk/video/${stream?.id}`,
-  };
+  const defaultSettingsFormValues = useCallback(
+    () => ({
+      name: stream?.name,
+      tags: stream?.tags.map((tag) => ({ value: tag.id, label: tag.name })),
+      categories: stream?.categories.map((category) => ({ value: category.id, label: category.name })),
+      description: stream?.description,
+      scheduledStreamDate: stream?.scheduledStreamDate ? new Date(stream?.scheduledStreamDate) : new Date(),
+      privacy: stream?.privacy,
+    }),
+    [stream],
+  );
 
   const {
     control: infoFormControl,
     errors: infoFormErrors,
     getValues: infoFormValues,
+    reset: infoFormReset,
   } = useAppForm<StreamInfoFormValues>({
-    defaultValues: defaultInfoFormValues,
+    defaultValues: defaultInfoFormValues(),
   });
 
   const {
@@ -106,7 +113,7 @@ const StudioStreamContainer: FC = () => {
     reset: settingsFormReset,
     handleSubmit: settingsFormHandleSubmit,
   } = useAppForm<StreamSettingsFormValues>({
-    defaultValues: defaultSettingsFormValues,
+    defaultValues: defaultSettingsFormValues(),
   });
 
   const onSubmit = (submitValue: StreamSettingsFormValues): void => {
@@ -129,6 +136,11 @@ const StudioStreamContainer: FC = () => {
   useEffect(() => {
     dispatch(streamActions.getStreamingInfo());
   }, [dispatch]);
+
+  useEffect(() => {
+    infoFormReset(defaultInfoFormValues());
+    settingsFormReset(defaultSettingsFormValues());
+  }, [infoFormReset, defaultInfoFormValues, defaultSettingsFormValues, settingsFormReset]);
 
   return isNotFound ? (
     <NotFound />

@@ -19,7 +19,8 @@ const createStream = createAsyncThunk<VideoStreamResponseDto, CreateStreamReques
   ActionType.CREATE_STREAM,
   async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
     try {
-      return await channelStreamingApi.createStream(payload);
+      const newStream = await channelStreamingApi.createStream(payload);
+      return newStream;
     } catch (error) {
       if (error instanceof HttpError) {
         return rejectWithValue(serializeHttpError(error));
