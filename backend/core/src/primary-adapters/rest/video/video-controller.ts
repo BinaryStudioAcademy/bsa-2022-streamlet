@@ -19,6 +19,11 @@ import {
   VideoCommentRequestDto,
   VideoCommentResponseDto,
   VideoExpandedResponseDto,
+  DateFilterId,
+  DurationFilterId,
+  SearchQueryParam,
+  SortByFilterId,
+  TypeFilterId,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -26,13 +31,6 @@ import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/
 import { optionalAuthenticationMiddleware } from '../middleware/optional-authentication-middleware';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { authenticationMiddleware } from '../middleware';
-import {
-  DateFilterId,
-  DurationFilterId,
-  SearchQueryParam,
-  SortByFilterId,
-  TypeFilterId,
-} from '~/../../../frontend/src/store/search/models';
 import {
   matchVideoFilterDate,
   matchVideoFilterDuration,

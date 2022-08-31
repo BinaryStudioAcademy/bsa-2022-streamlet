@@ -1,10 +1,5 @@
 import { StreamingStatus } from '@prisma/client';
-import {
-  DurationFilterId,
-  DateFilterId,
-  TypeFilterId,
-  SortByFilterId,
-} from '../../../../../../frontend/src/store/search/models';
+import { DurationFilterId, DateFilterId, TypeFilterId, SortByFilterId } from 'shared/build';
 
 type DurationOption = {
   lte: number | undefined;
