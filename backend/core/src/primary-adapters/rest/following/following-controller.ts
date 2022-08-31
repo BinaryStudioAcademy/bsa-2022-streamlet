@@ -87,6 +87,12 @@ export class FollowingController extends BaseHttpController {
    *          description: successful operation
    *        '401':
    *          description: user is not authenticated
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
    */
   @httpGet(FollowingApiPath.VIDEOS_OFFLINE, authenticationMiddleware)
   public async videosOffline(@request() req: ExtendedAuthenticatedRequest): Promise<VideosOfflineResponseDto> {
@@ -112,6 +118,12 @@ export class FollowingController extends BaseHttpController {
    *          description: successful operation
    *        '401':
    *          description: user is not authenticated
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Error'
    */
   @httpGet(FollowingApiPath.VIDEOS_LIVE, authenticationMiddleware)
   public async videosLive(@request() req: ExtendedAuthenticatedRequest): Promise<VideosLiveResponseDto> {
