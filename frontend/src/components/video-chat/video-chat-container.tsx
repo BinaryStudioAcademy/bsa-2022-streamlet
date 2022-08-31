@@ -19,7 +19,7 @@ const VideoChatContainer: FC<Props> = ({ videoId }) => {
   const dispatch = useAppDispatch();
   const {
     chat: {
-      currentChat: { id, messages },
+      currentChat: { id, initialMessages, messages },
     },
   } = useAppSelector((state) => ({
     chat: state.chat,
@@ -56,7 +56,9 @@ const VideoChatContainer: FC<Props> = ({ videoId }) => {
     };
   }, [dispatch, joinChatRoom, videoId]);
 
-  return <VideoChat sendMessageProps={sendMessageProps} messages={messages.list} />;
+  return (
+    <VideoChat sendMessageProps={sendMessageProps} initialMessages={initialMessages.list} messages={messages.list} />
+  );
 };
 
 export { VideoChatContainer };

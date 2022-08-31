@@ -7,6 +7,7 @@ import { loadChat, closeChat, appendMessage, sendMessage } from './actions';
 type State = {
   currentChat: {
     id: ChatInfoResponseDto['id'];
+    initialMessages: ChatInfoResponseDto['initialMessages'];
     messages: ChatInfoResponseDto['initialMessages'];
     dataStatus: DataStatus;
     error: string | undefined;
@@ -16,6 +17,10 @@ type State = {
 const initialState: State = {
   currentChat: {
     id: '',
+    initialMessages: {
+      list: [] as ChatMessageResponseDto[],
+      total: 0,
+    },
     messages: {
       list: [] as ChatMessageResponseDto[],
       total: 0,
@@ -33,7 +38,7 @@ const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(loadChat.fulfilled, (state, { payload }) => {
     state.currentChat.id = payload.id;
-    state.currentChat.messages = payload.initialMessages;
+    state.currentChat.initialMessages = payload.initialMessages;
   });
 
   builder.addCase(closeChat, (state: State) => {

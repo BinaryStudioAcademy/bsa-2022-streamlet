@@ -6,11 +6,12 @@ import { VideoComment } from './video-comment/video-comment';
 import styles from './video-chat.module.scss';
 
 interface VideoChatProps {
+  initialMessages: ChatMessageResponseDto[];
   messages: ChatMessageResponseDto[];
   sendMessageProps: SendMessageProps;
 }
 
-const VideoChat: FC<VideoChatProps> = ({ messages, sendMessageProps }) => {
+const VideoChat: FC<VideoChatProps> = ({ initialMessages, messages, sendMessageProps }) => {
   const chatEndEl = useRef<HTMLDivElement>(null);
   const chatViewEl = useRef<HTMLDivElement>(null);
 
@@ -19,6 +20,9 @@ const VideoChat: FC<VideoChatProps> = ({ messages, sendMessageProps }) => {
       <div className={styles['video-chat']} ref={chatViewEl}>
         <div ref={chatEndEl}></div>
         {messages.map((message) => (
+          <VideoComment key={message.id} message={message} />
+        ))}
+        {initialMessages.map((message) => (
           <VideoComment key={message.id} message={message} />
         ))}
       </div>
