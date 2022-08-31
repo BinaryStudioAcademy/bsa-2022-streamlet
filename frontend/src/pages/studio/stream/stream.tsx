@@ -16,7 +16,7 @@ import { DeepRequired, FieldErrorsImpl, FieldValues, UseFormGetValues, UseFormHa
 import { StreamStatus } from 'shared/build';
 // import { Loader, UploadImage } from 'components/common/common';
 // import { Icon } from 'components/common/icon';
-import defaultPreview from '../../../assets/img/default/video-default.png';
+import defaultPreview from 'assets/img/default/video-default.png';
 import { StreamInfoFormValues, StreamSettingsFormValues } from './common/stream-settings-form-values';
 
 import styles from './styles.module.scss';
@@ -63,7 +63,11 @@ const StudioStream: FC<Props> = ({
         <div className={styles['settings-block']}>
           <div className={styles['col-1']}>
             <div className={styles['preview-container']}>
-              <img className={styles['preview']} src={stream?.poster ?? defaultPreview} alt="Stream preview" />
+              <img
+                className={styles['preview']}
+                src={stream?.poster ? stream?.poster : defaultPreview}
+                alt="Stream preview"
+              />
               <Button content={'Upload Preview'} className={styles['button']} /*onClick={handleUploadPoster}*/ />
             </div>
             <form className={styles['form-container']}>
