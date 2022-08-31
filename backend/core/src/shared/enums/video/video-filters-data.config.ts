@@ -1,5 +1,6 @@
 import { StreamingStatus } from '@prisma/client';
 import { DurationFilterId, DateFilterId, TypeFilterId, SortByFilterId } from 'shared/build';
+import { returnSubtractedDate } from '~/shared/helpers/video/date-helper';
 
 type DurationOption = {
   lte: number | undefined;
@@ -8,7 +9,11 @@ type DurationOption = {
 
 type DateOption = Date | undefined;
 
-type SortByOption = Array<[string, string | undefined]>;
+interface SortByOption {
+  liveViews?: string;
+  videoViews?: string;
+  publishedAt?: string;
+}
 
 const matchVideoFilterDuration: Record<DurationFilterId, DurationOption> = {
   [DurationFilterId.UNDER_4_MINUTES]: {
@@ -30,19 +35,20 @@ const matchVideoFilterDuration: Record<DurationFilterId, DurationOption> = {
 };
 
 const matchTimeValuesInMilliseconds = {
-  [DateFilterId.LAST_HOUR]: 3600000,
-  [DateFilterId.THIS_WEEK]: 604800000,
-  [DateFilterId.THIS_MONTH]: 2592000000,
-  [DateFilterId.THIS_YEAR]: 31557600000,
+  [DateFilterId.ANYTIME]: 0,
+  [DateFilterId.LAST_HOUR]: 3600 * 1000,
+  [DateFilterId.THIS_WEEK]: 7 * 24 * 3600 * 1000,
+  [DateFilterId.THIS_MONTH]: 30 * 24 * 3600 * 1000,
+  [DateFilterId.THIS_YEAR]: 365 * 24 * 3600 * 1000,
 };
 
 const matchVideoFilterDate: Record<DateFilterId, DateOption> = {
   [DateFilterId.ANYTIME]: undefined,
-  [DateFilterId.LAST_HOUR]: new Date(new Date().getTime() - matchTimeValuesInMilliseconds[DateFilterId.LAST_HOUR]),
-  [DateFilterId.TODAY]: new Date(new Date().toDateString()),
-  [DateFilterId.THIS_WEEK]: new Date(new Date().getTime() - matchTimeValuesInMilliseconds[DateFilterId.THIS_WEEK]),
-  [DateFilterId.THIS_MONTH]: new Date(new Date().getTime() - matchTimeValuesInMilliseconds[DateFilterId.THIS_MONTH]),
-  [DateFilterId.THIS_YEAR]: new Date(new Date().getTime() - matchTimeValuesInMilliseconds[DateFilterId.THIS_YEAR]),
+  [DateFilterId.LAST_HOUR]: returnSubtractedDate(matchTimeValuesInMilliseconds[DateFilterId.LAST_HOUR]),
+  [DateFilterId.TODAY]: returnSubtractedDate(),
+  [DateFilterId.THIS_WEEK]: returnSubtractedDate(matchTimeValuesInMilliseconds[DateFilterId.THIS_WEEK]),
+  [DateFilterId.THIS_MONTH]: returnSubtractedDate(matchTimeValuesInMilliseconds[DateFilterId.THIS_MONTH]),
+  [DateFilterId.THIS_YEAR]: returnSubtractedDate(matchTimeValuesInMilliseconds[DateFilterId.THIS_YEAR]),
 };
 
 const matchVideoFilterType: Record<TypeFilterId, StreamingStatus[]> = {
@@ -52,19 +58,17 @@ const matchVideoFilterType: Record<TypeFilterId, StreamingStatus[]> = {
   [TypeFilterId.VIDEO]: [StreamingStatus.finished],
 };
 
-const matchVideoFilterSortBy: Record<SortByFilterId, SortByOption> = {
+const matchVideoFilterSortBy: Record<SortByFilterId, SortByOption[]> = {
   [SortByFilterId.DEFAULT]: [],
   [SortByFilterId.RATING]: [],
   [SortByFilterId.RELEVANCE]: [],
-  [SortByFilterId.UPLOAD_DATE]: [['publishedAt', 'desc']],
-  [SortByFilterId.VIEW_COUNT]: [
-    ['videoViews', 'desc'],
-    ['liveViews', 'desc'],
-  ],
+  [SortByFilterId.UPLOAD_DATE]: [{ publishedAt: 'desc' }],
+  [SortByFilterId.VIEW_COUNT]: [{ liveViews: 'desc' }, { videoViews: 'desc' }],
 };
 
 export {
   matchVideoFilterDuration,
+  matchTimeValuesInMilliseconds,
   matchVideoFilterDate,
   matchVideoFilterType,
   matchVideoFilterSortBy,

@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimVideo } from '~/shared/helpers';
@@ -294,9 +294,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
 
   async getVideosBySearch({ searchText, duration, date, type, sortBy }: VideoSearch): Promise<DataVideo> {
     const queryOrderByObject = {
-      orderBy: sortBy.map((arr) => ({
-        [arr[0]]: arr[1],
-      })),
+      orderBy: sortBy.map((param) => param as Prisma.VideoOrderByWithRelationAndSearchRelevanceInput),
     };
     const queryObject = {
       where: {

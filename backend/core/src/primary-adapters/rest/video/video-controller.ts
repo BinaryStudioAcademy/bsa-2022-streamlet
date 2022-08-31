@@ -127,6 +127,50 @@ export class VideoController extends BaseHttpController {
     return this.videoService.getAllVideos();
   }
 
+  /**
+   * @swagger
+   * /videos/search:
+   *    get:
+   *      tags:
+   *      - videos
+   *      operationId: getVideosBySearch
+   *      description: Returns videos
+   *      security: []
+   *      parameters:
+   *        - in: query
+   *          name: date
+   *          description: filtered videos by date
+   *          required: false
+   *          schema:
+   *            type: string
+   *        - in: query
+   *          name: type
+   *          description: filtered videos by type
+   *          required: false
+   *          schema:
+   *            type: string
+   *        - in: query
+   *          name: duration
+   *          description: filtered videos by duration
+   *          required: false
+   *          schema:
+   *            type: string
+   *        - in: query
+   *          name: sortBy
+   *          description: sorted videos by parameters
+   *          required: false
+   *          schema:
+   *            type: string
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Video'
+   */
   @httpGet(VideoApiPath.SEARCH)
   public async getVideosBySearch(
     @queryParam(SearchQueryParam.SEARCH_TEXT) search: string | undefined,

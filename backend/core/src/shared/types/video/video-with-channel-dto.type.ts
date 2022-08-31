@@ -18,5 +18,5 @@ export type VideoSearch = {
   duration: DurationOption;
   date: DateOption;
   type: StreamingStatus[];
-  sortBy: SortByOption;
+  sortBy: SortByOption[];
 };
