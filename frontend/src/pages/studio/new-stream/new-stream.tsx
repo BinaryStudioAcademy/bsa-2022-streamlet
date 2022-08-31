@@ -18,7 +18,7 @@ const StudioNewStream: FC = () => {
   useEffect(() => {
     const fetch = async (): Promise<void> => {
       try {
-        await dispatch(streamActions.getStreamData()).unwrap();
+        await dispatch(streamActions.getStreamingInfo()).unwrap();
         setIsForbidden(true);
       } catch (err) {
         console.warn(err);

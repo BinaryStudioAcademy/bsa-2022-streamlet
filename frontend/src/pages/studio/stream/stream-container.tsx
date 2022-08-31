@@ -127,7 +127,7 @@ const StudioStreamContainer: FC = () => {
   const isForbidden = errorCode === errorCodes.stream.FORBIDDEN || errorCode === errorCodes.stream.ACTIVE_STREAM_EXISTS;
 
   useEffect(() => {
-    dispatch(streamActions.getStreamData());
+    dispatch(streamActions.getStreamingInfo());
   }, [dispatch]);
 
   return isNotFound ? (

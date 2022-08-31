@@ -7,6 +7,7 @@ import {
   CreateStreamRequestDto,
   HttpMethod,
   ResetStreamingKeyRequestDto,
+  StreamingInfoResponseDto,
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
   StreamUpdateRequestDto,
@@ -80,6 +81,12 @@ class ChannelStreamingApi {
   async getCurrentStream({ id: channelId }: DefaultRequestParam): Promise<VideoStreamResponseDto> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.CHANNEL_STREAMING}${ChannelStreamingApiPath.LIVE}/${channelId}`,
+    });
+  }
+
+  async getStreamingInfo(): Promise<StreamingInfoResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.CHANNEL_STREAMING}${ChannelStreamingApiPath.STREAMING_INFO}`,
     });
   }
 

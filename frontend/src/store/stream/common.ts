@@ -1,5 +1,3 @@
-import { OwnChannelResponseDto, VideoStreamResponseDto } from 'shared/build';
-
 enum ActionType {
   CREATE_STREAM = 'stream/create-stream',
   UPLOAD_POSTER = 'stream/upload-poster',
@@ -10,10 +8,4 @@ enum ActionType {
   GET_MY_CHANNEL = 'stream/get-my-channel',
 }
 
-type StreamData = {
-  stream: VideoStreamResponseDto;
-  channel: OwnChannelResponseDto;
-  streamingKey: string;
-};
-
-export { ActionType, StreamData };
+export { ActionType };

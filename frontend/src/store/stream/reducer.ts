@@ -4,7 +4,7 @@ import {
   createStream,
   uploadPoster,
   editStream,
-  getStreamData,
+  getStreamingInfo,
   setStreamStatus,
   resetStreamingKey,
   getMyChannel,
@@ -35,7 +35,7 @@ const initialState: State = {
 };
 
 const reducer = createReducer(initialState, (builder) => {
-  builder.addCase(getStreamData.fulfilled, (state, { payload }) => {
+  builder.addCase(getStreamingInfo.fulfilled, (state, { payload }) => {
     state.status.dataStatus = DataStatus.FULFILLED;
     state.channel = payload.channel;
     state.stream = payload.stream;
@@ -56,7 +56,7 @@ const reducer = createReducer(initialState, (builder) => {
       editStream.pending,
       setStreamStatus.pending,
       resetStreamingKey.pending,
-      getStreamData.pending,
+      getStreamingInfo.pending,
       getMyChannel.pending,
     ),
     (state) => {
@@ -80,7 +80,7 @@ const reducer = createReducer(initialState, (builder) => {
       resetStreamingKey.rejected,
       setStreamStatus.rejected,
       getMyChannel.rejected,
-      getStreamData.rejected,
+      getStreamingInfo.rejected,
     ),
     (state, { error, payload }) => {
       const { errorCode, message } = getRejectedErrorData(error, payload);

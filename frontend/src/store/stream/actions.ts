@@ -6,13 +6,14 @@ import {
   HttpError,
   OwnChannelResponseDto,
   ResetStreamingKeyRequestDto,
+  StreamingInfoResponseDto,
   StreamingKeyResponseDto,
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
   StreamUpdateRequestDto,
   VideoStreamResponseDto,
 } from 'shared/build';
-import { ActionType, StreamData } from './common';
+import { ActionType } from './common';
 
 const createStream = createAsyncThunk<VideoStreamResponseDto, CreateStreamRequestDto, AsyncThunkConfigHttpError>(
   ActionType.CREATE_STREAM,
@@ -70,18 +71,11 @@ const editStream = createAsyncThunk<VideoStreamResponseDto, StreamUpdateRequestD
   },
 );
 
-const getStreamData = createAsyncThunk<StreamData, void, AsyncThunkConfigHttpError>(
+const getStreamingInfo = createAsyncThunk<StreamingInfoResponseDto, void, AsyncThunkConfigHttpError>(
   ActionType.GET_STREAM_DATA,
-  async (_payload, { extra: { channelStreamingApi, channelCrudApi }, rejectWithValue }) => {
+  async (_payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
     try {
-      const channel = await channelCrudApi.getMyChannelInfo();
-      const stream = await channelStreamingApi.getCurrentStream({ id: channel.id });
-      const streamingKey = await channelStreamingApi.getStreamingKey({ id: channel.id });
-      return {
-        channel,
-        stream,
-        streamingKey: streamingKey.streamingKey,
-      };
+      return await channelStreamingApi.getStreamingInfo();
     } catch (error) {
       if (error instanceof HttpError) {
         return rejectWithValue(serializeHttpError(error));
@@ -120,4 +114,4 @@ const resetStreamingKey = createAsyncThunk<
   }
 });
 
-export { createStream, uploadPoster, editStream, getStreamData, setStreamStatus, resetStreamingKey, getMyChannel };
+export { createStream, uploadPoster, editStream, getStreamingInfo, setStreamStatus, resetStreamingKey, getMyChannel };

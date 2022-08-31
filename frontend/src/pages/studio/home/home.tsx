@@ -1,7 +1,7 @@
 import { AppRoutes, IconColor, IconName } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { Icon } from 'components/common/icon';
-import { useAppDispatch, useEffect, useNavigate } from 'hooks/hooks';
+import { useAppDispatch, useAppSelector, useEffect, useNavigate } from 'hooks/hooks';
 import { streamActions } from 'store/actions';
 
 import styles from './styles.module.scss';
@@ -10,16 +10,19 @@ const StudioHome: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const { stream } = useAppSelector((state) => ({
+    stream: state.stream.stream,
+  }));
+
   useEffect(() => {
-    const fetch = async (): Promise<void> => {
-      const data = await dispatch(streamActions.getStreamData()).unwrap();
-      console.error(data);
-      if (data.stream) {
-        navigate(`${AppRoutes.STUDIO_STREAM}/${data.stream.id}`, { replace: true });
-      }
-    };
-    fetch();
-  }, [dispatch, navigate]);
+    dispatch(streamActions.getStreamingInfo());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (stream) {
+      navigate(`${AppRoutes.STUDIO_STREAM}/${stream.id}`, { replace: true });
+    }
+  }, [stream, navigate]);
 
   return (
     <div className={styles['studio']}>
