@@ -62,3 +62,23 @@
   background-color: var(--green-200-header-menu-background);
   border-radius: 50%;
 }
+
+.reaction-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.reaction-container span {
+  margin-left: 10px;
+}
+
+.reaction-block {
+  display: flex;
+}
+
+.reaction-button {
+  cursor: pointer;
+}

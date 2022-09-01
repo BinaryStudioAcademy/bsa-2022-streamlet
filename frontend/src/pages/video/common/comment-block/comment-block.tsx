@@ -8,14 +8,16 @@ type Props = {
   onNewComment: { (text: string): void };
   userAvatar: string | undefined;
   comments: Comment[];
+  onLike: (commentId: string) => void;
+  onDislike: (commentId: string) => void;
 };
 
-const VideoCommentBlock: FC<Props> = ({ comments, userAvatar, onNewComment }) => {
+const VideoCommentBlock: FC<Props> = ({ comments, userAvatar, onNewComment, onLike, onDislike }) => {
   return (
     <>
       <VideoPageCommentForm avatar={userAvatar} onSubmit={onNewComment} className={styles['comment-form']} />
       {comments.map((comment: Comment) => {
-        return <VideoComment key={comment.id} comment={comment} />;
+        return <VideoComment key={comment.id} comment={comment} onLike={onLike} onDislike={onDislike} />;
       })}
     </>
   );
