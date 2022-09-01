@@ -4,6 +4,7 @@ import { History, PrismaClient } from '@prisma/client';
 import { CONTAINER_TYPES, HistoryRequestDto, HistoryResponseDto } from '~/shared/types/types';
 import { trimHistory } from '~/shared/helpers/trim-history';
 import { HistoryListType } from 'shared/build';
+import { HISTORY_ITEM_NUM_IN_ONE_PAGE } from '~/shared/constants/constants';
 
 @injectable()
 export class HistoryRepositoryAdapter implements HistoryRepository {
@@ -50,7 +51,7 @@ export class HistoryRepositoryAdapter implements HistoryRepository {
     return {
       list,
       lastPage,
-      currentPage: skip / 10 + 1,
+      currentPage: skip / HISTORY_ITEM_NUM_IN_ONE_PAGE + 1,
     };
   }
 
