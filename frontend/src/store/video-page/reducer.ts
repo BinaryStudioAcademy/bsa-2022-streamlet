@@ -41,6 +41,7 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(channelSubscribe.fulfilled, (state, { payload }) => {
     if (state.video) {
       state.video.isUserSubscribedOnChannel = payload.isSubscribed;
+      state.video.channel.subscriberCount += payload.isSubscribed ? 1 : -1;
     }
     state.subscription.dataStatus = DataStatus.FULFILLED;
   });

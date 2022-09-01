@@ -1,9 +1,8 @@
 import { inject, injectable } from 'inversify';
 import { PrismaClient, Prisma } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
-import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
+import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimVideo } from '~/shared/helpers';
-import { Comment } from 'shared/build/common/types/comment';
 import { trimVideoWithComments } from '~/shared/helpers/trim-video';
 import {
   CategorySearchRequestQueryDto,
@@ -18,6 +17,7 @@ import { createAddReactionResponse } from '~/shared/helpers/video/create-add-rea
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { VideoSearch, VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 import { VideoRepositoryFilters } from '~/core/video/port/video-repository-filters';
+import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
   private prismaClient: PrismaClient;
@@ -36,16 +36,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     return reaction !== null ? reaction.isLike : null;
   }
 
-  async getById(id: string): Promise<
-    | (BaseVideoResponseDto & {
-        comments: Comment[];
-        description: string;
-        likeNum: number;
-        dislikeNum: number;
-        videoPath: string;
-      })
-    | null
-  > {
+  async getById(id: string): Promise<VideoExpandedInfo | null> {
     const video = await this.prismaClient.video.findUnique({
       where: {
         id,
@@ -56,6 +47,11 @@ export class VideoRepositoryAdapter implements VideoRepository {
             id: true,
             name: true,
             avatar: true,
+            _count: {
+              select: {
+                subscriptions: true,
+              },
+            },
           },
         },
         comments: {
@@ -76,7 +72,11 @@ export class VideoRepositoryAdapter implements VideoRepository {
       return video;
     }
     const { dislikeNum, likeNum } = await this.calculateReaction(video.id);
-    return { ...trimVideoWithComments(video), likeNum, dislikeNum };
+    return {
+      ...trimVideoWithComments(video),
+      likeNum,
+      dislikeNum,
+    };
   }
 
   async calculateReaction(videoId: string): Promise<{ likeNum: number; dislikeNum: number }> {

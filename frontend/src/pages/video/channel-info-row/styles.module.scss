@@ -1,0 +1,44 @@
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.sub-btn-container {
+  position: relative;
+  margin-left: auto;
+}
+
+.subscribe-signin-modal {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  width: 200px;
+}
+
+.channel-info-container {
+  display: grid;
+  grid-template:
+    'a b'
+    'a c';
+  gap: 0 10px;
+}
+
+.channel-name {
+  font-weight: 700;
+}
+
+.sub-count {
+  font-weight: 400;
+}
+
+.channel-name,
+.sub-count {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.channel-avatar {
+  grid-area: a;
+  align-self: center;
+}

@@ -7,16 +7,14 @@ import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import { useAppDispatch, useAppSelector, useNavigate, useParams, useState } from 'hooks/hooks';
 import { FC, useEffect } from 'react';
 import { videoPageActions } from 'store/actions';
-import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
 import styles from './video-page.module.scss';
 import { getReactBtnColor } from 'helpers/helpers';
 import { VideoPlayer } from 'components/common/video-player/video-player';
 import { VideoCommentBlock } from './common/comment-block/comment-block';
-import { Link } from 'react-router-dom';
 import { NeedSignInModal } from '../../components/common/sign-in-modal/sign-in-modal';
 import { socket } from 'common/config/config';
 import { store } from 'store/store';
-import { Subscribe } from './common/subscribe/subscribe';
+import { ChannelInfoRow } from './channel-info-row/channel-info-row';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -134,30 +132,13 @@ const VideoPageContainer: FC = () => {
               </div>
             </div>
           </div>
-          <div className={styles['subscribe-wrapper']}>
-            <Subscribe signinModalClassname={styles['subscribe-signin-modal']} />
+          <span>{`${isVideoFinished ? videoData.videoViews : videoData.liveViews} views`}</span>
+          <hr />
+          <ChannelInfoRow channelInfo={channel} />
+          <div className={styles['description-container']}>
+            <span>{`${videoData.description}`}</span>
           </div>
-          <>
-            <span>{`${isVideoFinished ? videoData.videoViews : videoData.liveViews} views`}</span>
-            <div className={styles['description-container']}>
-              <span>{`${videoData.description}`}</span>
-            </div>
-            <hr />
-            <div className={styles['channel-info-container']}>
-              <Link to={`${AppRoutes.CHANNEL}/${videoData.channel.id}`} style={{ textDecoration: 'none' }}>
-                <div className={styles['about-channel-block']}>
-                  <img
-                    className={styles['channel-banner']}
-                    alt={'user avatar'}
-                    src={videoData.channel.avatar ? videoData.channel.avatar : defaultAvatar}
-                  />
-                  <div className={styles['channel-description']}>
-                    <div>{videoData.channel.name}</div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </>
+          <hr />
         </div>
       </div>
       {!isVideoFinished ? (

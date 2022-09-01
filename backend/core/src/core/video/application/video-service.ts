@@ -1,14 +1,14 @@
 import { inject, injectable } from 'inversify';
 import { CONTAINER_TYPES, VideoSearch } from '~/shared/types/types';
 import { VideoRepository } from '~/core/video/port/video-repository';
-import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
-import { Comment } from 'shared/build/common/types/comment';
+import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import {
   CreateReactionRequestDto,
   CreateReactionResponseDto,
   VideoCommentRequestDto,
   VideoCommentResponseDto,
 } from 'shared/build';
+import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 
 @injectable()
 export class VideoService {
@@ -22,16 +22,7 @@ export class VideoService {
     return this.videoRepository.getAll();
   }
 
-  getById(id: string): Promise<
-    | (BaseVideoResponseDto & {
-        comments: Comment[];
-        description: string;
-        likeNum: number;
-        videoPath: string;
-        dislikeNum: number;
-      })
-    | null
-  > {
+  getById(id: string): Promise<VideoExpandedInfo | null> {
     return this.videoRepository.getById(id);
   }
 
