@@ -22,6 +22,28 @@ $base-z-index: $page-component-z-index;
   border-radius: 3px;
 }
 
+.video-chat-welcome-message {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-auto-rows: auto;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: var(--gray-400-primary-background);
+}
+
+.video-chat-welcome-message-icon {
+  margin-right: 12px;
+  padding-top: 7px;
+}
+
+.video-chat-welcome-message-body {
+  display: flex;
+  flex-flow: column nowrap;
+  color: var(--white-text-color);
+  font-size: 13px;
+  line-height: 22px;
+}
+
 .video-chat-wrapper .video-chat::-webkit-scrollbar {
   display: none;
 }
@@ -32,6 +54,8 @@ $base-z-index: $page-component-z-index;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  margin-bottom: 3px;
+  padding: 20px 20px 0;
   background-color: var(--gray-300-header-menu-background);
   border-radius: 3px;
 }
@@ -60,8 +84,27 @@ $base-z-index: $page-component-z-index;
   border-radius: 3px 3px 0 0;
 }
 
-.video-chat-header > span {
+.video-chat-header-title {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
   color: var(--white-text-color);
+}
+
+.video-chat-header-back-btn {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.video-chat-header-back-btn svg {
+  width: 20px;
+}
+
+.video-chat-header-back-btn path {
+  fill: var(--white-text-color);
 }
 
 .video-chat-header-menu-toggle {

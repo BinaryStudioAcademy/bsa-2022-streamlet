@@ -2,13 +2,23 @@ import { createReducer, isAnyOf } from '@reduxjs/toolkit';
 import { DataStatus, ErrorMessage } from 'common/enums/enums';
 import { ChatInfoResponseDto, ChatMessageResponseDto } from 'common/types/types';
 
-import { loadChat, closeChat, appendMessage, sendMessage } from './actions';
+import {
+  loadChat,
+  closeChat,
+  appendMessage,
+  sendMessage,
+  updateParticipants,
+  removeParticipants,
+  updateChatStatus,
+} from './actions';
 
 type State = {
   currentChat: {
     id: ChatInfoResponseDto['id'];
     initialMessages: ChatInfoResponseDto['initialMessages'];
     messages: ChatInfoResponseDto['initialMessages'];
+    participants: string[];
+    status: boolean;
     dataStatus: DataStatus;
     error: string | undefined;
   };
@@ -25,6 +35,8 @@ const initialState: State = {
       list: [] as ChatMessageResponseDto[],
       total: 0,
     },
+    participants: [] as string[],
+    status: true,
     dataStatus: DataStatus.IDLE,
     error: undefined,
   },
@@ -39,6 +51,18 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(loadChat.fulfilled, (state, { payload }) => {
     state.currentChat.id = payload.id;
     state.currentChat.initialMessages = payload.initialMessages;
+  });
+
+  builder.addCase(updateChatStatus, (state: State, { payload }) => {
+    state.currentChat.status = payload;
+  });
+
+  builder.addCase(updateParticipants, (state: State, { payload }) => {
+    state.currentChat.participants = payload;
+  });
+
+  builder.addCase(removeParticipants, (state: State) => {
+    state.currentChat.participants = initialState.currentChat.participants;
   });
 
   builder.addCase(closeChat, (state: State) => {

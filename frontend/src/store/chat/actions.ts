@@ -28,4 +28,10 @@ const sendMessage = createAsyncThunk<
   return chatApi.sendMessage(messagePayload);
 });
 
-export { loadChat, closeChat, appendMessage, sendMessage };
+const updateParticipants = createAction<string[]>(ActionType.UPDATE_PARTICIPANTS);
+
+const removeParticipants = createAction(ActionType.REMOVE_PARTICIPANTS);
+
+const updateChatStatus = createAction<boolean>(ActionType.UPDATE_CHAT_STATUS);
+
+export { loadChat, closeChat, appendMessage, sendMessage, updateParticipants, removeParticipants, updateChatStatus };

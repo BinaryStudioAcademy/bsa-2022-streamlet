@@ -11,6 +11,14 @@ socket.on(SocketEvents.chat.NEW_MESSAGE_TO_CHAT_ROOM_DONE, (message: ChatMessage
   store.dispatch(chatActions.appendMessage(message));
 });
 
+socket.on(SocketEvents.chat.UPDATE_CHAT_PARTICIPANTS_DONE, ({ participants }: { participants: string[] }) => {
+  store.dispatch(chatActions.updateParticipants(participants));
+});
+
+socket.on(SocketEvents.chat.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED_DONE, (isChatEnabled: boolean) => {
+  store.dispatch(chatActions.updateChatStatus(isChatEnabled));
+});
+
 type Props = {
   videoId: string;
   popOut: boolean;
@@ -20,7 +28,7 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOut }) => {
   const dispatch = useAppDispatch();
   const {
     chat: {
-      currentChat: { id, initialMessages, messages },
+      currentChat: { id, initialMessages, messages, participants },
     },
   } = useAppSelector((state) => ({
     chat: state.chat,
@@ -61,9 +69,10 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOut }) => {
     <VideoChat
       chatId={videoId}
       popOut={popOut}
-      sendMessageProps={sendMessageProps}
       initialMessages={initialMessages.list}
       messages={messages.list}
+      participants={participants}
+      sendMessageProps={sendMessageProps}
     />
   );
 };
