@@ -10,5 +10,6 @@ build
 .vscode
 .idea
 
-# video manifests & segments folder
-playback
+#tests
+allure-results
+output

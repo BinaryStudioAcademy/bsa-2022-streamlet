@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimVideo } from '~/shared/helpers';
@@ -16,8 +16,8 @@ import {
 import { createVideoCommentResponse } from '~/shared/helpers/video/create-video-comment-response';
 import { createAddReactionResponse } from '~/shared/helpers/video/create-add-reaction-response';
 import { VideoRepository } from '~/core/video/port/video-repository';
-import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
-
+import { VideoSearch, VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
+import { VideoRepositoryFilters } from '~/core/video/port/video-repository-filters';
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
   private prismaClient: PrismaClient;
@@ -98,8 +98,22 @@ export class VideoRepositoryAdapter implements VideoRepository {
     };
   }
 
-  async getAll(): Promise<DataVideo> {
+  async getAll(queryParams?: { filters?: VideoRepositoryFilters }): Promise<DataVideo> {
     const items = await this.prismaClient.video.findMany({
+      where: {
+        ...(queryParams?.filters?.streamingStatus ? { status: queryParams.filters.streamingStatus } : {}),
+        ...(queryParams?.filters?.fromChannelSubscribedByUserWithId
+          ? {
+              channel: {
+                subscriptions: {
+                  some: {
+                    userId: queryParams.filters.fromChannelSubscribedByUserWithId,
+                  },
+                },
+              },
+            }
+          : {}),
+      },
       include: {
         channel: {
           select: {
@@ -276,5 +290,65 @@ export class VideoRepositoryAdapter implements VideoRepository {
         },
       },
     });
+  }
+
+  async getVideosBySearch({ searchText, duration, date, type, sortBy }: VideoSearch): Promise<DataVideo> {
+    const queryOrderByObject = {
+      orderBy: sortBy.map((param) => param as Prisma.VideoOrderByWithRelationAndSearchRelevanceInput),
+    };
+    const queryObject = {
+      where: {
+        ...(searchText && {
+          OR: [
+            {
+              name: {
+                search: searchText,
+              },
+            },
+            {
+              description: {
+                search: searchText,
+              },
+            },
+          ],
+        }),
+        duration: {
+          gte: duration.gte,
+          lte: duration.lte,
+        },
+        publishedAt: {
+          gte: date,
+        },
+        status: {
+          in: type,
+        },
+      },
+      include: {
+        ...(type.length === 1
+          ? {
+              channel: {
+                select: {
+                  id: true,
+                  name: true,
+                  avatar: true,
+                },
+              },
+            }
+          : { channel: true }),
+      },
+    };
+
+    const result = await this.prismaClient.video.findMany({
+      ...queryObject,
+      ...queryOrderByObject,
+    });
+
+    const total = result.length;
+    const list = result.map(trimVideo);
+
+    return {
+      list,
+      total,
+    };
   }
 }

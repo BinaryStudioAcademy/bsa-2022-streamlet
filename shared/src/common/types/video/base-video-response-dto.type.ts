@@ -15,9 +15,28 @@ type BaseVideoResponseDto = {
   };
 };
 
+type BaseSearchVideoResponseDto = {
+  id: string;
+  name: string;
+  description: string;
+  videoPath: string;
+  liveViews: number;
+  videoViews: number;
+  channelId: string;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  duration: number;
+  poster: string;
+  publishedAt: string;
+  scheduledStreamDate: string;
+  channelName: string;
+  channelAvatar: string;
+};
+
 type DataVideo = {
   list: BaseVideoResponseDto[];
   total: number;
 };
 
-export { BaseVideoResponseDto, DataVideo };
+export { BaseVideoResponseDto, DataVideo, BaseSearchVideoResponseDto };

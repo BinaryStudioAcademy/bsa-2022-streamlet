@@ -9,6 +9,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -91,6 +92,7 @@ model Video {
   comments            VideoComment[]
   channel             Channel         @relation(fields: [channelId], references: [id])
   channelId           String
+  isChatEnabled       Boolean         @default(true)
   chatMessages        ChatMessage[]
   notifications       Notification[]
   historyRecords      History[]

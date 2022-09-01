@@ -3,6 +3,7 @@ enum VideoApiPath {
   $ID = '/:id',
   REACTION = '/react',
   COMMENT = '/comment',
+  SEARCH = '/search',
 }
 
 export { VideoApiPath };

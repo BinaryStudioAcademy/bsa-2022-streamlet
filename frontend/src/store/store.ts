@@ -9,6 +9,7 @@ import {
   channelCrudApi,
   channelSubscriptionApi,
   chatApi,
+  followingApi,
 } from 'services/services';
 import { rootReducer } from './root-reducer';
 import storage from 'redux-persist/lib/storage';
@@ -24,6 +25,7 @@ const extraArgument = {
   videoApi,
   categoryApi,
   chatApi,
+  followingApi,
 };
 
 const persistConfig = {
