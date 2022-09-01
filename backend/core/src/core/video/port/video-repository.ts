@@ -41,5 +41,11 @@ export interface VideoRepository {
     skip: number,
     lastPage: number,
   ): Promise<PopularVideoResponseDto>;
+  getPopularLive(
+    request: PopularVideosRequestDtoType,
+    take: number,
+    skip: number,
+    lastPage: number,
+  ): Promise<PopularVideoResponseDto>;
   getPopularVideoLength(category: string): Promise<number>;
 }

@@ -29,6 +29,7 @@ import { OverviewTab } from 'pages/following-page/tabs/overview/overview-tab';
 import { LiveVideosTab } from 'pages/following-page/tabs/live-videos/live-videos-tab';
 import { OfflineVideosTab } from 'pages/following-page/tabs/offline-videos/offline-videos-tab';
 import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
+import { BrowsePage } from '../../pages/browse-page/browse-page';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -99,7 +100,7 @@ const App: FC = () => {
                   />
                 </Route>
 
-                <Route path={AppRoutes.BROWSE} element="Browse" />
+                <Route path={AppRoutes.BROWSE} element={<BrowsePage />} />
                 <Route path={AppRoutes.GOOGLE_ATHORIZATION} element={<GoogleAuthorization query={search} />} />
                 <Route
                   path={AppRoutes.PROFILE_PREFERENCE}

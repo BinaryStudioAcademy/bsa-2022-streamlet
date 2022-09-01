@@ -3,6 +3,7 @@ import {
   controller,
   httpGet,
   httpPost,
+  queryParam,
   request,
   requestBody,
   requestParam,
@@ -121,6 +122,13 @@ export class VideoController extends BaseHttpController {
     return this.videoService.getAllVideos();
   }
 
+  @httpGet('/popular', optionalAuthenticationMiddleware)
+  public async getPopular(
+    @queryParam() { page, category }: PopularVideosRequestDtoType,
+  ): Promise<PopularVideoResponseDto> {
+    return this.videoService.getPopular({ category, page });
+  }
+
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware)
   public async get(@requestParam('id') id: string, @request() req: ExtendedRequest): Promise<VideoExpandedResponseDto> {
     const video = await this.videoService.getById(id);
@@ -140,14 +148,6 @@ export class VideoController extends BaseHttpController {
       isUserSubscribedOnChannel: isSubscribed,
       userReaction: userReaction !== null ? { isLike: userReaction } : null,
     };
-  }
-
-  @httpGet('/popular', optionalAuthenticationMiddleware)
-  public async getPopular(
-    @request() req: ExtendedRequest,
-    @requestBody() body: PopularVideosRequestDtoType,
-  ): Promise<PopularVideoResponseDto> {
-    return this.videoService.getPopular(body);
   }
 
   /**

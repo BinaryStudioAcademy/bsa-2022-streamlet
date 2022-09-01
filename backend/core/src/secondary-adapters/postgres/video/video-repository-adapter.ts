@@ -292,7 +292,40 @@ export class VideoRepositoryAdapter implements VideoRepository {
       },
       orderBy: {
         videoViews: 'desc',
-        liveViews: 'desc',
+      },
+    });
+    return trimPopular(popularVideos, lastPage, page);
+  }
+
+  async getPopularLive(
+    request: PopularVideosRequestDtoType,
+    take: number,
+    skip: number,
+    lastPage: number,
+  ): Promise<PopularVideoResponseDto> {
+    const { page } = request;
+    const popularVideos = await this.prismaClient.video.findMany({
+      where: {
+        status: 'live',
+      },
+      take,
+      skip,
+      include: {
+        categories: {
+          select: {
+            name: true,
+          },
+        },
+        channel: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+      orderBy: {
+        videoViews: 'desc',
       },
     });
     return trimPopular(popularVideos, lastPage, page);

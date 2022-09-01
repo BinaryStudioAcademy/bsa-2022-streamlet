@@ -59,6 +59,11 @@ export class VideoService {
       return this.videoRepository.getPopular(request, 10, 0, lastPage);
     }
     const skip = (pageNumber - 1) * 10;
+
+    if (request.category === 'live') {
+      return this.videoRepository.getPopularLive(request, 10, skip, lastPage);
+    }
+
     return this.videoRepository.getPopular(request, 10, skip, lastPage);
   }
 }
