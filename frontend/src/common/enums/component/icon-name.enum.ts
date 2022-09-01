@@ -8,6 +8,7 @@ enum IconName {
   CHEVRON_DOWN = 'chevron-down',
   CIRCLE = 'circle',
   COMPASS = 'compass',
+  DOTS_MENU = 'dots-menu',
   FILTER = 'filter',
   FOLLOW = 'follow',
   HISTORY = 'history',
@@ -39,6 +40,9 @@ enum IconName {
   ONLINE_STREAMING = 'online-streaming',
   BELL_OUTLINE = 'bell-outline',
   PROFILE = 'profile',
+  TIMESTAMP = 'timestamp',
+  OPEN_OUTSIDE = 'open-outside',
+  PARTICIPANTS = 'participants',
 }
 
 export { IconName };
