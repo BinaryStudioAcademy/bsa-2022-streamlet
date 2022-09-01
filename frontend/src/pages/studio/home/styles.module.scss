@@ -20,10 +20,7 @@
   display: flex;
   flex-grow: 5;
   justify-content: center;
-}
-
-.controls a {
-  text-decoration: none;
+  gap: 20px;
 }
 
 .button {
@@ -43,4 +40,8 @@
     cursor: pointer;
     opacity: 0.8;
   }
+}
+
+.icon {
+  margin-left: 10px;
 }

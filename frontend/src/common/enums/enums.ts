@@ -21,6 +21,6 @@ export * from './channel/channel';
 
 export { ImageUploadErrorMessage } from './image/image';
 
-export { StreamStatus } from './stream/stream';
+export { StreamStatus, StreamPrivacyLabel } from './stream/stream';
 
 export { SocketEvents } from './socket/socket';

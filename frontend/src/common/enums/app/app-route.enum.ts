@@ -24,9 +24,6 @@ const AppRoutes = {
   STUDIO: '/studio/home',
   STUDIO_ANALYTICS: '/studio/analytics',
   STUDIO_CHANNEL: '/studio/channel',
-  STUDIO_STREAM: '/studio/stream',
-  STUDIO_NEW_STREAM: '/studio/new-stream',
-  STUDIO_STREAM_$ID: `/studio/stream/:${AppParams.videoId}`,
   SEARCH: '/search',
   PROFILE_PREFERENCE: '/profile-preference',
   GOOGLE_ATHORIZATION: '/google-athorization',
@@ -47,9 +44,6 @@ const RoutesWithStudioHeader = {
   STUDIO: '/studio/home',
   STUDIO_ANALYTICS: '/studio/analytics',
   STUDIO_CHANNEL: '/studio/channel',
-  STUDIO_STREAM: '/studio/stream',
-  STUDIO_NEW_STREAM: '/studio/new-stream',
-  STUDIO_STREAM_$ID: `/studio/stream/:${AppParams.videoId}`,
 };
 
 type RouteWithoutHeader = typeof RoutesWithoutHeader[keyof typeof RoutesWithoutHeader];

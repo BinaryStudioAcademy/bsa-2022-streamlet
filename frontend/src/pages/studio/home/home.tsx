@@ -1,40 +1,25 @@
-import { AppRoutes, IconColor, IconName } from 'common/enums/enums';
+import { IconColor, IconName } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { Icon } from 'components/common/icon';
-import { useAppDispatch, useAppSelector, useEffect, useNavigate } from 'hooks/hooks';
-import { Link } from 'react-router-dom';
-import { streamActions } from 'store/actions';
-
 import styles from './styles.module.scss';
 
-const StudioHome: FC = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+type Props = {
+  handleStartStreaming(): void;
+};
 
-  const { stream } = useAppSelector((state) => ({
-    stream: state.stream.stream,
-  }));
-
-  useEffect(() => {
-    dispatch(streamActions.getStreamingInfo());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (stream) {
-      navigate(`${AppRoutes.STUDIO_STREAM}/${stream.id}`, { replace: true });
-    }
-  }, [stream, navigate]);
-
+const StudioHome: FC<Props> = ({ handleStartStreaming }) => {
   return (
     <div className={styles['studio']}>
       <h1 className={styles['header']}>Welcome to Studio!</h1>
       <div className={styles['controls']}>
-        <Link to={AppRoutes.STUDIO_NEW_STREAM}>
-          <button className={styles['button']}>
-            <Icon name={IconName.CAMERA} color={IconColor.WHITE} width="60" height="60" />
-            <p>Start streaming</p>
-          </button>
-        </Link>
+        <button className={styles['button']} onClick={handleStartStreaming}>
+          <Icon name={IconName.CAMERA} color={IconColor.WHITE} width="74" height="74" className={styles['icon']} />
+          <p>Start streaming</p>
+        </button>
+        <button className={styles['button']}>
+          <Icon name={IconName.TIME_AGO} color={IconColor.WHITE} width="70" height="70" />
+          <p>Schedule the stream</p>
+        </button>
       </div>
     </div>
   );

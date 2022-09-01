@@ -49,13 +49,16 @@ const reducer = createReducer(initialState, (builder) => {
     state.status.dataStatus = DataStatus.FULFILLED;
     state.channel = payload;
   });
+  builder.addCase(resetStreamingKey.pending, (state) => {
+    state.status.error = undefined;
+    state.status.errorCode = undefined;
+  });
   builder.addMatcher(
     isAnyOf(
       createStream.pending,
       uploadPoster.pending,
       editStream.pending,
       setStreamStatus.pending,
-      resetStreamingKey.pending,
       getStreamingInfo.pending,
       getMyChannel.pending,
     ),

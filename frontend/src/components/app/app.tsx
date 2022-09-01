@@ -10,7 +10,7 @@ import { Search } from 'components/search/search';
 import { NotFound } from 'components/placeholder-page/not-found';
 import { ReactNotifications } from 'react-notifications-component';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
-import { StudioHome, StudioAnalytics, StudioSidebar, StudioChannel } from '../../pages/studio';
+import { StudioAnalytics, StudioSidebar, StudioChannel } from '../../pages/studio';
 import { VideoCardTest } from './tests/video-card/video-card';
 import { VideoPageContainer } from 'pages/video/video-page-container';
 import { ProtectedRoute } from 'components/common/protected-route/protected-route';
@@ -29,10 +29,9 @@ import { OverviewTab } from 'pages/following-page/tabs/overview/overview-tab';
 import { LiveVideosTab } from 'pages/following-page/tabs/live-videos/live-videos-tab';
 import { OfflineVideosTab } from 'pages/following-page/tabs/offline-videos/offline-videos-tab';
 import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
-import { StudioStreamContainer } from 'pages/studio/stream/stream-container';
-import { StudioNewStream } from 'pages/studio/new-stream/new-stream';
 import { socket } from 'common/config/config';
 import { store } from 'store/store';
+import { StudioHomeContainer } from 'pages/studio/home/home-container';
 
 socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
   store.dispatch(socketActions.addSocketId(id));
@@ -90,14 +89,9 @@ const App: FC = () => {
           <StudioSidebar />
           <div className={styles['main-content']}>
             <Routes>
-              <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHome />} />} />
+              <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHomeContainer />} />} />
               <Route path={AppRoutes.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />
               <Route path={AppRoutes.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />} />
-              <Route path={AppRoutes.STUDIO_NEW_STREAM} element={<ProtectedRoute element={<StudioNewStream />} />} />
-              <Route
-                path={AppRoutes.STUDIO_STREAM_$ID}
-                element={<ProtectedRoute element={<StudioStreamContainer />} />}
-              />
               <Route path={AppRoutes.ANY} element={<NotFound />} />
             </Routes>
           </div>
