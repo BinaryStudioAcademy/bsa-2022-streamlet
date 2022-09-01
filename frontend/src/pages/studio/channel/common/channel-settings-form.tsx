@@ -2,7 +2,7 @@ import { useAppForm } from 'hooks/hooks';
 import { FC } from 'react';
 import styles from './styles.module.scss';
 import { ChannelProfileUpdateRequestDto, channelUpdateValidationSchema } from 'shared/build';
-import { Input, Loader } from 'components/common/common';
+import { Input, Loader, Textarea } from 'components/common/common';
 
 type Props = {
   onSubmit: { (submitValue: ChannelProfileUpdateRequestDto): Promise<void> };
@@ -34,12 +34,12 @@ export const ChannelSettingsForm: FC<Props> = ({ onSubmit, isLoading, defaultFor
       </div>
       <div className={styles['channel-setting-change-block']}>
         <div className={styles['channel-setting-input-block']}>
-          <Input
+          <Textarea
             control={control}
             errors={errors}
             name="description"
             type="text"
-            inputClassName={styles['input']}
+            inputClassName={styles['text-area']}
             label="Description"
             placeholder="Enter new channel description..."
           />

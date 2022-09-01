@@ -61,6 +61,20 @@ class ChannelCrudApi {
       },
     });
   }
+
+  async updateChannelBanner({
+    id,
+    base64Str,
+  }: ChannelProfileUpdateMediaRequestDto & DefaultRequestParam): Promise<ChannelProfileUpdateResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.CHANNEL_CRUD}${ChannelCrudApiPath.BANNER}/${id}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify({ id, base64Str }),
+      },
+    });
+  }
 }
 
 export { ChannelCrudApi };

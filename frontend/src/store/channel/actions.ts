@@ -50,6 +50,28 @@ const updateChannelAvatar = createAsyncThunk<
   },
 );
 
+const updateChannelBanner = createAsyncThunk<
+  ChannelProfileUpdateResponseDto,
+  ChannelProfileUpdateMediaRequestDto & DefaultRequestParam,
+  AsyncThunkConfig
+>(
+  ActionsTypes.UPDATE_CHANNEL_BANNER,
+  async ({ id, base64Str }, { extra: { channelCrudApi } }): Promise<ChannelProfileUpdateResponseDto> => {
+    const channelInfo = await channelCrudApi.updateChannelBanner({
+      id,
+      base64Str,
+    });
+    return channelInfo;
+  },
+);
+
 const unloadChannelInfo = createAction(ActionsTypes.UNLOAD_CHANNEL_SETTINGS);
 
-export { loadChannel, loadMyChannelInfo, unloadChannelInfo, updateChannelInfo, updateChannelAvatar };
+export {
+  loadChannel,
+  loadMyChannelInfo,
+  unloadChannelInfo,
+  updateChannelInfo,
+  updateChannelAvatar,
+  updateChannelBanner,
+};

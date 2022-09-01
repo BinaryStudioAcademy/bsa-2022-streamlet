@@ -1,10 +1,16 @@
-import { DataStatus, ErrorMessage } from 'common/enums/enums';
+import { DataStatus, ErrorMessage, IconName } from 'common/enums/enums';
 import { AvatarImgValue, FC } from 'common/types/types';
-import { ImageEditor, Loader, UploadImage } from 'components/common/common';
+import { createToastNotification, ImageEditor, Loader, UploadImage } from 'components/common/common';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { useEffect, useState, useCallback } from 'react';
 import { ChannelProfileUpdateMediaRequestDto, ChannelProfileUpdateRequestDto, DefaultRequestParam } from 'shared/build';
-import { loadMyChannelInfo, unloadChannelInfo, updateChannelInfo, updateChannelAvatar } from 'store/channel/actions';
+import {
+  loadMyChannelInfo,
+  unloadChannelInfo,
+  updateChannelInfo,
+  updateChannelAvatar,
+  updateChannelBanner,
+} from 'store/channel/actions';
 import { ChannelSettingsForm } from './common/channel-settings-form';
 import defaultChannelAvatar from '../../../assets/img/default-channel-avatar.jpg';
 import defaulChannelBanner from '../../../assets/img/default-channel-banner.jpg';
@@ -15,10 +21,12 @@ import { ImageListType } from 'react-images-uploading';
 
 const StudioChannel: FC = () => {
   const dispatch = useAppDispatch();
-  const [formError] = useState<string | undefined>();
+  const [formError, setFormError] = useState<string | undefined>();
   const [error, setError] = useState<string | undefined>();
-  const [formLoading] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [formLoading, setFormLoading] = useState<boolean>(false);
+
+  const [isLoadingAvatar, setIsLoadingAvatar] = useState(false);
+  const [isLoadingBanner, setIsLoadingBanner] = useState(false);
 
   const [isNeedAvatarUpload, setIsAvatarNeedUpload] = useState(false);
   const [isNeedAvatarEditor, setIsNeedAvatarEditor] = useState(false);
@@ -102,29 +110,32 @@ const StudioChannel: FC = () => {
   const handleAvatarSave = useCallback(
     async (payload: ChannelProfileUpdateMediaRequestDto & DefaultRequestParam) => {
       try {
-        setIsLoading(true);
+        setIsLoadingAvatar(true);
         await dispatch(updateChannelAvatar(payload)).unwrap();
       } catch {
         setError(store.getState().auth.error || ErrorMessage.DEFAULT);
       } finally {
-        setIsLoading(false);
+        setIsLoadingAvatar(false);
       }
       dispatch(updateChannelAvatar(payload));
     },
     [dispatch],
   );
 
-  const handleBannerSave = useCallback(async (payload: ChannelProfileUpdateMediaRequestDto & DefaultRequestParam) => {
-    try {
-      /* eslint no-console: 0 */
-      console.log(payload);
-      setIsLoading(true);
-    } catch {
-      setError(store.getState().auth.error || ErrorMessage.DEFAULT);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const handleBannerSave = useCallback(
+    async (payload: ChannelProfileUpdateMediaRequestDto & DefaultRequestParam) => {
+      try {
+        await dispatch(updateChannelBanner(payload)).unwrap();
+        setIsLoadingBanner(true);
+      } catch {
+        setError(store.getState().auth.error || ErrorMessage.DEFAULT);
+      } finally {
+        setIsLoadingBanner(false);
+      }
+      dispatch(updateChannelBanner(payload));
+    },
+    [dispatch],
+  );
 
   const onAvatarSave = async (base64Str: string): Promise<void> => {
     setIsNeedAvatarEditor(!isNeedAvatarEditor);
@@ -132,17 +143,33 @@ const StudioChannel: FC = () => {
   };
 
   const onBannerSave = async (base64Str: string): Promise<void> => {
-    setIsNeedAvatarEditor(!isNeedAvatarEditor);
+    setIsNeedBannerEditor(!isNeedBannerEditor);
     await handleBannerSave({ base64Str, id });
   };
 
+  const handleUpdateChannelInfoSubmit = useCallback(
+    async (payload: ChannelProfileUpdateRequestDto & DefaultRequestParam) => {
+      try {
+        setFormLoading(true);
+        await dispatch(updateChannelInfo(payload)).unwrap();
+      } catch {
+        setFormError(store.getState().auth.error || ErrorMessage.DEFAULT);
+      } finally {
+        createToastNotification({
+          iconName: IconName.TV,
+          type: 'success',
+          title: 'Channel profile',
+          message: 'Your channel info has been successfully updated',
+          durationMs: 5000,
+        });
+        setFormLoading(false);
+      }
+    },
+    [dispatch],
+  );
+
   const onFormSubmit = async (submitValue: ChannelProfileUpdateRequestDto): Promise<void> => {
-    dispatch(
-      updateChannelInfo({
-        id,
-        ...submitValue,
-      }),
-    );
+    await handleUpdateChannelInfoSubmit({ ...submitValue, id });
   };
 
   if (channelDataStatus === DataStatus.PENDING || !channelData) {
@@ -177,10 +204,10 @@ const StudioChannel: FC = () => {
       <div className={styles['channel-preferences-container']}>
         <div className={styles['channel-preferences-main-content-container']}>
           <div className={styles['image-setting-container']}>
-            <h2 className={styles['channel-image-header']}>channel avatar</h2>
+            <h2 className={styles['channel-image-header']}>Channel avatar</h2>
             <div className={styles['channel-image-upload-container']}>
               <div className={styles['avatar-container']}>
-                {isLoading ? (
+                {isLoadingAvatar ? (
                   <Loader spinnerSize={'xs'} className={styles['channel-page-loader-container']} />
                 ) : (
                   <img
@@ -213,10 +240,10 @@ const StudioChannel: FC = () => {
             </div>
           </div>
           <div className={styles['image-setting-container']}>
-            <h2 className={styles['channel-image-header']}>channel banner</h2>
+            <h2 className={styles['channel-image-header']}>Channel banner</h2>
             <div className={styles['channel-image-upload-container']}>
               <div className={styles['banner-container']}>
-                {isLoading ? (
+                {isLoadingBanner ? (
                   <Loader spinnerSize={'xs'} className={styles['channel-page-loader-container']} />
                 ) : (
                   <img
