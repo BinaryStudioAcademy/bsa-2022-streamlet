@@ -511,6 +511,10 @@
   --link-color: rgb(146 255 230);
   --password-eye-color: rgb(104 104 104);
 
+  /* stream */
+  --stream-settings-modal-bg: rgba(52 79 62);
+  --stream-select-item-hover-bg: rgb(36 65 47);
+
   /* subscription */
   --subscribed-btn-background-color: rgb(104 104 104);
   --subscribed-btn-hover-background-color: rgb(145 145 145);
@@ -566,6 +570,10 @@ body[data-theme='light'] {
   --auth-border: none;
   --input-border: 1px solid var(--brand-green-color);
   --auth-background: #fbfffa;
+
+  /* stream */
+  --stream-settings-modal-bg: white;
+  --stream-select-item-hover-bg: rgb(197 197 197);
 
   /* video-card */
   --video-card-schedule-btn-background: #d1d1d140;

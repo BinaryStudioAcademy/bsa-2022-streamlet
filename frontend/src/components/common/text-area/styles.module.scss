@@ -12,14 +12,14 @@
 .textarea {
   width: 100%;
   height: 47px;
-  padding-left: 23px;
-  color: var(--white-text-color);
+  padding-left: 12px;
+  color: var(--primary-text-color);
   border: var(--input-border);
   border-radius: 3px;
   outline: inherit;
 }
 
-.textarea-labels {
-  display: flex;
-  justify-content: space-between;
+.textarea-label {
+  color: var(--white-text-color);
+  cursor: pointer;
 }
