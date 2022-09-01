@@ -8,7 +8,7 @@
 // so the only reason of using varchar(n) is to duplicate validation logic on db level
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -32,6 +32,7 @@ model User {
   notifications      Notification[]
   profile            UserProfile?
   historyRecords     History[]
+  videoPreferences   Category[]
   reactions          Reaction[]
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
@@ -114,6 +115,7 @@ model Category {
   name       String   @unique
   posterPath String?
   videos     Video[]
+  users      User[]
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }

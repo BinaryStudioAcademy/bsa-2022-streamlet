@@ -111,6 +111,8 @@ async function seedTags(): Promise<void> {
 }
 
 async function seedCategories(): Promise<void> {
+  const users = await prisma.user.findMany();
+
   const categories = Array.from(
     new Set([
       'gaming',
@@ -125,6 +127,8 @@ async function seedCategories(): Promise<void> {
       'programming',
     ]),
   );
+
+  const preferencesPerUser = 4;
 
   const videosByCategory = new Map<string, string[]>();
   videosByCategory.set('gaming', ['e7b87m91-4ade-4209-9222-24dfe45b08s9']);
@@ -163,6 +167,11 @@ async function seedCategories(): Promise<void> {
         videos: {
           connect: videosByCategory.get(categories[i])?.map((videoId) => ({
             id: videoId,
+          })),
+        },
+        users: {
+          connect: getRandomSample(users, preferencesPerUser).map((user) => ({
+            id: user.id,
           })),
         },
       },
