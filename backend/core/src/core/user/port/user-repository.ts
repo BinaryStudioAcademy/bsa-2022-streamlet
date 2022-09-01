@@ -1,6 +1,6 @@
 import { Category, User } from '@prisma/client';
-import { UserSignUpRequestDto } from '~/shared/types/types';
-import { UserBindCategoriesDto } from 'shared/build';
+import { UserGetPreferencesDto, UserSignUpRequestDto } from '~/shared/types/types';
+import { DefaultRequestParam, UserBindCategoriesDto } from 'shared/build';
 
 export interface UserRepository {
   getAll(): Promise<User[]>;
@@ -12,4 +12,5 @@ export interface UserRepository {
   setIsActivated(shouldBeActivated: boolean, userId: string): Promise<void>;
   updateUserName(userId: string, username: string): Promise<User | null>;
   bindCategories(bindCategoriesDto: UserBindCategoriesDto): Promise<Category[]>;
+  getPreferedCategories(getPreferencesDto: DefaultRequestParam): Promise<UserGetPreferencesDto | null>;
 }

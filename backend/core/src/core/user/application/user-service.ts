@@ -15,6 +15,7 @@ import {
   GoogleUserResultDto,
   UserBindCategoriesDto,
   CategoryResponseDto,
+  DefaultRequestParam,
 } from 'shared/build';
 import { ImageStorePort } from '~/core/common/port/image-store';
 
@@ -160,5 +161,15 @@ export class UserService {
     });
 
     return bindedCategories.map((category) => castToCategoryResponseDto(category));
+  }
+
+  async getPreferedCategories({ id }: DefaultRequestParam): Promise<CategoryResponseDto[] | undefined> {
+    const preferedCategories = await this.userRepository.getPreferedCategories({
+      id,
+    });
+    if (!preferedCategories) {
+      return;
+    }
+    return preferedCategories.videoPreferences.map((category) => castToCategoryResponseDto(category));
   }
 }

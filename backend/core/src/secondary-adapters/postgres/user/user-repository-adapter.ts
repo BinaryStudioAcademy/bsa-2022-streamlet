@@ -1,9 +1,9 @@
 import { inject, injectable } from 'inversify';
 import { UserRepository } from '~/core/user/port/user-repository';
 import { Category, PrismaClient, User } from '@prisma/client';
-import { CONTAINER_TYPES, UserSignUpRequestDto } from '~/shared/types/types';
+import { CONTAINER_TYPES, UserGetPreferencesDto, UserSignUpRequestDto } from '~/shared/types/types';
 import { hashValue } from '~/shared/helpers';
-import { UserBindCategoriesDto } from 'shared/build';
+import { DefaultRequestParam, UserBindCategoriesDto } from 'shared/build';
 
 @injectable()
 export class UserRepositoryAdapter implements UserRepository {
@@ -11,6 +11,16 @@ export class UserRepositoryAdapter implements UserRepository {
 
   constructor(@inject(CONTAINER_TYPES.PrismaClient) prismaClient: PrismaClient) {
     this.prismaClient = prismaClient;
+  }
+  async getPreferedCategories({ id }: DefaultRequestParam): Promise<UserGetPreferencesDto | null> {
+    return this.prismaClient.user.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        videoPreferences: true,
+      },
+    });
   }
   async bindCategories({ id, categories }: UserBindCategoriesDto): Promise<Category[]> {
     const values = categories.map((categoryId) => {

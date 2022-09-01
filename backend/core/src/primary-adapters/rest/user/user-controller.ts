@@ -1,10 +1,20 @@
-import { BaseHttpController, controller, httpGet, httpPost, requestBody, requestParam } from 'inversify-express-utils';
+import {
+  BaseHttpController,
+  controller,
+  httpGet,
+  httpPost,
+  request,
+  requestBody,
+  requestParam,
+} from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES } from '~/shared/types/types';
+import { CONTAINER_TYPES, ExtendedAuthenticatedRequest } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
 import { authenticationMiddleware } from '../middleware';
 import { ApiPath, CategoryResponseDto, DefaultRequestParam, UserApiPath, UserBindCategoriesDto } from 'shared/build';
+import { Forbidden } from '~/shared/exceptions/forbidden';
+import { NotFound } from '~/shared/exceptions/not-found';
 
 /**
  * @swagger
@@ -68,10 +78,39 @@ export class UserController extends BaseHttpController {
   public bindCategories(
     @requestBody() payload: Omit<UserBindCategoriesDto, 'id'>,
     @requestParam() { id }: DefaultRequestParam,
+    @request() req: ExtendedAuthenticatedRequest,
   ): Promise<CategoryResponseDto[]> {
+    //should create middleware?
+    const { id: clientUserId } = req.user;
+
+    if (clientUserId !== id) {
+      throw new Forbidden('user Id mismatch');
+    }
+
     return this.userService.bindCategories({
       id,
       ...payload,
     });
+  }
+
+  @httpGet(UserApiPath.$PREFERENCES, authenticationMiddleware)
+  public async getPreferences(
+    @request() req: ExtendedAuthenticatedRequest,
+    @requestParam() { id }: DefaultRequestParam,
+  ): Promise<CategoryResponseDto[]> {
+    const { id: clientUserId } = req.user;
+
+    if (clientUserId !== id) {
+      throw new Forbidden('user Id mismatch');
+    }
+
+    const preferences = await this.userService.getPreferedCategories({
+      id,
+    });
+    if (!preferences) {
+      throw new NotFound();
+    }
+
+    return preferences;
   }
 }
