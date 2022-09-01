@@ -13,12 +13,14 @@ export class HistoryService {
 
   async getUserHistory(userId: string, page: string): Promise<HistoryResponseDto> {
     const pageNumber = Number(page);
+    const itemsNumOnOnePage = 10;
+
     const lastPage = Math.ceil((await this.historyRepository.getAllUserHistoryLength(userId)) / 10);
     if (!pageNumber) {
-      return this.historyRepository.getUserHistory(userId, 10, 0, lastPage);
+      return this.historyRepository.getUserHistory(userId, itemsNumOnOnePage, 0, lastPage);
     }
-    const skip = (pageNumber - 1) * 10;
-    return this.historyRepository.getUserHistory(userId, 10, skip, lastPage);
+    const skip = (pageNumber - 1) * itemsNumOnOnePage;
+    return this.historyRepository.getUserHistory(userId, itemsNumOnOnePage, skip, lastPage);
   }
 
   async createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<History> {

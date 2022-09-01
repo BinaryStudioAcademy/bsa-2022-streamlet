@@ -1,0 +1,11 @@
+{
+  "reporterEnabled": "spec, allure-mocha, mocha-junit-reporter",
+  "allure-mocha": {
+    "allure-results": "./allure-results"
+  },
+  "mochaJunitReporterReporterOptions": {
+    "mochaFile": "./output/junit-report-[hash].xml",
+    "testCaseSwitchClassnameAndName": true,
+    "testsuitesTitle": "API Tests"
+  }
+}

@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimVideo } from '~/shared/helpers';
@@ -16,9 +16,8 @@ import {
 import { createVideoCommentResponse } from '~/shared/helpers/video/create-video-comment-response';
 import { createAddReactionResponse } from '~/shared/helpers/video/create-add-reaction-response';
 import { VideoRepository } from '~/core/video/port/video-repository';
-import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
+import { VideoSearch, VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 import { VideoRepositoryFilters } from '~/core/video/port/video-repository-filters';
-
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
   private prismaClient: PrismaClient;
@@ -66,6 +65,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
                 profile: true,
               },
             },
+            commentReactions: true,
           },
           orderBy: {
             createdAt: 'desc',
@@ -291,5 +291,161 @@ export class VideoRepositoryAdapter implements VideoRepository {
         },
       },
     });
+  }
+
+  async commentReactionByUser(commentId: string, userId: string): Promise<boolean | null> {
+    const reaction = await this.prismaClient.commentReaction.findFirst({
+      where: {
+        userId,
+        commentId,
+      },
+    });
+    return reaction !== null ? reaction.isLike : null;
+  }
+
+  async calculateCommentReaction(commentId: string): Promise<{ likeNum: number; dislikeNum: number }> {
+    const likeCount = await this.prismaClient.commentReaction.count({
+      where: {
+        commentId,
+        isLike: true,
+      },
+    });
+    const dislikeCount = await this.prismaClient.commentReaction.count({
+      where: {
+        commentId,
+        isLike: false,
+      },
+    });
+    return {
+      likeNum: likeCount,
+      dislikeNum: dislikeCount,
+    };
+  }
+
+  async addCommentReaction(
+    request: CreateReactionRequestDto,
+    videoId: string,
+    userId: string,
+  ): Promise<CreateReactionResponseDto | null> {
+    const { isLike } = request;
+    const videoComment = await this.prismaClient.videoComment.update({
+      where: {
+        id: videoId,
+      },
+      data: {
+        commentReactions: {
+          create: { isLike, userId },
+        },
+      },
+      select: {
+        commentReactions: {
+          where: {
+            userId,
+          },
+        },
+      },
+    });
+    const { likeNum, dislikeNum } = await this.calculateReaction(videoId);
+    return createAddReactionResponse(videoComment.commentReactions[0], likeNum, dislikeNum);
+  }
+
+  async removeCommentReactionAndAddNew(
+    commentId: string,
+    userId: string,
+    isLike: boolean,
+  ): Promise<CreateReactionResponseDto | null> {
+    const userReaction = await this.commentReactionByUser(commentId, userId);
+    if (userReaction === isLike) {
+      await this.prismaClient.videoComment.update({
+        where: {
+          id: commentId,
+        },
+        data: {
+          commentReactions: {
+            deleteMany: [{ userId }],
+          },
+        },
+      });
+      const { likeNum, dislikeNum } = await this.calculateCommentReaction(commentId);
+      return createAddReactionResponse(null, likeNum, dislikeNum);
+    }
+
+    const newReaction = await this.prismaClient.videoComment.update({
+      where: {
+        id: commentId,
+      },
+      data: {
+        commentReactions: {
+          deleteMany: [{ userId }],
+          create: { isLike, userId },
+        },
+      },
+      select: {
+        commentReactions: {
+          where: { userId },
+        },
+      },
+    });
+    const { likeNum, dislikeNum } = await this.calculateCommentReaction(commentId);
+    return createAddReactionResponse(newReaction.commentReactions[0], likeNum, dislikeNum);
+  }
+  async getVideosBySearch({ searchText, duration, date, type, sortBy }: VideoSearch): Promise<DataVideo> {
+    const queryOrderByObject = {
+      orderBy: sortBy.map((param) => param as Prisma.VideoOrderByWithRelationAndSearchRelevanceInput),
+    };
+    const queryObject = {
+      where: {
+        ...(searchText && {
+          OR: [
+            {
+              name: {
+                search: searchText,
+              },
+            },
+            {
+              description: {
+                search: searchText,
+              },
+            },
+          ],
+        }),
+        duration: {
+          gte: duration.gte,
+          lte: duration.lte,
+        },
+        publishedAt: {
+          gte: date,
+        },
+        status: {
+          in: type,
+        },
+      },
+      include: {
+        ...(type.length === 1
+          ? {
+              channel: {
+                select: {
+                  id: true,
+                  name: true,
+                  avatar: true,
+                },
+              },
+            }
+          : { channel: true }),
+      },
+    };
+
+    const result = await this.prismaClient.video.findMany({
+      ...queryObject,
+      ...queryOrderByObject,
+    });
+
+    const total = result.length;
+    const list = result.map(trimVideo);
+
+    return {
+      list,
+      total,
+    };
   }
 }
