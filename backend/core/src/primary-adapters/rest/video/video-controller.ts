@@ -8,7 +8,13 @@ import {
   requestParam,
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES, ExtendedAuthenticatedRequest, ExtendedRequest } from '~/shared/types/types';
+import {
+  CONTAINER_TYPES,
+  ExtendedAuthenticatedRequest,
+  ExtendedRequest,
+  PopularVideoResponseDto,
+  PopularVideosRequestDtoType,
+} from '~/shared/types/types';
 import { VideoService } from '~/core/video/application/video-service';
 import {
   ApiPath,
@@ -135,6 +141,15 @@ export class VideoController extends BaseHttpController {
       userReaction: userReaction !== null ? { isLike: userReaction } : null,
     };
   }
+
+  @httpGet('/popular', optionalAuthenticationMiddleware)
+  public async getPopular(
+    @request() req: ExtendedRequest,
+    @requestBody() body: PopularVideosRequestDtoType,
+  ): Promise<PopularVideoResponseDto> {
+    return this.videoService.getPopular(body);
+  }
+
   /**
    * @swagger
    * /videos/react/{id}:

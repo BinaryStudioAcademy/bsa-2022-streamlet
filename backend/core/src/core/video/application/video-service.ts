@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { CONTAINER_TYPES } from '~/shared/types/types';
+import { CONTAINER_TYPES, PopularVideoResponseDto, PopularVideosRequestDtoType } from '~/shared/types/types';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { Comment } from 'shared/build/common/types/comment';
@@ -50,5 +50,15 @@ export class VideoService {
       return this.videoRepository.removeReactionAndAddNew(videoId, userId, request.isLike);
     }
     return this.videoRepository.addReaction(request, videoId, userId);
+  }
+
+  async getPopular(request: PopularVideosRequestDtoType): Promise<PopularVideoResponseDto> {
+    const pageNumber = request.page;
+    const lastPage = Math.ceil((await this.videoRepository.getPopularVideoLength(request.category)) / 10);
+    if (pageNumber <= 0) {
+      return this.videoRepository.getPopular(request, 10, 0, lastPage);
+    }
+    const skip = (pageNumber - 1) * 10;
+    return this.videoRepository.getPopular(request, 10, skip, lastPage);
   }
 }

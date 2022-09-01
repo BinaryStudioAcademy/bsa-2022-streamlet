@@ -6,6 +6,8 @@ import {
   CategorySearchRequestQueryDto,
   TagSearchRequestQueryDto,
   Comment,
+  PopularVideosRequestDtoType,
+  PopularVideoResponseDto,
 } from 'shared/build';
 import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
@@ -33,4 +35,11 @@ export interface VideoRepository {
     userId: string,
   ): Promise<CreateReactionResponseDto | null>;
   addComment(request: VideoCommentRequestDto, authorId: string): Promise<VideoCommentResponseDto | null>;
+  getPopular(
+    request: PopularVideosRequestDtoType,
+    take: number,
+    skip: number,
+    lastPage: number,
+  ): Promise<PopularVideoResponseDto>;
+  getPopularVideoLength(category: string): Promise<number>;
 }
