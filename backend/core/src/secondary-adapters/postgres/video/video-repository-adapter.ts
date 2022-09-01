@@ -65,6 +65,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
                 profile: true,
               },
             },
+            commentReactions: true,
           },
           orderBy: {
             createdAt: 'desc',
@@ -276,5 +277,102 @@ export class VideoRepositoryAdapter implements VideoRepository {
         },
       },
     });
+  }
+
+  async commentReactionByUser(commentId: string, userId: string): Promise<boolean | null> {
+    const reaction = await this.prismaClient.commentReaction.findFirst({
+      where: {
+        userId,
+        commentId,
+      },
+    });
+    return reaction !== null ? reaction.isLike : null;
+  }
+
+  async calculateCommentReaction(commentId: string): Promise<{ likeNum: number; dislikeNum: number }> {
+    const likeCount = await this.prismaClient.commentReaction.count({
+      where: {
+        commentId,
+        isLike: true,
+      },
+    });
+    const dislikeCount = await this.prismaClient.commentReaction.count({
+      where: {
+        commentId,
+        isLike: false,
+      },
+    });
+    return {
+      likeNum: likeCount,
+      dislikeNum: dislikeCount,
+    };
+  }
+
+  async addCommentReaction(
+    request: CreateReactionRequestDto,
+    videoId: string,
+    userId: string,
+  ): Promise<CreateReactionResponseDto | null> {
+    const { isLike } = request;
+    const videoComment = await this.prismaClient.videoComment.update({
+      where: {
+        id: videoId,
+      },
+      data: {
+        commentReactions: {
+          create: { isLike, userId },
+        },
+      },
+      select: {
+        commentReactions: {
+          where: {
+            userId,
+          },
+        },
+      },
+    });
+    const { likeNum, dislikeNum } = await this.calculateReaction(videoId);
+    return createAddReactionResponse(videoComment.commentReactions[0], likeNum, dislikeNum);
+  }
+
+  async removeCommentReactionAndAddNew(
+    commentId: string,
+    userId: string,
+    isLike: boolean,
+  ): Promise<CreateReactionResponseDto | null> {
+    const userReaction = await this.commentReactionByUser(commentId, userId);
+    if (userReaction === isLike) {
+      await this.prismaClient.videoComment.update({
+        where: {
+          id: commentId,
+        },
+        data: {
+          commentReactions: {
+            deleteMany: [{ userId }],
+          },
+        },
+      });
+      const { likeNum, dislikeNum } = await this.calculateCommentReaction(commentId);
+      return createAddReactionResponse(null, likeNum, dislikeNum);
+    }
+
+    const newReaction = await this.prismaClient.videoComment.update({
+      where: {
+        id: commentId,
+      },
+      data: {
+        commentReactions: {
+          deleteMany: [{ userId }],
+          create: { isLike, userId },
+        },
+      },
+      select: {
+        commentReactions: {
+          where: { userId },
+        },
+      },
+    });
+    const { likeNum, dislikeNum } = await this.calculateCommentReaction(commentId);
+    return createAddReactionResponse(newReaction.commentReactions[0], likeNum, dislikeNum);
   }
 }

@@ -135,6 +135,7 @@ export class VideoController extends BaseHttpController {
       userReaction: userReaction !== null ? { isLike: userReaction } : null,
     };
   }
+
   /**
    * @swagger
    * /comment:
@@ -228,5 +229,56 @@ export class VideoController extends BaseHttpController {
     }
 
     return res;
+  }
+
+  /**
+   * @swagger
+   * /comment:
+   *    post:
+   *      tags:
+   *        - comment
+   *      operationId: addCommentReaction
+   *      security:
+   *      - bearerAuth: []
+   *      consumes:
+   *        - application/json
+   *      produces:
+   *        - application/json
+   *      description: Add reaction to comment
+   *      parameters:
+   *        - in: body
+   *          name: body
+   *          description: data that contain isLike filed
+   *          required: true
+   *          schema:
+   *            $ref: '#/components/schemas/CreateReactionRequestDto'
+   *        - in: path
+   *          name: id
+   *          description: comment ID
+   *          required: true
+   *          schema:
+   *            type: string
+   *      responses:
+   *        '200':
+   *          description: reaction added
+   *        '404':
+   *          description: Such a comment does not exists!
+   */
+
+  @httpPost(`${VideoApiPath.COMMENT}${VideoApiPath.REACTION}${VideoApiPath.$ID}`, authenticationMiddleware)
+  public async addCommentReaction(
+    @requestParam('id') id: string,
+    @requestBody() body: CreateReactionRequestDto,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<CreateReactionResponseDto> {
+    const { id: userId } = req.user;
+
+    const reactionResponse = await this.videoService.addCommentReaction(body, id, userId);
+
+    if (!reactionResponse) {
+      throw new NotFound('Such a comment does not exist!');
+    }
+
+    return reactionResponse;
   }
 }

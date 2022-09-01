@@ -8,6 +8,8 @@ export const comments: Comment[] = [
     lastName: 'Pupkin',
     dateAdded: new Date('2022/08/17'),
     text: 'We are facing a serious business dilemma, with Facebook taking away a good chunk of traffic to news and content sites, and ad blockers eating into what’s left of it while slashing ad revenues.',
+    likeNum: 0,
+    dislikeNum: 0,
   },
   {
     id: '2',
@@ -15,6 +17,8 @@ export const comments: Comment[] = [
     firstName: 'Petya',
     dateAdded: new Date('2022/08/18 12:00'),
     text: 'We are facing a serious business dilemma, with Facebook taking away a good chunk of traffic to news.',
+    likeNum: 0,
+    dislikeNum: 0,
   },
   {
     id: '3',
@@ -23,6 +27,8 @@ export const comments: Comment[] = [
     lastName: 'Absuvi',
     dateAdded: new Date('2022/08/18 13:00'),
     text: 'We are facing a serious business dilemma, and ad blockers eating into what’s left of it while slashing ad revenues.',
+    likeNum: 0,
+    dislikeNum: 0,
   },
   {
     id: '4',
@@ -30,11 +36,15 @@ export const comments: Comment[] = [
     userName: 'dima',
     dateAdded: new Date(),
     text: 'We are facing a serious business dilemma, with Facebook taking away a good chunk of traffic to news and content sites, and ad blockers eating into what’s left of it while slashing ad revenues.',
+    likeNum: 0,
+    dislikeNum: 0,
   },
   {
     id: '5',
     userName: 'anonim',
     dateAdded: new Date('2022/08/18 09:00'),
     text: 'We are facing a serious business dilemma, with Facebook taking away a good chunk of traffic to news and content sites, and ad blockers eating into what’s left of it while slashing ad revenues.',
+    likeNum: 0,
+    dislikeNum: 0,
   },
 ];
