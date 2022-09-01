@@ -19,6 +19,8 @@ export const createVideoCommentResponse = (comments: CommentWithAuthor[]): Comme
       lastName: profile?.lastName,
       avatar: profile?.avatar,
       dateAdded: comment.createdAt,
+      likeNum: 0,
+      dislikeNum: 0,
     };
   });
   return commentsResponse;
