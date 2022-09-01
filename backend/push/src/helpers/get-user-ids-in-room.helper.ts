@@ -5,7 +5,7 @@ const getUserIdsInRoom = (clientsMap: Map<string, string>, clientsInRoom: string
       res.push(clientsMap.get(client) as string);
     }
   }
-  return res;
+  return Array.from(new Set(res));
 };
 
 export { getUserIdsInRoom };
