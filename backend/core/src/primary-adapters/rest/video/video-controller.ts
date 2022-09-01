@@ -3,12 +3,13 @@ import {
   controller,
   httpGet,
   httpPost,
+  queryParam,
   request,
   requestBody,
   requestParam,
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES, ExtendedAuthenticatedRequest, ExtendedRequest } from '~/shared/types/types';
+import { CONTAINER_TYPES, ExtendedAuthenticatedRequest, ExtendedRequest, VideoSearch } from '~/shared/types/types';
 import { VideoService } from '~/core/video/application/video-service';
 import {
   ApiPath,
@@ -18,6 +19,11 @@ import {
   VideoCommentRequestDto,
   VideoCommentResponseDto,
   VideoExpandedResponseDto,
+  DateFilterId,
+  DurationFilterId,
+  SearchQueryParam,
+  SortByFilterId,
+  TypeFilterId,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -25,6 +31,12 @@ import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/
 import { optionalAuthenticationMiddleware } from '../middleware/optional-authentication-middleware';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { authenticationMiddleware } from '../middleware';
+import {
+  matchVideoFilterDate,
+  matchVideoFilterDuration,
+  matchVideoFilterSortBy,
+  matchVideoFilterType,
+} from '~/shared/enums/enums';
 
 /**
  * @swagger
@@ -110,9 +122,72 @@ export class VideoController extends BaseHttpController {
    *                items:
    *                  $ref: '#/components/schemas/Video'
    */
-  @httpGet('/')
+  @httpGet(VideoApiPath.ROOT)
   public getAllVideos(): Promise<DataVideo> {
     return this.videoService.getAllVideos();
+  }
+
+  /**
+   * @swagger
+   * /videos/search:
+   *    get:
+   *      tags:
+   *      - videos
+   *      operationId: getVideosBySearch
+   *      description: Returns videos
+   *      security: []
+   *      parameters:
+   *        - in: query
+   *          name: date
+   *          description: filtered videos by date
+   *          required: false
+   *          schema:
+   *            type: string
+   *        - in: query
+   *          name: type
+   *          description: filtered videos by type
+   *          required: false
+   *          schema:
+   *            type: string
+   *        - in: query
+   *          name: duration
+   *          description: filtered videos by duration
+   *          required: false
+   *          schema:
+   *            type: string
+   *        - in: query
+   *          name: sortBy
+   *          description: sorted videos by parameters
+   *          required: false
+   *          schema:
+   *            type: string
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Video'
+   */
+  @httpGet(VideoApiPath.SEARCH)
+  public async getVideosBySearch(
+    @queryParam(SearchQueryParam.SEARCH_TEXT) search: string | undefined,
+    @queryParam(SearchQueryParam.DURATION) duration: DurationFilterId,
+    @queryParam(SearchQueryParam.DATE) date: DateFilterId,
+    @queryParam(SearchQueryParam.TYPE) type: TypeFilterId,
+    @queryParam(SearchQueryParam.SORT_BY) sortBy: SortByFilterId,
+  ): Promise<DataVideo> {
+    const queryParams: VideoSearch = {
+      searchText: search ? search.trim().split(' ').join(' & ') : undefined,
+      duration: matchVideoFilterDuration[duration] || matchVideoFilterDuration[DurationFilterId.ANY],
+      date: matchVideoFilterDate[date] || matchVideoFilterDate[DateFilterId.ANYTIME],
+      type: matchVideoFilterType[type] || matchVideoFilterType[TypeFilterId.ALL],
+      sortBy: matchVideoFilterSortBy[sortBy] || matchVideoFilterSortBy[SortByFilterId.DEFAULT],
+    };
+
+    return await this.videoRepository.getVideosBySearch(queryParams);
   }
 
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware)
@@ -138,7 +213,7 @@ export class VideoController extends BaseHttpController {
 
   /**
    * @swagger
-   * /comment:
+   * /videos/react/{id}:
    *    post:
    *      tags:
    *        - video
@@ -189,7 +264,7 @@ export class VideoController extends BaseHttpController {
 
   /**
    * @swagger
-   * /comment:
+   * /videos/comment:
    *    post:
    *      tags:
    *        - video

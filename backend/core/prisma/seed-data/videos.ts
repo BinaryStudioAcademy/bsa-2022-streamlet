@@ -15,6 +15,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'duration': 173,
       'poster':
         'https://scontent.flwo6-1.fna.fbcdn.net/v/t39.30808-6/285270507_1483328318791583_463444811077561983_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=730e14&_nc_ohc=EUXjv97KYh8AX9XNIbB&_nc_ht=scontent.flwo6-1.fna&oh=00_AT_5vuylsFZYcRnSkcgL71DPpQuzjvK0fP8vJltbfNv8yQ&oe=630EA310',
+      'isChatEnabled': false,
     },
     {
       'id': '34165be6-6ac0-4537-a857-cc0646d2620e',
@@ -27,6 +28,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 154,
       'duration': 121,
       'poster': 'https://img.youtube.com/vi/wxRfGOJE778/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': '3400139d-e0fd-49ab-ac52-be4d72f9b10b',
@@ -40,6 +42,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'duration': 161,
       'poster':
         'https://scontent.flwo6-1.fna.fbcdn.net/v/t39.30808-6/285270507_1483328318791583_463444811077561983_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=730e14&_nc_ohc=EUXjv97KYh8AX9XNIbB&_nc_ht=scontent.flwo6-1.fna&oh=00_AT_5vuylsFZYcRnSkcgL71DPpQuzjvK0fP8vJltbfNv8yQ&oe=630EA310',
+      'isChatEnabled': false,
     },
     {
       'id': '76746c5b-e552-40ba-8d9a-247428386caf',
@@ -52,18 +55,20 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 268,
       'duration': 148,
       'poster': 'https://img.youtube.com/vi/M25h9FGQ1BU/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': '67105c20-233e-48de-a8b6-c9a10be83824',
       'name': 'Binary Studio Summer Trip | 2019',
       'description':
         'Binary Studio team travels to one of the peaks of Koprowski Shtit, near the Slovak region. Prepare to watch our journey - 18 kilometers of trekking, 10 hours under the rain, hail and the stinging sun',
-      'status': 'finished',
+      'status': 'live',
       'videoPath': 'https://dev.streamlet.tk/segments/5/master.m3u8',
       'liveViews': 0,
       'videoViews': 1369,
-      'duration': 62,
+      'duration': 0,
       'poster': 'https://img.youtube.com/vi/teyjpbvxB3I/maxresdefault.jpg',
+      'isChatEnabled': true,
     },
     {
       'id': 'f5c7b2e5-fd35-4092-80ac-a1cea1d7cacb',
@@ -76,6 +81,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 172,
       'duration': 78,
       'poster': 'https://img.youtube.com/vi/B322okjRyoo/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': 'e7b87a26-4ade-4209-9222-24dfe36b08f5',
@@ -88,6 +94,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 1378,
       'duration': 79,
       'poster': 'https://img.youtube.com/vi/A6yDb9FGB9A/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': 'e7b87a26-4ade-4209-9422-24dff36b08f5',
@@ -99,6 +106,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 1378,
       'duration': 232,
       'poster': 'https://img.youtube.com/vi/sNDw4Khjymg/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': 'b3b82a26-4ade-4209-9222-24dfe36b08f5',
@@ -111,6 +119,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 128,
       'duration': 25804,
       'poster': 'https://img.youtube.com/vi/gPUX1oRtxPM/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': 'rt787a26-4ade-4201-9222-24dfe36b08f5',
@@ -122,6 +131,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 1328,
       'duration': 4084,
       'poster': 'https://img.youtube.com/vi/HflguE7T1Nw/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': 'sh787a26-4adv-4209-9173-24dfe36b08f5',
@@ -134,6 +144,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 451,
       'duration': 4437,
       'poster': 'https://img.youtube.com/vi/ocsOap0TGh0/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': 'h4a87a26-4ade-4209-9222-24dfe36b08f5',
@@ -146,6 +157,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 231,
       'duration': 5182,
       'poster': 'https://img.youtube.com/vi/8r0a_jbq7Cg/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': 'e7b87k17-4ade-4109-9222-24dfe36b08f5',
@@ -158,6 +170,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 231,
       'duration': 7340,
       'poster': 'https://img.youtube.com/vi/fJM__YM-Udw/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': 'w7b87a26-4adw-4211-9222-24dfe36b08f5',
@@ -171,6 +184,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'duration': 144,
       'poster':
         'https://scontent.flwo6-1.fna.fbcdn.net/v/t39.30808-6/285270507_1483328318791583_463444811077561983_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=730e14&_nc_ohc=EUXjv97KYh8AX9XNIbB&_nc_ht=scontent.flwo6-1.fna&oh=00_AT_5vuylsFZYcRnSkcgL71DPpQuzjvK0fP8vJltbfNv8yQ&oe=630EA310',
+      'isChatEnabled': false,
     },
     {
       'id': 'e7b87m91-4ade-4209-9222-24dfe45b08s9',
@@ -182,6 +196,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 251,
       'duration': 97,
       'poster': 'https://img.youtube.com/vi/q6CkUzKRFSk/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': 'e7b87a26-4add-1229-9222-24dfe36b08f5',
@@ -194,6 +209,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 251,
       'duration': 6930,
       'poster': 'https://img.youtube.com/vi/fFQV9BXpm1M/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': 'e7b87a21-4ase-4209-0022-24dfe36b08f5',
@@ -207,6 +223,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'duration': 142,
       'poster':
         'https://scontent.flwo6-1.fna.fbcdn.net/v/t39.30808-6/285270507_1483328318791583_463444811077561983_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=730e14&_nc_ohc=EUXjv97KYh8AX9XNIbB&_nc_ht=scontent.flwo6-1.fna&oh=00_AT_5vuylsFZYcRnSkcgL71DPpQuzjvK0fP8vJltbfNv8yQ&oe=630EA310',
+      'isChatEnabled': false,
     },
     {
       'id': 'e7b87a26-4ade-4209-9222-24dfe36b00c7',
@@ -219,6 +236,7 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 1020,
       'duration': 141,
       'poster': 'https://img.youtube.com/vi/XINU3TRXDsY/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': 'e7b87a26-4ade-4209-0122-24dfe36n08e5',
@@ -231,17 +249,19 @@ const videosNoChannels: Omit<Video, 'updatedAt' | 'createdAt' | 'channelId' | 'p
       'videoViews': 922,
       'duration': 137,
       'poster': 'https://img.youtube.com/vi/m_sOrxiC5ZU/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
     {
       'id': 'e7b87l09-4ade-4209-9111-12dfs34b08f5',
       'name': 'Binary Studio Academy',
       'description': 'Find out more about our academy',
-      'status': 'finished',
+      'status': 'live',
       'videoPath': 'https://www.youtube.com/watch?v=roHLJEoC2H8',
       'liveViews': 0,
       'videoViews': 362,
       'duration': 49,
       'poster': 'https://img.youtube.com/vi/roHLJEoC2H8/maxresdefault.jpg',
+      'isChatEnabled': false,
     },
   ];
 

@@ -5,6 +5,7 @@ export interface RoutePage {
   linkTo: AppRoute;
   iconName: IconName;
   textLink: string;
+  authRequired?: boolean;
 }
 
 export const configRoutePages: Array<RoutePage> = [
@@ -25,6 +26,7 @@ export const configRoutePages: Array<RoutePage> = [
     linkTo: AppRoutes.FOLLOWING,
     iconName: IconName.FOLLOW,
     textLink: 'Following',
+    authRequired: true,
   },
   {
     id: 4,

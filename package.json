@@ -51,7 +51,8 @@
     "backend/push",
     "backend/video-transcoding-server",
     "frontend",
-    "shared"
+    "shared",
+    "tests"
   ],
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"

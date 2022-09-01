@@ -10,4 +10,7 @@ export {
   type RestorePasswordConfirmRequestDto,
   type AccountVerificationConfirmRequestDto,
   type AccountVerificationConfirmResponseDto,
+  type GoogleResponseDto,
+  type GoogleRequestDto,
+  type GoogleUserResultDto,
 } from 'shared/build';
