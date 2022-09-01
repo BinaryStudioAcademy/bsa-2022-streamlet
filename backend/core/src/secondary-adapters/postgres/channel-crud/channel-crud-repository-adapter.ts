@@ -51,6 +51,14 @@ export class ChannelCrudRepositoryAdapter implements ChannelCrudRepository {
     });
   }
 
+  async getChannelByAuthorId(authorId: string): Promise<Channel | null> {
+    return this.prismaClient.channel.findFirst({
+      where: {
+        authorId,
+      },
+    });
+  }
+
   async getChannelById(id: string): Promise<ChannelInfoBeforeTrimming | null> {
     return this.prismaClient.channel.findUnique({
       where: {

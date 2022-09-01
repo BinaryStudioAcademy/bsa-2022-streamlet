@@ -33,6 +33,7 @@ model User {
   profile            UserProfile?
   historyRecords     History[]
   reactions          Reaction[]
+  commentReactions   CommentReaction[]
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
 }
@@ -125,6 +126,7 @@ model VideoComment {
   videoId   String
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
+  commentReactions CommentReaction[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -211,4 +213,17 @@ model Reaction {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, videoId])
+}
+
+model CommentReaction {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  comment   VideoComment @relation(fields: [commentId], references: [id])
+  commentId String
+  isLike    Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, commentId])
 }

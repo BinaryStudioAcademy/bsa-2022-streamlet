@@ -13,3 +13,7 @@ export const getReactBtnColor = (
   }
   return !userReaction.isLike ? IconColor.GREEN : IconColor.VIDEO_REACTIONS_ICON_COLOR;
 };
+
+export const getCommentReactBtnColor = (likeNum: number): IconColor.VIDEO_REACTIONS_ICON_COLOR | IconColor.GREEN => {
+  return likeNum === 0 ? IconColor.VIDEO_REACTIONS_ICON_COLOR : IconColor.GREEN;
+};

@@ -1,8 +1,8 @@
-import { Reaction } from '@prisma/client';
+import { Reaction, CommentReaction } from '@prisma/client';
 import { CreateReactionResponseDto } from 'shared/build';
 
 const createAddReactionResponse = (
-  reaction: Reaction | null,
+  reaction: Reaction | CommentReaction | null,
   likeNum: number,
   dislikeNum: number,
 ): CreateReactionResponseDto => {
