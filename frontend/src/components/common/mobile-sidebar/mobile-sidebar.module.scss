@@ -49,8 +49,10 @@ $animation-duration: 200ms;
   opacity: 0;
   transition: all $animation-duration cubic-bezier(0.46, 0.03, 0.52, 0.96);
 
-  @media screen and (min-width: 1301px) {
-    display: none;
+  &.has-backup-for-wide-screen {
+    @media screen and (min-width: 1301px) {
+      display: none;
+    }
   }
 
   @media screen and (max-width: 424px) {
