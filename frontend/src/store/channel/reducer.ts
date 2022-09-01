@@ -1,8 +1,8 @@
 import { createEntityAdapter, createReducer } from '@reduxjs/toolkit';
 import { DataStatus, ErrorMessage } from 'common/enums/enums';
-import { ChannelInfoResponseDto, RootState } from 'common/types/types';
-import { ChannelVideoPreviewsPageDto } from 'shared/build';
-import { loadChannel, channelSubscribeToggle } from './actions';
+import { ChannelInfoResponseDto, ChannelVideoPreviewsPageDto, RootState } from 'common/types/types';
+import { channelSubscribe } from 'store/subscriptions/actions';
+import { loadChannel } from './actions';
 
 type ChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
 type ChannelVideo = ChannelVideoPreviewsPageDto['list'][number];
@@ -39,16 +39,13 @@ const initialState: InitialState = {
       error: undefined,
     },
   },
-  currentChannelVideos: {
-    data: channelVideosAdapter.getInitialState(),
-    dataStatus: DataStatus.IDLE,
-    error: undefined,
-  },
+  currentChannelVideos: { data: channelVideosAdapter.getInitialState(), dataStatus: DataStatus.IDLE, error: undefined },
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder.addCase(loadChannel.pending, (state) => {
     state.currentChannel.dataStatus = DataStatus.PENDING;
+    state.currentChannelVideos.dataStatus = DataStatus.PENDING;
 
     // be sure to reset state, so that no stale data is displayed
     state.currentChannel.error = undefined;
@@ -62,17 +59,18 @@ const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(loadChannel.rejected, (state, { error }) => {
     state.currentChannel.dataStatus = DataStatus.REJECTED;
+    state.currentChannelVideos.dataStatus = DataStatus.REJECTED;
     state.currentChannel.error = error.message || ErrorMessage.DEFAULT;
   });
 
   builder.addCase(loadChannel.fulfilled, (state, { payload }) => {
     state.currentChannel.dataStatus = DataStatus.FULFILLED;
+    state.currentChannelVideos.dataStatus = DataStatus.FULFILLED;
     const { initialVideosPage, ...channelData } = payload;
     state.currentChannel.data = channelData;
     channelVideosAdapter.setAll(state.currentChannelVideos.data, initialVideosPage.list);
   });
-
-  builder.addCase(channelSubscribeToggle.fulfilled, (state, { payload }) => {
+  builder.addCase(channelSubscribe.fulfilled, (state, { payload }) => {
     if (state.currentChannel.data) {
       state.currentChannel.data.isCurrentUserSubscriber = payload.isSubscribed;
     }

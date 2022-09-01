@@ -5,6 +5,7 @@ import { ChannelStreamingRepository } from '~/core/channel-streaming/port/channe
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { VideoStreamResponseBeforeTrimming } from '~/shared/types/stream/stream-info-before-trimming.type';
 import { StreamKeyResponseBeforeTrimming } from '~/shared/types/types';
+import { VideoWithChannelAndAuthorDto } from '~/shared/types/video/video-with-channel-and-author-dto.type';
 
 @injectable()
 export class ChannelStreamingRepositoryAdapter implements ChannelStreamingRepository {
@@ -120,6 +121,32 @@ export class ChannelStreamingRepositoryAdapter implements ChannelStreamingReposi
     return this.prismaClient.channel.findFirst({
       where: {
         authorId,
+      },
+    });
+  }
+
+  getVideoById(videoId: string): Promise<VideoWithChannelAndAuthorDto | null> {
+    return this.prismaClient.video.findUnique({
+      where: {
+        id: videoId,
+      },
+      include: {
+        channel: {
+          include: {
+            author: true,
+          },
+        },
+      },
+    });
+  }
+
+  changeChatToggle(videoId: string, chatToggle: boolean): Promise<Video | null> {
+    return this.prismaClient.video.update({
+      where: {
+        id: videoId,
+      },
+      data: {
+        isChatEnabled: chatToggle,
       },
     });
   }

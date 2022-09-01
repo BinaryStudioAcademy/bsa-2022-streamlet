@@ -19,9 +19,16 @@ import { RestorePasswordConfirmPage } from 'pages/restore-password-confirm-page/
 import { ChannelPage } from 'pages/channel-page/channel-page';
 import { ProfilePreferencesPage } from 'pages/profile-preferences-page/profile-preferences-page';
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
+import { GoogleAuthorization } from 'components/auth/components/common/social-buttons/google-button/google-authorization';
 
 import styles from './app.module.scss';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
+import { FollowingPage } from 'pages/following-page/following-page';
+import { Navigate } from 'react-router-dom';
+import { OverviewTab } from 'pages/following-page/tabs/overview/overview-tab';
+import { LiveVideosTab } from 'pages/following-page/tabs/live-videos/live-videos-tab';
+import { OfflineVideosTab } from 'pages/following-page/tabs/offline-videos/offline-videos-tab';
+import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
 import { StudioStreamContainer } from 'pages/studio/stream/stream-container';
 import { StudioNewStream } from 'pages/studio/new-stream/new-stream';
 import { socket } from 'common/config/config';
@@ -33,7 +40,7 @@ socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
 
   const hasToken = Boolean(tokensStorageService.getTokens().accessToken);
 
@@ -106,8 +113,19 @@ const App: FC = () => {
                 <Route path={AppRoutes.ROOT} element={<MainPageContainer />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />
                 <Route path={AppRoutes.HISTORY} element="History" />
-                <Route path={AppRoutes.FOLLOWING} element="Following" />
+                <Route path={AppRoutes.FOLLOWING} element={<ProtectedRoute element={<FollowingPage />} />}>
+                  <Route index element={<OverviewTab />} />
+                  <Route path={FollowingTab.OVERVIEW} element={<OverviewTab />} />
+                  <Route path={FollowingTab.LIVE} element={<LiveVideosTab />} />
+                  <Route path={FollowingTab.OFFLINE} element={<OfflineVideosTab />} />
+                  <Route
+                    path="*"
+                    element={<Navigate to={`${AppRoutes.FOLLOWING}/${FollowingTab.OVERVIEW}`} replace />}
+                  />
+                </Route>
+
                 <Route path={AppRoutes.BROWSE} element="Browse" />
+                <Route path={AppRoutes.GOOGLE_ATHORIZATION} element={<GoogleAuthorization query={search} />} />
                 <Route
                   path={AppRoutes.PROFILE_PREFERENCE}
                   element={<ProtectedRoute element={<ProfilePreferencesPage />} />}

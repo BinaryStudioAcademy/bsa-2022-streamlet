@@ -13,4 +13,6 @@ export * from './tag/tag';
 export * from './profile/profile';
 export * from './history/history';
 export * from './chat/chat';
+export * from './subscription/subscription';
+export * from './video/video';
 export * from './stream/stream';

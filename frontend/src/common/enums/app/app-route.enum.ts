@@ -29,6 +29,7 @@ const AppRoutes = {
   STUDIO_STREAM_$ID: `/studio/stream/:${AppParams.videoId}`,
   SEARCH: '/search',
   PROFILE_PREFERENCE: '/profile-preference',
+  GOOGLE_ATHORIZATION: '/google-athorization',
 } as const;
 
 type AppRoute = typeof AppRoutes[keyof typeof AppRoutes];

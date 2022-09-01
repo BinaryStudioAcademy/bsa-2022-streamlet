@@ -18,3 +18,4 @@ export * from './stream/stream';
 export * from './subscription/subscription';
 export * from './comment';
 export * from './chat/chat';
+export * from './following/following';

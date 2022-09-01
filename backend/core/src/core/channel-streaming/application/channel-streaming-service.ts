@@ -1,5 +1,11 @@
 import { inject, injectable } from 'inversify';
-import { LiveStartResponseDto, StreamingKeyResponseDto, StreamingKeyWithAuthorResponseDto } from '~/shared/types/types';
+import {
+  LiveStartResponseDto,
+  StreamingKeyResponseDto,
+  StreamingKeyWithAuthorResponseDto,
+  ChangeChatToggleResponseDto,
+  VideoWithChannelAndAuthorDto,
+} from '~/shared/types/types';
 import { AmqpQueue, StreamStatus } from '~/shared/enums/enums';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { ChannelStreamingRepository } from '../port/channel-streaming-repository';
@@ -197,5 +203,27 @@ export class ChannelStreamingService {
     }
 
     return castToVideoStreamResponseDto(update);
+  }
+
+  async getVideoById(videoId: string): Promise<VideoWithChannelAndAuthorDto | null> {
+    return this.channelStreamingRepository.getVideoById(videoId);
+  }
+
+  async changeChatToggle(videoId: string, chatToggle: boolean): Promise<ChangeChatToggleResponseDto | null> {
+    const updatedVideo = await this.channelStreamingRepository.changeChatToggle(videoId, chatToggle);
+    if (!updatedVideo) {
+      return null;
+    }
+    return {
+      videoId: updatedVideo.id,
+      isChatEnabled: updatedVideo.isChatEnabled,
+    };
+  }
+
+  notifyViewersAboutChatToggleChanged(body: { roomId: string; isChatEnabled: boolean }): Promise<boolean> {
+    return this.amqpChannel.sendToQueue({
+      queue: AmqpQueue.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED,
+      content: Buffer.from(JSON.stringify(body)),
+    });
   }
 }

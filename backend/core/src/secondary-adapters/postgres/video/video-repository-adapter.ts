@@ -17,6 +17,7 @@ import { createVideoCommentResponse } from '~/shared/helpers/video/create-video-
 import { createAddReactionResponse } from '~/shared/helpers/video/create-add-reaction-response';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
+import { VideoRepositoryFilters } from '~/core/video/port/video-repository-filters';
 
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
@@ -98,8 +99,22 @@ export class VideoRepositoryAdapter implements VideoRepository {
     };
   }
 
-  async getAll(): Promise<DataVideo> {
+  async getAll(queryParams?: { filters?: VideoRepositoryFilters }): Promise<DataVideo> {
     const items = await this.prismaClient.video.findMany({
+      where: {
+        ...(queryParams?.filters?.streamStatus ? { status: queryParams.filters.streamStatus } : {}),
+        ...(queryParams?.filters?.fromChannelSubscribedByUserWithId
+          ? {
+              channel: {
+                subscriptions: {
+                  some: {
+                    userId: queryParams.filters.fromChannelSubscribedByUserWithId,
+                  },
+                },
+              },
+            }
+          : {}),
+      },
       include: {
         channel: {
           select: {
@@ -108,6 +123,9 @@ export class VideoRepositoryAdapter implements VideoRepository {
             avatar: true,
           },
         },
+      },
+      orderBy: {
+        publishedAt: 'desc',
       },
     });
     const total = items.length;

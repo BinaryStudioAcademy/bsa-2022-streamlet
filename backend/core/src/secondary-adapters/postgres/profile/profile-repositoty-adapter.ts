@@ -63,6 +63,17 @@ export class ProfileRepositoryAdapter implements ProfileRepository {
     });
   }
 
+  async createGoogleProfile(userId: string, firstName = '', lastName = '', avatar = ''): Promise<UserProfile> {
+    return this.prismaClient.userProfile.create({
+      data: {
+        firstName,
+        lastName,
+        userId,
+        avatar,
+      },
+    });
+  }
+
   async checkProfileExist(userId: string): Promise<UserProfile | null> {
     return this.prismaClient.userProfile.findFirst({
       where: {

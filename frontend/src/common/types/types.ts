@@ -29,9 +29,11 @@ export * from './profile/profile';
 export { type AvatarImgValue, ImageStorePresetType } from './image/image';
 
 export { ValidationSchema } from './validation/validation';
+
 export { type ToastNotificationParams } from './toast-notification/toast-notifications';
 
 export * from './video/video';
+
 export { BaseSubscriptionResponseDto, DataSubscription } from './subscription/subscription';
 
 export * from './channel/channel';
@@ -46,6 +48,6 @@ export {
   StreamLiveStatusRequestDto,
 } from './stream/stream';
 
-declare module 'react-notifications-component';
-
 export * from './chat/chat';
+
+declare module 'react-notifications-component';

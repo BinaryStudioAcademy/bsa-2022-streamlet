@@ -35,7 +35,7 @@ import { normalizeCategoryUpdatePayload } from './helpers/normalize-update-paylo
  * all routes except bind categories to video, get all and search
  * should be role based (role admin or something like that)
  */
-@controller(ApiPath.CATEGORY, authenticationMiddleware)
+@controller(ApiPath.CATEGORY)
 export class CategoryController extends BaseHttpController {
   private categoryService: CategoryService;
 
@@ -74,7 +74,7 @@ export class CategoryController extends BaseHttpController {
     return category;
   }
 
-  @httpPost(CategoryApiPath.ROOT)
+  @httpPost(CategoryApiPath.ROOT, authenticationMiddleware)
   public async createCategory(@requestBody() body: CategoryCreateRequestDto): Promise<CategoryResponseDto> {
     const payload = normalizeCategoryPayload(body);
     const category = await this.categoryService.createCategory(payload);
@@ -85,7 +85,7 @@ export class CategoryController extends BaseHttpController {
     return category;
   }
 
-  @httpPut(CategoryApiPath.$ID)
+  @httpPut(CategoryApiPath.$ID, authenticationMiddleware)
   public async updateCategory(
     @requestParam() { id }: DefaultRequestParam,
     @requestBody() body: Omit<CategoryUpdateRequestDto, 'id'>,
@@ -103,7 +103,7 @@ export class CategoryController extends BaseHttpController {
     return updatedCategory;
   }
 
-  @httpDelete(CategoryApiPath.$ID)
+  @httpDelete(CategoryApiPath.$ID, authenticationMiddleware)
   public async deleteCategory(@requestParam() { id }: DefaultRequestParam): Promise<boolean> {
     const isSuccess = await this.categoryService.deleteCategory(id);
     if (!isSuccess) {
@@ -113,7 +113,7 @@ export class CategoryController extends BaseHttpController {
     return isSuccess;
   }
 
-  @httpPost(CategoryApiPath.$BIND)
+  @httpPost(CategoryApiPath.$BIND, authenticationMiddleware)
   public async bindCategoryToVIdeo(
     @requestParam() { id }: DefaultRequestParam,
     @requestBody() { categories }: BindCategoryToVideoRequestDto,

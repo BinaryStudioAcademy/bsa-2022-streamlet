@@ -7,6 +7,7 @@ enum ChannelStreamingApiPath {
   DISCONNECT = '/disconnect',
   STREAMING_KEY = '/streaming_key',
   RESET_STREAMING_KEY = '/reset_streaming_key',
+  CHANGE_CHAT_TOGGLE = '/change_chat_toggle',
   LIVE = '/live',
   UPLOAD_POSTER = '/upload-poster',
   EDIT_STREAM = '/edit-stream',

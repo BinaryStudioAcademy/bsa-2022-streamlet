@@ -1,6 +1,5 @@
-import { Channel, StreamingKey, Video } from '@prisma/client';
-import { VideoStreamResponseBeforeTrimming } from '~/shared/types/stream/stream-info-before-trimming.type';
-import { StreamKeyResponseBeforeTrimming } from '~/shared/types/types';
+import { StreamingKey, Video } from '@prisma/client';
+import { VideoWithChannelAndAuthorDto } from '~/shared/types/video/video-with-channel-and-author-dto.type';
 
 export interface ChannelStreamingRepository {
   getStreamingKey(props: Partial<StreamingKey>): Promise<StreamingKey | null>;
@@ -12,4 +11,6 @@ export interface ChannelStreamingRepository {
   createStream(channelId: string): Promise<VideoStreamResponseBeforeTrimming>;
   updateStream(videoId: string, props: Partial<Video>): Promise<VideoStreamResponseBeforeTrimming | null>;
   getOwnChannel(authorId: string): Promise<Channel | null>;
+  getVideoById(videoId: string): Promise<VideoWithChannelAndAuthorDto | null>;
+  changeChatToggle(videoId: string, chatToggle: boolean): Promise<Video | null>;
 }

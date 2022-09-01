@@ -1,6 +1,7 @@
 export enum ImageStorePresetType {
   AVATAR = 'avatar',
   CATEGORY_POSTER = 'category-poster',
-  STREAM_POSTER = 'stream-poster',
+  CHANNEL_AVATAR = 'channel-avatar',
   CHANNEL_BANNER = 'channel-banner',
+  STREAM_POSTER = 'stream-poster',
 }

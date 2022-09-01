@@ -2,6 +2,8 @@ export {
   type ChannelInfoRequestDto,
   type ChannelInfoResponseDto,
   type CreateSubscriptionResponseDto,
+  type ChangeChatToggleRequestDto,
+  type ChangeChatToggleResponseDto,
   type OwnChannelResponseDto,
 } from 'shared/build';
 

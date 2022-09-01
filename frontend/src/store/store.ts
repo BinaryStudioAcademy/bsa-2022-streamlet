@@ -9,6 +9,7 @@ import {
   channelCrudApi,
   channelSubscriptionApi,
   chatApi,
+  followingApi,
   channelStreamingApi,
 } from 'services/services';
 import { rootReducer } from './root-reducer';
@@ -25,6 +26,7 @@ const extraArgument = {
   videoApi,
   categoryApi,
   chatApi,
+  followingApi,
   channelStreamingApi,
 };
 

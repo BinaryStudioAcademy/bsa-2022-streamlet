@@ -12,6 +12,7 @@ import { ChannelCrudApi } from './channel-crud-api/channel-crud-api.service';
 import { ChannelSubscriptionApi } from './channel-subscription-api/channel-subscription-api.service';
 import { CategoryApi } from './category-api/category-api.service';
 import { ChatApi } from './chat-api/chat-api.service';
+import { FollowingApi } from './following-api/following-api.service';
 import { ChannelStreamingApi } from './channel-streaming-api/channel-streaming-api.service';
 
 const storageService = new StorageService();
@@ -58,6 +59,11 @@ const chatApi = new ChatApi({
   http,
 });
 
+const followingApi = new FollowingApi({
+  apiPrefix: ENV.API_PATH,
+  http,
+});
+
 const channelStreamingApi = new ChannelStreamingApi({
   apiPrefix: ENV.API_PATH,
   http,
@@ -75,5 +81,6 @@ export {
   channelCrudApi,
   channelSubscriptionApi,
   chatApi,
+  followingApi,
   channelStreamingApi,
 };

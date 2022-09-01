@@ -33,9 +33,10 @@ const VideoSection: FC<Props> = ({ channelInfo }) => {
     }
     return (
       <VideosBlock
-        videoCards={videoIds.map((videoId) => (
-          <ChannelVideoCard key={videoId} videoId={videoId} channelInfo={channelInfo} />
-        ))}
+        loadingStatus={dataStatus}
+        videoCards={videoIds.map((videoId) => {
+          return <ChannelVideoCard key={videoId} videoId={videoId} channelInfo={channelInfo} />;
+        })}
       />
     );
   };

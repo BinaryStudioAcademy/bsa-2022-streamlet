@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { User } from '@prisma/client';
+import axios from 'axios';
 import { CONTAINER_TYPES, MailTestRequestDto, UserSignUpRequestDto } from '~/shared/types/types';
 import { UserRepository } from '~/core/user/port/user-repository';
 import { RefreshTokenRepository } from '~/core/refresh-token/port/refresh-token-repository';
@@ -11,6 +12,7 @@ import {
   ImageUploadResponseDto,
   UserUploadRequestDto,
   AmqpQueue,
+  GoogleUserResultDto,
 } from 'shared/build';
 import { ImageStorePort } from '~/core/common/port/image-store';
 
@@ -18,6 +20,7 @@ import { MailRepository } from '~/core/mail/port/mail-repository';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
 import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
 import { ChannelStreamingRepository } from '~/core/channel-streaming/port/channel-streaming-repository';
+import { ProfileRepository } from '~/core/profile/port/profile-repository';
 
 @injectable()
 export class UserService {
@@ -28,6 +31,7 @@ export class UserService {
   private amqpChannel: AmqpChannelPort;
   private channelCrudRepository: ChannelCrudRepository;
   private channelStreamingRepository: ChannelStreamingRepository;
+  private profileRepository: ProfileRepository;
 
   // eslint-disable-next-line max-params
   constructor(
@@ -38,6 +42,7 @@ export class UserService {
     @inject(CONTAINER_TYPES.AmqpChannelAdapter) amqpChannel: AmqpChannelPort,
     @inject(CONTAINER_TYPES.ChannelCrudRepository) channelCrudRepository: ChannelCrudRepository,
     @inject(CONTAINER_TYPES.ChannelStreamingRepository) channelStreamingRepository: ChannelStreamingRepository,
+    @inject(CONTAINER_TYPES.ProfileRepository) profileRepository: ProfileRepository,
   ) {
     this.userRepository = userRepository;
     this.refreshTokenRepository = refreshTokenRepository;
@@ -46,6 +51,7 @@ export class UserService {
     this.amqpChannel = amqpChannel;
     this.channelCrudRepository = channelCrudRepository;
     this.channelStreamingRepository = channelStreamingRepository;
+    this.profileRepository = profileRepository;
   }
 
   getAllUsers(): Promise<User[]> {
@@ -110,5 +116,47 @@ export class UserService {
       queue: AmqpQueue.NOTIFY_USER_BROADCAST,
       content: Buffer.from(JSON.stringify(body)),
     });
+  }
+
+  async getGoogleUser({
+    id_token,
+    access_token,
+  }: {
+    id_token: string;
+    access_token: string;
+  }): Promise<GoogleUserResultDto> {
+    const res = await axios.get<GoogleUserResultDto>(
+      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
+      {
+        headers: {
+          Authorization: `Bearer ${id_token}`,
+        },
+      },
+    );
+    return res.data;
+  }
+
+  async createGoogleUser(id_token: string, access_token: string): Promise<User> {
+    let newUser = {} as User;
+
+    const {
+      email,
+      name: username,
+      given_name,
+      family_name,
+      picture,
+    } = await this.getGoogleUser({ id_token, access_token });
+
+    const googleUser = await this.getUserByEmail(email);
+
+    if (!googleUser) {
+      newUser = await this.createUser({
+        email,
+        username,
+        password: '',
+      });
+      this.profileRepository.createGoogleProfile(newUser.id, given_name, family_name, picture);
+    }
+    return !googleUser ? newUser : googleUser;
   }
 }

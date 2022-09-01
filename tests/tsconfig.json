@@ -1,0 +1,27 @@
+{
+  "ts-node": {
+    "files": true
+  },
+  "compilerOptions": {
+    "outDir": "build",
+    "baseUrl": ".",
+    "target": "es2019",
+    "lib": ["es2017", "dom", "ES2019.Array"],
+    "moduleResolution": "Node",
+    "module": "CommonJS",
+    "experimentalDecorators": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false,
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "types": ["node", "mocha"]
+  },
+  "extends": "../tsconfig.json",
+  "include": ["temp", "tests", "./index.d.ts"],
+  "exclude": ["build", "node_modules"],
+  "typeRoots": ["./node_modules/allure2-js-commons/dist/declarations/**/"],
+  "files": ["./index.d.ts"]
+}

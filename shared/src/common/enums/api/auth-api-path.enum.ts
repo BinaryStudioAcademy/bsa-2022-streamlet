@@ -9,6 +9,8 @@ enum AuthApiPath {
   ACCOUNT_VERIFICATION_CONFIRM = '/account-verification-confirm',
   SIGN_OUT = '/sign-out',
   USER = '/user',
+  SIGN_IN_GOOGLE = '/sign-in-google',
+  GOOGLE_ATHORIZATION = '/google-athorization',
 }
 
 export { AuthApiPath };

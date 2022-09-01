@@ -12,3 +12,6 @@ export { type AccountVerificationConfirmRequestDto } from './account-verificatio
 export { type AccountVerificationConfirmResponseDto } from './account-verification-confirm-response-dto';
 export { type AccountVerificationInitRequestDto } from './account-verification-init-request-dto';
 export { type AccountVerificationInitResponseDto } from './account-verification-init-response-dto';
+export { type GoogleRequestDto } from './google-request-dto.type';
+export { type GoogleResponseDto } from './google-response-dto.type';
+export { type GoogleUserResultDto } from './google-user-result-dto.type';
