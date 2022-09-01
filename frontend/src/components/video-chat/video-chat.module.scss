@@ -1,3 +1,7 @@
+@import 'assets/css/config.scss';
+
+$base-z-index: $page-component-z-index;
+
 .video-chat-wrapper {
   display: flex;
   flex-direction: column;
@@ -20,6 +24,108 @@
 
 .video-chat-wrapper .video-chat::-webkit-scrollbar {
   display: none;
+}
+
+.video-chat-popout {
+  display: flex;
+  flex: 1;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--gray-300-header-menu-background);
+  border-radius: 3px;
+}
+
+.video-chat-popout span {
+  color: var(--text-gray-color);
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.video-chat-restore-btn {
+  margin-top: 10px;
+  background-color: var(--brand-green-color-hover);
+}
+
+.video-chat-header {
+  position: relative;
+  z-index: $base-z-index;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--gray-300-header-menu-background);
+  border-bottom: 2px solid var(--primary-text-color);
+  border-radius: 3px 3px 0 0;
+}
+
+.video-chat-header > span {
+  color: var(--white-text-color);
+}
+
+.video-chat-header-menu-toggle {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.video-chat-header-menu-toggle path {
+  fill: var(--text-gray-color);
+}
+
+.video-chat-header-menu-item path {
+  fill: var(--text-gray-color);
+}
+
+.video-chat-header-menu-toggle:hover path {
+  fill: var(--white-text-color);
+}
+
+.video-chat-header-menu-body {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: $base-z-index + 1;
+  background-color: var(--gray-300-header-menu-background);
+  border-top: 2px solid var(--primary-text-color);
+  border-radius: 0 0 3px 3px;
+  box-shadow: -3px 3px 10px 0 rgb(0 0 0 / 15%);
+}
+
+.video-chat-header-menu-list {
+  display: flex;
+  flex-flow: column nowrap;
+  list-style: none;
+}
+
+.video-chat-header-menu-item {
+  display: grid;
+  grid-template-columns: 33px auto;
+  align-items: center;
+  padding: 5px 15px 5px 5px;
+  color: var(--text-gray-color);
+  cursor: pointer;
+}
+
+.video-chat-header-menu-item svg {
+  justify-self: center;
+  height: 15px;
+}
+
+.video-chat-header-menu-item span {
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.video-chat-header-menu-item:hover {
+  color: var(--white-text-color);
+}
+
+.video-chat-header-menu-item:hover path {
+  fill: var(--white-text-color);
 }
 
 .video-chat:hover {

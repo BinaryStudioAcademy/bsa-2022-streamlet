@@ -5,4 +5,6 @@ export { getHowLongAgoString } from './date/date';
 export { getImageUploadError } from './upload-image/upload-image';
 export { getStringifiedQuery } from './http/http';
 export { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from './routes/routes';
+export { generateAbbreviatureNameUser, getUserDisplayName, getGoogleOAuthURL } from './user';
+export { joinExistingValues, getRightUpdateTimeDelay } from './common/common';
 export * from './video/video';

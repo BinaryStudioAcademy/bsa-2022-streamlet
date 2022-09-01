@@ -3,7 +3,7 @@ import { socket } from 'common/config/config';
 import { useEffect, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
 import { chatActions } from 'store/actions';
 import { VideoChat } from './video-chat';
-import { SendMessageProps } from 'components/common/send-message/send-message';
+import { SendMessageProps } from './components/components';
 import { SocketEvents } from 'common/enums/enums';
 import { store } from 'store/store';
 
@@ -12,10 +12,11 @@ socket.on(SocketEvents.chat.NEW_MESSAGE_TO_CHAT_ROOM_DONE, (message: ChatMessage
 });
 
 type Props = {
-  videoId: string | undefined;
+  videoId: string;
+  popOut: boolean;
 };
 
-const VideoChatContainer: FC<Props> = ({ videoId }) => {
+const VideoChatContainer: FC<Props> = ({ videoId, popOut }) => {
   const dispatch = useAppDispatch();
   const {
     chat: {
@@ -57,7 +58,13 @@ const VideoChatContainer: FC<Props> = ({ videoId }) => {
   }, [dispatch, joinChatRoom, videoId]);
 
   return (
-    <VideoChat sendMessageProps={sendMessageProps} initialMessages={initialMessages.list} messages={messages.list} />
+    <VideoChat
+      chatId={videoId}
+      popOut={popOut}
+      sendMessageProps={sendMessageProps}
+      initialMessages={initialMessages.list}
+      messages={messages.list}
+    />
   );
 };
 

@@ -1,15 +1,15 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import clsx from 'clsx';
 import { ChatMessageResponseDto, FC } from 'common/types/types';
-import { Icon } from '../icon';
 import { IconName } from 'common/enums/enums';
+import { Icon } from 'components/common/icon';
 
 import styles from './send-message.module.scss';
 
-export interface SendMessageProps {
+export type SendMessageProps = {
   handlerSubmitMessage: (messageText: string) => Promise<ChatMessageResponseDto>;
   handleChooseEmoji: () => void;
-}
+};
 
 const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseEmoji }) => {
   const [messageText, setMessageText] = useState('');
@@ -31,6 +31,11 @@ const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseE
       });
   };
 
+  const handleClickSubmit = (e: MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
+    handleSubmitMessage();
+  };
+
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     handleSubmitMessage();
@@ -49,7 +54,7 @@ const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseE
         <button onClick={handleChooseEmoji} className={styles['choose-emoji']}>
           <Icon name={IconName.EMOJI} width="28" height="28" />
         </button>
-        <button onClick={handleSubmitMessage} className={styles['send-message']}>
+        <button onClick={handleClickSubmit} className={styles['send-message']}>
           <Icon name={IconName.SEND_MESSAGE} width="18" height="16" />
         </button>
       </div>

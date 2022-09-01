@@ -1,14 +1,31 @@
 import { ChatMessageResponseDto, FC } from 'common/types/types';
-import { generateAbbreviatureNameUser, getUserDisplayName } from 'helpers/user';
-import { getHowLongAgoString } from 'helpers/helpers';
+import { useState, useEffect } from 'hooks/hooks';
+import {
+  getHowLongAgoString,
+  generateAbbreviatureNameUser,
+  getUserDisplayName,
+  getRightUpdateTimeDelay,
+} from 'helpers/helpers';
 
 import styles from './video-comment.module.scss';
 
 type Props = {
   message: ChatMessageResponseDto;
+  showTimeStamp: boolean;
 };
 
-const VideoComment: FC<Props> = ({ message: { text, createdAt, author } }) => {
+const VideoComment: FC<Props> = ({ message: { text, createdAt, author }, showTimeStamp }) => {
+  const [createdAtDate, setCreatedAtDate] = useState(getHowLongAgoString(new Date(createdAt)));
+
+  const updateTimeDelay = getRightUpdateTimeDelay(createdAt);
+
+  useEffect(() => {
+    const updateTimeInterval = setInterval(() => {
+      setCreatedAtDate(getHowLongAgoString(new Date(createdAt)));
+    }, updateTimeDelay);
+    return () => clearInterval(updateTimeInterval);
+  }, [updateTimeDelay, createdAt]);
+
   return (
     <div className={styles['video-comment']}>
       <div className={styles['main-part-comment']}>
@@ -20,7 +37,7 @@ const VideoComment: FC<Props> = ({ message: { text, createdAt, author } }) => {
           </div>
         )}
         <p className={styles['commentators-name']}>{getUserDisplayName({ userName: author.username })}</p>
-        <span className={styles['dispatch-time']}>{getHowLongAgoString(new Date(createdAt))}</span>
+        {showTimeStamp && <span className={styles['dispatch-time']}>{createdAtDate}</span>}
       </div>
       <div className={styles['content-part-comment']}>
         <p className={styles['text-comment']}>{text}</p>
