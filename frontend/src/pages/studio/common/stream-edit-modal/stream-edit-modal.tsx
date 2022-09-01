@@ -1,9 +1,13 @@
+import clsx from 'clsx';
 import { Modal } from 'components/common/common';
 import { SelectOptions } from 'pages/studio/stream/common/stream-settings-form-values';
-import React, { FC } from 'react';
-import { getInitialFormValues } from './stream-edit-form/initial-form-values';
-import { StreamEditForm } from './stream-edit-form/stream-edit-form';
+import React, { FC, useState } from 'react';
+import { StreamAppearanceForm } from './stream-edit-forms/stream-appearance-form/stream-appearance-form';
+import { getInitialFormValues } from './stream-edit-forms/stream-basic-info-form/initial-form-values';
+import { StreamBasicInfoForm } from './stream-edit-forms/stream-basic-info-form/stream-basic-info-form';
 import styles from './styles.module.scss';
+import { TabHeader } from './tabs/tab-header/tab-header';
+import { Tab } from './tabs/tab.enum';
 
 type Props = {
   isOpen: boolean;
@@ -17,16 +21,22 @@ const mockCategoryOptions: SelectOptions<string>[] = [
 ];
 
 const StreamEditModal: FC<Props> = ({ onClose, isOpen }) => {
+  const [currentTab, setCurrentTab] = useState<Tab>(Tab.GeneralInfo);
+  const [isParentModalInvisible, setIsParentModalInvisible] = useState(false);
   return (
-    <Modal isOpen={isOpen} onClose={onClose} contentContainerClassName={styles['modal-container']}>
-      <StreamEditForm
-        initialValues={getInitialFormValues()}
-        onSubmit={(values): void => {
-          // eslint-disable-next-line no-console
-          console.log(values);
-        }}
-        categoryOptions={mockCategoryOptions}
-      />
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      contentContainerClassName={clsx(styles['modal-container'], isParentModalInvisible && styles['invisible'])}
+    >
+      <div className={styles['header']}>
+        <h1 className={styles['heading']}>Stream settings</h1>
+      </div>
+      <TabHeader currentTab={currentTab} setTab={setCurrentTab} />
+      {currentTab === Tab.GeneralInfo && (
+        <StreamBasicInfoForm initialValues={getInitialFormValues()} categoryOptions={mockCategoryOptions} />
+      )}
+      {currentTab === Tab.Appearance && <StreamAppearanceForm setParentModalInvisible={setIsParentModalInvisible} />}
     </Modal>
   );
 };

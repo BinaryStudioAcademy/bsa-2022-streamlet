@@ -2,33 +2,34 @@ import { Button, Input, Textarea } from 'components/common/common';
 import { DatetimeInput } from 'components/common/input/datetime-input/datetime-input';
 import { useAppForm } from 'hooks/hooks';
 import React, { FC, ReactElement, useId, useState } from 'react';
-import { StreamEditFormValues } from './stream-edit-form-values';
+import { StreamBasicInfoFormValues } from './stream-basic-info-form-values';
 import Select from 'react-select';
 import { SelectOptions } from 'pages/studio/stream/common/stream-settings-form-values';
 import Creatable from 'react-select/creatable';
 import { Controller } from 'react-hook-form';
-import styles from './styles.module.scss';
+import styles from '../styles.module.scss';
 import clsx from 'clsx';
-import { customSelectStyles } from './custom-select-styles';
+import { customSelectStyles } from '../custom-select-styles';
 
 type Props = {
-  initialValues: StreamEditFormValues;
-  onSubmit: (formData: StreamEditFormValues) => void;
+  initialValues: StreamBasicInfoFormValues;
   categoryOptions: SelectOptions<string>[];
 };
 
-const StreamEditForm: FC<Props> = ({ initialValues, onSubmit, categoryOptions }) => {
+const StreamBasicInfoForm: FC<Props> = ({ initialValues, categoryOptions }) => {
   const [isDescriptionInFocus, setIsDescriptionInFocus] = useState(false);
-  const { handleSubmit, control, errors } = useAppForm<StreamEditFormValues>({ defaultValues: initialValues });
+  const { handleSubmit, control, errors } = useAppForm<StreamBasicInfoFormValues>({ defaultValues: initialValues });
 
   const catSelectId = useId();
   const tagSelectId = useId();
 
+  const onSubmit = (formData: StreamBasicInfoFormValues): void => {
+    // eslint-disable-next-line no-console
+    console.log(formData);
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles['form']}>
-      <div className={styles['header']}>
-        <h1 className={styles['heading']}>Stream settings</h1>
-      </div>
       <Input
         control={control}
         errors={errors}
@@ -114,4 +115,4 @@ const StreamEditForm: FC<Props> = ({ initialValues, onSubmit, categoryOptions })
   );
 };
 
-export { StreamEditForm };
+export { StreamBasicInfoForm };

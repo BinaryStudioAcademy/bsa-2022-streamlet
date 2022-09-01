@@ -1,3 +1,20 @@
 .modal-container {
+  padding: 20px;
   background-color: var(--stream-settings-modal-bg);
+}
+
+.header {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--white-text-color);
+}
+
+.heading {
+  color: var(--white-text-color);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.invisible {
+  visibility: hidden;
 }
