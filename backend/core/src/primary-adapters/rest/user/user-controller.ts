@@ -1,9 +1,10 @@
-import { BaseHttpController, controller, httpGet, httpPost, requestBody } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, httpPost, requestBody, requestParam } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { CONTAINER_TYPES } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
 import { authenticationMiddleware } from '../middleware';
+import { ApiPath, CategoryResponseDto, DefaultRequestParam, UserApiPath, UserBindCategoriesDto } from 'shared/build';
 
 /**
  * @swagger
@@ -26,7 +27,7 @@ import { authenticationMiddleware } from '../middleware';
  *            type: string
  *            format: date-time
  */
-@controller('/users')
+@controller(ApiPath.USER)
 export class UserController extends BaseHttpController {
   private userService: UserService;
 
@@ -58,19 +59,19 @@ export class UserController extends BaseHttpController {
    *        401:
    *          $ref: '#/components/responses/Unauthorized'
    */
-  @httpGet('/', authenticationMiddleware)
+  @httpGet(UserApiPath.ROOT, authenticationMiddleware)
   public getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
   }
 
-  //NOTE: this routes only for testing and in future should removed or modified
-  @httpPost('/notify')
-  public notify(@requestBody() body: { data: { message: string } }): Promise<boolean> {
-    return this.userService.notify(body);
-  }
-
-  @httpPost('/notify-broadcast')
-  public notifyBroadcast(@requestBody() body: { data: { message: string } }): Promise<boolean> {
-    return this.userService.notifyBroadcast(body);
+  @httpPost(UserApiPath.$BIND, authenticationMiddleware)
+  public bindCategories(
+    @requestBody() payload: Omit<UserBindCategoriesDto, 'id'>,
+    @requestParam() { id }: DefaultRequestParam,
+  ): Promise<CategoryResponseDto[]> {
+    return this.userService.bindCategories({
+      id,
+      ...payload,
+    });
   }
 }

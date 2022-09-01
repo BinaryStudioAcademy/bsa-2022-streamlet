@@ -1,5 +1,6 @@
-import { User } from '@prisma/client';
+import { Category, User } from '@prisma/client';
 import { UserSignUpRequestDto } from '~/shared/types/types';
+import { UserBindCategoriesDto } from 'shared/build';
 
 export interface UserRepository {
   getAll(): Promise<User[]>;
@@ -10,4 +11,5 @@ export interface UserRepository {
   changePassword(userId: string, newPassword: string): Promise<void>;
   setIsActivated(shouldBeActivated: boolean, userId: string): Promise<void>;
   updateUserName(userId: string, username: string): Promise<User | null>;
+  bindCategories(bindCategoriesDto: UserBindCategoriesDto): Promise<Category[]>;
 }
