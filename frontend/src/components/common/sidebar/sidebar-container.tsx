@@ -31,10 +31,6 @@ const SidebarContainer: FC = () => {
     user: state.auth.user,
   }));
 
-  // useEffect(() => {
-  //   dispatch(openSidebar());
-  // }, [pathname, dispatch]);
-
   const closeMobileSidebar = (): void => {
     dispatch(closeSidebar());
   };
