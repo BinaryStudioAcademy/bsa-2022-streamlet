@@ -162,7 +162,7 @@ const VideoPageContainer: FC = () => {
       </div>
       {!isVideoFinished ? (
         <div className={styles['chat-block']}>
-          <VideoChatContainer videoId={videoId} popOut={true} />
+          <VideoChatContainer videoId={videoId} popOutSetting={true} />
         </div>
       ) : (
         <div className={styles['video-comment-block']}>

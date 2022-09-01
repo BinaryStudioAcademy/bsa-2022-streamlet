@@ -15,7 +15,7 @@ const LiveChat: FC = () => {
 
   return (
     <div className={styles['chat-block']}>
-      <VideoChatContainer videoId={queryParams.get(LiveChatQueryParams.CHAT_ID) as string} popOut={false} />
+      <VideoChatContainer videoId={queryParams.get(LiveChatQueryParams.CHAT_ID) as string} popOutSetting={false} />
     </div>
   );
 };

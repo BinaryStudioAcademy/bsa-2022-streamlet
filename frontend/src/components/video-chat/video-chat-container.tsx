@@ -21,10 +21,10 @@ socket.on(SocketEvents.chat.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED_DONE, (isChatEnable
 
 type Props = {
   videoId: string;
-  popOut: boolean;
+  popOutSetting: boolean;
 };
 
-const VideoChatContainer: FC<Props> = ({ videoId, popOut }) => {
+const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
   const dispatch = useAppDispatch();
   const {
     chat: {
@@ -68,7 +68,7 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOut }) => {
   return (
     <VideoChat
       chatId={videoId}
-      popOut={popOut}
+      popOutSetting={popOutSetting}
       initialMessages={initialMessages.list}
       messages={messages.list}
       participants={participants}

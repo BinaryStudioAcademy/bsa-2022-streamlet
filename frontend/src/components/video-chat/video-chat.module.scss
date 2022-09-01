@@ -1,6 +1,7 @@
 @import 'assets/css/config.scss';
 
 $base-z-index: $page-component-z-index;
+$down-btn-height: 35px;
 
 .video-chat-wrapper {
   display: flex;
@@ -42,6 +43,48 @@ $base-z-index: $page-component-z-index;
   color: var(--white-text-color);
   font-size: 13px;
   line-height: 22px;
+}
+
+.video-chat-send-form {
+  position: relative;
+  z-index: $base-z-index;
+}
+
+.video-chat-down-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: $base-z-index - 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: $down-btn-height;
+  transition: top 0.25s ease-out;
+}
+
+.show-btn {
+  top: -$down-btn-height - 10px;
+}
+
+.video-chat-down-btn-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: $down-btn-height;
+  height: $down-btn-height;
+  padding: 10px;
+  background-color: var(--brand-green-color-hover);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.video-chat-down-btn-icon svg {
+  width: 12px;
+}
+
+.video-chat-down-btn-icon path {
+  fill: var(--always-white-color);
 }
 
 .video-chat-wrapper .video-chat::-webkit-scrollbar {
