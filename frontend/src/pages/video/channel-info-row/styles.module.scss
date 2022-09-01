@@ -21,7 +21,7 @@
   grid-template:
     'a b'
     'a c';
-  gap: 0 10px;
+  gap: 0 15px;
 }
 
 .channel-name {
@@ -34,8 +34,10 @@
 
 .channel-name,
 .sub-count {
+  display: flex;
+  align-items: center;
   font-size: 14px;
-  line-height: 20px;
+  line-height: 14px;
 }
 
 .channel-avatar {

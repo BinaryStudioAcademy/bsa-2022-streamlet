@@ -11,10 +11,14 @@ type Props = {
     lastName?: string;
     userName: string;
   };
+  sizing?: {
+    size: string;
+    initialsSize: string;
+  };
   className?: string;
 };
 
-const UserAvatarOrInitials: FC<Props> = ({ avatar, userNamingInfo, className }) => {
+const UserAvatarOrInitials: FC<Props> = ({ avatar, userNamingInfo, className, sizing }) => {
   let pictureComponent: ReactNode;
   if (avatar) {
     pictureComponent = <img className={styles['avatar']} src={avatar} alt={userNamingInfo?.userName || 'channel'} />;
@@ -25,7 +29,14 @@ const UserAvatarOrInitials: FC<Props> = ({ avatar, userNamingInfo, className }) 
   } else {
     pictureComponent = <img className={styles['avatar']} src={defaultUser} alt="channel" />;
   }
-  return <div className={clsx(styles['avatar-container'], className)}>{pictureComponent}</div>;
+  return (
+    <div
+      className={clsx(styles['avatar-container'], className)}
+      style={{ '--size': sizing?.size, '--initials-size': sizing?.initialsSize } as React.CSSProperties}
+    >
+      {pictureComponent}
+    </div>
+  );
 };
 
 export { UserAvatarOrInitials };

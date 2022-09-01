@@ -25,7 +25,7 @@ const ChannelInfoRow: FC<Props> = ({ wrapperClassName, channelInfo }) => {
           style={{ textDecoration: 'none' }}
           className={styles['channel-avatar']}
         >
-          <UserAvatarOrInitials />
+          <UserAvatarOrInitials avatar={channelInfo.avatar} sizing={{ initialsSize: '24px', size: '50px' }} />
         </Link>
         <Link
           to={`${AppRoutes.CHANNEL}/${channelInfo.id}`}

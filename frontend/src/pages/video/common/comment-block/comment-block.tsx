@@ -7,13 +7,23 @@ import { VideoPageCommentForm } from '../add-comment-form/add-comment-form';
 type Props = {
   onNewComment: { (text: string): void };
   userAvatar: string | undefined;
+  namingInfo: {
+    userName: string;
+    firstName?: string;
+    lastName?: string;
+  };
   comments: Comment[];
 };
 
-const VideoCommentBlock: FC<Props> = ({ comments, userAvatar, onNewComment }) => {
+const VideoCommentBlock: FC<Props> = ({ comments, userAvatar, onNewComment, namingInfo }) => {
   return (
     <>
-      <VideoPageCommentForm avatar={userAvatar} onSubmit={onNewComment} className={styles['comment-form']} />
+      <VideoPageCommentForm
+        avatar={userAvatar}
+        onSubmit={onNewComment}
+        className={styles['comment-form']}
+        namingInfo={namingInfo}
+      />
       {comments.map((comment: Comment) => {
         return <VideoComment key={comment.id} comment={comment} />;
       })}
