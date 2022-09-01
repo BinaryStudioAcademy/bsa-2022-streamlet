@@ -21,6 +21,7 @@ import { ProfilePreferencesPage } from 'pages/profile-preferences-page/profile-p
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
 import { GoogleAuthorization } from 'components/auth/components/common/social-buttons/google-button/google-authorization';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
+import { LiveChat } from 'pages/live-chat/live-chat';
 import { socket } from 'common/config/config';
 import { store } from 'store/store';
 
@@ -75,6 +76,7 @@ const App: FC = () => {
           <Route path={AppRoutes.ACCOUNT_VERIFICATION_CONFIRM} element={<AccountVerificationConfirmPage />} />
           <Route path={AppRoutes.ACCOUNT_VERIFICATION_INIT} element={<AccountVerificationInitPage />} />
           <Route path={AppRoutes.RESTORE_PASSWORD_CONFIRM} element={<RestorePasswordConfirmPage />} />
+          <Route path={AppRoutes.LIVE_CHAT} element={<LiveChat />} />
         </Routes>
       )}
       {isHasStudioNavigation && (
