@@ -1,8 +1,8 @@
 import { FC } from 'common/types/types';
-import { AppRoutes, AppTheme } from 'common/enums/enums';
+import { AppRoutes, AppTheme, SocketEvents } from 'common/enums/enums';
 import { useLocation, useEffect, useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { tokensStorageService } from 'services/services';
-import { authActions } from 'store/actions';
+import { authActions, socketActions } from 'store/actions';
 import { MainPageContainer } from 'pages/main-page/main-page-container';
 import { Routes, Route, HeaderContainer, SidebarContainer } from 'components/common/common';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
@@ -20,9 +20,15 @@ import { ChannelPage } from 'pages/channel-page/channel-page';
 import { ProfilePreferencesPage } from 'pages/profile-preferences-page/profile-preferences-page';
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
 import { GoogleAuthorization } from 'components/auth/components/common/social-buttons/google-button/google-authorization';
+import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
+import { socket } from 'common/config/config';
+import { store } from 'store/store';
 
 import styles from './app.module.scss';
-import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
+
+socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
+  store.dispatch(socketActions.addSocketId(id));
+});
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -33,8 +39,9 @@ const App: FC = () => {
   const isHasDefaultNavigation = isRouteHasDefaultNavigation(pathname);
   const isHasStudioNavigation = isRouteHasStudioNavigation(pathname);
 
-  const { theme: isLightTheme } = useAppSelector((state) => ({
+  const { theme: isLightTheme, userId } = useAppSelector((state) => ({
     theme: state.theme.isLightTheme,
+    userId: state.auth.user?.id,
   }));
 
   useEffect(() => {
@@ -46,6 +53,16 @@ const App: FC = () => {
       dispatch(authActions.loadCurrentUser());
     }
   }, [hasToken, dispatch]);
+
+  useEffect(() => {
+    if (userId) {
+      socket.emit(SocketEvents.socket.HANDSHAKE, userId);
+    }
+
+    return () => {
+      dispatch(socketActions.removeSocketId());
+    };
+  }, [userId, dispatch]);
 
   return (
     <>
