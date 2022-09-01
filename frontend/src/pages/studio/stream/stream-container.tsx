@@ -134,10 +134,6 @@ const StudioStreamContainer: FC = () => {
   const isForbidden = errorCode === errorCodes.stream.FORBIDDEN || errorCode === errorCodes.stream.ACTIVE_STREAM_EXISTS;
 
   useEffect(() => {
-    dispatch(streamActions.getStreamingInfo());
-  }, [dispatch]);
-
-  useEffect(() => {
     infoFormReset(defaultInfoFormValues());
     settingsFormReset(defaultSettingsFormValues());
   }, [infoFormReset, defaultInfoFormValues, defaultSettingsFormValues, settingsFormReset]);

@@ -1,4 +1,3 @@
-// import { IconColor, IconName } from 'common/enums/enums';
 import clsx from 'clsx';
 import {
   FC,
@@ -8,18 +7,15 @@ import {
   VideoStreamResponseDto,
 } from 'common/types/types';
 import { Button, Input, PasswordInput } from 'components/common/common';
-import { AreaInput } from 'components/common/input/area-input/area-input';
-import { DatetimeInput } from 'components/common/input/datetime-input/datetime-input';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { DeepRequired, FieldErrorsImpl, FieldValues, UseFormGetValues, UseFormHandleSubmit } from 'react-hook-form';
 import { StreamStatus } from 'shared/build';
-// import { Loader, UploadImage } from 'components/common/common';
-// import { Icon } from 'components/common/icon';
-import defaultPreview from 'assets/img/default/video-default.png';
+// import defaultPreview from 'assets/img/default/video-default.png';
 import { StreamInfoFormValues, StreamSettingsFormValues } from './common/stream-settings-form-values';
 
 import styles from './styles.module.scss';
+import { StreamPrivacyLabel } from 'common/enums/enums';
 
 type Props = {
   isEditingForm: boolean;
@@ -41,21 +37,14 @@ type Props = {
 };
 
 const StudioStream: FC<Props> = ({
-  isEditingForm,
   handleFormEdit,
-  handleFormCancel,
   handleChangeStreamStatus,
   handleCopy,
   handleStreamingKeyReset,
-  // handleUploadPoster,
   stream,
   infoFormControl,
   infoFormErrors,
   infoFormValues,
-  settingsFormControl,
-  settingsFormErrors,
-  settingsFormHandleSubmit,
-  onSubmit,
 }) => {
   return (
     <div className={styles['settings-container']}>
@@ -63,12 +52,13 @@ const StudioStream: FC<Props> = ({
         <div className={styles['settings-block']}>
           <div className={styles['col-1']}>
             <div className={styles['preview-container']}>
-              <img
+              <div className={styles['preview']} />
+
+              {/* <img
                 className={styles['preview']}
                 src={stream?.poster ? stream?.poster : defaultPreview}
                 alt="Stream preview"
-              />
-              <Button content={'Upload Preview'} className={styles['button']} /*onClick={handleUploadPoster}*/ />
+              /> */}
             </div>
             <form className={styles['form-container']}>
               <div className={styles['field-container']}>
@@ -129,137 +119,52 @@ const StudioStream: FC<Props> = ({
                 <div
                   className={clsx(styles['status-indicator'], stream?.status === StreamStatus.LIVE && styles['live'])}
                 />
-                <p className={styles['status-text']}>
-                  {!stream?.isReadyToStream
-                    ? 'Not connected'
-                    : stream?.status === StreamStatus.WAITING
-                    ? 'Ready to stream'
-                    : stream?.status === StreamStatus.LIVE
-                    ? 'Live'
-                    : 'Offline'}
-                </p>
+                <p className={styles['status-text']}>{!stream?.isReadyToStream ? 'Not connected' : 'Connected'}</p>
               </div>
               <Button
                 content={stream?.status === StreamStatus.WAITING ? 'Go live' : 'End stream'}
-                className={clsx(styles['button'], styles['preview-button'], styles['live-button'])}
+                className={clsx(styles['button'], styles['padding-button'], styles['live-button'])}
                 onClick={handleChangeStreamStatus}
                 disabled={!stream?.isReadyToStream}
               />
             </div>
-            <form className={styles['form-container']} onSubmit={settingsFormHandleSubmit(onSubmit)}>
-              <Input
-                control={settingsFormControl}
-                errors={settingsFormErrors}
-                name="name"
-                label="Title"
-                type="text"
-                inputClassName={styles['input']}
-                inputErrorClassName={styles['input-error']}
-                labelClassName={styles['label']}
-                errorBlockClassName={styles['error']}
-                wrapperClassName={styles['form-input']}
-                placeholder="Your stream name..."
-                disabled={!isEditingForm}
-              />
-              <div className={styles['input-row']}>
-                <Input
-                  control={settingsFormControl}
-                  errors={settingsFormErrors}
-                  name="categories"
-                  label="Categories"
-                  type="text"
-                  inputClassName={styles['input']}
-                  inputErrorClassName={styles['input-error']}
-                  labelClassName={styles['label']}
-                  errorBlockClassName={styles['error']}
-                  wrapperClassName={styles['form-input']}
-                  placeholder="Choose the categories"
-                  disabled={!isEditingForm}
-                />
-                <Input
-                  control={settingsFormControl}
-                  errors={settingsFormErrors}
-                  name="tags"
-                  label="Tags"
-                  type="text"
-                  inputClassName={styles['input']}
-                  inputErrorClassName={styles['input-error']}
-                  labelClassName={styles['label']}
-                  errorBlockClassName={styles['error']}
-                  wrapperClassName={styles['form-input']}
-                  placeholder="Press enter to add tags..."
-                  disabled={!isEditingForm}
-                />
+            <div className={styles['stream-details']}>
+              <div className={styles['text-field-container']}>
+                <p className={styles['field-caption']}>Title</p>
+                <p className={styles['field-value']}>{stream?.name}</p>
               </div>
-              <div className={styles['input-row']}>
-                <DatetimeInput
-                  control={settingsFormControl}
-                  name="scheduledStreamDate"
-                  label="Scheduled date"
-                  inputClassName={styles['input']}
-                  labelClassName={styles['label']}
-                  wrapperClassName={styles['form-input']}
-                  defaultValue={new Date()}
-                  disabled={!isEditingForm}
-                />
-                <Input
-                  control={settingsFormControl}
-                  errors={settingsFormErrors}
-                  name="privacy"
-                  label="Privacy"
-                  type="text"
-                  inputClassName={styles['input']}
-                  inputErrorClassName={styles['input-error']}
-                  labelClassName={styles['label']}
-                  errorBlockClassName={styles['error']}
-                  wrapperClassName={styles['form-input']}
-                  placeholder="Select privacy settings"
-                  disabled={!isEditingForm}
-                />
+              <div className={styles['text-field-container']}>
+                <p className={styles['field-caption']}>Privacy</p>
+                <p className={styles['field-value']}>{StreamPrivacyLabel[stream?.privacy ?? 'PUBLIC']}</p>
               </div>
-
-              <AreaInput
-                control={settingsFormControl}
-                name="description"
-                label="Stream description"
-                inputClassName={styles['area']}
-                labelClassName={styles['label']}
-                wrapperClassName={styles['form-input']}
-                placeholder="Stream description..."
-                disabled={!isEditingForm}
-              />
+              <div className={styles['text-field-container']}>
+                <p className={styles['field-caption']}>Categories</p>
+                <p className={styles['field-value']}>
+                  {stream?.categories ? stream?.categories.map((category) => category.name).join(', ') : '-'}
+                </p>
+              </div>
+              <div className={styles['text-field-container']}>
+                <p className={styles['field-caption']}>Tags</p>
+                <p className={styles['field-value']}>
+                  {stream?.tags ? stream?.tags.map((tag) => tag.name).join(', ') : '-'}
+                </p>
+              </div>
+              <div className={styles['text-field-container']}>
+                <p className={styles['field-caption']}>Description</p>
+                <p className={clsx(styles['field-value'], styles['field-value-description'])}>
+                  {stream?.description ? stream.description : '-'}
+                </p>
+              </div>
 
               <div className={styles['button-wrapper']}>
-                {!isEditingForm ? (
-                  <Button
-                    content={'Edit'}
-                    className={clsx(styles['button'], styles['preview-button'])}
-                    onClick={handleFormEdit}
-                    type="button"
-                  />
-                ) : (
-                  // <button
-                  //   className={clsx(styles['button'], styles['preview-button'])}
-                  //   onClick={handleFormEdit}
-                  //   type="button"
-                  // >
-                  //   Edit
-                  // </button>
-                  <>
-                    <Button
-                      content={'Save'}
-                      className={clsx(styles['button'], styles['preview-button'])}
-                      type="submit"
-                    />
-                    <Button
-                      content={'Cancel'}
-                      className={clsx(styles['button'], styles['preview-button'])}
-                      onClick={handleFormCancel}
-                    />
-                  </>
-                )}
+                <Button
+                  content={'Edit'}
+                  className={clsx(styles['button'], styles['padding-button'], styles['stream-edit'])}
+                  onClick={handleFormEdit}
+                  type="button"
+                />
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
@@ -270,55 +175,3 @@ const StudioStream: FC<Props> = ({
   );
 };
 export { StudioStream };
-
-// const [isNeedUpload, setIsNeedUpload] = useState(false);
-// const [isLoading, setIsLoading] = useState(false);
-// const [error, setError] = useState<string | undefined>();
-// const [formError, setFormError] = useState<string | undefined>();
-// const [formLoading, setFormLoading] = useState<boolean>(false);
-// const [images, setImages] = useState([]);
-
-// const onFormSubmit = async (submitValue: UpdateProfileValue): Promise<void> => {
-//   // const request: ProfileUpdateRequestDto = {
-//   //   ...submitValue,
-//   //   userId: user?.id as string,
-//   // };
-//   // await handleUpdateProfileDataSubmit(request);
-
-// };
-
-// const onUploadImageClose = (): void => {
-//   setIsNeedUpload(!isNeedUpload);
-// };
-
-/* {isNeedUpload && <UploadImage images={images} onUpload={onChange} onClose={onUploadImageClose} />}
-<div className={styles['row1']}>
-  <div className={styles['video-preview']}></div>
-  {isLoading ? (
-    <Loader spinnerSize={'xs'} vCentered={true} hCentered={true} />
-  ) : (
-    <img
-      className={styles['profile-image-preview']}
-      src={video.previewImage === '' ? defaultPreview : video.previewImage}
-      alt="profile picture preview"
-    />
-  )}
-  <div className={styles['image-upload-control-container']}>
-    <button
-      type="button"
-      className={styles['image-upload-button']}
-      onClick={(): void => {
-        setIsNeedUpload(!isNeedUpload);
-      }}
-    >
-      Upload profile image
-    </button>
-    <span>
-      {error ? (
-        <span className={styles['error-message']}>{error}</span>
-      ) : (
-        'File format: JPEG/PNG, max size: 10MB'
-      )}
-    </span>
-  </div>
-</div> */
