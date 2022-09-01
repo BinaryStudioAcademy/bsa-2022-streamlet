@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import clsx from 'clsx';
 import { ChatMessageResponseDto, FC } from 'common/types/types';
 import { IconName } from 'common/enums/enums';
@@ -13,6 +13,7 @@ export type SendMessageProps = {
 
 const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseEmoji }) => {
   const [messageText, setMessageText] = useState('');
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>): void {
@@ -21,19 +22,19 @@ const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseE
   }
 
   const handleSubmitMessage = (): void => {
-    handlerSubmitMessage(messageText)
-      .then(() => {
-        setMessageText('');
-        setError(false);
-      })
-      .catch(() => {
-        setError(true);
-      });
-  };
-
-  const handleClickSubmit = (e: MouseEvent<HTMLButtonElement>): void => {
-    e.preventDefault();
-    handleSubmitMessage();
+    if (!loading) {
+      setLoading(true);
+      handlerSubmitMessage(messageText)
+        .then(() => {
+          setMessageText('');
+          setError(false);
+          setLoading(false);
+        })
+        .catch(() => {
+          setError(true);
+          setLoading(false);
+        });
+    }
   };
 
   const handleSubmitForm = (e: FormEvent<HTMLFormElement>): void => {
@@ -48,13 +49,13 @@ const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseE
         onChange={handleInputChange}
         className={clsx(styles['input-add-comments'], error && styles['input-error'])}
         type="text"
-        placeholder="Add comments"
+        placeholder="Say something..."
       />
       <div className={styles['group-buttons-reactions']}>
-        <button onClick={handleChooseEmoji} className={styles['choose-emoji']}>
+        <button onClick={handleChooseEmoji} className={styles['choose-emoji']} type="button">
           <Icon name={IconName.EMOJI} width="28" height="28" />
         </button>
-        <button onClick={handleClickSubmit} className={styles['send-message']}>
+        <button onClick={handleSubmitMessage} className={styles['send-message']} type="button">
           <Icon name={IconName.SEND_MESSAGE} width="18" height="16" />
         </button>
       </div>
