@@ -2,8 +2,8 @@ import { FC } from 'common/types/types';
 import { Sidebar } from './sidebar';
 import { configRoutePages, RoutePage } from './route-pages.config';
 import { useLocation } from 'react-router-dom';
-import { useAppSelector, useAppDispatch, useEffect } from 'hooks/hooks';
-import { openSidebar } from 'store/layout/actions';
+import { useAppSelector, useAppDispatch } from 'hooks/hooks';
+import { closeSidebar } from 'store/layout/actions';
 import { MobileSidebarProps } from '../mobile-sidebar/mobile-sidebar';
 
 function returnIdActiveRoute(currentRoute: string): number {
@@ -31,12 +31,12 @@ const SidebarContainer: FC = () => {
     user: state.auth.user,
   }));
 
-  useEffect(() => {
-    dispatch(openSidebar());
-  }, [pathname, dispatch]);
+  // useEffect(() => {
+  //   dispatch(openSidebar());
+  // }, [pathname, dispatch]);
 
   const closeMobileSidebar = (): void => {
-    dispatch(openSidebar());
+    dispatch(closeSidebar());
   };
 
   const mobileSidebarProps: MobileSidebarProps = {
