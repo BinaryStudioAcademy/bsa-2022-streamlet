@@ -1,6 +1,7 @@
 import styles from './styles.module.scss';
 import { IconName } from 'common/enums/enums';
 import { ReactComponent as ArrowDown } from 'assets/img/arrow-down.svg';
+import { ReactComponent as ArrowDown2 } from 'assets/img/arrow-down-2.svg';
 import { ReactComponent as Sun } from 'assets/img/sun-solid.svg';
 import { ReactComponent as Alarm } from 'assets/img/alarm.svg';
 import { ReactComponent as ArrowUp } from 'assets/img/arrow-up.svg';
@@ -84,6 +85,10 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.ARROW_DOWN: {
       return <ArrowDown {...commonProps} />;
+    }
+
+    case IconName.ARROW_DOWN_2: {
+      return <ArrowDown2 {...commonProps} />;
     }
 
     case IconName.ARROW_UP: {
