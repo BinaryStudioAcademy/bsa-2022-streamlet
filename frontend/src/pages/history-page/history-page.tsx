@@ -1,5 +1,5 @@
 import { AppRoutes } from 'common/enums/app/app-route.enum';
-import { Button, Loader } from 'components/common/common';
+import { Button, Icon, Loader } from 'components/common/common';
 import { useAppDispatch, useAppSelector, useNavigate } from 'hooks/hooks';
 import React, { FC, useEffect } from 'react';
 import { historyActions } from '../../store/actions';
@@ -9,6 +9,8 @@ import { DataStatus } from '../../common/enums/app/data-status.enum';
 import { generateHistorySkeletons } from './common/skeleton/skeleton';
 import { HistoryList } from './common/history-list/history-list';
 import styles from './styles.module.scss';
+import { IconName } from '../../common/enums/component/icon-name.enum';
+import { IconColor } from '../../common/enums/component/icon-color.enum';
 
 const HistoryPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -59,7 +61,12 @@ const HistoryPage: FC = () => {
 
   return (
     <div className={styles['history-page-container']}>
-      <Button content={'delete all'} onClick={handleDeleteAllHistory} className={styles['delete-all-btn']} />
+      <div className={styles['header']}>
+        <Icon name={IconName.TIME_AGO} color={IconColor.GRAY} width={'40'} height={'40'}></Icon>
+        <h2 className={styles['page-header']}>History</h2>
+        <Button content={'delete all'} onClick={handleDeleteAllHistory} className={styles['delete-all-btn']} />
+      </div>
+
       <div className={styles['history-list-container']}>
         {historyData.dataStatus === DataStatus.PENDING ? generateHistorySkeletons(isLightTheme) : null}
         {

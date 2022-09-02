@@ -20,7 +20,7 @@ const HistoryList: FC<props> = ({ historyData, isLightTheme, containerClassName 
           return (
             <div key={historyRecord.id}>
               <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(historyRecord.updatedAt)}</p>
-              <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={isLightTheme} />;
+              <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={isLightTheme} />
             </div>
           );
         }
@@ -36,11 +36,10 @@ const HistoryList: FC<props> = ({ historyData, isLightTheme, containerClassName 
         ) : (
           <div key={historyRecord.id}>
             <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(prevHistoryRecordUpdatedAt)}</p>
-            <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={isLightTheme} />;
+            <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={isLightTheme} />
           </div>
         );
       })}
-      ;
     </div>
   );
 };
