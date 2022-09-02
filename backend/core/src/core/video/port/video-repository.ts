@@ -5,7 +5,6 @@ import {
   VideoCommentResponseDto,
   CategorySearchRequestQueryDto,
   TagSearchRequestQueryDto,
-  Comment,
   PopularVideosRequestDtoType,
   PopularVideoResponseDto,
 } from 'shared/build';

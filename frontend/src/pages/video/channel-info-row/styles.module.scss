@@ -1,3 +1,5 @@
+@use 'assets/css/config';
+
 .wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -13,6 +15,7 @@
   position: absolute;
   top: 120%;
   right: 0;
+  z-index: config.$modal-z-index;
   width: 200px;
 }
 

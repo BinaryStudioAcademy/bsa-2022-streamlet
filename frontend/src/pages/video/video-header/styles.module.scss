@@ -1,3 +1,5 @@
+@use 'assets/css/config';
+
 .header {
   display: flex;
   flex-direction: column;
@@ -43,6 +45,7 @@
   position: absolute;
   top: 35px;
   right: -50px;
+  z-index: config.$modal-z-index;
   width: 378px;
   height: 200px;
 }

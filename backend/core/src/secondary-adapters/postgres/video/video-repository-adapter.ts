@@ -1,9 +1,8 @@
 import { inject, injectable } from 'inversify';
 import { PrismaClient, Prisma } from '@prisma/client';
 import { CONTAINER_TYPES, PopularVideoResponseDto, PopularVideosRequestDtoType } from '~/shared/types/types';
-import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
+import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimPopular, trimVideo } from '~/shared/helpers';
-import { Comment } from 'shared/build/common/types/comment';
 import { trimVideoWithComments } from '~/shared/helpers/trim-video';
 import {
   CategorySearchRequestQueryDto,
