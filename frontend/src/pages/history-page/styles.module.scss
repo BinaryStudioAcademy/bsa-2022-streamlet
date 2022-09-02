@@ -14,11 +14,11 @@
 }
 
 .delete-all-btn {
+  margin-left: auto;
   padding: 0 30px;
-  color: var(--text-gray-color);
+  color: var(--always-white-color);
   font-size: 20px;
   white-space: nowrap;
   text-transform: capitalize;
-  background: none;
   border: 3px var(--brand-green-color) solid;
 }
