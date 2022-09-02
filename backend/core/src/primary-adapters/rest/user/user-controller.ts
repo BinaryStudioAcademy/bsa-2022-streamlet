@@ -14,12 +14,22 @@ import { User } from '@prisma/client';
 import { authenticationMiddleware } from '../middleware';
 import { ApiPath, CategoryResponseDto, DefaultRequestParam, UserApiPath, UserBindCategoriesDto } from 'shared/build';
 import { Forbidden } from '~/shared/exceptions/forbidden';
-import { NotFound } from '~/shared/exceptions/not-found';
 
 /**
  * @swagger
  * components:
  *    schemas:
+ *      CategoryDto:
+ *         type: object
+ *         properties:
+ *           id:
+ *             type: string
+ *             format: uuid
+ *           name:
+ *             type: string
+ *           posterPath:
+ *             type: string
+ *             format: uri
  *      User:
  *        type: object
  *        properties:
@@ -74,6 +84,34 @@ export class UserController extends BaseHttpController {
     return this.userService.getAllUsers();
   }
 
+  /**
+   * @swagger
+   * /users/bind/{id}:
+   *    post:
+   *        tags:
+   *          - users
+   *        summary: Bind user preferences
+   *        security:
+   *          - bearerAuth: []
+   *        parameters:
+   *          - name: id
+   *            required: true
+   *            in: path
+   *            schema:
+   *              type: string
+   *        requestBody:
+   *          description: Categories
+   *          required: true
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  categories:
+   *                    type: array
+   *                    items:
+   *                      type: string
+   */
   @httpPost(UserApiPath.$BIND, authenticationMiddleware)
   public bindCategories(
     @requestBody() payload: Omit<UserBindCategoriesDto, 'id'>,
@@ -93,6 +131,31 @@ export class UserController extends BaseHttpController {
     });
   }
 
+  /**
+   * @swagger
+   * /users/preferences/{id}:
+   *    get:
+   *      tags:
+   *        - users
+   *      summary: Get user preferences
+   *      security:
+   *        - bearerAuth: []
+   *      parameters:
+   *        - name: id
+   *          required: true
+   *          in: path
+   *          schema:
+   *            type: string
+   *      responses:
+   *        '200':
+   *          description: OK
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/CategoryDto'
+   */
   @httpGet(UserApiPath.$PREFERENCES, authenticationMiddleware)
   public async getPreferences(
     @request() req: ExtendedAuthenticatedRequest,
@@ -108,7 +171,7 @@ export class UserController extends BaseHttpController {
       id,
     });
     if (!preferences) {
-      throw new NotFound();
+      return [] as CategoryResponseDto[];
     }
 
     return preferences;
