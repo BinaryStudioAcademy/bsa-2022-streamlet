@@ -1,7 +1,8 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import clsx from 'clsx';
 import { ChatMessageResponseDto, FC } from 'common/types/types';
 import { IconName } from 'common/enums/enums';
+import { useState } from 'hooks/hooks';
 import { Icon } from 'components/common/icon';
 
 import styles from './send-message.module.scss';

@@ -29,22 +29,30 @@ const VideoComment: FC<Props> = ({ message: { text, createdAt, author }, showTim
   }, [updateTimeDelay, createdAt]);
 
   return (
-    <div className={clsx(styles['video-comment'], messageClassName)}>
-      <div className={styles['main-part-comment']}>
-        {author.profile.avatar ? (
-          <img className={styles['commentators-avatar']} src={author.profile.avatar} alt={author.username} />
-        ) : (
-          <div className={styles['default-avatar']}>
-            {generateAbbreviatureNameUser(getUserDisplayName({ userName: author.username }))}
+    <>
+      <div className={styles['chat-message-wrapper']}>
+        <div className={clsx(styles['chat-message'], messageClassName)}>
+          <div className={styles['chat-message-icon']}>
+            {author.profile.avatar ? (
+              <img className={styles['author-avatar']} src={author.profile.avatar} alt={author.username} />
+            ) : (
+              <div className={styles['default-avatar']}>
+                {generateAbbreviatureNameUser(getUserDisplayName({ userName: author.username }))}
+              </div>
+            )}
           </div>
-        )}
-        <p className={styles['commentators-name']}>{getUserDisplayName({ userName: author.username })}</p>
-        {showTimeStamp && <span className={styles['dispatch-time']}>{createdAtDate}</span>}
+          <div className={styles['chat-message-body']}>
+            <div className={styles['chat-message-title']}>
+              <span className={styles['author-name']}>{getUserDisplayName({ userName: author.username })}</span>
+              {showTimeStamp && <span className={styles['dispatch-time']}>{createdAtDate}</span>}
+            </div>
+            <div className="chat-message-tex">
+              <p className={styles['text-comment']}>{text}</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className={styles['content-part-comment']}>
-        <p className={styles['text-comment']}>{text}</p>
-      </div>
-    </div>
+    </>
   );
 };
 
