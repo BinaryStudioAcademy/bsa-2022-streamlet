@@ -46,9 +46,7 @@ class SocketService {
             const { authorId, streamData } = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(streamData)}`);
             if (this.socketClients.has(authorId)) {
-              this.io
-                .to(this.socketClients.get(authorId) as string)
-                .emit(SocketEvents.notify.STREAM_TRANSCODER_DONE, streamData);
+              this.io.to(this.socketClients.get(authorId) as string).emit(SocketEvents.notify.STREAM_OBS_STATUS, true);
             }
           }
         },
@@ -61,9 +59,7 @@ class SocketService {
             const { authorId, streamingKey } = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(streamingKey)}`);
             if (this.socketClients.has(authorId)) {
-              this.io
-                .to(this.socketClients.get(authorId) as string)
-                .emit(SocketEvents.notify.STREAM_TRANSCODER_DONE, streamingKey);
+              this.io.to(this.socketClients.get(authorId) as string).emit(SocketEvents.notify.STREAM_OBS_STATUS, false);
             }
           }
         },

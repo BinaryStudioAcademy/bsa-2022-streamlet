@@ -6,7 +6,7 @@ import {
   StreamUpdateRequestDto,
   VideoStreamResponseDto,
 } from 'common/types/types';
-import { Button, Input, PasswordInput } from 'components/common/common';
+import { Button, Input, Loader, PasswordInput } from 'components/common/common';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { DeepRequired, FieldErrorsImpl, FieldValues, UseFormGetValues, UseFormHandleSubmit } from 'react-hook-form';
@@ -16,6 +16,8 @@ import { StreamInfoFormValues, StreamSettingsFormValues } from './common/stream-
 
 import styles from './styles.module.scss';
 import { StreamPrivacyLabel } from 'common/enums/enums';
+import { Select } from 'components/common/select';
+import { STREAM_PRIVACY_OPTIONS } from 'common/constants/stream/stream';
 
 type Props = {
   isEditingForm: boolean;
@@ -34,6 +36,7 @@ type Props = {
   settingsFormErrors: FieldErrorsImpl<DeepRequired<FieldValues>>;
   settingsFormHandleSubmit: UseFormHandleSubmit<StreamSettingsFormValues>;
   onSubmit(submitValue: StreamSettingsFormValues): void;
+  isObsConnected: boolean;
 };
 
 const StudioStream: FC<Props> = ({
@@ -45,6 +48,7 @@ const StudioStream: FC<Props> = ({
   infoFormControl,
   infoFormErrors,
   infoFormValues,
+  isObsConnected,
 }) => {
   return (
     <div className={styles['settings-container']}>
@@ -53,6 +57,7 @@ const StudioStream: FC<Props> = ({
           <div className={styles['col-1']}>
             <div className={styles['preview-container']}>
               <div className={styles['preview']} />
+              <Loader color="white" spinnerSize="40" />
 
               {/* <img
                 className={styles['preview']}
@@ -119,7 +124,7 @@ const StudioStream: FC<Props> = ({
                 <div
                   className={clsx(styles['status-indicator'], stream?.status === StreamStatus.LIVE && styles['live'])}
                 />
-                <p className={styles['status-text']}>{!stream?.isReadyToStream ? 'Not connected' : 'Connected'}</p>
+                <p className={styles['status-text']}>{!isObsConnected ? 'Not connected' : 'Connected'}</p>
               </div>
               <Button
                 content={stream?.status === StreamStatus.WAITING ? 'Go live' : 'End stream'}
@@ -163,6 +168,10 @@ const StudioStream: FC<Props> = ({
                   onClick={handleFormEdit}
                   type="button"
                 />
+              </div>
+              <div className={styles['text-field-container']}>
+                <p className={styles['field-caption']}>Privacy</p>
+                <Select options={STREAM_PRIVACY_OPTIONS} selectClassName={styles['input']} />
               </div>
             </div>
           </div>

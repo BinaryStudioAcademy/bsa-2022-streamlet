@@ -6,8 +6,7 @@ export const SocketEvents = {
   notify: {
     NOTIFY_USER_DONE: 'notify-user-done',
     NOTIFY_BROADCAST_DONE: 'notify-broadcast-done',
-    STREAM_TRANSCODER_DONE: 'stream-transcoder-done',
-    STREAM_INTERRUPTED_DONE: 'stream-interrupted-done',
+    STREAM_OBS_STATUS: 'stream-obs-status',
   },
   chat: {
     NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED_DONE: 'notify-chat-room-chat-is-enabled-done',

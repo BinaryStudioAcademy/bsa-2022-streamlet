@@ -1,14 +1,10 @@
+import { SelectOptions } from 'common/types/types';
 import { StreamPrivacy } from 'shared/build';
-
-export type SelectOptions<T> = {
-  value: T;
-  label: string;
-};
 
 export type StreamSettingsFormValues = {
   name: string;
-  tags: SelectOptions<string>[];
-  categories: SelectOptions<string>[];
+  tags: SelectOptions[];
+  categories: SelectOptions[];
   description: string;
   scheduledStreamDate: Date;
   privacy: StreamPrivacy;

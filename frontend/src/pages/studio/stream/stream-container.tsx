@@ -1,5 +1,5 @@
 import { STREAMING_SERVER_URL } from 'common/constants/constants';
-import { IconName, StreamStatus } from 'common/enums/enums';
+import { IconName, SocketEvents, StreamStatus } from 'common/enums/enums';
 import { FC, StreamPosterUploadRequestDto, StreamUpdateRequestDto } from 'common/types/types';
 import { createToastNotification } from 'components/common/toast-notification';
 import { Forbidden } from 'components/placeholder-page';
@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { streamActions } from 'store/actions';
 import { StreamInfoFormValues, StreamSettingsFormValues } from './common/stream-settings-form-values';
 import { StudioStream } from './stream';
+import { socket } from 'common/config/config';
 
 const StudioStreamContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -21,6 +22,11 @@ const StudioStreamContainer: FC = () => {
   }));
 
   const [isEditingForm, setIsEditingForm] = useState(false);
+  const [isObsConnected, setIsObsConnected] = useState(false);
+
+  socket.on(SocketEvents.notify.STREAM_OBS_STATUS, (status: boolean) => {
+    setIsObsConnected(status);
+  });
 
   const handleFormEdit = (): void => {
     setIsEditingForm(true);
@@ -160,6 +166,7 @@ const StudioStreamContainer: FC = () => {
       settingsFormErrors={settingsFormErrors}
       settingsFormHandleSubmit={settingsFormHandleSubmit}
       onSubmit={onSubmit}
+      isObsConnected={isObsConnected}
     />
   );
 };

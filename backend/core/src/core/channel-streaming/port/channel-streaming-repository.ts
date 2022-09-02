@@ -1,5 +1,9 @@
-import { StreamingKey, Video } from '@prisma/client';
+import { StreamingKey, Video, Channel } from '@prisma/client';
 import { VideoWithChannelAndAuthorDto } from '~/shared/types/video/video-with-channel-and-author-dto.type';
+import {
+  StreamKeyResponseBeforeTrimming,
+  VideoStreamResponseBeforeTrimming,
+} from '../../../shared/types/stream/stream';
 
 export interface ChannelStreamingRepository {
   getStreamingKey(props: Partial<StreamingKey>): Promise<StreamingKey | null>;
