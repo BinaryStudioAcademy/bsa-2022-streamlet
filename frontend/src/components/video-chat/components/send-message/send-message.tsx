@@ -19,12 +19,14 @@ const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseE
   const [error, setError] = useState(false);
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>): void {
-    setMessageText(e.target.value);
-    setError(false);
+    if (e.target.value.length <= 200) {
+      setMessageText(e.target.value);
+      setError(false);
+    }
   }
 
   const handleSubmitMessage = (): void => {
-    if (!loading) {
+    if (!loading && messageText) {
       setLoading(true);
       handlerSubmitMessage(messageText)
         .then(() => {
@@ -35,6 +37,7 @@ const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseE
         .catch(() => {
           setError(true);
           setLoading(false);
+          setTimeout(setError, 1000, false);
         });
     }
   };
@@ -55,11 +58,14 @@ const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseE
       />
       <div className={styles['group-buttons-reactions']}>
         <button onClick={handleChooseEmoji} className={styles['choose-emoji']} type="button">
-          <Icon name={IconName.EMOJI} width="28" height="28" />
+          <Icon name={IconName.EMOJI} width="25" height="25" />
         </button>
-        <button onClick={handleSubmitMessage} className={styles['send-message']} type="button">
-          <Icon name={IconName.SEND_MESSAGE} width="18" height="16" />
-        </button>
+        <div className={styles['send-btn-group']}>
+          <div className={styles['message-length-count']}>{`${messageText.length} / 200`}</div>
+          <button onClick={handleSubmitMessage} className={styles['send-message']} type="button">
+            <Icon name={IconName.SEND_MESSAGE} width="18" height="16" />
+          </button>
+        </div>
       </div>
     </form>
   );
