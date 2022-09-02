@@ -20,12 +20,18 @@ type Props = {
   video: VideoCardType;
   isLightTheme: boolean;
   className?: string;
+  // in case of need easily expand with other properties telling which info needs to be hidden
+  // by default everything is shown
+  hideFromDisplay?: {
+    channelInfo?: boolean;
+  };
 };
 
 const VideoCardMain: FC<Props> = ({
   video: { id, name, status, publishedAt, scheduledStreamDate, poster, duration, videoViews, liveViews, channel },
   isLightTheme,
   className,
+  hideFromDisplay,
 }) => {
   const [timeNow, setTimeNow] = useState(dayjs());
 
@@ -78,19 +84,24 @@ const VideoCardMain: FC<Props> = ({
         )}
       </div>
       <div className={styles['video-card-info']}>
-        <div className={styles['video-card-desc']}>
-          <Link to={linkToChannelPage} className={styles['video-card-channel']}>
-            <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
-          </Link>
+        {/* attach special classes like hide-channel to change layout for smaller number of elements */}
+        <div className={clsx(styles['video-card-desc'], hideFromDisplay?.channelInfo && styles['hide-channel'])}>
+          {hideFromDisplay?.channelInfo || (
+            <Link to={linkToChannelPage} className={styles['video-card-channel']}>
+              <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
+            </Link>
+          )}
           <div className={styles['video-card-name']}>
             <Link to={linkToVideoPage} className={styles['video-card-title']} title={name}>
               {name}
             </Link>
-            <div className={styles['video-card-author']}>
-              <Link to={linkToChannelPage} className={styles['video-card-author-name']} title={channel.name}>
-                {channel.name}
-              </Link>
-            </div>
+            {hideFromDisplay?.channelInfo || (
+              <div className={styles['video-card-author']}>
+                <Link to={linkToChannelPage} className={styles['video-card-author-name']} title={channel.name}>
+                  {channel.name}
+                </Link>
+              </div>
+            )}
           </div>
         </div>
         <div className={styles['video-card-meta-footer']}>

@@ -37,6 +37,9 @@ const ChannelVideoCard: FC<Props> = ({ videoId, className, channelInfo }) => {
       }}
       className={className}
       isLightTheme={isLightTheme}
+      hideFromDisplay={{
+        channelInfo: true,
+      }}
     />
   );
 };
