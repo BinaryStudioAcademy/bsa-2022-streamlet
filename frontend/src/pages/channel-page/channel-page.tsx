@@ -25,7 +25,7 @@ const ChannelPage: FC = () => {
   const channelInfo = useAppSelector((state) => state.channel.currentChannel.data);
   const channelError = useAppSelector((state) => state.channel.currentChannel.error);
 
-  const [currentTab, setCurrentTab] = useState<Tabs>(Tabs.About);
+  const [currentTab, setCurrentTab] = useState<Tabs>(Tabs.Videos);
 
   const getChannelComponent = (): ReactElement => {
     if (channelDataStatus === DataStatus.PENDING) {

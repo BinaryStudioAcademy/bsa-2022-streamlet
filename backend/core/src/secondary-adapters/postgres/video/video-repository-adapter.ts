@@ -1,8 +1,8 @@
 import { inject, injectable } from 'inversify';
 import { PrismaClient, Prisma } from '@prisma/client';
-import { CONTAINER_TYPES } from '~/shared/types/types';
+import { CONTAINER_TYPES, PopularVideoResponseDto, PopularVideosRequestDtoType } from '~/shared/types/types';
 import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
-import { trimVideo } from '~/shared/helpers';
+import { trimPopular, trimVideo } from '~/shared/helpers';
 import { Comment } from 'shared/build/common/types/comment';
 import { trimVideoWithComments } from '~/shared/helpers/trim-video';
 import {
@@ -18,6 +18,7 @@ import { createAddReactionResponse } from '~/shared/helpers/video/create-add-rea
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { VideoSearch, VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 import { VideoRepositoryFilters } from '~/core/video/port/video-repository-filters';
+
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
   private prismaClient: PrismaClient;
@@ -255,6 +256,94 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
     const { likeNum, dislikeNum } = await this.calculateReaction(videoId);
     return createAddReactionResponse(newReaction.reactions[0], likeNum, dislikeNum);
+  }
+
+  async getPopularVideoLength(category: string): Promise<number> {
+    return this.prismaClient.video.count({
+      where: {
+        categories: {
+          some: {
+            name: {
+              in: category,
+            },
+          },
+        },
+      },
+    });
+  }
+
+  async getPopular(
+    request: PopularVideosRequestDtoType,
+    take: number,
+    skip: number,
+    lastPage: number,
+  ): Promise<PopularVideoResponseDto> {
+    const { page, category } = request;
+    const popularVideos = await this.prismaClient.video.findMany({
+      where: {
+        categories: {
+          some: {
+            name: {
+              in: category,
+            },
+          },
+        },
+      },
+      take,
+      skip,
+      include: {
+        categories: {
+          select: {
+            name: true,
+          },
+        },
+        channel: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+      orderBy: {
+        videoViews: 'desc',
+      },
+    });
+    return trimPopular(popularVideos, lastPage, page);
+  }
+
+  async getPopularLive(
+    request: PopularVideosRequestDtoType,
+    take: number,
+    skip: number,
+    lastPage: number,
+  ): Promise<PopularVideoResponseDto> {
+    const { page } = request;
+    const popularVideos = await this.prismaClient.video.findMany({
+      where: {
+        status: 'live',
+      },
+      take,
+      skip,
+      include: {
+        categories: {
+          select: {
+            name: true,
+          },
+        },
+        channel: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+      orderBy: {
+        videoViews: 'desc',
+      },
+    });
+    return trimPopular(popularVideos, lastPage, page);
   }
 
   searchByTags({ take, skip, tags }: TagSearchRequestQueryDto): Promise<VideoWithChannel[]> {

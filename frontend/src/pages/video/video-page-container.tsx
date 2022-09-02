@@ -38,6 +38,10 @@ const VideoPageContainer: FC = () => {
     return state.videoPage.video;
   });
 
+  const user = useAppSelector((state) => {
+    return state.auth.user;
+  });
+
   const profile = useAppSelector((state) => {
     return state.profile.profileData;
   });
@@ -46,10 +50,6 @@ const VideoPageContainer: FC = () => {
     dispatch(videoPageActions.getVideo(videoId));
     setReactState(false);
   }, [videoId, dispatch, isReactChanged]);
-
-  const user = useAppSelector((state) => {
-    return state.auth.user;
-  });
 
   const channel = useAppSelector((state) => {
     return state.videoPage.video?.channel;

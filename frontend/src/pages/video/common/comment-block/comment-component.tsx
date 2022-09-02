@@ -23,6 +23,8 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike }) => {
     onDislike(comment.id);
   };
 
+  const getLikes = (num: number): number | string => (num === 0 ? '\u00A0' : num);
+
   return (
     <div className={styles['video-comment']}>
       <div className={styles['main-part-comment']}>
@@ -33,33 +35,33 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike }) => {
           <div className={styles['default-avatar']}>{generateAbbreviatureNameUser(getUserDisplayName(comment))}</div>
         )}
         <p className={styles['commentators-name']}>{getUserDisplayName(comment)}</p>
-        <div className={styles['reaction-block']}>
-          <div className={styles['reaction-container']}>
-            <ThumbUp
-              height={'25'}
-              width={'25'}
-              onClick={handleLikeReact}
-              className={styles['reaction-button']}
-              color={getCommentReactBtnColor(comment.likeNum)}
-            />
-            <span>{comment.likeNum}</span>
-          </div>
-          <div className={styles['reaction-container']}>
-            <ThumbDown
-              height={'25'}
-              width={'25'}
-              onClick={handleDislikeReact}
-              className={styles['reaction-button']}
-              color={getCommentReactBtnColor(comment.dislikeNum)}
-            />
-            <span>{comment.dislikeNum}</span>
-          </div>
-          <p>{comment.repliesCount}</p>
-        </div>
         <span className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</span>
       </div>
       <div className={styles['content-part-comment']}>
         <p className={styles['text-comment']}>{comment.text}</p>
+      </div>
+      <div className={styles['reaction-block']}>
+        <div className={styles['reaction-container']}>
+          <ThumbUp
+            height={'20'}
+            width={'20'}
+            onClick={handleLikeReact}
+            className={styles['reaction-button']}
+            color={getCommentReactBtnColor(comment.likeNum)}
+          />
+          <span>{getLikes(comment.likeNum)}</span>
+        </div>
+        <div className={styles['reaction-container']}>
+          <ThumbDown
+            height={'20'}
+            width={'20'}
+            onClick={handleDislikeReact}
+            className={styles['reaction-button']}
+            color={getCommentReactBtnColor(comment.dislikeNum)}
+          />
+          <span> {getLikes(comment.dislikeNum)}</span>
+        </div>
+        <p>{comment.repliesCount}</p>
       </div>
     </div>
   );

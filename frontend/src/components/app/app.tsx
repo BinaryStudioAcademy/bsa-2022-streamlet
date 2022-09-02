@@ -20,6 +20,7 @@ import { ChannelPage } from 'pages/channel-page/channel-page';
 import { ProfilePreferencesPage } from 'pages/profile-preferences-page/profile-preferences-page';
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
 import { GoogleAuthorization } from 'components/auth/components/common/social-buttons/google-button/google-authorization';
+import { HistoryPage } from '../../pages/history-page/history-page';
 
 import styles from './app.module.scss';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
@@ -29,6 +30,7 @@ import { OverviewTab } from 'pages/following-page/tabs/overview/overview-tab';
 import { LiveVideosTab } from 'pages/following-page/tabs/live-videos/live-videos-tab';
 import { OfflineVideosTab } from 'pages/following-page/tabs/offline-videos/offline-videos-tab';
 import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
+import { BrowsePage } from '../../pages/browse-page/browse-page';
 import { closeSidebar } from 'store/layout/actions';
 
 const App: FC = () => {
@@ -95,7 +97,7 @@ const App: FC = () => {
               <Routes>
                 <Route path={AppRoutes.ROOT} element={<MainPageContainer />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />
-                <Route path={AppRoutes.HISTORY} element="History" />
+                <Route path={AppRoutes.HISTORY} element={<HistoryPage />} />
                 <Route path={AppRoutes.FOLLOWING} element={<ProtectedRoute element={<FollowingPage />} />}>
                   <Route index element={<OverviewTab />} />
                   <Route path={FollowingTab.OVERVIEW} element={<OverviewTab />} />
@@ -107,7 +109,7 @@ const App: FC = () => {
                   />
                 </Route>
 
-                <Route path={AppRoutes.BROWSE} element="Browse" />
+                <Route path={AppRoutes.BROWSE} element={<BrowsePage />} />
                 <Route path={AppRoutes.GOOGLE_ATHORIZATION} element={<GoogleAuthorization query={search} />} />
                 <Route
                   path={AppRoutes.PROFILE_PREFERENCE}

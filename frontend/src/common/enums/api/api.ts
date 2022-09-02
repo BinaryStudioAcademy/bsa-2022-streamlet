@@ -5,5 +5,6 @@ export {
   ProfileApiPath,
   VideoApiPath,
   ChannelSubscriptionApiPath,
+  HistoryApiPath,
   FollowingApiPath,
 } from 'shared/build';
