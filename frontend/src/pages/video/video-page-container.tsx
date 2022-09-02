@@ -1,22 +1,18 @@
 import clsx from 'clsx';
 import { AppRoutes, SocketEvents, StreamingStatus } from 'common/enums/enums';
-import { ReactComponent as ThumbUp } from 'assets/img/thumb-up.svg';
-import { ReactComponent as ThumbDown } from 'assets/img/thumb-down.svg';
 import { Loader } from 'components/common/common';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
-import { useAppDispatch, useAppSelector, useNavigate, useParams, useState } from 'hooks/hooks';
-import { FC, useEffect } from 'react';
+import { useAppDispatch, useAppSelector, useNavigate, useParams } from 'hooks/hooks';
+import { FC, useEffect, useState } from 'react';
 import { videoPageActions } from 'store/actions';
-import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
 import styles from './video-page.module.scss';
-import { getReactBtnColor } from 'helpers/helpers';
 import { VideoPlayer } from 'components/common/video-player/video-player';
 import { VideoCommentBlock } from './common/comment-block/comment-block';
-import { Link } from 'react-router-dom';
-import { NeedSignInModal } from '../../components/common/sign-in-modal/sign-in-modal';
 import { socket } from 'common/config/config';
 import { store } from 'store/store';
-import { Subscribe } from './common/subscribe/subscribe';
+import { ChannelInfoRow } from './channel-info-row/channel-info-row';
+import { VideoHeader } from './video-header/video-header';
+import { LinksBlock } from './links-block/links-block';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -26,7 +22,6 @@ const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { videoId: isVideoIdProvided } = useParams();
-  const [isUserNotAuthAndReact, setIsUserNotAuthAndReact] = useState(false);
   const [isReactChanged, setReactState] = useState(false);
   if (!isVideoIdProvided) {
     navigate(AppRoutes.ANY, { replace: true });
@@ -45,20 +40,6 @@ const VideoPageContainer: FC = () => {
     dispatch(videoPageActions.getVideo(videoId));
     setReactState(false);
   }, [videoId, dispatch, isReactChanged]);
-
-  const handleLikeReact = (): void => {
-    if (!user) {
-      return setIsUserNotAuthAndReact(true);
-    }
-    dispatch(videoPageActions.videoReact({ videoId, isLike: true }));
-  };
-
-  const handleDislikeReact = (): void => {
-    if (!user) {
-      return setIsUserNotAuthAndReact(true);
-    }
-    dispatch(videoPageActions.videoReact({ videoId, isLike: false }));
-  };
 
   const handleCommentLikeReact = (commentId: string): void => {
     dispatch(videoPageActions.commentReact({ commentId, isLike: true }));
@@ -85,8 +66,6 @@ const VideoPageContainer: FC = () => {
   const { status } = videoData;
   const isVideoFinished = status === 'finished';
 
-  const { userReaction } = videoData;
-
   return (
     <div
       className={clsx(styles['video-page'], {
@@ -101,75 +80,32 @@ const VideoPageContainer: FC = () => {
           videoAttributes={{ poster: videoData.poster }}
           className={styles['video-player']}
         />
-        <div className={styles['video-info-block']}>
-          <div className={styles['video-header']}>
-            <h2 className={styles['video-title']}>{videoData.name}</h2>
-            <div className={styles['reaction-block']}>
-              <div className={styles['reaction-container']}>
-                <ThumbUp
-                  height={'25'}
-                  width={'25'}
-                  onClick={handleLikeReact}
-                  className={styles['reaction-button']}
-                  color={getReactBtnColor(userReaction, true)}
-                />
-                {isUserNotAuthAndReact && (
-                  <NeedSignInModal
-                    headerText={'Like this video?'}
-                    className={styles['sign-in-modal']}
-                    mainText={'Sign in so we can take your opinion into account.'}
-                    onClose={(): void => {
-                      setIsUserNotAuthAndReact(false);
-                    }}
-                  />
-                )}
-                <span>{videoData.likeNum}</span>
-              </div>
-              <div className={styles['reaction-container']}>
-                <ThumbDown
-                  height={'25'}
-                  width={'25'}
-                  onClick={handleDislikeReact}
-                  className={clsx(styles['reaction-button'], styles['dislike-icon'])}
-                  color={getReactBtnColor(userReaction, false)}
-                />
-                <span>{videoData.dislikeNum}</span>
-              </div>
-            </div>
-          </div>
-          <div className={styles['subscribe-wrapper']}>
-            <Subscribe signinModalClassname={styles['subscribe-signin-modal']} />
-          </div>
-          <>
-            <span>{`${isVideoFinished ? videoData.videoViews : videoData.liveViews} views`}</span>
-            <div className={styles['description-container']}>
-              <span>{`${videoData.description}`}</span>
-            </div>
-            <hr />
-            <div className={styles['channel-info-container']}>
-              <Link to={`${AppRoutes.CHANNEL}/${videoData.channel.id}`} style={{ textDecoration: 'none' }}>
-                <div className={styles['about-channel-block']}>
-                  <img
-                    className={styles['channel-banner']}
-                    alt={'user avatar'}
-                    src={videoData.channel.avatar ? videoData.channel.avatar : defaultAvatar}
-                  />
-                  <div className={styles['channel-description']}>
-                    <div>{videoData.channel.name}</div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </>
-        </div>
       </div>
-      {!isVideoFinished ? (
-        <div className={styles['chat-block']}>
-          <VideoChatContainer videoId={videoId} popOutSetting={true} />
+      <div className={styles['video-info-block']}>
+        <VideoHeader videoInfo={videoData} />
+        <hr />
+        <ChannelInfoRow channelInfo={channel} />
+        <div className={styles['description-container']}>
+          <span>{`${videoData.description}`}</span>
         </div>
-      ) : (
+        <hr />
+      </div>
+      <div className={styles['side-block']}>
+        {!isVideoFinished && (
+          <div className={styles['chat-block']}>
+            <VideoChatContainer videoId={videoId} popOutSetting={true} />
+          </div>
+        )}
+        <LinksBlock />
+      </div>
+      {isVideoFinished && (
         <div className={styles['video-comment-block']}>
           <VideoCommentBlock
+            namingInfo={{
+              userName: profile?.username ?? '',
+              firstName: profile?.firstName,
+              lastName: profile?.lastName,
+            }}
             onNewComment={handleMessageSubmit}
             userAvatar={profile?.avatar}
             comments={videoData.comments}

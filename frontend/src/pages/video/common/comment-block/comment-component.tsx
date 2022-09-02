@@ -1,4 +1,4 @@
-import { generateAbbreviatureNameUser, getUserDisplayName } from 'helpers/user';
+import { getUserDisplayName } from 'helpers/user';
 import { getHowLongAgoString } from 'helpers/helpers';
 import { FC } from 'common/types/types';
 import { Comment } from 'shared/src/common/types/comment';
@@ -7,6 +7,7 @@ import { ReactComponent as ThumbDown } from 'assets/img/thumb-down.svg';
 import { getCommentReactBtnColor } from 'helpers/video/get-react-button-color.helper';
 
 import styles from './styles.module.scss';
+import { UserAvatarOrInitials } from 'components/common/user-avatar-or-initials/user-avatar-or-initials';
 
 type Props = {
   comment: Comment;
@@ -28,12 +29,11 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike }) => {
   return (
     <div className={styles['video-comment']}>
       <div className={styles['main-part-comment']}>
-        {comment.avatar && (
-          <img className={styles['commentators-avatar']} src={comment.avatar} alt={comment.userName} />
-        )}
-        {!comment.avatar && (
-          <div className={styles['default-avatar']}>{generateAbbreviatureNameUser(getUserDisplayName(comment))}</div>
-        )}
+        <UserAvatarOrInitials
+          className={styles['commentators-avatar']}
+          avatar={comment.avatar}
+          userNamingInfo={{ firstName: comment.firstName, lastName: comment.lastName, userName: comment.userName }}
+        />
         <p className={styles['commentators-name']}>{getUserDisplayName(comment)}</p>
         <span className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</span>
       </div>

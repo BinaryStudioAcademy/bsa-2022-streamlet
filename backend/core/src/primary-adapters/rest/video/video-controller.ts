@@ -9,7 +9,15 @@ import {
   requestParam,
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES, ExtendedAuthenticatedRequest, ExtendedRequest, VideoSearch } from '~/shared/types/types';
+import {
+  CONTAINER_TYPES,
+  ExtendedAuthenticatedRequest,
+  ExtendedRequest,
+  PopularVideoResponseDto,
+  PopularVideosRequestDtoType,
+  VideoSearch,
+} from '~/shared/types/types';
+
 import { VideoService } from '~/core/video/application/video-service';
 import {
   ApiPath,
@@ -38,6 +46,7 @@ import {
   matchVideoFilterType,
 } from '~/shared/enums/enums';
 import { authenticationMiddleware, CreateVideoHistoryRecordMiddleware } from '../middleware';
+import { normalizeCategoryFiltersPayload } from '~/primary-adapters/rest/category/helpers/normalize-category-filters-helper';
 
 /**
  * @swagger
@@ -189,6 +198,14 @@ export class VideoController extends BaseHttpController {
     };
 
     return await this.videoRepository.getVideosBySearch(queryParams);
+  }
+
+  @httpGet(VideoApiPath.POPULAR, optionalAuthenticationMiddleware)
+  public async getPopular(
+    @queryParam() { page, category }: PopularVideosRequestDtoType,
+  ): Promise<PopularVideoResponseDto> {
+    const preparedCategory = normalizeCategoryFiltersPayload(category)[0];
+    return this.videoService.getPopular({ category: preparedCategory, page });
   }
 
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware, CreateVideoHistoryRecordMiddleware)
