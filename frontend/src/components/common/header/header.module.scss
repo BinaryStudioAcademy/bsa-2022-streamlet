@@ -27,6 +27,7 @@
 }
 
 .search-input-clear path {
+  transform: translateY(-1px);
   fill: var(--text-gray-color);
 }
 

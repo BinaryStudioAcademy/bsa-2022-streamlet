@@ -7,6 +7,7 @@ import { MobileSidebar, MobileSidebarProps } from '../mobile-sidebar/mobile-side
 
 import styles from './sidebar.module.scss';
 import { SidebarSubs } from './sidebar-subs/sidebar-subs';
+import { useAppSelector } from 'hooks/hooks';
 
 interface SidebarProps {
   isSidebarOpen: boolean;
@@ -16,20 +17,28 @@ interface SidebarProps {
 }
 
 const Sidebar: FC<SidebarProps> = ({ configRoutePages, activeRouteId, isSidebarOpen, mobileSidebarProps }) => {
+  const hasUser = Boolean(useAppSelector((state) => state.auth.user));
   return (
     <>
       <MobileSidebar {...mobileSidebarProps} />
       <div className={clsx({ [styles.close]: !isSidebarOpen }, styles.sidebar)}>
         <nav className={styles['navigate-menu']}>
           <ul>
-            {configRoutePages.map((page) => (
-              <Link key={page.linkTo} to={page.linkTo} className={clsx({ [styles.active]: page.id === activeRouteId })}>
-                <li>
-                  <Icon name={page.iconName} width="24" height="24" />
-                  <span className={styles['link-name']}>{page.textLink}</span>
-                </li>
-              </Link>
-            ))}
+            {configRoutePages.map(
+              (page) =>
+                (page.authRequired !== true || hasUser) && (
+                  <Link
+                    key={page.linkTo}
+                    to={page.linkTo}
+                    className={clsx({ [styles.active]: page.id === activeRouteId })}
+                  >
+                    <li>
+                      <Icon name={page.iconName} width="24" height="24" />
+                      <span className={styles['link-name']}>{page.textLink}</span>
+                    </li>
+                  </Link>
+                ),
+            )}
           </ul>
         </nav>
         <div className={styles['divider']} />

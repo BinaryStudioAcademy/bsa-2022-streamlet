@@ -5,4 +5,9 @@ export {
   VideoCommentResponseDto,
   CreateReactionRequestDto,
   CreateReactionResponseDto,
+  CreateCommentReactionRequestDto,
+  CreateCommentReactionResponseDto,
+  BaseVideoCommentResponseDto,
+  VideosLiveResponseDto,
+  VideosOfflineResponseDto,
 } from 'shared/build';

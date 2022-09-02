@@ -27,6 +27,7 @@ const VideoPageContainer: FC = () => {
   const navigate = useNavigate();
   const { videoId: isVideoIdProvided } = useParams();
   const [isUserNotAuthAndReact, setIsUserNotAuthAndReact] = useState(false);
+  const [isReactChanged, setReactState] = useState(false);
   if (!isVideoIdProvided) {
     navigate(AppRoutes.ANY, { replace: true });
   }
@@ -42,7 +43,8 @@ const VideoPageContainer: FC = () => {
 
   useEffect(() => {
     dispatch(videoPageActions.getVideo(videoId));
-  }, [videoId, dispatch]);
+    setReactState(false);
+  }, [videoId, dispatch, isReactChanged]);
 
   const handleLikeReact = (): void => {
     if (!user) {
@@ -56,6 +58,16 @@ const VideoPageContainer: FC = () => {
       return setIsUserNotAuthAndReact(true);
     }
     dispatch(videoPageActions.videoReact({ videoId, isLike: false }));
+  };
+
+  const handleCommentLikeReact = (commentId: string): void => {
+    dispatch(videoPageActions.commentReact({ commentId, isLike: true }));
+    setReactState(true);
+  };
+
+  const handleCommentDislikeReact = (commentId: string): void => {
+    dispatch(videoPageActions.commentReact({ commentId, isLike: false }));
+    setReactState(true);
   };
 
   const handleMessageSubmit = (text: string): void => {
@@ -161,6 +173,8 @@ const VideoPageContainer: FC = () => {
             onNewComment={handleMessageSubmit}
             userAvatar={profile?.avatar}
             comments={videoData.comments}
+            onLike={handleCommentLikeReact}
+            onDislike={handleCommentDislikeReact}
           />
         </div>
       )}

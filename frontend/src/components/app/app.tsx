@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
-import { AppRoutes, AppTheme, SocketEvents } from 'common/enums/enums';
-import { useLocation, useEffect, useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { AppRoutes, AppTheme, SizesWindow, SocketEvents } from 'common/enums/enums';
+import { useLocation, useEffect, useAppDispatch, useAppSelector, useWindowDimensions } from 'hooks/hooks';
 import { tokensStorageService } from 'services/services';
 import { authActions, socketActions } from 'store/actions';
 import { MainPageContainer } from 'pages/main-page/main-page-container';
@@ -22,6 +22,13 @@ import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers
 import { GoogleAuthorization } from 'components/auth/components/common/social-buttons/google-button/google-authorization';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
 import { LiveChat } from 'pages/live-chat/live-chat';
+import { FollowingPage } from 'pages/following-page/following-page';
+import { Navigate } from 'react-router-dom';
+import { OverviewTab } from 'pages/following-page/tabs/overview/overview-tab';
+import { LiveVideosTab } from 'pages/following-page/tabs/live-videos/live-videos-tab';
+import { OfflineVideosTab } from 'pages/following-page/tabs/offline-videos/offline-videos-tab';
+import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
+import { closeSidebar } from 'store/layout/actions';
 import { socket } from 'common/config/config';
 import { store } from 'store/store';
 
@@ -34,6 +41,13 @@ socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const { pathname, search } = useLocation();
+  const { width } = useWindowDimensions();
+
+  useEffect(() => {
+    if (width <= SizesWindow.SIZE_FOR_HIDDEN_SIDEBAR) {
+      dispatch(closeSidebar());
+    }
+  }, [width, dispatch]);
 
   const hasToken = Boolean(tokensStorageService.getTokens().accessToken);
 
@@ -101,7 +115,17 @@ const App: FC = () => {
                 <Route path={AppRoutes.ROOT} element={<MainPageContainer />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />
                 <Route path={AppRoutes.HISTORY} element="History" />
-                <Route path={AppRoutes.FOLLOWING} element="Following" />
+                <Route path={AppRoutes.FOLLOWING} element={<ProtectedRoute element={<FollowingPage />} />}>
+                  <Route index element={<OverviewTab />} />
+                  <Route path={FollowingTab.OVERVIEW} element={<OverviewTab />} />
+                  <Route path={FollowingTab.LIVE} element={<LiveVideosTab />} />
+                  <Route path={FollowingTab.OFFLINE} element={<OfflineVideosTab />} />
+                  <Route
+                    path="*"
+                    element={<Navigate to={`${AppRoutes.FOLLOWING}/${FollowingTab.OVERVIEW}`} replace />}
+                  />
+                </Route>
+
                 <Route path={AppRoutes.BROWSE} element="Browse" />
                 <Route path={AppRoutes.GOOGLE_ATHORIZATION} element={<GoogleAuthorization query={search} />} />
                 <Route

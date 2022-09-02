@@ -14,3 +14,5 @@ export * from './image/image';
 export * from './profile/profile';
 export * from './frontend/frontend';
 export * from './socket/socket';
+export * from './channel/channel';
+export * from './search/search';

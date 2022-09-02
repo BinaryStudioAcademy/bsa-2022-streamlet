@@ -8,6 +8,7 @@ import { RoutePage } from '../sidebar/route-pages.config';
 
 import styles from './mobile-sidebar.module.scss';
 import { SidebarSubs } from '../sidebar/sidebar-subs/sidebar-subs';
+import { useAppSelector } from 'hooks/hooks';
 
 export interface MobileSidebarProps {
   isSidebarOpen: boolean;
@@ -22,10 +23,12 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
   configRoutePages,
   activeRouteId,
 }) => {
+  const hasUser = Boolean(useAppSelector((state) => state.auth.user));
+
   return (
-    <div className={clsx(styles['shadow'], !isSidebarOpen && styles['shadow-open'])}>
+    <div className={clsx(styles['shadow'], isSidebarOpen && styles['shadow-open'])}>
       <div className={styles['scrim']} onClick={closeMobileSidebar}></div>
-      <div className={clsx({ [styles['open']]: !isSidebarOpen }, styles['mobile-sidebar'])}>
+      <div className={clsx({ [styles['open']]: isSidebarOpen }, styles['mobile-sidebar'])}>
         <div className={styles['sidebar-content']} onClick={(e): void => e.stopPropagation()}>
           <div className={styles['sidebar-header']}>
             <button onClick={closeMobileSidebar} className={styles['burger-menu']}>
@@ -35,18 +38,21 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
           </div>
           <div className={styles['sidebar-body']}>
             <ul className={styles['list-links']}>
-              {configRoutePages.map((page) => (
-                <Link
-                  key={page.linkTo}
-                  to={page.linkTo}
-                  className={clsx({ [styles.active]: page.id === activeRouteId }, styles['nav-link'])}
-                >
-                  <li>
-                    <Icon name={page.iconName} width="24" height="24" />
-                    <span className={styles['link-name']}>{page.textLink}</span>
-                  </li>
-                </Link>
-              ))}
+              {configRoutePages.map(
+                (page) =>
+                  (page.authRequired !== true || hasUser) && (
+                    <Link
+                      key={page.linkTo}
+                      to={page.linkTo}
+                      className={clsx({ [styles.active]: page.id === activeRouteId }, styles['nav-link'])}
+                    >
+                      <li>
+                        <Icon name={page.iconName} width="24" height="24" />
+                        <span className={styles['link-name']}>{page.textLink}</span>
+                      </li>
+                    </Link>
+                  ),
+              )}
             </ul>
             <div className={styles['divider']} />
             <SidebarSubs promoWrpClassName={styles['sign-in-promo-wrp']} keepVisisble={!isSidebarOpen} />
