@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AsyncThunkConfig } from 'common/types/types';
-import { DataVideo } from 'shared/build';
+import { DataVideo, PopularVideoResponseDto, PopularVideosRequestDtoType } from 'shared/build';
 import { ActionType } from './common';
 
 const getVideos = createAsyncThunk<DataVideo, void, AsyncThunkConfig>(
@@ -29,4 +29,11 @@ const getVideosByCategory = createAsyncThunk<DataVideo, void, AsyncThunkConfig>(
   },
 );
 
-export { getVideos, getVideosByCategory };
+const getPopularVideos = createAsyncThunk<PopularVideoResponseDto, PopularVideosRequestDtoType, AsyncThunkConfig>(
+  ActionType.GET_POPULAR_VIDEOS,
+  async (payload, { extra: { videoApi } }) => {
+    return await videoApi.getPopular(payload);
+  },
+);
+
+export { getVideos, getVideosByCategory, getPopularVideos };

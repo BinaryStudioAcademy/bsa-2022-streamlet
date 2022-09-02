@@ -20,6 +20,10 @@ const HistoryPage: FC = () => {
     return state.auth.user;
   });
 
+  const isLightTheme = useAppSelector((state) => {
+    return state.theme.isLightTheme;
+  });
+
   useEffect(() => {
     if (!user) {
       navigate(AppRoutes.SIGN_IN, { replace: true });
@@ -50,10 +54,6 @@ const HistoryPage: FC = () => {
     rootMargin: '0px 0px 400px 0px',
   });
 
-  if (historyData.dataStatus === DataStatus.PENDING && !historyData.list.length) {
-    generateHistorySkeletons();
-  }
-
   return (
     <div className={styles['history-page-container']}>
       {historyData.list.map((historyRecord, index) => {
@@ -80,7 +80,7 @@ const HistoryPage: FC = () => {
           </div>
         );
       })}
-      {historyData.dataStatus === DataStatus.PENDING ? generateHistorySkeletons() : null}
+      {historyData.dataStatus === DataStatus.PENDING ? generateHistorySkeletons(isLightTheme) : null}
       <div ref={sentryRef}>
         {historyData.dataStatus === DataStatus.PENDING && (
           <Loader hCentered={true} vCentered={true} spinnerSize={'md'} />
