@@ -1,42 +1,44 @@
 @use 'assets/css/breakpoint';
 
-.reaction-button {
-  cursor: pointer;
-}
-
 .video-page {
   display: grid;
+  grid-template:
+    'video-player'
+    'video-info'
+    'side-block'
+    'comments-block';
   grid-template-columns: 1fr;
-  max-width: 1200px;
+  max-width: 1700px;
   margin: auto;
   padding: 20px;
-  column-gap: 10px;
-  @media #{breakpoint.$tablet-middle} {
-    grid-template-columns: 2fr 1fr;
+  column-gap: 20px;
+  @media #{breakpoint.$tablet-large} {
+    grid-template:
+      'video-player side-block'
+      'video-info side-block'
+      'comments-block side-block' / 2.3fr 1fr;
+    padding: 20px;
+  }
+
+  @media #{breakpoint.$desktop-small} {
+    grid-template:
+      'video-player side-block'
+      'video-info side-block'
+      'comments-block side-block' / 3fr 1fr;
     padding: 20px;
   }
 }
 
-.finished {
-  grid-template-columns: 1fr;
-}
-
-.video-player {
-  max-width: 1200px;
-  margin-bottom: 20px;
-}
-
-.video-title {
-  color: var(--white-text-color);
-  font-weight: 600;
-  font-size: 24px;
-  font-family: Gilroy, sans-serif;
-  line-height: 48px;
+.side-block {
+  display: flex;
+  grid-area: side-block;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .video-block {
+  grid-area: video-player;
   width: 100%;
-  max-width: 1200px;
   aspect-ratio: 16 / 9;
   object-fit: contain;
   @media screen and (max-width: 992px) {
@@ -44,34 +46,9 @@
   }
 }
 
-.sign-in-modal {
-  position: absolute;
-  top: 35px;
-  right: -50px;
-  width: 378px;
-  height: 200px;
-}
-
-.reaction-container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 10px;
-}
-
-.reaction-container span {
-  margin-left: 10px;
-}
-
-.reaction-block {
-  display: flex;
-}
-
 .chat-block {
-  max-width: 350px;
   height: 100%;
-  max-height: 560px;
+  max-height: min(860px, 80vh);
 
   @media screen and (max-width: 992px) {
     width: 100%;
@@ -80,22 +57,20 @@
 
 .video-info-block {
   display: flex;
+  grid-area: video-info;
   flex-direction: column;
+  margin-top: 20px;
   padding: 0;
 }
 
 .video-comment-block {
+  grid-area: comments-block;
   padding: 0;
-}
-
-.video-header {
-  display: flex;
-  justify-content: space-between;
 }
 
 .description-container {
   max-width: 65%;
-  margin: 11px 0 8px;
+  margin-top: 11px;
   color: var(--text-gray-color);
   font-weight: 400;
   font-size: 14px;
@@ -106,45 +81,14 @@
 .video-page hr {
   width: 100%;
   height: 1px;
-  margin-bottom: 19px;
+  margin: 19px 0;
   color: var(--gray-200-input-background);
   background-color: var(--gray-200-input-background);
   border-color: var(--gray-200-input-background);
   outline-color: var(--gray-200-input-background);
 }
 
-.channel-banner {
-  width: 34px;
-  height: 34px;
-  border-radius: 100%;
-}
-
-.channel-info-container {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 20px;
-}
-
-.channel-description {
-  min-width: 350px;
-  margin-left: 10px;
-}
-
-.about-channel-block {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 20px;
-  color: var(--white-text-color);
-}
-
 @media screen and (max-width: 768px) {
-  .sign-in-modal {
-    left: -170px;
-    width: 280px;
-  }
-
   .video-page {
     padding: 0;
   }
@@ -166,49 +110,7 @@
     align-items: initial;
   }
 
-  .video-header {
-    display: flex;
-    flex-direction: column-reverse;
-  }
-
-  .reaction-block {
-    margin-left: auto;
-  }
-
-  .channel-info-container button {
-    width: 100%;
-  }
-
-  .about-channel-block {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .about-channel-block span {
-    width: fit-content;
-  }
-
-  .channel-description {
-    width: fit-content;
-    min-width: fit-content;
-  }
-
   .description-container {
     max-width: 100%;
   }
-}
-
-.subscribe-wrapper {
-  position: relative;
-  margin: 20px 0;
-}
-
-.subscribe-signin-modal {
-  position: absolute;
-  top: 120%;
-  left: 0;
-  width: 200px;
 }
