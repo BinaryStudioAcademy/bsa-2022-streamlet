@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
-import { AppRoutes, AppTheme } from 'common/enums/enums';
-import { useLocation, useEffect, useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { AppRoutes, AppTheme, SizesWindow } from 'common/enums/enums';
+import { useLocation, useEffect, useAppDispatch, useAppSelector, useWindowDimensions } from 'hooks/hooks';
 import { tokensStorageService } from 'services/services';
 import { authActions } from 'store/actions';
 import { MainPageContainer } from 'pages/main-page/main-page-container';
@@ -29,10 +29,18 @@ import { OverviewTab } from 'pages/following-page/tabs/overview/overview-tab';
 import { LiveVideosTab } from 'pages/following-page/tabs/live-videos/live-videos-tab';
 import { OfflineVideosTab } from 'pages/following-page/tabs/offline-videos/offline-videos-tab';
 import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
+import { closeSidebar } from 'store/layout/actions';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const { pathname, search } = useLocation();
+  const { width } = useWindowDimensions();
+
+  useEffect(() => {
+    if (width <= SizesWindow.SIZE_FOR_HIDDEN_SIDEBAR) {
+      dispatch(closeSidebar());
+    }
+  }, [width, dispatch]);
 
   const hasToken = Boolean(tokensStorageService.getTokens().accessToken);
 

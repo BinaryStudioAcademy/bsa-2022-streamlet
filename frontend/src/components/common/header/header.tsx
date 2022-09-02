@@ -117,7 +117,7 @@ const Header: FC<HeaderProps> = ({
         {isLogged ? (
           <>
             <Link className={styles['btn-go-stream']} to={AppRoutes.STUDIO}>
-              <Icon name={IconName.CAMERA} width="24" height="19" />
+              <Icon name={IconName.CAMERA} width="24" height="22" />
             </Link>
             {notificationDropdownContent}
             <button

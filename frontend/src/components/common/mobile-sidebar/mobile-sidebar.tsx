@@ -28,7 +28,7 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
   const hasUser = Boolean(useAppSelector((state) => state.auth.user));
 
   return (
-    <div className={clsx(styles['shadow'], !isSidebarOpen && styles['shadow-open'])}>
+    <div className={clsx(styles['shadow'], isSidebarOpen && styles['shadow-open'])}>
       <div className={styles['scrim']} onClick={closeMobileSidebar}></div>
       <div
         className={clsx(

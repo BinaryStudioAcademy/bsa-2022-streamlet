@@ -152,12 +152,7 @@ $animation-duration: 200ms;
 }
 
 .list-links {
-  padding-top: 7px;
   list-style: none;
-
-  @media screen and (max-width: 1300px) {
-    padding-top: 9px;
-  }
 }
 
 .nav-link {
@@ -168,7 +163,7 @@ $animation-duration: 200ms;
 .nav-link li {
   display: flex;
   align-items: center;
-  padding: 6px 20px;
+  padding: 13px 20px;
 }
 
 .nav-link li svg {

@@ -1,4 +1,4 @@
-import { User, UserProfile, Video, VideoComment } from '@prisma/client';
+import { User, UserProfile, Video, VideoComment, CommentReaction } from '@prisma/client';
 import { BaseVideoResponseDto } from 'shared/build';
 import { Comment } from 'shared/build/common/types/comment';
 
@@ -37,7 +37,10 @@ export const trimVideoWithComments = (
         subscriptions: number;
       };
     };
-    comments: (VideoComment & { author: User & { profile: UserProfile | null } })[];
+    comments: (VideoComment & {
+      author: User & { profile: UserProfile | null };
+      commentReactions: CommentReaction[];
+    })[];
   },
 ): BaseVideoResponseDto & {
   channel: {
@@ -90,7 +93,14 @@ export const trimVideoWithComments = (
       avatar: comment.author.profile?.avatar,
       firstName: comment.author.profile?.firstName,
       lastName: comment.author.profile?.lastName,
+      likeNum: calculateReactions(comment.commentReactions, true),
+      dislikeNum: calculateReactions(comment.commentReactions, false),
     })),
     description,
   };
+};
+
+const calculateReactions = (commentReactions: CommentReaction[], isLike: boolean): number => {
+  const likeCount = commentReactions.filter((item) => item.isLike === isLike);
+  return likeCount.length;
 };

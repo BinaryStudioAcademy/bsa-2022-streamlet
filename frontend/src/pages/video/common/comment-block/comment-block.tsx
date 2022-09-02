@@ -13,9 +13,11 @@ type Props = {
     lastName?: string;
   };
   comments: Comment[];
+  onLike: (commentId: string) => void;
+  onDislike: (commentId: string) => void;
 };
 
-const VideoCommentBlock: FC<Props> = ({ comments, userAvatar, onNewComment, namingInfo }) => {
+const VideoCommentBlock: FC<Props> = ({ comments, userAvatar, onNewComment, onLike, onDislike, namingInfo }) => {
   return (
     <>
       <VideoPageCommentForm
@@ -25,7 +27,7 @@ const VideoCommentBlock: FC<Props> = ({ comments, userAvatar, onNewComment, nami
         namingInfo={namingInfo}
       />
       {comments.map((comment: Comment) => {
-        return <VideoComment key={comment.id} comment={comment} />;
+        return <VideoComment key={comment.id} comment={comment} onLike={onLike} onDislike={onDislike} />;
       })}
     </>
   );

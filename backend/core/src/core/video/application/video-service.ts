@@ -43,6 +43,19 @@ export class VideoService {
     return this.videoRepository.addReaction(request, videoId, userId);
   }
 
+  async addCommentReaction(
+    request: CreateReactionRequestDto,
+    commentId: string,
+    userId: string,
+  ): Promise<CreateReactionResponseDto | null> {
+    const userReaction = await this.videoRepository.commentReactionByUser(commentId, userId);
+
+    if (userReaction !== null) {
+      return this.videoRepository.removeCommentReactionAndAddNew(commentId, userId, request.isLike);
+    }
+    return this.videoRepository.addCommentReaction(request, commentId, userId);
+  }
+
   getVideosBySearch(queryParams: VideoSearch): Promise<DataVideo> {
     return this.videoRepository.getVideosBySearch(queryParams);
   }

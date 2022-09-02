@@ -6,6 +6,8 @@ import {
   VideoCommentResponseDto,
   CreateReactionRequestDto,
   CreateReactionResponseDto,
+  CreateCommentReactionRequestDto,
+  CreateCommentReactionResponseDto,
 } from 'common/types/types';
 import { VideoExpandedResponseDto } from 'shared/build';
 import { ActionType } from './common';
@@ -37,6 +39,15 @@ const videoReact = createAsyncThunk<
   return await videoApi.react(payload);
 });
 
+const commentReact = createAsyncThunk<
+  CreateCommentReactionResponseDto,
+  CreateCommentReactionRequestDto & { commentId: string },
+  AsyncThunkConfig
+>(ActionType.COMMENT_REACT, async (payload, { extra }) => {
+  const { videoApi } = extra;
+  return await videoApi.commentReact(payload);
+});
+
 const updateLiveViews = createAction<number>(ActionType.UPDATE_LIVE_VIEWS);
 
-export { getVideo, videoReact, addVideoComment, updateLiveViews };
+export { getVideo, videoReact, addVideoComment, updateLiveViews, commentReact };
