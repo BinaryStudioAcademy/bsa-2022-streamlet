@@ -7,6 +7,7 @@ const CONTAINER_TYPES = {
   HealthcheckController: Symbol.for('HealthcheckController'),
 
   ChannelStreamingController: Symbol.for('ChannelStreamingController'),
+  CreateVideoHistoryRecordMiddleware: Symbol.for('createVideoHistoryRecordMiddleware'),
   ChannelCrudController: Symbol.for('ChannelCrudController'),
   ChannelSubscriptionController: Symbol.for('ChannelSubscriptionController'),
   UserService: Symbol.for('UserService'),
@@ -42,7 +43,7 @@ const CONTAINER_TYPES = {
 
   FollowingService: Symbol.for('FollowingService'),
   FollowingController: Symbol.for('FollowingController'),
-  
+
   ChannelOwnerMiddleWare: Symbol.for('ChannelOwnerMiddleware'),
 
   PrismaClient: Symbol.for('PrismaClient'),

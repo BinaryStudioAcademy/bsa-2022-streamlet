@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
-import { AppRoutes, AppTheme } from 'common/enums/enums';
-import { useLocation, useEffect, useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { AppRoutes, AppTheme, SizesWindow } from 'common/enums/enums';
+import { useLocation, useEffect, useAppDispatch, useAppSelector, useWindowDimensions } from 'hooks/hooks';
 import { tokensStorageService } from 'services/services';
 import { authActions } from 'store/actions';
 import { MainPageContainer } from 'pages/main-page/main-page-container';
@@ -20,6 +20,7 @@ import { ChannelPage } from 'pages/channel-page/channel-page';
 import { ProfilePreferencesPage } from 'pages/profile-preferences-page/profile-preferences-page';
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
 import { GoogleAuthorization } from 'components/auth/components/common/social-buttons/google-button/google-authorization';
+import { HistoryPage } from '../../pages/history-page/history-page';
 
 import styles from './app.module.scss';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
@@ -30,10 +31,18 @@ import { LiveVideosTab } from 'pages/following-page/tabs/live-videos/live-videos
 import { OfflineVideosTab } from 'pages/following-page/tabs/offline-videos/offline-videos-tab';
 import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
 import { BrowsePage } from '../../pages/browse-page/browse-page';
+import { closeSidebar } from 'store/layout/actions';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const { pathname, search } = useLocation();
+  const { width } = useWindowDimensions();
+
+  useEffect(() => {
+    if (width <= SizesWindow.SIZE_FOR_HIDDEN_SIDEBAR) {
+      dispatch(closeSidebar());
+    }
+  }, [width, dispatch]);
 
   const hasToken = Boolean(tokensStorageService.getTokens().accessToken);
 
@@ -88,7 +97,7 @@ const App: FC = () => {
               <Routes>
                 <Route path={AppRoutes.ROOT} element={<MainPageContainer />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />
-                <Route path={AppRoutes.HISTORY} element="History" />
+                <Route path={AppRoutes.HISTORY} element={<HistoryPage />} />
                 <Route path={AppRoutes.FOLLOWING} element={<ProtectedRoute element={<FollowingPage />} />}>
                   <Route index element={<OverviewTab />} />
                   <Route path={FollowingTab.OVERVIEW} element={<OverviewTab />} />
