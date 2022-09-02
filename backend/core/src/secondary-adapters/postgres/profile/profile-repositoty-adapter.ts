@@ -75,7 +75,7 @@ export class ProfileRepositoryAdapter implements ProfileRepository {
   }
 
   async checkProfileExist(userId: string): Promise<UserProfile | null> {
-    return this.prismaClient.userProfile.findFirst({
+    return this.prismaClient.userProfile.findUnique({
       where: {
         userId,
       },
