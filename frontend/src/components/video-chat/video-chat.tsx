@@ -185,9 +185,13 @@ const VideoChat: FC<VideoChatProps> = ({
           </div>
         </>
       ) : (
-        <div className={styles['video-chat']} onScroll={debouncedHandleChatScroll} ref={chatViewEl}>
+        <div
+          className={clsx(styles['video-chat'], showParticipants && styles['view-participants'])}
+          onScroll={debouncedHandleChatScroll}
+          ref={chatViewEl}
+        >
           {showParticipants ? (
-            participants.map((user) => <Participant key={user} user={{ id: user }} />)
+            participants.map((participantId) => <Participant key={participantId} id={participantId} />)
           ) : (
             <>
               <div ref={chatEndEl} />
