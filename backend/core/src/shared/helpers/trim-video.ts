@@ -52,6 +52,7 @@ export const trimVideoWithComments = (
   comments: Comment[];
   description: string;
   videoPath: string;
+  isChatEnabled: boolean;
 } => {
   const {
     id,
