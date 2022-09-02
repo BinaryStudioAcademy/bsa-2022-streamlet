@@ -59,12 +59,12 @@ const reducer = createReducer(initialState, (builder) => {
     state.data.error = error.message;
   });
 
-  builder.addCase(getUserVideoHistoryRecord.pending, (state) => {
+  builder.addCase(deleteAllUserHistory.pending, (state) => {
     state.data.deleteStatus = DataStatus.PENDING;
     state.data.error = undefined;
   });
 
-  builder.addCase(getUserVideoHistoryRecord.fulfilled, (state) => {
+  builder.addCase(deleteAllUserHistory.fulfilled, (state) => {
     state.data.deleteStatus = DataStatus.FULFILLED;
     state.data.list = [];
     state.data.error = undefined;

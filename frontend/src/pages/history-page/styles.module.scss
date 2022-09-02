@@ -12,3 +12,13 @@
   color: var(--white-text-color);
   font-weight: 600;
 }
+
+.delete-all-btn {
+  padding: 0 30px;
+  color: var(--text-gray-color);
+  font-size: 20px;
+  white-space: nowrap;
+  text-transform: capitalize;
+  background: none;
+  border: 3px var(--brand-green-color) solid;
+}
