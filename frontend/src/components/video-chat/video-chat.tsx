@@ -36,8 +36,10 @@ const VideoChat: FC<VideoChatProps> = ({
   const [showParticipants, setShowParticipants] = useState(false);
   const [popOutWindow, setPopOutWindow] = useState<Window | null>(null);
   const [showChatDownBtn, setShowChatDownBtn] = useState(false);
+  const [hideChat, setHideChat] = useState(false);
 
   const handleSetShowChatMenu = (): void => setShowChatMenu(!showChatMenu);
+
   const handleSetShowTimeStamp = (): void => {
     setShowTimeStamp(!showTimeStamp);
     setShowChatMenu(false);
@@ -103,6 +105,11 @@ const VideoChat: FC<VideoChatProps> = ({
     }
   };
 
+  const handleSetHideChat = (): void => {
+    setHideChat(!hideChat);
+    setTimeout(handleClickGoDownBtn, 1000);
+  };
+
   useEffect(() => {
     if (showChatMenu) {
       window.addEventListener('click', onHandleClickOutsideMenu);
@@ -113,7 +120,7 @@ const VideoChat: FC<VideoChatProps> = ({
   }, [showChatMenu, onHandleClickOutsideMenu]);
 
   return (
-    <div className={styles['video-chat-wrapper']}>
+    <div className={clsx(styles['video-chat-wrapper'], hideChat && styles['hide-chat'])}>
       {!popOutWindow && (
         <div className={styles['video-chat-header']}>
           <div className={styles['video-chat-header-title']}>
@@ -170,7 +177,12 @@ const VideoChat: FC<VideoChatProps> = ({
             <>
               <div ref={chatEndEl} />
               {messages.map((message) => (
-                <VideoComment key={message.id} message={message} showTimeStamp={showTimeStamp} />
+                <VideoComment
+                  key={message.id}
+                  message={message}
+                  showTimeStamp={showTimeStamp}
+                  messageClassName={styles['video-chat-message']}
+                />
               ))}
               <div className={styles['video-chat-welcome-message']}>
                 <div className={styles['video-chat-welcome-message-icon']}>
@@ -183,13 +195,18 @@ const VideoChat: FC<VideoChatProps> = ({
                 </div>
               </div>
               {initialMessages.map((message) => (
-                <VideoComment key={message.id} message={message} showTimeStamp={showTimeStamp} />
+                <VideoComment
+                  key={message.id}
+                  message={message}
+                  showTimeStamp={showTimeStamp}
+                  messageClassName={styles['video-chat-message']}
+                />
               ))}
             </>
           )}
         </div>
       )}
-      <div className={styles['video-chat-send-form']}>
+      <div className={styles['video-chat-footer']}>
         <div
           className={clsx(styles['video-chat-down-btn'], showChatDownBtn && styles['show-btn'])}
           onClick={handleClickGoDownBtn}
@@ -198,7 +215,10 @@ const VideoChat: FC<VideoChatProps> = ({
             <Icon name={IconName.ARROW_DOWN_2} />
           </div>
         </div>
-        <SendMessage {...sendMessageProps} />
+        <SendMessage {...sendMessageProps} sendMessageClassName={styles['video-chat-send-form']} />
+      </div>
+      <div className={styles['video-chat-footer-bar']} onClick={handleSetHideChat}>
+        <span>{hideChat ? 'show chat' : 'hide chat'}</span>
       </div>
     </div>
   );

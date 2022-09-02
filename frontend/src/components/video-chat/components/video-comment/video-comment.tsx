@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { ChatMessageResponseDto, FC } from 'common/types/types';
 import { useState, useEffect } from 'hooks/hooks';
 import {
@@ -12,9 +13,10 @@ import styles from './video-comment.module.scss';
 type Props = {
   message: ChatMessageResponseDto;
   showTimeStamp: boolean;
+  messageClassName?: string;
 };
 
-const VideoComment: FC<Props> = ({ message: { text, createdAt, author }, showTimeStamp }) => {
+const VideoComment: FC<Props> = ({ message: { text, createdAt, author }, showTimeStamp, messageClassName }) => {
   const [createdAtDate, setCreatedAtDate] = useState(getHowLongAgoString(new Date(createdAt)));
 
   const updateTimeDelay = getRightUpdateTimeDelay(createdAt);
@@ -27,7 +29,7 @@ const VideoComment: FC<Props> = ({ message: { text, createdAt, author }, showTim
   }, [updateTimeDelay, createdAt]);
 
   return (
-    <div className={styles['video-comment']}>
+    <div className={clsx(styles['video-comment'], messageClassName)}>
       <div className={styles['main-part-comment']}>
         {author.profile.avatar ? (
           <img className={styles['commentators-avatar']} src={author.profile.avatar} alt={author.username} />

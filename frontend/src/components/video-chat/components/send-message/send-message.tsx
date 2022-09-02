@@ -9,9 +9,10 @@ import styles from './send-message.module.scss';
 export type SendMessageProps = {
   handlerSubmitMessage: (messageText: string) => Promise<ChatMessageResponseDto>;
   handleChooseEmoji: () => void;
+  sendMessageClassName?: string;
 };
 
-const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseEmoji }) => {
+const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseEmoji, sendMessageClassName }) => {
   const [messageText, setMessageText] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -43,7 +44,7 @@ const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseE
   };
 
   return (
-    <form className={styles['add-comments']} onSubmit={handleSubmitForm}>
+    <form className={clsx(styles['add-comments'], sendMessageClassName)} onSubmit={handleSubmitForm}>
       <input
         value={messageText}
         onChange={handleInputChange}

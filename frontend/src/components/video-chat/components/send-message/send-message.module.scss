@@ -5,7 +5,7 @@ $base-z-index: $page-component-z-index;
 .add-comments {
   position: relative;
   z-index: $base-z-index;
-  padding: 20px;
+  padding: 20px 20px 10px;
   background-color: var(--gray-300-header-menu-background);
   border-radius: 3px;
 }
