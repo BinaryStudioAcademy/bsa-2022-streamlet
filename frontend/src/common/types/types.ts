@@ -38,3 +38,4 @@ declare module 'react-notifications-component';
 export * from './channel/channel';
 
 export * from './chat/chat';
+export * from './batch-payload/batch-payload';

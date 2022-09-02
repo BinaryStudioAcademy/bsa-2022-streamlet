@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 
-import { getUserVideoHistoryRecord } from './actions';
+import { deleteAllUserHistory, getUserVideoHistoryRecord } from './actions';
 import { HistoryListType } from 'shared/build';
 import { isObjectUniqueIdContainInTwoArray } from '../../helpers/helpers';
 
@@ -10,6 +10,7 @@ type State = {
     currentPage: number;
     lastPage: number;
     dataStatus: DataStatus;
+    deleteStatus: DataStatus;
     error: string | undefined;
     list: HistoryListType[];
   };
@@ -20,6 +21,7 @@ const initialState: State = {
     list: [],
     lastPage: 1,
     currentPage: 1,
+    deleteStatus: DataStatus.IDLE,
     dataStatus: DataStatus.IDLE,
     error: undefined,
   },
@@ -42,6 +44,7 @@ const reducer = createReducer(initialState, (builder) => {
       ...payload,
       list: newList,
       error: undefined,
+      deleteStatus: DataStatus.IDLE,
       dataStatus: DataStatus.FULFILLED,
     };
   });
@@ -49,6 +52,22 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(getUserVideoHistoryRecord.rejected, (state, { error }) => {
     state.data.dataStatus = DataStatus.REJECTED;
     state.data.error = error.message;
+  });
+
+  builder.addCase(deleteAllUserHistory.rejected, (state, { error }) => {
+    state.data.deleteStatus = DataStatus.REJECTED;
+    state.data.error = error.message;
+  });
+
+  builder.addCase(getUserVideoHistoryRecord.pending, (state) => {
+    state.data.deleteStatus = DataStatus.PENDING;
+    state.data.error = undefined;
+  });
+
+  builder.addCase(getUserVideoHistoryRecord.fulfilled, (state) => {
+    state.data.deleteStatus = DataStatus.FULFILLED;
+    state.data.list = [];
+    state.data.error = undefined;
   });
 });
 
