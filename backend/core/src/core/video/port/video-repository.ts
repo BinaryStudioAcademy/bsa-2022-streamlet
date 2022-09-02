@@ -5,26 +5,17 @@ import {
   VideoCommentResponseDto,
   CategorySearchRequestQueryDto,
   TagSearchRequestQueryDto,
-  Comment,
   PopularVideosRequestDtoType,
   PopularVideoResponseDto,
 } from 'shared/build';
-import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
+import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 import { VideoRepositoryFilters } from './video-repository-filters';
 import { VideoSearch } from '~/shared/types/types';
+import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 
 export interface VideoRepository {
-  getById(id: string): Promise<
-    | (BaseVideoResponseDto & {
-        comments: Comment[];
-        description: string;
-        likeNum: number;
-        dislikeNum: number;
-        videoPath: string;
-      })
-    | null
-  >;
+  getById(id: string): Promise<VideoExpandedInfo | null>;
   searchByTags(searchByTagsDto: TagSearchRequestQueryDto): Promise<VideoWithChannel[]>;
   searchByCatergories(searchByCategoryDto: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]>;
   getAll(queryParams?: { filters?: VideoRepositoryFilters }): Promise<DataVideo>;

@@ -5,27 +5,26 @@
 }
 
 .add-comment-block-user-avatar {
-  display: block;
-  width: 50px;
-  height: 50px;
-  margin-right: 30px;
-  border-radius: 100%;
+  margin-right: 20px;
 }
 
 .add-comment-input {
   width: 100%;
   height: auto;
-  padding: 0;
+  padding: 0 0 3px;
   overflow: hidden;
+  color: var(--white-text-color);
+  font-weight: 400;
   white-space: normal;
   background: none;
   border: none;
-  border-bottom: var(--text-gray-color) 3px solid;
+  border-bottom: var(--gray-200-input-background) 1px solid;
+  border-radius: 0;
   resize: none;
 }
 
 .add-comment-input-in-focus {
-  border-bottom: var(--brand-green-color) 3px solid;
+  border-bottom: var(--brand-green-color) 1px solid;
 }
 
 .add-comment-input-wrapper {
