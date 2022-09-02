@@ -9,9 +9,8 @@ export interface ChannelStreamingRepository {
   getStreamingKey(props: Partial<StreamingKey>): Promise<StreamingKey | null>;
   updateStreamingKey(channelId: string, streamingKey: string): Promise<StreamingKey | null>;
   createStreamingKey(channelId: string): Promise<StreamingKey>;
-  getAuthorlId(props: Partial<StreamingKey>): Promise<StreamKeyResponseBeforeTrimming | null>;
-  getPendingStream(channelId: string): Promise<VideoStreamResponseBeforeTrimming | null>;
-  getCurrentStream(channelId: string): Promise<VideoStreamResponseBeforeTrimming | null>;
+  getAuthorId(props: Partial<StreamingKey>): Promise<StreamKeyResponseBeforeTrimming | null>;
+  getActiveStream(channelId: string): Promise<VideoStreamResponseBeforeTrimming | null>;
   createStream(channelId: string): Promise<VideoStreamResponseBeforeTrimming>;
   updateStream(videoId: string, props: Partial<Video>): Promise<VideoStreamResponseBeforeTrimming | null>;
   getOwnChannel(authorId: string): Promise<Channel | null>;

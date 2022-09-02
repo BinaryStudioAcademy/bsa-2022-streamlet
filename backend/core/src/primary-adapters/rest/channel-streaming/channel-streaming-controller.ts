@@ -147,6 +147,10 @@ export class ChannelStreamingController extends BaseHttpController {
     if (!authorId) {
       throw new NotFound('Author of stream not found.');
     }
+    await this.channelStreamingService.update({
+      videoId: streamData.videoId,
+      videoPath: `/segments/${videoId}/master.m3u8`,
+    });
     this.channelStreamingService.notifyTranscoderAboutStreamStart({ authorId, streamData });
   }
 
@@ -302,8 +306,8 @@ export class ChannelStreamingController extends BaseHttpController {
     authenticationMiddleware,
     CONTAINER_TYPES.ChannelActionMiddleware,
   )
-  public async getCurrentStream(@requestParam() { id }: DefaultRequestParam): Promise<VideoStreamResponseDto> {
-    const currentStream = await this.channelStreamingService.getCurrentStream(id);
+  public async getActiveStream(@requestParam() { id }: DefaultRequestParam): Promise<VideoStreamResponseDto> {
+    const currentStream = await this.channelStreamingService.getActiveStream(id);
     if (!currentStream) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
@@ -331,7 +335,7 @@ export class ChannelStreamingController extends BaseHttpController {
     if (keyData === null) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
-    const stream = await this.channelStreamingService.getCurrentStream(channel.id);
+    const stream = await this.channelStreamingService.getActiveStream(channel.id);
     return {
       channel,
       streamingKey: keyData.streamingKey,

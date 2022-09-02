@@ -15,20 +15,7 @@ export class ChannelStreamingRepositoryAdapter implements ChannelStreamingReposi
     this.prismaClient = prismaClient;
   }
 
-  getPendingStream(channelId: string): Promise<VideoStreamResponseBeforeTrimming | null> {
-    return this.prismaClient.video.findFirst({
-      where: {
-        channelId,
-        status: StreamStatus.WAITING,
-      },
-      include: {
-        categories: true,
-        tags: true,
-      },
-    });
-  }
-
-  getCurrentStream(channelId: string): Promise<VideoStreamResponseBeforeTrimming | null> {
+  getActiveStream(channelId: string): Promise<VideoStreamResponseBeforeTrimming | null> {
     return this.prismaClient.video.findFirst({
       where: {
         channelId,
@@ -48,7 +35,7 @@ export class ChannelStreamingRepositoryAdapter implements ChannelStreamingReposi
     });
   }
 
-  getAuthorlId(props: Partial<StreamingKey>): Promise<StreamKeyResponseBeforeTrimming | null> {
+  getAuthorId(props: Partial<StreamingKey>): Promise<StreamKeyResponseBeforeTrimming | null> {
     return this.prismaClient.streamingKey.findFirst({
       where: {
         ...props,

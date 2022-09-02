@@ -9,6 +9,7 @@ type StreamUpdateRequestDto = {
   tags: TagCreateRequestDto[];
   categories: CategoryCreateRequestDto[];
   privacy: StreamPrivacy;
+  videoPath: string;
 };
 
 export { type StreamUpdateRequestDto };

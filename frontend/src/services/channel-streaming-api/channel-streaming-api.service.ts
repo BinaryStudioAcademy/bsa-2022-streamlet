@@ -79,7 +79,7 @@ class ChannelStreamingApi {
     });
   }
 
-  async getCurrentStream({ id: channelId }: DefaultRequestParam): Promise<VideoStreamResponseDto> {
+  async getActiveStream({ id: channelId }: DefaultRequestParam): Promise<VideoStreamResponseDto> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.CHANNEL_STREAMING}${ChannelStreamingApiPath.LIVE}/${channelId}`,
     });

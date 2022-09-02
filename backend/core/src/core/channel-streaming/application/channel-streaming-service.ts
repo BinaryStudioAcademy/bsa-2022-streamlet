@@ -48,8 +48,8 @@ export class ChannelStreamingService {
     if (!keyRecord) {
       return null;
     }
-    const pendingStream = await this.channelStreamingRepository.getPendingStream(keyRecord.channelId);
-    if (!pendingStream) {
+    const activeStream = await this.channelStreamingRepository.getActiveStream(keyRecord.channelId);
+    if (!activeStream) {
       return null;
     }
     return {
@@ -74,7 +74,7 @@ export class ChannelStreamingService {
   }
 
   async getAuthorIdByStreamingKey(key: string): Promise<StreamingKeyWithAuthorResponseDto | null> {
-    const keyRecord = await this.channelStreamingRepository.getAuthorlId({ key });
+    const keyRecord = await this.channelStreamingRepository.getAuthorId({ key });
     if (!keyRecord) {
       return null;
     }
@@ -118,7 +118,7 @@ export class ChannelStreamingService {
   }
 
   async createStream(channelId: string): Promise<VideoStreamResponseDto | undefined | null> {
-    const existingStream = await this.getCurrentStream(channelId);
+    const existingStream = await this.getActiveStream(channelId);
     if (existingStream !== null) {
       return null;
     }
@@ -164,8 +164,8 @@ export class ChannelStreamingService {
     return castToVideoStreamResponseDto(update);
   }
 
-  async getCurrentStream(channelId: string): Promise<VideoStreamResponseDto | null> {
-    const currentStream = await this.channelStreamingRepository.getCurrentStream(channelId);
+  async getActiveStream(channelId: string): Promise<VideoStreamResponseDto | null> {
+    const currentStream = await this.channelStreamingRepository.getActiveStream(channelId);
     if (!currentStream) {
       return null;
     }
@@ -184,7 +184,6 @@ export class ChannelStreamingService {
       update = await this.channelStreamingRepository.updateStream(videoId, {
         status,
         publishedAt: new Date(),
-        videoPath: `/segments/${videoId}/master.m3u8`,
       });
     }
 
