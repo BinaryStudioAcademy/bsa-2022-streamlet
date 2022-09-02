@@ -10,6 +10,7 @@ import {
   StreamingInfoResponseDto,
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
+  StreamReadinessRequestDto,
   StreamUpdateRequestDto,
   VideoStreamResponseDto,
 } from 'shared/build';
@@ -95,6 +96,17 @@ class ChannelStreamingApi {
       url: `${this.#apiPrefix}${ApiPath.CHANNEL_STREAMING}${ChannelStreamingApiPath.LIVE}`,
       options: {
         method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+      },
+    });
+  }
+
+  async setReadinessToStream(payload: StreamReadinessRequestDto): Promise<VideoStreamResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.CHANNEL_STREAMING}${ChannelStreamingApiPath.EDIT_STREAM}`,
+      options: {
+        method: HttpMethod.PUT,
         contentType: ContentType.JSON,
         payload: JSON.stringify(payload),
       },

@@ -1,18 +1,12 @@
 import clsx from 'clsx';
-import {
-  FC,
-  FormControl,
-  StreamPosterUploadRequestDto,
-  StreamUpdateRequestDto,
-  VideoStreamResponseDto,
-} from 'common/types/types';
+import { FC, FormControl, VideoStreamResponseDto } from 'common/types/types';
 import { Button, Input, Loader, PasswordInput } from 'components/common/common';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { DeepRequired, FieldErrorsImpl, FieldValues, UseFormGetValues, UseFormHandleSubmit } from 'react-hook-form';
+import { DeepRequired, FieldErrorsImpl, FieldValues, UseFormGetValues } from 'react-hook-form';
 import { StreamStatus } from 'shared/build';
 // import defaultPreview from 'assets/img/default/video-default.png';
-import { StreamInfoFormValues, StreamSettingsFormValues } from './common/stream-settings-form-values';
+import { StreamInfoFormValues } from './common/stream-info-form-values';
 
 import styles from './styles.module.scss';
 import { StreamPrivacyLabel } from 'common/enums/enums';
@@ -20,27 +14,18 @@ import { Select } from 'components/common/select';
 import { STREAM_PRIVACY_OPTIONS } from 'common/constants/stream/stream';
 
 type Props = {
-  isEditingForm: boolean;
-  handleFormEdit(): void;
-  handleFormSave(payload: StreamUpdateRequestDto): void;
-  handleFormCancel(): void;
+  handleSettingsModalOpen(): void;
   handleChangeStreamStatus(): void;
   handleCopy(): void;
   handleStreamingKeyReset(): void;
-  handleUploadPoster(payload: StreamPosterUploadRequestDto): void;
   stream: VideoStreamResponseDto | null;
   infoFormControl: FormControl<StreamInfoFormValues>;
   infoFormErrors: FieldErrorsImpl<DeepRequired<FieldValues>>;
   infoFormValues: UseFormGetValues<StreamInfoFormValues>;
-  settingsFormControl: FormControl<StreamSettingsFormValues>;
-  settingsFormErrors: FieldErrorsImpl<DeepRequired<FieldValues>>;
-  settingsFormHandleSubmit: UseFormHandleSubmit<StreamSettingsFormValues>;
-  onSubmit(submitValue: StreamSettingsFormValues): void;
-  isObsConnected: boolean;
 };
 
 const StudioStream: FC<Props> = ({
-  handleFormEdit,
+  handleSettingsModalOpen,
   handleChangeStreamStatus,
   handleCopy,
   handleStreamingKeyReset,
@@ -48,7 +33,6 @@ const StudioStream: FC<Props> = ({
   infoFormControl,
   infoFormErrors,
   infoFormValues,
-  isObsConnected,
 }) => {
   return (
     <div className={styles['settings-container']}>
@@ -121,16 +105,23 @@ const StudioStream: FC<Props> = ({
           <div className={styles['col-2']}>
             <div className={styles['status-container']}>
               <div className={styles['status']}>
-                <div
-                  className={clsx(styles['status-indicator'], stream?.status === StreamStatus.LIVE && styles['live'])}
-                />
-                <p className={styles['status-text']}>{!isObsConnected ? 'Not connected' : 'Connected'}</p>
+                <div className={clsx(styles['status-indicator'], stream?.isReadyToStream && styles['live'])} />
+                <p className={styles['status-text']}>{!stream?.isReadyToStream ? 'Not connected' : 'Connected'}</p>
               </div>
               <Button
-                content={stream?.status === StreamStatus.WAITING ? 'Go live' : 'End stream'}
+                content={
+                  stream?.status === StreamStatus.WAITING
+                    ? 'Go live'
+                    : StreamStatus.LIVE
+                    ? 'End stream'
+                    : 'Disconnected'
+                }
                 className={clsx(styles['button'], styles['padding-button'], styles['live-button'])}
                 onClick={handleChangeStreamStatus}
-                disabled={!stream?.isReadyToStream}
+                disabled={
+                  (!stream?.isReadyToStream && stream?.status === StreamStatus.WAITING) ||
+                  stream?.status === StreamStatus.FINISHED
+                }
               />
             </div>
             <div className={styles['stream-details']}>
@@ -165,7 +156,7 @@ const StudioStream: FC<Props> = ({
                 <Button
                   content={'Edit'}
                   className={clsx(styles['button'], styles['padding-button'], styles['stream-edit'])}
-                  onClick={handleFormEdit}
+                  onClick={handleSettingsModalOpen}
                   type="button"
                 />
               </div>

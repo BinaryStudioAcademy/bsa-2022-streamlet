@@ -1,6 +1,6 @@
 import { STREAMING_SERVER_URL } from 'common/constants/constants';
 import { IconName, SocketEvents, StreamStatus } from 'common/enums/enums';
-import { FC, StreamPosterUploadRequestDto, StreamUpdateRequestDto } from 'common/types/types';
+import { FC } from 'common/types/types';
 import { createToastNotification } from 'components/common/toast-notification';
 import { Forbidden } from 'components/placeholder-page';
 import { NotFound } from 'components/placeholder-page/not-found';
@@ -8,9 +8,20 @@ import { errorCodes } from 'exceptions/exceptions';
 import { useAppDispatch, useAppForm, useAppSelector } from 'hooks/hooks';
 import { useCallback, useEffect, useState } from 'react';
 import { streamActions } from 'store/actions';
-import { StreamInfoFormValues, StreamSettingsFormValues } from './common/stream-settings-form-values';
+import { StreamInfoFormValues } from './common/stream-info-form-values';
 import { StudioStream } from './stream';
 import { socket } from 'common/config/config';
+import { StreamEditModal } from '../common/stream-edit-modal/stream-edit-modal';
+import { store } from 'store/store';
+
+socket.on(SocketEvents.notify.STREAM_OBS_STATUS, (isReadyToStream: boolean) => {
+  store.dispatch(
+    streamActions.setReadinessToStream({
+      videoId: store.getState().stream.stream?.id ?? '',
+      isReadyToStream,
+    }),
+  );
+});
 
 const StudioStreamContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -21,28 +32,16 @@ const StudioStreamContainer: FC = () => {
     errorCode: state.stream.status.errorCode,
   }));
 
-  const [isEditingForm, setIsEditingForm] = useState(false);
-  const [isObsConnected, setIsObsConnected] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
-  socket.on(SocketEvents.notify.STREAM_OBS_STATUS, (status: boolean) => {
-    setIsObsConnected(status);
-  });
-
-  const handleFormEdit = (): void => {
-    setIsEditingForm(true);
+  const handleSettingsModalOpen = (): void => {
+    setIsSettingsModalOpen(true);
   };
 
-  const handleFormCancel = (): void => {
-    setIsEditingForm(false);
-    settingsFormReset(defaultSettingsFormValues());
+  const handleSettingsModalClose = (): void => {
+    setIsSettingsModalOpen(false);
+    // settingsFormReset(defaultSettingsFormValues());
   };
-
-  const handleFormSave = useCallback(
-    (payload: StreamUpdateRequestDto) => {
-      dispatch(streamActions.editStream(payload));
-    },
-    [dispatch],
-  );
 
   const handleChangeStreamStatus = useCallback(() => {
     let newStatus;
@@ -76,13 +75,6 @@ const StudioStreamContainer: FC = () => {
     dispatch(streamActions.resetStreamingKey({ channelId: channel?.id ?? '' }));
   }, [dispatch, channel]);
 
-  const handleUploadPoster = useCallback(
-    (payload: StreamPosterUploadRequestDto) => {
-      dispatch(streamActions.uploadPoster(payload));
-    },
-    [dispatch],
-  );
-
   const defaultInfoFormValues = useCallback(
     () => ({
       streamingKey: streamingKey ?? '',
@@ -90,18 +82,6 @@ const StudioStreamContainer: FC = () => {
       streamUrl: `https://dev.streamlet.tk/video/${stream?.id}`,
     }),
     [stream?.id, streamingKey],
-  );
-
-  const defaultSettingsFormValues = useCallback(
-    () => ({
-      name: stream?.name,
-      tags: stream?.tags.map((tag) => ({ value: tag.id, label: tag.name })),
-      categories: stream?.categories.map((category) => ({ value: category.id, label: category.name })),
-      description: stream?.description,
-      scheduledStreamDate: stream?.scheduledStreamDate ? new Date(stream?.scheduledStreamDate) : new Date(),
-      privacy: stream?.privacy,
-    }),
-    [stream],
   );
 
   const {
@@ -113,61 +93,32 @@ const StudioStreamContainer: FC = () => {
     defaultValues: defaultInfoFormValues(),
   });
 
-  const {
-    control: settingsFormControl,
-    errors: settingsFormErrors,
-    reset: settingsFormReset,
-    handleSubmit: settingsFormHandleSubmit,
-  } = useAppForm<StreamSettingsFormValues>({
-    defaultValues: defaultSettingsFormValues(),
-  });
-
-  const onSubmit = (submitValue: StreamSettingsFormValues): void => {
-    const { name, description, scheduledStreamDate, privacy, tags, categories } = submitValue;
-    handleFormSave({
-      name,
-      description,
-      scheduledStreamDate,
-      privacy,
-      videoId: stream?.id ?? '',
-      tags: tags?.map((tag) => ({ name: tag.label })) ?? [],
-      categories: categories?.map((category) => ({ name: category.label })) ?? [],
-    });
-  };
-
   const isNotFound = errorCode === errorCodes.stream.NOT_FOUND || errorCode === errorCodes.stream.NO_CHANNELS;
 
   const isForbidden = errorCode === errorCodes.stream.FORBIDDEN || errorCode === errorCodes.stream.ACTIVE_STREAM_EXISTS;
 
   useEffect(() => {
     infoFormReset(defaultInfoFormValues());
-    settingsFormReset(defaultSettingsFormValues());
-  }, [infoFormReset, defaultInfoFormValues, defaultSettingsFormValues, settingsFormReset]);
+  }, [infoFormReset, defaultInfoFormValues]);
 
   return isNotFound ? (
     <NotFound />
   ) : isForbidden ? (
     <Forbidden />
   ) : (
-    <StudioStream
-      handleChangeStreamStatus={handleChangeStreamStatus}
-      handleCopy={handleCopy}
-      handleFormCancel={handleFormCancel}
-      handleFormEdit={handleFormEdit}
-      handleFormSave={handleFormSave}
-      handleStreamingKeyReset={handleStreamingKeyReset}
-      handleUploadPoster={handleUploadPoster}
-      isEditingForm={isEditingForm}
-      stream={stream}
-      infoFormControl={infoFormControl}
-      infoFormErrors={infoFormErrors}
-      infoFormValues={infoFormValues}
-      settingsFormControl={settingsFormControl}
-      settingsFormErrors={settingsFormErrors}
-      settingsFormHandleSubmit={settingsFormHandleSubmit}
-      onSubmit={onSubmit}
-      isObsConnected={isObsConnected}
-    />
+    <>
+      <StreamEditModal isOpen={isSettingsModalOpen} onClose={handleSettingsModalClose} />
+      <StudioStream
+        handleSettingsModalOpen={handleSettingsModalOpen}
+        handleChangeStreamStatus={handleChangeStreamStatus}
+        handleCopy={handleCopy}
+        handleStreamingKeyReset={handleStreamingKeyReset}
+        stream={stream}
+        infoFormControl={infoFormControl}
+        infoFormErrors={infoFormErrors}
+        infoFormValues={infoFormValues}
+      />
+    </>
   );
 };
 

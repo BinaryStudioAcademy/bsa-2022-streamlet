@@ -10,6 +10,7 @@ import {
   StreamingKeyResponseDto,
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
+  StreamReadinessRequestDto,
   StreamUpdateRequestDto,
   VideoStreamResponseDto,
 } from 'shared/build';
@@ -100,6 +101,21 @@ const setStreamStatus = createAsyncThunk<VideoStreamResponseDto, StreamLiveStatu
   },
 );
 
+const setReadinessToStream = createAsyncThunk<
+  VideoStreamResponseDto,
+  StreamReadinessRequestDto,
+  AsyncThunkConfigHttpError
+>(ActionType.SET_READINESS_TO_STREAM, async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
+  try {
+    return await channelStreamingApi.setReadinessToStream(payload);
+  } catch (error) {
+    if (error instanceof HttpError) {
+      return rejectWithValue(serializeHttpError(error));
+    }
+    throw error;
+  }
+});
+
 const resetStreamingKey = createAsyncThunk<
   StreamingKeyResponseDto,
   ResetStreamingKeyRequestDto,
@@ -115,4 +131,13 @@ const resetStreamingKey = createAsyncThunk<
   }
 });
 
-export { createStream, uploadPoster, editStream, getStreamingInfo, setStreamStatus, resetStreamingKey, getMyChannel };
+export {
+  createStream,
+  uploadPoster,
+  editStream,
+  getStreamingInfo,
+  setStreamStatus,
+  resetStreamingKey,
+  getMyChannel,
+  setReadinessToStream,
+};

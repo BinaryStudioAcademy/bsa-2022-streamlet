@@ -9,3 +9,4 @@ export { StreamingKeyResponseDto } from './streaming-key-response-dto.type';
 export { ResetStreamingKeyRequestDto } from './reset-streaming-key-request-dto.type';
 export { StreamingKeyWithAuthorResponseDto } from './streaming-key-w-author-response-dto.type';
 export { StreamingInfoResponseDto } from './streaming-info-response-dto.type';
+export { StreamReadinessRequestDto } from './stream-readiness-request-dto.type';

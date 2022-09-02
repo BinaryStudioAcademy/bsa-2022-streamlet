@@ -1,2 +1,2 @@
-export { StreamStatus } from 'shared/build';
+export { StreamStatus, StreamPrivacy } from 'shared/build';
 export { StreamPrivacyLabel } from './stream-privacy-label.enum';

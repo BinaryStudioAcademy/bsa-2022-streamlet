@@ -1,5 +1,5 @@
 import { createReducer, isAnyOf } from '@reduxjs/toolkit';
-import { DataStatus } from 'common/enums/enums';
+import { DataStatus, IconName, StreamStatus } from 'common/enums/enums';
 import {
   createStream,
   uploadPoster,
@@ -8,9 +8,11 @@ import {
   setStreamStatus,
   resetStreamingKey,
   getMyChannel,
+  setReadinessToStream,
 } from './actions';
 import { OwnChannelResponseDto, VideoStreamResponseDto } from 'common/types/types';
 import { getRejectedErrorData } from 'helpers/redux/get-rejected-error-data';
+import { createToastNotification } from 'components/common/toast-notification';
 
 type State = {
   stream: VideoStreamResponseDto | null;
@@ -53,11 +55,26 @@ const reducer = createReducer(initialState, (builder) => {
     state.status.error = undefined;
     state.status.errorCode = undefined;
   });
+  builder.addCase(setStreamStatus.fulfilled, (state, { payload }) => {
+    state.status.dataStatus = DataStatus.FULFILLED;
+    if (payload.status === StreamStatus.LIVE) {
+      state.stream = payload;
+    } else if (payload.status === StreamStatus.FINISHED) {
+      state.stream = null;
+      createToastNotification({
+        iconName: IconName.SMILE,
+        title: 'Stream finished!',
+        message: 'You have finished the stream!',
+        type: 'success',
+      });
+    }
+  });
   builder.addMatcher(
     isAnyOf(
       createStream.pending,
       uploadPoster.pending,
       editStream.pending,
+      setReadinessToStream.pending,
       setStreamStatus.pending,
       getStreamingInfo.pending,
       getMyChannel.pending,
@@ -69,7 +86,7 @@ const reducer = createReducer(initialState, (builder) => {
     },
   );
   builder.addMatcher(
-    isAnyOf(createStream.fulfilled, uploadPoster.fulfilled, editStream.fulfilled, setStreamStatus.fulfilled),
+    isAnyOf(createStream.fulfilled, uploadPoster.fulfilled, editStream.fulfilled, setReadinessToStream.fulfilled),
     (state, { payload }) => {
       state.status.dataStatus = DataStatus.FULFILLED;
       state.stream = payload;
@@ -80,6 +97,7 @@ const reducer = createReducer(initialState, (builder) => {
       createStream.rejected,
       uploadPoster.rejected,
       editStream.rejected,
+      setReadinessToStream.rejected,
       resetStreamingKey.rejected,
       setStreamStatus.rejected,
       getMyChannel.rejected,
