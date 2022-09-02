@@ -1,35 +1,28 @@
-import { Button, Input, Textarea } from 'components/common/common';
+import { Input, Textarea } from 'components/common/common';
 import { DatetimeInput } from 'components/common/input/datetime-input/datetime-input';
-import { useAppForm } from 'hooks/hooks';
 import React, { FC, ReactElement, useId, useState } from 'react';
-import { StreamBasicInfoFormValues } from './stream-basic-info-form-values';
+import { StreamSettingsFormValues } from './stream-settings-form-values';
 import Select from 'react-select';
-import { SelectOptions } from 'pages/studio/stream/common/stream-settings-form-values';
+import { FormControl, SelectOptions } from 'common/types/types';
 import Creatable from 'react-select/creatable';
-import { Controller } from 'react-hook-form';
+import { Controller, DeepRequired, FieldErrorsImpl, FieldValues } from 'react-hook-form';
 import styles from '../styles.module.scss';
 import clsx from 'clsx';
 import { customSelectStyles } from '../custom-select-styles';
 
 type Props = {
-  initialValues: StreamBasicInfoFormValues;
-  categoryOptions: SelectOptions<string>[];
+  categoryOptions: SelectOptions[];
+  control: FormControl<StreamSettingsFormValues>;
+  errors: FieldErrorsImpl<DeepRequired<FieldValues>>;
 };
 
-const StreamBasicInfoForm: FC<Props> = ({ initialValues, categoryOptions }) => {
+const StreamBasicInfoForm: FC<Props> = ({ categoryOptions, control, errors }) => {
   const [isDescriptionInFocus, setIsDescriptionInFocus] = useState(false);
-  const { handleSubmit, control, errors } = useAppForm<StreamBasicInfoFormValues>({ defaultValues: initialValues });
-
   const catSelectId = useId();
   const tagSelectId = useId();
 
-  const onSubmit = (formData: StreamBasicInfoFormValues): void => {
-    // eslint-disable-next-line no-console
-    console.log(formData);
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles['form']}>
+    <>
       <Input
         control={control}
         errors={errors}
@@ -110,8 +103,7 @@ const StreamBasicInfoForm: FC<Props> = ({ initialValues, categoryOptions }) => {
           </div>
         )}
       />
-      <Button content="Save" type="submit" className={styles['submit-btn']} />
-    </form>
+    </>
   );
 };
 

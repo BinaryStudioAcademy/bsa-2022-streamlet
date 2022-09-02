@@ -1,7 +1,7 @@
-import { SelectOptions } from 'pages/studio/stream/common/stream-settings-form-values';
+import { SelectOptions } from 'common/types/types';
 import { StylesConfig } from 'react-select';
 
-export const customSelectStyles: StylesConfig<SelectOptions<string>, true> = {
+export const customSelectStyles: StylesConfig<SelectOptions, true> = {
   control: (provided, state) => ({
     ...provided,
     backgroundColor: 'var(--stream-settings-modal-bg)',

@@ -8,6 +8,16 @@
   border-bottom: 1px solid var(--white-text-color);
 }
 
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.control-btn {
+  margin-top: 20px;
+}
+
 .heading {
   color: var(--white-text-color);
   font-weight: 500;
