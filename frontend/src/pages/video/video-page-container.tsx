@@ -12,6 +12,7 @@ import { socket } from 'common/config/config';
 import { store } from 'store/store';
 import { ChannelInfoRow } from './channel-info-row/channel-info-row';
 import { VideoHeader } from './video-header/video-header';
+import { LinksBlock } from './links-block/links-block';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -76,31 +77,33 @@ const VideoPageContainer: FC = () => {
           videoAttributes={{ poster: videoData.poster }}
           className={styles['video-player']}
         />
-        <div className={styles['video-info-block']}>
-          <VideoHeader videoInfo={videoData} />
-          <hr />
-          <ChannelInfoRow channelInfo={channel} />
-          <div className={styles['description-container']}>
-            <span>{`${videoData.description}`}</span>
-          </div>
-          <hr />
-        </div>
       </div>
-      {!isVideoFinished ? (
-        <div className={styles['chat-block']}>
-          <VideoChatContainer videoId={videoId} />
+      <div className={styles['video-info-block']}>
+        <VideoHeader videoInfo={videoData} />
+        <hr />
+        <ChannelInfoRow channelInfo={channel} />
+        <div className={styles['description-container']}>
+          <span>{`${videoData.description}`}</span>
         </div>
-      ) : (
-        profile && (
-          <div className={styles['video-comment-block']}>
-            <VideoCommentBlock
-              namingInfo={{ userName: profile.username, firstName: profile.firstName, lastName: profile.lastName }}
-              onNewComment={handleMessageSubmit}
-              userAvatar={profile?.avatar}
-              comments={videoData.comments}
-            />
+        <hr />
+      </div>
+      <div className={styles['side-block']}>
+        {!isVideoFinished && (
+          <div className={styles['chat-block']}>
+            <VideoChatContainer videoId={videoId} />
           </div>
-        )
+        )}
+        <LinksBlock />
+      </div>
+      {isVideoFinished && profile && (
+        <div className={styles['video-comment-block']}>
+          <VideoCommentBlock
+            namingInfo={{ userName: profile.username, firstName: profile.firstName, lastName: profile.lastName }}
+            onNewComment={handleMessageSubmit}
+            userAvatar={profile?.avatar}
+            comments={videoData.comments}
+          />
+        </div>
       )}
     </div>
   );
