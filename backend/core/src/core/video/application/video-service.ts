@@ -14,6 +14,7 @@ import {
   VideoCommentRequestDto,
   VideoCommentResponseDto,
 } from 'shared/build';
+import { POPULAR_VIDEO_CARD_IN_ONE_PAGE } from '~/shared/constants/constants';
 
 @injectable()
 export class VideoService {
@@ -76,16 +77,18 @@ export class VideoService {
 
   async getPopular(request: PopularVideosRequestDtoType): Promise<PopularVideoResponseDto> {
     const pageNumber = request.page;
-    const lastPage = Math.ceil((await this.videoRepository.getPopularVideoLength(request.category)) / 10);
+    const lastPage = Math.ceil(
+      (await this.videoRepository.getPopularVideoLength(request.category)) / POPULAR_VIDEO_CARD_IN_ONE_PAGE,
+    );
     if (pageNumber <= 0) {
-      return this.videoRepository.getPopular(request, 10, 0, lastPage);
+      return this.videoRepository.getPopular(request, POPULAR_VIDEO_CARD_IN_ONE_PAGE, 0, lastPage);
     }
-    const skip = (pageNumber - 1) * 10;
+    const skip = (pageNumber - 1) * POPULAR_VIDEO_CARD_IN_ONE_PAGE;
 
     if (request.category === 'live') {
-      return this.videoRepository.getPopularLive(request, 10, skip, lastPage);
+      return this.videoRepository.getPopularLive(request, POPULAR_VIDEO_CARD_IN_ONE_PAGE, skip, lastPage);
     }
 
-    return this.videoRepository.getPopular(request, 10, skip, lastPage);
+    return this.videoRepository.getPopular(request, POPULAR_VIDEO_CARD_IN_ONE_PAGE, skip, lastPage);
   }
 }

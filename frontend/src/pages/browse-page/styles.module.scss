@@ -1,5 +1,5 @@
 .browse-page-container {
-  padding: 30px 20px 0;
+  padding: 30px 40px 0;
 }
 
 .browse-page-header-container,
@@ -40,6 +40,15 @@
 .categories-button:hover {
   color: var(--white-text-color);
   background: none;
+}
+
+.browse-page-video-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .browse-page-video-container > div {

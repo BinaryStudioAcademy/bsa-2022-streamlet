@@ -1,6 +1,6 @@
 import { DataStatus, IconColor, IconName } from 'common/enums/enums';
-import { Button, Icon } from 'components/common/common';
-import { FC, useEffect } from 'react';
+import { Button, Icon, Loader } from 'components/common/common';
+import React, { FC, useEffect } from 'react';
 import styles from './styles.module.scss';
 import clsx from 'clsx';
 import { useAppDispatch, useAppSelector, useState, useWindowDimensions } from '../../hooks/hooks';
@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector, useState, useWindowDimensions } from '.
 import { videoActions } from '../../store/actions';
 import { VideoCard } from '../../components/search/components/components';
 import { generateHistorySkeletons } from '../history-page/common/skeleton/skeleton';
+import useInfiniteScroll from 'react-infinite-scroll-hook';
 
 const BrowsePage: FC = () => {
   const dispatch = useAppDispatch();
@@ -35,9 +36,22 @@ const BrowsePage: FC = () => {
 
   const { popular: popularVideos } = videoData.data;
 
+  const { currentPage, lastPage } = popularVideos;
+
   useEffect(() => {
     dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
   }, [activeCategory, dispatch]);
+
+  const loadMore = (): void => {
+    dispatch(videoActions.getPopularVideos({ page: currentPage + 1, category: activeCategory }));
+  };
+
+  const [sentryRef] = useInfiniteScroll({
+    loading: videoData.dataStatus === DataStatus.PENDING,
+    hasNextPage: currentPage < lastPage,
+    onLoadMore: loadMore,
+    disabled: videoData.error,
+  });
 
   if (width <= 400 && iconSize !== '40') {
     setIconSize('40');
@@ -70,6 +84,11 @@ const BrowsePage: FC = () => {
         {popularVideos.list.map((video) => {
           return <VideoCard key={video.id} video={video} isLightTheme={true} />;
         })}
+        <div ref={sentryRef}>
+          {videoData.dataStatus === DataStatus.PENDING && popularVideos.list.length > 0 ? (
+            <Loader hCentered={true} vCentered={true} spinnerSize={'md'} />
+          ) : null}
+        </div>
       </div>
     </div>
   );

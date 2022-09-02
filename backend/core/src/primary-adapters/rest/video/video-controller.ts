@@ -46,6 +46,7 @@ import {
   matchVideoFilterType,
 } from '~/shared/enums/enums';
 import { authenticationMiddleware, CreateVideoHistoryRecordMiddleware } from '../middleware';
+import { normalizeCategoryFiltersPayload } from '~/primary-adapters/rest/category/helpers/normalize-category-filters-helper';
 
 /**
  * @swagger
@@ -199,11 +200,12 @@ export class VideoController extends BaseHttpController {
     return await this.videoRepository.getVideosBySearch(queryParams);
   }
 
-  @httpGet('/popular', optionalAuthenticationMiddleware)
+  @httpGet(VideoApiPath.POPULAR, optionalAuthenticationMiddleware)
   public async getPopular(
     @queryParam() { page, category }: PopularVideosRequestDtoType,
   ): Promise<PopularVideoResponseDto> {
-    return this.videoService.getPopular({ category: category.replace(' ', '&'), page });
+    const preparedCategory = normalizeCategoryFiltersPayload(category)[0];
+    return this.videoService.getPopular({ category: preparedCategory, page });
   }
 
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware, CreateVideoHistoryRecordMiddleware)
