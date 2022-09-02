@@ -1,8 +1,11 @@
+@use 'assets/css/helpers/break-long-words';
+
 .comment-form {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .video-comment {
+  max-width: 100%;
   margin-bottom: 20px;
 }
 
@@ -13,11 +16,7 @@
 }
 
 .video-comment .main-part-comment .commentators-avatar {
-  width: 34px;
-  height: 34px;
   margin-right: 12px;
-  background-size: cover;
-  border-radius: 50%;
 }
 
 .video-comment .main-part-comment .commentators-name {
@@ -47,18 +46,27 @@
   font-size: 14px;
   font-style: normal;
   line-height: 19px;
+
+  @include break-long-words.break-long-words;
 }
 
-.default-avatar {
+.reaction-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 34px;
-  height: 34px;
-  margin-right: 12px;
-  color: var(--green-100-header-menu-background);
-  font-size: 18px;
-  line-height: 18px;
-  background-color: var(--green-200-header-menu-background);
-  border-radius: 50%;
+  margin: 0 5px;
+}
+
+.reaction-container span {
+  margin-left: 10px;
+}
+
+.reaction-block {
+  display: flex;
+  margin: 5px 0 0 43px;
+}
+
+.reaction-button {
+  cursor: pointer;
 }

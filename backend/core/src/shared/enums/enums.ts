@@ -5,3 +5,4 @@ export * from './messages';
 export { MailType } from './mail/mail';
 export { StreamStatus } from './stream/stream';
 export * from './api/api';
+export * from './video/video';

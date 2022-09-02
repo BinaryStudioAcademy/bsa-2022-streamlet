@@ -9,6 +9,7 @@ import {
   channelCrudApi,
   channelSubscriptionApi,
   chatApi,
+  historyApi,
   followingApi,
   channelStreamingApi,
 } from 'services/services';
@@ -26,6 +27,7 @@ const extraArgument = {
   videoApi,
   categoryApi,
   chatApi,
+  historyApi,
   followingApi,
   channelStreamingApi,
 };

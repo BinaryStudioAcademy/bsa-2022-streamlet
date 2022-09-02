@@ -49,8 +49,10 @@ $animation-duration: 200ms;
   opacity: 0;
   transition: all $animation-duration cubic-bezier(0.46, 0.03, 0.52, 0.96);
 
-  @media screen and (min-width: 1301px) {
-    display: none;
+  &.has-backup-for-wide-screen {
+    @media screen and (min-width: 1301px) {
+      display: none;
+    }
   }
 
   @media screen and (max-width: 424px) {
@@ -150,12 +152,7 @@ $animation-duration: 200ms;
 }
 
 .list-links {
-  padding-top: 7px;
   list-style: none;
-
-  @media screen and (max-width: 1300px) {
-    padding-top: 9px;
-  }
 }
 
 .nav-link {
@@ -166,7 +163,7 @@ $animation-duration: 200ms;
 .nav-link li {
   display: flex;
   align-items: center;
-  padding: 6px 20px;
+  padding: 13px 20px;
 }
 
 .nav-link li svg {

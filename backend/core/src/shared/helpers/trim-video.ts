@@ -1,4 +1,4 @@
-import { User, UserProfile, Video, VideoComment } from '@prisma/client';
+import { User, UserProfile, Video, VideoComment, CommentReaction } from '@prisma/client';
 import { BaseVideoResponseDto, StreamStatus } from 'shared/build';
 import { Comment } from 'shared/build/common/types/comment';
 
@@ -33,10 +33,26 @@ export const trimVideoWithComments = (
       id: string;
       name: string;
       avatar: string;
+      _count: {
+        subscriptions: number;
+      };
     };
-    comments: (VideoComment & { author: User & { profile: UserProfile | null } })[];
+    comments: (VideoComment & {
+      author: User & { profile: UserProfile | null };
+      commentReactions: CommentReaction[];
+    })[];
   },
-): BaseVideoResponseDto & { comments: Comment[]; description: string; videoPath: string } => {
+): BaseVideoResponseDto & {
+  channel: {
+    id: string;
+    name: string;
+    avatar: string;
+    subscriberCount: number;
+  };
+  comments: Comment[];
+  description: string;
+  videoPath: string;
+} => {
   const {
     id,
     poster,
@@ -63,7 +79,12 @@ export const trimVideoWithComments = (
     duration,
     videoViews,
     liveViews,
-    channel,
+    channel: {
+      avatar: channel.avatar,
+      id: channel.id,
+      name: channel.name,
+      subscriberCount: channel._count.subscriptions,
+    },
     comments: comments.map((comment) => ({
       dateAdded: comment.createdAt,
       id: comment.id,
@@ -72,7 +93,14 @@ export const trimVideoWithComments = (
       avatar: comment.author.profile?.avatar,
       firstName: comment.author.profile?.firstName,
       lastName: comment.author.profile?.lastName,
+      likeNum: calculateReactions(comment.commentReactions, true),
+      dislikeNum: calculateReactions(comment.commentReactions, false),
     })),
     description,
   };
+};
+
+const calculateReactions = (commentReactions: CommentReaction[], isLike: boolean): number => {
+  const likeCount = commentReactions.filter((item) => item.isLike === isLike);
+  return likeCount.length;
 };

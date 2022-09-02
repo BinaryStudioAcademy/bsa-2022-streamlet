@@ -21,6 +21,15 @@ export class ChannelCrudService {
     return this.channelRepository.getChannelById(id);
   }
 
+  async getChannelByAuthorId({ id }: { id: string }): Promise<ChannelProfileUpdateResponseDto | undefined> {
+    const channel = await this.channelRepository.getChannelByAuthorId(id);
+    if (!channel) {
+      return;
+    }
+
+    return castToChannelProfileUpdateResponseDto(channel);
+  }
+
   async isUserChannelOwner({ channelId, userId }: { channelId: string; userId: string }): Promise<boolean> {
     return (await this.channelRepository.getChannelById(channelId))?.authorId === userId;
   }

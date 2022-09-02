@@ -15,6 +15,7 @@ export interface MobileSidebarProps {
   configRoutePages: RoutePage[];
   activeRouteId: number;
   closeMobileSidebar: () => void;
+  hasBackupForWideScreen?: boolean;
 }
 
 const MobileSidebar: FC<MobileSidebarProps> = ({
@@ -22,13 +23,19 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
   closeMobileSidebar,
   configRoutePages,
   activeRouteId,
+  hasBackupForWideScreen = true,
 }) => {
   const hasUser = Boolean(useAppSelector((state) => state.auth.user));
 
   return (
-    <div className={clsx(styles['shadow'], !isSidebarOpen && styles['shadow-open'])}>
+    <div className={clsx(styles['shadow'], isSidebarOpen && styles['shadow-open'])}>
       <div className={styles['scrim']} onClick={closeMobileSidebar}></div>
-      <div className={clsx({ [styles['open']]: !isSidebarOpen }, styles['mobile-sidebar'])}>
+      <div
+        className={clsx(
+          { [styles['open']]: isSidebarOpen, [styles['has-backup-for-wide-screen']]: hasBackupForWideScreen },
+          styles['mobile-sidebar'],
+        )}
+      >
         <div className={styles['sidebar-content']} onClick={(e): void => e.stopPropagation()}>
           <div className={styles['sidebar-header']}>
             <button onClick={closeMobileSidebar} className={styles['burger-menu']}>
@@ -55,7 +62,7 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
               )}
             </ul>
             <div className={styles['divider']} />
-            <SidebarSubs promoWrpClassName={styles['sign-in-promo-wrp']} keepVisisble={!isSidebarOpen} />
+            <SidebarSubs promoWrpClassName={styles['sign-in-promo-wrp']} keepVisisble={isSidebarOpen} />
           </div>
         </div>
       </div>

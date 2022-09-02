@@ -4,10 +4,14 @@ import {
   ContentType,
   CreateReactionRequestDto,
   CreateReactionResponseDto,
+  PopularVideoResponseDto,
+  PopularVideosRequestDtoType,
   VideoApiPath,
   VideoCommentRequestDto,
   VideoCommentResponseDto,
   VideoExpandedResponseDto,
+  CreateCommentReactionRequestDto,
+  CreateCommentReactionResponseDto,
 } from 'shared/build';
 import { Http } from '../http/http.service';
 
@@ -54,6 +58,7 @@ class VideoApi {
       },
     });
   }
+
   public comment(payload: VideoCommentRequestDto): Promise<VideoCommentResponseDto> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.COMMENT}`,
@@ -61,6 +66,34 @@ class VideoApi {
         method: HttpMethod.POST,
         contentType: ContentType.JSON,
         payload: JSON.stringify(payload),
+      },
+    });
+  }
+
+  public commentReact(
+    payload: CreateCommentReactionRequestDto & { commentId: string },
+  ): Promise<CreateCommentReactionResponseDto> {
+    const { commentId, isLike } = payload;
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.COMMENT}${VideoApiPath.REACTION}${
+        VideoApiPath.ROOT
+      }${commentId}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify({ isLike }),
+      },
+    });
+  }
+
+  public getPopular(payload: PopularVideosRequestDtoType): Promise<PopularVideoResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.POPULAR}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+      query: {
+        ...payload,
       },
     });
   }

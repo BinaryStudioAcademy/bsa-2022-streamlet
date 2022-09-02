@@ -11,13 +11,22 @@ import { FC } from '../../../common/types/react/fc.type';
 import { useWindowDimensions } from '../../../hooks/hooks';
 
 type imageEditorProps = {
+  editorWidth?: number;
+  editorHeight?: number;
   avatar: AvatarImgValue;
   setAvatar: { (newAvatar: AvatarImgValue): void };
   onClose: { (): void };
   handleSave: { (base64Str: string): void };
 };
 
-const ImageEditor: FC<imageEditorProps> = ({ avatar, setAvatar, onClose, handleSave }): ReactElement => {
+const ImageEditor: FC<imageEditorProps> = ({
+  editorHeight,
+  editorWidth,
+  avatar,
+  setAvatar,
+  onClose,
+  handleSave,
+}): ReactElement => {
   const { width } = useWindowDimensions();
   const [editor, setEditor] = useState<undefined | AvatarEditor>();
   const handleSlider = (value: number): void => {
@@ -60,8 +69,8 @@ const ImageEditor: FC<imageEditorProps> = ({ avatar, setAvatar, onClose, handleS
               : 'https://i.ibb.co/SJBq57m/404-error-page-or-file-not-found-icon-cute-green-vector-20364439.jpg'
           }
           ref={setEditorRef}
-          width={250}
-          height={250}
+          width={editorWidth || 250}
+          height={editorHeight || 250}
           border={width > 350 ? 50 : 35}
           color={[255, 255, 255, 0.6]} // RGBA
           scale={avatar.zoom}

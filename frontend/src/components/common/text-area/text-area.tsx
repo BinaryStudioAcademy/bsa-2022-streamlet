@@ -6,6 +6,8 @@ import TextareaAutosize from 'react-textarea-autosize';
 import clsx from 'clsx';
 
 import styles from './styles.module.scss';
+import { ErrorMessage } from '../common';
+import { ErrorBox } from '../errors/errors';
 
 type Props<T> = {
   control: FormControl<T>;
@@ -26,14 +28,16 @@ type Props<T> = {
 const Textarea = <T extends FieldValues>({
   control,
   name,
+  label,
+  errors,
   placeholder = '',
   inputClassName,
   labelClassName,
   inputErrorClassName,
   wrapperClassName,
+  errorBlockClassName,
   onFocus,
   onBlur,
-  label,
 }: Props<T>): ReactElement | null => {
   const {
     field,
@@ -43,9 +47,22 @@ const Textarea = <T extends FieldValues>({
 
   return (
     <div className={clsx(styles['textarea-wrapper'], wrapperClassName)}>
-      <label className={clsx(styles['textarea-label'], labelClassName)} htmlFor={id}>
-        {label}
-      </label>
+      <div className={styles['textarea-labels']}>
+        <label className={clsx(styles.label, labelClassName)} htmlFor={id}>
+          <span>{label}</span>
+        </label>
+        <div className={clsx(errorBlockClassName)}>
+          {isTouched && (
+            <ErrorMessage
+              errors={errors}
+              name={name}
+              render={({ message }): ReactElement => {
+                return <ErrorBox message={message} />;
+              }}
+            />
+          )}
+        </div>
+      </div>
       <TextareaAutosize
         {...field}
         onFocus={onFocus}

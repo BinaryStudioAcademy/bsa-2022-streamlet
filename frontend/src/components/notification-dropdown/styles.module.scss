@@ -65,11 +65,11 @@
 
 .unread-mark {
   position: absolute;
-  top: 0;
-  right: 4px;
+  top: -2px;
+  right: 6px;
   display: block;
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   background-color: var(--notifications-unread-mark);
   border: 2px solid var(--gray-300-header-menu-background);
   border-radius: 50%;

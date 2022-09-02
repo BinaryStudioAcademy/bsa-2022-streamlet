@@ -10,6 +10,7 @@ import { reducer as videos } from './videos/reducer';
 import { reducer as videoPage } from './video-page/reducer';
 import { reducer as category } from './categories/reducer';
 import { reducer as chat } from './chat/reducer';
+import { reducer as history } from './history/reducer';
 import { reducer as subscriptions } from './subscriptions/reducer';
 import { reducer as followingPage } from './following-page/reducer';
 import { reducer as stream } from './stream/reducer';
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   videoPage,
   category,
   chat,
+  history,
   subscriptions,
   followingPage,
   stream,
