@@ -24,7 +24,7 @@ const UploadImage: FC<UploadImageProps> = ({ images, onUpload, onClose }) => {
         multiple
         value={images}
         onChange={onUpload}
-        acceptType={['jpg', 'png', 'jpeg']}
+        acceptType={['jpg', 'png', 'jpeg', 'jpe', 'jfi', 'jfif', 'jif']}
         maxFileSize={10000000}
         onError={handleError}
       >

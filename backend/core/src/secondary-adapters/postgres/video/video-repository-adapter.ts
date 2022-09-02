@@ -388,7 +388,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
     const { likeNum, dislikeNum } = await this.calculateCommentReaction(commentId);
     return createAddReactionResponse(newReaction.commentReactions[0], likeNum, dislikeNum);
-}
+  }
   async getVideosBySearch({ searchText, duration, date, type, sortBy }: VideoSearch): Promise<DataVideo> {
     const queryOrderByObject = {
       orderBy: sortBy.map((param) => param as Prisma.VideoOrderByWithRelationAndSearchRelevanceInput),

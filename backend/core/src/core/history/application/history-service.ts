@@ -1,7 +1,8 @@
 import { inject, injectable } from 'inversify';
-import { History } from '@prisma/client';
 import { CONTAINER_TYPES, HistoryRequestDto, HistoryResponseDto } from '~/shared/types/types';
+import { History } from '@prisma/client';
 import { HistoryRepository } from '~/core/history/port/history-repository';
+import { HISTORY_ITEM_NUM_IN_ONE_PAGE } from '~/shared/constants/constants';
 
 @injectable()
 export class HistoryService {
@@ -11,11 +12,23 @@ export class HistoryService {
     this.historyRepository = historyRepository;
   }
 
-  getAllUserHistory(userId: string): Promise<History[]> {
-    return this.historyRepository.getAllUserHistory(userId);
+  async getUserHistory(userId: string, page: string): Promise<HistoryResponseDto> {
+    const pageNumber = Number(page);
+
+    const lastPage = Math.ceil((await this.historyRepository.getAllUserHistoryLength(userId)) / 10);
+    if (!pageNumber) {
+      return this.historyRepository.getUserHistory(userId, HISTORY_ITEM_NUM_IN_ONE_PAGE, 0, lastPage);
+    }
+    const skip = (pageNumber - 1) * HISTORY_ITEM_NUM_IN_ONE_PAGE;
+    return this.historyRepository.getUserHistory(userId, HISTORY_ITEM_NUM_IN_ONE_PAGE, skip, lastPage);
   }
 
-  createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<HistoryResponseDto> {
+  async createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<History> {
+    const isHistoryExist = await this.historyRepository.isHistoryAlreadyExist(historyRequestDto);
+    if (isHistoryExist) {
+      return this.historyRepository.updateHistoryRecord(isHistoryExist.id);
+    }
+
     return this.historyRepository.createHistoryItem(historyRequestDto);
   }
 }
