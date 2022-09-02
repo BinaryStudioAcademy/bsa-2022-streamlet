@@ -11,6 +11,8 @@ import { useAppSelector, useLocation } from 'hooks/hooks';
 import { AppRoutes } from 'common/enums/enums';
 import { matchPath } from 'react-router-dom';
 import { useLayoutEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { closeSidebar } from 'store/layout/actions';
 
 interface SidebarProps {
   isSidebarOpen: boolean;
@@ -30,11 +32,18 @@ const shouldHideSidebarByDefault = (pathName: string): boolean => {
 
 const Sidebar: FC<SidebarProps> = ({ configRoutePages, activeRouteId, isSidebarOpen, mobileSidebarProps }) => {
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
   const [shouldHideSidebar, setShouldHideSidebar] = useState<boolean>(false);
 
   useLayoutEffect(() => {
     setShouldHideSidebar(shouldHideSidebarByDefault(pathname));
   }, [pathname]);
+
+  useLayoutEffect(() => {
+    if (shouldHideSidebar) {
+      dispatch(closeSidebar());
+    }
+  }, [dispatch, shouldHideSidebar]);
 
   const hasUser = Boolean(useAppSelector((state) => state.auth.user));
   return (

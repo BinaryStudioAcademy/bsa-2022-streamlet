@@ -1,8 +1,11 @@
+@use 'assets/css/helpers/break-long-words';
+
 .comment-form {
   margin-bottom: 10px;
 }
 
 .video-comment {
+  max-width: 100%;
   margin-bottom: 20px;
 }
 
@@ -43,4 +46,27 @@
   font-size: 14px;
   font-style: normal;
   line-height: 19px;
+
+  @include break-long-words.break-long-words;
+}
+
+.reaction-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+}
+
+.reaction-container span {
+  margin-left: 10px;
+}
+
+.reaction-block {
+  display: flex;
+  margin: 5px 0 0 43px;
+}
+
+.reaction-button {
+  cursor: pointer;
 }

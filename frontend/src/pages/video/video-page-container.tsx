@@ -3,7 +3,7 @@ import { AppRoutes, SocketEvents, StreamingStatus } from 'common/enums/enums';
 import { Loader } from 'components/common/common';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import { useAppDispatch, useAppSelector, useNavigate, useParams } from 'hooks/hooks';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { videoPageActions } from 'store/actions';
 import styles from './video-page.module.scss';
 import { VideoPlayer } from 'components/common/video-player/video-player';
@@ -22,7 +22,6 @@ const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { videoId: isVideoIdProvided } = useParams();
-  const [isUserNotAuthAndReact, setIsUserNotAuthAndReact] = useState(false);
   const [isReactChanged, setReactState] = useState(false);
   if (!isVideoIdProvided) {
     navigate(AppRoutes.ANY, { replace: true });
@@ -108,10 +107,14 @@ const VideoPageContainer: FC = () => {
         )}
         <LinksBlock />
       </div>
-      {isVideoFinished && profile && (
+      {isVideoFinished && (
         <div className={styles['video-comment-block']}>
           <VideoCommentBlock
-            namingInfo={{ userName: profile.username, firstName: profile.firstName, lastName: profile.lastName }}
+            namingInfo={{
+              userName: profile?.username ?? '',
+              firstName: profile?.firstName,
+              lastName: profile?.lastName,
+            }}
             onNewComment={handleMessageSubmit}
             userAvatar={profile?.avatar}
             comments={videoData.comments}

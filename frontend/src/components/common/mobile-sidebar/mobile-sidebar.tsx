@@ -32,7 +32,7 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
       <div className={styles['scrim']} onClick={closeMobileSidebar}></div>
       <div
         className={clsx(
-          { [styles['open']]: !isSidebarOpen, [styles['has-backup-for-wide-screen']]: hasBackupForWideScreen },
+          { [styles['open']]: isSidebarOpen, [styles['has-backup-for-wide-screen']]: hasBackupForWideScreen },
           styles['mobile-sidebar'],
         )}
       >
@@ -62,7 +62,7 @@ const MobileSidebar: FC<MobileSidebarProps> = ({
               )}
             </ul>
             <div className={styles['divider']} />
-            <SidebarSubs promoWrpClassName={styles['sign-in-promo-wrp']} keepVisisble={!isSidebarOpen} />
+            <SidebarSubs promoWrpClassName={styles['sign-in-promo-wrp']} keepVisisble={isSidebarOpen} />
           </div>
         </div>
       </div>
