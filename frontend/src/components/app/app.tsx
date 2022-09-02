@@ -32,6 +32,7 @@ import { OfflineVideosTab } from 'pages/following-page/tabs/offline-videos/offli
 import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
 import { BrowsePage } from '../../pages/browse-page/browse-page';
 import { closeSidebar } from 'store/layout/actions';
+import { ScrollToTop } from './scroll-to-top';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -65,6 +66,7 @@ const App: FC = () => {
 
   return (
     <>
+      <ScrollToTop querySelectors={[`.${styles['main-content']}`]} />
       <ReactNotifications />
       {!isHasDefaultNavigation && !isHasStudioNavigation && (
         <Routes>

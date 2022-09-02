@@ -141,6 +141,8 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
       data-paused="true"
     >
       <video
+        autoPlay
+        playsInline
         ref={videoContainerCallbackRef}
         {...videoAttributes}
         className={styles['video-container']}
