@@ -8,3 +8,4 @@ export { trimVideoToChatInfo } from './trim-video-to-chat-info';
 export { trimChatMessage } from './trim-chat-message';
 export { trimSubscriptionInfo } from './trim-subscription-info';
 export { trimChannelToSubscriptionChannel } from './trim-channel-to-subscription-channel';
+export { omitProperties } from './omit-properties/omit-properties.helper';

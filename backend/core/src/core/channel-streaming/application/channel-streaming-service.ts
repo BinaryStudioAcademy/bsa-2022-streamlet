@@ -10,7 +10,7 @@ import { AmqpQueue, StreamStatus } from '~/shared/enums/enums';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { ChannelStreamingRepository } from '../port/channel-streaming-repository';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
-import { generateUuid } from '~/shared/helpers';
+import { generateUuid, omitProperties } from '~/shared/helpers';
 import { VideoRepository } from '~/core/video/port/video-repository';
 import {
   ImageStorePresetType,
@@ -153,7 +153,10 @@ export class ChannelStreamingService {
       return null;
     }
 
-    const update = await this.channelStreamingRepository.updateStream(videoId, streamUpdateRequestDto);
+    const update = await this.channelStreamingRepository.updateStream(
+      videoId,
+      omitProperties<StreamUpdateRequestDto>(['videoId'], streamUpdateRequestDto),
+    );
     if (!update) {
       return null;
     }
@@ -170,9 +173,7 @@ export class ChannelStreamingService {
     return castToVideoStreamResponseDto(currentStream);
   }
 
-  async liveControl(streamLiveStatusRequestDto: StreamLiveStatusRequestDto): Promise<VideoStreamResponseDto | null> {
-    const { status, videoId } = streamLiveStatusRequestDto;
-
+  async liveControl({ status, videoId }: StreamLiveStatusRequestDto): Promise<VideoStreamResponseDto | null> {
     if (status === StreamStatus.WAITING) {
       return null;
     }
@@ -183,6 +184,7 @@ export class ChannelStreamingService {
       update = await this.channelStreamingRepository.updateStream(videoId, {
         status,
         publishedAt: new Date(),
+        videoPath: `/segments/${videoId}/master.m3u8`,
       });
     }
 
@@ -194,7 +196,7 @@ export class ChannelStreamingService {
 
       update = await this.channelStreamingRepository.updateStream(videoId, {
         status,
-        duration: Math.abs((new Date(currentStream.publishedAt).getTime() - new Date().getTime()) / 1000),
+        duration: Math.round((new Date().getTime() - new Date(currentStream.publishedAt).getTime()) / 1000),
       });
     }
 
