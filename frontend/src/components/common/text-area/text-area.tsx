@@ -28,10 +28,12 @@ const Textarea = <T extends FieldValues>({
   name,
   placeholder = '',
   inputClassName,
+  labelClassName,
   inputErrorClassName,
   wrapperClassName,
   onFocus,
   onBlur,
+  label,
 }: Props<T>): ReactElement | null => {
   const {
     field,
@@ -41,6 +43,9 @@ const Textarea = <T extends FieldValues>({
 
   return (
     <div className={clsx(styles['textarea-wrapper'], wrapperClassName)}>
+      <label className={clsx(styles['textarea-label'], labelClassName)} htmlFor={id}>
+        {label}
+      </label>
       <TextareaAutosize
         {...field}
         onFocus={onFocus}

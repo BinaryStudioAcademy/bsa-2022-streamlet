@@ -14,7 +14,7 @@ type Props<T> = {
   inputClassName?: string;
   labelClassName?: string;
   wrapperClassName?: string;
-  defaultValue: Date;
+  defaultValue?: Date;
   readOnly?: boolean;
   disabled?: boolean;
 };

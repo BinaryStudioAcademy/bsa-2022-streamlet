@@ -116,7 +116,10 @@ export class VideoController extends BaseHttpController {
   }
 
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware)
-  public async get(@requestParam('id') id: string, @request() req: ExtendedRequest): Promise<VideoExpandedResponseDto> {
+  public async get(
+    @requestParam('videoId') id: string,
+    @request() req: ExtendedRequest,
+  ): Promise<VideoExpandedResponseDto> {
     const video = await this.videoService.getById(id);
 
     if (!video) {

@@ -1,18 +1,20 @@
 import styles from './styles.module.scss';
 import { FC } from 'common/types/types';
 import { useModal } from './hooks/use-modal/use-modal.hook';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { Portal } from '../portal/portal';
 import { IconColor, IconName } from '../../../common/enums/enums';
 import { Icon } from '../icon';
+import clsx from 'clsx';
 
 type Props = {
-  children: ReactElement;
+  children: ReactNode;
   isOpen: boolean;
+  contentContainerClassName?: string;
   onClose: { (): void };
 };
 
-const Modal: FC<Props> = ({ isOpen, onClose, children }) => {
+const Modal: FC<Props> = ({ isOpen, onClose, children, contentContainerClassName }) => {
   const { handleDisableContentContainerClick, handleOutsideClick } = useModal({
     onClose,
   });
@@ -24,7 +26,10 @@ const Modal: FC<Props> = ({ isOpen, onClose, children }) => {
   return (
     <Portal>
       <div className={styles['modal-container']} onClick={handleOutsideClick}>
-        <div className={styles['modal-content-container']} onClick={handleDisableContentContainerClick}>
+        <div
+          className={clsx(styles['modal-content-container'], contentContainerClassName)}
+          onClick={handleDisableContentContainerClick}
+        >
           <Icon
             name={IconName.CLOSE}
             color={IconColor.GREEN}
