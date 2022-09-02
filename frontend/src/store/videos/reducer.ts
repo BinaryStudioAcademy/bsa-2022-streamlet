@@ -30,20 +30,10 @@ const initialState: State = {
 };
 
 const reducer = createReducer(initialState, (builder) => {
-  builder.addCase(getVideos.pending, (state) => {
-    state.error = false;
-    state.dataStatus = DataStatus.PENDING;
-  });
-
   builder.addCase(getVideos.fulfilled, (state, { payload }) => {
     state.dataStatus = DataStatus.FULFILLED;
     state.data.list = payload.list;
     state.data.total = payload.total;
-  });
-
-  builder.addCase(getVideosByCategory.pending, (state) => {
-    state.error = false;
-    state.dataStatus = DataStatus.PENDING;
   });
 
   builder.addCase(getVideosByCategory.fulfilled, (state, { payload }) => {
@@ -60,8 +50,19 @@ const reducer = createReducer(initialState, (builder) => {
     };
   });
 
+  builder.addCase(getPopularVideos.pending, (state) => {
+    state.dataStatus = DataStatus.PENDING;
+    state.error = false;
+    state.data.popular.list = [];
+  });
+
   builder.addMatcher(isAnyOf(getVideosByCategory.rejected, getVideos.rejected, getPopularVideos.rejected), (state) => {
     state.error = true;
+  });
+
+  builder.addMatcher(isAnyOf(getVideosByCategory.pending, getVideos.pending), (state) => {
+    state.error = false;
+    state.dataStatus = DataStatus.PENDING;
   });
 });
 

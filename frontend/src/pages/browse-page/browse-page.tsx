@@ -1,4 +1,4 @@
-import { IconColor, IconName } from 'common/enums/enums';
+import { DataStatus, IconColor, IconName } from 'common/enums/enums';
 import { Button, Icon } from 'components/common/common';
 import { FC, useEffect } from 'react';
 import styles from './styles.module.scss';
@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector, useState, useWindowDimensions } from '.
 
 import { videoActions } from '../../store/actions';
 import { VideoCard } from '../../components/search/components/components';
+import { generateHistorySkeletons } from '../history-page/common/skeleton/skeleton';
 
 const BrowsePage: FC = () => {
   const dispatch = useAppDispatch();
@@ -24,9 +25,15 @@ const BrowsePage: FC = () => {
     setActiveCategory(category);
   };
 
-  const popularVideos = useAppSelector((state) => {
-    return state.videos.data.popular;
+  const videoData = useAppSelector((state) => {
+    return state.videos;
   });
+
+  const isLightTheme = useAppSelector((state) => {
+    return state.theme.isLightTheme;
+  });
+
+  const { popular: popularVideos } = videoData.data;
 
   useEffect(() => {
     dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
@@ -59,6 +66,7 @@ const BrowsePage: FC = () => {
         })}
       </div>
       <div className={styles['browse-page-video-container']}>
+        {videoData.dataStatus === DataStatus.PENDING ? generateHistorySkeletons(isLightTheme) : null}
         {popularVideos.list.map((video) => {
           return <VideoCard key={video.id} video={video} isLightTheme={true} />;
         })}
