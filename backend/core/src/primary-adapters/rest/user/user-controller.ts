@@ -1,19 +1,10 @@
-import {
-  BaseHttpController,
-  controller,
-  httpGet,
-  httpPost,
-  request,
-  requestBody,
-  requestParam,
-} from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, httpPost, request, requestBody } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { CONTAINER_TYPES, ExtendedAuthenticatedRequest } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
 import { authenticationMiddleware } from '../middleware';
-import { ApiPath, CategoryResponseDto, DefaultRequestParam, UserApiPath, UserBindCategoriesDto } from 'shared/build';
-import { Forbidden } from '~/shared/exceptions/forbidden';
+import { ApiPath, CategoryResponseDto, UserApiPath, UserBindCategoriesDto } from 'shared/build';
 
 /**
  * @swagger
@@ -86,19 +77,13 @@ export class UserController extends BaseHttpController {
 
   /**
    * @swagger
-   * /users/bind/{id}:
+   * /users/bind/:
    *    post:
    *        tags:
    *          - users
    *        summary: Bind user preferences
    *        security:
    *          - bearerAuth: []
-   *        parameters:
-   *          - name: id
-   *            required: true
-   *            in: path
-   *            schema:
-   *              type: string
    *        requestBody:
    *          description: Categories
    *          required: true
@@ -115,15 +100,9 @@ export class UserController extends BaseHttpController {
   @httpPost(UserApiPath.$BIND, authenticationMiddleware)
   public bindCategories(
     @requestBody() payload: Omit<UserBindCategoriesDto, 'id'>,
-    @requestParam() { id }: DefaultRequestParam,
     @request() req: ExtendedAuthenticatedRequest,
   ): Promise<CategoryResponseDto[]> {
-    //should create middleware?
-    const { id: clientUserId } = req.user;
-
-    if (clientUserId !== id) {
-      throw new Forbidden('user Id mismatch');
-    }
+    const { id } = req.user;
 
     return this.userService.bindCategories({
       id,
@@ -133,19 +112,13 @@ export class UserController extends BaseHttpController {
 
   /**
    * @swagger
-   * /users/preferences/{id}:
+   * /users/preferences/:
    *    get:
    *      tags:
    *        - users
    *      summary: Get user preferences
    *      security:
    *        - bearerAuth: []
-   *      parameters:
-   *        - name: id
-   *          required: true
-   *          in: path
-   *          schema:
-   *            type: string
    *      responses:
    *        '200':
    *          description: OK
@@ -157,15 +130,8 @@ export class UserController extends BaseHttpController {
    *                  $ref: '#/components/schemas/CategoryDto'
    */
   @httpGet(UserApiPath.$PREFERENCES, authenticationMiddleware)
-  public async getPreferences(
-    @request() req: ExtendedAuthenticatedRequest,
-    @requestParam() { id }: DefaultRequestParam,
-  ): Promise<CategoryResponseDto[]> {
-    const { id: clientUserId } = req.user;
-
-    if (clientUserId !== id) {
-      throw new Forbidden('user Id mismatch');
-    }
+  public async getPreferences(@request() req: ExtendedAuthenticatedRequest): Promise<CategoryResponseDto[]> {
+    const { id } = req.user;
 
     const preferences = await this.userService.getPreferedCategories({
       id,
