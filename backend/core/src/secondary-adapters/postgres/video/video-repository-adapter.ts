@@ -59,6 +59,9 @@ export class VideoRepositoryAdapter implements VideoRepository {
           },
         },
         comments: {
+          where: {
+            parentId: null,
+          },
           include: {
             author: {
               include: {
@@ -73,11 +76,21 @@ export class VideoRepositoryAdapter implements VideoRepository {
         },
       },
     });
+
     if (video === null) {
       return video;
     }
+
     const { dislikeNum, likeNum } = await this.calculateReaction(video.id);
-    return { ...trimVideoWithComments(video), likeNum, dislikeNum };
+    const commentsWithReplies = await Promise.all(
+      video.comments.map(async (comment) => ({
+        ...comment,
+        repliesCount: await this.prismaClient.videoComment.count({ where: { parentId: comment.id } }),
+      })),
+    );
+    const videoCommentsReplies = { ...video, comments: commentsWithReplies };
+
+    return { ...trimVideoWithComments(videoCommentsReplies), likeNum, dislikeNum };
   }
 
   async calculateReaction(videoId: string): Promise<{ likeNum: number; dislikeNum: number }> {
@@ -152,6 +165,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
         comments: {
           select: {
             id: true,
+            parentId: true,
             createdAt: true,
             updatedAt: true,
             text: true,
@@ -388,7 +402,8 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
     const { likeNum, dislikeNum } = await this.calculateCommentReaction(commentId);
     return createAddReactionResponse(newReaction.commentReactions[0], likeNum, dislikeNum);
-}
+  }
+
   async getVideosBySearch({ searchText, duration, date, type, sortBy }: VideoSearch): Promise<DataVideo> {
     const queryOrderByObject = {
       orderBy: sortBy.map((param) => param as Prisma.VideoOrderByWithRelationAndSearchRelevanceInput),

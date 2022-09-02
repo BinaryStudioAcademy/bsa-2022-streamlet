@@ -3,6 +3,7 @@ import { Comment } from 'shared/build';
 
 type CommentWithAuthor = {
   id: string;
+  parentId: string | null;
   createdAt: Date;
   updatedAt: Date;
   text: string;
@@ -19,6 +20,7 @@ export const createVideoCommentResponse = (comments: CommentWithAuthor[]): Comme
       lastName: profile?.lastName,
       avatar: profile?.avatar,
       dateAdded: comment.createdAt,
+      parentId: comment.parentId,
       likeNum: 0,
       dislikeNum: 0,
     };

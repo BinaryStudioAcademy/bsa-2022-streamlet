@@ -54,6 +54,7 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike }) => {
             />
             <span>{comment.dislikeNum}</span>
           </div>
+          <p>{comment.repliesCount}</p>
         </div>
         <span className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</span>
       </div>

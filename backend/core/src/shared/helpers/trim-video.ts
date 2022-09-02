@@ -37,6 +37,7 @@ export const trimVideoWithComments = (
     comments: (VideoComment & {
       author: User & { profile: UserProfile | null };
       commentReactions: CommentReaction[];
+      repliesCount: number;
     })[];
   },
 ): BaseVideoResponseDto & { comments: Comment[]; description: string; videoPath: string } => {
@@ -70,6 +71,8 @@ export const trimVideoWithComments = (
     comments: comments.map((comment) => ({
       dateAdded: comment.createdAt,
       id: comment.id,
+      parentId: comment.parentId,
+      repliesCount: comment.repliesCount,
       text: comment.text,
       userName: comment.author.username,
       avatar: comment.author.profile?.avatar,

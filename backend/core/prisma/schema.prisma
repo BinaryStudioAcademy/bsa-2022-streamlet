@@ -121,6 +121,7 @@ model Category {
 
 model VideoComment {
   id        String   @id @default(uuid())
+  parentId  String?
   text      String
   video     Video    @relation(fields: [videoId], references: [id])
   videoId   String
