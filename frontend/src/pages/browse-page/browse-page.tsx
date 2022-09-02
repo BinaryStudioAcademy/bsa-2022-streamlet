@@ -17,7 +17,7 @@ const BrowsePage: FC = () => {
 
   const [activeCategory, setActiveCategory] = useState<string>('live');
 
-  const categoryList = ['live', 'music', 'gaming', 'films'];
+  const categoryList = ['live', 'music', 'gaming', 'film animation'];
 
   const handleCategoryClick = (category: string): void => {
     dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));

@@ -126,7 +126,7 @@ export class VideoController extends BaseHttpController {
   public async getPopular(
     @queryParam() { page, category }: PopularVideosRequestDtoType,
   ): Promise<PopularVideoResponseDto> {
-    return this.videoService.getPopular({ category, page });
+    return this.videoService.getPopular({ category: category.replace(' ', '&'), page });
   }
 
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware)
