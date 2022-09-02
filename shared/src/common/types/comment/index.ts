@@ -6,4 +6,6 @@ export type Comment = {
   lastName?: string;
   dateAdded: Date;
   text: string;
+  likeNum: number;
+  dislikeNum: number;
 };

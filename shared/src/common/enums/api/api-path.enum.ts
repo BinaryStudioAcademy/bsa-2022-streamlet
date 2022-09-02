@@ -12,6 +12,7 @@ enum ApiPath {
   VIDEOS = '/videos',
   CHAT = '/chats',
   USER = '/users',
+  HISTORY = '/history',
 }
 
 export { ApiPath };

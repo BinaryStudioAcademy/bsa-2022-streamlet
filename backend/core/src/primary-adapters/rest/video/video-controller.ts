@@ -9,7 +9,15 @@ import {
   requestParam,
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES, ExtendedAuthenticatedRequest, ExtendedRequest, VideoSearch } from '~/shared/types/types';
+import {
+  CONTAINER_TYPES,
+  ExtendedAuthenticatedRequest,
+  ExtendedRequest,
+  PopularVideoResponseDto,
+  PopularVideosRequestDtoType,
+  VideoSearch,
+} from '~/shared/types/types';
+
 import { VideoService } from '~/core/video/application/video-service';
 import {
   ApiPath,
@@ -30,13 +38,15 @@ import { NotFound } from '~/shared/exceptions/not-found';
 import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/channel-subscription-repository';
 import { optionalAuthenticationMiddleware } from '../middleware/optional-authentication-middleware';
 import { VideoRepository } from '~/core/video/port/video-repository';
-import { authenticationMiddleware } from '../middleware';
+
 import {
   matchVideoFilterDate,
   matchVideoFilterDuration,
   matchVideoFilterSortBy,
   matchVideoFilterType,
 } from '~/shared/enums/enums';
+import { authenticationMiddleware, CreateVideoHistoryRecordMiddleware } from '../middleware';
+import { normalizeCategoryFiltersPayload } from '~/primary-adapters/rest/category/helpers/normalize-category-filters-helper';
 
 /**
  * @swagger
@@ -190,7 +200,15 @@ export class VideoController extends BaseHttpController {
     return await this.videoRepository.getVideosBySearch(queryParams);
   }
 
-  @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware)
+  @httpGet(VideoApiPath.POPULAR, optionalAuthenticationMiddleware)
+  public async getPopular(
+    @queryParam() { page, category }: PopularVideosRequestDtoType,
+  ): Promise<PopularVideoResponseDto> {
+    const preparedCategory = normalizeCategoryFiltersPayload(category)[0];
+    return this.videoService.getPopular({ category: preparedCategory, page });
+  }
+
+  @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware, CreateVideoHistoryRecordMiddleware)
   public async get(@requestParam('id') id: string, @request() req: ExtendedRequest): Promise<VideoExpandedResponseDto> {
     const video = await this.videoService.getById(id);
 
@@ -303,5 +321,56 @@ export class VideoController extends BaseHttpController {
     }
 
     return res;
+  }
+
+  /**
+   * @swagger
+   * /comment:
+   *    post:
+   *      tags:
+   *        - comment
+   *      operationId: addCommentReaction
+   *      security:
+   *      - bearerAuth: []
+   *      consumes:
+   *        - application/json
+   *      produces:
+   *        - application/json
+   *      description: Add reaction to comment
+   *      parameters:
+   *        - in: body
+   *          name: body
+   *          description: data that contain isLike filed
+   *          required: true
+   *          schema:
+   *            $ref: '#/components/schemas/CreateReactionRequestDto'
+   *        - in: path
+   *          name: id
+   *          description: comment ID
+   *          required: true
+   *          schema:
+   *            type: string
+   *      responses:
+   *        '200':
+   *          description: reaction added
+   *        '404':
+   *          description: Such a comment does not exists!
+   */
+
+  @httpPost(`${VideoApiPath.COMMENT}${VideoApiPath.REACTION}${VideoApiPath.$ID}`, authenticationMiddleware)
+  public async addCommentReaction(
+    @requestParam('id') id: string,
+    @requestBody() body: CreateReactionRequestDto,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<CreateReactionResponseDto> {
+    const { id: userId } = req.user;
+
+    const reactionResponse = await this.videoService.addCommentReaction(body, id, userId);
+
+    if (!reactionResponse) {
+      throw new NotFound('Such a comment does not exist!');
+    }
+
+    return reactionResponse;
   }
 }
