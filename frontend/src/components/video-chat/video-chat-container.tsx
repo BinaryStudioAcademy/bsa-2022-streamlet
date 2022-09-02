@@ -28,7 +28,8 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
   const dispatch = useAppDispatch();
   const {
     chat: {
-      currentChat: { id, initialMessages, messages, participants },
+      currentChat: { initialMessages, messages, participants },
+      status,
     },
   } = useAppSelector((state) => ({
     chat: state.chat,
@@ -37,7 +38,7 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
   const handlerSubmitMessage = (messageText: string): Promise<ChatMessageResponseDto> =>
     dispatch(
       chatActions.sendMessage({
-        chatId: id,
+        chatId: videoId,
         message: { text: messageText },
       }),
     ).unwrap();
@@ -63,7 +64,7 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
       dispatch(chatActions.closeChat());
       socket.emit(SocketEvents.chat.LEAVE_ROOM, videoId);
     };
-  }, [dispatch, joinChatRoom, videoId]);
+  }, [dispatch, joinChatRoom, videoId, status]);
 
   return (
     <VideoChat
@@ -72,6 +73,7 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
       initialMessages={initialMessages.list}
       messages={messages.list}
       participants={participants}
+      chatStatus={status}
       sendMessageProps={sendMessageProps}
     />
   );

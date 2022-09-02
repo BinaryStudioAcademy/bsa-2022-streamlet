@@ -18,10 +18,10 @@ type State = {
     initialMessages: ChatInfoResponseDto['initialMessages'];
     messages: ChatInfoResponseDto['initialMessages'];
     participants: string[];
-    status: boolean;
     dataStatus: DataStatus;
     error: string | undefined;
   };
+  status: boolean;
 };
 
 const initialState: State = {
@@ -36,13 +36,17 @@ const initialState: State = {
       total: 0,
     },
     participants: [] as string[],
-    status: true,
     dataStatus: DataStatus.IDLE,
     error: undefined,
   },
+  status: true,
 };
 
 const reducer = createReducer(initialState, (builder) => {
+  builder.addCase(loadChat.rejected, (state) => {
+    state.status = false;
+  });
+
   builder.addCase(loadChat.pending, (state) => {
     state.currentChat.dataStatus = DataStatus.PENDING;
     state.currentChat = initialState.currentChat;
@@ -54,7 +58,7 @@ const reducer = createReducer(initialState, (builder) => {
   });
 
   builder.addCase(updateChatStatus, (state: State, { payload }) => {
-    state.currentChat.status = payload;
+    state.status = payload;
   });
 
   builder.addCase(updateParticipants, (state: State, { payload }) => {

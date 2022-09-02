@@ -265,6 +265,10 @@ $hide-transition-duration: 1s;
   color: var(--white-text-color);
 }
 
+.chat-disabled .video-chat-footer-bar span {
+  border-top: 2px solid var(--gray-300-header-menu-background);
+}
+
 .hide-chat {
   max-height: 0;
 }
@@ -308,4 +312,10 @@ $hide-transition-duration: 1s;
 
 .hide-chat .video-chat-footer-bar span {
   border-top: 2px solid var(--gray-300-header-menu-background);
+}
+
+.hide-chat .video-chat-popout {
+  margin-bottom: 0;
+  padding: 0 20px;
+  overflow: hidden;
 }

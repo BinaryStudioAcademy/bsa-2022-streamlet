@@ -1,14 +1,14 @@
+import { UIEvent } from 'react';
+import clsx from 'clsx';
 import { ChatMessageResponseDto, FC } from 'common/types/types';
 import { AppRoutes, ChatMenuOptions, IconName } from 'common/enums/enums';
 import { useCallback, useEffect, useRef, useState } from 'hooks/hooks';
 import { Button, Icon } from 'components/common/common';
 import { Participant, SendMessage, SendMessageProps, VideoComment } from './components/components';
+import { debounce } from 'helpers/common/debounce.helper';
 import { allChatMenuOptions, popOutChatParamsString } from './config';
 
 import styles from './video-chat.module.scss';
-import { UIEvent } from 'react';
-import { debounce } from 'helpers/common/debounce.helper';
-import clsx from 'clsx';
 
 interface VideoChatProps {
   chatId: string;
@@ -16,6 +16,7 @@ interface VideoChatProps {
   initialMessages: ChatMessageResponseDto[];
   messages: ChatMessageResponseDto[];
   participants: string[];
+  chatStatus: boolean;
   sendMessageProps: SendMessageProps;
 }
 
@@ -25,6 +26,7 @@ const VideoChat: FC<VideoChatProps> = ({
   initialMessages,
   messages,
   participants,
+  chatStatus,
   sendMessageProps,
 }) => {
   const chatEndEl = useRef<HTMLDivElement>(null);
@@ -118,6 +120,19 @@ const VideoChat: FC<VideoChatProps> = ({
       window.removeEventListener('click', onHandleClickOutsideMenu);
     };
   }, [showChatMenu, onHandleClickOutsideMenu]);
+
+  if (!chatStatus) {
+    return (
+      <div className={clsx(styles['video-chat-wrapper'], styles['chat-disabled'], hideChat && styles['hide-chat'])}>
+        <div className={styles['video-chat-popout']}>
+          <span>Chat is disabled for this live stream.</span>
+        </div>
+        <div className={styles['video-chat-footer-bar']} onClick={handleSetHideChat}>
+          <span>{hideChat ? 'show chat' : 'hide chat'}</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={clsx(styles['video-chat-wrapper'], hideChat && styles['hide-chat'])}>

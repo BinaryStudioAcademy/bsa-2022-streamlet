@@ -31,27 +31,18 @@ const VideoPageContainer: FC = () => {
     navigate(AppRoutes.ANY, { replace: true });
   }
 
+  const { videoData, profile, user, channel } = useAppSelector((state) => ({
+    videoData: state.videoPage.video,
+    profile: state.profile.profileData,
+    user: state.auth.user,
+    channel: state.videoPage.video?.channel,
+  }));
+
   const videoId = isVideoIdProvided as string;
-
-  const videoData = useAppSelector((state) => {
-    return state.videoPage.video;
-  });
-
-  const profile = useAppSelector((state) => {
-    return state.profile.profileData;
-  });
 
   useEffect(() => {
     dispatch(videoPageActions.getVideo(videoId));
   }, [videoId, dispatch]);
-
-  const user = useAppSelector((state) => {
-    return state.auth.user;
-  });
-
-  const channel = useAppSelector((state) => {
-    return state.videoPage.video?.channel;
-  });
 
   const handleLikeReact = (): void => {
     if (!user) {
