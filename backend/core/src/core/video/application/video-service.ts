@@ -29,6 +29,7 @@ export class VideoService {
         likeNum: number;
         videoPath: string;
         dislikeNum: number;
+        isChatEnabled: boolean;
       })
     | null
   > {

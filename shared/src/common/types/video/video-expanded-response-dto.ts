@@ -10,4 +10,5 @@ export type VideoExpandedResponseDto = BaseVideoResponseDto & {
   videoPath: string;
   userReaction: VideoReaction | null;
   isUserSubscribedOnChannel: boolean;
+  isChatEnabled: boolean;
 };

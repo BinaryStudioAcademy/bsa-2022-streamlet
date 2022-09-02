@@ -36,7 +36,7 @@ export const trimVideoWithComments = (
     };
     comments: (VideoComment & { author: User & { profile: UserProfile | null } })[];
   },
-): BaseVideoResponseDto & { comments: Comment[]; description: string; videoPath: string } => {
+): BaseVideoResponseDto & { comments: Comment[]; description: string; videoPath: string; isChatEnabled: boolean } => {
   const {
     id,
     poster,
@@ -51,6 +51,7 @@ export const trimVideoWithComments = (
     comments,
     description,
     videoPath,
+    isChatEnabled,
   } = video;
   return {
     id,
@@ -74,5 +75,6 @@ export const trimVideoWithComments = (
       lastName: comment.author.profile?.lastName,
     })),
     description,
+    isChatEnabled,
   };
 };

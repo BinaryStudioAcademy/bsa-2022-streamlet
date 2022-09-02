@@ -43,6 +43,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
         likeNum: number;
         dislikeNum: number;
         videoPath: string;
+        isChatEnabled: boolean;
       })
     | null
   > {

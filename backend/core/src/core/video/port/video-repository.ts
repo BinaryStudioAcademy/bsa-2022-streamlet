@@ -18,6 +18,7 @@ export interface VideoRepository {
         likeNum: number;
         dislikeNum: number;
         videoPath: string;
+        isChatEnabled: boolean;
       })
     | null
   >;
