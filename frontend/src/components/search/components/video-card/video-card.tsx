@@ -13,6 +13,7 @@ import styles from './styles.module.scss';
 import defaultVideoPosterDark from 'assets/img/default-video-poster-dark.jpg';
 import defaultVideoPosterLight from 'assets/img/default-video-poster-light.jpg';
 import defaultUserAvatar from 'assets/img/default-user-avatar.jpg';
+import React from 'react';
 
 dayjs.extend(dayjsRelativeTime.default);
 
