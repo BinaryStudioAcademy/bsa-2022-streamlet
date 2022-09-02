@@ -3,13 +3,13 @@ import { TagCreateRequestDto, CategoryCreateRequestDto } from '../types';
 
 type StreamUpdateRequestDto = {
   videoId: string;
-  name: string;
-  description: string;
-  scheduledStreamDate: Date;
-  tags: TagCreateRequestDto[];
-  categories: CategoryCreateRequestDto[];
-  privacy: StreamPrivacy;
-  videoPath: string;
+  name?: string;
+  description?: string;
+  scheduledStreamDate?: Date;
+  tags?: TagCreateRequestDto[];
+  categories?: CategoryCreateRequestDto[];
+  privacy?: StreamPrivacy;
+  videoPath?: string;
 };
 
 export { type StreamUpdateRequestDto };
