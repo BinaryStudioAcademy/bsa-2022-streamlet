@@ -53,7 +53,7 @@ export class ChannelStreamingService {
       return null;
     }
     return {
-      videoId: pendingStream.id,
+      videoId: activeStream.id,
       channelId: keyRecord.channelId,
       streamingKey: key,
     };

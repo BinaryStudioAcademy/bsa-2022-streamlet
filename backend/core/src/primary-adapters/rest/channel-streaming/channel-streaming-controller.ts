@@ -149,7 +149,7 @@ export class ChannelStreamingController extends BaseHttpController {
     }
     await this.channelStreamingService.update({
       videoId: streamData.videoId,
-      videoPath: `/segments/${videoId}/master.m3u8`,
+      videoPath: `/segments/${streamData.videoId}/master.m3u8`,
     });
     this.channelStreamingService.notifyTranscoderAboutStreamStart({ authorId, streamData });
   }
