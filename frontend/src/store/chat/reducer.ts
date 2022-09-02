@@ -18,10 +18,11 @@ type State = {
     initialMessages: ChatInfoResponseDto['initialMessages'];
     messages: ChatInfoResponseDto['initialMessages'];
     participants: string[];
+    isChatEnabled: ChatInfoResponseDto['isChatEnabled'];
     dataStatus: DataStatus;
     error: string | undefined;
   };
-  status: boolean;
+  status: boolean | undefined;
 };
 
 const initialState: State = {
@@ -36,15 +37,16 @@ const initialState: State = {
       total: 0,
     },
     participants: [] as string[],
+    isChatEnabled: true,
     dataStatus: DataStatus.IDLE,
     error: undefined,
   },
-  status: true,
+  status: undefined,
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder.addCase(loadChat.rejected, (state) => {
-    state.status = false;
+    state.currentChat.isChatEnabled = false;
   });
 
   builder.addCase(loadChat.pending, (state) => {
@@ -55,6 +57,7 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(loadChat.fulfilled, (state, { payload }) => {
     state.currentChat.id = payload.id;
     state.currentChat.initialMessages = payload.initialMessages;
+    state.currentChat.isChatEnabled = payload.isChatEnabled;
   });
 
   builder.addCase(updateChatStatus, (state: State, { payload }) => {

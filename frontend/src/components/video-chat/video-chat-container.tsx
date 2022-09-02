@@ -28,7 +28,7 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
   const dispatch = useAppDispatch();
   const {
     chat: {
-      currentChat: { initialMessages, messages, participants },
+      currentChat: { initialMessages, messages, participants, isChatEnabled },
       status,
     },
   } = useAppSelector((state) => ({
@@ -57,14 +57,16 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
     }
   }, [videoId, dispatch]);
 
+  const leaveChatRoom = useCallback((): void => {
+    dispatch(chatActions.closeChat());
+    socket.emit(SocketEvents.chat.LEAVE_ROOM, videoId);
+  }, [dispatch, videoId]);
+
   useEffect(() => {
     joinChatRoom();
 
-    return () => {
-      dispatch(chatActions.closeChat());
-      socket.emit(SocketEvents.chat.LEAVE_ROOM, videoId);
-    };
-  }, [dispatch, joinChatRoom, videoId, status]);
+    return leaveChatRoom;
+  }, [joinChatRoom, leaveChatRoom, status]);
 
   return (
     <VideoChat
@@ -73,7 +75,7 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
       initialMessages={initialMessages.list}
       messages={messages.list}
       participants={participants}
-      chatStatus={status}
+      chatStatus={status ?? isChatEnabled}
       sendMessageProps={sendMessageProps}
     />
   );
