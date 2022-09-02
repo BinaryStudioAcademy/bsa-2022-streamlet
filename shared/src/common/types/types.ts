@@ -18,3 +18,4 @@ export * from './subscription/subscription';
 export * from './comment';
 export * from './chat/chat';
 export * from './following/following';
+export * from './common/batch-payload';

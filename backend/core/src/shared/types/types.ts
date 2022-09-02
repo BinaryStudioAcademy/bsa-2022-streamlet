@@ -15,3 +15,4 @@ export * from './history/history';
 export * from './chat/chat';
 export * from './subscription/subscription';
 export * from './video/video';
+export * from './batch-payload/batch-payload';
