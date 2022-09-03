@@ -9,6 +9,7 @@ import { VideoRepository } from '~/core/video/port/video-repository';
 import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { Comment } from 'shared/build/common/types/comment';
 import {
+  BaseReplyRequestDto,
   CreateReactionRequestDto,
   CreateReactionResponseDto,
   VideoCommentRequestDto,
@@ -90,5 +91,13 @@ export class VideoService {
     }
 
     return this.videoRepository.getPopular(request, POPULAR_VIDEO_CARD_IN_ONE_PAGE, skip, lastPage);
+  }
+
+  async getRepliesForComment(commentId: string): Promise<Comment[]> {
+    return await this.videoRepository.getRepliesForComment(commentId);
+  }
+
+  async addVideoCommentReply(request: BaseReplyRequestDto, userId: string): Promise<Comment[]> {
+    return this.videoRepository.addVideoCommentReply(request, userId);
   }
 }

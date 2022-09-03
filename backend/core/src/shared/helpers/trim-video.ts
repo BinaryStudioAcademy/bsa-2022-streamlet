@@ -85,6 +85,30 @@ export const trimVideoWithComments = (
   };
 };
 
+export const trimCommentsForReplies = (
+  comments: (VideoComment & {
+    commentReactions: CommentReaction[];
+    author: User & {
+      profile: UserProfile | null;
+    };
+  })[],
+): Comment[] => {
+  const res = comments.map((comment) => ({
+    id: comment.id,
+    parentId: comment.parentId,
+    avatar: comment.author.profile?.avatar,
+    userName: comment.author.username,
+    firstName: comment.author.profile?.firstName,
+    lastName: comment.author.profile?.lastName,
+    text: comment.text,
+    dateAdded: comment.createdAt,
+    likeNum: calculateReactions(comment.commentReactions, true),
+    dislikeNum: calculateReactions(comment.commentReactions, false),
+  }));
+
+  return res;
+};
+
 const calculateReactions = (commentReactions: CommentReaction[], isLike: boolean): number => {
   const likeCount = commentReactions.filter((item) => item.isLike === isLike);
   return likeCount.length;

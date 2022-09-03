@@ -7,14 +7,32 @@ import { ReactComponent as ThumbDown } from 'assets/img/thumb-down.svg';
 import { getCommentReactBtnColor } from 'helpers/video/get-react-button-color.helper';
 
 import styles from './styles.module.scss';
+import { useAppDispatch, useAppSelector, useNavigate, useState } from 'hooks/hooks';
+import { addVideoCommentReply, getRepliesForComment } from 'store/video-page/actions';
+import { AppRoutes, DataStatus } from 'common/enums/enums';
+import { VideoPageCommentForm } from '../add-comment-form/add-comment-form';
 
 type Props = {
   comment: Comment;
   onLike: (commentId: string) => void;
   onDislike: (commentId: string) => void;
+  isReply?: boolean;
 };
 
-const VideoComment: FC<Props> = ({ comment, onLike, onDislike }) => {
+const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply }) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const [isRepliesOpen, setIsRepliesOpen] = useState(false);
+  const [isReplyFormOpen, setIsReplyFormOpen] = useState(false);
+
+  const { data, dataStatus } = useAppSelector((state) => state.videoPage.replies);
+  const videoId = useAppSelector((state) => state.videoPage.video?.id);
+  const userAvatar = useAppSelector((state) => state.profile.profileData?.avatar);
+  const user = useAppSelector((state) => state.auth.user);
+
+  const replies = data[comment.id];
+
   const handleLikeReact = (): void => {
     onLike(comment.id);
   };
@@ -24,6 +42,31 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike }) => {
   };
 
   const getLikes = (num: number): number | string => (num === 0 ? '\u00A0' : num);
+
+  const handleClickShowReplies = (): void => {
+    setIsRepliesOpen(!isRepliesOpen);
+
+    if (!isRepliesOpen) {
+      dispatch(getRepliesForComment(comment.id));
+    }
+  };
+
+  const handleClickReplyComment = (): void => {
+    setIsReplyFormOpen(true);
+  };
+
+  const handlerCancelForReplyForm = (): void => {
+    setIsReplyFormOpen(false);
+  };
+
+  const handleSendForm = (text: string): void => {
+    if (!user) {
+      navigate(AppRoutes.SIGN_IN, { replace: true });
+      return;
+    }
+
+    dispatch(addVideoCommentReply({ parentId: comment.id, text, videoId: videoId }));
+  };
 
   return (
     <div className={styles['video-comment']}>
@@ -61,8 +104,43 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike }) => {
           />
           <span> {getLikes(comment.dislikeNum)}</span>
         </div>
-        <p>{comment.repliesCount}</p>
+        {!isReply && (
+          <button onClick={handleClickReplyComment} className={styles['button-open-reply-form']}>
+            Reply
+          </button>
+        )}
       </div>
+      {isReplyFormOpen && (
+        <div className={styles['wrapper-form-reply']}>
+          <VideoPageCommentForm
+            avatar={userAvatar}
+            onSubmit={handleSendForm}
+            className={'form-send-reply'}
+            isFormForReply={true}
+            handlerCancelForReplyForm={handlerCancelForReplyForm}
+          />
+        </div>
+      )}
+      {Boolean(comment.repliesCount) && (
+        <button onClick={handleClickShowReplies} className={styles['button-show-replies']}>
+          {comment.repliesCount} replies
+        </button>
+      )}
+      {isRepliesOpen && dataStatus === DataStatus.FULFILLED && (
+        <div style={{ marginLeft: '46px' }}>
+          {isRepliesOpen &&
+            dataStatus === DataStatus.FULFILLED &&
+            replies.map((reply) => (
+              <VideoComment
+                key={reply.id}
+                comment={reply}
+                onLike={(): void => onLike(reply.id)}
+                onDislike={(): void => onDislike(reply.id)}
+                isReply={true}
+              />
+            ))}
+        </div>
+      )}
     </div>
   );
 };

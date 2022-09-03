@@ -83,3 +83,30 @@
 .reaction-button {
   cursor: pointer;
 }
+
+.button-show-replies {
+  margin-top: 5px;
+  margin-left: 46px;
+  text-transform: uppercase;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--brand-dark-green-color);
+  }
+}
+
+.button-open-reply-form {
+  margin-left: 12px;
+  text-transform: uppercase;
+  background-color: transparent;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--brand-dark-green-color);
+  }
+}
+
+.wrapper-form-reply {
+  margin-left: 46px;
+}

@@ -1,9 +1,16 @@
 import { createReducer } from '@reduxjs/toolkit';
 
 import { DataStatus } from 'common/enums/enums';
-import { VideoExpandedResponseDto } from 'shared/build';
+import { Comment, VideoExpandedResponseDto } from 'shared/build';
 import { channelSubscribe } from 'store/subscriptions/actions';
-import { addVideoComment, getVideo, videoReact, updateLiveViews } from './actions';
+import {
+  addVideoComment,
+  getVideo,
+  videoReact,
+  updateLiveViews,
+  getRepliesForComment,
+  addVideoCommentReply,
+} from './actions';
 
 type State = {
   dataStatus: DataStatus;
@@ -13,6 +20,10 @@ type State = {
   };
   error: string | undefined;
   video: VideoExpandedResponseDto | null;
+  replies: {
+    dataStatus: DataStatus;
+    data: Record<string, Comment[]>;
+  };
 };
 
 const initialState: State = {
@@ -22,6 +33,10 @@ const initialState: State = {
   subscription: {
     dataStatus: DataStatus.IDLE,
     error: undefined,
+  },
+  replies: {
+    dataStatus: DataStatus.IDLE,
+    data: {},
   },
 };
 
@@ -66,6 +81,24 @@ const reducer = createReducer(initialState, (builder) => {
     if (state.video) {
       state.video.liveViews = payload;
     }
+  });
+
+  builder.addCase(getRepliesForComment.pending, (state, _payload) => {
+    state.replies.dataStatus = DataStatus.PENDING;
+  });
+  builder.addCase(getRepliesForComment.fulfilled, (state, { payload }) => {
+    state.replies.dataStatus = DataStatus.FULFILLED;
+    state.replies.data[payload.commentId] = [];
+    state.replies.data[payload.commentId] = payload.data;
+  });
+  builder.addCase(getRepliesForComment.rejected, (state, _payload) => {
+    state.replies.dataStatus = DataStatus.REJECTED;
+    state.replies.data = {};
+  });
+
+  builder.addCase(addVideoCommentReply.fulfilled, (state, { payload }) => {
+    state.replies.data[payload.commentId] = payload.data;
+    state.replies.dataStatus = DataStatus.FULFILLED;
   });
 });
 

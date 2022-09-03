@@ -4,8 +4,9 @@ import { CONTAINER_TYPES, PopularVideoResponseDto, PopularVideosRequestDtoType }
 import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimPopular, trimVideo } from '~/shared/helpers';
 import { Comment } from 'shared/build/common/types/comment';
-import { trimVideoWithComments } from '~/shared/helpers/trim-video';
+import { trimCommentsForReplies, trimVideoWithComments } from '~/shared/helpers/trim-video';
 import {
+  BaseReplyRequestDto,
   CategorySearchRequestQueryDto,
   CreateReactionRequestDto,
   CreateReactionResponseDto,
@@ -551,5 +552,43 @@ export class VideoRepositoryAdapter implements VideoRepository {
       list,
       total,
     };
+  }
+
+  async getRepliesForComment(commentId: string): Promise<Comment[]> {
+    const result = await this.prismaClient.videoComment.findMany({
+      where: {
+        parentId: commentId,
+      },
+      include: {
+        author: {
+          include: {
+            profile: true,
+          },
+        },
+        commentReactions: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const repliesComments = trimCommentsForReplies(result);
+
+    return repliesComments;
+  }
+
+  async addVideoCommentReply(request: BaseReplyRequestDto, authorId: string): Promise<Comment[]> {
+    if (request.videoId) {
+      await this.prismaClient.videoComment.create({
+        data: {
+          parentId: request.parentId,
+          text: request.text,
+          authorId,
+          videoId: request.videoId,
+        },
+      });
+    }
+
+    return await this.getRepliesForComment(request.parentId);
   }
 }

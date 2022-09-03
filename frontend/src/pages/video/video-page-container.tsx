@@ -87,6 +87,10 @@ const VideoPageContainer: FC = () => {
     dispatch(videoPageActions.addVideoComment({ videoId, text }));
   };
 
+  const handlerCancelForReplyForm = (): void => {
+    return void 1;
+  };
+
   if (!videoData || !channel) {
     return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
   }
@@ -184,6 +188,7 @@ const VideoPageContainer: FC = () => {
             comments={videoData.comments}
             onLike={handleCommentLikeReact}
             onDislike={handleCommentDislikeReact}
+            handlerCancelForReplyForm={handlerCancelForReplyForm}
           />
         </div>
       )}

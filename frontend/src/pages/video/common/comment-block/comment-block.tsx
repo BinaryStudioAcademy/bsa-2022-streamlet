@@ -10,12 +10,25 @@ type Props = {
   comments: Comment[];
   onLike: (commentId: string) => void;
   onDislike: (commentId: string) => void;
+  handlerCancelForReplyForm: () => void;
 };
 
-const VideoCommentBlock: FC<Props> = ({ comments, userAvatar, onNewComment, onLike, onDislike }) => {
+const VideoCommentBlock: FC<Props> = ({
+  comments,
+  userAvatar,
+  onNewComment,
+  onLike,
+  onDislike,
+  handlerCancelForReplyForm,
+}) => {
   return (
     <>
-      <VideoPageCommentForm avatar={userAvatar} onSubmit={onNewComment} className={styles['comment-form']} />
+      <VideoPageCommentForm
+        avatar={userAvatar}
+        onSubmit={onNewComment}
+        className={styles['comment-form']}
+        handlerCancelForReplyForm={handlerCancelForReplyForm}
+      />
       {comments.map((comment: Comment) => {
         return <VideoComment key={comment.id} comment={comment} onLike={onLike} onDislike={onDislike} />;
       })}

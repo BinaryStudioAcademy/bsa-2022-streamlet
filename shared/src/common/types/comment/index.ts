@@ -2,7 +2,7 @@ export type Comment = {
   id: string;
   parentId: string | null;
   avatar?: string;
-  repliesCount: number;
+  repliesCount?: number;
   userName: string;
   firstName?: string;
   lastName?: string;
