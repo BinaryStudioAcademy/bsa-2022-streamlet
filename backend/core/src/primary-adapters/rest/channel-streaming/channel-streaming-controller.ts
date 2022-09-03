@@ -284,12 +284,12 @@ export class ChannelStreamingController extends BaseHttpController {
   }
 
   @httpPost(ChannelStreamingApiPath.UPLOAD_POSTER, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
-  public async uploadPoster(@requestBody() payload: StreamPosterUploadRequestDto): Promise<VideoStreamResponseDto> {
-    const update = await this.channelStreamingService.uploadStreamPoster(payload);
-    if (!update) {
+  public async uploadPoster(@requestBody() payload: StreamPosterUploadRequestDto): Promise<string> {
+    const posterUrl = await this.channelStreamingService.uploadStreamPoster(payload);
+    if (!posterUrl) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
-    return update;
+    return posterUrl;
   }
 
   @httpPut(ChannelStreamingApiPath.EDIT_STREAM, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)

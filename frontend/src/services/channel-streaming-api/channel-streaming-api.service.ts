@@ -57,7 +57,7 @@ class ChannelStreamingApi {
     });
   }
 
-  async uploadPoster(payload: StreamPosterUploadRequestDto): Promise<VideoStreamResponseDto> {
+  async uploadPoster(payload: StreamPosterUploadRequestDto): Promise<string> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.CHANNEL_STREAMING}${ChannelStreamingApiPath.UPLOAD_POSTER}`,
       options: {

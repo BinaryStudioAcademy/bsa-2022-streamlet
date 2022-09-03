@@ -45,7 +45,7 @@ const getMyChannel = createAsyncThunk<OwnChannelResponseDto, void, AsyncThunkCon
   },
 );
 
-const uploadPoster = createAsyncThunk<VideoStreamResponseDto, StreamPosterUploadRequestDto, AsyncThunkConfigHttpError>(
+const uploadPoster = createAsyncThunk<string, StreamPosterUploadRequestDto, AsyncThunkConfigHttpError>(
   ActionType.UPLOAD_POSTER,
   async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
     try {

@@ -55,6 +55,12 @@ const reducer = createReducer(initialState, (builder) => {
     state.status.error = undefined;
     state.status.errorCode = undefined;
   });
+  builder.addCase(uploadPoster.fulfilled, (state, { payload }) => {
+    state.status.dataStatus = DataStatus.FULFILLED;
+    if (state.stream) {
+      state.stream.poster = payload;
+    }
+  });
   builder.addCase(setStreamStatus.fulfilled, (state, { payload }) => {
     state.status.dataStatus = DataStatus.FULFILLED;
     if (payload.status === StreamStatus.LIVE) {
@@ -86,7 +92,7 @@ const reducer = createReducer(initialState, (builder) => {
     },
   );
   builder.addMatcher(
-    isAnyOf(createStream.fulfilled, uploadPoster.fulfilled, editStream.fulfilled, setReadinessToStream.fulfilled),
+    isAnyOf(createStream.fulfilled, editStream.fulfilled, setReadinessToStream.fulfilled),
     (state, { payload }) => {
       state.status.dataStatus = DataStatus.FULFILLED;
       state.stream = payload;

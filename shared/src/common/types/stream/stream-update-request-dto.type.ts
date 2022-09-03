@@ -10,6 +10,7 @@ type StreamUpdateRequestDto = {
   categories?: CategoryCreateRequestDto[];
   privacy?: StreamPrivacy;
   videoPath?: string;
+  poster?: string;
 };
 
 export { type StreamUpdateRequestDto };
