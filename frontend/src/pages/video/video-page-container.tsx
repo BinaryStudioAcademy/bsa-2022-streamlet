@@ -41,24 +41,6 @@ const VideoPageContainer: FC = () => {
     setReactState(false);
   }, [videoId, dispatch, isReactChanged]);
 
-  const channel = useAppSelector((state) => {
-    return state.videoPage.video?.channel;
-  });
-
-  const handleLikeReact = (): void => {
-    if (!user) {
-      return setIsUserNotAuthAndReact(true);
-    }
-    dispatch(videoPageActions.videoReact({ videoId, isLike: true }));
-  };
-
-  const handleDislikeReact = (): void => {
-    if (!user) {
-      return setIsUserNotAuthAndReact(true);
-    }
-    dispatch(videoPageActions.videoReact({ videoId, isLike: false }));
-  };
-
   const handleCommentLikeReact = useCallback(
     (commentId: string): void => {
       dispatch(videoPageActions.commentReact({ commentId, isLike: true }));

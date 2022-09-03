@@ -1,5 +1,5 @@
-@import 'assets/css/config.scss';
 @use 'assets/css/helpers/break-long-words';
+@import 'assets/css/config.scss';
 
 :root {
   --avatar-top-value: 10px;
@@ -123,6 +123,30 @@
   z-index: $modal-z-index;
   width: 378px;
   height: 200px;
+}
+
+@media screen and (min-width: 1680px) {
+  .sign-in-modal {
+    left: 30%;
+  }
+}
+
+@media screen and (max-width: 1680px) {
+  .sign-in-modal {
+    left: 30%;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .sign-in-modal {
+    left: 30%;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .sign-in-modal {
+    left: 27%;
+  }
 }
 
 @media screen and (max-width: 992px) {
