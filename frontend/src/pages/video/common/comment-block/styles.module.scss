@@ -1,12 +1,16 @@
 @use 'assets/css/helpers/break-long-words';
+@import 'assets/css/config.scss';
+
+:root {
+  --avatar-top-value: 10px;
+}
 
 .comment-form {
   margin-bottom: 10px;
 }
 
 .video-comment {
-  max-width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .video-comment .main-part-comment {
@@ -16,7 +20,13 @@
 }
 
 .video-comment .main-part-comment .commentators-avatar {
+  position: relative;
+  top: var(--avatar-top-value);
+  width: 34px;
+  height: 34px;
   margin-right: 12px;
+  background-size: cover;
+  border-radius: 50%;
 }
 
 .video-comment .main-part-comment .commentators-name {
@@ -37,7 +47,7 @@
 }
 
 .video-comment .content-part-comment {
-  margin: 5px 0 0 46px;
+  margin: -6px 0 0 46px;
 }
 
 .video-comment .content-part-comment .text-comment {
@@ -46,27 +56,126 @@
   font-size: 14px;
   font-style: normal;
   line-height: 19px;
+}
 
+.default-avatar {
+  position: relative;
+  top: var(--avatar-top-value);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 34px;
+  height: 34px;
+  margin-right: 12px;
+  color: var(--green-100-header-menu-background);
+  font-size: 18px;
+  line-height: 18px;
+  background-color: var(--green-200-header-menu-background);
+  border-radius: 50%;
   @include break-long-words.break-long-words;
 }
 
-.reaction-container {
+.reaction-container-up,
+.reaction-container-down {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 5px;
 }
 
-.reaction-container span {
-  margin-left: 10px;
+.reaction-container-up {
+  margin: 0 0 2px 5px;
+}
+
+.reaction-container-down {
+  margin: 0 5px 0 8px;
 }
 
 .reaction-block {
   display: flex;
-  margin: 5px 0 0 43px;
+  margin: 1px 0 0 43px;
 }
 
 .reaction-button {
   cursor: pointer;
+}
+
+.like-span-up,
+.like-span-down {
+  min-width: 10px;
+  color: var(--text-gray-color);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.like-span-down {
+  margin: 0 0 4px 10px;
+}
+
+.like-span-up {
+  margin: 0 0 0 7px;
+}
+
+.sign-in-modal {
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  z-index: $modal-z-index;
+  width: 378px;
+  height: 200px;
+}
+
+@media screen and (min-width: 1680px) {
+  .sign-in-modal {
+    left: 30%;
+  }
+}
+
+@media screen and (max-width: 1680px) {
+  .sign-in-modal {
+    left: 30%;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .sign-in-modal {
+    left: 30%;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .sign-in-modal {
+    left: 27%;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .sign-in-modal {
+    left: 37%;
+    width: 280px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sign-in-modal {
+    left: 33%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .sign-in-modal {
+    left: 20%;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .sign-in-modal {
+    left: 12%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .sign-in-modal {
+    left: 5%;
+  }
 }

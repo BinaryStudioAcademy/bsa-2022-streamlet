@@ -14,3 +14,5 @@ export {
   type GoogleRequestDto,
   type GoogleUserResultDto,
 } from 'shared/build';
+
+export { UserGetPreferencesDto } from './user-get-preferences-response-dto';
