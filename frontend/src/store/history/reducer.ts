@@ -37,8 +37,8 @@ const reducer = createReducer(initialState, (builder) => {
 
     if (currentPage === 1) {
       newList = list;
-    } else if (!isObjectUniqueIdContainInTwoArray(newList, payload.list)) {
-      newList = state.data.list.concat(payload.list);
+    } else if (!isObjectUniqueIdContainInTwoArray(newList, list)) {
+      newList = state.data.list.concat(list);
     }
 
     state.data = {
