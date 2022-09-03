@@ -1,5 +1,5 @@
 .browse-page-container {
-  padding: 30px 40px 0;
+  padding: 20px 40px 0;
 }
 
 .browse-page-header-container,
@@ -26,7 +26,7 @@
 .categories-button {
   padding: 0 47px;
   color: var(--text-gray-color);
-  font-size: 20px;
+  font-size: 16px;
   white-space: nowrap;
   text-transform: capitalize;
   background: none;
@@ -43,12 +43,19 @@
 }
 
 .browse-page-video-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  max-width: 100%;
-  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 15px;
+  width: 100%;
+
+  @media screen and (min-width: 2500px) {
+    width: 1900px;
+    margin: 0 auto;
+  }
+
+  @media screen and (max-width: 1900px) {
+    grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+  }
 }
 
 .browse-page-video-container > div {
