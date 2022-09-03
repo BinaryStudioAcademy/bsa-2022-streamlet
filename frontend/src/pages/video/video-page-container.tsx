@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import { AppRoutes, SocketEvents, StreamingStatus } from 'common/enums/enums';
 import { Loader } from 'components/common/common';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
-import { useAppDispatch, useAppSelector, useNavigate, useParams } from 'hooks/hooks';
-import { FC, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector, useNavigate, useParams, useState } from 'hooks/hooks';
+import { FC, useEffect, useCallback } from 'react';
 import { videoPageActions } from 'store/actions';
 import styles from './video-page.module.scss';
 import { VideoPlayer } from 'components/common/video-player/video-player';
@@ -41,15 +41,21 @@ const VideoPageContainer: FC = () => {
     setReactState(false);
   }, [videoId, dispatch, isReactChanged]);
 
-  const handleCommentLikeReact = (commentId: string): void => {
-    dispatch(videoPageActions.commentReact({ commentId, isLike: true }));
-    setReactState(true);
-  };
+  const handleCommentLikeReact = useCallback(
+    (commentId: string): void => {
+      dispatch(videoPageActions.commentReact({ commentId, isLike: true }));
+      setReactState(true);
+    },
+    [dispatch],
+  );
 
-  const handleCommentDislikeReact = (commentId: string): void => {
-    dispatch(videoPageActions.commentReact({ commentId, isLike: false }));
-    setReactState(true);
-  };
+  const handleCommentDislikeReact = useCallback(
+    (commentId: string): void => {
+      dispatch(videoPageActions.commentReact({ commentId, isLike: false }));
+      setReactState(true);
+    },
+    [dispatch],
+  );
 
   const handleMessageSubmit = (text: string): void => {
     if (!user) {
