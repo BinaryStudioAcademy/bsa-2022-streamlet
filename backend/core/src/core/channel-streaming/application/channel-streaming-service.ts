@@ -23,6 +23,8 @@ import {
 import { castToVideoStreamResponseDto, castToOwnChannelDto } from './dtos/dtos';
 import { ImageStorePort } from '~/core/common/port/image-store';
 import { VideoStreamResponseBeforeTrimming } from '~/shared/types/stream/stream-info-before-trimming.type';
+import { CategoryService } from '~/core/category/application/category-service';
+import { TagService } from '~/core/tag/application/tag-service';
 
 @injectable()
 export class ChannelStreamingService {
@@ -30,17 +32,23 @@ export class ChannelStreamingService {
   private videoRepository: VideoRepository;
   private imageStore: ImageStorePort;
   private amqpChannel: AmqpChannelPort;
+  private categoryService: CategoryService;
+  private tagService: TagService;
 
   constructor(
     @inject(CONTAINER_TYPES.ChannelStreamingRepository) channelStreamingRepository: ChannelStreamingRepository,
     @inject(CONTAINER_TYPES.VideoRepository) videoRepository: VideoRepository,
     @inject(CONTAINER_TYPES.ImageStoreAdapter) imageStore: ImageStorePort,
     @inject(CONTAINER_TYPES.AmqpChannelAdapter) amqpChannel: AmqpChannelPort,
+    @inject(CONTAINER_TYPES.CategoryService) categoryService: CategoryService,
+    @inject(CONTAINER_TYPES.TagService) tagService: TagService,
   ) {
     this.channelStreamingRepository = channelStreamingRepository;
     this.videoRepository = videoRepository;
     this.imageStore = imageStore;
     this.amqpChannel = amqpChannel;
+    this.categoryService = categoryService;
+    this.tagService = tagService;
   }
 
   async checkStreamingKey(key: string): Promise<LiveStartResponseDto | null> {
@@ -59,15 +67,15 @@ export class ChannelStreamingService {
     };
   }
 
-  notifyTranscoderAboutStreamStart(body: { authorId: string; streamData: LiveStartResponseDto }): Promise<boolean> {
-    return this.amqpChannel.sendToQueue({
+  notifyTranscoderAboutStreamStart(body: { authorId: string; streamData: LiveStartResponseDto }): void {
+    this.amqpChannel.sendToQueue({
       queue: AmqpQueue.STREAM_TRANSCODER,
       content: Buffer.from(JSON.stringify(body)),
     });
   }
 
-  notifyTranscoderAboutStreamEnd(body: { authorId: string; streamingKey: string }): Promise<boolean> {
-    return this.amqpChannel.sendToQueue({
+  notifyTranscoderAboutStreamEnd(body: { authorId: string; streamingKey: string }): void {
+    this.amqpChannel.sendToQueue({
       queue: AmqpQueue.STREAM_INTERRUPTED,
       content: Buffer.from(JSON.stringify(body)),
     });
@@ -145,9 +153,22 @@ export class ChannelStreamingService {
       return null;
     }
 
+    if (streamUpdateRequestDto.categories && streamUpdateRequestDto.categories.length) {
+      await this.categoryService.bindCategories({
+        categoryPayload: streamUpdateRequestDto.categories,
+        videoId,
+      });
+    }
+    if (streamUpdateRequestDto.tags && streamUpdateRequestDto.tags.length) {
+      await this.tagService.bindTags({
+        tagPayload: streamUpdateRequestDto.tags,
+        videoId,
+      });
+    }
+
     const update = await this.channelStreamingRepository.updateStream(
       videoId,
-      omitProperties<StreamUpdateRequestDto>(['videoId'], streamUpdateRequestDto),
+      omitProperties<StreamUpdateRequestDto>(['videoId', 'categories', 'tags'], streamUpdateRequestDto),
     );
     if (!update) {
       return null;

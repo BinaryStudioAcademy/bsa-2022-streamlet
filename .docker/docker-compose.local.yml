@@ -5,8 +5,8 @@ services:
     ports:
       - "1935:1935"
     container_name: rtmp
-    depends_on:
-      - backend
+    # depends_on:
+    #   - backend
     networks:
       - backend_network
     volumes:
@@ -56,23 +56,23 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
-  push:
-    image: push
-    container_name: push
-    depends_on:
-      - rabbitmq
-    ports:
-      - '5002:5002'
-    env_file:
-      - ../.env/push.env
-    networks:
-      - backend_network
-      - frontend_network
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
+  # push:
+  #   image: push
+  #   container_name: push
+  #   depends_on:
+  #     - rabbitmq
+  #   ports:
+  #     - '5002:5002'
+  #   env_file:
+  #     - ../.env/push.env
+  #   networks:
+  #     - backend_network
+  #     - frontend_network
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "5"
   video-transcoding-server:
     image: video-transcoding-server
     container_name: video-transcoding-server
@@ -90,27 +90,27 @@ services:
       options:
         max-size: "10m"
         max-file: "5"                  
-  frontend:
-    image: frontend
-    container_name: frontend
-    depends_on:
-      - backend
-    ports:
-      - '8080:80'
-      - '443:443'
-    env_file:
-      - ../.env/client.env
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
-    volumes:
-      - ../nginx/nginx.local.conf:/etc/nginx/nginx.conf
-      - ../playback:/assets/segments
-    networks:
-      - backend_network
-      - frontend_network
+  # frontend:
+  #   image: frontend
+  #   container_name: frontend
+  #   depends_on:
+  #     - backend
+  #   ports:
+  #     - '8080:80'
+  #     - '443:443'
+  #   env_file:
+  #     - ../.env/client.env
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "5"
+  #   volumes:
+  #     - ../nginx/nginx.local.conf:/etc/nginx/nginx.conf
+  #     - ../playback:/assets/segments
+  #   networks:
+  #     - backend_network
+  #     - frontend_network
 
 volumes:
   segments:

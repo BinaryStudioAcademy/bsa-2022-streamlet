@@ -209,8 +209,11 @@ export class VideoController extends BaseHttpController {
   }
 
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware, CreateVideoHistoryRecordMiddleware)
-  public async get(@requestParam('id') id: string, @request() req: ExtendedRequest): Promise<VideoExpandedResponseDto> {
-    const video = await this.videoService.getById(id);
+  public async get(
+    @requestParam('videoId') videoId: string,
+    @request() req: ExtendedRequest,
+  ): Promise<VideoExpandedResponseDto> {
+    const video = await this.videoService.getById(videoId);
 
     if (!video) {
       throw new NotFound('Such video doesn`t exist');
@@ -224,6 +227,7 @@ export class VideoController extends BaseHttpController {
     }
     return {
       ...video,
+      videoPath: `api/v1/${video.videoPath}`,
       isUserSubscribedOnChannel: isSubscribed,
       userReaction: userReaction !== null ? { isLike: userReaction } : null,
     };

@@ -39,7 +39,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
   }
 
   async getById(id: string): Promise<VideoExpandedInfo | null> {
-    const video = await this.prismaClient.video.findUnique({
+    const video = await this.prismaClient.video.findFirst({
       where: {
         id,
       },
@@ -540,7 +540,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
   }
 
   async getAuthorById(id: string): Promise<string | undefined> {
-    const searchResult = await this.prismaClient.video.findUnique({
+    const searchResult = await this.prismaClient.video.findFirst({
       where: {
         id,
       },

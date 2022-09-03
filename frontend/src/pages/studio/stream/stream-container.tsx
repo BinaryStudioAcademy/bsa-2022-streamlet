@@ -67,7 +67,7 @@ const StudioStreamContainer: FC = () => {
         videoId: stream?.id ?? '',
       }),
     );
-  }, [dispatch, stream]);
+  }, [dispatch, stream?.status, stream?.id]);
 
   const handleCopy = (): void => {
     createToastNotification({
@@ -80,7 +80,7 @@ const StudioStreamContainer: FC = () => {
 
   const handleStreamingKeyReset = useCallback(() => {
     dispatch(streamActions.resetStreamingKey({ channelId: channel?.id ?? '' }));
-  }, [dispatch, channel]);
+  }, [dispatch, channel?.id]);
 
   const defaultInfoFormValues = useCallback(
     () => ({

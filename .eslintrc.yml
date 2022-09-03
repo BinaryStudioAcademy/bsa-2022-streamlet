@@ -36,7 +36,7 @@ rules:
     - prefer-double
   max-params:
     - error
-    - 5
+    - 10
   '@typescript-eslint/explicit-function-return-type':
     - error
     - allowTypedFunctionExpressions: true

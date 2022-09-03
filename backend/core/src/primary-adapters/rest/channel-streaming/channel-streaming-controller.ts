@@ -7,6 +7,7 @@ import {
   request,
   requestBody,
   requestParam,
+  response,
 } from 'inversify-express-utils';
 import {
   CONTAINER_TYPES,
@@ -35,6 +36,8 @@ import { exceptionMessages } from '~/shared/enums/messages';
 import { VideoService } from '~/core/video/application/video-service';
 import { errorCodes, StreamingInfoResponseDto } from 'shared/build';
 import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud-service';
+import path from 'path';
+import express from 'express';
 
 /**
  * @swagger
@@ -430,5 +433,21 @@ export class ChannelStreamingController extends BaseHttpController {
       isChatEnabled: videoData.isChatEnabled,
     });
     return videoData;
+  }
+
+  @httpGet('/segments/:videoId/master.m3u8')
+  public async getPlaylist(
+    @requestParam() { videoId }: { videoId: string },
+    @response() res: express.Response,
+  ): Promise<void> {
+    res.sendFile(path.resolve(__dirname, '../../../../../playback/', videoId, '/master.m3u8'));
+  }
+
+  @httpGet('/segments/:videoId/:segment')
+  public async getFile(
+    @requestParam() { segment, videoId }: { segment: string; videoId: string },
+    @response() res: express.Response,
+  ): Promise<void> {
+    res.sendFile(path.resolve(__dirname, '../../../../../playback/', videoId, segment));
   }
 }
