@@ -33,6 +33,9 @@ export const trimVideoWithComments = (
       id: string;
       name: string;
       avatar: string;
+      _count: {
+        subscriptions: number;
+      };
     };
     comments: (VideoComment & {
       author: User & { profile: UserProfile | null };
@@ -40,7 +43,18 @@ export const trimVideoWithComments = (
       repliesCount: number;
     })[];
   },
-): BaseVideoResponseDto & { comments: Comment[]; description: string; videoPath: string } => {
+): BaseVideoResponseDto & {
+  channel: {
+    id: string;
+    name: string;
+    avatar: string;
+    subscriberCount: number;
+  };
+  comments: Comment[];
+  description: string;
+  videoPath: string;
+  isChatEnabled: boolean;
+} => {
   const {
     id,
     poster,
@@ -55,6 +69,7 @@ export const trimVideoWithComments = (
     comments,
     description,
     videoPath,
+    isChatEnabled,
   } = video;
   return {
     id,
@@ -67,7 +82,12 @@ export const trimVideoWithComments = (
     duration,
     videoViews,
     liveViews,
-    channel,
+    channel: {
+      avatar: channel.avatar,
+      id: channel.id,
+      name: channel.name,
+      subscriberCount: channel._count.subscriptions,
+    },
     comments: comments.map((comment) => ({
       dateAdded: comment.createdAt,
       id: comment.id,
@@ -80,8 +100,10 @@ export const trimVideoWithComments = (
       lastName: comment.author.profile?.lastName,
       likeNum: calculateReactions(comment.commentReactions, true),
       dislikeNum: calculateReactions(comment.commentReactions, false),
+      commentReactions: comment.commentReactions.map((item) => ({ isLike: item.isLike, userId: item.userId })),
     })),
     description,
+    isChatEnabled,
   };
 };
 
@@ -93,7 +115,7 @@ export const trimCommentsForReplies = (
     };
   })[],
 ): Comment[] => {
-  const res = comments.map((comment) => ({
+  const result = comments.map((comment) => ({
     id: comment.id,
     parentId: comment.parentId,
     avatar: comment.author.profile?.avatar,
@@ -104,9 +126,10 @@ export const trimCommentsForReplies = (
     dateAdded: comment.createdAt,
     likeNum: calculateReactions(comment.commentReactions, true),
     dislikeNum: calculateReactions(comment.commentReactions, false),
+    commentReactions: comment.commentReactions.map((item) => ({ isLike: item.isLike, userId: item.userId })),
   }));
 
-  return res;
+  return result;
 };
 
 const calculateReactions = (commentReactions: CommentReaction[], isLike: boolean): number => {

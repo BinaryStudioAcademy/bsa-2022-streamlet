@@ -1,6 +1,7 @@
 import styles from './styles.module.scss';
 import { IconName } from 'common/enums/enums';
 import { ReactComponent as ArrowDown } from 'assets/img/arrow-down.svg';
+import { ReactComponent as ArrowDown2 } from 'assets/img/arrow-down-2.svg';
 import { ReactComponent as Sun } from 'assets/img/sun-solid.svg';
 import { ReactComponent as Alarm } from 'assets/img/alarm.svg';
 import { ReactComponent as ArrowUp } from 'assets/img/arrow-up.svg';
@@ -11,6 +12,7 @@ import { ReactComponent as ChevronUp } from 'assets/img/chevron-up.svg';
 import { ReactComponent as ChevronDown } from 'assets/img/chevron-down.svg';
 import { ReactComponent as Circle } from 'assets/img/circle.svg';
 import { ReactComponent as Compass } from 'assets/img/compass.svg';
+import { ReactComponent as DotsMenu } from 'assets/img/ellipsis-vertical.svg';
 import { ReactComponent as Filter } from 'assets/img/filter.svg';
 import { ReactComponent as Follow } from 'assets/img/follow.svg';
 import { ReactComponent as History } from 'assets/img/history.svg';
@@ -40,6 +42,9 @@ import { ReactComponent as OnlineStreaming } from 'assets/img/online-streaming.s
 import { ReactComponent as TV } from 'assets/img/tv.svg';
 import { ReactComponent as Rotate } from 'assets/img/rotate.svg';
 import { ReactComponent as Profile } from 'assets/img/profile.svg';
+import { ReactComponent as Participants } from 'assets/img/users-between-lines.svg';
+import { ReactComponent as OpenOutside } from 'assets/img/up-right-from-square.svg';
+import { ReactComponent as TimeStamp } from 'assets/img/clock-rotate-left.svg';
 
 import clsx from 'clsx';
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -82,6 +87,10 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
       return <ArrowDown {...commonProps} />;
     }
 
+    case IconName.ARROW_DOWN_2: {
+      return <ArrowDown2 {...commonProps} />;
+    }
+
     case IconName.ARROW_UP: {
       return <ArrowUp {...commonProps} />;
     }
@@ -108,6 +117,10 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.COMPASS: {
       return <Compass {...commonProps} />;
+    }
+
+    case IconName.DOTS_MENU: {
+      return <DotsMenu {...commonProps} />;
     }
 
     case IconName.FILTER: {
@@ -228,6 +241,18 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.PROFILE: {
       return <Profile {...commonProps} />;
+    }
+
+    case IconName.PARTICIPANTS: {
+      return <Participants {...commonProps} />;
+    }
+
+    case IconName.TIMESTAMP: {
+      return <TimeStamp {...commonProps} />;
+    }
+
+    case IconName.OPEN_OUTSIDE: {
+      return <OpenOutside {...commonProps} />;
     }
 
     default: {

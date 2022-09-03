@@ -52,6 +52,25 @@ import { authenticationMiddleware } from '../middleware';
  *              properties:
  *                avatar:
  *                  type: string
+ *    ChatInfoResponseDto:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: string
+ *          format: uuid
+ *        isChatEnabled:
+ *          type: boolean
+ *        initialMessages:
+ *          type: object
+ *          properties:
+ *            list:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ChatMessage'
+ *              total:
+ *                type: integer
+ *                format: int32
+ *                minimum: 0
  */
 @controller(ApiPath.CHAT)
 export class ChatController extends BaseHttpController {
@@ -82,9 +101,7 @@ export class ChatController extends BaseHttpController {
    *          content:
    *            application/json:
    *              schema:
-   *                type: array
-   *                items:
-   *                  $ref: '#/components/schemas/ChatMessage'
+   *                $ref: '#/components/schemas/ChatInfoResponseDto'
    *        403:
    *          description: Chat with id disabled
    *          content:

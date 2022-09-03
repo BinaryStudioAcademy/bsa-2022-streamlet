@@ -33,9 +33,12 @@ const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(getUserVideoHistoryRecord.fulfilled, (state, { payload }) => {
     let newList: HistoryListType[] = state.data.list;
+    const { currentPage, list } = payload;
 
-    if (!isObjectUniqueIdContainInTwoArray(newList, payload.list)) {
-      newList = state.data.list.concat(payload.list);
+    if (currentPage === 1) {
+      newList = list;
+    } else if (!isObjectUniqueIdContainInTwoArray(newList, list)) {
+      newList = state.data.list.concat(list);
     }
 
     state.data = {

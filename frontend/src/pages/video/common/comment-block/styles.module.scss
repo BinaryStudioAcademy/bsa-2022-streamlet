@@ -1,9 +1,16 @@
+@use 'assets/css/helpers/break-long-words';
+@import 'assets/css/config.scss';
+
+:root {
+  --avatar-top-value: 10px;
+}
+
 .comment-form {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .video-comment {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .video-comment .main-part-comment {
@@ -13,17 +20,30 @@
 }
 
 .video-comment .main-part-comment .commentators-avatar {
+  position: relative;
+  top: var(--avatar-top-value);
   width: 34px;
   height: 34px;
   margin-right: 12px;
   background-size: cover;
   border-radius: 50%;
+
+  &.is-reply {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .video-comment .main-part-comment .commentators-name {
   color: var(--white-text-color);
   font-size: 14px;
   line-height: 16px;
+
+  &.is-reply {
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 14px;
+  }
 }
 
 .video-comment .main-part-comment .dispatch-time {
@@ -38,7 +58,11 @@
 }
 
 .video-comment .content-part-comment {
-  margin: 5px 0 0 46px;
+  margin: -6px 0 0 46px;
+
+  &.is-reply {
+    margin: -2px 0 0 36px;
+  }
 }
 
 .video-comment .content-part-comment .text-comment {
@@ -50,6 +74,8 @@
 }
 
 .default-avatar {
+  position: relative;
+  top: var(--avatar-top-value);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,49 +87,161 @@
   line-height: 18px;
   background-color: var(--green-200-header-menu-background);
   border-radius: 50%;
+  @include break-long-words.break-long-words;
 }
 
-.reaction-container {
+.reaction-container-up,
+.reaction-container-down {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 5px;
 }
 
-.reaction-container span {
-  margin-left: 10px;
+.reaction-container-up {
+  margin: 0 0 2px 5px;
+}
+
+.reaction-container-down {
+  margin: 0 5px 0 8px;
 }
 
 .reaction-block {
   display: flex;
-  margin: 5px 0 0 43px;
+  align-items: center;
+  margin: 1px 0 0 43px;
 }
 
 .reaction-button {
   cursor: pointer;
 }
 
-.button-show-replies {
-  margin-top: 5px;
-  margin-left: 46px;
-  text-transform: uppercase;
-  background-color: transparent;
-  cursor: pointer;
+.like-span-up,
+.like-span-down {
+  min-width: 10px;
+  color: var(--text-gray-color);
+  font-weight: 400;
+  font-size: 12px;
+}
 
-  &:hover {
-    color: var(--brand-dark-green-color);
+.like-span-down {
+  margin: 0 0 -1px 10px;
+}
+
+.like-span-up {
+  margin: 2px 0 0 7px;
+}
+
+.sign-in-modal {
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  z-index: $modal-z-index;
+  width: 378px;
+  height: 200px;
+}
+
+@media screen and (min-width: 1680px) {
+  .sign-in-modal {
+    left: 30%;
   }
 }
 
-.button-open-reply-form {
-  margin-left: 12px;
+@media screen and (max-width: 1680px) {
+  .sign-in-modal {
+    left: 30%;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .sign-in-modal {
+    left: 30%;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .sign-in-modal {
+    left: 27%;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .sign-in-modal {
+    left: 37%;
+    width: 280px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sign-in-modal {
+    left: 33%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .sign-in-modal {
+    left: 20%;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .sign-in-modal {
+    left: 12%;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .sign-in-modal {
+    left: 5%;
+  }
+}
+
+.button-show-replies {
+  position: relative;
+  margin-top: 5px;
+  margin-left: 64px;
+  color: var(--text-gray-color);
+  font-size: 13px;
+  line-height: 13px;
   text-transform: uppercase;
   background-color: transparent;
   cursor: pointer;
 
-  &:hover {
-    color: var(--brand-dark-green-color);
+  &::after {
+    position: absolute;
+    top: 4px;
+    left: -18px;
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 5px solid var(--text-gray-color);
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    transition: 0.2s;
+  }
+}
+
+.open-replies::after {
+  transform: rotate(180deg);
+  transition: 0.2s;
+}
+
+.button-open-reply-form {
+  height: fit-content;
+  margin-top: -1px;
+  margin-left: 4px;
+  padding: 7px 12px;
+  color: var(--text-gray-color);
+  font-size: 12px;
+  line-height: 12px;
+  text-transform: uppercase;
+  background-color: transparent;
+  border-radius: 2px;
+  cursor: pointer;
+
+  &:active {
+    color: var(--green-200-header-menu-background);
+    background-color: var(--button-placeholder-light-color);
   }
 }
 

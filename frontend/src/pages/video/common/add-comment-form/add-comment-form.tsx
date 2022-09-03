@@ -1,14 +1,20 @@
 import styles from './styles.module.scss';
 import { useAppForm } from '../../../../hooks/use-app-form/use-app-form.hook';
 import { FC } from '../../../../common/types/react/fc.type';
-import { Button, Textarea } from '../../../../components/common/common';
-import defaultAvatar from 'assets/img/default-user-avatar.jpg';
+import { Button, Icon, Textarea } from '../../../../components/common/common';
 import * as Joi from 'joi';
 import clsx from 'clsx';
 import { useState } from '../../../../hooks/hooks';
+import { UserAvatarOrInitials } from 'components/common/user-avatar-or-initials/user-avatar-or-initials';
+import { IconName } from 'common/enums/enums';
 
 type Props = {
   avatar: string | undefined;
+  namingInfo: {
+    userName: string;
+    firstName?: string;
+    lastName?: string;
+  };
   onSubmit: { (text: string): void };
   className?: string;
   isFormForReply?: boolean;
@@ -26,6 +32,7 @@ export const VideoPageCommentForm: FC<Props> = ({
   avatar,
   onSubmit,
   className,
+  namingInfo,
   isFormForReply,
   handlerCancelForReplyForm,
 }) => {
@@ -60,10 +67,10 @@ export const VideoPageCommentForm: FC<Props> = ({
       onSubmit={handleSubmit(handleSubmitEvent)}
       className={clsx(styles['add-comment-block'], className, { [styles['for-reply']]: isFormForReply })}
     >
-      <img
-        alt={'you'}
-        src={avatar || defaultAvatar}
+      <UserAvatarOrInitials
         className={clsx(styles['add-comment-block-user-avatar'], { [styles['for-reply']]: isFormForReply })}
+        avatar={avatar}
+        userNamingInfo={namingInfo}
       />
       <div className={styles['input-block']}>
         <Textarea
@@ -87,22 +94,25 @@ export const VideoPageCommentForm: FC<Props> = ({
         <div className={styles['add-comment-form-control']}>
           {(isNeedFormControlElement || isFormForReply) && (
             <>
-              <Button
-                onClick={handleCancel}
-                type={'button'}
-                content={'Cancel'}
-                className={styles['add-comment-cancel-button']}
-              />
-              <Button
-                type={'submit'}
-                content={'Submit'}
-                className={clsx(
-                  {
-                    [styles['add-comment-submit-disabled']]: !isValid,
-                  },
-                  styles['add-comment-submit-active'],
-                )}
-              />
+              <Icon name={IconName.EMOJI} className={styles['emoji-icon']} width="20" height="20" />
+              <div className={styles['button-block']}>
+                <Button
+                  onClick={handleCancel}
+                  type={'button'}
+                  content={'Cancel'}
+                  className={styles['add-comment-cancel-button']}
+                />
+                <Button
+                  type={'submit'}
+                  content={isFormForReply ? 'Reply' : 'Comment'}
+                  className={clsx(
+                    {
+                      [styles['add-comment-submit-disabled']]: !isValid,
+                    },
+                    styles['add-comment-submit-active'],
+                  )}
+                />
+              </div>
             </>
           )}
         </div>
