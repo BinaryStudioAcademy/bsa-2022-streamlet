@@ -6,6 +6,7 @@ import styles from './styles.module.scss';
 import { toggleVideoPlay } from './helpers/toggle-video-play';
 import clsx from 'clsx';
 import { PlayPauseCenterEffect } from './play-pause-center-effect/play-pause-center-effect';
+import { ENV } from 'common/enums/enums';
 
 type VideoPlayerProps = {
   sizingProps?: {
@@ -80,7 +81,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
 
       hls.attachMedia(videoContainerRef.current);
       hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-        hls.loadSource(url);
+        hls.loadSource(new URL(url, ENV.VIDEO_FALLBACK_BASE_URL).toString());
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
           hlsRef.current = hls;
           setAreRefsNull((prev) => ({
