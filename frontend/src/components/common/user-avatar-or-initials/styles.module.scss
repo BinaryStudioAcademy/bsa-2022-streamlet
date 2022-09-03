@@ -1,0 +1,29 @@
+.avatar-container {
+  --size: 34px;
+  --initials-size: 18px;
+
+  width: var(--size);
+  height: var(--size);
+}
+
+.default-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--green-100-header-menu-background);
+  font-size: var(--initials-size);
+  line-height: var(--initials-size);
+  background-color: var(--green-200-header-menu-background);
+}
+
+.avatar-container,
+.default-avatar,
+.avatar {
+  border-radius: 50%;
+}
+
+.avatar,
+.default-avatar {
+  width: 100%;
+  height: 100%;
+}
