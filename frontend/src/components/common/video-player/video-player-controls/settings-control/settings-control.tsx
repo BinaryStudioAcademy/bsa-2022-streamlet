@@ -2,7 +2,7 @@ import React, { FC, ReactElement, useLayoutEffect, useMemo, useState } from 'rea
 import { ControlButton } from '../control-button/control-button';
 import { ReactComponent as SettingsIcon } from 'assets/img/settings-filled.svg';
 import { ReactComponent as SpeedIcon } from 'assets/img/speedometer.svg';
-import { ReactComponent as QualityIcon } from 'assets/img/magnifying-glass.svg';
+import { ReactComponent as QualityIcon } from 'assets/img/settings-tune.svg';
 import styles from './styles.module.scss';
 import { GenericSettingsModal } from './generic-settings-modal/generic-settings-modal';
 import { ModalItem } from './modal-item/modal-item';
@@ -24,7 +24,7 @@ enum Modal {
 }
 
 const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, hlsClient }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [currentModal, setCurrentModal] = useState<Modal>(Modal.MAIN);
 
   const getModalComponent = useMemo((): ReactElement => {
@@ -32,10 +32,10 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
       case Modal.MAIN: {
         return (
           <GenericSettingsModal className={styles['settings-modal']}>
-            <ModalItem onClick={(): void => setCurrentModal(Modal.SPEED)} icon={<SpeedIcon width={20} />}>
+            <ModalItem onClick={(): void => setCurrentModal(Modal.SPEED)} icon={<SpeedIcon height={20} />}>
               Speed
             </ModalItem>
-            <ModalItem onClick={(): void => setCurrentModal(Modal.QUALITY)} icon={<QualityIcon width={20} />}>
+            <ModalItem onClick={(): void => setCurrentModal(Modal.QUALITY)} icon={<QualityIcon height={17} />}>
               Quality
             </ModalItem>
           </GenericSettingsModal>
@@ -70,7 +70,7 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
   const handleBlur = (e: React.FocusEvent<HTMLDivElement, Element>): void => {
     if (!e.currentTarget.contains(e.relatedTarget)) {
       // Not triggered when swapping focus between children
-      setIsOpen(false);
+      //setIsOpen(false);
     }
   };
 

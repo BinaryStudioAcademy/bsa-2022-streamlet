@@ -526,11 +526,12 @@
   --controls-overlay: rgba(0 0 0 / 50%);
   --playpause-effect-bg: rgba(0 0 0 / 50%);
   --selected-menu-item-bg: rgb(48 48 48 / 50.7%);
-  --hovered-menu-item-bg: rgb(0 0 0 / 20%);
+  --hovered-menu-item-bg: rgb(105 105 105 / 75.3%);
   --settings-modal-bg: rgb(58 58 58 / 75.3%);
   --progress-bar-bg: rgb(100 100 100 / 50%);
   --progress-bar-preview-bg: rgb(206 206 206 / 50%);
   --progress-bar-done-bg: #006624;
+  --selectable-not-selected-bg: rgb(255 255 255 / 56.2%);
 }
 
 body[data-theme='light'] {

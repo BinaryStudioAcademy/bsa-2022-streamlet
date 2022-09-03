@@ -76,7 +76,9 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
       return;
     }
     if (Hls.isSupported()) {
-      const hls = new Hls();
+      const hls = new Hls({
+        startLevel: -1,
+      });
 
       hls.attachMedia(videoContainerRef.current);
       hls.on(Hls.Events.MEDIA_ATTACHED, () => {

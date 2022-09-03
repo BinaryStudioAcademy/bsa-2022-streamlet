@@ -2,6 +2,8 @@ import Hls, { Level, LevelsUpdatedData, LevelSwitchedData } from 'hls.js';
 import React, { FC, useEffect, useState } from 'react';
 import { GenericSettingsModal } from '../generic-settings-modal/generic-settings-modal';
 import { ModalItem } from '../modal-item/modal-item';
+import { ReactComponent as BackArrow } from 'assets/img/back-arrow.svg';
+import styles from '../header-styles.module.scss';
 
 type Props = {
   className?: string;
@@ -25,7 +27,7 @@ const levelToBasicLevel = (level: Level): BasicLevel => ({
 
 type LevelRepresentation = { name: string; index: number | null };
 const levelToString = (level: BasicLevel, otherLevelNames: LevelRepresentation[]): LevelRepresentation => {
-  const name = level.name || `${level.width}x${level.height}`;
+  const name = level.name || `${level.height}p`;
   const lastDuplicate = otherLevelNames
     .slice()
     .reverse()
@@ -40,6 +42,7 @@ const levelToString = (level: BasicLevel, otherLevelNames: LevelRepresentation[]
 };
 
 const QualitySelector: FC<Props> = ({ className, goBack, hlsClient }) => {
+  const [isAuto, setIsAuto] = useState(hlsClient.autoLevelEnabled);
   const [currentLevel, setCurrentLevel] = useState<number>(hlsClient.currentLevel);
   const [levels, setLevels] = useState<BasicLevel[]>(hlsClient.levels.map(levelToBasicLevel));
 
@@ -69,8 +72,19 @@ const QualitySelector: FC<Props> = ({ className, goBack, hlsClient }) => {
 
   return (
     <GenericSettingsModal className={className}>
-      <ModalItem isHeader onClick={goBack}>
-        &lt; Select quality
+      <ModalItem isHeader onClick={goBack} contentContainerClassName={styles['header']}>
+        <BackArrow height={15} />
+        <span className={styles['header-text']}> Select quality</span>
+      </ModalItem>
+      <ModalItem
+        isSelectable
+        isSelected={isAuto}
+        onClick={(): void => {
+          hlsClient.currentLevel = -1;
+          setIsAuto(true);
+        }}
+      >
+        Auto
       </ModalItem>
       {levels.map((level, index) => {
         const levelName =
@@ -80,9 +94,10 @@ const QualitySelector: FC<Props> = ({ className, goBack, hlsClient }) => {
           <ModalItem
             key={levelName}
             isSelectable
-            isSelected={index === currentLevel}
+            isSelected={index === currentLevel && !isAuto}
             onClick={(): void => {
               hlsClient.currentLevel = index;
+              setIsAuto(false);
             }}
           >
             {levelName}
