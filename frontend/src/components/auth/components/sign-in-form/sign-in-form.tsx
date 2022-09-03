@@ -53,6 +53,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
           name="password"
           errors={errors}
           label="Password"
+          changeVisibilityBtnClassName={formStyles['password-eye']}
         />
         <Link to={AppRoutes.RESTORE_PASSWORD_INIT} className={clsx(styles['forgot-password'], formStyles['link'])}>
           Forgot Password?
