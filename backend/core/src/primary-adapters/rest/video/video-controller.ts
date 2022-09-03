@@ -227,7 +227,7 @@ export class VideoController extends BaseHttpController {
     }
     return {
       ...video,
-      videoPath: `api/v1/${video.videoPath}`,
+      videoPath: `api/v1${video.videoPath}`,
       isUserSubscribedOnChannel: isSubscribed,
       userReaction: userReaction !== null ? { isLike: userReaction } : null,
     };
