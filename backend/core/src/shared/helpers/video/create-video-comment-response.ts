@@ -21,6 +21,7 @@ export const createVideoCommentResponse = (comments: CommentWithAuthor[]): Comme
       dateAdded: comment.createdAt,
       likeNum: 0,
       dislikeNum: 0,
+      commentReactions: [{ isLike: false, userId: '' }],
     };
   });
   return commentsResponse;
