@@ -5,7 +5,7 @@ import { ReactComponent as ThumbDown } from 'assets/img/thumb-down.svg';
 import { Loader } from 'components/common/common';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import { useAppDispatch, useAppSelector, useNavigate, useParams, useState } from 'hooks/hooks';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useCallback } from 'react';
 import { videoPageActions } from 'store/actions';
 import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
 import styles from './video-page.module.scss';
@@ -69,15 +69,21 @@ const VideoPageContainer: FC = () => {
     dispatch(videoPageActions.videoReact({ videoId, isLike: false }));
   };
 
-  const handleCommentLikeReact = (commentId: string): void => {
-    dispatch(videoPageActions.commentReact({ commentId, isLike: true }));
-    setReactState(true);
-  };
+  const handleCommentLikeReact = useCallback(
+    (commentId: string): void => {
+      dispatch(videoPageActions.commentReact({ commentId, isLike: true }));
+      setReactState(true);
+    },
+    [dispatch],
+  );
 
-  const handleCommentDislikeReact = (commentId: string): void => {
-    dispatch(videoPageActions.commentReact({ commentId, isLike: false }));
-    setReactState(true);
-  };
+  const handleCommentDislikeReact = useCallback(
+    (commentId: string): void => {
+      dispatch(videoPageActions.commentReact({ commentId, isLike: false }));
+      setReactState(true);
+    },
+    [dispatch],
+  );
 
   const handleMessageSubmit = (text: string): void => {
     if (!user) {
