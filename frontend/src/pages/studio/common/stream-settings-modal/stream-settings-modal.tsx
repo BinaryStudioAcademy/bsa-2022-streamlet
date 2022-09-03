@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Button, Modal } from 'components/common/common';
-import { StreamUpdateRequestDto } from 'common/types/types';
+import { StreamPosterUploadRequestDto, StreamUpdateRequestDto } from 'common/types/types';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { StreamAppearanceForm } from './stream-settings-forms/stream-appearance-form/stream-appearance-form';
 import { StreamBasicInfoForm } from './stream-settings-forms/stream-basic-info-form/stream-basic-info-form';
@@ -8,7 +8,7 @@ import styles from './styles.module.scss';
 import { TabHeader } from './tabs/tab-header/tab-header';
 import { Tab } from './tabs/tab.enum';
 import { useAppDispatch, useAppForm, useAppSelector } from 'hooks/hooks';
-import { categoryActions } from 'store/actions';
+import { categoryActions, streamActions } from 'store/actions';
 import { StreamSettingsFormValues } from './stream-settings-forms/stream-basic-info-form/stream-settings-form-values';
 
 type Props = {
@@ -26,8 +26,20 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
 
   const categoryOptions = categories.map((category) => ({ value: category.id, label: category.name }));
 
+  const handlePosterUpload = useCallback(
+    ({ base64Str }: Omit<StreamPosterUploadRequestDto, 'videoId'>): void => {
+      dispatch(
+        streamActions.uploadPoster({
+          base64Str,
+          videoId: stream?.id ?? '',
+        }),
+      );
+    },
+    [dispatch, stream?.id],
+  );
+
   const onSubmit = (submitValue: StreamSettingsFormValues): void => {
-    const { name, description, scheduledStreamDate, privacy, tags, categories, poster } = submitValue;
+    const { name, description, scheduledStreamDate, privacy, tags, categories } = submitValue;
     onSave({
       name,
       description,
@@ -36,7 +48,7 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
       videoId: stream?.id ?? '',
       tags: tags?.map((tag) => ({ name: tag.label })) ?? [],
       categories: categories?.map((category) => ({ name: category.label })) ?? [],
-      poster,
+      poster: stream?.poster ?? '',
     });
   };
 
@@ -78,7 +90,13 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
         {currentTab === Tab.GeneralInfo && (
           <StreamBasicInfoForm categoryOptions={categoryOptions} control={control} errors={errors} />
         )}
-        {currentTab === Tab.Appearance && <StreamAppearanceForm setParentModalInvisible={setIsParentModalInvisible} />}
+        {currentTab === Tab.Appearance && (
+          <StreamAppearanceForm
+            setParentModalInvisible={setIsParentModalInvisible}
+            currentPreviewPicture={stream?.poster ?? ''}
+            handleImageUpload={handlePosterUpload}
+          />
+        )}
         <div className={styles['footer']}>
           <Button content="Save" type="submit" className={styles['control-btn']} />
           <Button content="Cancel" type="button" className={styles['control-btn']} onClick={onClose} />
