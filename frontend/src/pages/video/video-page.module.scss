@@ -47,6 +47,8 @@
 }
 
 .chat-block {
+  min-width: 300px;
+  max-width: 350px;
   height: 100%;
   max-height: min(860px, 80vh);
 

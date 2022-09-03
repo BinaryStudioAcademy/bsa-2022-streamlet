@@ -3,6 +3,7 @@ import { ChatInfoBeforeTrimming, ChatInfoResponseDto } from '../types/types';
 export const trimVideoToChatInfo = (video: ChatInfoBeforeTrimming): ChatInfoResponseDto => {
   return {
     id: video.id,
+    isChatEnabled: video.isChatEnabled,
     initialMessages: {
       list: video.chatMessages.map((message) => ({
         id: message.id,
