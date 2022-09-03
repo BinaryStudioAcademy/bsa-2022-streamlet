@@ -63,6 +63,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
             label="Password"
             isValidationErrorOnTop={false}
             errorBlockClassName={formStyles['password-error']}
+            changeVisibilityBtnClassName={formStyles['password-eye']}
           />
           <PasswordInput
             inputClassName={formStyles['password']}
@@ -76,6 +77,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
             label="Confirm password"
             isValidationErrorOnTop={false}
             errorBlockClassName={formStyles['password-error']}
+            changeVisibilityBtnClassName={formStyles['password-eye']}
           />
         </div>
         <AuthSubmitButton isLoading={isLoading} disabled={isLoading || !isValid} name="Sign up" />

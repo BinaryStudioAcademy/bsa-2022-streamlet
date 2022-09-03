@@ -16,3 +16,12 @@
 .auth-submit-btn:hover {
   background-color: var(--brand-green-color-hover);
 }
+
+.auth-submit-btn:disabled {
+  background-color: var(--brand-green-color-hover);
+}
+
+.no-hover:hover,
+.no-hover:disabled {
+  background-color: var(--brand-green-color);
+}
