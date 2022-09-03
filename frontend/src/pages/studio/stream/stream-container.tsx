@@ -1,6 +1,6 @@
 import { STREAMING_SERVER_URL } from 'common/constants/constants';
 import { IconName, SocketEvents, StreamStatus } from 'common/enums/enums';
-import { FC } from 'common/types/types';
+import { FC, StreamUpdateRequestDto } from 'common/types/types';
 import { createToastNotification } from 'components/common/toast-notification';
 import { Forbidden } from 'components/placeholder-page';
 import { NotFound } from 'components/placeholder-page/not-found';
@@ -11,7 +11,7 @@ import { streamActions } from 'store/actions';
 import { StreamInfoFormValues } from './common/stream-info-form-values';
 import { StudioStream } from './stream';
 import { socket } from 'common/config/config';
-import { StreamEditModal } from '../common/stream-edit-modal/stream-edit-modal';
+import { StreamSettingsModal } from '../common/stream-settings-modal/stream-settings-modal';
 import { store } from 'store/store';
 
 socket.on(SocketEvents.notify.STREAM_OBS_STATUS, (isReadyToStream: boolean) => {
@@ -42,6 +42,13 @@ const StudioStreamContainer: FC = () => {
     setIsSettingsModalOpen(false);
     // settingsFormReset(defaultSettingsFormValues());
   };
+
+  const handleSettingsModalSave = useCallback(
+    (payload: StreamUpdateRequestDto) => {
+      dispatch(streamActions.editStream(payload));
+    },
+    [dispatch],
+  );
 
   const handleChangeStreamStatus = useCallback(() => {
     let newStatus;
@@ -107,7 +114,11 @@ const StudioStreamContainer: FC = () => {
     <Forbidden />
   ) : (
     <>
-      <StreamEditModal isOpen={isSettingsModalOpen} onClose={handleSettingsModalClose} />
+      <StreamSettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={handleSettingsModalClose}
+        onSave={handleSettingsModalSave}
+      />
       <StudioStream
         handleSettingsModalOpen={handleSettingsModalOpen}
         handleChangeStreamStatus={handleChangeStreamStatus}

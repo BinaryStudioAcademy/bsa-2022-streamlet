@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { useState } from 'react';
-import { StreamEditModal } from '../common/stream-edit-modal/stream-edit-modal';
+import { StreamSettingsModal } from '../common/stream-settings-modal/stream-settings-modal';
 
 import styles from './styles.module.scss';
 
@@ -10,7 +10,7 @@ const StudioAnalytics: FC = () => {
     <div className={styles['studio']}>
       <h1 className={styles['header']}>Analytics</h1>
       <h1 className={styles['body']}></h1>
-      <StreamEditModal
+      <StreamSettingsModal
         isOpen={isModalOpen}
         onClose={(): void => {
           setIsModalOpen(false);

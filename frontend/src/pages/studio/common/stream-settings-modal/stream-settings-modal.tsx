@@ -2,21 +2,22 @@ import clsx from 'clsx';
 import { Button, Modal } from 'components/common/common';
 import { StreamUpdateRequestDto } from 'common/types/types';
 import { FC, useCallback, useEffect, useState } from 'react';
-import { StreamAppearanceForm } from './stream-edit-forms/stream-appearance-form/stream-appearance-form';
-import { StreamBasicInfoForm } from './stream-edit-forms/stream-basic-info-form/stream-basic-info-form';
+import { StreamAppearanceForm } from './stream-settings-forms/stream-appearance-form/stream-appearance-form';
+import { StreamBasicInfoForm } from './stream-settings-forms/stream-basic-info-form/stream-basic-info-form';
 import styles from './styles.module.scss';
 import { TabHeader } from './tabs/tab-header/tab-header';
 import { Tab } from './tabs/tab.enum';
 import { useAppDispatch, useAppForm, useAppSelector } from 'hooks/hooks';
-import { categoryActions, streamActions } from 'store/actions';
-import { StreamSettingsFormValues } from './stream-edit-forms/stream-basic-info-form/stream-settings-form-values';
+import { categoryActions } from 'store/actions';
+import { StreamSettingsFormValues } from './stream-settings-forms/stream-basic-info-form/stream-settings-form-values';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onSave: (payload: StreamUpdateRequestDto) => void;
 };
 
-const StreamEditModal: FC<Props> = ({ onClose, isOpen }) => {
+const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
   const dispatch = useAppDispatch();
   const { stream, categories } = useAppSelector((state) => ({
     stream: state.stream.stream,
@@ -25,16 +26,9 @@ const StreamEditModal: FC<Props> = ({ onClose, isOpen }) => {
 
   const categoryOptions = categories.map((category) => ({ value: category.id, label: category.name }));
 
-  const handleFormSave = useCallback(
-    (payload: StreamUpdateRequestDto) => {
-      dispatch(streamActions.editStream(payload));
-    },
-    [dispatch],
-  );
-
   const onSubmit = (submitValue: StreamSettingsFormValues): void => {
-    const { name, description, scheduledStreamDate, privacy, tags, categories } = submitValue;
-    handleFormSave({
+    const { name, description, scheduledStreamDate, privacy, tags, categories, poster } = submitValue;
+    onSave({
       name,
       description,
       scheduledStreamDate,
@@ -42,6 +36,7 @@ const StreamEditModal: FC<Props> = ({ onClose, isOpen }) => {
       videoId: stream?.id ?? '',
       tags: tags?.map((tag) => ({ name: tag.label })) ?? [],
       categories: categories?.map((category) => ({ name: category.label })) ?? [],
+      poster,
     });
   };
 
@@ -53,16 +48,10 @@ const StreamEditModal: FC<Props> = ({ onClose, isOpen }) => {
       description: stream?.description,
       scheduledStreamDate: stream?.scheduledStreamDate ? new Date(stream?.scheduledStreamDate) : new Date(),
       privacy: stream?.privacy,
+      poster: stream?.poster,
     }),
     [stream],
   );
-
-  // const handleUploadPoster = useCallback(
-  //   (payload: StreamPosterUploadRequestDto) => {
-  //     dispatch(streamActions.uploadPoster(payload));
-  //   },
-  //   [dispatch],
-  // );
 
   const { control, errors, reset, handleSubmit } = useAppForm<StreamSettingsFormValues>({
     defaultValues: defaultValues(),
@@ -99,4 +88,4 @@ const StreamEditModal: FC<Props> = ({ onClose, isOpen }) => {
   );
 };
 
-export { StreamEditModal };
+export { StreamSettingsModal };

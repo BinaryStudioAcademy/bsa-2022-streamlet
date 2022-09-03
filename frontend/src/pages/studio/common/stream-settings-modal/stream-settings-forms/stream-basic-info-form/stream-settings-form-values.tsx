@@ -8,4 +8,5 @@ export type StreamSettingsFormValues = {
   description: string;
   privacy: StreamPrivacy;
   scheduledStreamDate: Date;
+  poster: string;
 };
