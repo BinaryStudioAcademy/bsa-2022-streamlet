@@ -27,6 +27,7 @@ const AppRoutes = {
   SEARCH: '/search',
   PROFILE_PREFERENCE: '/profile-preference',
   GOOGLE_ATHORIZATION: '/google-athorization',
+  LIVE_CHAT: '/live_chat',
 } as const;
 
 type AppRoute = typeof AppRoutes[keyof typeof AppRoutes];
@@ -38,6 +39,7 @@ const RoutesWithoutHeader = {
   RESTORE_PASSWORD_CONFIRM: commonFrontendPaths.auth.RESET_PASSWORD_CONFIRM.path,
   ACCOUNT_VERIFICATION_CONFIRM: commonFrontendPaths.auth.ACCOUNT_VERIFICATION_CONFIRM.path,
   ACCOUNT_VERIFICATION_INIT: '/account-verify-init',
+  LIVE_CHAT: '/live_chat',
 } as const;
 
 enum RoutesWithStudioHeader {

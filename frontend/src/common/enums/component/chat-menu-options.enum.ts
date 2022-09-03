@@ -1,0 +1,7 @@
+enum ChatMenuOptions {
+  PARTICIPANTS = 'PARTICIPANTS',
+  POP_OUT_CHAT = 'POP_OUT_CHAT',
+  TOGGLE_TIMESTAMPS = 'TOGGLE_TIMESTAMPS',
+}
+
+export { ChatMenuOptions };

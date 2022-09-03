@@ -2,7 +2,15 @@ export * from './api/api';
 
 export * from './app/app';
 
-export { IconColor, IconName, MenuOptions, LoaderSize, VideoTagName } from './component/component';
+export {
+  IconColor,
+  IconName,
+  MenuOptions,
+  LoaderSize,
+  VideoTagName,
+  ChatMenuOptions,
+  ComponentUpdateDelayTime,
+} from './component/component';
 
 export { ContentType } from './file/file';
 
