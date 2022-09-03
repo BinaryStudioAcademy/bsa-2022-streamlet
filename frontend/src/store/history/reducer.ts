@@ -37,7 +37,7 @@ const reducer = createReducer(initialState, (builder) => {
     let newList: HistoryListType[] = state.data.list;
     const { currentPage, list } = payload;
 
-    if (currentPage === 1) {
+    if (currentPage === 1 || currentPage === -1) {
       newList = list;
     } else if (!isObjectUniqueIdContainInTwoArray(newList, list)) {
       newList = state.data.list.concat(list);

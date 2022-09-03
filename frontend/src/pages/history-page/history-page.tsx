@@ -38,8 +38,9 @@ const HistoryPage: FC = () => {
     if (isFirstHistoryPageLoad && currentPage !== -1) {
       return;
     }
-
-    dispatch(historyActions.getUserVideoHistoryRecord(1));
+    if (currentPage === -1) {
+      dispatch(historyActions.getUserVideoHistoryRecord(1));
+    }
   }, [dispatch, navigate, user, isFirstHistoryPageLoad, currentPage]);
 
   const loadMore = (): void => {
@@ -67,7 +68,7 @@ const HistoryPage: FC = () => {
           return (
             <div key={id}>
               <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(updatedAt)}</p>
-              <VideoCard key={id} video={video} isLightTheme={true} />;
+              <VideoCard key={id} video={video} isLightTheme={isLightTheme} />;
             </div>
           );
         }
@@ -76,18 +77,16 @@ const HistoryPage: FC = () => {
         const isPrevAndCurrentHistoryUpdatedAtSame = isDateSameByDayMonthYear(prevHistoryRecordUpdatedAt, updatedAt);
 
         return isPrevAndCurrentHistoryUpdatedAtSame ? (
-          <VideoCard key={id} video={video} isLightTheme={true} />
+          <VideoCard key={id} video={video} isLightTheme={isLightTheme} />
         ) : (
           <div key={id}>
             <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(prevHistoryRecordUpdatedAt)}</p>
-            <VideoCard key={id} video={video} isLightTheme={true} />;
+            <VideoCard key={id} video={video} isLightTheme={isLightTheme} />;
           </div>
         );
       })}
 
-      <div ref={sentryRef}>
-        {dataStatus === DataStatus.PENDING && currentPage === 1 && generateHistorySkeletons(isLightTheme)}
-      </div>
+      <div ref={sentryRef}>{dataStatus === DataStatus.PENDING && generateHistorySkeletons(isLightTheme)}</div>
     </div>
   );
 };

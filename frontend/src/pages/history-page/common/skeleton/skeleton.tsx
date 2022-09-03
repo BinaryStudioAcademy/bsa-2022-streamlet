@@ -8,6 +8,7 @@ import {
   LIGHT_THEME_BASE_COLOR,
   LIGHT_THEME_HIGHLIGHT_COLOR,
 } from './skeleton-config';
+import { SkeletonTheme } from 'react-loading-skeleton';
 
 type props = {
   isLightTheme: boolean;
@@ -16,25 +17,28 @@ type props = {
 const HistoryLoader: FC<props> = ({ isLightTheme }): ReactElement => {
   const { width } = useWindowDimensions();
 
+  const baseColor = isLightTheme ? LIGHT_THEME_BASE_COLOR : DARK_THEME_BASE_COLOR;
+
+  const highlightColor = isLightTheme ? LIGHT_THEME_HIGHLIGHT_COLOR : DARK_THEME_HIGHLIGHT_COLOR;
+
   if (width <= 575) {
-    return <VideoSkeleton />;
+    return (
+      <>
+        <SkeletonTheme baseColor={baseColor} highlightColor={highlightColor}>
+          <VideoSkeleton />
+        </SkeletonTheme>
+      </>
+    );
   }
 
   return (
-    <div style={{ maxWidth: '950px', maxHeight: '230px', marginBottom: '10px' }}>
-      <ContentLoader
-        speed={2}
-        viewBox="0 0 450 100"
-        backgroundColor={isLightTheme ? LIGHT_THEME_BASE_COLOR : DARK_THEME_BASE_COLOR}
-        foregroundColor={isLightTheme ? LIGHT_THEME_HIGHLIGHT_COLOR : DARK_THEME_HIGHLIGHT_COLOR}
-      >
-        <rect x="231" y="9" rx="3" ry="3" width="320" height="6" />
-        <rect x="254" y="49" rx="3" ry="3" width="178" height="6" />
-        <circle cx="240" cy="52" r="13" />
-        <rect x="-1" y="1" rx="0" ry="0" width="225" height="149" />
-        <rect x="231" y="25" rx="3" ry="3" width="178" height="6" />
-      </ContentLoader>
-    </div>
+    <ContentLoader speed={2} viewBox="0 0 450 100" backgroundColor={baseColor} foregroundColor={highlightColor}>
+      <rect x="231" y="9" rx="3" ry="3" width="320" height="6" />
+      <rect x="254" y="49" rx="3" ry="3" width="178" height="6" />
+      <circle cx="240" cy="52" r="13" />
+      <rect x="-1" y="1" rx="0" ry="0" width="225" height="149" />
+      <rect x="231" y="25" rx="3" ry="3" width="178" height="6" />
+    </ContentLoader>
   );
 };
 
