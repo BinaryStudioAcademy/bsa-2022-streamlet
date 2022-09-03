@@ -169,12 +169,19 @@ async function seedCategories(): Promise<void> {
             id: videoId,
           })),
         },
-        users: {
-          connect: getRandomSample(users, preferencesPerUser).map((user) => ({
-            id: user.id,
-          })),
-        },
       },
+    });
+  }
+
+  //connect to user
+  const allCategories = await prisma.category.findMany();
+
+  for (const { id: userId } of users) {
+    await prisma.categoryToUser.createMany({
+      data: getRandomSample(allCategories, preferencesPerUser).map(({ id: categoryId }) => ({
+        userId,
+        categoryId,
+      })),
     });
   }
 }
