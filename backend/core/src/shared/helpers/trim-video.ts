@@ -33,13 +33,27 @@ export const trimVideoWithComments = (
       id: string;
       name: string;
       avatar: string;
+      _count: {
+        subscriptions: number;
+      };
     };
     comments: (VideoComment & {
       author: User & { profile: UserProfile | null };
       commentReactions: CommentReaction[];
     })[];
   },
-): BaseVideoResponseDto & { comments: Comment[]; description: string; videoPath: string } => {
+): BaseVideoResponseDto & {
+  channel: {
+    id: string;
+    name: string;
+    avatar: string;
+    subscriberCount: number;
+  };
+  comments: Comment[];
+  description: string;
+  videoPath: string;
+  isChatEnabled: boolean;
+} => {
   const {
     id,
     poster,
@@ -54,6 +68,7 @@ export const trimVideoWithComments = (
     comments,
     description,
     videoPath,
+    isChatEnabled,
   } = video;
   return {
     id,
@@ -66,7 +81,12 @@ export const trimVideoWithComments = (
     duration,
     videoViews,
     liveViews,
-    channel,
+    channel: {
+      avatar: channel.avatar,
+      id: channel.id,
+      name: channel.name,
+      subscriberCount: channel._count.subscriptions,
+    },
     comments: comments.map((comment) => ({
       dateAdded: comment.createdAt,
       id: comment.id,
@@ -80,6 +100,7 @@ export const trimVideoWithComments = (
       commentReactions: comment.commentReactions.map((item) => ({ isLike: item.isLike, userId: item.userId })),
     })),
     description,
+    isChatEnabled,
   };
 };
 

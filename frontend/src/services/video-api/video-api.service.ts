@@ -4,6 +4,8 @@ import {
   ContentType,
   CreateReactionRequestDto,
   CreateReactionResponseDto,
+  PopularVideoResponseDto,
+  PopularVideosRequestDtoType,
   VideoApiPath,
   VideoCommentRequestDto,
   VideoCommentResponseDto,
@@ -80,6 +82,18 @@ class VideoApi {
         method: HttpMethod.POST,
         contentType: ContentType.JSON,
         payload: JSON.stringify({ isLike }),
+      },
+    });
+  }
+
+  public getPopular(payload: PopularVideosRequestDtoType): Promise<PopularVideoResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.POPULAR}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+      query: {
+        ...payload,
       },
     });
   }

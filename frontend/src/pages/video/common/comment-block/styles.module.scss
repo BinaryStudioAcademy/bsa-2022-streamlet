@@ -1,11 +1,12 @@
 @import 'assets/css/config.scss';
+@use 'assets/css/helpers/break-long-words';
 
 :root {
   --avatar-top-value: 10px;
 }
 
 .comment-form {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .video-comment {
@@ -55,7 +56,6 @@
   font-size: 14px;
   font-style: normal;
   line-height: 19px;
-}
 
 .default-avatar {
   position: relative;
@@ -71,6 +71,7 @@
   line-height: 18px;
   background-color: var(--green-200-header-menu-background);
   border-radius: 50%;
+  @include break-long-words.break-long-words;
 }
 
 .reaction-container-up,

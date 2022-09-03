@@ -132,6 +132,13 @@ $base-z-index: $page-component-z-index;
   grid-template-columns: 32px auto;
   gap: 5px 8px;
   padding: 10px 22px 10px 10px;
+
+  &.hide-channel {
+    display: flex;
+    grid-template-columns: unset;
+    align-items: center;
+    gap: unset;
+  }
 }
 
 .video-card-name {
