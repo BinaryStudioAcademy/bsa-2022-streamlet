@@ -1,6 +1,7 @@
 enum IconName {
   ALARM = 'alarm',
   ARROW_DOWN = 'arrow-down',
+  ARROW_DOWN_2 = 'arrow-down-2',
   ARROW_UP = 'arrow-up',
   ARROW_LEFT = 'arrow-left',
   CAMERA = 'camera',
@@ -8,6 +9,7 @@ enum IconName {
   CHEVRON_DOWN = 'chevron-down',
   CIRCLE = 'circle',
   COMPASS = 'compass',
+  DOTS_MENU = 'dots-menu',
   FILTER = 'filter',
   FOLLOW = 'follow',
   HISTORY = 'history',
@@ -39,6 +41,9 @@ enum IconName {
   ONLINE_STREAMING = 'online-streaming',
   BELL_OUTLINE = 'bell-outline',
   PROFILE = 'profile',
+  TIMESTAMP = 'timestamp',
+  OPEN_OUTSIDE = 'open-outside',
+  PARTICIPANTS = 'participants',
 }
 
 export { IconName };
