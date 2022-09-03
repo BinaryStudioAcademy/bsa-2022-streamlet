@@ -78,6 +78,8 @@ const getRepliesForComment = createAsyncThunk<ResponseRepliesForComment, string,
   },
 );
 
+const resetVideoPage = createAction(ActionType.RESET_VIDEO_PAGE);
+
 export {
   getVideo,
   videoReact,
@@ -86,4 +88,5 @@ export {
   commentReact,
   getRepliesForComment,
   addVideoCommentReply,
+  resetVideoPage,
 };

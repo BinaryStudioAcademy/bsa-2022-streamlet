@@ -7,6 +7,7 @@ enum ActionType {
   COMMENT_REACT = 'video/comment/react',
   GET_REPLIES_FOR_COMMENT = 'comment/replies/get',
   ADD_REPLY_FOR_COMMENT = 'comment/reply/add',
+  RESET_VIDEO_PAGE = 'video/page/reset',
 }
 
 export { ActionType };

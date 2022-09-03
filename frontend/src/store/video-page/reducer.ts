@@ -10,6 +10,7 @@ import {
   updateLiveViews,
   getRepliesForComment,
   addVideoCommentReply,
+  resetVideoPage,
 } from './actions';
 
 type State = {
@@ -99,6 +100,12 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(addVideoCommentReply.fulfilled, (state, { payload }) => {
     state.replies.data[payload.commentId] = payload.data;
     state.replies.dataStatus = DataStatus.FULFILLED;
+  });
+
+  builder.addCase(resetVideoPage, (state) => {
+    state.video = null;
+    state.replies.dataStatus = DataStatus.IDLE;
+    state.replies.data = {};
   });
 });
 
