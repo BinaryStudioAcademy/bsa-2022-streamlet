@@ -17,24 +17,40 @@ export class UserRepositoryAdapter implements UserRepository {
       where: {
         id,
       },
-      select: {
-        videoPreferences: true,
+      include: {
+        videoPreferences: {
+          include: {
+            category: true,
+          },
+        },
       },
     });
   }
-  async bindCategories({ id, categories }: UserBindCategoriesDto): Promise<Category[]> {
-    const values = categories.map((categoryId) => {
-      return `('${categoryId}', '${id}')`;
-    });
-    const query = `insert into "_CategoryToUser" ("A", "B") values ${values.join(',')} on conflict do nothing`;
-    return this.prismaClient.$queryRawUnsafe(query).then(() => {
-      return this.prismaClient.category.findMany({
-        where: {
-          id: {
-            in: categories,
+  async bindCategories({ id: userId, categories }: UserBindCategoriesDto): Promise<Category[]> {
+    await this.prismaClient.$transaction(
+      categories.map((categoryId) => {
+        return this.prismaClient.categoryToUser.upsert({
+          where: {
+            categoryId_userId: {
+              userId,
+              categoryId,
+            },
           },
+          update: {},
+          create: {
+            userId,
+            categoryId,
+          },
+        });
+      }),
+    );
+
+    return this.prismaClient.category.findMany({
+      where: {
+        id: {
+          in: categories,
         },
-      });
+      },
     });
   }
 

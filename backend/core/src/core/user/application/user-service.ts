@@ -170,6 +170,6 @@ export class UserService {
     if (!preferedCategories) {
       return;
     }
-    return preferedCategories.videoPreferences.map((category) => castToCategoryResponseDto(category));
+    return preferedCategories.videoPreferences.map(({ category }) => castToCategoryResponseDto(category));
   }
 }
