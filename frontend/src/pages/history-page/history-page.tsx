@@ -44,7 +44,7 @@ const HistoryPage: FC = () => {
   if (!historyData) {
     return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
   }
-  const { currentPage, lastPage } = historyData;
+  const { currentPage, lastPage, dataStatus } = historyData;
 
   const [sentryRef] = useInfiniteScroll({
     loading: historyData.dataStatus === DataStatus.PENDING,
@@ -53,6 +53,10 @@ const HistoryPage: FC = () => {
     disabled: !!historyData.error,
     rootMargin: '0px 0px 400px 0px',
   });
+
+  if (dataStatus === DataStatus.PENDING && currentPage < 0) {
+    return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
+  }
 
   return (
     <div className={styles['history-page-container']}>
@@ -80,11 +84,9 @@ const HistoryPage: FC = () => {
           </div>
         );
       })}
-      {historyData.dataStatus === DataStatus.PENDING ? generateHistorySkeletons(isLightTheme) : null}
+
       <div ref={sentryRef}>
-        {historyData.dataStatus === DataStatus.PENDING && (
-          <Loader hCentered={true} vCentered={true} spinnerSize={'md'} />
-        )}
+        {historyData.dataStatus === DataStatus.PENDING && currentPage > 0 && generateHistorySkeletons(isLightTheme)}
       </div>
     </div>
   );

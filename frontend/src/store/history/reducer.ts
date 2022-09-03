@@ -18,8 +18,8 @@ type State = {
 const initialState: State = {
   data: {
     list: [],
-    lastPage: 1,
-    currentPage: 1,
+    lastPage: -1,
+    currentPage: -1,
     dataStatus: DataStatus.IDLE,
     error: undefined,
   },
