@@ -13,6 +13,9 @@ import {
   UserUploadRequestDto,
   AmqpQueue,
   GoogleUserResultDto,
+  UserBindCategoriesDto,
+  CategoryResponseDto,
+  DefaultRequestParam,
 } from 'shared/build';
 import { ImageStorePort } from '~/core/common/port/image-store';
 
@@ -20,6 +23,7 @@ import { MailRepository } from '~/core/mail/port/mail-repository';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
 import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
 import { ProfileRepository } from '~/core/profile/port/profile-repository';
+import { castToCategoryResponseDto } from '~/core/category/application/dtos/cast-to-category-response-dto';
 
 @injectable()
 export class UserService {
@@ -148,5 +152,24 @@ export class UserService {
       this.profileRepository.createGoogleProfile(newUser.id, given_name, family_name, picture);
     }
     return !googleUser ? newUser : googleUser;
+  }
+
+  async bindCategories({ id, categories }: UserBindCategoriesDto): Promise<CategoryResponseDto[]> {
+    const bindedCategories = await this.userRepository.bindCategories({
+      id,
+      categories,
+    });
+
+    return bindedCategories.map((category) => castToCategoryResponseDto(category));
+  }
+
+  async getPreferedCategories({ id }: DefaultRequestParam): Promise<CategoryResponseDto[] | undefined> {
+    const preferedCategories = await this.userRepository.getPreferedCategories({
+      id,
+    });
+    if (!preferedCategories) {
+      return;
+    }
+    return preferedCategories.videoPreferences.map(({ category }) => castToCategoryResponseDto(category));
   }
 }
