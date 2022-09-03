@@ -10,6 +10,7 @@ type State = {
     currentPage: number;
     lastPage: number;
     dataStatus: DataStatus;
+    isFirstHistoryPageLoad: boolean;
     error: string | undefined;
     list: HistoryListType[];
   };
@@ -18,6 +19,7 @@ type State = {
 const initialState: State = {
   data: {
     list: [],
+    isFirstHistoryPageLoad: true,
     lastPage: -1,
     currentPage: -1,
     dataStatus: DataStatus.IDLE,
@@ -41,6 +43,7 @@ const reducer = createReducer(initialState, (builder) => {
     state.data = {
       ...payload,
       list: newList,
+      isFirstHistoryPageLoad: false,
       error: undefined,
       dataStatus: DataStatus.FULFILLED,
     };
