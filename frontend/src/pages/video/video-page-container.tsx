@@ -27,28 +27,19 @@ const VideoPageContainer: FC = () => {
     navigate(AppRoutes.ANY, { replace: true });
   }
 
+  const { videoData, profile, user, channel } = useAppSelector((state) => ({
+    videoData: state.videoPage.video,
+    profile: state.profile.profileData,
+    user: state.auth.user,
+    channel: state.videoPage.video?.channel,
+  }));
+
   const videoId = isVideoIdProvided as string;
-
-  const videoData = useAppSelector((state) => {
-    return state.videoPage.video;
-  });
-
-  const user = useAppSelector((state) => {
-    return state.auth.user;
-  });
-
-  const profile = useAppSelector((state) => {
-    return state.profile.profileData;
-  });
 
   useEffect(() => {
     dispatch(videoPageActions.getVideo(videoId));
     setReactState(false);
   }, [videoId, dispatch, isReactChanged]);
-
-  const channel = useAppSelector((state) => {
-    return state.videoPage.video?.channel;
-  });
 
   const handleCommentLikeReact = (commentId: string): void => {
     dispatch(videoPageActions.commentReact({ commentId, isLike: true }));
@@ -102,7 +93,7 @@ const VideoPageContainer: FC = () => {
       <div className={styles['side-block']}>
         {!isVideoFinished && (
           <div className={styles['chat-block']}>
-            <VideoChatContainer videoId={videoId} />
+            <VideoChatContainer videoId={videoId} popOutSetting={true} />
           </div>
         )}
         <LinksBlock />

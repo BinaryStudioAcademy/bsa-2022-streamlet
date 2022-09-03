@@ -11,8 +11,8 @@ function initSwagger(): object {
         description: 'This is BSA project.',
       },
       servers: [
-        { url: `http://${CONFIG.APP.HOST}${CONFIG.API.PREFIX}` },
         { url: `https://${CONFIG.APP.HOST}${CONFIG.API.PREFIX}` },
+        { url: `http://${CONFIG.APP.HOST}${CONFIG.API.PREFIX}` },
       ],
     },
     apis: ['./build/primary-adapters/**/**.js'],

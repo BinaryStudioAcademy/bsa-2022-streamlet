@@ -3,7 +3,7 @@ import { socket } from 'common/config/config';
 import { useEffect, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
 import { chatActions } from 'store/actions';
 import { VideoChat } from './video-chat';
-import { SendMessageProps } from 'components/common/send-message/send-message';
+import { SendMessageProps } from './components/components';
 import { SocketEvents } from 'common/enums/enums';
 import { store } from 'store/store';
 
@@ -11,15 +11,25 @@ socket.on(SocketEvents.chat.NEW_MESSAGE_TO_CHAT_ROOM_DONE, (message: ChatMessage
   store.dispatch(chatActions.appendMessage(message));
 });
 
+socket.on(SocketEvents.chat.UPDATE_CHAT_PARTICIPANTS_DONE, ({ participants }: { participants: string[] }) => {
+  store.dispatch(chatActions.updateParticipants(participants));
+});
+
+socket.on(SocketEvents.chat.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED_DONE, (isChatEnabled: boolean) => {
+  store.dispatch(chatActions.updateChatStatus(isChatEnabled));
+});
+
 type Props = {
-  videoId: string | undefined;
+  videoId: string;
+  popOutSetting: boolean;
 };
 
-const VideoChatContainer: FC<Props> = ({ videoId }) => {
+const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
   const dispatch = useAppDispatch();
   const {
     chat: {
-      currentChat: { id, messages },
+      currentChat: { initialMessages, messages, participants, isChatEnabled },
+      status,
     },
   } = useAppSelector((state) => ({
     chat: state.chat,
@@ -28,7 +38,7 @@ const VideoChatContainer: FC<Props> = ({ videoId }) => {
   const handlerSubmitMessage = (messageText: string): Promise<ChatMessageResponseDto> =>
     dispatch(
       chatActions.sendMessage({
-        chatId: id,
+        chatId: videoId,
         message: { text: messageText },
       }),
     ).unwrap();
@@ -47,16 +57,28 @@ const VideoChatContainer: FC<Props> = ({ videoId }) => {
     }
   }, [videoId, dispatch]);
 
+  const leaveChatRoom = useCallback((): void => {
+    dispatch(chatActions.closeChat());
+    socket.emit(SocketEvents.chat.LEAVE_ROOM, videoId);
+  }, [dispatch, videoId]);
+
   useEffect(() => {
     joinChatRoom();
 
-    return () => {
-      dispatch(chatActions.closeChat());
-      socket.emit(SocketEvents.chat.LEAVE_ROOM, videoId);
-    };
-  }, [dispatch, joinChatRoom, videoId]);
+    return leaveChatRoom;
+  }, [joinChatRoom, leaveChatRoom, status]);
 
-  return <VideoChat sendMessageProps={sendMessageProps} messages={messages.list} />;
+  return (
+    <VideoChat
+      chatId={videoId}
+      popOutSetting={popOutSetting}
+      initialMessages={initialMessages.list}
+      messages={messages.list}
+      participants={participants}
+      chatStatus={status ?? isChatEnabled}
+      sendMessageProps={sendMessageProps}
+    />
+  );
 };
 
 export { VideoChatContainer };
