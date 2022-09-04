@@ -1,9 +1,11 @@
 import { inject, injectable } from 'inversify';
 import { UserRepository } from '~/core/user/port/user-repository';
-import { Category, PrismaClient, User } from '@prisma/client';
+import { Category, Prisma, PrismaClient, User } from '@prisma/client';
 import { CONTAINER_TYPES, UserGetPreferencesDto, UserSignUpRequestDto } from '~/shared/types/types';
 import { hashValue } from '~/shared/helpers';
-import { DefaultRequestParam, UserBindCategoriesDto } from 'shared/build';
+import { DefaultRequestParam, ImageUploadErrorMessage, UserBindCategoriesDto } from 'shared/build';
+import { DuplicationError } from '~/shared/exceptions/duplication-error';
+import { BadRequest } from '~/shared/exceptions/bad-request';
 
 @injectable()
 export class UserRepositoryAdapter implements UserRepository {
@@ -103,15 +105,25 @@ export class UserRepositoryAdapter implements UserRepository {
     });
   }
 
-  updateUserName(userId: string, username: string): Promise<User | null> {
-    return this.prismaClient.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        username,
-      },
-    });
+  async updateUserName(userId: string, username: string): Promise<User | BadRequest> {
+    try {
+      return await this.prismaClient.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          username,
+        },
+      });
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        const { code: errorCode } = e;
+        if (errorCode === 'P2002') {
+          return new DuplicationError('This username already taken try another one', errorCode);
+        }
+      }
+    }
+    return new BadRequest(ImageUploadErrorMessage.UNKNOWN_ERROR);
   }
   getByEmail(email: string): Promise<User | null> {
     return this.prismaClient.user.findFirst({

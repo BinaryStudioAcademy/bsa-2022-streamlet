@@ -1,19 +1,19 @@
 import {
-  FC,
   AvatarImgValue,
-  UserUploadRequestDto,
-  UserBaseResponseDto,
-  UpdateProfileValue,
+  FC,
   ProfileUpdateRequestDto,
+  UpdateProfileValue,
+  UserBaseResponseDto,
+  UserUploadRequestDto,
 } from 'common/types/types';
 import style from './styles.module.scss';
 import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
-import { UploadImage, ImageEditor, Loader, createToastNotification } from '../../components/common/common';
+import { createToastNotification, ImageEditor, Loader, UploadImage } from '../../components/common/common';
 import React, { useCallback, useState } from 'react';
 import { profileActions } from 'store/actions';
 import { ImageListType } from 'react-images-uploading';
 import { useAppDispatch, useAppSelector, useEffect, useNavigate } from 'hooks/hooks';
-import { AppRoutes, ErrorMessage, IconName } from '../../common/enums/enums';
+import { AppRoutes, DataStatus, ErrorMessage, IconName } from '../../common/enums/enums';
 import { store } from '../../store/store';
 import { ProfilePreferencesPageForm } from './common/profile-preferences-page-form';
 
@@ -42,6 +42,10 @@ const ProfilePreferencesPage: FC = () => {
 
   const profile = useAppSelector((state) => {
     return state.profile.profileData;
+  });
+
+  const { error: responseError, dataStatus } = useAppSelector((state) => {
+    return state.profile;
   });
 
   useEffect(() => {
@@ -99,17 +103,27 @@ const ProfilePreferencesPage: FC = () => {
       } catch {
         setFormError(store.getState().auth.error || ErrorMessage.DEFAULT);
       } finally {
-        createToastNotification({
-          iconName: IconName.PROFILE,
-          type: 'success',
-          title: 'Profile',
-          message: 'Your profile has been successfully updated',
-          durationMs: 5000,
-        });
+        if (dataStatus === DataStatus.FULFILLED) {
+          createToastNotification({
+            iconName: IconName.PROFILE,
+            type: 'success',
+            title: 'Profile',
+            message: 'Your profile has been successfully updated',
+            durationMs: 5000,
+          });
+        } else if (dataStatus === DataStatus.REJECTED) {
+          createToastNotification({
+            iconName: IconName.PROFILE,
+            type: 'danger',
+            title: 'Profile',
+            message: 'Something went wrong',
+            durationMs: 5000,
+          });
+        }
         setFormLoading(false);
       }
     },
-    [dispatch],
+    [dispatch, dataStatus],
   );
 
   const onFormSubmit = async (submitValue: UpdateProfileValue): Promise<void> => {
@@ -119,6 +133,10 @@ const ProfilePreferencesPage: FC = () => {
     };
     await handleUpdateProfileDataSubmit(request);
   };
+
+  if (DataStatus.REJECTED && responseError !== formError) {
+    setFormError(responseError);
+  }
 
   if (!profile) {
     return <Loader spinnerSize={'lg'} vCentered={true} hCentered={true} />;
