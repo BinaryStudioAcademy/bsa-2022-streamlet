@@ -275,7 +275,7 @@ Specify `api.env` `api-db.env` files in `.env` folder
 Run commands from root:
 
 ```
-docker build --build-arg REACT_APP_API_ORIGIN_URL=/api/v1 -f .docker/frontend.Dockerfile -t frontend .
+docker build --build-arg REACT_APP_API_ORIGIN_URL=/api/v1 --build-arg REACT_APP_PUSH_HOST=localhost --build-arg REACT_APP_PUSH_PORT=5002 -f .docker/frontend.Dockerfile -t frontend .
 docker build -f .docker/backend.Dockerfile -t backend .
 docker build -f .docker/push.Dockerfile -t push .
 docker build -f .docker/video-transcoding-server.Dockerfile -t video-transcoding-server .
