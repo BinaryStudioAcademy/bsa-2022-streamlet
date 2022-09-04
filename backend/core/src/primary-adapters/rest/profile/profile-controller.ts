@@ -103,6 +103,8 @@ export class ProfileController extends BaseHttpController {
    *                  $ref: '#/components/schemas/ProfileUpdateResponseDto'
    *        404:
    *          $ref: '#/components/responses/NotFound'
+   *        400:
+   *          $ref '#/components/responses/BadRequest
    */
   @httpPut(ProfileApiPath.UPDATE, authenticationMiddleware)
   public async update(
