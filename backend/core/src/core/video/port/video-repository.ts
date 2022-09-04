@@ -6,6 +6,8 @@ import {
   CategorySearchRequestQueryDto,
   TagSearchRequestQueryDto,
   PopularVideoResponseDto,
+  BaseReplyRequestDto,
+  Comment,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
@@ -57,4 +59,6 @@ export interface VideoRepository {
     isLike: boolean,
   ): Promise<CreateReactionResponseDto | null>;
   getVideosBySearch(queryParams: VideoSearch): Promise<DataVideo>;
+  getRepliesForComment(commentId: string): Promise<Comment[]>;
+  addVideoCommentReply(request: BaseReplyRequestDto, authorId: string): Promise<Comment[]>;
 }
