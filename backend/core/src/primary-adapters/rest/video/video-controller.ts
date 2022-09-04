@@ -177,9 +177,16 @@ export class VideoController extends BaseHttpController {
    *          content:
    *            application/json:
    *              schema:
-   *                type: array
-   *                items:
-   *                  $ref: '#/components/schemas/Video'
+   *                type: object
+   *                properties:
+   *                  list:
+   *                    type: array
+   *                    items:
+   *                      $ref: '#/components/schemas/Video'
+   *                  total:
+   *                    type: interger
+   *                    format: int32
+   *                    minimum: 0
    */
   @httpGet(VideoApiPath.SEARCH)
   public async getVideosBySearch(
@@ -197,7 +204,7 @@ export class VideoController extends BaseHttpController {
       sortBy: matchVideoFilterSortBy[sortBy] || matchVideoFilterSortBy[SortByFilterId.DEFAULT],
     };
 
-    return await this.videoRepository.getVideosBySearch(queryParams);
+    return await this.videoService.getVideosBySearch(queryParams);
   }
 
   @httpGet(VideoApiPath.POPULAR, optionalAuthenticationMiddleware)
