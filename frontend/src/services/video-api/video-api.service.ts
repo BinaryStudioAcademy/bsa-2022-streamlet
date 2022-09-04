@@ -12,6 +12,8 @@ import {
   VideoExpandedResponseDto,
   CreateCommentReactionRequestDto,
   CreateCommentReactionResponseDto,
+  Comment,
+  BaseReplyRequestDto,
 } from 'shared/build';
 import { Http } from '../http/http.service';
 
@@ -94,6 +96,26 @@ class VideoApi {
       },
       query: {
         ...payload,
+      },
+    });
+  }
+
+  public getRepliesForComment(commentId: string): Promise<Comment[]> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}/${VideoApiPath.REPLIES_COMMENT}/${commentId}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+    });
+  }
+
+  public addVideoCommentReply(payload: BaseReplyRequestDto): Promise<Comment[]> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.REPLIES_COMMENT}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
       },
     });
   }
