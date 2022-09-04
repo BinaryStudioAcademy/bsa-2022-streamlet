@@ -2,12 +2,20 @@
 
 .page-container {
   max-height: 100%;
+  padding: 20px 40px;
   overflow-y: auto;
 }
 
-.tab-container {
-  padding: 20px;
-  @media #{breakpoint.$mobile-large} {
-    padding: 20px 40px;
-  }
+.page-header-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.page-header {
+  margin-left: 20px;
+  color: var(--white-text-color);
+  font-weight: 600;
+  font-family: Gilroy, sans-serif;
+  text-transform: capitalize;
 }
