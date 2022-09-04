@@ -496,6 +496,13 @@ export class VideoRepositoryAdapter implements VideoRepository {
                 search: searchText,
               },
             },
+            {
+              channel: {
+                name: {
+                  search: searchText,
+                },
+              },
+            },
           ],
         }),
         duration: {
