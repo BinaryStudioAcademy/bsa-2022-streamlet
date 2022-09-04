@@ -1,6 +1,6 @@
 export type PaginationHelperInputType = {
   allDataLength: number;
-  pageNumber: number | typeof NaN;
+  pageNumber: number;
   itemInOnePage: number;
 };
 
