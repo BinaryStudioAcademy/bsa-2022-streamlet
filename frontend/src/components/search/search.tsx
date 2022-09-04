@@ -1,5 +1,7 @@
 import { FC, VideoCard as VideoCardType } from 'common/types/types';
+import { DataStatus, LoaderSize } from 'common/enums/enums';
 import { useEffect, useSearchParams, useAppDispatch, useAppSelector, useCallback, useMemo } from 'hooks/hooks';
+import { Loader } from 'components/common/common';
 import { FilterBar, FilterSidebar, ResultNotFound, VideoCard } from './components/components';
 import { SearchQueryParam, FilterType, SearchState } from './config/config';
 import { searchActions } from 'store/actions';
@@ -17,7 +19,7 @@ const Search: FC = () => {
     search: {
       searchText,
       activeFilterId,
-      results: { results },
+      results: { list, total, dataStatus },
     },
     theme: { isLightTheme },
   } = useAppSelector((state) => ({
@@ -51,6 +53,10 @@ const Search: FC = () => {
     }, {});
   }, [searchText, activeFilterId]);
 
+  const handleSetSearchResults = useCallback(() => {
+    dispatch(searchActions.setSearchResults({ searchParamURL: searchParams.toString() }));
+  }, [searchParams, dispatch]);
+
   useEffect(() => {
     const currentFilterFromURL = getFilterFromSearchParams(searchParams);
 
@@ -59,7 +65,8 @@ const Search: FC = () => {
       delete currentFilterFromURL[FilterType.SEARCH_TEXT];
     }
     handleSetActiveFilterIds(currentFilterFromURL);
-  }, [searchParams, handleSetSearchText, handleSetActiveFilterIds]);
+    handleSetSearchResults();
+  }, [searchParams, handleSetSearchText, handleSetActiveFilterIds, handleSetSearchResults]);
 
   useEffect(() => {
     setSearchParams({ ...handleGetVideoFilter });
@@ -71,10 +78,16 @@ const Search: FC = () => {
       <div className={styles['search-page-wrapper']}>
         <FilterSidebar />
         <div className={styles['search-page-video-list']}>
-          {results.length === 0 && <ResultNotFound />}
-          {results.map((c: VideoCardType) => (
-            <VideoCard key={c.id} video={c} isLightTheme={isLightTheme} />
-          ))}
+          {dataStatus === DataStatus.PENDING ? (
+            <Loader spinnerSize={LoaderSize.MD} />
+          ) : (
+            <>
+              {(!searchText || total === 0) && <ResultNotFound />}
+              {list.map((c: VideoCardType) => (
+                <VideoCard key={c.id} video={c} isLightTheme={isLightTheme} />
+              ))}
+            </>
+          )}
         </div>
       </div>
     </div>
