@@ -1,17 +1,19 @@
 .button {
-  min-width: 50px;
-  margin: none;
-  color: var(--white-text-color);
+  padding: 0 47px;
+  color: var(--text-gray-color);
+  font-size: 16px;
+  white-space: nowrap;
+  text-transform: capitalize;
   background: none;
-  border: none;
-  cursor: pointer;
 }
 
 .button:hover {
-  color: var(--brand-green-color);
+  color: var(--white-text-color);
+  background: none;
+  cursor: pointer;
 }
 
 .active {
-  color: var(--brand-green-color);
-  border-bottom: solid 2px var(--brand-green-color);
+  color: var(--white-text-color);
+  border-bottom: 3px var(--brand-green-color) solid;
 }

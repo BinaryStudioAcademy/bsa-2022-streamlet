@@ -34,7 +34,6 @@ const reducer = createReducer(initialState, (builder) => {
       const { message: errorMessage } = error;
       state.dataStatus = DataStatus.REJECTED;
       state.error = errorMessage;
-      state.profileData = null;
     },
   );
 });

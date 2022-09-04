@@ -26,7 +26,7 @@ const SendMessage: FC<SendMessageProps> = ({ handlerSubmitMessage, handleChooseE
   }
 
   const handleSubmitMessage = (): void => {
-    if (!loading && messageText) {
+    if (!loading && messageText.trim()) {
       setLoading(true);
       handlerSubmitMessage(messageText)
         .then(() => {

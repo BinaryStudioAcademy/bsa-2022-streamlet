@@ -10,6 +10,7 @@ export const comments: Comment[] = [
     text: 'We are facing a serious business dilemma, with Facebook taking away a good chunk of traffic to news and content sites, and ad blockers eating into what’s left of it while slashing ad revenues.',
     likeNum: 0,
     dislikeNum: 0,
+    commentReactions: [{ isLike: false, userId: '' }],
   },
   {
     id: '2',
@@ -19,6 +20,7 @@ export const comments: Comment[] = [
     text: 'We are facing a serious business dilemma, with Facebook taking away a good chunk of traffic to news.',
     likeNum: 0,
     dislikeNum: 0,
+    commentReactions: [{ isLike: false, userId: '' }],
   },
   {
     id: '3',
@@ -29,6 +31,7 @@ export const comments: Comment[] = [
     text: 'We are facing a serious business dilemma, and ad blockers eating into what’s left of it while slashing ad revenues.',
     likeNum: 0,
     dislikeNum: 0,
+    commentReactions: [{ isLike: false, userId: '' }],
   },
   {
     id: '4',
@@ -38,6 +41,7 @@ export const comments: Comment[] = [
     text: 'We are facing a serious business dilemma, with Facebook taking away a good chunk of traffic to news and content sites, and ad blockers eating into what’s left of it while slashing ad revenues.',
     likeNum: 0,
     dislikeNum: 0,
+    commentReactions: [{ isLike: false, userId: '' }],
   },
   {
     id: '5',
@@ -46,5 +50,6 @@ export const comments: Comment[] = [
     text: 'We are facing a serious business dilemma, with Facebook taking away a good chunk of traffic to news and content sites, and ad blockers eating into what’s left of it while slashing ad revenues.',
     likeNum: 0,
     dislikeNum: 0,
+    commentReactions: [{ isLike: false, userId: '' }],
   },
 ];

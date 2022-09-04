@@ -97,6 +97,7 @@ export const trimVideoWithComments = (
       lastName: comment.author.profile?.lastName,
       likeNum: calculateReactions(comment.commentReactions, true),
       dislikeNum: calculateReactions(comment.commentReactions, false),
+      commentReactions: comment.commentReactions.map((item) => ({ isLike: item.isLike, userId: item.userId })),
     })),
     description,
     isChatEnabled,

@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "1.8.3",
     "clsx": "1.2.1",
     "dayjs": "1.11.4",
+    "fscreen": "^1.2.0",
     "hls.js": "1.2.0",
     "query-string": "7.1.1",
     "react": "18.2.0",
@@ -42,6 +43,7 @@
     "socket.io-client": "4.5.0"
   },
   "devDependencies": {
+    "@types/fscreen": "^1.0.1",
     "@types/node": "18.0.5",
     "@types/react": "18.0.15",
     "@types/react-avatar-editor": "13.0.0",

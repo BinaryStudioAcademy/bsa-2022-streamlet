@@ -10,20 +10,17 @@ type Props = {
 };
 
 const PlayPauseCenterEffect: FC<Props> = ({ videoContainer, className }) => {
+  const firstUpdate = useRef(true);
   const [isPaused, setIsPaused] = useState(videoContainer.paused);
   const containerRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    const handlePause = (): void => {
-      setIsPaused(true);
+    const handleToggle = (): void => {
+      firstUpdate.current = false;
+      setIsPaused((wasPaused) => !wasPaused);
     };
-    const handlePlay = (): void => {
-      setIsPaused(false);
-    };
-    videoContainer.addEventListener('pause', handlePause);
-    videoContainer.addEventListener('play', handlePlay);
+    videoContainer.addEventListener('click', handleToggle);
     return () => {
-      videoContainer.removeEventListener('pause', handlePause);
-      videoContainer.removeEventListener('play', handlePlay);
+      videoContainer.removeEventListener('click', handleToggle);
     };
   }, [videoContainer]);
 
@@ -37,7 +34,7 @@ const PlayPauseCenterEffect: FC<Props> = ({ videoContainer, className }) => {
     el.style.animation = '';
   }, [isPaused]);
 
-  return (
+  return firstUpdate.current ? null : (
     <div className={clsx(className, styles['container'])} ref={containerRef}>
       {isPaused ? <PauseIcon height="100%" /> : <PlayIcon height="100%" />}
     </div>
