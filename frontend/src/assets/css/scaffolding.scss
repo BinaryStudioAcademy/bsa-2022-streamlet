@@ -504,7 +504,8 @@
   --auth-border: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
   --auth-background: var(--gray-400-primary-background);
   --auth-box-shadow: none;
-  --link-color: rgb(146 255 230);
+  --link-color: #06c149;
+  --link-hover-color: #ffffff;
   --password-eye-color: rgb(104 104 104);
 
   /* subscription */
@@ -556,7 +557,8 @@ body[data-theme='light'] {
   --logo-text-color: #363c3a;
 
   /* auth forms */
-  --link-color: rgb(0 73 56);
+  --link-color: #006624;
+  --link-hover-color: #6a726d;
   --auth-modal-background: white;
   --auth-box-shadow: 0 0 15px 7px rgb(0 0 0 / 16%);
   --auth-border: none;
