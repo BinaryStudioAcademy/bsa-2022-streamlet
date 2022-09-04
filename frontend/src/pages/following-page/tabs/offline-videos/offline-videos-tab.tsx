@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import React, { FC, useEffect } from 'react';
 import { shallowEqual } from 'react-redux';
 import { loadOfflineVideos } from 'store/following-page/actions';
-import { NoVideosYet } from '../../../../components/common/no-videos-yet/no-videos-yet';
+import { NoVideosYet } from 'components/common/no-videos-yet/no-videos-yet';
 
 const OfflineVideosTab: FC = () => {
   const dispatch = useAppDispatch();
