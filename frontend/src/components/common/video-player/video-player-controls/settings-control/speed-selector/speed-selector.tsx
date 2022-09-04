@@ -1,6 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { GenericSettingsModal } from '../generic-settings-modal/generic-settings-modal';
 import { ModalItem } from '../modal-item/modal-item';
+import { ReactComponent as BackArrow } from 'assets/img/back-arrow.svg';
+import styles from '../header-styles.module.scss';
 
 type Props = {
   className?: string;
@@ -22,8 +24,9 @@ const SpeedSelector: FC<Props> = ({ className, goBack, videoContainer }) => {
   }, [videoContainer]);
   return (
     <GenericSettingsModal className={className}>
-      <ModalItem isHeader onClick={goBack}>
-        &lt; Select playback speed
+      <ModalItem isHeader onClick={goBack} contentContainerClassName={styles['header']}>
+        <BackArrow height={15} />
+        <span className={styles['header-text']}> Select playback speed</span>
       </ModalItem>
       {!predefinedSpeeds.includes(currentSpeed) && <ModalItem isSelected>Other: {currentSpeed}</ModalItem>}
       {predefinedSpeeds.map((speed) => (

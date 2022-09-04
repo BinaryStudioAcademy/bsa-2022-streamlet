@@ -69,11 +69,9 @@ class SocketService {
             this.io.to(roomId).emit(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, { live: countIsLive });
 
             const clientsInRoom = Array.from(this.io.sockets.adapter.rooms.get(roomId) || []);
-            this.io
-              .to(roomId)
-              .emit(SocketEvents.chat.UPDATE_CHAT_PARTICIPANTS_DONE, {
-                participants: getUserIdsInRoom(this.socketClients, clientsInRoom),
-              });
+            this.io.to(roomId).emit(SocketEvents.chat.UPDATE_CHAT_PARTICIPANTS_DONE, {
+              participants: getUserIdsInRoom(this.socketClients, clientsInRoom),
+            });
           }
         }
       }, 2000);

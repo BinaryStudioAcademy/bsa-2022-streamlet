@@ -80,7 +80,9 @@ const BrowsePage: FC = () => {
           return <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />;
         })}
         <div ref={sentryRef}>
-          {videoData.dataStatus === DataStatus.PENDING && popularVideos.list.length > 0 && generateBrowsePageSkeleton(isLightTheme)}
+          {videoData.dataStatus === DataStatus.PENDING &&
+            popularVideos.list.length > 0 &&
+            generateBrowsePageSkeleton(isLightTheme)}
         </div>
       </div>
     </div>
