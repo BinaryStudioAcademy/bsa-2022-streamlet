@@ -10,6 +10,7 @@ import { ProgressBar } from './progress-bar/progress-bar';
 import { SettingsControl } from './settings-control/settings-control';
 import Hls from 'hls.js';
 import { LiveIndicator } from './live-indicator/live-indicator';
+import fscreen from 'fscreen';
 
 type Props = {
   videoContainer: HTMLVideoElement;
@@ -47,7 +48,7 @@ const VideoPlayerControls: FC<Props> = ({ videoContainer, videoContainerWrapper,
           <VideoTime videoContainer={videoContainer} className={styles['video-time']} />
         )}
         <SettingsControl videoWrapper={videoContainerWrapper} videoContainer={videoContainer} hlsClient={hlsClient} />
-        {document.fullscreenEnabled && <FullScreenButton videoContainerWrapper={videoContainerWrapper} />}
+        {fscreen.fullscreenEnabled && <FullScreenButton videoContainerWrapper={videoContainerWrapper} />}
       </div>
     </div>
   );
