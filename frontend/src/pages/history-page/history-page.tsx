@@ -24,11 +24,10 @@ const HistoryPage: FC = () => {
     return state.theme.isLightTheme;
   });
 
-  const historyData = useAppSelector((state) => {
+  const { isFirstHistoryPageLoad, currentPage, lastPage, dataStatus, error, list } = useAppSelector((state) => {
     return state.history.data;
   });
 
-  const { isFirstHistoryPageLoad, currentPage, lastPage, dataStatus } = historyData;
   useEffect(() => {
     if (!user) {
       navigate(AppRoutes.SIGN_IN, { replace: true });
@@ -44,14 +43,14 @@ const HistoryPage: FC = () => {
   }, [dispatch, navigate, user, isFirstHistoryPageLoad, currentPage]);
 
   const loadMore = (): void => {
-    dispatch(historyActions.getUserVideoHistoryRecord(historyData.currentPage + 1));
+    dispatch(historyActions.getUserVideoHistoryRecord(currentPage + 1));
   };
 
   const [sentryRef] = useInfiniteScroll({
-    loading: historyData.dataStatus === DataStatus.PENDING,
+    loading: dataStatus === DataStatus.PENDING,
     hasNextPage: currentPage < lastPage,
     onLoadMore: loadMore,
-    disabled: !!historyData.error,
+    disabled: !!error,
     rootMargin: '0px 0px 400px 0px',
   });
 
@@ -61,7 +60,7 @@ const HistoryPage: FC = () => {
 
   return (
     <div className={styles['history-page-container']}>
-      {historyData.list.map((historyRecord, index) => {
+      {list.map((historyRecord, index) => {
         const { id, video, updatedAt } = historyRecord;
 
         if (!index) {
@@ -72,7 +71,7 @@ const HistoryPage: FC = () => {
             </div>
           );
         }
-        const prevHistoryRecordUpdatedAt = historyData.list[index - 1].updatedAt;
+        const prevHistoryRecordUpdatedAt = list[index - 1].updatedAt;
 
         const isPrevAndCurrentHistoryUpdatedAtSame = isDateSameByDayMonthYear(prevHistoryRecordUpdatedAt, updatedAt);
 
