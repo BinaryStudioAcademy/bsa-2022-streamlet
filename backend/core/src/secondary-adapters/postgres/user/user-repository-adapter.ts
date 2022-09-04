@@ -119,7 +119,7 @@ export class UserRepositoryAdapter implements UserRepository {
       if (e instanceof Prisma.PrismaClientKnownRequestError) {
         const { code: errorCode } = e;
         if (errorCode === 'P2002') {
-          return new DuplicationError(errorCode, 'this username already taken try another one');
+          return new DuplicationError('This username already taken try another one', errorCode);
         }
       }
     }
