@@ -48,10 +48,8 @@
 .add-comment-submit-active {
   width: 100px;
   height: 36px;
-
-  &:hover {
-    color: var(--button-placeholder-light-color);
-  }
+  color: var(--always-white-color);
+  transition: all 0.3s ease;
 }
 
 .add-comment-cancel-button {

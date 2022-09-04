@@ -134,6 +134,8 @@ model CategoryToUser {
 model VideoComment {
   id               String            @id @default(uuid())
   parentId         String?
+  childComments    VideoComment[]    @relation("ParentChildVideoComment")
+  parentComment    VideoComment?     @relation("ParentChildVideoComment", fields: [parentId], references: [id])
   text             String
   video            Video             @relation(fields: [videoId], references: [id])
   videoId          String

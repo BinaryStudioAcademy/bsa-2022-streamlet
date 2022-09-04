@@ -67,6 +67,11 @@ export class VideoRepositoryAdapter implements VideoRepository {
                 profile: true,
               },
             },
+            _count: {
+              select: {
+                childComments: true,
+              },
+            },
             commentReactions: true,
           },
           orderBy: {
@@ -81,12 +86,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
     }
 
     const { dislikeNum, likeNum } = await this.calculateReaction(video.id);
-    const commentsWithReplies = await Promise.all(
-      video.comments.map(async (comment) => ({
-        ...comment,
-        repliesCount: await this.prismaClient.videoComment.count({ where: { parentId: comment.id } }),
-      })),
-    );
+    const commentsWithReplies = video.comments.map((comment) => ({
+      ...comment,
+      repliesCount: comment._count.childComments,
+    }));
     const videoCommentsReplies = { ...video, comments: commentsWithReplies };
 
     return { ...trimVideoWithComments(videoCommentsReplies), likeNum, dislikeNum };
