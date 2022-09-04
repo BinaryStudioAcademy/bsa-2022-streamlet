@@ -18,7 +18,7 @@ export { HttpHeader, HttpMethod, HttpCode } from './http/http';
 
 export { ErrorMessage } from './message/message';
 
-export { SearchQueryParam } from './search/search';
+export * from './search/search';
 
 export { StorageKeys } from './storage/storage';
 

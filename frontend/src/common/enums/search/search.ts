@@ -1,1 +1,8 @@
-export { SearchQueryParam } from 'store/search/models';
+export {
+  TypeFilterId,
+  DateFilterId,
+  DurationFilterId,
+  SortByFilterId,
+  SearchQueryParam,
+  FilterType,
+} from 'shared/build';
