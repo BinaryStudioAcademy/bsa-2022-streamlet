@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector, useEffect } from 'hooks/hooks';
 import React, { FC } from 'react';
 import { shallowEqual } from 'react-redux';
 import { loadLiveVideos } from 'store/following-page/actions';
-import { NoVideosYet } from '../../../../components/common/no-videos-yet/no-videos-yet';
+import { NoVideosYet } from 'components/common/no-videos-yet/no-videos-yet';
 
 const LiveVideosTab: FC = () => {
   const dispatch = useAppDispatch();
