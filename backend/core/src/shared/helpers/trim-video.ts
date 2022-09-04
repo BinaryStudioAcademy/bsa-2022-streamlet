@@ -52,6 +52,7 @@ export const trimVideoWithComments = (
   comments: Comment[];
   description: string;
   videoPath: string;
+  isChatEnabled: boolean;
 } => {
   const {
     id,
@@ -67,6 +68,7 @@ export const trimVideoWithComments = (
     comments,
     description,
     videoPath,
+    isChatEnabled,
   } = video;
   return {
     id,
@@ -95,8 +97,10 @@ export const trimVideoWithComments = (
       lastName: comment.author.profile?.lastName,
       likeNum: calculateReactions(comment.commentReactions, true),
       dislikeNum: calculateReactions(comment.commentReactions, false),
+      commentReactions: comment.commentReactions.map((item) => ({ isLike: item.isLike, userId: item.userId })),
     })),
     description,
+    isChatEnabled,
   };
 };
 

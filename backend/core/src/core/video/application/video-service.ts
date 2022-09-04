@@ -15,6 +15,7 @@ import {
 } from 'shared/build';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { POPULAR_VIDEO_CARD_IN_ONE_PAGE } from '~/shared/constants/constants';
+import { usePagination } from '~/shared/helpers';
 
 @injectable()
 export class VideoService {
@@ -67,19 +68,14 @@ export class VideoService {
   }
 
   async getPopular(request: PopularVideosRequestDtoType): Promise<PopularVideoResponseDto> {
-    const pageNumber = request.page;
-    const lastPage = Math.ceil(
-      (await this.videoRepository.getPopularVideoLength(request.category)) / POPULAR_VIDEO_CARD_IN_ONE_PAGE,
-    );
-    if (pageNumber <= 0) {
-      return this.videoRepository.getPopular(request, POPULAR_VIDEO_CARD_IN_ONE_PAGE, 0, lastPage);
-    }
-    const skip = (pageNumber - 1) * POPULAR_VIDEO_CARD_IN_ONE_PAGE;
+    const { page: pageNumber, category } = request;
+    const allDataLength = await this.videoRepository.getPopularVideoLength(category);
+    const paginationParam = usePagination({ allDataLength, pageNumber, itemInOnePage: POPULAR_VIDEO_CARD_IN_ONE_PAGE });
 
     if (request.category === 'live') {
-      return this.videoRepository.getPopularLive(request, POPULAR_VIDEO_CARD_IN_ONE_PAGE, skip, lastPage);
+      return this.videoRepository.getPopularLive(paginationParam);
     }
 
-    return this.videoRepository.getPopular(request, POPULAR_VIDEO_CARD_IN_ONE_PAGE, skip, lastPage);
+    return this.videoRepository.getPopular({ category, ...paginationParam });
   }
 }

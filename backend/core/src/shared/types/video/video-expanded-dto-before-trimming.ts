@@ -6,6 +6,7 @@ export type VideoExpandedInfo = BaseVideoResponseDto & {
   likeNum: number;
   videoPath: string;
   dislikeNum: number;
+  isChatEnabled: boolean;
   channel: {
     id: string;
     name: string;

@@ -1,28 +1,244 @@
+import { UIEvent } from 'react';
+import clsx from 'clsx';
 import { ChatMessageResponseDto, FC } from 'common/types/types';
-import { useRef } from 'hooks/hooks';
-import { SendMessage, SendMessageProps } from 'components/common/send-message/send-message';
-import { VideoComment } from './video-comment/video-comment';
+import { AppRoutes, ChatMenuOptions, IconName } from 'common/enums/enums';
+import { useCallback, useEffect, useRef, useState } from 'hooks/hooks';
+import { Button, Icon } from 'components/common/common';
+import { Participant, SendMessage, SendMessageProps, VideoComment } from './components/components';
+import { debounce } from 'helpers/common/debounce.helper';
+import { allChatMenuOptions, popOutChatParamsString } from './config';
 
 import styles from './video-chat.module.scss';
 
 interface VideoChatProps {
+  chatId: string;
+  popOutSetting: boolean;
+  initialMessages: ChatMessageResponseDto[];
   messages: ChatMessageResponseDto[];
+  participants: string[];
+  chatStatus: boolean;
   sendMessageProps: SendMessageProps;
 }
 
-const VideoChat: FC<VideoChatProps> = ({ messages, sendMessageProps }) => {
+const VideoChat: FC<VideoChatProps> = ({
+  chatId,
+  popOutSetting,
+  initialMessages,
+  messages,
+  participants,
+  chatStatus,
+  sendMessageProps,
+}) => {
   const chatEndEl = useRef<HTMLDivElement>(null);
   const chatViewEl = useRef<HTMLDivElement>(null);
+  const chatMenuEl = useRef<HTMLDivElement>(null);
+
+  const [showTimeStamp, setShowTimeStamp] = useState(false);
+  const [showChatMenu, setShowChatMenu] = useState(false);
+  const [showParticipants, setShowParticipants] = useState(false);
+  const [popOutWindow, setPopOutWindow] = useState<Window | null>(null);
+  const [showChatDownBtn, setShowChatDownBtn] = useState(false);
+  const [hideChat, setHideChat] = useState(false);
+
+  const handleSetShowChatMenu = (): void => setShowChatMenu(!showChatMenu);
+
+  const handleSetShowTimeStamp = (): void => {
+    setShowTimeStamp(!showTimeStamp);
+    setShowChatMenu(false);
+  };
+  const handleSetShowParticipants = (): void => {
+    setShowParticipants(!showParticipants);
+    setShowChatMenu(false);
+  };
+
+  const popInChat = (): void => {
+    popOutWindow?.close();
+    setPopOutWindow(null);
+  };
+
+  const popOutChat = (): void => {
+    const popOut = window.open(`${AppRoutes.LIVE_CHAT}?v=${chatId}`, 'Live chat', popOutChatParamsString);
+    setPopOutWindow(popOut);
+    setShowChatMenu(false);
+
+    const timer = setInterval(() => {
+      if (!popOut) {
+        clearInterval(timer);
+      } else {
+        if (popOut.closed) {
+          clearInterval(timer);
+          popInChat();
+        }
+      }
+    }, 2000);
+  };
+
+  const matchChatMenuOptionWithOnClickHandler: Record<ChatMenuOptions, () => void> = {
+    [ChatMenuOptions.PARTICIPANTS]: handleSetShowParticipants,
+    [ChatMenuOptions.POP_OUT_CHAT]: popOutChat,
+    [ChatMenuOptions.TOGGLE_TIMESTAMPS]: handleSetShowTimeStamp,
+  };
+
+  const chatMenuOptions = allChatMenuOptions.map((option) => ({
+    ...option,
+    onClick: matchChatMenuOptionWithOnClickHandler[option.type],
+  }));
+
+  const onHandleClickOutsideMenu = useCallback((e: MouseEvent): void => {
+    if (!chatMenuEl.current?.contains(e.target as HTMLElement)) {
+      setShowChatMenu(false);
+    }
+  }, []);
+
+  const handleChatScroll = (e: UIEvent<HTMLDivElement>): void => {
+    const target = e.target as EventTarget & HTMLDivElement;
+    if (target.scrollTop < -100) {
+      setShowChatDownBtn(true);
+    } else {
+      setShowChatDownBtn(false);
+    }
+  };
+
+  const debouncedHandleChatScroll = debounce(handleChatScroll, 500);
+
+  const handleClickGoDownBtn = (): void => {
+    if (chatViewEl.current) {
+      chatViewEl.current.scrollTop = 0;
+    }
+  };
+
+  const handleSetHideChat = (): void => {
+    setHideChat(!hideChat);
+    setTimeout(handleClickGoDownBtn, 1000);
+  };
+
+  useEffect(() => {
+    if (showChatMenu) {
+      window.addEventListener('click', onHandleClickOutsideMenu);
+    }
+    return () => {
+      window.removeEventListener('click', onHandleClickOutsideMenu);
+    };
+  }, [showChatMenu, onHandleClickOutsideMenu]);
+
+  if (!chatStatus) {
+    return (
+      <div className={clsx(styles['video-chat-wrapper'], styles['chat-disabled'], hideChat && styles['hide-chat'])}>
+        <div className={styles['video-chat-popout']}>
+          <span>Chat is disabled for this live stream.</span>
+        </div>
+        <div className={styles['video-chat-footer-bar']} onClick={handleSetHideChat}>
+          <span>{hideChat ? 'show chat' : 'hide chat'}</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className={styles['video-chat-wrapper']}>
-      <div className={styles['video-chat']} ref={chatViewEl}>
-        <div ref={chatEndEl}></div>
-        {messages.map((message) => (
-          <VideoComment key={message.id} message={message} />
-        ))}
+    <div className={clsx(styles['video-chat-wrapper'], hideChat && styles['hide-chat'])}>
+      {!popOutWindow && (
+        <div className={styles['video-chat-header']}>
+          <div className={styles['video-chat-header-title']}>
+            {showParticipants ? (
+              <>
+                <div className={styles['video-chat-header-back-btn']} onClick={handleSetShowParticipants}>
+                  <Icon name={IconName.ARROW_LEFT} />
+                </div>
+                <span>Participants</span>
+              </>
+            ) : (
+              <span>Live chat</span>
+            )}
+          </div>
+          <div className={styles['video-chat-header-menu']} ref={chatMenuEl}>
+            <div className={styles['video-chat-header-menu-toggle']} onClick={handleSetShowChatMenu}>
+              <Icon name={IconName.DOTS_MENU} height="20px" />
+            </div>
+            {showChatMenu && (
+              <div className={styles['video-chat-header-menu-body']}>
+                <ul className={styles['video-chat-header-menu-list']}>
+                  {chatMenuOptions.map((option) => {
+                    if (!popOutSetting && option.type === ChatMenuOptions.POP_OUT_CHAT) {
+                      return null;
+                    }
+                    return (
+                      <li key={option.type}>
+                        <div className={styles['video-chat-header-menu-item']} onClick={option.onClick}>
+                          <Icon name={option.icon} />
+                          <span>{option.text}</span>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {popOutWindow && !popOutWindow.closed ? (
+        <>
+          <div className={styles['video-chat-popout']}>
+            <span>Nothing to see here.</span>
+            <span>We popped out.</span>
+            <Button content="Restore chat" className={styles['video-chat-restore-btn']} onClick={popInChat} />
+          </div>
+        </>
+      ) : (
+        <div
+          className={clsx(styles['video-chat'], showParticipants && styles['view-participants'])}
+          onScroll={debouncedHandleChatScroll}
+          ref={chatViewEl}
+        >
+          {showParticipants ? (
+            participants.map((participantId) => <Participant key={participantId} id={participantId} />)
+          ) : (
+            <>
+              <div ref={chatEndEl} />
+              {messages.map((message) => (
+                <VideoComment
+                  key={message.id}
+                  message={message}
+                  showTimeStamp={showTimeStamp}
+                  messageClassName={styles['video-chat-message']}
+                />
+              ))}
+              <div className={styles['video-chat-welcome-message']}>
+                <div className={styles['video-chat-welcome-message-icon']}>
+                  <Icon name={IconName.MAIN_LOGO} />
+                </div>
+                <div className={styles['video-chat-welcome-message-body']}>
+                  <span>
+                    Welcome to live chat! Remember to guard your privacy and abide by our Community Guidelines.
+                  </span>
+                </div>
+              </div>
+              {initialMessages.map((message) => (
+                <VideoComment
+                  key={message.id}
+                  message={message}
+                  showTimeStamp={showTimeStamp}
+                  messageClassName={styles['video-chat-message']}
+                />
+              ))}
+            </>
+          )}
+        </div>
+      )}
+      <div className={styles['video-chat-footer']}>
+        <div
+          className={clsx(styles['video-chat-down-btn'], showChatDownBtn && styles['show-btn'])}
+          onClick={handleClickGoDownBtn}
+        >
+          <div className={styles['video-chat-down-btn-icon']}>
+            <Icon name={IconName.ARROW_DOWN_2} />
+          </div>
+        </div>
+        <SendMessage {...sendMessageProps} sendMessageClassName={styles['video-chat-send-form']} />
       </div>
-      <SendMessage {...sendMessageProps} />
+      <div className={styles['video-chat-footer-bar']} onClick={handleSetHideChat}>
+        <span>{hideChat ? 'show chat' : 'hide chat'}</span>
+      </div>
     </div>
   );
 };

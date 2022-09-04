@@ -1,8 +1,8 @@
 import { FC } from 'common/types/types';
-import { AppRoutes, AppTheme, SizesWindow } from 'common/enums/enums';
+import { AppRoutes, AppTheme, SizesWindow, SocketEvents } from 'common/enums/enums';
 import { useLocation, useEffect, useAppDispatch, useAppSelector, useWindowDimensions } from 'hooks/hooks';
 import { tokensStorageService } from 'services/services';
-import { authActions } from 'store/actions';
+import { authActions, socketActions } from 'store/actions';
 import { MainPageContainer } from 'pages/main-page/main-page-container';
 import { Routes, Route, HeaderContainer, SidebarContainer } from 'components/common/common';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
@@ -21,9 +21,8 @@ import { ProfilePreferencesPage } from 'pages/profile-preferences-page/profile-p
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
 import { GoogleAuthorization } from 'components/auth/components/common/social-buttons/google-button/google-authorization';
 import { HistoryPage } from '../../pages/history-page/history-page';
-
-import styles from './app.module.scss';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
+import { LiveChat } from 'pages/live-chat/live-chat';
 import { FollowingPage } from 'pages/following-page/following-page';
 import { Navigate } from 'react-router-dom';
 import { OverviewTab } from 'pages/following-page/tabs/overview/overview-tab';
@@ -33,6 +32,14 @@ import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
 import { BrowsePage } from '../../pages/browse-page/browse-page';
 import { closeSidebar } from 'store/layout/actions';
 import { ScrollToTop } from './scroll-to-top';
+import { socket } from 'common/config/config';
+import { store } from 'store/store';
+
+import styles from './app.module.scss';
+
+socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
+  store.dispatch(socketActions.addSocketId(id));
+});
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -50,8 +57,9 @@ const App: FC = () => {
   const isHasDefaultNavigation = isRouteHasDefaultNavigation(pathname);
   const isHasStudioNavigation = isRouteHasStudioNavigation(pathname);
 
-  const { theme: isLightTheme } = useAppSelector((state) => ({
+  const { theme: isLightTheme, userId } = useAppSelector((state) => ({
     theme: state.theme.isLightTheme,
+    userId: state.auth.user?.id,
   }));
 
   useEffect(() => {
@@ -63,6 +71,16 @@ const App: FC = () => {
       dispatch(authActions.loadCurrentUser());
     }
   }, [hasToken, dispatch]);
+
+  useEffect(() => {
+    if (userId) {
+      socket.emit(SocketEvents.socket.HANDSHAKE, userId);
+    }
+
+    return () => {
+      dispatch(socketActions.removeSocketId());
+    };
+  }, [userId, dispatch]);
 
   return (
     <>
@@ -76,6 +94,7 @@ const App: FC = () => {
           <Route path={AppRoutes.ACCOUNT_VERIFICATION_CONFIRM} element={<AccountVerificationConfirmPage />} />
           <Route path={AppRoutes.ACCOUNT_VERIFICATION_INIT} element={<AccountVerificationInitPage />} />
           <Route path={AppRoutes.RESTORE_PASSWORD_CONFIRM} element={<RestorePasswordConfirmPage />} />
+          <Route path={AppRoutes.LIVE_CHAT} element={<LiveChat />} />
         </Routes>
       )}
       {isHasStudioNavigation && (
