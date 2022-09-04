@@ -76,7 +76,7 @@ const HistoryPage: FC = () => {
         ) : (
           <div key={historyRecord.id}>
             <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(prevHistoryRecordUpdatedAt)}</p>
-            <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={true} />;
+            <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={true} />
           </div>
         );
       })}
