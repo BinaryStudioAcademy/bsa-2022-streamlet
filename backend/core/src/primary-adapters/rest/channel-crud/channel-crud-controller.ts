@@ -82,10 +82,14 @@ export class ChannelCrudController extends BaseHttpController {
   public async updateAvatar(
     @requestParam() { id }: ChannelInfoRequestDto,
     @requestBody() { base64Str }: ChannelProfileUpdateMediaRequestDto,
+    @request() req: ExtendedAuthenticatedRequest,
   ): Promise<ChannelProfileUpdateResponseDto> {
+    const { id: userId } = req.user;
+
     const updatedChannel = await this.channelService.updateAvatar({
       id,
       base64Str,
+      userId,
     });
 
     return updatedChannel;
@@ -99,10 +103,13 @@ export class ChannelCrudController extends BaseHttpController {
   public async updateBanner(
     @requestParam() { id }: ChannelInfoRequestDto,
     @requestBody() { base64Str }: ChannelProfileUpdateMediaRequestDto,
+    @request() req: ExtendedAuthenticatedRequest,
   ): Promise<ChannelProfileUpdateResponseDto> {
+    const { id: userId } = req.user;
     const updatedChannel = await this.channelService.updateBanner({
       id,
       base64Str,
+      userId,
     });
 
     return updatedChannel;

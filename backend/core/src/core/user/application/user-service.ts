@@ -83,8 +83,8 @@ export class UserService {
     return this.refreshTokenRepository.createForUser(userId);
   }
 
-  uploadAvatar({ base64Str }: UserUploadRequestDto): Promise<ImageUploadResponseDto> {
-    return this.imageStore.upload({ base64Str, type: ImageStorePresetType.AVATAR });
+  uploadAvatar({ base64Str }: UserUploadRequestDto, userId: string): Promise<ImageUploadResponseDto> {
+    return this.imageStore.upload({ base64Str, type: ImageStorePresetType.AVATAR, userId });
   }
   // This method is created only for testing purposes. When proper registration method will be implemented,
   // this.mailRepository.sendEmail() will be called  from there.

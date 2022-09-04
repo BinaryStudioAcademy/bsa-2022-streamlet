@@ -11,9 +11,16 @@ export class ImageStoreAdapter implements ImageStorePort {
     this.cloudinary = cloudinary;
   }
 
-  async upload({ base64Str, type }: ImageUploadRequestDto): Promise<ImageUploadResponseDto> {
+  async upload({
+    base64Str,
+    type,
+    userId,
+  }: ImageUploadRequestDto & { userId: string }): Promise<ImageUploadResponseDto> {
+    await this.cloudinary.uploader.destroy(`${userId}${type}`);
+
     const apiResponse = await this.cloudinary.uploader.upload(base64Str, {
       upload_preset: type,
+      public_id: `${userId}${type}`,
     });
     return castToImageUploadResponseDto(apiResponse);
   }
