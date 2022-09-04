@@ -69,12 +69,20 @@ export class ChannelStreamingService {
 
   notifyTranscoderAboutStreamStart(body: { authorId: string; streamData: LiveStartResponseDto }): void {
     this.amqpChannel.sendToQueue({
+      queue: AmqpQueue.SOCKETS_STREAM_CONNECTED,
+      content: Buffer.from(JSON.stringify(body)),
+    });
+    this.amqpChannel.sendToQueue({
       queue: AmqpQueue.STREAM_TRANSCODER,
       content: Buffer.from(JSON.stringify(body)),
     });
   }
 
   notifyTranscoderAboutStreamEnd(body: { authorId: string; streamingKey: string }): void {
+    this.amqpChannel.sendToQueue({
+      queue: AmqpQueue.SOCKETS_STREAM_DISCONNECTED,
+      content: Buffer.from(JSON.stringify(body)),
+    });
     this.amqpChannel.sendToQueue({
       queue: AmqpQueue.STREAM_INTERRUPTED,
       content: Buffer.from(JSON.stringify(body)),
