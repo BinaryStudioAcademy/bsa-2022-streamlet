@@ -1,14 +1,26 @@
-import { BaseHttpController, controller, httpGet, httpPost, requestBody } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpGet, httpPost, request, requestBody } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES } from '~/shared/types/types';
+import { CONTAINER_TYPES, ExtendedAuthenticatedRequest } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
 import { authenticationMiddleware } from '../middleware';
+import { ApiPath, CategoryResponseDto, UserApiPath, UserBindCategoriesDto } from 'shared/build';
 
 /**
  * @swagger
  * components:
  *    schemas:
+ *      CategoryDto:
+ *         type: object
+ *         properties:
+ *           id:
+ *             type: string
+ *             format: uuid
+ *           name:
+ *             type: string
+ *           posterPath:
+ *             type: string
+ *             format: uri
  *      User:
  *        type: object
  *        properties:
@@ -26,7 +38,7 @@ import { authenticationMiddleware } from '../middleware';
  *            type: string
  *            format: date-time
  */
-@controller('/users')
+@controller(ApiPath.USER)
 export class UserController extends BaseHttpController {
   private userService: UserService;
 
@@ -58,19 +70,76 @@ export class UserController extends BaseHttpController {
    *        401:
    *          $ref: '#/components/responses/Unauthorized'
    */
-  @httpGet('/', authenticationMiddleware)
+  @httpGet(UserApiPath.ROOT, authenticationMiddleware)
   public getAllUsers(): Promise<User[]> {
     return this.userService.getAllUsers();
   }
 
-  //NOTE: this routes only for testing and in future should removed or modified
-  @httpPost('/notify')
-  public notify(@requestBody() body: { data: { message: string } }): Promise<boolean> {
-    return this.userService.notify(body);
+  /**
+   * @swagger
+   * /users/bind/:
+   *    post:
+   *        tags:
+   *          - users
+   *        summary: Bind user preferences
+   *        security:
+   *          - bearerAuth: []
+   *        requestBody:
+   *          description: Categories
+   *          required: true
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  categories:
+   *                    type: array
+   *                    items:
+   *                      type: string
+   */
+  @httpPost(UserApiPath.$BIND, authenticationMiddleware)
+  public bindCategories(
+    @requestBody() payload: Omit<UserBindCategoriesDto, 'id'>,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<CategoryResponseDto[]> {
+    const { id } = req.user;
+
+    return this.userService.bindCategories({
+      id,
+      ...payload,
+    });
   }
 
-  @httpPost('/notify-broadcast')
-  public notifyBroadcast(@requestBody() body: { data: { message: string } }): Promise<boolean> {
-    return this.userService.notifyBroadcast(body);
+  /**
+   * @swagger
+   * /users/preferences/:
+   *    get:
+   *      tags:
+   *        - users
+   *      summary: Get user preferences
+   *      security:
+   *        - bearerAuth: []
+   *      responses:
+   *        '200':
+   *          description: OK
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/CategoryDto'
+   */
+  @httpGet(UserApiPath.$PREFERENCES, authenticationMiddleware)
+  public async getPreferences(@request() req: ExtendedAuthenticatedRequest): Promise<CategoryResponseDto[]> {
+    const { id } = req.user;
+
+    const preferences = await this.userService.getPreferedCategories({
+      id,
+    });
+    if (!preferences) {
+      return [] as CategoryResponseDto[];
+    }
+
+    return preferences;
   }
 }

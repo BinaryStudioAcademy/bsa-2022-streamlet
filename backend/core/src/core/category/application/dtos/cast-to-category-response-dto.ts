@@ -5,6 +5,6 @@ export const castToCategoryResponseDto = ({ id, name, posterPath }: Category): C
   return {
     id,
     name,
-    posterPath: posterPath,
+    posterPath,
   };
 };

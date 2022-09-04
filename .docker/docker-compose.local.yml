@@ -5,8 +5,8 @@ services:
     ports:
       - "1935:1935"
     container_name: rtmp
-    # depends_on:
-    #   - backend
+    depends_on:
+      - backend
     networks:
       - backend_network
     volumes:

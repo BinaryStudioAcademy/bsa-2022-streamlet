@@ -436,18 +436,25 @@ export class ChannelStreamingController extends BaseHttpController {
   }
 
   @httpGet('/segments/:videoId/master.m3u8')
-  public async getPlaylist(
-    @requestParam() { videoId }: { videoId: string },
-    @response() res: express.Response,
-  ): Promise<void> {
-    res.sendFile(path.resolve(__dirname, '../../../../../playback/', videoId, '/master.m3u8'));
+  public async getPlaylist(@requestParam('videoId') videoId: string, @response() res: express.Response): Promise<void> {
+    console.warn(videoId);
+    const masterPath = path
+      .resolve(__dirname, '../../../../../../playback', videoId, 'master.m3u8')
+      .replaceAll('\\', '/');
+    console.warn(masterPath);
+    res.sendFile(masterPath);
   }
 
   @httpGet('/segments/:videoId/:segment')
   public async getFile(
-    @requestParam() { segment, videoId }: { segment: string; videoId: string },
+    @requestParam('videoId') videoId: string,
+    @requestParam('segment') segment: string,
     @response() res: express.Response,
   ): Promise<void> {
-    res.sendFile(path.resolve(__dirname, '../../../../../playback/', videoId, segment));
+    console.warn(videoId);
+    console.warn(segment);
+    const segmentPath = path.resolve(__dirname, '../../../../../../playback', videoId, segment).replaceAll('\\', '/');
+    console.warn(segmentPath);
+    res.sendFile(segmentPath);
   }
 }

@@ -70,7 +70,7 @@ export class ChannelSubscriptionRepositoryAdapter implements ChannelSubscription
   }
 
   async isUserSubscribed(channelId: string, userId: string): Promise<boolean> {
-    const userSubscription = await this.prismaClient.channel.findUnique({
+    const userSubscription = await this.prismaClient.channel.findFirst({
       where: {
         id: channelId,
       },

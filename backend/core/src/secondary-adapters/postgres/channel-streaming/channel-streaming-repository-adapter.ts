@@ -113,7 +113,7 @@ export class ChannelStreamingRepositoryAdapter implements ChannelStreamingReposi
   }
 
   getVideoById(videoId: string): Promise<VideoWithChannelAndAuthorDto | null> {
-    return this.prismaClient.video.findUnique({
+    return this.prismaClient.video.findFirst({
       where: {
         id: videoId,
       },

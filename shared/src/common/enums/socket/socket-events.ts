@@ -15,6 +15,7 @@ export const SocketEvents = {
     JOIN_ROOM_DONE: 'join-room-done',
     LEAVE_ROOM: 'leave-room',
     LEAVE_ROOM_DONE: 'leave-room-done',
+    UPDATE_CHAT_PARTICIPANTS_DONE: 'update-chat-participants',
   },
   video: {
     UPDATE_LIVE_VIEWS_DONE: 'update-live-views-done',

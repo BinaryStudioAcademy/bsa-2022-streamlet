@@ -5,7 +5,8 @@ import { amqpService } from '../services';
 import { AmqpQueue, SocketEvents } from '~/shared/enums/enums';
 import { logger } from '~/config/logger';
 import { throttle } from '~/helpers/throttle';
-import { getUserIdBySocketId } from '~/helpers/get-user-id-by-socket-id.helper';
+import { getUserIdsInRoom } from '~/helpers/get-user-ids-in-room.helper';
+import { getSocketIdByUserId } from '~/helpers/get-socket-id-by-user-id.helper';
 
 class SocketService {
   private io: SocketIo | undefined;
@@ -45,8 +46,9 @@ class SocketService {
           if (data && this.io) {
             const { authorId, streamData } = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(streamData)}`);
-            if (this.socketClients.has(authorId)) {
-              this.io.to(this.socketClients.get(authorId) as string).emit(SocketEvents.notify.STREAM_OBS_STATUS, true);
+            const socketId = getSocketIdByUserId(this.socketClients, authorId);
+            if (socketId) {
+              this.io.to(socketId).emit(SocketEvents.notify.STREAM_OBS_STATUS, true);
             }
           }
         },
@@ -58,8 +60,9 @@ class SocketService {
           if (data && this.io) {
             const { authorId, streamingKey } = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(streamingKey)}`);
-            if (this.socketClients.has(authorId)) {
-              this.io.to(this.socketClients.get(authorId) as string).emit(SocketEvents.notify.STREAM_OBS_STATUS, false);
+            const socketId = getSocketIdByUserId(this.socketClients, authorId);
+            if (socketId) {
+              this.io.to(socketId).emit(SocketEvents.notify.STREAM_OBS_STATUS, false);
             }
           }
         },
@@ -80,14 +83,21 @@ class SocketService {
 
       const updateLiveViews = throttle((roomId: string) => {
         if (this.io) {
-          const countIsLive = this.io.sockets.adapter.rooms.get(roomId)?.size;
-          this.io.to(roomId).emit(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, { live: countIsLive });
+          if (this.io.sockets.adapter.rooms.has(roomId)) {
+            const countIsLive = this.io.sockets.adapter.rooms.get(roomId)?.size;
+            this.io.to(roomId).emit(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, { live: countIsLive });
+
+            const clientsInRoom = Array.from(this.io.sockets.adapter.rooms.get(roomId) || []);
+            this.io.to(roomId).emit(SocketEvents.chat.UPDATE_CHAT_PARTICIPANTS_DONE, {
+              participants: getUserIdsInRoom(this.socketClients, clientsInRoom),
+            });
+          }
         }
       }, 2000);
 
       socket.on(SocketEvents.socket.HANDSHAKE, (userId: string) => {
         if (userId) {
-          this.socketClients.set(userId, socket.id);
+          this.socketClients.set(socket.id, userId);
           logger.info(`CLient ${socket.id} = ${userId} handshaked`);
           if (this.io) {
             this.io.to(socket.id).emit(SocketEvents.socket.HANDSHAKE_DONE, { id: socket.id });
@@ -110,9 +120,8 @@ class SocketService {
       });
 
       socket.on('disconnect', async () => {
-        const userId = getUserIdBySocketId(this.socketClients, socket.id);
-        if (userId) {
-          this.socketClients.delete(userId);
+        if (this.socketClients.has(socket.id)) {
+          this.socketClients.delete(socket.id);
         }
 
         logger.info(`${socket.id} connection lost`);

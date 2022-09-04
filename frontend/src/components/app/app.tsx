@@ -21,9 +21,8 @@ import { ProfilePreferencesPage } from 'pages/profile-preferences-page/profile-p
 import { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from 'helpers/helpers';
 import { GoogleAuthorization } from 'components/auth/components/common/social-buttons/google-button/google-authorization';
 import { HistoryPage } from '../../pages/history-page/history-page';
-
-import styles from './app.module.scss';
 import { AccountVerificationInitPage } from 'pages/account-verification-page/account-verification-init-page';
+import { LiveChat } from 'pages/live-chat/live-chat';
 import { FollowingPage } from 'pages/following-page/following-page';
 import { Navigate } from 'react-router-dom';
 import { OverviewTab } from 'pages/following-page/tabs/overview/overview-tab';
@@ -35,6 +34,8 @@ import { closeSidebar } from 'store/layout/actions';
 import { socket } from 'common/config/config';
 import { store } from 'store/store';
 import { StudioHomeContainer } from 'pages/studio/home/home-container';
+
+import styles from './app.module.scss';
 
 socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
   store.dispatch(socketActions.addSocketId(id));
@@ -92,6 +93,7 @@ const App: FC = () => {
           <Route path={AppRoutes.ACCOUNT_VERIFICATION_CONFIRM} element={<AccountVerificationConfirmPage />} />
           <Route path={AppRoutes.ACCOUNT_VERIFICATION_INIT} element={<AccountVerificationInitPage />} />
           <Route path={AppRoutes.RESTORE_PASSWORD_CONFIRM} element={<RestorePasswordConfirmPage />} />
+          <Route path={AppRoutes.LIVE_CHAT} element={<LiveChat />} />
         </Routes>
       )}
       {isHasStudioNavigation && (
