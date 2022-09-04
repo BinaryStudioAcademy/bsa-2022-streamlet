@@ -9,7 +9,7 @@ type Props = {
 const LiveIndicator: FC<Props> = ({ className }) => {
   return (
     <span className={clsx(styles['indicator'], className)}>
-      <div className={clsx(styles['circle'], styles['blink'])} aria-hidden="true"></div>Live
+      <div className={styles['live-label']}>Live</div>
     </span>
   );
 };

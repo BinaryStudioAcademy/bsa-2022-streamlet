@@ -6,6 +6,7 @@ import styles from './styles.module.scss';
 import { toggleVideoPlay } from './helpers/toggle-video-play';
 import clsx from 'clsx';
 import { PlayPauseCenterEffect } from './play-pause-center-effect/play-pause-center-effect';
+import fscreen from 'fscreen';
 
 type VideoPlayerProps = {
   sizingProps?: {
@@ -33,7 +34,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
     hls: true,
   });
   const [isFullscreen, setIsFullscreen] = useState(
-    document.fullscreenElement !== null && document.fullscreenElement === videoContainerWrapperRef.current,
+    fscreen.fullscreenElement !== null && fscreen.fullscreenElement === videoContainerWrapperRef.current,
   );
 
   useEffect(() => {
@@ -61,13 +62,13 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
   useEffect(() => {
     const handleFullscreenChange = (): void => {
       setIsFullscreen(
-        document.fullscreenElement !== null && document.fullscreenElement === videoContainerWrapperRef.current,
+        fscreen.fullscreenElement !== null && fscreen.fullscreenElement === videoContainerWrapperRef.current,
       );
     };
 
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    fscreen.addEventListener('fullscreenchange', handleFullscreenChange);
     return () => {
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      fscreen.removeEventListener('fullscreenchange', handleFullscreenChange);
     };
   }, []);
 
@@ -152,10 +153,10 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
           toggleVideoPlay(e.currentTarget);
         }}
         onDoubleClick={(): void => {
-          if (document.fullscreenElement !== null) {
-            document.exitFullscreen();
+          if (fscreen.fullscreenElement !== null) {
+            fscreen.exitFullscreen();
           } else if (videoContainerWrapperRef.current) {
-            videoContainerWrapperRef.current.requestFullscreen();
+            fscreen.requestFullscreen(videoContainerWrapperRef.current);
           }
         }}
       >
