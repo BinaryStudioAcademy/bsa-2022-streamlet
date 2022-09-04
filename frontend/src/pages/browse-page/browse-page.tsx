@@ -6,8 +6,8 @@ import clsx from 'clsx';
 import { useAppDispatch, useAppSelector, useState } from '../../hooks/hooks';
 
 import { videoActions } from '../../store/actions';
-import { generateHistorySkeletons } from '../history-page/common/skeleton/skeleton';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
+import { generateBrowsePageSkeleton } from './common/skeleton';
 
 const BrowsePage: FC = () => {
   const dispatch = useAppDispatch();
@@ -31,7 +31,9 @@ const BrowsePage: FC = () => {
 
   const { popular: popularVideos } = videoData.data;
 
-  const { currentPage, lastPage } = popularVideos;
+  const { dataStatus } = videoData;
+
+  const { currentPage, lastPage, lastListLength } = popularVideos;
 
   useEffect(() => {
     dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
@@ -47,6 +49,10 @@ const BrowsePage: FC = () => {
     onLoadMore: loadMore,
     disabled: videoData.error,
   });
+
+  if (dataStatus === DataStatus.PENDING && currentPage < 0) {
+    return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
+  }
 
   return (
     <div className={styles['browse-page-container']}>
@@ -69,14 +75,12 @@ const BrowsePage: FC = () => {
         })}
       </div>
       <div className={styles['browse-page-video-container']}>
-        {videoData.dataStatus === DataStatus.PENDING ? generateHistorySkeletons(isLightTheme) : null}
+        {videoData.dataStatus === DataStatus.PENDING && generateBrowsePageSkeleton(isLightTheme, lastListLength)}
         {popularVideos.list.map((video) => {
           return <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />;
         })}
         <div ref={sentryRef}>
-          {videoData.dataStatus === DataStatus.PENDING && popularVideos.list.length > 0 ? (
-            <Loader hCentered={true} vCentered={true} spinnerSize={'md'} />
-          ) : null}
+          {videoData.dataStatus === DataStatus.PENDING && popularVideos.list.length > 0 && generateBrowsePageSkeleton(isLightTheme)}
         </div>
       </div>
     </div>

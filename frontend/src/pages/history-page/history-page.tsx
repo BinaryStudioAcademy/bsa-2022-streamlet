@@ -24,68 +24,68 @@ const HistoryPage: FC = () => {
     return state.theme.isLightTheme;
   });
 
+  const { isFirstHistoryPageLoad, currentPage, lastPage, dataStatus, error, list } = useAppSelector((state) => {
+    return state.history.data;
+  });
+
   useEffect(() => {
     if (!user) {
       navigate(AppRoutes.SIGN_IN, { replace: true });
       return;
     }
 
-    dispatch(historyActions.getUserVideoHistoryRecord(1));
-  }, [user, dispatch, navigate]);
-
-  const historyData = useAppSelector((state) => {
-    return state.history.data;
-  });
+    if (isFirstHistoryPageLoad && currentPage !== -1) {
+      return;
+    }
+    if (currentPage === -1) {
+      dispatch(historyActions.getUserVideoHistoryRecord(1));
+    }
+  }, [dispatch, navigate, user, isFirstHistoryPageLoad, currentPage]);
 
   const loadMore = (): void => {
-    dispatch(historyActions.getUserVideoHistoryRecord(historyData.currentPage + 1));
+    dispatch(historyActions.getUserVideoHistoryRecord(currentPage + 1));
   };
 
-  if (!historyData) {
-    return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
-  }
-  const { currentPage, lastPage } = historyData;
-
   const [sentryRef] = useInfiniteScroll({
-    loading: historyData.dataStatus === DataStatus.PENDING,
+    loading: dataStatus === DataStatus.PENDING,
     hasNextPage: currentPage < lastPage,
     onLoadMore: loadMore,
-    disabled: !!historyData.error,
+    disabled: !!error,
     rootMargin: '0px 0px 400px 0px',
   });
 
+  if (dataStatus === DataStatus.PENDING && currentPage < 0) {
+    return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
+  }
+
   return (
     <div className={styles['history-page-container']}>
-      {historyData.list.map((historyRecord, index) => {
+      {list.map((historyRecord, index) => {
+        const { id, video, updatedAt } = historyRecord;
+
         if (!index) {
           return (
-            <div key={historyRecord.id}>
-              <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(historyRecord.updatedAt)}</p>
-              <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={true} />;
+            <div key={id}>
+              <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(updatedAt)}</p>
+              <VideoCard key={id} video={video} isLightTheme={isLightTheme} />;
             </div>
           );
         }
-        const prevHistoryRecordUpdatedAt = historyData.list[index - 1].updatedAt;
-        const currentHistoryUpdatedAt = historyRecord.updatedAt;
-        const isPrevAndCurrentHistoryUpdatedAtSame = isDateSameByDayMonthYear(
-          prevHistoryRecordUpdatedAt,
-          currentHistoryUpdatedAt,
-        );
+        const prevHistoryRecordUpdatedAt = list[index - 1].updatedAt;
+
+        const isPrevAndCurrentHistoryUpdatedAtSame = isDateSameByDayMonthYear(prevHistoryRecordUpdatedAt, updatedAt);
+
         return isPrevAndCurrentHistoryUpdatedAtSame ? (
-          <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={true} />
+          <VideoCard key={id} video={video} isLightTheme={isLightTheme} />
         ) : (
-          <div key={historyRecord.id}>
+          <div key={id}>
             <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(prevHistoryRecordUpdatedAt)}</p>
-            <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={true} />;
+            <VideoCard key={id} video={video} isLightTheme={isLightTheme} />;
           </div>
         );
       })}
-      {historyData.dataStatus === DataStatus.PENDING ? generateHistorySkeletons(isLightTheme) : null}
-      <div ref={sentryRef}>
-        {historyData.dataStatus === DataStatus.PENDING && (
-          <Loader hCentered={true} vCentered={true} spinnerSize={'md'} />
-        )}
-      </div>
+
+      <div ref={sentryRef}>{dataStatus === DataStatus.PENDING && generateHistorySkeletons(isLightTheme)}</div>
     </div>
   );
 };
