@@ -16,14 +16,14 @@ const usePagination = ({
   itemInOnePage,
 }: PaginationHelperInputType): PaginationHelperReturnType => {
   const lastPage = Math.ceil(allDataLength / itemInOnePage);
-  const skip = isNaN(pageNumber) ? 0 : (pageNumber - 1) * itemInOnePage;
-  const currentPage = skip / allDataLength + 1;
+  const currentPageNumber = lastPage < pageNumber || pageNumber <= 0 ? 1 : pageNumber;
+  const skip = (currentPageNumber - 1) * itemInOnePage;
 
   return {
     take: itemInOnePage,
     skip,
     lastPage: lastPage || 1,
-    currentPage: currentPage || 1,
+    currentPage: currentPageNumber,
   };
 };
 
