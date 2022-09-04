@@ -102,7 +102,7 @@ class VideoApi {
 
   public getRepliesForComment(commentId: string): Promise<Comment[]> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.VIDEOS}/${VideoApiPath.REPLIES_COMMENT}/${commentId}`,
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.REPLIES_COMMENT}/${commentId}`,
       options: {
         method: HttpMethod.GET,
       },
