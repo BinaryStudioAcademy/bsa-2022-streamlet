@@ -295,7 +295,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
         videoViews: 'desc',
       },
     });
-    return trimPopular(popularVideos, lastPage, currentPage);
+    return trimPopular(popularVideos, lastPage, currentPage, category);
   }
 
   async getPopularLive({
@@ -328,7 +328,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
         videoViews: 'desc',
       },
     });
-    return trimPopular(popularVideos, lastPage, currentPage);
+    return trimPopular(popularVideos, lastPage, currentPage, 'live');
   }
 
   searchByTags({ take, skip, tags }: TagSearchRequestQueryDto): Promise<VideoWithChannel[]> {
