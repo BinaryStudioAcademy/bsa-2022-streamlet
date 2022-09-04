@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 import { PrismaClient, Prisma } from '@prisma/client';
 import { CONTAINER_TYPES, PopularVideoResponseDto, PopularVideosRequestDtoType } from '~/shared/types/types';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
-import { trimPopular, trimVideo } from '~/shared/helpers';
+import { trimPopular, trimVideo, trimVideoSearch } from '~/shared/helpers';
 import { trimVideoWithComments } from '~/shared/helpers/trim-video';
 import {
   CategorySearchRequestQueryDto,
@@ -537,7 +537,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
 
     const total = result.length;
-    const list = result.map(trimVideo);
+    const list = result.map(trimVideoSearch);
 
     return {
       list,

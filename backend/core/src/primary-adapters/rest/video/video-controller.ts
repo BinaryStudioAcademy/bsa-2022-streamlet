@@ -10,6 +10,7 @@ import {
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import {
+  ChannelSearch,
   CONTAINER_TYPES,
   ExtendedAuthenticatedRequest,
   ExtendedRequest,
@@ -32,6 +33,7 @@ import {
   SearchQueryParam,
   SortByFilterId,
   TypeFilterId,
+  SearchDataResponseDto,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -47,6 +49,8 @@ import {
 } from '~/shared/enums/enums';
 import { authenticationMiddleware, CreateVideoHistoryRecordMiddleware } from '../middleware';
 import { normalizeCategoryFiltersPayload } from '~/primary-adapters/rest/category/helpers/normalize-category-filters-helper';
+import { ChannelService } from '~/core/channel/application/channel-service';
+import { matchChannelFilterSortBy } from '~/shared/enums/channel/channel-filters-data.config';
 
 /**
  * @swagger
@@ -104,6 +108,7 @@ export class VideoController extends BaseHttpController {
 
   constructor(
     @inject(CONTAINER_TYPES.VideoService) videoService: VideoService,
+    @inject(CONTAINER_TYPES.ChannelService) private channelService: ChannelService,
     @inject(CONTAINER_TYPES.VideoRepository) private videoRepository: VideoRepository,
     @inject(CONTAINER_TYPES.ChannelSubscriptionRepository)
     private channelSubscriptionRepository: ChannelSubscriptionRepository,
@@ -148,6 +153,12 @@ export class VideoController extends BaseHttpController {
    *      security: []
    *      parameters:
    *        - in: query
+   *          name: search_query
+   *          description: search videos by text value
+   *          required: true
+   *          schema:
+   *            type: string
+   *        - in: query
    *          name: date
    *          description: filtered videos by date
    *          required: false
@@ -179,14 +190,28 @@ export class VideoController extends BaseHttpController {
    *              schema:
    *                type: object
    *                properties:
-   *                  list:
-   *                    type: array
-   *                    items:
-   *                      $ref: '#/components/schemas/Video'
-   *                  total:
-   *                    type: interger
-   *                    format: int32
-   *                    minimum: 0
+   *                  videos:
+   *                    type: object
+   *                    properties:
+   *                      list:
+   *                        type: array
+   *                        items:
+   *                          $ref: '#/components/schemas/Video'
+   *                      total:
+   *                        type: integer
+   *                        format: int32
+   *                        minimum: 0
+   *                  channels:
+   *                    type: object
+   *                    properties:
+   *                      list:
+   *                        type: array
+   *                        items:
+   *                          $ref: '#/components/schemas/Channel'
+   *                      total:
+   *                        type: integer
+   *                        format: int32
+   *                        minimum: 0
    */
   @httpGet(VideoApiPath.SEARCH)
   public async getVideosBySearch(
@@ -195,7 +220,7 @@ export class VideoController extends BaseHttpController {
     @queryParam(SearchQueryParam.DATE) date: DateFilterId,
     @queryParam(SearchQueryParam.TYPE) type: TypeFilterId,
     @queryParam(SearchQueryParam.SORT_BY) sortBy: SortByFilterId,
-  ): Promise<DataVideo> {
+  ): Promise<SearchDataResponseDto> {
     const queryParams: VideoSearch = {
       searchText: search ? search.trim().split(' ').join(' & ') : undefined,
       duration: matchVideoFilterDuration[duration] || matchVideoFilterDuration[DurationFilterId.ANY],
@@ -204,7 +229,22 @@ export class VideoController extends BaseHttpController {
       sortBy: matchVideoFilterSortBy[sortBy] || matchVideoFilterSortBy[SortByFilterId.DEFAULT],
     };
 
-    return await this.videoService.getVideosBySearch(queryParams);
+    const channelQueryParams: ChannelSearch = {
+      searchText: queryParams.searchText,
+      date: queryParams.date,
+      sortBy: matchChannelFilterSortBy[sortBy] || matchChannelFilterSortBy[SortByFilterId.DEFAULT],
+    };
+
+    if (type === TypeFilterId.CHANNEL) {
+      return {
+        channels: await this.channelService.getChannelsBySearch(channelQueryParams),
+        videos: { list: [], total: 0 },
+      };
+    }
+    return {
+      channels: await this.channelService.getFirstChannelBySearch(channelQueryParams),
+      videos: await this.videoService.getVideosBySearch(queryParams),
+    };
   }
 
   @httpGet(VideoApiPath.POPULAR, optionalAuthenticationMiddleware)

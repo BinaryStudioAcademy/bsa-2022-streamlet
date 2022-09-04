@@ -9,3 +9,5 @@ export { trimChatMessage } from './trim-chat-message';
 export { trimSubscriptionInfo } from './trim-subscription-info';
 export { trimPopular } from './video/create-popular-response';
 export { trimChannelToSubscriptionChannel } from './trim-channel-to-subscription-channel';
+export { trimChannelSearch } from './trim-channel-search';
+export { trimVideoSearch } from './trim-video-search';
