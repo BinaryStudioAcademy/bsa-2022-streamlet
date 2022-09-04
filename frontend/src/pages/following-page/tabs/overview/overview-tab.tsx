@@ -1,10 +1,10 @@
 import { DataStatus } from 'common/enums/enums';
 import { useAppSelector } from 'hooks/hooks';
 import React, { FC } from 'react';
-import { NoVideosYet } from '../common/no-videos-yet/no-videos-yet';
 import { LiveBlock } from './live-block/live-block';
 import { OfflineBlock } from './offline-block/offline-block';
 import styles from './styles.module.scss';
+import { NoVideosYet } from '../../../../components/common/no-videos-yet/no-videos-yet';
 
 const OverviewTab: FC = () => {
   const hasAnyBlock = useAppSelector(

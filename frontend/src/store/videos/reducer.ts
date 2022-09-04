@@ -10,6 +10,7 @@ type State = {
       currentPage: number;
       lastPage: number;
       lastListLength: number;
+      category: string;
     };
   };
   dataStatus: DataStatus;
@@ -25,6 +26,7 @@ const initialState: State = {
       currentPage: -1,
       lastPage: -1,
       lastListLength: 0,
+      category: '',
     },
   },
   dataStatus: DataStatus.IDLE,

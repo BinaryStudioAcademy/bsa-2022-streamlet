@@ -4,6 +4,7 @@ type PopularVideoResponseDto = {
   list: VideoCard[];
   currentPage: number;
   lastPage: number;
+  category: string;
 };
 
 export { type PopularVideoResponseDto };
