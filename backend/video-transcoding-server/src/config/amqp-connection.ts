@@ -40,6 +40,7 @@ const amqpConnect = async (): Promise<Channel> => {
   const amqpChannel = await connection.createChannel();
   amqpChannel.assertQueue(AmqpQueue.STREAM_TRANSCODER);
   amqpChannel.assertQueue(AmqpQueue.STREAM_INTERRUPTED);
+  amqpChannel.assertQueue('PREVIEW_STOPPED');
 
   return amqpChannel;
 };
