@@ -5,7 +5,6 @@ import {
   VideoCommentResponseDto,
   CategorySearchRequestQueryDto,
   TagSearchRequestQueryDto,
-  PopularVideosRequestDtoType,
   PopularVideoResponseDto,
   BaseReplyRequestDto,
   Comment,
@@ -15,6 +14,21 @@ import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.ty
 import { VideoRepositoryFilters } from './video-repository-filters';
 import { VideoSearch } from '~/shared/types/types';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
+
+export type GetPopularInputType = {
+  category: string;
+  take: number;
+  skip: number;
+  lastPage: number;
+  currentPage: number;
+};
+
+export type GetPopularLiveInputType = {
+  take: number;
+  skip: number;
+  lastPage: number;
+  currentPage: number;
+};
 
 export interface VideoRepository {
   getById(id: string): Promise<VideoExpandedInfo | null>;
@@ -29,18 +43,8 @@ export interface VideoRepository {
     userId: string,
   ): Promise<CreateReactionResponseDto | null>;
   addComment(request: VideoCommentRequestDto, authorId: string): Promise<VideoCommentResponseDto | null>;
-  getPopular(
-    request: PopularVideosRequestDtoType,
-    take: number,
-    skip: number,
-    lastPage: number,
-  ): Promise<PopularVideoResponseDto>;
-  getPopularLive(
-    request: PopularVideosRequestDtoType,
-    take: number,
-    skip: number,
-    lastPage: number,
-  ): Promise<PopularVideoResponseDto>;
+  getPopular(arg: GetPopularInputType): Promise<PopularVideoResponseDto>;
+  getPopularLive(arg: GetPopularLiveInputType): Promise<PopularVideoResponseDto>;
   getPopularVideoLength(category: string): Promise<number>;
   commentReactionByUser(commentId: string, userId: string): Promise<boolean | null>;
   calculateCommentReaction(commentId: string): Promise<{ likeNum: number; dislikeNum: number }>;

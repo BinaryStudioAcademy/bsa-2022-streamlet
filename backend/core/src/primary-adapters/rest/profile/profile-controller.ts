@@ -23,6 +23,7 @@ import { exceptionMessages } from '~/shared/enums/messages';
 import { authenticationMiddleware } from '../middleware/authentication-middleware';
 import { Forbidden } from '~/shared/exceptions/forbidden';
 import { ApiPath, ProfileApiPath } from 'shared/build';
+import { BadRequest } from '~/shared/exceptions/bad-request';
 
 /* @swagger
  * tags:
@@ -102,6 +103,8 @@ export class ProfileController extends BaseHttpController {
    *                  $ref: '#/components/schemas/ProfileUpdateResponseDto'
    *        404:
    *          $ref: '#/components/responses/NotFound'
+   *        400:
+   *          $ref '#/components/responses/BadRequest
    */
   @httpPut(ProfileApiPath.UPDATE, authenticationMiddleware)
   public async update(
@@ -116,7 +119,11 @@ export class ProfileController extends BaseHttpController {
 
     const res = await this.profileService.update(body);
 
-    if (!res) {
+    if (res instanceof BadRequest) {
+      throw res;
+    }
+
+    if (res === null) {
       throw new NotFound(exceptionMessages.auth.USER_NOT_FOUND);
     }
 
