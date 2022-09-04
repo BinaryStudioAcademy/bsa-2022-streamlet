@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { useAppDispatch, useAppSelector, useState } from '../../hooks/hooks';
 
 import { videoActions } from '../../store/actions';
-import { VideoCard } from '../../components/search/components/components';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { generateBrowsePageSkeleton } from './common/skeleton';
 
