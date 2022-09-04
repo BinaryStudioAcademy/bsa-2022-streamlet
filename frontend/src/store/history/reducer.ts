@@ -10,6 +10,7 @@ type State = {
     currentPage: number;
     lastPage: number;
     dataStatus: DataStatus;
+    isFirstHistoryPageLoad: boolean;
     error: string | undefined;
     list: HistoryListType[];
   };
@@ -18,8 +19,9 @@ type State = {
 const initialState: State = {
   data: {
     list: [],
-    lastPage: 1,
-    currentPage: 1,
+    isFirstHistoryPageLoad: true,
+    lastPage: -1,
+    currentPage: -1,
     dataStatus: DataStatus.IDLE,
     error: undefined,
   },
@@ -35,7 +37,7 @@ const reducer = createReducer(initialState, (builder) => {
     let newList: HistoryListType[] = state.data.list;
     const { currentPage, list } = payload;
 
-    if (currentPage === 1) {
+    if (currentPage === 1 || currentPage === -1) {
       newList = list;
     } else if (!isObjectUniqueIdContainInTwoArray(newList, list)) {
       newList = state.data.list.concat(list);
@@ -44,6 +46,7 @@ const reducer = createReducer(initialState, (builder) => {
     state.data = {
       ...payload,
       list: newList,
+      isFirstHistoryPageLoad: false,
       error: undefined,
       dataStatus: DataStatus.FULFILLED,
     };
