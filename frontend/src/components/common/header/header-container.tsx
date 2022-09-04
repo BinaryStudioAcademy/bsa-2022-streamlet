@@ -137,10 +137,10 @@ const HeaderContainer: FC = () => {
   };
 
   const handleClickSearchBtn = (): void => {
-    if (searchValue) {
-      handleSetInputSearch(searchValue);
+    if (searchValue.trim()) {
+      handleSetInputSearch(searchValue.trim());
       handleClearActiveFilterIds();
-      const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchValue });
+      const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchValue.trim() });
       navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`);
       setMobileSearchToggle(false);
     } else {
