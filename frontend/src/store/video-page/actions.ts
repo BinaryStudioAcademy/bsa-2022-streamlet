@@ -9,7 +9,7 @@ import {
   CreateCommentReactionRequestDto,
   CreateCommentReactionResponseDto,
 } from 'common/types/types';
-import { VideoExpandedResponseDto } from 'shared/build';
+import { VideoExpandedResponseDto, ResponseRepliesForComment, BaseReplyRequestDto } from 'shared/build';
 import { ActionType } from './common';
 
 const getVideo = createAsyncThunk<VideoExpandedResponseDto, string, AsyncThunkConfig>(
@@ -27,6 +27,20 @@ const addVideoComment = createAsyncThunk<VideoCommentResponseDto, VideoCommentRe
     const { videoApi } = extra;
 
     return await videoApi.comment(payload);
+  },
+);
+
+const addVideoCommentReply = createAsyncThunk<ResponseRepliesForComment, BaseReplyRequestDto, AsyncThunkConfig>(
+  ActionType.ADD_REPLY_FOR_COMMENT,
+  async (payload: BaseReplyRequestDto, { extra }) => {
+    const { videoApi } = extra;
+
+    const data = await videoApi.addVideoCommentReply(payload);
+
+    return {
+      data,
+      commentId: payload.parentId,
+    };
   },
 );
 
@@ -50,4 +64,29 @@ const commentReact = createAsyncThunk<
 
 const updateLiveViews = createAction<number>(ActionType.UPDATE_LIVE_VIEWS);
 
-export { getVideo, videoReact, addVideoComment, updateLiveViews, commentReact };
+const getRepliesForComment = createAsyncThunk<ResponseRepliesForComment, string, AsyncThunkConfig>(
+  ActionType.GET_REPLIES_FOR_COMMENT,
+  async (commentId: string, { extra }) => {
+    const { videoApi } = extra;
+
+    const data = await videoApi.getRepliesForComment(commentId);
+
+    return {
+      data,
+      commentId,
+    };
+  },
+);
+
+const resetVideoPage = createAction(ActionType.RESET_VIDEO_PAGE);
+
+export {
+  getVideo,
+  videoReact,
+  addVideoComment,
+  updateLiveViews,
+  commentReact,
+  getRepliesForComment,
+  addVideoCommentReply,
+  resetVideoPage,
+};

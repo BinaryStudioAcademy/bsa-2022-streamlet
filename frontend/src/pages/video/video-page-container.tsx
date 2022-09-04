@@ -13,6 +13,7 @@ import { store } from 'store/store';
 import { ChannelInfoRow } from './channel-info-row/channel-info-row';
 import { VideoHeader } from './video-header/video-header';
 import { LinksBlock } from './links-block/links-block';
+import { resetVideoPage } from 'store/video-page/actions';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -33,6 +34,12 @@ const VideoPageContainer: FC = () => {
     user: state.auth.user,
     channel: state.videoPage.video?.channel,
   }));
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetVideoPage());
+    };
+  }, [dispatch]);
 
   const videoId = isVideoIdProvided as string;
 
@@ -63,6 +70,11 @@ const VideoPageContainer: FC = () => {
       return;
     }
     dispatch(videoPageActions.addVideoComment({ videoId, text }));
+    setReactState(true);
+  };
+
+  const handlerCancelForReplyForm = (): void => {
+    return void 1;
   };
 
   if (!videoData || !channel) {
@@ -117,6 +129,7 @@ const VideoPageContainer: FC = () => {
             comments={videoData.comments}
             onLike={handleCommentLikeReact}
             onDislike={handleCommentDislikeReact}
+            handlerCancelForReplyForm={handlerCancelForReplyForm}
           />
         </div>
       )}
