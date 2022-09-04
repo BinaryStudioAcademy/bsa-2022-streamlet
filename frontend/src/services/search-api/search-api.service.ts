@@ -1,6 +1,6 @@
 import { Http } from 'services/http/http.service';
+import { SearchDataResponseDto } from 'common/types/types';
 import { ApiPath, VideoApiPath } from 'common/enums/enums';
-import { DataVideo } from 'shared/build';
 
 type Constructor = {
   http: Http;
@@ -16,7 +16,7 @@ class SearchApi {
     this.#apiPrefix = apiPrefix;
   }
 
-  async getSearchResults(searchPayload: { searchParamURL: string }): Promise<DataVideo> {
+  async getSearchResults(searchPayload: { searchParamURL: string }): Promise<SearchDataResponseDto> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.SEARCH}?${searchPayload.searchParamURL}`,
     });

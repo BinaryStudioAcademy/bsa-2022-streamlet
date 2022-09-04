@@ -38,3 +38,5 @@ declare module 'react-notifications-component';
 export * from './channel/channel';
 
 export * from './chat/chat';
+
+export { SearchDataResponseDto } from './search/search';

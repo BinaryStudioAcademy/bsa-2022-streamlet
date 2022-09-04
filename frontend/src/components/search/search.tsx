@@ -19,7 +19,10 @@ const Search: FC = () => {
     search: {
       searchText,
       activeFilterId,
-      results: { list, total, dataStatus },
+      results: {
+        videos: { list: videosList, total: videosTotal },
+        dataStatus,
+      },
     },
     theme: { isLightTheme },
   } = useAppSelector((state) => ({
@@ -82,8 +85,8 @@ const Search: FC = () => {
             <Loader spinnerSize={LoaderSize.MD} />
           ) : (
             <>
-              {(!searchText || total === 0) && <ResultNotFound />}
-              {list.map((c: VideoCardType) => (
+              {(!searchText || videosTotal === 0) && <ResultNotFound />}
+              {videosList.map((c: VideoCardType) => (
                 <VideoCard key={c.id} video={c} isLightTheme={isLightTheme} />
               ))}
             </>
