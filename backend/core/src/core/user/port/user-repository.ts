@@ -1,7 +1,6 @@
 import { Category, User } from '@prisma/client';
 import { UserGetPreferencesDto, UserSignUpRequestDto } from '~/shared/types/types';
 import { DefaultRequestParam, UserBindCategoriesDto } from 'shared/build';
-import { PrismaError } from '~/shared/exceptions/prisma-error';
 
 export interface UserRepository {
   getAll(): Promise<User[]>;
