@@ -20,3 +20,4 @@ export * from './comment';
 export * from './chat/chat';
 export * from './search/search';
 export * from './following/following';
+export * from './common/batch-payload';

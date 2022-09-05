@@ -1,4 +1,4 @@
-import { HistoryRequestDto, HistoryResponseDto } from '~/shared/types/types';
+import { BatchPayload, HistoryRequestDto, HistoryResponseDto } from '~/shared/types/types';
 import { History } from '@prisma/client';
 
 export type getAllUserHistoryInputType = {
@@ -14,4 +14,5 @@ export interface HistoryRepository {
   createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<History>;
   isHistoryAlreadyExist(historyRequestDto: HistoryRequestDto): Promise<History | null>;
   updateHistoryRecord(id: string): Promise<History>;
+  deleteAllUserHistory(userId: string): Promise<BatchPayload>;
 }
