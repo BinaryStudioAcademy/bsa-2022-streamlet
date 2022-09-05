@@ -83,12 +83,11 @@ const BrowsePage: FC = () => {
       </div>
       <div
         className={clsx({
-          [styles['no-video-in-list']]: !popularVideos.list.length,
+          [styles['no-video-in-list']]: !popularVideos.list.length && videoData.dataStatus !== DataStatus.PENDING,
           [styles['browse-page-video-container']]: popularVideos.list.length,
         })}
       >
-        {videoData.dataStatus === DataStatus.PENDING && generateBrowsePageSkeleton(isLightTheme)}
-        {!popularVideos.list.length ? (
+        {!popularVideos.list.length && videoData.dataStatus !== DataStatus.PENDING ? (
           <div className={styles['no-video-in-list']}>
             <NoVideosYet />
           </div>
