@@ -19,7 +19,6 @@ const BrowsePage: FC = () => {
 
   const handleCategoryClick = (category: string): void => {
     if (activeCategory === reposnseCategory && activeCategory !== category) {
-      //dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
       setActiveCategory(category);
     }
   };
