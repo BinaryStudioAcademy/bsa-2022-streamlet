@@ -211,7 +211,7 @@ export class ChannelStreamingService {
 
     if (status === StreamStatus.LIVE) {
       this.amqpChannel.sendToQueue({
-        queue: 'PREVIEW_STOPPED' as AmqpQueue, //TODO: add queue to enum
+        queue: AmqpQueue.PREVIEW_STOPPED,
         content: Buffer.from(JSON.stringify({ videoId })),
       });
       update = await this.channelStreamingRepository.updateStream(videoId, {
