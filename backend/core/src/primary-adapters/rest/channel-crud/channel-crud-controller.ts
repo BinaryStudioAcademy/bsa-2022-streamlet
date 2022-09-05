@@ -21,7 +21,6 @@ import { exceptionMessages } from '~/shared/enums/messages';
 import { errorCodes, NotFound } from '~/shared/exceptions/exceptions';
 import { trimChannelInfo } from '~/shared/helpers';
 import {
-  ChannelInfoRequestDto,
   ChannelInfoResponseDto,
   CONTAINER_TYPES,
   ExtendedAuthenticatedRequest,
@@ -56,7 +55,7 @@ export class ChannelCrudController extends BaseHttpController {
 
   @httpGet(ChannelCrudApiPath.$ID, optionalAuthenticationMiddleware)
   public async getOne(
-    @requestParam() { id }: ChannelInfoRequestDto,
+    @requestParam('channelId') id: string,
     @request() req: ExtendedRequest,
   ): Promise<ChannelInfoResponseDto> {
     const channel = await this.channelService.getChannelById({ id });
@@ -80,7 +79,7 @@ export class ChannelCrudController extends BaseHttpController {
     CONTAINER_TYPES.ChannelOwnerMiddleWare,
   )
   public async updateAvatar(
-    @requestParam() { id }: ChannelInfoRequestDto,
+    @requestParam('channelId') id: string,
     @requestBody() { base64Str }: ChannelProfileUpdateMediaRequestDto,
   ): Promise<ChannelProfileUpdateResponseDto> {
     const updatedChannel = await this.channelService.updateAvatar({
@@ -97,7 +96,7 @@ export class ChannelCrudController extends BaseHttpController {
     CONTAINER_TYPES.ChannelOwnerMiddleWare,
   )
   public async updateBanner(
-    @requestParam() { id }: ChannelInfoRequestDto,
+    @requestParam('channelId') id: string,
     @requestBody() { base64Str }: ChannelProfileUpdateMediaRequestDto,
   ): Promise<ChannelProfileUpdateResponseDto> {
     const updatedChannel = await this.channelService.updateBanner({
@@ -110,7 +109,7 @@ export class ChannelCrudController extends BaseHttpController {
 
   @httpPut(ChannelCrudApiPath.$ID, authenticationMiddleware, CONTAINER_TYPES.ChannelOwnerMiddleWare)
   public async updateSettings(
-    @requestParam() { id }: ChannelInfoRequestDto,
+    @requestParam('channelId') id: string,
     @requestBody() { name, description }: ChannelProfileUpdateRequestDto,
   ): Promise<ChannelProfileUpdateResponseDto> {
     const updatedChannel = await this.channelService.updateSettings({

@@ -60,10 +60,10 @@ export class HistoryController extends BaseHttpController {
    *        401:
    *          $ref: '#/components/responses/NotFound'
    */
-  @httpGet(`${HistoryApiPath.ROOT}:id`, authenticationMiddleware)
+  @httpGet(HistoryApiPath.$ID, authenticationMiddleware)
   public getAllUserHistory(
     @request() req: ExtendedAuthenticatedRequest,
-    @requestParam() { id: page }: { id: string },
+    @requestParam('pageId') page: string,
   ): Promise<HistoryResponseDto> {
     const { id: userId } = req.user;
     return this.historyService.getUserHistory(userId, page);

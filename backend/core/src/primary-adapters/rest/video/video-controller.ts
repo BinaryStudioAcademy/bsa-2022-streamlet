@@ -446,7 +446,7 @@ export class VideoController extends BaseHttpController {
 
   @httpPost(`${VideoApiPath.COMMENT}${VideoApiPath.REACTION}${VideoApiPath.$ID}`, authenticationMiddleware)
   public async addCommentReaction(
-    @requestParam('id') id: string,
+    @requestParam('videoId') id: string,
     @requestBody() body: CreateReactionRequestDto,
     @request() req: ExtendedAuthenticatedRequest,
   ): Promise<CreateReactionResponseDto> {

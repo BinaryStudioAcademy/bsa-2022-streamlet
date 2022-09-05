@@ -9,7 +9,6 @@ import {
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import {
-  ChatInfoRequestDto,
   ChatInfoResponseDto,
   ChatMessageRequestDto,
   CONTAINER_TYPES,
@@ -120,7 +119,7 @@ export class ChatController extends BaseHttpController {
    *                  $ref: '#/components/schemas/Error'
    */
   @httpGet(ChatApiPath.$ID)
-  public async getChatInfo(@requestParam() { id }: ChatInfoRequestDto): Promise<ChatInfoResponseDto> {
+  public async getChatInfo(@requestParam('videoId') id: string): Promise<ChatInfoResponseDto> {
     const video = await this.chatService.getChatMessagesByVideoId(id);
     if (!video) {
       throw new NotFound(exceptionMessages.chat.CHAT_ID_NOT_FOUND);
@@ -194,7 +193,7 @@ export class ChatController extends BaseHttpController {
   @httpPost(ChatApiPath.$ID, authenticationMiddleware)
   public async createChatMessage(
     @request() req: ExtendedAuthenticatedRequest,
-    @requestParam() { id }: ChatInfoRequestDto,
+    @requestParam('videoId') id: string,
     @requestBody() message: ChatMessageRequestDto,
   ): Promise<ChatMessageResponseDto> {
     if (!message.text) {

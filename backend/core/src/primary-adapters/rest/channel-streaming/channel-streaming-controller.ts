@@ -11,7 +11,6 @@ import {
 } from 'inversify-express-utils';
 import {
   CONTAINER_TYPES,
-  DefaultRequestParam,
   ResetStreamingKeyRequestDto,
   StreamingKeyResponseDto,
   RtmpLiveRequestDto,
@@ -224,7 +223,7 @@ export class ChannelStreamingController extends BaseHttpController {
    *          description: channel not found
    */
   @httpGet(`${ChannelStreamingApiPath.STREAMING_KEY}${ChannelStreamingApiPath.$CHANNEL_ID}`, authenticationMiddleware)
-  public async getStreamingKey(@requestParam() { id }: DefaultRequestParam): Promise<StreamingKeyResponseDto> {
+  public async getStreamingKey(@requestParam('channelId') id: string): Promise<StreamingKeyResponseDto> {
     const keyData = await this.channelStreamingService.getStreamingKey(id);
     if (keyData === null) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
@@ -311,7 +310,7 @@ export class ChannelStreamingController extends BaseHttpController {
     authenticationMiddleware,
     CONTAINER_TYPES.ChannelActionMiddleware,
   )
-  public async getActiveStream(@requestParam() { id }: DefaultRequestParam): Promise<VideoStreamResponseDto> {
+  public async getActiveStream(@requestParam('channelId') id: string): Promise<VideoStreamResponseDto> {
     const currentStream = await this.channelStreamingService.getActiveStream(id);
     if (!currentStream) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
