@@ -4,6 +4,7 @@ import { CONTAINER_TYPES, ProfileUpdateResponseDto, ProfileUpdateRequestDto } fr
 import { ImageStorePresetType, UserUploadRequestDto } from 'shared/build';
 import { ImageStorePort } from '~/core/common/port/image-store';
 import { UserRepository } from '~/core/user/port/user-repository';
+import { BadRequest } from '~/shared/exceptions/exceptions';
 
 @injectable()
 export class ProfileService {
@@ -21,7 +22,9 @@ export class ProfileService {
     this.userRepository = userRepository;
   }
 
-  async update(updateCredentialRequestDto: ProfileUpdateRequestDto): Promise<ProfileUpdateResponseDto | null> {
+  async update(
+    updateCredentialRequestDto: ProfileUpdateRequestDto,
+  ): Promise<ProfileUpdateResponseDto | BadRequest | null> {
     const { userId, username } = updateCredentialRequestDto;
     const isUserExist = await this.userRepository.getById(userId);
 
@@ -35,8 +38,11 @@ export class ProfileService {
       await this.profileRepository.createDefaultProfile(userId);
     }
 
-    await this.userRepository.updateUserName(userId, username);
+    const updateUserNameResult = await this.userRepository.updateUserName(userId, username);
 
+    if (updateUserNameResult instanceof BadRequest) {
+      return updateUserNameResult;
+    }
     return this.profileRepository.update(updateCredentialRequestDto);
   }
 

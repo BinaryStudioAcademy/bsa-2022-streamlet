@@ -1,10 +1,9 @@
 import { inject, injectable } from 'inversify';
-import { HistoryRepository } from '~/core/history/port/history-repository';
+import { getAllUserHistoryInputType, HistoryRepository } from '~/core/history/port/history-repository';
 import { History, PrismaClient } from '@prisma/client';
 import { CONTAINER_TYPES, HistoryRequestDto, HistoryResponseDto } from '~/shared/types/types';
 import { trimHistory } from '~/shared/helpers/trim-history';
 import { HistoryListType } from 'shared/build';
-import { HISTORY_ITEM_NUM_IN_ONE_PAGE } from '~/shared/constants/constants';
 
 @injectable()
 export class HistoryRepositoryAdapter implements HistoryRepository {
@@ -22,7 +21,13 @@ export class HistoryRepositoryAdapter implements HistoryRepository {
     });
   }
 
-  async getUserHistory(userId: string, take: number, skip: number, lastPage: number): Promise<HistoryResponseDto> {
+  async getUserHistory({
+    userId,
+    take,
+    skip,
+    lastPage,
+    currentPage,
+  }: getAllUserHistoryInputType): Promise<HistoryResponseDto> {
     const history = await this.prismaClient.history.findMany({
       take,
       skip,
@@ -51,7 +56,7 @@ export class HistoryRepositoryAdapter implements HistoryRepository {
     return {
       list,
       lastPage,
-      currentPage: skip / HISTORY_ITEM_NUM_IN_ONE_PAGE + 1,
+      currentPage,
     };
   }
 

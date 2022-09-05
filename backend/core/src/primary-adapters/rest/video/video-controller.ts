@@ -34,6 +34,8 @@ import {
   SortByFilterId,
   TypeFilterId,
   SearchDataResponseDto,
+  Comment,
+  BaseReplyRequestDto,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -302,6 +304,14 @@ export class VideoController extends BaseHttpController {
       userReaction: userReaction !== null ? { isLike: userReaction } : null,
     };
   }
+
+  @httpGet(`${VideoApiPath.REPLIES_COMMENT}${VideoApiPath.$ID}`)
+  public async getRepliesForComment(@requestParam('id') id: string): Promise<Comment[]> {
+    const result = await this.videoService.getRepliesForComment(id);
+
+    return result;
+  }
+
   /**
    * @swagger
    * /videos/react/{id}:
@@ -446,5 +456,21 @@ export class VideoController extends BaseHttpController {
     }
 
     return reactionResponse;
+  }
+
+  @httpPost(VideoApiPath.REPLIES_COMMENT, authenticationMiddleware)
+  public async addVideoCommentReply(
+    @requestBody() body: BaseReplyRequestDto,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<Comment[]> {
+    const { id: userId } = req.user;
+
+    const result = await this.videoService.addVideoCommentReply(body, userId);
+
+    if (!result) {
+      throw new NotFound('Unexpected error');
+    }
+
+    return result;
   }
 }

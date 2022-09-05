@@ -3,6 +3,7 @@ import { CONTAINER_TYPES, HistoryRequestDto, HistoryResponseDto } from '~/shared
 import { History } from '@prisma/client';
 import { HistoryRepository } from '~/core/history/port/history-repository';
 import { HISTORY_ITEM_NUM_IN_ONE_PAGE } from '~/shared/constants/constants';
+import { usePagination } from '~/shared/helpers';
 
 @injectable()
 export class HistoryService {
@@ -13,14 +14,11 @@ export class HistoryService {
   }
 
   async getUserHistory(userId: string, page: string): Promise<HistoryResponseDto> {
+    const allDataLength = await this.historyRepository.getAllUserHistoryLength(userId);
     const pageNumber = Number(page);
+    const paginationParam = usePagination({ allDataLength, pageNumber, itemInOnePage: HISTORY_ITEM_NUM_IN_ONE_PAGE });
 
-    const lastPage = Math.ceil((await this.historyRepository.getAllUserHistoryLength(userId)) / 10);
-    if (!pageNumber) {
-      return this.historyRepository.getUserHistory(userId, HISTORY_ITEM_NUM_IN_ONE_PAGE, 0, lastPage);
-    }
-    const skip = (pageNumber - 1) * HISTORY_ITEM_NUM_IN_ONE_PAGE;
-    return this.historyRepository.getUserHistory(userId, HISTORY_ITEM_NUM_IN_ONE_PAGE, skip, lastPage);
+    return this.historyRepository.getUserHistory({ userId, ...paginationParam });
   }
 
   async createHistoryItem(historyRequestDto: HistoryRequestDto): Promise<History> {

@@ -1,10 +1,12 @@
 import { inject, injectable } from 'inversify';
 import { PrismaClient, Prisma } from '@prisma/client';
-import { CONTAINER_TYPES, PopularVideoResponseDto, PopularVideosRequestDtoType } from '~/shared/types/types';
+import { CONTAINER_TYPES, PopularVideoResponseDto } from '~/shared/types/types';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimPopular, trimVideo, trimVideoSearch } from '~/shared/helpers';
-import { trimVideoWithComments } from '~/shared/helpers/trim-video';
+import { trimCommentsForReplies, trimVideoWithComments } from '~/shared/helpers/trim-video';
+import { Comment } from 'shared/build/common/types/comment';
 import {
+  BaseReplyRequestDto,
   CategorySearchRequestQueryDto,
   CreateReactionRequestDto,
   CreateReactionResponseDto,
@@ -14,7 +16,7 @@ import {
 } from 'shared/build';
 import { createVideoCommentResponse } from '~/shared/helpers/video/create-video-comment-response';
 import { createAddReactionResponse } from '~/shared/helpers/video/create-add-reaction-response';
-import { VideoRepository } from '~/core/video/port/video-repository';
+import { GetPopularInputType, GetPopularLiveInputType, VideoRepository } from '~/core/video/port/video-repository';
 import { VideoSearch, VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 import { VideoRepositoryFilters } from '~/core/video/port/video-repository-filters';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
@@ -56,10 +58,18 @@ export class VideoRepositoryAdapter implements VideoRepository {
           },
         },
         comments: {
+          where: {
+            parentId: null,
+          },
           include: {
             author: {
               include: {
                 profile: true,
+              },
+            },
+            _count: {
+              select: {
+                childComments: true,
               },
             },
             commentReactions: true,
@@ -70,15 +80,19 @@ export class VideoRepositoryAdapter implements VideoRepository {
         },
       },
     });
+
     if (video === null) {
       return video;
     }
+
     const { dislikeNum, likeNum } = await this.calculateReaction(video.id);
-    return {
-      ...trimVideoWithComments(video),
-      likeNum,
-      dislikeNum,
-    };
+    const commentsWithReplies = video.comments.map((comment) => ({
+      ...comment,
+      repliesCount: comment._count.childComments,
+    }));
+    const videoCommentsReplies = { ...video, comments: commentsWithReplies };
+
+    return { ...trimVideoWithComments(videoCommentsReplies), likeNum, dislikeNum };
   }
 
   async calculateReaction(videoId: string): Promise<{ likeNum: number; dislikeNum: number }> {
@@ -153,6 +167,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
         comments: {
           select: {
             id: true,
+            parentId: true,
             createdAt: true,
             updatedAt: true,
             text: true,
@@ -258,13 +273,13 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
   }
 
-  async getPopular(
-    request: PopularVideosRequestDtoType,
-    take: number,
-    skip: number,
-    lastPage: number,
-  ): Promise<PopularVideoResponseDto> {
-    const { page, category } = request;
+  async getPopular({
+    category,
+    take,
+    skip,
+    lastPage,
+    currentPage,
+  }: GetPopularInputType): Promise<PopularVideoResponseDto> {
     const popularVideos = await this.prismaClient.video.findMany({
       where: {
         categories: {
@@ -295,16 +310,15 @@ export class VideoRepositoryAdapter implements VideoRepository {
         videoViews: 'desc',
       },
     });
-    return trimPopular(popularVideos, lastPage, page);
+    return trimPopular(popularVideos, lastPage, currentPage, category);
   }
 
-  async getPopularLive(
-    request: PopularVideosRequestDtoType,
-    take: number,
-    skip: number,
-    lastPage: number,
-  ): Promise<PopularVideoResponseDto> {
-    const { page } = request;
+  async getPopularLive({
+    take,
+    skip,
+    lastPage,
+    currentPage,
+  }: GetPopularLiveInputType): Promise<PopularVideoResponseDto> {
     const popularVideos = await this.prismaClient.video.findMany({
       where: {
         status: 'live',
@@ -329,7 +343,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
         videoViews: 'desc',
       },
     });
-    return trimPopular(popularVideos, lastPage, page);
+    return trimPopular(popularVideos, lastPage, currentPage, 'live');
   }
 
   searchByTags({ take, skip, tags }: TagSearchRequestQueryDto): Promise<VideoWithChannel[]> {
@@ -478,6 +492,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     const { likeNum, dislikeNum } = await this.calculateCommentReaction(commentId);
     return createAddReactionResponse(newReaction.commentReactions[0], likeNum, dislikeNum);
   }
+
   async getVideosBySearch({ searchText, duration, date, type, sortBy }: VideoSearch): Promise<DataVideo> {
     const queryOrderByObject = {
       orderBy: sortBy.map((param) => param as Prisma.VideoOrderByWithRelationAndSearchRelevanceInput),
@@ -543,5 +558,43 @@ export class VideoRepositoryAdapter implements VideoRepository {
       list,
       total,
     };
+  }
+
+  async getRepliesForComment(commentId: string): Promise<Comment[]> {
+    const result = await this.prismaClient.videoComment.findMany({
+      where: {
+        parentId: commentId,
+      },
+      include: {
+        author: {
+          include: {
+            profile: true,
+          },
+        },
+        commentReactions: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const repliesComments = trimCommentsForReplies(result);
+
+    return repliesComments;
+  }
+
+  async addVideoCommentReply(request: BaseReplyRequestDto, authorId: string): Promise<Comment[]> {
+    if (request.videoId) {
+      await this.prismaClient.videoComment.create({
+        data: {
+          parentId: request.parentId,
+          text: request.text,
+          authorId,
+          videoId: request.videoId,
+        },
+      });
+    }
+
+    return await this.getRepliesForComment(request.parentId);
   }
 }

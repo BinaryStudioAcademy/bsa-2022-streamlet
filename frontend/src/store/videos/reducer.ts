@@ -9,6 +9,8 @@ type State = {
       list: BaseVideoResponseDto[];
       currentPage: number;
       lastPage: number;
+      lastListLength: number;
+      category: string;
     };
   };
   dataStatus: DataStatus;
@@ -21,8 +23,10 @@ const initialState: State = {
     total: 0,
     popular: {
       list: [],
-      currentPage: 1,
-      lastPage: 1,
+      currentPage: -1,
+      lastPage: -1,
+      lastListLength: 0,
+      category: '',
     },
   },
   dataStatus: DataStatus.IDLE,
@@ -45,8 +49,12 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(getPopularVideos.fulfilled, (state, { payload }) => {
     state.dataStatus = DataStatus.FULFILLED;
     state.error = false;
+
+    const { list } = payload;
+
     state.data.popular = {
       ...payload,
+      lastListLength: list.length,
     };
   });
 
