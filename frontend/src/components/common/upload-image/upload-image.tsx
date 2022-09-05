@@ -9,9 +9,11 @@ type UploadImageProps = {
   images: never[];
   onUpload: { (imageList: ImageListType, addUpdateIndex: number[] | undefined): void };
   onClose: { (): void };
+  modalClassName?: string;
+  maxNumber?: number;
 };
 
-const UploadImage: FC<UploadImageProps> = ({ images, onUpload, onClose }) => {
+const UploadImage: FC<UploadImageProps> = ({ images, onUpload, onClose, modalClassName, maxNumber = 1 }) => {
   const [error, setError] = useState<string | undefined>();
   const handleError = (errors: ErrorsType, files: ImageListType | undefined): void => {
     const uploadErrorString: string = getImageUploadError(errors);
@@ -19,7 +21,7 @@ const UploadImage: FC<UploadImageProps> = ({ images, onUpload, onClose }) => {
     files?.pop();
   };
   return (
-    <Modal isOpen={true} onClose={onClose}>
+    <Modal contentContainerClassName={modalClassName} isOpen={true} onClose={onClose}>
       <ImageUploading
         multiple
         value={images}
@@ -27,6 +29,7 @@ const UploadImage: FC<UploadImageProps> = ({ images, onUpload, onClose }) => {
         acceptType={['jpg', 'png', 'jpeg', 'jpe', 'jfi', 'jfif', 'jif']}
         maxFileSize={10000000}
         onError={handleError}
+        maxNumber={maxNumber}
       >
         {({ onImageUpload, isDragging, dragProps }): ReactNode => (
           <div className={style['upload-image-wrapper']}>

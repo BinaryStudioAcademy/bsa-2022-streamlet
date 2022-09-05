@@ -6,6 +6,7 @@ import { AmqpQueue, SocketEvents } from '~/shared/enums/enums';
 import { logger } from '~/config/logger';
 import { throttle } from '~/helpers/throttle';
 import { getUserIdsInRoom } from '~/helpers/get-user-ids-in-room.helper';
+import { getSocketIdByUserId } from '~/helpers/get-socket-id-by-user-id.helper';
 
 class SocketService {
   private io: SocketIo | undefined;
@@ -16,6 +17,7 @@ class SocketService {
     this.io = createIoInstance(httpServer);
     this.io.on('connection', (socket) => {
       logger.info(`CLient ${socket.id} connected`);
+
       amqpService.consume({
         queue: AmqpQueue.NOTIFY_USER,
         onMessage: (data) => {
@@ -39,12 +41,29 @@ class SocketService {
       });
 
       amqpService.consume({
-        queue: AmqpQueue.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED,
+        queue: AmqpQueue.SOCKETS_STREAM_CONNECTED,
         onMessage: (data) => {
           if (data && this.io) {
-            const { roomId, isChatEnabled } = JSON.parse(data.toString('utf-8'));
-            logger.info(`Rabbitmq -> chat ${roomId} is enabled - ${isChatEnabled}`);
-            this.io.to(roomId).emit(SocketEvents.chat.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED_DONE, isChatEnabled);
+            const { authorId, streamData } = JSON.parse(data.toString('utf-8'));
+            logger.info(`Rabbitmq -> ${JSON.stringify(streamData)}`);
+            const socketId = getSocketIdByUserId(this.socketClients, authorId);
+            if (socketId) {
+              this.io.to(socketId).emit(SocketEvents.notify.STREAM_OBS_STATUS, true);
+            }
+          }
+        },
+      });
+
+      amqpService.consume({
+        queue: AmqpQueue.SOCKETS_STREAM_DISCONNECTED,
+        onMessage: (data) => {
+          if (data && this.io) {
+            const { authorId, streamingKey } = JSON.parse(data.toString('utf-8'));
+            logger.info(`Rabbitmq -> ${JSON.stringify(streamingKey)}`);
+            const socketId = getSocketIdByUserId(this.socketClients, authorId);
+            if (socketId) {
+              this.io.to(socketId).emit(SocketEvents.notify.STREAM_OBS_STATUS, false);
+            }
           }
         },
       });

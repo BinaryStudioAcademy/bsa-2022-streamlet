@@ -48,7 +48,7 @@ const channelsNoAuthors: Omit<Channel, 'createdAt' | 'updatedAt' | 'authorId'>[]
   },
 ];
 
-const userIndices = Array.from(channelsNoAuthors, () => Math.floor(Math.random() * users.length));
+const userIndices = Array.from(Array(channelsNoAuthors.length).keys());
 
 export const channels: Omit<Channel, 'createdAt' | 'updatedAt'>[] = channelsNoAuthors.map((channel, index) => ({
   ...channel,

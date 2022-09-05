@@ -1,5 +1,5 @@
 import { Channel, Video } from '@prisma/client';
-import { BaseVideoResponseDto } from 'shared/build';
+import { BaseVideoResponseDto, StreamStatus } from 'shared/build';
 
 export const trimVideoSearch = (
   video: Video & {
@@ -12,9 +12,9 @@ export const trimVideoSearch = (
     id,
     poster,
     scheduledStreamDate: scheduledStreamDate.toString(),
-    status,
+    status: status as StreamStatus,
     name,
-    publishedAt: publishedAt.toString(),
+    publishedAt: publishedAt?.toISOString() ?? '',
     duration,
     videoViews,
     liveViews,

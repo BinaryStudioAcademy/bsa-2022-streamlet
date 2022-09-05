@@ -12,7 +12,12 @@ type Props = {
 };
 
 const Button: FC<Props> = ({ type = 'button', content, className, onClick, disabled = false }) => (
-  <button className={clsx(styles.button, className)} onClick={onClick} type={type} disabled={disabled}>
+  <button
+    className={clsx(styles.button, className, disabled && styles.disabled)}
+    onClick={onClick}
+    type={type}
+    disabled={disabled}
+  >
     {content}
   </button>
 );

@@ -19,4 +19,5 @@ RUN npm run build:vts
 RUN rm -rf ./backend/video-transcoding-server/src
 RUN rm -rf ./shared/src
 
+EXPOSE 5003
 CMD npm start -w backend/video-transcoding-server

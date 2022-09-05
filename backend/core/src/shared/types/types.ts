@@ -16,3 +16,4 @@ export * from './chat/chat';
 export * from './search/search';
 export * from './subscription/subscription';
 export * from './video/video';
+export * from './stream/stream';

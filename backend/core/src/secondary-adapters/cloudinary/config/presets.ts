@@ -21,4 +21,9 @@ export const uploadPresets = (cloudinary: CloudinaryApi): void => {
     folder: 'channel/banner',
     allowed_formats: 'jpg, png, jpeg',
   });
+  cloudinary.api.create_upload_preset({
+    name: ImageStorePresetType.STREAM_POSTER,
+    folder: 'stream/poster',
+    allowed_formats: 'jpg, png, jpeg',
+  });
 };

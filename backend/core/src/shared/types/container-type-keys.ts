@@ -48,6 +48,7 @@ const CONTAINER_TYPES = {
   FollowingController: Symbol.for('FollowingController'),
 
   ChannelOwnerMiddleWare: Symbol.for('ChannelOwnerMiddleware'),
+  ChannelActionMiddleware: Symbol.for('ChannelActionMiddleware'),
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),

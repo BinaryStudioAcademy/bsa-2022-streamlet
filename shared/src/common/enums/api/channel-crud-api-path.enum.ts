@@ -2,7 +2,7 @@ enum ChannelCrudApiPath {
   ROOT = '/',
   AVATAR = '/avatar',
   BANNER = '/banner',
-  $ID = '/:id',
+  $ID = '/:channelId',
 }
 
 export { ChannelCrudApiPath };

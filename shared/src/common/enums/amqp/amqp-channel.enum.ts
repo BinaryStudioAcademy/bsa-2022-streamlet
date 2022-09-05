@@ -10,4 +10,6 @@ export enum AmqpQueue {
   STREAM_INTERRUPTED = 'stream-interrupted',
   STREAM_INTERRUPTED_DONE = 'stream-interrupted-done',
   STREAM_DATA = 'stream-data',
+  SOCKETS_STREAM_CONNECTED = 'sockets-stream-connected',
+  SOCKETS_STREAM_DISCONNECTED = 'sockets-stream-disconnected',
 }
