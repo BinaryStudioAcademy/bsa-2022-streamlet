@@ -38,6 +38,7 @@ const VideoChat: FC<VideoChatProps> = ({
   const [showParticipants, setShowParticipants] = useState(false);
   const [popOutWindow, setPopOutWindow] = useState<Window | null>(null);
   const [showChatDownBtn, setShowChatDownBtn] = useState(false);
+  const [hideWelcome, setHideWelcome] = useState(false);
   const [hideChat, setHideChat] = useState(false);
 
   const handleSetShowChatMenu = (): void => setShowChatMenu(!showChatMenu);
@@ -203,16 +204,23 @@ const VideoChat: FC<VideoChatProps> = ({
                   messageClassName={styles['video-chat-message']}
                 />
               ))}
-              <div className={styles['video-chat-welcome-message']}>
-                <div className={styles['video-chat-welcome-message-icon']}>
-                  <Icon name={IconName.MAIN_LOGO} />
+              {!hideWelcome && (
+                <div className={styles['video-chat-welcome-message']}>
+                  <div className={styles['video-chat-welcome-message-icon']}>
+                    <Icon name={IconName.MAIN_LOGO} />
+                  </div>
+                  <div className={styles['video-chat-welcome-message-body']}>
+                    <span>
+                      Welcome to live chat! Remember to guard your privacy and abide by our Community Guidelines.
+                    </span>
+                  </div>
+                  <Icon
+                    name={IconName.X_MARK}
+                    className={styles['video-chat-welcome-message-close']}
+                    onClick={(): void => setHideWelcome(true)}
+                  />
                 </div>
-                <div className={styles['video-chat-welcome-message-body']}>
-                  <span>
-                    Welcome to live chat! Remember to guard your privacy and abide by our Community Guidelines.
-                  </span>
-                </div>
-              </div>
+              )}
               {initialMessages.map((message) => (
                 <VideoComment
                   key={message.id}

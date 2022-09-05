@@ -41,7 +41,7 @@ $hide-transition-duration: 1s;
 
 .video-chat-welcome-message {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto 20px;
   grid-auto-rows: auto;
   margin-bottom: 20px;
   padding: 10px 20px;
@@ -63,6 +63,15 @@ $hide-transition-duration: 1s;
   color: var(--white-text-color);
   font-size: 13px;
   line-height: 22px;
+}
+
+.video-chat-welcome-message-close {
+  width: 15px;
+  cursor: pointer;
+}
+
+.video-chat-welcome-message-close path {
+  fill: var(--text-gray-color);
 }
 
 .video-chat-footer {
@@ -271,6 +280,10 @@ $hide-transition-duration: 1s;
 
 .chat-disabled .video-chat-footer-bar span {
   border-top: 2px solid var(--gray-300-header-menu-background);
+}
+
+.video-chat-welcome-message-close:hover path {
+  fill: var(--white-text-color);
 }
 
 .hide-chat {
