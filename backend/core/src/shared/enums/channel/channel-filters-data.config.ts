@@ -1,12 +1,10 @@
 import { SortByFilterId } from 'shared/build';
 
-interface SortByOption {
-  liveViews?: string;
-  videoViews?: string;
+interface ChannelSortByOption {
   createdAt?: string;
 }
 
-const matchChannelFilterSortBy: Record<SortByFilterId, SortByOption[]> = {
+const matchChannelFilterSortBy: Record<SortByFilterId, ChannelSortByOption[]> = {
   [SortByFilterId.DEFAULT]: [],
   [SortByFilterId.RATING]: [],
   [SortByFilterId.RELEVANCE]: [],
@@ -14,4 +12,4 @@ const matchChannelFilterSortBy: Record<SortByFilterId, SortByOption[]> = {
   [SortByFilterId.VIEW_COUNT]: [],
 };
 
-export { matchChannelFilterSortBy, SortByOption };
+export { matchChannelFilterSortBy, ChannelSortByOption };

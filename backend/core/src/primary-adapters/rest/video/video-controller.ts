@@ -207,7 +207,28 @@ export class VideoController extends BaseHttpController {
    *                      list:
    *                        type: array
    *                        items:
-   *                          $ref: '#/components/schemas/Channel'
+   *                          type: object
+   *                          properties:
+   *                            id:
+   *                              type: string
+   *                              format: uuid
+   *                            name:
+   *                              type: string
+   *                            description:
+   *                              type: string
+   *                            avatar:
+   *                              type: string
+   *                            subscribersCount:
+   *                              type: integer
+   *                              format: int64
+   *                              minimum: 0
+   *                            videosCount:
+   *                              type: integer
+   *                              format: int64
+   *                              minimum: 0
+   *                            createdAt:
+   *                              type: string
+   *                              format: date-time
    *                      total:
    *                        type: integer
    *                        format: int32
@@ -239,6 +260,12 @@ export class VideoController extends BaseHttpController {
       return {
         channels: await this.channelService.getChannelsBySearch(channelQueryParams),
         videos: { list: [], total: 0 },
+      };
+    }
+    if (duration && duration !== DurationFilterId.ANY) {
+      return {
+        channels: { list: [], total: 0 },
+        videos: await this.videoService.getVideosBySearch(queryParams),
       };
     }
     return {

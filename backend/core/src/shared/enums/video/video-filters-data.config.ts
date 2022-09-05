@@ -9,7 +9,7 @@ type DurationOption = {
 
 type DateOption = Date | undefined;
 
-interface SortByOption {
+interface VideoSortByOption {
   liveViews?: string;
   videoViews?: string;
   publishedAt?: string;
@@ -58,7 +58,7 @@ const matchVideoFilterType: Record<TypeFilterId, StreamingStatus[]> = {
   [TypeFilterId.VIDEO]: [StreamingStatus.finished],
 };
 
-const matchVideoFilterSortBy: Record<SortByFilterId, SortByOption[]> = {
+const matchVideoFilterSortBy: Record<SortByFilterId, VideoSortByOption[]> = {
   [SortByFilterId.DEFAULT]: [],
   [SortByFilterId.RATING]: [],
   [SortByFilterId.RELEVANCE]: [],
@@ -74,5 +74,5 @@ export {
   matchVideoFilterSortBy,
   DurationOption,
   DateOption,
-  SortByOption,
+  VideoSortByOption,
 };

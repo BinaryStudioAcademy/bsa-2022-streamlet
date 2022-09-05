@@ -11,6 +11,6 @@ export class ChannelService {
   }
 
   getFirstChannelBySearch(queryParams: ChannelSearch): Promise<ChannelSearchDataResponseDto> {
-    return this.channelRepository.getChannelsBySearch(queryParams);
+    return this.channelRepository.getFirstChannelBySearch(queryParams);
   }
 }
