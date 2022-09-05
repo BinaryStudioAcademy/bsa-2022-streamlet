@@ -193,7 +193,7 @@ export class ProfileController extends BaseHttpController {
    *          description: user not found
    */
   @httpGet(`${ProfileApiPath.$ID}`, authenticationMiddleware)
-  public async get(@requestParam('id') id: string): Promise<ProfileUpdateResponseDto> {
+  public async get(@requestParam('userId') id: string): Promise<ProfileUpdateResponseDto> {
     const res = await this.profileService.getByUserId(id);
 
     if (!res) {

@@ -15,6 +15,7 @@ export const trimPopular = (
   })[],
   lastPage: number,
   currentPage: number,
+  category: string,
 ): PopularVideoResponseDto => {
   return {
     list: videos.map((video) => {
@@ -22,5 +23,6 @@ export const trimPopular = (
     }),
     currentPage,
     lastPage,
+    category,
   };
 };

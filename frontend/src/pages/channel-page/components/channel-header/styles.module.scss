@@ -1,4 +1,7 @@
 @use 'assets/css/breakpoint';
+@use 'assets/css/config';
+
+$base-z-index: config.$page-component-z-index;
 
 .channel-header {
   display: flex;
@@ -35,6 +38,7 @@
   position: absolute;
   top: 120%;
   left: 0;
+  z-index: $base-z-index + 10;
   width: 200px;
   @media #{breakpoint.$tablet-small} {
     right: 0;

@@ -40,6 +40,7 @@ export const trimVideoWithComments = (
     comments: (VideoComment & {
       author: User & { profile: UserProfile | null };
       commentReactions: CommentReaction[];
+      repliesCount: number;
     })[];
   },
 ): BaseVideoResponseDto & {
@@ -90,6 +91,8 @@ export const trimVideoWithComments = (
     comments: comments.map((comment) => ({
       dateAdded: comment.createdAt,
       id: comment.id,
+      parentId: comment.parentId,
+      repliesCount: comment.repliesCount,
       text: comment.text,
       userName: comment.author.username,
       avatar: comment.author.profile?.avatar,
@@ -102,6 +105,31 @@ export const trimVideoWithComments = (
     description,
     isChatEnabled,
   };
+};
+
+export const trimCommentsForReplies = (
+  comments: (VideoComment & {
+    commentReactions: CommentReaction[];
+    author: User & {
+      profile: UserProfile | null;
+    };
+  })[],
+): Comment[] => {
+  const result = comments.map((comment) => ({
+    id: comment.id,
+    parentId: comment.parentId,
+    avatar: comment.author.profile?.avatar,
+    userName: comment.author.username,
+    firstName: comment.author.profile?.firstName,
+    lastName: comment.author.profile?.lastName,
+    text: comment.text,
+    dateAdded: comment.createdAt,
+    likeNum: calculateReactions(comment.commentReactions, true),
+    dislikeNum: calculateReactions(comment.commentReactions, false),
+    commentReactions: comment.commentReactions.map((item) => ({ isLike: item.isLike, userId: item.userId })),
+  }));
+
+  return result;
 };
 
 const calculateReactions = (commentReactions: CommentReaction[], isLike: boolean): number => {

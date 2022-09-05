@@ -17,6 +17,8 @@ import {
   OwnChannelResponseDto,
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
+  StreamPosterUploadResponseDto,
+  StreamPrivacy,
   StreamUpdateRequestDto,
   VideoStreamResponseDto,
 } from 'shared/build';
@@ -143,15 +145,21 @@ export class ChannelStreamingService {
     return castToVideoStreamResponseDto(stream);
   }
 
-  async uploadStreamPoster({ base64Str, videoId }: StreamPosterUploadRequestDto): Promise<string | null> {
+  async uploadStreamPoster({
+    base64Str,
+    videoId,
+  }: StreamPosterUploadRequestDto): Promise<StreamPosterUploadResponseDto | null> {
     const isVideoExisting = await this.videoRepository.getById(videoId);
     if (!isVideoExisting) {
       return null;
     }
 
-    const { url } = await this.imageStore.upload({ base64Str, type: ImageStorePresetType.STREAM_POSTER });
+    const { url: poster } = await this.imageStore.upload({ base64Str, type: ImageStorePresetType.STREAM_POSTER });
 
-    return url;
+    return {
+      poster,
+      videoId,
+    };
   }
 
   async update(streamUpdateRequestDto: StreamUpdateRequestDto): Promise<VideoStreamResponseDto | null> {
@@ -209,6 +217,7 @@ export class ChannelStreamingService {
       update = await this.channelStreamingRepository.updateStream(videoId, {
         status,
         publishedAt: new Date(),
+        privacy: StreamPrivacy.PUBLIC,
       });
     }
 

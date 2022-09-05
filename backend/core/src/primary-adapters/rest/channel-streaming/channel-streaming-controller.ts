@@ -11,7 +11,6 @@ import {
 } from 'inversify-express-utils';
 import {
   CONTAINER_TYPES,
-  DefaultRequestParam,
   ResetStreamingKeyRequestDto,
   StreamingKeyResponseDto,
   RtmpLiveRequestDto,
@@ -34,7 +33,7 @@ import { NotFound } from '~/shared/exceptions/not-found';
 import { authenticationMiddleware } from '../middleware';
 import { exceptionMessages } from '~/shared/enums/messages';
 import { VideoService } from '~/core/video/application/video-service';
-import { errorCodes, StreamingInfoResponseDto } from 'shared/build';
+import { errorCodes, StreamingInfoResponseDto, StreamPosterUploadResponseDto } from 'shared/build';
 import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud-service';
 import path from 'path';
 import express from 'express';
@@ -224,7 +223,7 @@ export class ChannelStreamingController extends BaseHttpController {
    *          description: channel not found
    */
   @httpGet(`${ChannelStreamingApiPath.STREAMING_KEY}${ChannelStreamingApiPath.$CHANNEL_ID}`, authenticationMiddleware)
-  public async getStreamingKey(@requestParam() { id }: DefaultRequestParam): Promise<StreamingKeyResponseDto> {
+  public async getStreamingKey(@requestParam('channelId') id: string): Promise<StreamingKeyResponseDto> {
     const keyData = await this.channelStreamingService.getStreamingKey(id);
     if (keyData === null) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
@@ -287,12 +286,14 @@ export class ChannelStreamingController extends BaseHttpController {
   }
 
   @httpPost(ChannelStreamingApiPath.UPLOAD_POSTER, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
-  public async uploadPoster(@requestBody() payload: StreamPosterUploadRequestDto): Promise<string> {
-    const posterUrl = await this.channelStreamingService.uploadStreamPoster(payload);
-    if (!posterUrl) {
+  public async uploadPoster(
+    @requestBody() payload: StreamPosterUploadRequestDto,
+  ): Promise<StreamPosterUploadResponseDto> {
+    const poster = await this.channelStreamingService.uploadStreamPoster(payload);
+    if (!poster) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
-    return posterUrl;
+    return poster;
   }
 
   @httpPut(ChannelStreamingApiPath.EDIT_STREAM, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
@@ -309,7 +310,7 @@ export class ChannelStreamingController extends BaseHttpController {
     authenticationMiddleware,
     CONTAINER_TYPES.ChannelActionMiddleware,
   )
-  public async getActiveStream(@requestParam() { id }: DefaultRequestParam): Promise<VideoStreamResponseDto> {
+  public async getActiveStream(@requestParam('channelId') id: string): Promise<VideoStreamResponseDto> {
     const currentStream = await this.channelStreamingService.getActiveStream(id);
     if (!currentStream) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);

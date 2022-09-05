@@ -13,6 +13,7 @@ interface MainPageProps {
 
 const MainPage: FC<MainPageProps> = ({ filterBlockProps, blocksVideo }) => {
   const loadingStatus = useAppSelector((state) => state.videos.dataStatus);
+
   return (
     <main className={styles.main}>
       <FiltersBlock {...filterBlockProps} />

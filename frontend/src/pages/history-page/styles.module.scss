@@ -2,12 +2,43 @@
   padding: 20px;
 }
 
-.history-page-container > div {
+.history-list-container > div {
   margin: 20px 0;
 }
 
-.history-page-container > .date {
+.history-list-container > .date {
   margin: 10px;
   color: var(--white-text-color);
   font-weight: 600;
+}
+
+.delete-all-btn {
+  margin-left: auto;
+  padding: 0 30px;
+  color: var(--always-white-color);
+  font-size: 20px;
+  white-space: nowrap;
+  text-transform: capitalize;
+  border: 3px var(--brand-green-color) solid;
+}
+
+.page-header {
+  margin-left: 20px;
+  color: var(--white-text-color);
+  font-weight: 600;
+  font-family: Gilroy, sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.no-video-in-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100vh - 200px);
+  margin: 0;
 }

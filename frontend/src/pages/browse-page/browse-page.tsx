@@ -8,17 +8,19 @@ import { useAppDispatch, useAppSelector, useState } from '../../hooks/hooks';
 import { videoActions } from '../../store/actions';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { generateBrowsePageSkeleton } from './common/skeleton';
+import { NoVideosYet } from '../../components/common/no-videos-yet/no-videos-yet';
 
 const BrowsePage: FC = () => {
   const dispatch = useAppDispatch();
 
   const [activeCategory, setActiveCategory] = useState<string>('live');
 
-  const categoryList = ['live', 'music', 'gaming', 'film animation'];
+  const categoryList = ['live', 'music', 'gaming', 'film&animation'];
 
   const handleCategoryClick = (category: string): void => {
-    dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
-    setActiveCategory(category);
+    if (activeCategory === reposnseCategory && activeCategory !== category) {
+      setActiveCategory(category);
+    }
   };
 
   const videoData = useAppSelector((state) => {
@@ -33,11 +35,15 @@ const BrowsePage: FC = () => {
 
   const { dataStatus } = videoData;
 
-  const { currentPage, lastPage, lastListLength } = popularVideos;
+  const { currentPage, lastPage, category: reposnseCategory, firstLoad } = popularVideos;
 
   useEffect(() => {
-    dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
-  }, [activeCategory, dispatch]);
+    if (firstLoad) {
+      dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
+    } else if (activeCategory !== reposnseCategory) {
+      dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
+    }
+  }, [activeCategory, dispatch, firstLoad, reposnseCategory]);
 
   const loadMore = (): void => {
     dispatch(videoActions.getPopularVideos({ page: currentPage + 1, category: activeCategory }));
@@ -58,7 +64,7 @@ const BrowsePage: FC = () => {
     <div className={styles['browse-page-container']}>
       <div className={styles['browse-page-header-container']}>
         <Icon name={IconName.COMPASS} color={IconColor.GRAY} width={'40'} height={'40'}></Icon>
-        <h2 className={styles['browse-page-header']}>Trending</h2>
+        <h2 className={styles['browse-page-header']}>Browse</h2>
       </div>
       <div className={styles['browse-page-categories-container']}>
         {categoryList.map((category, index) => {
@@ -74,11 +80,21 @@ const BrowsePage: FC = () => {
           );
         })}
       </div>
-      <div className={styles['browse-page-video-container']}>
-        {videoData.dataStatus === DataStatus.PENDING && generateBrowsePageSkeleton(isLightTheme, lastListLength)}
-        {popularVideos.list.map((video) => {
-          return <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />;
+      <div
+        className={clsx({
+          [styles['no-video-in-list']]: !popularVideos.list.length && videoData.dataStatus !== DataStatus.PENDING,
+          [styles['browse-page-video-container']]: popularVideos.list.length,
         })}
+      >
+        {!popularVideos.list.length && videoData.dataStatus !== DataStatus.PENDING ? (
+          <div className={styles['no-video-in-list']}>
+            <NoVideosYet />
+          </div>
+        ) : (
+          popularVideos.list.map((video) => {
+            return <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />;
+          })
+        )}
         <div ref={sentryRef}>
           {videoData.dataStatus === DataStatus.PENDING &&
             popularVideos.list.length > 0 &&

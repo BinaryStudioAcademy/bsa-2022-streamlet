@@ -7,6 +7,7 @@ enum ActionType {
   RESET_STREAMING_KEY = 'stream/reset-streaming-key',
   GET_MY_CHANNEL = 'stream/get-my-channel',
   SET_READINESS_TO_STREAM = 'stream/set-readiness-to-stream',
+  RESET_TEMPORARY_POSTER = 'stream/reset-temporary-poster',
 }
 
 export { ActionType };

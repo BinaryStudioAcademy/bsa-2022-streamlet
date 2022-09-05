@@ -11,6 +11,7 @@ import {
   chatApi,
   historyApi,
   followingApi,
+  searchApi,
   channelStreamingApi,
 } from 'services/services';
 import { rootReducer } from './root-reducer';
@@ -30,6 +31,7 @@ const extraArgument = {
   historyApi,
   followingApi,
   channelStreamingApi,
+  searchApi,
 };
 
 const persistConfig = {

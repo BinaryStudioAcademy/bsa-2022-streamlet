@@ -3,6 +3,7 @@ import { Comment } from 'shared/build';
 
 type CommentWithAuthor = {
   id: string;
+  parentId: string | null;
   createdAt: Date;
   updatedAt: Date;
   text: string;

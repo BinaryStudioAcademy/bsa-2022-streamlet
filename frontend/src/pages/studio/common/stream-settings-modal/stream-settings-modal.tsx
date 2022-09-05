@@ -19,9 +19,10 @@ type Props = {
 
 const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
   const dispatch = useAppDispatch();
-  const { stream, categories } = useAppSelector((state) => ({
+  const { stream, categories, temporaryPoster } = useAppSelector((state) => ({
     stream: state.stream.stream,
     categories: state.category.data,
+    temporaryPoster: state.stream.temporaryPoster,
   }));
 
   const categoryOptions = categories.map((category) => ({ value: category.id, label: category.name }));
@@ -60,14 +61,19 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
       description: stream?.description,
       scheduledStreamDate: stream?.scheduledStreamDate ? new Date(stream?.scheduledStreamDate) : new Date(),
       privacy: stream?.privacy,
-      poster: stream?.poster,
+      poster: temporaryPoster ?? stream?.poster,
     }),
-    [stream],
+    [stream, temporaryPoster],
   );
 
   const { control, errors, reset, handleSubmit } = useAppForm<StreamSettingsFormValues>({
     defaultValues: defaultValues(),
   });
+
+  const handleClose = (): void => {
+    dispatch(streamActions.resetTemporaryPoster());
+    onClose();
+  };
 
   useEffect(() => {
     dispatch(categoryActions.getCategories());
@@ -79,7 +85,7 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       contentContainerClassName={clsx(styles['modal-container'], isParentModalInvisible && styles['invisible'])}
     >
       <div className={styles['header']}>
@@ -93,13 +99,13 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
         {currentTab === Tab.Appearance && (
           <StreamAppearanceForm
             setParentModalInvisible={setIsParentModalInvisible}
-            currentPreviewPicture={stream?.poster ?? ''}
+            currentPreviewPicture={temporaryPoster ?? stream?.poster ?? ''}
             handleImageUpload={handlePosterUpload}
           />
         )}
         <div className={styles['footer']}>
           <Button content="Save" type="submit" className={styles['control-btn']} />
-          <Button content="Cancel" type="button" className={styles['control-btn']} onClick={onClose} />
+          <Button content="Cancel" type="button" className={styles['control-btn']} onClick={handleClose} />
         </div>
       </form>
     </Modal>

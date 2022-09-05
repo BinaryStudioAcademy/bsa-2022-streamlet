@@ -10,6 +10,7 @@ import {
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
 import {
+  ChannelSearch,
   CONTAINER_TYPES,
   ExtendedAuthenticatedRequest,
   ExtendedRequest,
@@ -32,6 +33,9 @@ import {
   SearchQueryParam,
   SortByFilterId,
   TypeFilterId,
+  SearchDataResponseDto,
+  Comment,
+  BaseReplyRequestDto,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -47,6 +51,8 @@ import {
 } from '~/shared/enums/enums';
 import { authenticationMiddleware, CreateVideoHistoryRecordMiddleware } from '../middleware';
 import { normalizeCategoryFiltersPayload } from '~/primary-adapters/rest/category/helpers/normalize-category-filters-helper';
+import { ChannelService } from '~/core/channel/application/channel-service';
+import { matchChannelFilterSortBy } from '~/shared/enums/channel/channel-filters-data.config';
 
 /**
  * @swagger
@@ -104,6 +110,7 @@ export class VideoController extends BaseHttpController {
 
   constructor(
     @inject(CONTAINER_TYPES.VideoService) videoService: VideoService,
+    @inject(CONTAINER_TYPES.ChannelService) private channelService: ChannelService,
     @inject(CONTAINER_TYPES.VideoRepository) private videoRepository: VideoRepository,
     @inject(CONTAINER_TYPES.ChannelSubscriptionRepository)
     private channelSubscriptionRepository: ChannelSubscriptionRepository,
@@ -148,6 +155,12 @@ export class VideoController extends BaseHttpController {
    *      security: []
    *      parameters:
    *        - in: query
+   *          name: search_query
+   *          description: search videos by text value
+   *          required: true
+   *          schema:
+   *            type: string
+   *        - in: query
    *          name: date
    *          description: filtered videos by date
    *          required: false
@@ -177,9 +190,51 @@ export class VideoController extends BaseHttpController {
    *          content:
    *            application/json:
    *              schema:
-   *                type: array
-   *                items:
-   *                  $ref: '#/components/schemas/Video'
+   *                type: object
+   *                properties:
+   *                  videos:
+   *                    type: object
+   *                    properties:
+   *                      list:
+   *                        type: array
+   *                        items:
+   *                          $ref: '#/components/schemas/Video'
+   *                      total:
+   *                        type: integer
+   *                        format: int32
+   *                        minimum: 0
+   *                  channels:
+   *                    type: object
+   *                    properties:
+   *                      list:
+   *                        type: array
+   *                        items:
+   *                          type: object
+   *                          properties:
+   *                            id:
+   *                              type: string
+   *                              format: uuid
+   *                            name:
+   *                              type: string
+   *                            description:
+   *                              type: string
+   *                            avatar:
+   *                              type: string
+   *                            subscribersCount:
+   *                              type: integer
+   *                              format: int64
+   *                              minimum: 0
+   *                            videosCount:
+   *                              type: integer
+   *                              format: int64
+   *                              minimum: 0
+   *                            createdAt:
+   *                              type: string
+   *                              format: date-time
+   *                      total:
+   *                        type: integer
+   *                        format: int32
+   *                        minimum: 0
    */
   @httpGet(VideoApiPath.SEARCH)
   public async getVideosBySearch(
@@ -188,7 +243,7 @@ export class VideoController extends BaseHttpController {
     @queryParam(SearchQueryParam.DATE) date: DateFilterId,
     @queryParam(SearchQueryParam.TYPE) type: TypeFilterId,
     @queryParam(SearchQueryParam.SORT_BY) sortBy: SortByFilterId,
-  ): Promise<DataVideo> {
+  ): Promise<SearchDataResponseDto> {
     const queryParams: VideoSearch = {
       searchText: search ? search.trim().split(' ').join(' & ') : undefined,
       duration: matchVideoFilterDuration[duration] || matchVideoFilterDuration[DurationFilterId.ANY],
@@ -197,7 +252,31 @@ export class VideoController extends BaseHttpController {
       sortBy: matchVideoFilterSortBy[sortBy] || matchVideoFilterSortBy[SortByFilterId.DEFAULT],
     };
 
-    return await this.videoRepository.getVideosBySearch(queryParams);
+    const channelQueryParams: ChannelSearch = {
+      searchText: queryParams.searchText,
+      date: queryParams.date,
+      sortBy: matchChannelFilterSortBy[sortBy] || matchChannelFilterSortBy[SortByFilterId.DEFAULT],
+    };
+
+    if (type === TypeFilterId.CHANNEL) {
+      return {
+        channels: await this.channelService.getChannelsBySearch(channelQueryParams),
+        videos: { list: [], total: 0 },
+      };
+    }
+    if (
+      (duration && duration !== DurationFilterId.ANY) ||
+      (type && (type === TypeFilterId.VIDEO || type === TypeFilterId.STREAM))
+    ) {
+      return {
+        channels: { list: [], total: 0 },
+        videos: await this.videoService.getVideosBySearch(queryParams),
+      };
+    }
+    return {
+      channels: await this.channelService.getFirstChannelBySearch(channelQueryParams),
+      videos: await this.videoService.getVideosBySearch(queryParams),
+    };
   }
 
   @httpGet(VideoApiPath.POPULAR, optionalAuthenticationMiddleware)
@@ -231,6 +310,14 @@ export class VideoController extends BaseHttpController {
       userReaction: userReaction !== null ? { isLike: userReaction } : null,
     };
   }
+
+  @httpGet(`${VideoApiPath.REPLIES_COMMENT}${VideoApiPath.$ID}`)
+  public async getRepliesForComment(@requestParam('videoId') id: string): Promise<Comment[]> {
+    const result = await this.videoService.getRepliesForComment(id);
+
+    return result;
+  }
+
   /**
    * @swagger
    * /videos/react/{id}:
@@ -267,7 +354,7 @@ export class VideoController extends BaseHttpController {
 
   @httpPost(`${VideoApiPath.REACTION}${VideoApiPath.$ID}`, authenticationMiddleware)
   public async addReaction(
-    @requestParam('id') id: string,
+    @requestParam('videoId') id: string,
     @requestBody() body: CreateReactionRequestDto,
     @request() req: ExtendedAuthenticatedRequest,
   ): Promise<CreateReactionResponseDto> {
@@ -362,7 +449,7 @@ export class VideoController extends BaseHttpController {
 
   @httpPost(`${VideoApiPath.COMMENT}${VideoApiPath.REACTION}${VideoApiPath.$ID}`, authenticationMiddleware)
   public async addCommentReaction(
-    @requestParam('id') id: string,
+    @requestParam('videoId') id: string,
     @requestBody() body: CreateReactionRequestDto,
     @request() req: ExtendedAuthenticatedRequest,
   ): Promise<CreateReactionResponseDto> {
@@ -375,5 +462,21 @@ export class VideoController extends BaseHttpController {
     }
 
     return reactionResponse;
+  }
+
+  @httpPost(VideoApiPath.REPLIES_COMMENT, authenticationMiddleware)
+  public async addVideoCommentReply(
+    @requestBody() body: BaseReplyRequestDto,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<Comment[]> {
+    const { id: userId } = req.user;
+
+    const result = await this.videoService.addVideoCommentReply(body, userId);
+
+    if (!result) {
+      throw new NotFound('Unexpected error');
+    }
+
+    return result;
   }
 }
