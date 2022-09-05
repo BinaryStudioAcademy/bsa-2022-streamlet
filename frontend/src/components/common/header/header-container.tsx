@@ -139,11 +139,13 @@ const HeaderContainer: FC = () => {
   const handleClickSearchBtn = (): void => {
     const searchValueTrimed = searchValue.trim();
     if (searchValueTrimed) {
-      handleSetInputSearch(searchValueTrimed);
-      handleClearSearchResults();
-      const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchValueTrimed });
-      navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`);
-      setMobileSearchToggle(false);
+      if (searchValueTrimed !== searchText) {
+        handleSetInputSearch(searchValueTrimed);
+        handleClearSearchResults();
+        const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchValueTrimed });
+        navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`);
+        setMobileSearchToggle(false);
+      }
     } else {
       setFocusOnSearchInput();
     }

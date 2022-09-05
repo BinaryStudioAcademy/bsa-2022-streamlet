@@ -264,7 +264,10 @@ export class VideoController extends BaseHttpController {
         videos: { list: [], total: 0 },
       };
     }
-    if (duration && duration !== DurationFilterId.ANY) {
+    if (
+      (duration && duration !== DurationFilterId.ANY) ||
+      (type && (type === TypeFilterId.VIDEO || type === TypeFilterId.STREAM))
+    ) {
       return {
         channels: { list: [], total: 0 },
         videos: await this.videoService.getVideosBySearch(queryParams),
