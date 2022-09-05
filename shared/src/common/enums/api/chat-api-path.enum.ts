@@ -1,6 +1,6 @@
 enum ChatApiPath {
   ROOT = '/',
-  $ID = '/:id',
+  $ID = '/:videoId',
 }
 
 export { ChatApiPath };

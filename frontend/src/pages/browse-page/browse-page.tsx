@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector, useState } from '../../hooks/hooks';
 import { videoActions } from '../../store/actions';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { generateBrowsePageSkeleton } from './common/skeleton';
+import { NoVideosYet } from '../../components/common/no-videos-yet/no-videos-yet';
 
 const BrowsePage: FC = () => {
   const dispatch = useAppDispatch();
@@ -17,8 +18,9 @@ const BrowsePage: FC = () => {
   const categoryList = ['live', 'music', 'gaming', 'film&animation'];
 
   const handleCategoryClick = (category: string): void => {
-    dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
-    setActiveCategory(category);
+    if (activeCategory === reposnseCategory && activeCategory !== category) {
+      setActiveCategory(category);
+    }
   };
 
   const videoData = useAppSelector((state) => {
@@ -33,11 +35,15 @@ const BrowsePage: FC = () => {
 
   const { dataStatus } = videoData;
 
-  const { currentPage, lastPage } = popularVideos;
+  const { currentPage, lastPage, category: reposnseCategory, firstLoad } = popularVideos;
 
   useEffect(() => {
-    dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
-  }, [activeCategory, dispatch]);
+    if (firstLoad) {
+      dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
+    } else if (activeCategory !== reposnseCategory) {
+      dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
+    }
+  }, [activeCategory, dispatch, firstLoad, reposnseCategory]);
 
   const loadMore = (): void => {
     dispatch(videoActions.getPopularVideos({ page: currentPage + 1, category: activeCategory }));
@@ -74,13 +80,22 @@ const BrowsePage: FC = () => {
           );
         })}
       </div>
-      <div className={styles['browse-page-video-container']}>
+      <div
+        className={clsx({
+          [styles['no-video-in-list']]: !popularVideos.list.length,
+          [styles['browse-page-video-container']]: popularVideos.list.length,
+        })}
+      >
         {videoData.dataStatus === DataStatus.PENDING && generateBrowsePageSkeleton(isLightTheme)}
-        {popularVideos.category === activeCategory
-          ? popularVideos.list.map((video) => {
-              return <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />;
-            })
-          : generateBrowsePageSkeleton(isLightTheme)}
+        {!popularVideos.list.length ? (
+          <div className={styles['no-video-in-list']}>
+            <NoVideosYet />
+          </div>
+        ) : (
+          popularVideos.list.map((video) => {
+            return <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />;
+          })
+        )}
         <div ref={sentryRef}>
           {videoData.dataStatus === DataStatus.PENDING &&
             popularVideos.list.length > 0 &&
