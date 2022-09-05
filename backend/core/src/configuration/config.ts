@@ -39,11 +39,8 @@ interface CloudConfig {
 }
 
 interface MailServiceConfig {
-  ADDRESS: string;
-  CLIENT_ID: string;
-  CLIENT_SECRET: string;
-  REDIRECT_URI: string;
-  REFRESH_TOKEN: string;
+  LOGIN: string;
+  PASSWORD: string;
 }
 
 interface ClientInfo {
@@ -80,11 +77,8 @@ const configuration = (): ConfigInterface => {
     CLOUDINARY_API_SECRET,
     CLOUDINARY_NAME,
     API_BASE_PREFIX,
-    MAIL_ADDRESS,
-    MAIL_CLIENT_ID,
-    MAIL_CLIENT_SECRET,
-    MAIL_REDIRECT_URI,
-    MAIL_REFRESH_TOKEN,
+    MAIL_LOGIN,
+    MAIL_PASSWORD,
     RABBITMQ_PORT,
     RABBITMQ_HOST,
     CLIENT_URL,
@@ -126,11 +120,8 @@ const configuration = (): ConfigInterface => {
     },
     ENCRYPTION: getEncryptionConfig(),
     MAIL_SERVICE: {
-      ADDRESS: MAIL_ADDRESS || '',
-      CLIENT_ID: MAIL_CLIENT_ID || '',
-      CLIENT_SECRET: MAIL_CLIENT_SECRET || '',
-      REDIRECT_URI: MAIL_REDIRECT_URI || '',
-      REFRESH_TOKEN: MAIL_REFRESH_TOKEN || '',
+      LOGIN: MAIL_LOGIN || '',
+      PASSWORD: MAIL_PASSWORD || '',
     },
     CLIENT_INFO: {
       URL: CLIENT_URL || 'http://localhost:3000',
