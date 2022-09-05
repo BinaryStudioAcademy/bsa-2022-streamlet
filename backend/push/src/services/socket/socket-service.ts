@@ -7,6 +7,7 @@ import { logger } from '~/config/logger';
 import { throttle } from '~/helpers/throttle';
 import { getUserIdsInRoom } from '~/helpers/get-user-ids-in-room.helper';
 import { getSocketIdByUserId } from '~/helpers/get-socket-id-by-user-id.helper';
+import { AmqpConnectionError } from 'shared/build';
 
 class SocketService {
   private io: SocketIo | undefined;
@@ -16,6 +17,11 @@ class SocketService {
   subscribe(httpServer: http.Server): void {
     this.io = createIoInstance(httpServer);
     this.io.on('connection', (socket) => {
+      if (!amqpService.amqpChannel) {
+        throw new AmqpConnectionError({
+          message: 'Forbidden context',
+        });
+      }
       logger.info(`CLient ${socket.id} connected`);
 
       amqpService.consume({
@@ -41,7 +47,7 @@ class SocketService {
       });
 
       amqpService.consume({
-        queue: 'SOCKETS-STREAMING' as AmqpQueue,
+        queue: AmqpQueue.SOCKETS_STREAM_CONNECTED,
         onMessage: (data) => {
           if (data && this.io) {
             const { authorId, streamData } = JSON.parse(data.toString('utf-8'));
@@ -55,7 +61,7 @@ class SocketService {
       });
 
       amqpService.consume({
-        queue: 'SOCKETS-STREAMING-DONE' as AmqpQueue,
+        queue: AmqpQueue.SOCKETS_STREAM_DISCONNECTED,
         onMessage: (data) => {
           if (data && this.io) {
             const { authorId, streamingKey } = JSON.parse(data.toString('utf-8'));

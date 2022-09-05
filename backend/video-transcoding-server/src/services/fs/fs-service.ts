@@ -11,7 +11,7 @@ export class FsService {
     }
   }
 
-  public static async removeFolder({ path }: { path: string }): Promise<void> {
+  public static async emptyFolder({ path }: { path: string }): Promise<void> {
     try {
       rm(path, { recursive: true, force: true }); // rm -rf equivalent
     } catch (err) {

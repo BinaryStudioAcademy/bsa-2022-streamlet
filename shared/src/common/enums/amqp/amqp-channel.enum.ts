@@ -12,4 +12,5 @@ export enum AmqpQueue {
   STREAM_DATA = 'stream-data',
   SOCKETS_STREAM_CONNECTED = 'sockets-stream-connected',
   SOCKETS_STREAM_DISCONNECTED = 'sockets-stream-disconnected',
+  PREVIEW_STOPPED = 'preview-stopped',
 }
