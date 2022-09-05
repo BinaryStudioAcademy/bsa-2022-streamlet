@@ -18,7 +18,7 @@ import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud
 import { ChannelSubscriptionRepository } from '~/core/channel-subscription/port/channel-subscription-repository';
 import { ApiPath, ChannelCrudApiPath } from '~/shared/enums/api/api';
 import { exceptionMessages } from '~/shared/enums/messages';
-import { NotFound } from '~/shared/exceptions/exceptions';
+import { errorCodes, NotFound } from '~/shared/exceptions/exceptions';
 import { trimChannelInfo } from '~/shared/helpers';
 import {
   ChannelInfoRequestDto,
@@ -61,7 +61,7 @@ export class ChannelCrudController extends BaseHttpController {
   ): Promise<ChannelInfoResponseDto> {
     const channel = await this.channelService.getChannelById({ id });
     if (!channel) {
-      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_ID_NOT_FOUND);
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
     const basicChannelInfo = trimChannelInfo(channel);
     if (req.user) {

@@ -70,37 +70,44 @@ model ResetPasswordToken {
   updatedAt DateTime @updatedAt
 }
 
-enum StreamingStatus {
-  pending
-  ready
-  live
-  finished
+enum StreamStatus {
+  WAITING
+  LIVE
+  FINISHED
+}
+
+enum Privacy {
+  PUBLIC
+  UNLISTED
+  PRIVATE
 }
 
 model Video {
-  id                  String          @id @default(uuid())
-  name                String
-  description         String          @default("")
-  status              StreamingStatus @default(pending)
-  publishedAt         DateTime        @default(now())
-  scheduledStreamDate DateTime        @default(now())
-  poster              String          @default("")
-  duration            Int             @default(0)
-  videoPath           String
-  liveViews           Int             @default(0)
-  videoViews          Int             @default(0)
+  id                  String         @id @default(uuid())
+  name                String         @default("My new stream")
+  description         String         @default("")
+  status              StreamStatus   @default(WAITING)
+  isReadyToStream     Boolean        @default(false)
+  publishedAt         DateTime?
+  scheduledStreamDate DateTime       @default(now())
+  poster              String         @default("")
+  duration            Int            @default(0)
+  videoPath           String         @default("")
+  privacy             Privacy        @default(UNLISTED)
+  liveViews           Int            @default(0)
+  videoViews          Int            @default(0)
   tags                Tag[]
   categories          Category[]
   comments            VideoComment[]
-  channel             Channel         @relation(fields: [channelId], references: [id])
+  channel             Channel        @relation(fields: [channelId], references: [id])
   channelId           String
   isChatEnabled       Boolean         @default(true)
   chatMessages        ChatMessage[]
   notifications       Notification[]
   historyRecords      History[]
   reactions           Reaction[]
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 }
 
 model Tag {
@@ -115,7 +122,7 @@ model Tag {
 model Category {
   id         String           @id @default(uuid())
   name       String           @unique
-  posterPath String?          @default("")
+  posterPath String          @default("")
   videos     Video[]
   users      CategoryToUser[]
   createdAt  DateTime         @default(now())

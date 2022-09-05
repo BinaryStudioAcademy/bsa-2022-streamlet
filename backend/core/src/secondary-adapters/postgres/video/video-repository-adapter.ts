@@ -10,6 +10,7 @@ import {
   CategorySearchRequestQueryDto,
   CreateReactionRequestDto,
   CreateReactionResponseDto,
+  StreamStatus,
   TagSearchRequestQueryDto,
   VideoCommentRequestDto,
   VideoCommentResponseDto,
@@ -40,7 +41,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
   }
 
   async getById(id: string): Promise<VideoExpandedInfo | null> {
-    const video = await this.prismaClient.video.findUnique({
+    const video = await this.prismaClient.video.findFirst({
       where: {
         id,
       },
@@ -117,7 +118,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
   async getAll(queryParams?: { filters?: VideoRepositoryFilters }): Promise<DataVideo> {
     const items = await this.prismaClient.video.findMany({
       where: {
-        ...(queryParams?.filters?.streamingStatus ? { status: queryParams.filters.streamingStatus } : {}),
+        ...(queryParams?.filters?.streamStatus ? { status: queryParams.filters.streamStatus } : {}),
         ...(queryParams?.filters?.fromChannelSubscribedByUserWithId
           ? {
               channel: {
@@ -321,7 +322,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
   }: GetPopularLiveInputType): Promise<PopularVideoResponseDto> {
     const popularVideos = await this.prismaClient.video.findMany({
       where: {
-        status: 'live',
+        status: StreamStatus.LIVE,
       },
       take,
       skip,
@@ -371,7 +372,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
   }
 
-  searchByCatergories({ skip, take, categories }: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]> {
+  searchByCategories({ skip, take, categories }: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]> {
     return this.prismaClient.video.findMany({
       where: {
         categories: {
@@ -596,5 +597,18 @@ export class VideoRepositoryAdapter implements VideoRepository {
     }
 
     return await this.getRepliesForComment(request.parentId);
+  }
+
+  async getAuthorById(id: string): Promise<string | undefined> {
+    const searchResult = await this.prismaClient.video.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        channel: true,
+      },
+    });
+
+    return searchResult?.channel.authorId;
   }
 }

@@ -1,0 +1,23 @@
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin-bottom: 2px;
+  color: var(--white-text-color);
+  cursor: pointer;
+}
+
+.input {
+  width: 100%;
+  height: 47px;
+  padding: 0 12px;
+  border: var(--input-border);
+  border-radius: 3px;
+  outline: inherit;
+}
+
+.input:disabled {
+  background-color: var(--input-disabled-color);
+}

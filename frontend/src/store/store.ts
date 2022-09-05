@@ -12,6 +12,7 @@ import {
   historyApi,
   followingApi,
   searchApi,
+  channelStreamingApi,
 } from 'services/services';
 import { rootReducer } from './root-reducer';
 import storage from 'redux-persist/lib/storage';
@@ -29,6 +30,7 @@ const extraArgument = {
   chatApi,
   historyApi,
   followingApi,
+  channelStreamingApi,
   searchApi,
 };
 

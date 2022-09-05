@@ -7,10 +7,10 @@ import { MainPageContainer } from 'pages/main-page/main-page-container';
 import { Routes, Route, HeaderContainer, SidebarContainer } from 'components/common/common';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 import { Search } from 'components/search/search';
-import { NotFound } from 'components/not-found-page/not-found';
+import { NotFound } from 'components/placeholder-page/not-found';
 import { ReactNotifications } from 'react-notifications-component';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
-import { StudioHome, StudioAnalytics, StudioSidebar, StudioChannel } from '../../pages/studio';
+import { StudioAnalytics, StudioSidebar, StudioChannel } from '../../pages/studio';
 import { VideoCardTest } from './tests/video-card/video-card';
 import { VideoPageContainer } from 'pages/video/video-page-container';
 import { ProtectedRoute } from 'components/common/protected-route/protected-route';
@@ -34,6 +34,7 @@ import { closeSidebar } from 'store/layout/actions';
 import { ScrollToTop } from './scroll-to-top';
 import { socket } from 'common/config/config';
 import { store } from 'store/store';
+import { StudioHomeContainer } from 'pages/studio/home/home-container';
 
 import styles from './app.module.scss';
 
@@ -58,7 +59,7 @@ const App: FC = () => {
   const isHasStudioNavigation = isRouteHasStudioNavigation(pathname);
 
   const { theme: isLightTheme, userId } = useAppSelector((state) => ({
-    theme: state.theme.isLightTheme,
+    theme: state.theme.isLightTheme && !pathname.includes('/studio'),
     userId: state.auth.user?.id,
   }));
 
@@ -102,9 +103,10 @@ const App: FC = () => {
           <StudioSidebar />
           <div className={styles['main-content']}>
             <Routes>
-              <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHome />} />} />
+              <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHomeContainer />} />} />
               <Route path={AppRoutes.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />
               <Route path={AppRoutes.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />} />
+              <Route path={AppRoutes.ANY} element={<NotFound />} />
             </Routes>
           </div>
         </div>

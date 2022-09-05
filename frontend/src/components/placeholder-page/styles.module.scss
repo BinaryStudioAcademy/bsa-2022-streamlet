@@ -1,6 +1,6 @@
 @import 'assets/css/config.scss';
 
-.not-found-page-container {
+.page-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -14,7 +14,7 @@
   background-color: var(--gray-400-primary-background);
 }
 
-.error-page-description-container span {
+.error-description-container span {
   display: block;
   text-transform: uppercase;
 }

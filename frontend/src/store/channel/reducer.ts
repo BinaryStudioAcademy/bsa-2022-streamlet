@@ -12,7 +12,7 @@ import {
   updateChannelInfo,
 } from './actions';
 
-type CurrentChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
+type ChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
 type ChannelVideo = ChannelVideoPreviewsPageDto['list'][number];
 
 interface InitialState {
@@ -22,7 +22,7 @@ interface InitialState {
     error: string | undefined;
   };
   currentChannel: {
-    data: CurrentChannelInfo | null;
+    data: ChannelInfo | null;
     dataStatus: DataStatus;
     error: string | undefined;
     subscription: {

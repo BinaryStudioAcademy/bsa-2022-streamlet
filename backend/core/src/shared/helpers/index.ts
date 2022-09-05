@@ -16,3 +16,4 @@ export {
 export { trimChannelToSubscriptionChannel } from './trim-channel-to-subscription-channel';
 export { trimChannelSearch } from './trim-channel-search';
 export { trimVideoSearch } from './trim-video-search';
+export { omitProperties } from './omit-properties/omit-properties.helper';

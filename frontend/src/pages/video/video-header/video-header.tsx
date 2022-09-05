@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import React, { FC, useState } from 'react';
-import { StreamingStatus, VideoReaction } from 'shared/build';
+import { StreamStatus, VideoReaction } from 'shared/build';
 import { videoPageActions } from 'store/actions';
 import styles from './styles.module.scss';
 import { ReactComponent as ThumbUp } from 'assets/img/thumb-up.svg';
@@ -16,7 +16,7 @@ type Props = {
     userReaction: VideoReaction | null;
     likeNum: number;
     dislikeNum: number;
-    status: string;
+    status: StreamStatus;
     videoViews: number;
     liveViews: number;
   };
@@ -49,7 +49,7 @@ const VideoHeader: FC<Props> = ({ videoInfo }) => {
       <h2 className={styles['video-title']}>{videoInfo.name}</h2>
       <div className={styles['video-secondary-info']}>
         <span className={styles['video-views']}>{`${
-          videoInfo.status === StreamingStatus.FINISHED ? videoInfo.videoViews : videoInfo.liveViews
+          videoInfo.status === StreamStatus.FINISHED ? videoInfo.videoViews : videoInfo.liveViews
         } views`}</span>
         <div className={styles['reaction-block']}>
           <div className={styles['reaction-container']} onClick={handleLikeReact}>
