@@ -21,6 +21,7 @@ import { GetPopularInputType, GetPopularLiveInputType, VideoRepository } from '~
 import { VideoSearch, VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 import { VideoRepositoryFilters } from '~/core/video/port/video-repository-filters';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
+import { StreamPrivacy } from '~/shared/enums/stream/stream';
 
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
@@ -119,6 +120,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     const items = await this.prismaClient.video.findMany({
       where: {
         ...(queryParams?.filters?.streamStatus ? { status: queryParams.filters.streamStatus } : {}),
+        ...{ privacy: StreamPrivacy.PUBLIC },
         ...(queryParams?.filters?.fromChannelSubscribedByUserWithId
           ? {
               channel: {
