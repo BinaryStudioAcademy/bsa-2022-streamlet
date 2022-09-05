@@ -1,6 +1,8 @@
-import { FC, VideoCard as VideoCardType } from 'common/types/types';
+import { FC, VideoCard as VideoCardType, ChannelCard as ChannelCardType } from 'common/types/types';
+import { DataStatus, LoaderSize } from 'common/enums/enums';
 import { useEffect, useSearchParams, useAppDispatch, useAppSelector, useCallback, useMemo } from 'hooks/hooks';
-import { FilterBar, FilterSidebar, ResultNotFound, VideoCard } from './components/components';
+import { Loader } from 'components/common/common';
+import { FilterBar, FilterSidebar, ResultNotFound, VideoCard, ChannelCard } from './components/components';
 import { SearchQueryParam, FilterType, SearchState } from './config/config';
 import { searchActions } from 'store/actions';
 import {
@@ -17,15 +19,25 @@ const Search: FC = () => {
     search: {
       searchText,
       activeFilterId,
-      results: { results },
+      results: {
+        videos: { list: videosList, total: videosTotal },
+        channels: { list: channelsList, total: channelsTotal },
+        dataStatus,
+      },
     },
     theme: { isLightTheme },
+    user,
+    subscriptionsList,
   } = useAppSelector((state) => ({
     search: state.search,
     theme: state.theme,
+    user: state.auth.user,
+    subscriptionsList: state.subscriptions.subscriptionsData.subscriptionsList.ids,
   }));
 
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const hasUser = Boolean(user);
 
   const handleSetSearchText = useCallback((v: string) => dispatch(searchActions.setSearchText(v)), [dispatch]);
   const handleSetActiveFilterIds = useCallback(
@@ -51,6 +63,10 @@ const Search: FC = () => {
     }, {});
   }, [searchText, activeFilterId]);
 
+  const handleSetSearchResults = useCallback(() => {
+    dispatch(searchActions.setSearchResults({ searchParamURL: searchParams.toString() }));
+  }, [searchParams, dispatch]);
+
   useEffect(() => {
     const currentFilterFromURL = getFilterFromSearchParams(searchParams);
 
@@ -59,7 +75,12 @@ const Search: FC = () => {
       delete currentFilterFromURL[FilterType.SEARCH_TEXT];
     }
     handleSetActiveFilterIds(currentFilterFromURL);
-  }, [searchParams, handleSetSearchText, handleSetActiveFilterIds]);
+    handleSetSearchResults();
+
+    return () => {
+      dispatch(searchActions.clearSearchResults());
+    };
+  }, [searchParams, handleSetSearchText, handleSetActiveFilterIds, handleSetSearchResults, dispatch]);
 
   useEffect(() => {
     setSearchParams({ ...handleGetVideoFilter });
@@ -71,10 +92,24 @@ const Search: FC = () => {
       <div className={styles['search-page-wrapper']}>
         <FilterSidebar />
         <div className={styles['search-page-video-list']}>
-          {results.length === 0 && <ResultNotFound />}
-          {results.map((c: VideoCardType) => (
-            <VideoCard key={c.id} video={c} isLightTheme={isLightTheme} />
-          ))}
+          {dataStatus === DataStatus.PENDING ? (
+            <Loader spinnerSize={LoaderSize.MD} />
+          ) : (
+            <>
+              {(!searchText || (videosTotal === 0 && channelsTotal === 0)) && <ResultNotFound />}
+              {channelsList.map((c: ChannelCardType) => (
+                <ChannelCard
+                  key={c.id}
+                  channel={c}
+                  hasUser={hasUser}
+                  isCurrentUserSubscribed={subscriptionsList.includes(c.id)}
+                />
+              ))}
+              {videosList.map((c: VideoCardType) => (
+                <VideoCard key={c.id} video={c} isLightTheme={isLightTheme} />
+              ))}
+            </>
+          )}
         </div>
       </div>
     </div>

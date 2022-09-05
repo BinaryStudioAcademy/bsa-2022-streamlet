@@ -395,10 +395,6 @@ $base-z-index: $page-component-z-index;
     gap: 15px;
   }
 
-  .video-card-preview {
-    height: 190px;
-  }
-
   .video-card-title {
     font-size: 18px;
   }
@@ -430,7 +426,7 @@ $base-z-index: $page-component-z-index;
 
 @media screen and (min-width: 850px) {
   .video-card-preview {
-    height: 205px;
+    height: 185px;
   }
 
   .video-card-info {
@@ -444,7 +440,7 @@ $base-z-index: $page-component-z-index;
 
 @media #{$desktop-small} {
   .video-card-preview {
-    height: 230px;
+    height: 200px;
   }
 }
 

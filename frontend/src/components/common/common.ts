@@ -12,7 +12,7 @@ export { Textarea } from './text-area/text-area';
 export { ImageEditor } from './image-editor/image-editor';
 export { UploadImage } from './upload-image/upload-image';
 export { createToastNotification } from './toast-notification';
-
+export { SubscribeButton } from './subscribe-button/subscribe-button';
 export { HeaderContainer } from './header/header-container';
 export { SidebarContainer } from './sidebar/sidebar-container';
 

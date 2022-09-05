@@ -2,7 +2,7 @@ export { AppDispatch, AsyncThunkConfig, RootState } from './app/app';
 
 export { RefreshTokenRequestDto, RefreshTokenResponseDto, TokenPair } from './auth/auth';
 
-export { VideoCard, SelectOptions } from './component/component';
+export { VideoCard, ChannelCard, SelectOptions } from './component/component';
 
 export { FormControl, FormControlErrors, FormControlPath, FormControlValues } from './form/form';
 
@@ -49,5 +49,7 @@ export {
 } from './stream/stream';
 
 export * from './chat/chat';
+
+export { SearchDataResponseDto } from './search/search';
 
 declare module 'react-notifications-component';

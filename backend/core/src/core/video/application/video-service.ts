@@ -8,10 +8,12 @@ import {
 import { VideoRepository } from '~/core/video/port/video-repository';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import {
+  BaseReplyRequestDto,
   CreateReactionRequestDto,
   CreateReactionResponseDto,
   VideoCommentRequestDto,
   VideoCommentResponseDto,
+  Comment,
 } from 'shared/build';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { POPULAR_VIDEO_CARD_IN_ONE_PAGE } from '~/shared/constants/constants';
@@ -81,5 +83,13 @@ export class VideoService {
     }
 
     return this.videoRepository.getPopular({ category, ...paginationParam });
+  }
+
+  async getRepliesForComment(commentId: string): Promise<Comment[]> {
+    return await this.videoRepository.getRepliesForComment(commentId);
+  }
+
+  async addVideoCommentReply(request: BaseReplyRequestDto, userId: string): Promise<Comment[]> {
+    return this.videoRepository.addVideoCommentReply(request, userId);
   }
 }
