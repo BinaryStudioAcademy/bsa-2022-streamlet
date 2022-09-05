@@ -76,7 +76,7 @@ export class ChannelCrudController extends BaseHttpController {
   @httpPost(
     `${ChannelCrudApiPath.AVATAR}${ChannelCrudApiPath.$ID}`,
     authenticationMiddleware,
-    CONTAINER_TYPES.ChannelOwnerMiddleWare,
+    CONTAINER_TYPES.ChannelActionMiddleware,
   )
   public async updateAvatar(
     @requestParam('channelId') id: string,
@@ -93,7 +93,7 @@ export class ChannelCrudController extends BaseHttpController {
   @httpPost(
     `${ChannelCrudApiPath.BANNER}${ChannelCrudApiPath.$ID}`,
     authenticationMiddleware,
-    CONTAINER_TYPES.ChannelOwnerMiddleWare,
+    CONTAINER_TYPES.ChannelActionMiddleware,
   )
   public async updateBanner(
     @requestParam('channelId') id: string,
@@ -107,7 +107,7 @@ export class ChannelCrudController extends BaseHttpController {
     return updatedChannel;
   }
 
-  @httpPut(ChannelCrudApiPath.$ID, authenticationMiddleware, CONTAINER_TYPES.ChannelOwnerMiddleWare)
+  @httpPut(ChannelCrudApiPath.$ID, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
   public async updateSettings(
     @requestParam('channelId') id: string,
     @requestBody() { name, description }: ChannelProfileUpdateRequestDto,
