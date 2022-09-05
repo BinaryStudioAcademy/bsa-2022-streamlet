@@ -79,6 +79,7 @@ const Search: FC = () => {
 
     return () => {
       dispatch(searchActions.clearSearchResults());
+      dispatch(searchActions.setSearchText(''));
     };
   }, [searchParams, handleSetSearchText, handleSetActiveFilterIds, handleSetSearchResults, dispatch]);
 

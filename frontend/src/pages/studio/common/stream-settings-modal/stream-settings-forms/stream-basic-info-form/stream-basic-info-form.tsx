@@ -1,5 +1,5 @@
 import { Input, Textarea } from 'components/common/common';
-import { DatetimeInput } from 'components/common/input/datetime-input/datetime-input';
+// import { DatetimeInput } from 'components/common/input/datetime-input/datetime-input';
 import React, { FC, ReactElement, useId, useState } from 'react';
 import { StreamSettingsFormValues } from './stream-settings-form-values';
 import Select from 'react-select';
@@ -53,13 +53,13 @@ const StreamBasicInfoForm: FC<Props> = ({ categoryOptions, control, errors }) =>
           setIsDescriptionInFocus(false);
         }}
       />
-      <DatetimeInput
+      {/* <DatetimeInput
         control={control}
         name="scheduledStreamDate"
         label="Scheduled date"
         labelClassName={styles['label']}
         inputClassName={styles['input']}
-      />
+      /> */}
       <Controller
         control={control}
         defaultValue={[]}

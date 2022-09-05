@@ -10,8 +10,8 @@ import { StreamInfoFormValues } from './common/stream-info-form-values';
 
 import styles from './styles.module.scss';
 import { StreamPrivacyLabel } from 'common/enums/enums';
-import { Select } from 'components/common/select';
-import { STREAM_PRIVACY_OPTIONS } from 'common/constants/stream/stream';
+// import { Select } from 'components/common/select';
+// import { STREAM_PRIVACY_OPTIONS } from 'common/constants/stream/stream';
 
 type Props = {
   handleSettingsModalOpen(): void;
@@ -160,10 +160,10 @@ const StudioStream: FC<Props> = ({
                   type="button"
                 />
               </div>
-              <div className={styles['text-field-container']}>
+              {/* <div className={styles['text-field-container']}>
                 <p className={styles['field-caption']}>Privacy</p>
                 <Select options={STREAM_PRIVACY_OPTIONS} selectClassName={styles['input']} />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
