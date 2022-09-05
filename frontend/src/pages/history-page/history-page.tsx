@@ -72,7 +72,6 @@ const HistoryPage: FC = () => {
       </div>
 
       <div className={styles['history-list-container']}>
-        {historyData.dataStatus === DataStatus.PENDING ? generateHistorySkeletons(isLightTheme) : null}
         {
           <HistoryList
             historyData={historyData}
