@@ -61,3 +61,12 @@
 .browse-page-video-container > div {
   margin: 20px 0;
 }
+
+.no-video-in-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100vh - 200px);
+  margin: 0;
+}

@@ -12,7 +12,6 @@ import { CONTAINER_TYPES } from '~/shared/types/types';
 import {
   ApiPath,
   BaseVideoResponseDto,
-  DefaultRequestParam,
   TagApiPath,
   TagResponseDto,
   TagSearchRequestQueryDto,
@@ -44,7 +43,7 @@ export class TagController extends BaseHttpController {
   }
 
   @httpGet(TagApiPath.$ID)
-  public async getById(@requestParam() { id }: DefaultRequestParam): Promise<TagResponseDto> {
+  public async getById(@requestParam('tagId') id: string): Promise<TagResponseDto> {
     const tag = await this.tagService.getById(id);
     if (!tag) {
       throw new NotFound('Invalid Tag id');
@@ -55,7 +54,7 @@ export class TagController extends BaseHttpController {
 
   @httpPost(TagApiPath.$BIND, authenticationMiddleware)
   public async bindTagToVIdeo(
-    @requestParam() { id }: DefaultRequestParam,
+    @requestParam('tagId') id: string,
     @requestBody() { tags }: BindTagToVideoRequestDto,
   ): Promise<TagResponseDto[]> {
     const payload = tags.map((tag) => normalizeTagPayload(tag));
