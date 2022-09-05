@@ -1,11 +1,10 @@
-import { mkdir, rm } from 'node:fs/promises';
-import { createWriteStream } from 'node:fs';
+import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { logger } from '~/config/logger';
 
 export class FsService {
   public static async createFolder({ path }: { path: string }): Promise<void> {
     try {
-      mkdir(path, { recursive: true });
+      await mkdir(path, { recursive: true });
     } catch (err) {
       logger.error(err);
     }
@@ -13,16 +12,25 @@ export class FsService {
 
   public static async emptyFolder({ path }: { path: string }): Promise<void> {
     try {
-      rm(path, { recursive: true, force: true }); // rm -rf equivalent
+      await rm(path, { recursive: true, force: true }); // rm -rf equivalent
     } catch (err) {
       logger.error(err);
     }
   }
 
-  public static createFile({ path, filename, content }: { path: string; filename: string; content: string[] }): void {
-    const writeStream = createWriteStream(`${path}/${filename}`);
-    writeStream.write(content.join('\r\n'));
-
-    writeStream.end();
+  public static async createFile({
+    path,
+    filename,
+    content,
+  }: {
+    path: string;
+    filename: string;
+    content: string[];
+  }): Promise<void> {
+    try {
+      await writeFile(`${path}/${filename}`, content.join('\r\n'));
+    } catch (err) {
+      logger.error(err);
+    }
   }
 }
