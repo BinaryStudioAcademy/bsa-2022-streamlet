@@ -1,6 +1,6 @@
-import { StreamingStatus } from '@prisma/client';
+import { StreamStatus } from '@prisma/client';
 
 export type VideoRepositoryFilters = {
-  streamingStatus?: StreamingStatus;
+  streamStatus?: StreamStatus;
   fromChannelSubscribedByUserWithId?: string;
 };

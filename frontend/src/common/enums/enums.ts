@@ -2,7 +2,15 @@ export * from './api/api';
 
 export * from './app/app';
 
-export { IconColor, IconName, MenuOptions, LoaderSize, VideoTagName } from './component/component';
+export {
+  IconColor,
+  IconName,
+  MenuOptions,
+  LoaderSize,
+  VideoTagName,
+  ChatMenuOptions,
+  ComponentUpdateDelayTime,
+} from './component/component';
 
 export { ContentType } from './file/file';
 
@@ -10,7 +18,7 @@ export { HttpHeader, HttpMethod, HttpCode } from './http/http';
 
 export { ErrorMessage } from './message/message';
 
-export { SearchQueryParam } from './search/search';
+export * from './search/search';
 
 export { StorageKeys } from './storage/storage';
 
@@ -21,6 +29,6 @@ export * from './channel/channel';
 
 export { ImageUploadErrorMessage } from './image/image';
 
-export { StreamingStatus } from './stream/stream';
+export { StreamStatus, StreamPrivacyLabel, StreamPrivacy } from './stream/stream';
 
 export { SocketEvents } from './socket/socket';

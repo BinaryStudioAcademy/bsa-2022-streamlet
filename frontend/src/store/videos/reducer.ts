@@ -7,8 +7,11 @@ type State = {
   data: DataVideo & {
     popular: {
       list: BaseVideoResponseDto[];
+      firstLoad: boolean;
       currentPage: number;
       lastPage: number;
+      lastListLength: number;
+      category: string;
     };
   };
   dataStatus: DataStatus;
@@ -20,9 +23,13 @@ const initialState: State = {
     list: [],
     total: 0,
     popular: {
+      firstLoad: true,
+
       list: [],
-      currentPage: 1,
-      lastPage: 1,
+      currentPage: -1,
+      lastPage: -1,
+      lastListLength: 0,
+      category: '',
     },
   },
   dataStatus: DataStatus.IDLE,
@@ -43,11 +50,16 @@ const reducer = createReducer(initialState, (builder) => {
   });
 
   builder.addCase(getPopularVideos.fulfilled, (state, { payload }) => {
+    const { list } = payload;
+
+    state.data.popular = {
+      firstLoad: false,
+      ...payload,
+      lastListLength: list.length,
+    };
+
     state.dataStatus = DataStatus.FULFILLED;
     state.error = false;
-    state.data.popular = {
-      ...payload,
-    };
   });
 
   builder.addCase(getPopularVideos.pending, (state) => {

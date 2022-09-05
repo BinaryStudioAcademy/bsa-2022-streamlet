@@ -11,6 +11,7 @@ type State = {
     lastPage: number;
     dataStatus: DataStatus;
     deleteStatus: DataStatus;
+    isFirstHistoryPageLoad: boolean;
     error: string | undefined;
     list: HistoryListType[];
   };
@@ -19,9 +20,10 @@ type State = {
 const initialState: State = {
   data: {
     list: [],
-    lastPage: 1,
-    currentPage: 1,
     deleteStatus: DataStatus.IDLE,
+    isFirstHistoryPageLoad: true,
+    lastPage: -1,
+    currentPage: -1,
     dataStatus: DataStatus.IDLE,
     error: undefined,
   },
@@ -35,14 +37,18 @@ const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(getUserVideoHistoryRecord.fulfilled, (state, { payload }) => {
     let newList: HistoryListType[] = state.data.list;
+    const { currentPage, list } = payload;
 
-    if (!isObjectUniqueIdContainInTwoArray(newList, payload.list)) {
-      newList = state.data.list.concat(payload.list);
+    if (currentPage === 1 || currentPage === -1) {
+      newList = list;
+    } else if (!isObjectUniqueIdContainInTwoArray(newList, list)) {
+      newList = state.data.list.concat(list);
     }
 
     state.data = {
       ...payload,
       list: newList,
+      isFirstHistoryPageLoad: false,
       error: undefined,
       deleteStatus: DataStatus.IDLE,
       dataStatus: DataStatus.FULFILLED,

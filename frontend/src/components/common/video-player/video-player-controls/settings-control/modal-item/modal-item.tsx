@@ -1,9 +1,12 @@
 import clsx from 'clsx';
 import React, { FC, ReactNode } from 'react';
 import styles from './styles.module.scss';
+import { ReactComponent as NotSelectedIcon } from 'assets/img/circle-empty-inside.svg';
+import { ReactComponent as SelectedIcon } from 'assets/img/circle-selected.svg';
 
 type Props = {
   children?: ReactNode;
+  contentContainerClassName?: string;
   isHeader?: boolean;
   isSelected?: boolean;
   isSelectable?: boolean;
@@ -17,6 +20,7 @@ const ModalItem: FC<Props> = ({
   isHeader = false,
   isSelected = false,
   isSelectable = false,
+  contentContainerClassName,
   icon,
 }) => {
   return (
@@ -29,11 +33,12 @@ const ModalItem: FC<Props> = ({
       })}
       onClick={onClick}
     >
-      <div>
-        {isSelected && '\u2713'}
+      <div className={styles['icon-container']}>
+        {isSelectable && !isSelected && <NotSelectedIcon height={18} className={styles['icon']} />}
+        {isSelected && <SelectedIcon height={18} color="var(--brand-green-color)" className={styles['icon']} />}
         {icon}
       </div>
-      <div className={styles['modal-item-content']}>{children}</div>
+      <div className={clsx(styles['modal-item-content'], contentContainerClassName)}>{children}</div>
     </div>
   );
 };

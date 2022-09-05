@@ -5,14 +5,19 @@ import { amqpService } from '../services';
 import { AmqpQueue, SocketEvents } from '~/shared/enums/enums';
 import { logger } from '~/config/logger';
 import { throttle } from '~/helpers/throttle';
+import { getUserIdsInRoom } from '~/helpers/get-user-ids-in-room.helper';
+import { getSocketIdByUserId } from '~/helpers/get-socket-id-by-user-id.helper';
 
 class SocketService {
   private io: SocketIo | undefined;
+
+  private socketClients = new Map<string, string>();
 
   subscribe(httpServer: http.Server): void {
     this.io = createIoInstance(httpServer);
     this.io.on('connection', (socket) => {
       logger.info(`CLient ${socket.id} connected`);
+
       amqpService.consume({
         queue: AmqpQueue.NOTIFY_USER,
         onMessage: (data) => {
@@ -36,12 +41,29 @@ class SocketService {
       });
 
       amqpService.consume({
-        queue: AmqpQueue.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED,
+        queue: AmqpQueue.SOCKETS_STREAM_CONNECTED,
         onMessage: (data) => {
           if (data && this.io) {
-            const { roomId, isChatEnabled } = JSON.parse(data.toString('utf-8'));
-            logger.info(`Rabbitmq -> chat ${roomId} is enabled - ${isChatEnabled}`);
-            this.io.to(roomId).emit(SocketEvents.chat.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED_DONE, isChatEnabled);
+            const { authorId, streamData } = JSON.parse(data.toString('utf-8'));
+            logger.info(`Rabbitmq -> ${JSON.stringify(streamData)}`);
+            const socketId = getSocketIdByUserId(this.socketClients, authorId);
+            if (socketId) {
+              this.io.to(socketId).emit(SocketEvents.notify.STREAM_OBS_STATUS, true);
+            }
+          }
+        },
+      });
+
+      amqpService.consume({
+        queue: AmqpQueue.SOCKETS_STREAM_DISCONNECTED,
+        onMessage: (data) => {
+          if (data && this.io) {
+            const { authorId, streamingKey } = JSON.parse(data.toString('utf-8'));
+            logger.info(`Rabbitmq -> ${JSON.stringify(streamingKey)}`);
+            const socketId = getSocketIdByUserId(this.socketClients, authorId);
+            if (socketId) {
+              this.io.to(socketId).emit(SocketEvents.notify.STREAM_OBS_STATUS, false);
+            }
           }
         },
       });
@@ -61,10 +83,27 @@ class SocketService {
 
       const updateLiveViews = throttle((roomId: string) => {
         if (this.io) {
-          const countIsLive = this.io.sockets.adapter.rooms.get(roomId)?.size;
-          this.io.to(roomId).emit(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, { live: countIsLive });
+          if (this.io.sockets.adapter.rooms.has(roomId)) {
+            const countIsLive = this.io.sockets.adapter.rooms.get(roomId)?.size;
+            this.io.to(roomId).emit(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, { live: countIsLive });
+
+            const clientsInRoom = Array.from(this.io.sockets.adapter.rooms.get(roomId) || []);
+            this.io.to(roomId).emit(SocketEvents.chat.UPDATE_CHAT_PARTICIPANTS_DONE, {
+              participants: getUserIdsInRoom(this.socketClients, clientsInRoom),
+            });
+          }
         }
       }, 2000);
+
+      socket.on(SocketEvents.socket.HANDSHAKE, (userId: string) => {
+        if (userId) {
+          this.socketClients.set(socket.id, userId);
+          logger.info(`CLient ${socket.id} = ${userId} handshaked`);
+          if (this.io) {
+            this.io.to(socket.id).emit(SocketEvents.socket.HANDSHAKE_DONE, { id: socket.id });
+          }
+        }
+      });
 
       socket.on(SocketEvents.chat.JOIN_ROOM, (roomId: string) => {
         socket.join(roomId);
@@ -81,6 +120,10 @@ class SocketService {
       });
 
       socket.on('disconnect', async () => {
+        if (this.socketClients.has(socket.id)) {
+          this.socketClients.delete(socket.id);
+        }
+
         logger.info(`${socket.id} connection lost`);
       });
 

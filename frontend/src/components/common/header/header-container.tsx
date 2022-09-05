@@ -15,7 +15,7 @@ import { authActions, searchActions, profileActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
 import { switchTheme } from 'store/theme-switch/actions';
 import { Header } from './header';
-import defaultAvatar from 'assets/img/default-user-avatar.jpg';
+import defaultAvatar from 'assets/img/default/user-avatar-default.jpg';
 
 const HeaderContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -110,7 +110,7 @@ const HeaderContainer: FC = () => {
 
   const searchInputEl = useRef<HTMLInputElement>(null);
 
-  const handleClearActiveFilterIds = useCallback(() => dispatch(searchActions.clearActiveFilterIds()), [dispatch]);
+  const handleClearSearchResults = useCallback(() => dispatch(searchActions.clearSearchResults()), [dispatch]);
 
   const handleSetInputSearch = useCallback((value: string) => dispatch(searchActions.setSearchText(value)), [dispatch]);
 
@@ -137,10 +137,11 @@ const HeaderContainer: FC = () => {
   };
 
   const handleClickSearchBtn = (): void => {
-    if (searchValue) {
-      handleSetInputSearch(searchValue);
-      handleClearActiveFilterIds();
-      const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchValue });
+    const searchValueTrimed = searchValue.trim();
+    if (searchValueTrimed) {
+      handleSetInputSearch(searchValueTrimed);
+      handleClearSearchResults();
+      const searchUrlParams = new URLSearchParams({ [SearchQueryParam.SEARCH_TEXT]: searchValueTrimed });
       navigate(`${AppRoutes.SEARCH}?${searchUrlParams.toString()}`);
       setMobileSearchToggle(false);
     } else {

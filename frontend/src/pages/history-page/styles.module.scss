@@ -1,6 +1,5 @@
 .history-page-container {
-  height: 100%;
-  padding: 10px 40px 0;
+  padding: 20px;
 }
 
 .history-list-container > div {
@@ -33,4 +32,13 @@
 .header {
   display: flex;
   align-items: center;
+}
+
+.no-video-in-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100vh - 200px);
+  margin: 0;
 }

@@ -1,5 +1,4 @@
-import { StreamingStatus } from '@prisma/client';
-import { DurationFilterId, DateFilterId, TypeFilterId, SortByFilterId } from 'shared/build';
+import { DurationFilterId, DateFilterId, TypeFilterId, SortByFilterId, StreamStatus } from 'shared/build';
 import { returnSubtractedDate } from '~/shared/helpers/video/date-helper';
 
 type DurationOption = {
@@ -9,7 +8,7 @@ type DurationOption = {
 
 type DateOption = Date | undefined;
 
-interface SortByOption {
+interface VideoSortByOption {
   liveViews?: string;
   videoViews?: string;
   publishedAt?: string;
@@ -51,14 +50,14 @@ const matchVideoFilterDate: Record<DateFilterId, DateOption> = {
   [DateFilterId.THIS_YEAR]: returnSubtractedDate(matchTimeValuesInMilliseconds[DateFilterId.THIS_YEAR]),
 };
 
-const matchVideoFilterType: Record<TypeFilterId, StreamingStatus[]> = {
-  [TypeFilterId.ALL]: [StreamingStatus.finished, StreamingStatus.live],
-  [TypeFilterId.CHANNEL]: [StreamingStatus.finished, StreamingStatus.live],
-  [TypeFilterId.STREAM]: [StreamingStatus.live],
-  [TypeFilterId.VIDEO]: [StreamingStatus.finished],
+const matchVideoFilterType: Record<TypeFilterId, StreamStatus[]> = {
+  [TypeFilterId.ALL]: [StreamStatus.FINISHED, StreamStatus.LIVE],
+  [TypeFilterId.CHANNEL]: [StreamStatus.FINISHED, StreamStatus.LIVE],
+  [TypeFilterId.STREAM]: [StreamStatus.LIVE],
+  [TypeFilterId.VIDEO]: [StreamStatus.FINISHED],
 };
 
-const matchVideoFilterSortBy: Record<SortByFilterId, SortByOption[]> = {
+const matchVideoFilterSortBy: Record<SortByFilterId, VideoSortByOption[]> = {
   [SortByFilterId.DEFAULT]: [],
   [SortByFilterId.RATING]: [],
   [SortByFilterId.RELEVANCE]: [],
@@ -74,5 +73,5 @@ export {
   matchVideoFilterSortBy,
   DurationOption,
   DateOption,
-  SortByOption,
+  VideoSortByOption,
 };

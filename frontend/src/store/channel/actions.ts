@@ -10,7 +10,7 @@ import { ActionsTypes } from './common';
 
 const loadChannel = createAsyncThunk<ChannelInfoResponseDto, ChannelInfoRequestDto, AsyncThunkConfig>(
   ActionsTypes.LOAD_CHANNEL,
-  async ({ id }, { extra: { channelCrudApi } }): Promise<ChannelInfoResponseDto> => {
+  async ({ id }, { extra: { channelCrudApi } }) => {
     return channelCrudApi.getChannelInfo({ id });
   },
 );

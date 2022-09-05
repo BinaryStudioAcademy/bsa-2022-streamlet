@@ -5,6 +5,7 @@ import { isDateSameByDayMonthYear } from '../../../../helpers/date/is-date-same-
 import React, { ReactElement } from 'react';
 import { HistoryResponseDto } from 'shared/build';
 import { FC } from '../../../../common/types/react/fc.type';
+import { NoVideosYet } from '../../../../components/common/no-videos-yet/no-videos-yet';
 
 type props = {
   historyData: HistoryResponseDto;
@@ -13,6 +14,14 @@ type props = {
 };
 
 const HistoryList: FC<props> = ({ historyData, isLightTheme, containerClassName }): ReactElement => {
+  const { list } = historyData;
+  if (!list.length) {
+    return (
+      <div className={styles['no-video-in-list']}>
+        <NoVideosYet />
+      </div>
+    );
+  }
   return (
     <div className={containerClassName}>
       {historyData.list.map((historyRecord, index) => {

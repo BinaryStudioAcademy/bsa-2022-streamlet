@@ -8,7 +8,7 @@
 // so the only reason of using varchar(n) is to duplicate validation logic on db level
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -32,6 +32,7 @@ model User {
   notifications      Notification[]
   profile            UserProfile?
   historyRecords     History[]
+  videoPreferences   CategoryToUser[]
   reactions          Reaction[]
   commentReactions   CommentReaction[]
   createdAt          DateTime            @default(now())
@@ -69,37 +70,44 @@ model ResetPasswordToken {
   updatedAt DateTime @updatedAt
 }
 
-enum StreamingStatus {
-  pending
-  ready
-  live
-  finished
+enum StreamStatus {
+  WAITING
+  LIVE
+  FINISHED
+}
+
+enum Privacy {
+  PUBLIC
+  UNLISTED
+  PRIVATE
 }
 
 model Video {
-  id                  String          @id @default(uuid())
-  name                String
-  description         String          @default("")
-  status              StreamingStatus @default(pending)
-  publishedAt         DateTime        @default(now())
-  scheduledStreamDate DateTime        @default(now())
-  poster              String          @default("")
-  duration            Int             @default(0)
-  videoPath           String
-  liveViews           Int             @default(0)
-  videoViews          Int             @default(0)
+  id                  String         @id @default(uuid())
+  name                String         @default("My new stream")
+  description         String         @default("")
+  status              StreamStatus   @default(WAITING)
+  isReadyToStream     Boolean        @default(false)
+  publishedAt         DateTime?
+  scheduledStreamDate DateTime       @default(now())
+  poster              String         @default("")
+  duration            Int            @default(0)
+  videoPath           String         @default("")
+  privacy             Privacy        @default(UNLISTED)
+  liveViews           Int            @default(0)
+  videoViews          Int            @default(0)
   tags                Tag[]
   categories          Category[]
   comments            VideoComment[]
-  channel             Channel         @relation(fields: [channelId], references: [id])
+  channel             Channel        @relation(fields: [channelId], references: [id])
   channelId           String
   isChatEnabled       Boolean         @default(true)
   chatMessages        ChatMessage[]
   notifications       Notification[]
   historyRecords      History[]
   reactions           Reaction[]
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 }
 
 model Tag {
@@ -110,25 +118,39 @@ model Tag {
   updatedAt DateTime @updatedAt
 }
 
+//NOTE: make explicit many to many for Category<>Video and Tag<>Video
 model Category {
-  id         String   @id @default(uuid())
-  name       String   @unique
-  posterPath String?
+  id         String           @id @default(uuid())
+  name       String           @unique
+  posterPath String          @default("")
   videos     Video[]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  users      CategoryToUser[]
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+}
+
+model CategoryToUser {
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+
+  @@id([categoryId, userId])
 }
 
 model VideoComment {
-  id        String   @id @default(uuid())
-  text      String
-  video     Video    @relation(fields: [videoId], references: [id])
-  videoId   String
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String
+  id               String            @id @default(uuid())
+  parentId         String?
+  childComments    VideoComment[]    @relation("ParentChildVideoComment")
+  parentComment    VideoComment?     @relation("ParentChildVideoComment", fields: [parentId], references: [id])
+  text             String
+  video            Video             @relation(fields: [videoId], references: [id])
+  videoId          String
+  author           User              @relation(fields: [authorId], references: [id])
+  authorId         String
   commentReactions CommentReaction[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 }
 
 model Channel {
@@ -216,14 +238,14 @@ model Reaction {
 }
 
 model CommentReaction {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
+  id        String       @id @default(uuid())
+  user      User         @relation(fields: [userId], references: [id])
   userId    String
   comment   VideoComment @relation(fields: [commentId], references: [id])
   commentId String
   isLike    Boolean
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 
   @@unique([userId, commentId])
 }

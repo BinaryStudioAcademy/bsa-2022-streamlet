@@ -59,6 +59,10 @@ const HistoryPage: FC = () => {
     rootMargin: '0px 0px 400px 0px',
   });
 
+  if (historyData.dataStatus === DataStatus.PENDING && currentPage < 0) {
+    return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
+  }
+
   return (
     <div className={styles['history-page-container']}>
       <div className={styles['header']}>
@@ -77,8 +81,8 @@ const HistoryPage: FC = () => {
           />
         }
         <div ref={sentryRef}>
-          {historyData.dataStatus === DataStatus.PENDING && (
-            <Loader hCentered={true} vCentered={true} spinnerSize={'md'} />
+          {historyData.dataStatus === DataStatus.PENDING && currentPage > 0 && (
+            <>{generateHistorySkeletons(isLightTheme)}</>
           )}
         </div>
       </div>

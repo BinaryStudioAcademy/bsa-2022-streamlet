@@ -18,7 +18,7 @@ type Props = {
 const AuthSubmitButton: FC<Props> = ({ isLoading, name, disabled, className }) => {
   return (
     <Button
-      className={clsx(styles['auth-submit-btn'], className)}
+      className={clsx(styles['auth-submit-btn'], isLoading && styles['no-hover'], className)}
       type="submit"
       content={isLoading ? <Loader spinnerSize="25px" vCentered={false} color="white" /> : name}
       disabled={disabled}

@@ -1,7 +1,9 @@
+import { StreamStatus } from '~/common/enums/enums';
+
 type BaseVideoResponseDto = {
   id: string;
   name: string;
-  status: string;
+  status: StreamStatus;
   publishedAt: string;
   scheduledStreamDate: string;
   poster: string;
@@ -25,7 +27,7 @@ type BaseSearchVideoResponseDto = {
   channelId: string;
   createdAt: string;
   updatedAt: string;
-  status: string;
+  status: StreamStatus;
   duration: number;
   poster: string;
   publishedAt: string;

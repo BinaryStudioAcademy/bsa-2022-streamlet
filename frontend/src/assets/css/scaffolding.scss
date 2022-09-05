@@ -472,7 +472,7 @@
   --white-text-color: #ffffff;
   --brand-green-color: #06c149;
   --brand-dark-green-color: #006624;
-  --brand-green-color-hover: #00802d;
+  --brand-green-color-hover: #1caa4f;
   --brand-yellow-color: #f6c648;
   --support-info-color: #03d8ff;
   --hover-dark-grey: #2a2d37;
@@ -480,11 +480,16 @@
   --hover-light-grey: #e8e8e8;
   --input-error-color: #f41b3b;
   --input-placeholder-color: #c4c4c4;
+  --button-placeholder-light-color: #f2f2f2;
   --input-password-placeholder-color: #bcbec0;
   --input-border: none;
   --input-error-border: 1px solid var(--input-error-color);
   --input-background-color: #ffffff;
   --always-white-color: #ffffff;
+  --live-red: #e63232;
+  --live-red-hover: #b11919;
+  --stream-indicator-offline: #a59c9c;
+  --input-disabled-color: #d6d4d4;
 
   /* sidebar */
   --sidebar-scrollbar-track-background: var(--gray-300-header-menu-background);
@@ -504,8 +509,13 @@
   --auth-border: linear-gradient(to left, var(--auth-modal-border-color-1), var(--auth-modal-border-color-2));
   --auth-background: var(--gray-400-primary-background);
   --auth-box-shadow: none;
-  --link-color: rgb(146 255 230);
+  --link-color: #06c149;
+  --link-hover-color: #ffffff;
   --password-eye-color: rgb(104 104 104);
+
+  /* stream */
+  --stream-settings-modal-bg: rgba(52 79 62);
+  --stream-select-item-hover-bg: rgb(36 65 47);
 
   /* subscription */
   --subscribed-btn-background-color: rgb(104 104 104);
@@ -526,11 +536,13 @@
   --controls-overlay: rgba(0 0 0 / 50%);
   --playpause-effect-bg: rgba(0 0 0 / 50%);
   --selected-menu-item-bg: rgb(48 48 48 / 50.7%);
-  --hovered-menu-item-bg: rgb(0 0 0 / 20%);
+  --hovered-menu-item-bg: rgb(105 105 105 / 75.3%);
   --settings-modal-bg: rgb(58 58 58 / 75.3%);
   --progress-bar-bg: rgb(100 100 100 / 50%);
   --progress-bar-preview-bg: rgb(206 206 206 / 50%);
   --progress-bar-done-bg: #006624;
+  --selectable-not-selected-bg: rgb(255 255 255 / 56.2%);
+  --live-indicator-bg: #00501c;
 }
 
 body[data-theme='light'] {
@@ -556,12 +568,17 @@ body[data-theme='light'] {
   --logo-text-color: #363c3a;
 
   /* auth forms */
-  --link-color: rgb(0 73 56);
+  --link-color: #006624;
+  --link-hover-color: #6a726d;
   --auth-modal-background: white;
   --auth-box-shadow: 0 0 15px 7px rgb(0 0 0 / 16%);
   --auth-border: none;
   --input-border: 1px solid var(--brand-green-color);
   --auth-background: #fbfffa;
+
+  /* stream */
+  --stream-settings-modal-bg: white;
+  --stream-select-item-hover-bg: rgb(197 197 197);
 
   /* video-card */
   --video-card-schedule-btn-background: #d1d1d140;

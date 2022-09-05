@@ -2,6 +2,7 @@ import { commonFrontendPaths } from 'shared/build/common/enums/enums';
 
 const AppParams = {
   channelId: 'channelId',
+  videoId: 'videoId',
 } as const;
 
 const AppRoutes = {
@@ -17,16 +18,16 @@ const AppRoutes = {
   ACCOUNT_VERIFICATION_INIT: '/account-verify-init',
   ANY: '*',
   VIDEO: '/video',
-  VIDEO_$ID: '/video/:videoId',
+  VIDEO_$ID: `/video/:${AppParams.videoId}`,
   CHANNEL_$ID: `/channel/:${AppParams.channelId}`,
   CHANNEL: '/channel',
   STUDIO: '/studio/home',
   STUDIO_ANALYTICS: '/studio/analytics',
   STUDIO_CHANNEL: '/studio/channel',
-  STUDIO_STREAM_$ID: '/studio/stream/:id',
   SEARCH: '/search',
   PROFILE_PREFERENCE: '/profile-preference',
   GOOGLE_ATHORIZATION: '/google-athorization',
+  LIVE_CHAT: '/live_chat',
 } as const;
 
 type AppRoute = typeof AppRoutes[keyof typeof AppRoutes];
@@ -38,14 +39,14 @@ const RoutesWithoutHeader = {
   RESTORE_PASSWORD_CONFIRM: commonFrontendPaths.auth.RESET_PASSWORD_CONFIRM.path,
   ACCOUNT_VERIFICATION_CONFIRM: commonFrontendPaths.auth.ACCOUNT_VERIFICATION_CONFIRM.path,
   ACCOUNT_VERIFICATION_INIT: '/account-verify-init',
+  LIVE_CHAT: '/live_chat',
 } as const;
 
-enum RoutesWithStudioHeader {
-  STUDIO = '/studio/home',
-  STUDIO_ANALYTICS = '/studio/analytics',
-  STUDIO_CHANNEL = '/studio/channel',
-  STUDIO_STREAM_$ID = '/studio/stream/:id',
-}
+const RoutesWithStudioHeader = {
+  STUDIO: '/studio/home',
+  STUDIO_ANALYTICS: '/studio/analytics',
+  STUDIO_CHANNEL: '/studio/channel',
+};
 
 type RouteWithoutHeader = typeof RoutesWithoutHeader[keyof typeof RoutesWithoutHeader];
 

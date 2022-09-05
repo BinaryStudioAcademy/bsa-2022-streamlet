@@ -1,0 +1,74 @@
+@import 'assets/css/config.scss';
+
+$base-z-index: $page-component-z-index;
+
+.add-comments {
+  position: relative;
+  z-index: $base-z-index;
+  padding: 20px 20px 10px;
+  background-color: var(--gray-300-header-menu-background);
+  border-radius: 3px;
+}
+
+.add-comments .input-add-comments {
+  width: 100%;
+  padding: 6px 15px;
+  color: var(--brand-green-color);
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: -0.16px;
+  background-color: var(--gray-400-primary-background);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  outline: none;
+}
+
+.add-comments .input-error {
+  border: var(--input-error-border);
+}
+
+.add-comments .group-buttons-reactions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.add-comments .group-buttons-reactions button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.add-comments .group-buttons-reactions button:hover {
+  opacity: 0.8;
+}
+
+.add-comments .group-buttons-reactions button svg {
+  display: block;
+}
+
+.add-comments .group-buttons-reactions .choose-emoji {
+  background-color: transparent;
+}
+
+.add-comments .group-buttons-reactions .choose-emoji svg path {
+  fill: var(--gray-200-input-background);
+}
+
+.add-comments .group-buttons-reactions .send-message {
+  padding: 5px 10px;
+  background-color: var(--brand-green-color);
+  border-radius: 3px;
+}
+
+.send-btn-group {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.message-length-count {
+  margin-right: 10px;
+  color: var(--text-gray-color);
+  font-size: 14px;
+}

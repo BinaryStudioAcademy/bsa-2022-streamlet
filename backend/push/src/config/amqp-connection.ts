@@ -43,6 +43,8 @@ const amqpConnect = async (): Promise<Channel> => {
   amqpChannel.assertQueue(AmqpQueue.NOTIFY_USER_BROADCAST);
   amqpChannel.assertQueue(AmqpQueue.NEW_MESSAGE_TO_CHAT_ROOM);
   amqpChannel.assertQueue(AmqpQueue.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED);
+  amqpChannel.assertQueue(AmqpQueue.SOCKETS_STREAM_CONNECTED);
+  amqpChannel.assertQueue(AmqpQueue.SOCKETS_STREAM_DISCONNECTED);
 
   return amqpChannel;
 };

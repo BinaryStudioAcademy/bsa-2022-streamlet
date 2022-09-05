@@ -1,5 +1,7 @@
-import { User } from '@prisma/client';
-import { UserSignUpRequestDto } from '~/shared/types/types';
+import { Category, User } from '@prisma/client';
+import { UserGetPreferencesDto, UserSignUpRequestDto } from '~/shared/types/types';
+import { DefaultRequestParam, UserBindCategoriesDto } from 'shared/build';
+import { BadRequest } from '~/shared/exceptions/bad-request';
 
 export interface UserRepository {
   getAll(): Promise<User[]>;
@@ -9,5 +11,7 @@ export interface UserRepository {
   createUser(userRequestDto: UserSignUpRequestDto): Promise<User>;
   changePassword(userId: string, newPassword: string): Promise<void>;
   setIsActivated(shouldBeActivated: boolean, userId: string): Promise<void>;
-  updateUserName(userId: string, username: string): Promise<User | null>;
+  updateUserName(userId: string, username: string): Promise<User | BadRequest>;
+  bindCategories(bindCategoriesDto: UserBindCategoriesDto): Promise<Category[]>;
+  getPreferedCategories(getPreferencesDto: DefaultRequestParam): Promise<UserGetPreferencesDto | null>;
 }

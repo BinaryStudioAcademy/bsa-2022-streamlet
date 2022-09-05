@@ -1,0 +1,61 @@
+@use 'assets/css/config';
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.video-secondary-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+}
+
+.video-title {
+  color: var(--white-text-color);
+  font-weight: 600;
+  font-size: 24px;
+  font-family: Gilroy, sans-serif;
+  line-height: 34px;
+}
+
+.reaction-block {
+  display: flex;
+  gap: 25px;
+  margin-left: auto;
+}
+
+.reaction-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+
+  &:hover {
+    .reaction-button {
+      color: var(--brand-green-color);
+    }
+  }
+}
+
+.sign-in-modal {
+  position: absolute;
+  top: 35px;
+  right: -50px;
+  z-index: config.$modal-z-index;
+  width: 378px;
+}
+
+.video-views {
+  font-weight: 400;
+}
+
+@media screen and (max-width: 768px) {
+  .sign-in-modal {
+    left: -170px;
+    width: 280px;
+  }
+}
