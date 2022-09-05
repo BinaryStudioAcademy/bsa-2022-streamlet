@@ -60,6 +60,7 @@ $hide-transition-duration: 1s;
 .video-chat-welcome-message-body {
   display: flex;
   flex-flow: column nowrap;
+  justify-content: center;
   color: var(--white-text-color);
   font-size: 13px;
   line-height: 22px;
@@ -126,10 +127,12 @@ $hide-transition-duration: 1s;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
+  min-height: 300px;
   margin-bottom: 3px;
   padding: 20px 20px 0;
   background-color: var(--gray-300-header-menu-background);
   border-radius: 3px;
+  transition: min-height 1s;
 }
 
 .video-chat-popout span {
@@ -332,6 +335,7 @@ $hide-transition-duration: 1s;
 }
 
 .hide-chat .video-chat-popout {
+  min-height: 0;
   margin-bottom: 0;
   padding: 0 20px;
   overflow: hidden;
