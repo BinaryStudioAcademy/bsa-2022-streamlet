@@ -31,9 +31,13 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
       currentChat: { initialMessages, messages, participants, isChatEnabled },
       status,
     },
+    user,
   } = useAppSelector((state) => ({
     chat: state.chat,
+    user: state.auth.user,
   }));
+
+  const hasUser = Boolean(user);
 
   const handlerSubmitMessage = (messageText: string): Promise<ChatMessageResponseDto> =>
     dispatch(
@@ -48,6 +52,7 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
   const sendMessageProps: SendMessageProps = {
     handlerSubmitMessage,
     handleChooseEmoji,
+    hasUser,
   };
 
   const joinChatRoom = useCallback(async () => {
