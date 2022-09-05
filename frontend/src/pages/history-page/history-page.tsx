@@ -1,16 +1,16 @@
 import { AppRoutes } from 'common/enums/app/app-route.enum';
-import { Loader } from 'components/common/common';
+import { Button, Icon, Loader } from 'components/common/common';
 import { useAppDispatch, useAppSelector, useNavigate } from 'hooks/hooks';
 import React, { FC, useEffect } from 'react';
 import { historyActions } from '../../store/actions';
-import { VideoCard } from '../../components/search/components/video-card/video-card';
 
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { DataStatus } from '../../common/enums/app/data-status.enum';
 import { generateHistorySkeletons } from './common/skeleton/skeleton';
-
+import { HistoryList } from './common/history-list/history-list';
 import styles from './styles.module.scss';
-import { getDateStringAtDdMmYyyyFormat, isDateSameByDayMonthYear } from '../../helpers/date/date';
+import { IconName } from '../../common/enums/component/icon-name.enum';
+import { IconColor } from '../../common/enums/component/icon-color.enum';
 
 const HistoryPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -24,68 +24,68 @@ const HistoryPage: FC = () => {
     return state.theme.isLightTheme;
   });
 
-  const { isFirstHistoryPageLoad, currentPage, lastPage, dataStatus, error, list } = useAppSelector((state) => {
-    return state.history.data;
-  });
-
   useEffect(() => {
     if (!user) {
       navigate(AppRoutes.SIGN_IN, { replace: true });
       return;
     }
 
-    if (isFirstHistoryPageLoad && currentPage !== -1) {
-      return;
-    }
-    if (currentPage === -1) {
-      dispatch(historyActions.getUserVideoHistoryRecord(1));
-    }
-  }, [dispatch, navigate, user, isFirstHistoryPageLoad, currentPage]);
+    dispatch(historyActions.getUserVideoHistoryRecord(1));
+  }, [user, dispatch, navigate]);
+
+  const historyData = useAppSelector((state) => {
+    return state.history.data;
+  });
 
   const loadMore = (): void => {
-    dispatch(historyActions.getUserVideoHistoryRecord(currentPage + 1));
+    dispatch(historyActions.getUserVideoHistoryRecord(historyData.currentPage + 1));
   };
 
+  const handleDeleteAllHistory = (): void => {
+    dispatch(historyActions.deleteAllUserHistory());
+  };
+
+  if (!historyData) {
+    return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
+  }
+
+  const { currentPage, lastPage } = historyData;
+
   const [sentryRef] = useInfiniteScroll({
-    loading: dataStatus === DataStatus.PENDING,
+    loading: historyData.dataStatus === DataStatus.PENDING,
     hasNextPage: currentPage < lastPage,
     onLoadMore: loadMore,
-    disabled: !!error,
+    disabled: !!historyData.error,
     rootMargin: '0px 0px 400px 0px',
   });
 
-  if (dataStatus === DataStatus.PENDING && currentPage < 0) {
+  if (historyData.dataStatus === DataStatus.PENDING && currentPage < 0) {
     return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
   }
 
   return (
     <div className={styles['history-page-container']}>
-      {list.map((historyRecord, index) => {
-        const { id, video, updatedAt } = historyRecord;
+      <div className={styles['header']}>
+        <Icon name={IconName.TIME_AGO} color={IconColor.GRAY} width={'40'} height={'40'}></Icon>
+        <h2 className={styles['page-header']}>History</h2>
+        <Button content={'delete all'} onClick={handleDeleteAllHistory} className={styles['delete-all-btn']} />
+      </div>
 
-        if (!index) {
-          return (
-            <div key={id}>
-              <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(updatedAt)}</p>
-              <VideoCard key={id} video={video} isLightTheme={isLightTheme} />;
-            </div>
-          );
+      <div className={styles['history-list-container']}>
+        {historyData.dataStatus === DataStatus.PENDING ? generateHistorySkeletons(isLightTheme) : null}
+        {
+          <HistoryList
+            historyData={historyData}
+            isLightTheme={isLightTheme}
+            containerClassName={styles['history-list-container']}
+          />
         }
-        const prevHistoryRecordUpdatedAt = list[index - 1].updatedAt;
-
-        const isPrevAndCurrentHistoryUpdatedAtSame = isDateSameByDayMonthYear(prevHistoryRecordUpdatedAt, updatedAt);
-
-        return isPrevAndCurrentHistoryUpdatedAtSame ? (
-          <VideoCard key={id} video={video} isLightTheme={isLightTheme} />
-        ) : (
-          <div key={id}>
-            <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(prevHistoryRecordUpdatedAt)}</p>
-            <VideoCard key={id} video={video} isLightTheme={isLightTheme} />;
-          </div>
-        );
-      })}
-
-      <div ref={sentryRef}>{dataStatus === DataStatus.PENDING && generateHistorySkeletons(isLightTheme)}</div>
+        <div ref={sentryRef}>
+          {historyData.dataStatus === DataStatus.PENDING && currentPage > 0 && (
+            <>{generateHistorySkeletons(isLightTheme)}</>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
