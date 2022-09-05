@@ -1,0 +1,140 @@
+version: '3.9'
+services:
+  rtmp:
+    image: tiangolo/nginx-rtmp
+    ports:
+      - "1935:1935"
+    container_name: rtmp
+    depends_on:
+      - backend
+    networks:
+      - backend_network
+    volumes:
+      - ../../nginx/nginx.rtmp.conf:/etc/nginx/nginx.conf
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    hostname: rabbit
+    networks:
+      - backend_network
+    ports:
+      # AMQP protocol port
+      - "5672:5672"
+      # HTTP management UI
+      - "15672:15672"
+  api-db:
+    image: postgres:14
+    container_name: api-db
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata_api:/var/lib/postgresql/data
+      - pgconf_api:/etc/postgresql
+      - pglog_api:/var/log/postgresql
+    env_file:
+      - ../../.env/api-db.env
+    networks:
+      - backend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  backend:
+    container_name: backend
+    build:
+      context: ./
+      dockerfile: backend-debug.Dockerfile
+    depends_on:
+      - api-db
+    ports:
+      - '5001:5001'
+    env_file:
+      - ../../.env/api.env
+    volumes:
+      - ../../backend/core:/app/backend/core:ro
+    networks:
+      - backend_network
+      - frontend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+  push:
+    image: push
+    container_name: push
+    depends_on:
+      - rabbitmq
+    ports:
+      - '5002:5002'
+    env_file:
+      - ../../.env/push.env
+    networks:
+      - backend_network
+      - frontend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+  video-transcoding-server:
+    image: video-transcoding-server
+    container_name: video-transcoding-server
+    volumes:
+      - ../../playback:/app/backend/video-transcoding-server/playback
+    depends_on:
+      - rabbitmq
+    ports:
+      - '5003:5003'
+    env_file:
+      - ../../.env/video-transcoding-server.env
+    networks:
+      - backend_network
+      - frontend_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+  frontend:
+    build:
+      context: ./
+      dockerfile: frontend-debug.Dockerfile
+    container_name: frontend
+    depends_on:
+      - backend
+    ports:
+      - '8080:80'
+      - '443:443'
+    env_file:
+      - ../../.env/client.env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    volumes:
+      - ../../frontend:/app/frontend:ro
+      - ../../nginx/nginx.local.conf:/etc/nginx/nginx.conf
+      - ../../playback:/assets/segments
+    networks:
+      - backend_network
+      - frontend_network
+
+volumes:
+  segments:
+    driver: local
+  pgdata_api:
+    driver: local
+  pgconf_api:
+    driver: local
+  pglog_api:
+    driver: local
+  shared:
+    driver: local
+
+networks:
+  backend_network:
+    driver: bridge
+  frontend_network:
+    driver: bridge
