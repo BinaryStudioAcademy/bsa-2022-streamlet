@@ -143,7 +143,13 @@ $hide-transition-duration: 1s;
 
 .video-chat-restore-btn {
   margin-top: 10px;
-  background-color: var(--brand-green-color-hover);
+  color: var(--always-white-color);
+  background-color: var(--brand-dark-green-color);
+  transition: background-color 0.2s ease;
+}
+
+.video-chat-restore-btn:hover {
+  background-color: var(--brand-green-color);
 }
 
 .video-chat-header {
