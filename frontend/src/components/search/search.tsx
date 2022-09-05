@@ -76,7 +76,11 @@ const Search: FC = () => {
     }
     handleSetActiveFilterIds(currentFilterFromURL);
     handleSetSearchResults();
-  }, [searchParams, handleSetSearchText, handleSetActiveFilterIds, handleSetSearchResults]);
+
+    return () => {
+      dispatch(searchActions.clearSearchResults());
+    };
+  }, [searchParams, handleSetSearchText, handleSetActiveFilterIds, handleSetSearchResults, dispatch]);
 
   useEffect(() => {
     setSearchParams({ ...handleGetVideoFilter });
