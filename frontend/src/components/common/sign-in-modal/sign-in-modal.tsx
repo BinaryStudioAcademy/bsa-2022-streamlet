@@ -35,7 +35,7 @@ type Props = {
   headerText: string;
   mainText: string;
   className?: string;
-  onClose: { (): void };
+  onClose: () => void;
 };
 
 const NeedSignInModal: FC<Props> = ({ headerText, mainText, onClose, className }) => {
@@ -48,11 +48,9 @@ const NeedSignInModal: FC<Props> = ({ headerText, mainText, onClose, className }
     <div className={clsx(styles['need-sign-in-modal'], className)} ref={modalRef}>
       <div className={styles['need-sign-in-modal-header']}>{headerText}</div>
       <div className={styles['need-sign-in-main-text']}>{mainText}</div>
-      <div className={styles['redirect-to-sign-in']}>
-        <Link to={AppRoutes.SIGN_IN} className={styles['redirect-to-sign-in-link']}>
-          Sign in
-        </Link>
-      </div>
+      <Link to={AppRoutes.SIGN_IN} className={styles['redirect-to-sign-in']}>
+        Sign in
+      </Link>
     </div>
   );
 };

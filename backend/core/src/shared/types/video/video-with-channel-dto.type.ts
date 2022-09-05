@@ -1,5 +1,5 @@
 import { Prisma, StreamingStatus } from '@prisma/client';
-import { DateOption, DurationOption, SortByOption } from '~/shared/enums/enums';
+import { DateOption, DurationOption, VideoSortByOption } from '~/shared/enums/enums';
 
 export type VideoWithChannel = Prisma.VideoGetPayload<{
   include: {
@@ -18,5 +18,5 @@ export type VideoSearch = {
   duration: DurationOption;
   date: DateOption;
   type: StreamingStatus[];
-  sortBy: SortByOption[];
+  sortBy: VideoSortByOption[];
 };

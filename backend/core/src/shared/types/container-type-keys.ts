@@ -40,6 +40,9 @@ const CONTAINER_TYPES = {
   ChatService: Symbol.for('ChatService'),
   ChatRepository: Symbol.for('ChatRepository'),
   ChatController: Symbol.for('ChatController'),
+  ChannelService: Symbol.for('ChannelService'),
+  ChannelRepository: Symbol.for('ChannelRepository'),
+  ChannelController: Symbol.for('ChannelController'),
 
   FollowingService: Symbol.for('FollowingService'),
   FollowingController: Symbol.for('FollowingController'),

@@ -14,6 +14,7 @@ import { CategoryApi } from './category-api/category-api.service';
 import { ChatApi } from './chat-api/chat-api.service';
 import { HistoryApi } from './history/history-api.service';
 import { FollowingApi } from './following-api/following-api.service';
+import { SearchApi } from './search-api/search-api.service';
 
 const storageService = new StorageService();
 const tokensStorageService = new TokensStorageService(storageService);
@@ -69,6 +70,11 @@ const followingApi = new FollowingApi({
   http,
 });
 
+const searchApi = new SearchApi({
+  apiPrefix: ENV.API_PATH,
+  http,
+});
+
 export {
   http,
   authApi,
@@ -83,4 +89,5 @@ export {
   chatApi,
   followingApi,
   historyApi,
+  searchApi,
 };

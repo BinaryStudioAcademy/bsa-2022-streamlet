@@ -14,3 +14,5 @@ export {
   type PaginationHelperReturnType,
 } from './pagination/pagination';
 export { trimChannelToSubscriptionChannel } from './trim-channel-to-subscription-channel';
+export { trimChannelSearch } from './trim-channel-search';
+export { trimVideoSearch } from './trim-video-search';
