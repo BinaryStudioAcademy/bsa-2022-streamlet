@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AsyncThunkConfig } from 'common/types/types';
+import { AsyncThunkConfig, BatchPayload } from 'common/types/types';
 import { ActionType } from './common';
 import { HistoryResponseDto } from '../../common/types/history/history';
 
@@ -12,4 +12,13 @@ const getUserVideoHistoryRecord = createAsyncThunk<HistoryResponseDto, number, A
   },
 );
 
-export { getUserVideoHistoryRecord };
+const deleteAllUserHistory = createAsyncThunk<BatchPayload, void, AsyncThunkConfig>(
+  ActionType.DELETE_ALL_USER_HISTORY,
+  async (_, { extra }) => {
+    const { historyApi } = extra;
+
+    return historyApi.deleteAllUserHistory();
+  },
+);
+
+export { getUserVideoHistoryRecord, deleteAllUserHistory };

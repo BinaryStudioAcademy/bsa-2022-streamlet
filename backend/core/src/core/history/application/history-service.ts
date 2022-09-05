@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { CONTAINER_TYPES, HistoryRequestDto, HistoryResponseDto } from '~/shared/types/types';
+import { BatchPayload, CONTAINER_TYPES, HistoryRequestDto, HistoryResponseDto } from '~/shared/types/types';
 import { History } from '@prisma/client';
 import { HistoryRepository } from '~/core/history/port/history-repository';
 import { HISTORY_ITEM_NUM_IN_ONE_PAGE } from '~/shared/constants/constants';
@@ -28,5 +28,9 @@ export class HistoryService {
     }
 
     return this.historyRepository.createHistoryItem(historyRequestDto);
+  }
+
+  async deleteAllUserHistory(userId: string): Promise<BatchPayload> {
+    return this.historyRepository.deleteAllUserHistory(userId);
   }
 }

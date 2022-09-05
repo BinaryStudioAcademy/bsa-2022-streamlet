@@ -1,4 +1,4 @@
-import { StreamingStatus } from '@prisma/client';
+import { StreamStatus } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { BaseVideoResponseDto } from 'shared/build';
 import { VideoRepository } from '~/core/video/port/video-repository';
@@ -10,14 +10,14 @@ export class FollowingService {
 
   async getOfflineVideos(userId: string): Promise<BaseVideoResponseDto[]> {
     const videos = await this.videoRepository.getAll({
-      filters: { streamingStatus: StreamingStatus.finished, fromChannelSubscribedByUserWithId: userId },
+      filters: { streamStatus: StreamStatus.FINISHED, fromChannelSubscribedByUserWithId: userId },
     });
     return videos.list;
   }
 
   async getLiveVideos(userId: string): Promise<BaseVideoResponseDto[]> {
     const videos = await this.videoRepository.getAll({
-      filters: { streamingStatus: StreamingStatus.live, fromChannelSubscribedByUserWithId: userId },
+      filters: { streamStatus: StreamStatus.LIVE, fromChannelSubscribedByUserWithId: userId },
     });
     return videos.list;
   }

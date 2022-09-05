@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { generateAbbreviatureNameUser, getUserDisplayName } from 'helpers/user';
-import defaultUser from 'assets/img/default-user-avatar.jpg';
+import defaultUser from 'assets/img/default/user-avatar-default.jpg';
 import React, { FC, ReactNode } from 'react';
 import styles from './styles.module.scss';
 

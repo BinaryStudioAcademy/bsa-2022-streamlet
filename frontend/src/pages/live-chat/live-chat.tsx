@@ -1,5 +1,5 @@
 import { FC } from 'common/types/types';
-import { NotFound } from 'components/not-found-page/not-found';
+import { NotFound } from 'components/placeholder-page';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import { useSearchParams } from 'hooks/hooks';
 import { LiveChatQueryParams } from './config';

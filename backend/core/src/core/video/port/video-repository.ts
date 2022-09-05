@@ -33,7 +33,8 @@ export type GetPopularLiveInputType = {
 export interface VideoRepository {
   getById(id: string): Promise<VideoExpandedInfo | null>;
   searchByTags(searchByTagsDto: TagSearchRequestQueryDto): Promise<VideoWithChannel[]>;
-  searchByCatergories(searchByCategoryDto: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]>;
+  searchByCategories(searchByCategoryDto: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]>;
+  getAuthorById(id: string): Promise<string | undefined>;
   getAll(queryParams?: { filters?: VideoRepositoryFilters }): Promise<DataVideo>;
   reactionByUser(videoId: string, userId: string): Promise<boolean | null>;
   removeReactionAndAddNew(videoId: string, userId: string, isLike: boolean): Promise<CreateReactionResponseDto | null>;

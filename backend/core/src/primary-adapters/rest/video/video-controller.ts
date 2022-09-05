@@ -285,8 +285,11 @@ export class VideoController extends BaseHttpController {
   }
 
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware, CreateVideoHistoryRecordMiddleware)
-  public async get(@requestParam('id') id: string, @request() req: ExtendedRequest): Promise<VideoExpandedResponseDto> {
-    const video = await this.videoService.getById(id);
+  public async get(
+    @requestParam('videoId') videoId: string,
+    @request() req: ExtendedRequest,
+  ): Promise<VideoExpandedResponseDto> {
+    const video = await this.videoService.getById(videoId);
 
     if (!video) {
       throw new NotFound('Such video doesn`t exist');
@@ -306,7 +309,7 @@ export class VideoController extends BaseHttpController {
   }
 
   @httpGet(`${VideoApiPath.REPLIES_COMMENT}${VideoApiPath.$ID}`)
-  public async getRepliesForComment(@requestParam('id') id: string): Promise<Comment[]> {
+  public async getRepliesForComment(@requestParam('videoId') id: string): Promise<Comment[]> {
     const result = await this.videoService.getRepliesForComment(id);
 
     return result;
@@ -348,7 +351,7 @@ export class VideoController extends BaseHttpController {
 
   @httpPost(`${VideoApiPath.REACTION}${VideoApiPath.$ID}`, authenticationMiddleware)
   public async addReaction(
-    @requestParam('id') id: string,
+    @requestParam('videoId') id: string,
     @requestBody() body: CreateReactionRequestDto,
     @request() req: ExtendedAuthenticatedRequest,
   ): Promise<CreateReactionResponseDto> {
@@ -443,7 +446,7 @@ export class VideoController extends BaseHttpController {
 
   @httpPost(`${VideoApiPath.COMMENT}${VideoApiPath.REACTION}${VideoApiPath.$ID}`, authenticationMiddleware)
   public async addCommentReaction(
-    @requestParam('id') id: string,
+    @requestParam('videoId') id: string,
     @requestBody() body: CreateReactionRequestDto,
     @request() req: ExtendedAuthenticatedRequest,
   ): Promise<CreateReactionResponseDto> {

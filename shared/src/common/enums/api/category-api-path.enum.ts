@@ -1,7 +1,7 @@
 enum CategoryApiPath {
   ROOT = '/',
-  $ID = '/:id',
-  $BIND = '/bind/:id',
+  $ID = '/:categoryId',
+  $BIND = '/bind/:categoryId',
   SEARCH = '/search',
 }
 

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { AppRoutes, SocketEvents, StreamingStatus } from 'common/enums/enums';
+import { AppRoutes, SocketEvents, StreamStatus } from 'common/enums/enums';
 import { Loader } from 'components/common/common';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import { useAppDispatch, useAppSelector, useNavigate, useParams, useState } from 'hooks/hooks';
@@ -105,7 +105,7 @@ const VideoPageContainer: FC = () => {
   }
 
   const { status } = videoData;
-  const isVideoFinished = status === 'finished';
+  const isVideoFinished = status === StreamStatus.FINISHED;
 
   return (
     <div
@@ -117,7 +117,7 @@ const VideoPageContainer: FC = () => {
         <VideoPlayer
           sizingProps={{ aspectRatio: '16 / 9' }}
           url={videoData.videoPath}
-          isLive={videoData.status === StreamingStatus.LIVE}
+          isLive={videoData.status === StreamStatus.LIVE}
           videoAttributes={{ poster: videoData.poster }}
           className={styles['video-player']}
         />

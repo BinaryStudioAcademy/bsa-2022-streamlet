@@ -5,6 +5,7 @@ $base-z-index: $page-component-z-index;
 .add-comments {
   position: relative;
   z-index: $base-z-index;
+  height: 100px;
   padding: 20px 20px 10px;
   background-color: var(--gray-300-header-menu-background);
   border-radius: 3px;
@@ -71,4 +72,28 @@ $base-z-index: $page-component-z-index;
   margin-right: 10px;
   color: var(--text-gray-color);
   font-size: 14px;
+}
+
+.sign-in-modal {
+  font-size: 14px;
+  background-color: var(--gray-400-primary-background);
+}
+
+.sign-in-modal > div {
+  margin: 0;
+}
+
+.sign-in-modal > div:nth-child(1) {
+  padding: 7px 15px;
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: -0.16px;
+}
+
+.sign-in-modal > div:nth-child(2) {
+  display: none;
+}
+
+.sign-in-modal > div:nth-child(3) {
+  padding: 5px 8px 5px 20px;
 }

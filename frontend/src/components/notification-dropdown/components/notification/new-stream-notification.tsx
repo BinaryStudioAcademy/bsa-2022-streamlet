@@ -1,5 +1,5 @@
 import { FC, NotificationStreamStartResponseDto } from 'common/types/types';
-import DefaultUserAvatar from 'assets/img/default-user-avatar.jpg';
+import DefaultUserAvatar from 'assets/img/default/user-avatar-default.jpg';
 import { Link } from 'react-router-dom';
 import { getHowLongAgoString } from 'helpers/helpers';
 

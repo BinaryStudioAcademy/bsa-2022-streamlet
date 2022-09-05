@@ -1,7 +1,9 @@
+import { StreamStatus } from '~/common/enums/enums';
+
 type VideoCard = {
   id: string;
   name: string;
-  status: string;
+  status: StreamStatus;
   publishedAt: string;
   scheduledStreamDate: string;
   poster: string;

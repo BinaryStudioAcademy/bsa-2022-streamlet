@@ -29,6 +29,7 @@ const tryConnect = async (tries = 1): Promise<Connection> => {
 };
 
 const amqpReconnect = async (): Promise<void> => {
+  console.warn('transcoder reconnecting to amqp');
   amqpService.connect(await amqpConnect());
 };
 

@@ -83,7 +83,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
 
       hls.attachMedia(videoContainerRef.current);
       hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-        hls.loadSource(new URL(url, ENV.VIDEO_FALLBACK_BASE_URL).toString());
+        hls.loadSource(ENV.VIDEO_FALLBACK_BASE_URL + url);
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
           hlsRef.current = hls;
           setAreRefsNull((prev) => ({

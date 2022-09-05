@@ -9,7 +9,7 @@ export class ChatRepositoryAdapter implements ChatRepository {
   constructor(@inject(CONTAINER_TYPES.PrismaClient) private prismaClient: PrismaClient) {}
 
   async getChatMessagesByVideoId(id: string): Promise<ChatInfoBeforeTrimming | null> {
-    return this.prismaClient.video.findUnique({
+    return this.prismaClient.video.findFirst({
       where: {
         id,
       },
@@ -39,7 +39,7 @@ export class ChatRepositoryAdapter implements ChatRepository {
   }
 
   async getVideoById(id: string): Promise<Video | null> {
-    return this.prismaClient.video.findUnique({
+    return this.prismaClient.video.findFirst({
       where: {
         id,
       },
@@ -47,7 +47,7 @@ export class ChatRepositoryAdapter implements ChatRepository {
   }
 
   async getChatMessageById(id: string): Promise<ChatMessageBeforeTrimming | null> {
-    return this.prismaClient.chatMessage.findUnique({
+    return this.prismaClient.chatMessage.findFirst({
       where: {
         id,
       },

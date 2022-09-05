@@ -1,6 +1,6 @@
 enum NotificationApiPath {
   ROOT = '/',
-  $ID = '/:id',
+  $ID = '/:notificationId',
   READ = '/read',
 }
 

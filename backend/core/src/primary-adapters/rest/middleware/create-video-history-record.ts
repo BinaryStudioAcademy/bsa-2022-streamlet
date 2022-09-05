@@ -15,7 +15,7 @@ class CreateVideoHistoryRecordMiddleware extends BaseMiddleware {
   public async handler(req: ExtendedRequest, _res: express.Response, next: express.NextFunction): Promise<void> {
     if (req.user) {
       const { id: userId } = req.user;
-      const videoId = req.params.id;
+      const videoId = req.params.videoId;
       await this.historyService.createHistoryItem({ userId, videoId });
     }
     next();
