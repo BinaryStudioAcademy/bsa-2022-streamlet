@@ -1,8 +1,8 @@
-import { FC, VideoCard as VideoCardType } from 'common/types/types';
+import { FC, VideoCard as VideoCardType, ChannelCard as ChannelCardType } from 'common/types/types';
 import { DataStatus, LoaderSize } from 'common/enums/enums';
 import { useEffect, useSearchParams, useAppDispatch, useAppSelector, useCallback, useMemo } from 'hooks/hooks';
 import { Loader } from 'components/common/common';
-import { FilterBar, FilterSidebar, ResultNotFound, VideoCard } from './components/components';
+import { FilterBar, FilterSidebar, ResultNotFound, VideoCard, ChannelCard } from './components/components';
 import { SearchQueryParam, FilterType, SearchState } from './config/config';
 import { searchActions } from 'store/actions';
 import {
@@ -21,16 +21,23 @@ const Search: FC = () => {
       activeFilterId,
       results: {
         videos: { list: videosList, total: videosTotal },
+        channels: { list: channelsList, total: channelsTotal },
         dataStatus,
       },
     },
     theme: { isLightTheme },
+    user,
+    subscriptionsList,
   } = useAppSelector((state) => ({
     search: state.search,
     theme: state.theme,
+    user: state.auth.user,
+    subscriptionsList: state.subscriptions.subscriptionsData.subscriptionsList.ids,
   }));
 
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const hasUser = Boolean(user);
 
   const handleSetSearchText = useCallback((v: string) => dispatch(searchActions.setSearchText(v)), [dispatch]);
   const handleSetActiveFilterIds = useCallback(
@@ -85,7 +92,15 @@ const Search: FC = () => {
             <Loader spinnerSize={LoaderSize.MD} />
           ) : (
             <>
-              {(!searchText || videosTotal === 0) && <ResultNotFound />}
+              {(!searchText || (videosTotal === 0 && channelsTotal === 0)) && <ResultNotFound />}
+              {channelsList.map((c: ChannelCardType) => (
+                <ChannelCard
+                  key={c.id}
+                  channel={c}
+                  hasUser={hasUser}
+                  isCurrentUserSubscribed={subscriptionsList.includes(c.id)}
+                />
+              ))}
               {videosList.map((c: VideoCardType) => (
                 <VideoCard key={c.id} video={c} isLightTheme={isLightTheme} />
               ))}
