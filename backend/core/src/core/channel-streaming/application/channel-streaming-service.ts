@@ -18,6 +18,7 @@ import {
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
   StreamPosterUploadResponseDto,
+  StreamPrivacy,
   StreamUpdateRequestDto,
   VideoStreamResponseDto,
 } from 'shared/build';
@@ -212,6 +213,7 @@ export class ChannelStreamingService {
       update = await this.channelStreamingRepository.updateStream(videoId, {
         status,
         publishedAt: new Date(),
+        privacy: StreamPrivacy.PUBLIC,
       });
     }
 
