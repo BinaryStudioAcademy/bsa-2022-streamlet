@@ -75,7 +75,7 @@ jobs:
           image_tag: latest
           context: ./
           dockerfile: ./.docker/frontend.Dockerfile
-          build_extra_args: "--build-arg=REACT_APP_API_ORIGIN_URL=${{ secrets.REACT_APP_API_ORIGIN_URL }} --build-arg=REACT_APP_PUSH_HOST=${{ secrets.REACT_APP_PUSH_HOST }}"
+          build_extra_args: "--build-arg=REACT_APP_API_ORIGIN_URL=${{ secrets.REACT_APP_API_ORIGIN_URL }} --build-arg=REACT_APP_PUSH_HOST=${{ secrets.REACT_APP_PUSH_HOST }} --build-arg=REACT_APP_VIDEO_FALLBACK_BASE_URL=${{ secrets.REACT_APP_VIDEO_FALLBACK_BASE_URL }}"
 
   deploy:
     needs: [build-backend, build-frontend, build-push-server, build-video-transcoding-server]
