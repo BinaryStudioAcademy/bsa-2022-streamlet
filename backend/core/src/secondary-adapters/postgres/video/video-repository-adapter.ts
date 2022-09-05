@@ -21,6 +21,7 @@ import { GetPopularInputType, GetPopularLiveInputType, VideoRepository } from '~
 import { VideoSearch, VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 import { VideoRepositoryFilters } from '~/core/video/port/video-repository-filters';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
+import { StreamPrivacy } from '~/shared/enums/stream/stream';
 
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
@@ -119,6 +120,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     const items = await this.prismaClient.video.findMany({
       where: {
         ...(queryParams?.filters?.streamStatus ? { status: queryParams.filters.streamStatus } : {}),
+        ...{ privacy: StreamPrivacy.PUBLIC },
         ...(queryParams?.filters?.fromChannelSubscribedByUserWithId
           ? {
               channel: {
@@ -283,6 +285,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
   }: GetPopularInputType): Promise<PopularVideoResponseDto> {
     const popularVideos = await this.prismaClient.video.findMany({
       where: {
+        ...{ privacy: StreamPrivacy.PUBLIC },
         categories: {
           some: {
             name: {
@@ -322,6 +325,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
   }: GetPopularLiveInputType): Promise<PopularVideoResponseDto> {
     const popularVideos = await this.prismaClient.video.findMany({
       where: {
+        ...{ privacy: StreamPrivacy.PUBLIC },
         status: StreamStatus.LIVE,
       },
       take,
@@ -350,6 +354,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
   searchByTags({ take, skip, tags }: TagSearchRequestQueryDto): Promise<VideoWithChannel[]> {
     return this.prismaClient.video.findMany({
       where: {
+        ...{ privacy: StreamPrivacy.PUBLIC },
         tags: {
           some: {
             name: {
@@ -375,6 +380,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
   searchByCategories({ skip, take, categories }: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]> {
     return this.prismaClient.video.findMany({
       where: {
+        ...{ privacy: StreamPrivacy.PUBLIC },
         categories: {
           some: {
             name: {
@@ -500,6 +506,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
     };
     const queryObject = {
       where: {
+        ...{ privacy: StreamPrivacy.PUBLIC },
         ...(searchText && {
           OR: [
             {

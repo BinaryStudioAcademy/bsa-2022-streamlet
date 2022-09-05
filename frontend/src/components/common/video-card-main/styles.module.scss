@@ -76,7 +76,7 @@ $base-z-index: $page-component-z-index;
 }
 
 .video-card-badge-scheduled svg path {
-  fill: var(--white-text-color);
+  fill: var(--always-white-color);
 }
 
 .video-card-badge-scheduled svg {
@@ -86,6 +86,7 @@ $base-z-index: $page-component-z-index;
 .video-card-badge-scheduled-data {
   display: flex;
   flex-flow: column nowrap;
+  color: var(--always-white-color);
 }
 
 .video-card-badge-scheduled-btn {
