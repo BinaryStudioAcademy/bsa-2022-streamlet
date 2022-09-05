@@ -41,7 +41,7 @@ class SocketService {
       });
 
       amqpService.consume({
-        queue: 'SOCKETS-STREAMING' as AmqpQueue,
+        queue: AmqpQueue.SOCKETS_STREAM_CONNECTED,
         onMessage: (data) => {
           if (data && this.io) {
             const { authorId, streamData } = JSON.parse(data.toString('utf-8'));
@@ -55,7 +55,7 @@ class SocketService {
       });
 
       amqpService.consume({
-        queue: 'SOCKETS-STREAMING-DONE' as AmqpQueue,
+        queue: AmqpQueue.SOCKETS_STREAM_DISCONNECTED,
         onMessage: (data) => {
           if (data && this.io) {
             const { authorId, streamingKey } = JSON.parse(data.toString('utf-8'));

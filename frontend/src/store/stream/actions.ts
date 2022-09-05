@@ -10,6 +10,7 @@ import {
   StreamingKeyResponseDto,
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
+  StreamPosterUploadResponseDto,
   StreamReadinessRequestDto,
   StreamUpdateRequestDto,
   VideoStreamResponseDto,
@@ -45,19 +46,20 @@ const getMyChannel = createAsyncThunk<OwnChannelResponseDto, void, AsyncThunkCon
   },
 );
 
-const uploadPoster = createAsyncThunk<string, StreamPosterUploadRequestDto, AsyncThunkConfigHttpError>(
-  ActionType.UPLOAD_POSTER,
-  async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
-    try {
-      return await channelStreamingApi.uploadPoster(payload);
-    } catch (error) {
-      if (error instanceof HttpError) {
-        return rejectWithValue(serializeHttpError(error));
-      }
-      throw error;
+const uploadPoster = createAsyncThunk<
+  StreamPosterUploadResponseDto,
+  StreamPosterUploadRequestDto,
+  AsyncThunkConfigHttpError
+>(ActionType.UPLOAD_POSTER, async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
+  try {
+    return await channelStreamingApi.uploadPoster(payload);
+  } catch (error) {
+    if (error instanceof HttpError) {
+      return rejectWithValue(serializeHttpError(error));
     }
-  },
-);
+    throw error;
+  }
+});
 
 const editStream = createAsyncThunk<VideoStreamResponseDto, StreamUpdateRequestDto, AsyncThunkConfigHttpError>(
   ActionType.UPDATE_STREAM_DATA,
@@ -92,6 +94,20 @@ const setStreamStatus = createAsyncThunk<VideoStreamResponseDto, StreamLiveStatu
   async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
     try {
       return await channelStreamingApi.setStreamStatus(payload);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        return rejectWithValue(serializeHttpError(error));
+      }
+      throw error;
+    }
+  },
+);
+
+const resetTemporaryPoster = createAsyncThunk<boolean, void, AsyncThunkConfigHttpError>(
+  ActionType.RESET_TEMPORARY_POSTER,
+  async (_payload, { rejectWithValue }) => {
+    try {
+      return true;
     } catch (error) {
       if (error instanceof HttpError) {
         return rejectWithValue(serializeHttpError(error));
@@ -140,4 +156,5 @@ export {
   resetStreamingKey,
   getMyChannel,
   setReadinessToStream,
+  resetTemporaryPoster,
 };

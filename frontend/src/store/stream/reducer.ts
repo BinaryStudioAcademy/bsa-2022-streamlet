@@ -9,6 +9,7 @@ import {
   resetStreamingKey,
   getMyChannel,
   setReadinessToStream,
+  resetTemporaryPoster,
 } from './actions';
 import { OwnChannelResponseDto, VideoStreamResponseDto } from 'common/types/types';
 import { getRejectedErrorData } from 'helpers/redux/get-rejected-error-data';
@@ -23,6 +24,7 @@ type State = {
     error: string | undefined;
     errorCode: string | undefined;
   };
+  temporaryPoster: string | null;
 };
 
 const initialState: State = {
@@ -34,6 +36,7 @@ const initialState: State = {
     error: undefined,
     errorCode: undefined,
   },
+  temporaryPoster: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -51,15 +54,14 @@ const reducer = createReducer(initialState, (builder) => {
     state.status.dataStatus = DataStatus.FULFILLED;
     state.channel = payload;
   });
-  builder.addCase(resetStreamingKey.pending, (state) => {
-    state.status.error = undefined;
-    state.status.errorCode = undefined;
-  });
   builder.addCase(uploadPoster.fulfilled, (state, { payload }) => {
     state.status.dataStatus = DataStatus.FULFILLED;
     if (state.stream) {
-      state.stream.poster = payload;
+      state.temporaryPoster = payload.poster;
     }
+  });
+  builder.addCase(resetTemporaryPoster.fulfilled, (state) => {
+    state.temporaryPoster = state.stream?.poster ?? null;
   });
   builder.addCase(setStreamStatus.fulfilled, (state, { payload }) => {
     state.status.dataStatus = DataStatus.FULFILLED;
@@ -76,11 +78,16 @@ const reducer = createReducer(initialState, (builder) => {
     }
   });
   builder.addMatcher(
+    isAnyOf(resetStreamingKey.pending, uploadPoster.pending, setReadinessToStream.pending),
+    (state) => {
+      state.status.error = undefined;
+      state.status.errorCode = undefined;
+    },
+  );
+  builder.addMatcher(
     isAnyOf(
       createStream.pending,
-      uploadPoster.pending,
       editStream.pending,
-      setReadinessToStream.pending,
       setStreamStatus.pending,
       getStreamingInfo.pending,
       getMyChannel.pending,

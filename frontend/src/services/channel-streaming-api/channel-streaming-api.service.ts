@@ -10,6 +10,7 @@ import {
   StreamingInfoResponseDto,
   StreamLiveStatusRequestDto,
   StreamPosterUploadRequestDto,
+  StreamPosterUploadResponseDto,
   StreamReadinessRequestDto,
   StreamUpdateRequestDto,
   VideoStreamResponseDto,
@@ -57,7 +58,7 @@ class ChannelStreamingApi {
     });
   }
 
-  async uploadPoster(payload: StreamPosterUploadRequestDto): Promise<string> {
+  async uploadPoster(payload: StreamPosterUploadRequestDto): Promise<StreamPosterUploadResponseDto> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.CHANNEL_STREAMING}${ChannelStreamingApiPath.UPLOAD_POSTER}`,
       options: {
