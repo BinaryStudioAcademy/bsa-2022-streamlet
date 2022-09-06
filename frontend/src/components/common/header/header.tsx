@@ -6,7 +6,6 @@ import { AppRoutes, IconName, MenuOptions } from 'common/enums/enums';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import { closeSidebar, openSidebar } from 'store/layout/actions';
 import { Icon } from 'components/common/common';
-import ReactTooltip from 'react-tooltip';
 
 import styles from './header.module.scss';
 import { ToggleSwitch } from '../toggle-switch';
@@ -65,7 +64,6 @@ const Header: FC<HeaderProps> = ({
   themeValue,
 }) => {
   const isSidebarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
-  const isLightTheme = useAppSelector((state) => state.theme.isLightTheme);
   const dispatch = useAppDispatch();
 
   function handleClickBurgerMenu(): void {
@@ -78,12 +76,6 @@ const Header: FC<HeaderProps> = ({
 
   return (
     <header className={styles['header']}>
-      <ReactTooltip
-        place="bottom"
-        backgroundColor={isLightTheme ? '#c3cfc0' : '#000000'}
-        effect="solid"
-        textColor={isLightTheme ? '#000000' : '#ffffff'}
-      />
       <div className={styles['logo-block']}>
         <button onClick={handleClickBurgerMenu} className={styles['burger-menu']}>
           <Icon name={IconName.BURGER_MENU} width="24" height="24" />

@@ -7,8 +7,8 @@ import { NavLink } from 'react-router-dom';
 import { ReactNode } from 'react';
 
 import styles from './styles.module.scss';
-import ReactTooltip from 'react-tooltip';
 import { useAppSelector } from '../../../../hooks/hooks';
+import { Tooltip } from '../../../../components/common/tooltip/tooltip';
 
 const StudioSidebar: FC = () => {
   const isLightTheme = useAppSelector((state) => state.theme.isLightTheme);
@@ -19,12 +19,7 @@ const StudioSidebar: FC = () => {
           <Icon name={IconName.MAIN_LOGO} width="24" height="24" />
         </div>
       </NavLink>
-      <ReactTooltip
-        place="right"
-        backgroundColor={isLightTheme ? '#c3cfc0' : '#000000'}
-        effect="solid"
-        textColor={isLightTheme ? '#000000' : '#ffffff'}
-      />
+      <Tooltip place={'right'} isLightTheme={isLightTheme} />
       {sideBarItems.map((item: ISideBarItem) => (
         <NavLink key={item.itemName} to={item.routeName as AppRoute}>
           {({ isActive }): ReactNode => {
