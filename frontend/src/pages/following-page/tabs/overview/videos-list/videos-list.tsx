@@ -12,6 +12,9 @@ type Props = {
 
 const VIDEO_GAP = 20;
 
+const SCROLL_TIMEOUT_MS = 50;
+let lastEventFire = 0;
+
 const VideosList: FC<Props> = ({ children, title }) => {
   const videoListRef = useRef<HTMLDivElement | null>(null);
   const [hasScroll, setHasScroll] = useState(false);
@@ -106,7 +109,18 @@ const VideosList: FC<Props> = ({ children, title }) => {
 
           setHasScroll(videoListRef.current.scrollWidth > videoListRef.current.clientWidth);
           setHasLeftScroll(videoListRef.current.scrollLeft > 0);
-          setHasRightScroll(videoListRef.current.scrollLeft < videoListRef.current.scrollWidth);
+          setHasRightScroll(
+            videoListRef.current.scrollLeft + videoListRef.current.clientWidth < videoListRef.current.scrollWidth,
+          );
+        }}
+        onScroll={(e): void => {
+          const currentTarget = e.currentTarget;
+          if (Date.now() - lastEventFire >= SCROLL_TIMEOUT_MS) {
+            lastEventFire = Date.now();
+            setHasScroll(currentTarget.scrollWidth > currentTarget.clientWidth);
+            setHasLeftScroll(currentTarget.scrollLeft > 0);
+            setHasRightScroll(currentTarget.scrollLeft + currentTarget.clientWidth < currentTarget.scrollWidth);
+          }
         }}
       >
         {children}

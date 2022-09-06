@@ -51,6 +51,7 @@ const OfflineBlock: FC = () => {
             .concat(
               videos.length >= SHOW_SEE_ALL_VIDEOS_AFTER ? (
                 <SeeMoreCard
+                  key="see-more"
                   text="Show All"
                   onBtnClick={(): void => {
                     pageContainerRef.current?.scrollTo(0, 0);

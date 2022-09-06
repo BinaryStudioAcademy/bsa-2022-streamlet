@@ -53,6 +53,7 @@ const LiveBlock: FC = () => {
               videos.length >= SHOW_SEE_ALL_VIDEOS_AFTER ? (
                 <SeeMoreCard
                   text="Show All"
+                  key="see-more"
                   onBtnClick={(): void => {
                     pageContainerRef.current?.scrollTo(0, 0);
                     navigate(`../${Tab.LIVE}`);
