@@ -13,6 +13,7 @@
 
 .link:hover {
   color: var(--link-hover-color);
+  transition: all 0.3s ease;
 }
 
 .password {
@@ -90,4 +91,5 @@ div .input-error-dark {
 
 .password-eye:hover {
   background-color: var(--always-white-color);
+  transition: all 0.3s ease;
 }
