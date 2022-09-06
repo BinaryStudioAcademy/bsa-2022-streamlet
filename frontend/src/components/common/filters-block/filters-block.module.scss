@@ -68,6 +68,7 @@
   border: 1px solid var(--brand-green-color);
   border-radius: 16px;
   cursor: pointer;
+  transition: all 0.3s ease;
 
   &:hover {
     border: 1px solid var(--brand-green-color-hover);

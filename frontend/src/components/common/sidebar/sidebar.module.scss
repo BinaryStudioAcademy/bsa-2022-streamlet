@@ -47,7 +47,7 @@
   color: var(--text-gray-color);
   font-size: 16px;
   line-height: 28px;
-
+  transition: all 0.3s ease;
   @media screen and (max-width: 1300px) {
     display: none;
   }
@@ -89,6 +89,7 @@
 }
 
 .navigate-menu ul a.active svg path {
+  transition: all 0.3s ease;
   fill: var(--always-white-color);
 }
 
