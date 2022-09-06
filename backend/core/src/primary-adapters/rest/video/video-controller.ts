@@ -36,6 +36,7 @@ import {
   SearchDataResponseDto,
   Comment,
   BaseReplyRequestDto,
+  VideoPaginationParams,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -140,8 +141,8 @@ export class VideoController extends BaseHttpController {
    *                  $ref: '#/components/schemas/Video'
    */
   @httpGet(VideoApiPath.ROOT)
-  public getAllVideos(): Promise<DataVideo> {
-    return this.videoService.getAllVideos();
+  public async getAllVideos(@queryParam() paginationParams: VideoPaginationParams): Promise<DataVideo> {
+    return this.videoService.getAllVideos(paginationParams);
   }
 
   /**

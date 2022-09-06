@@ -14,6 +14,7 @@ import {
   TagSearchRequestQueryDto,
   VideoCommentRequestDto,
   VideoCommentResponseDto,
+  VideoPaginationParams,
 } from 'shared/build';
 import { createVideoCommentResponse } from '~/shared/helpers/video/create-video-comment-response';
 import { createAddReactionResponse } from '~/shared/helpers/video/create-add-reaction-response';
@@ -116,42 +117,51 @@ export class VideoRepositoryAdapter implements VideoRepository {
     };
   }
 
-  async getAll(queryParams?: { filters?: VideoRepositoryFilters }): Promise<DataVideo> {
-    const items = await this.prismaClient.video.findMany({
-      where: {
-        ...(queryParams?.filters?.streamStatus ? { status: queryParams.filters.streamStatus } : {}),
-        ...{ privacy: StreamPrivacy.PUBLIC },
-        ...(queryParams?.filters?.fromChannelSubscribedByUserWithId
-          ? {
-              channel: {
-                subscriptions: {
-                  some: {
-                    userId: queryParams.filters.fromChannelSubscribedByUserWithId,
+  async getAll(queryParams?: {
+    filters?: VideoRepositoryFilters;
+    pagination?: VideoPaginationParams;
+  }): Promise<DataVideo> {
+    const [items, total] = await this.prismaClient.$transaction([
+      this.prismaClient.video.findMany({
+        where: {
+          ...(queryParams?.filters?.streamStatus ? { status: queryParams.filters.streamStatus } : {}),
+          ...{ privacy: StreamPrivacy.PUBLIC },
+          ...(queryParams?.filters?.fromChannelSubscribedByUserWithId
+            ? {
+                channel: {
+                  subscriptions: {
+                    some: {
+                      userId: queryParams.filters.fromChannelSubscribedByUserWithId,
+                    },
                   },
                 },
-              },
-            }
-          : {}),
-      },
-      include: {
-        channel: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
+              }
+            : {}),
+        },
+        include: {
+          channel: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+            },
           },
         },
-      },
-      orderBy: {
-        publishedAt: 'desc',
-      },
-    });
-    const total = items.length;
+        ...(queryParams?.pagination?.skip && { skip: Number(queryParams?.pagination?.skip) }),
+        ...(queryParams?.pagination?.take && { take: Number(queryParams?.pagination?.take) }),
+        orderBy: {
+          publishedAt: 'desc',
+        },
+      }),
+      this.prismaClient.video.count(),
+    ]);
+
     const list = items.map(trimVideo);
 
     return {
       list,
       total,
+      lazyLoad: Boolean(queryParams?.pagination?.take),
     };
   }
 
