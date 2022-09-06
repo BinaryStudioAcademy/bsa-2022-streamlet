@@ -13,6 +13,7 @@ import { matchPath } from 'react-router-dom';
 import { useLayoutEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeSidebar } from 'store/layout/actions';
+import ReactTooltip from 'react-tooltip';
 
 interface SidebarProps {
   isSidebarOpen: boolean;
@@ -45,6 +46,9 @@ const Sidebar: FC<SidebarProps> = ({ configRoutePages, activeRouteId, isSidebarO
     }
   }, [dispatch, shouldHideSidebar]);
 
+  const isLightTheme = useAppSelector((state) => state.theme.isLightTheme);
+  const isSideBarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
+
   const hasUser = Boolean(useAppSelector((state) => state.auth.user));
   return (
     <>
@@ -68,10 +72,18 @@ const Sidebar: FC<SidebarProps> = ({ configRoutePages, activeRouteId, isSidebarO
                       to={page.linkTo}
                       className={clsx({ [styles.active]: page.id === activeRouteId })}
                     >
-                      <li>
+                      <li data-tip={page.textLink}>
                         <Icon name={page.iconName} width="24" height="24" />
                         <span className={styles['link-name']}>{page.textLink}</span>
                       </li>
+                      {!isSideBarOpen && (
+                        <ReactTooltip
+                          place="right"
+                          backgroundColor={isLightTheme ? '#c3cfc0' : '#000000'}
+                          effect="solid"
+                          textColor={isLightTheme ? '#000000' : '#ffffff'}
+                        />
+                      )}
                     </Link>
                   ),
               )}
