@@ -1,5 +1,5 @@
 import { FormControl, FormControlErrors, FormControlPath } from 'common/types/types';
-import { useFormControl } from 'hooks/hooks';
+import { useAppSelector, useFormControl } from 'hooks/hooks';
 import { Button, ErrorMessage } from 'components/common/common';
 import { FieldValues } from 'react-hook-form';
 import { ReactElement, useId, useState } from 'react';
@@ -62,6 +62,8 @@ const PasswordInput = <T extends FieldValues>({
     }
   };
 
+  const isLightTheme = useAppSelector((store) => store.theme.isLightTheme);
+
   return (
     <div className={clsx(styles['input-wrapper'], wrapperClassName)}>
       <div className={styles['input-labels']}>
@@ -100,7 +102,11 @@ const PasswordInput = <T extends FieldValues>({
         />
         <Button
           onClick={handleChangeInputPasswordType}
-          className={clsx(passwordStyles['check-password-btn'], changeVisibilityBtnClassName)}
+          className={clsx(
+            passwordStyles['check-password-btn'],
+            !isLightTheme ? passwordStyles['check-password-btn-dark'] : '',
+            changeVisibilityBtnClassName,
+          )}
           content={inputPasswordType === 'password' ? <PasswordEyeClosed /> : <PasswordEye />}
         />
       </div>

@@ -15,6 +15,7 @@
 
 .auth-submit-btn:hover {
   background-color: var(--brand-green-color-hover);
+  transition: all 0.3s ease;
 }
 
 .auth-submit-btn:disabled {
@@ -24,4 +25,5 @@
 .no-hover:hover,
 .no-hover:disabled {
   background-color: var(--brand-green-color);
+  transition: all 0.3s ease;
 }
