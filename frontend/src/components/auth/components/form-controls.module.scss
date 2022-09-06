@@ -13,6 +13,7 @@
 
 .link:hover {
   color: var(--link-hover-color);
+  transition: all 0.3s ease;
 }
 
 .password {
@@ -35,6 +36,10 @@
 
 div .input-error {
   border: var(--input-error-border);
+}
+
+div .input-error-dark {
+  outline: var(--input-error-border);
 }
 
 .input-row {
@@ -86,4 +91,5 @@ div .input-error {
 
 .password-eye:hover {
   background-color: var(--always-white-color);
+  transition: all 0.3s ease;
 }
