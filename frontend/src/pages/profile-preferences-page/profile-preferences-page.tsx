@@ -7,8 +7,8 @@ import {
   UserUploadRequestDto,
 } from 'common/types/types';
 import style from './styles.module.scss';
-import defaultAvatar from '../../assets/img/default-user-avatar.jpg';
-import { createToastNotification, ImageEditor, Loader, UploadImage } from '../../components/common/common';
+import defaultAvatar from '../../assets/img/default/user-avatar-default.jpg';
+import { UploadImage, ImageEditor, Loader, createToastNotification } from '../../components/common/common';
 import React, { useCallback, useState } from 'react';
 import { profileActions } from 'store/actions';
 import { ImageListType } from 'react-images-uploading';

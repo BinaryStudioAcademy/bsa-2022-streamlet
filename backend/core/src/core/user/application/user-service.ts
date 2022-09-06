@@ -22,6 +22,7 @@ import { ImageStorePort } from '~/core/common/port/image-store';
 import { MailRepository } from '~/core/mail/port/mail-repository';
 import { AmqpChannelPort } from '~/core/common/port/amqp-channel';
 import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
+import { ChannelStreamingRepository } from '~/core/channel-streaming/port/channel-streaming-repository';
 import { ProfileRepository } from '~/core/profile/port/profile-repository';
 import { castToCategoryResponseDto } from '~/core/category/application/dtos/cast-to-category-response-dto';
 
@@ -32,21 +33,29 @@ export class UserService {
   private mailRepository: MailRepository;
   private imageStore: ImageStorePort;
   private amqpChannel: AmqpChannelPort;
-  @inject(CONTAINER_TYPES.ChannelCrudRepository) private channelCrudRepository!: ChannelCrudRepository;
-  @inject(CONTAINER_TYPES.ProfileRepository) private profileRepository!: ProfileRepository;
+  private channelCrudRepository: ChannelCrudRepository;
+  private channelStreamingRepository: ChannelStreamingRepository;
+  private profileRepository: ProfileRepository;
 
+  // eslint-disable-next-line max-params
   constructor(
     @inject(CONTAINER_TYPES.UserRepository) userRepository: UserRepository,
     @inject(CONTAINER_TYPES.RefreshTokenRepository) refreshTokenRepository: RefreshTokenRepository,
     @inject(CONTAINER_TYPES.ImageStoreAdapter) imageStore: ImageStorePort,
     @inject(CONTAINER_TYPES.MailRepository) mailRepository: MailRepository,
     @inject(CONTAINER_TYPES.AmqpChannelAdapter) amqpChannel: AmqpChannelPort,
+    @inject(CONTAINER_TYPES.ChannelCrudRepository) channelCrudRepository: ChannelCrudRepository,
+    @inject(CONTAINER_TYPES.ChannelStreamingRepository) channelStreamingRepository: ChannelStreamingRepository,
+    @inject(CONTAINER_TYPES.ProfileRepository) profileRepository: ProfileRepository,
   ) {
     this.userRepository = userRepository;
     this.refreshTokenRepository = refreshTokenRepository;
     this.imageStore = imageStore;
     this.mailRepository = mailRepository;
     this.amqpChannel = amqpChannel;
+    this.channelCrudRepository = channelCrudRepository;
+    this.channelStreamingRepository = channelStreamingRepository;
+    this.profileRepository = profileRepository;
   }
 
   getAllUsers(): Promise<User[]> {
@@ -67,7 +76,8 @@ export class UserService {
 
   async createUser(userRequestDto: UserSignUpRequestDto): Promise<User> {
     const user = await this.userRepository.createUser(userRequestDto);
-    await this.channelCrudRepository.createDefaultForUser(user, `${user.username}'s channel`);
+    const channel = await this.channelCrudRepository.createDefaultForUser(user, `${user.username}'s channel`);
+    await this.channelStreamingRepository.createStreamingKey(channel.id);
     return user;
   }
 
@@ -86,8 +96,8 @@ export class UserService {
   uploadAvatar({ base64Str }: UserUploadRequestDto, userId: string): Promise<ImageUploadResponseDto> {
     return this.imageStore.upload({ base64Str, type: ImageStorePresetType.AVATAR, userId });
   }
-  // This method is created only for testing purposes. When proper registration method will be implemented,
-  // this.mailRepository.sendEmail() will be called  from there.
+
+  // This method is created only for testing purposes
   testSendingEmail(mailTestRequestDto: MailTestRequestDto): Promise<MailResponseDto> {
     return this.mailRepository.sendMail({
       receiver: mailTestRequestDto.email,

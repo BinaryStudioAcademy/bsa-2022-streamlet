@@ -3,17 +3,19 @@
   justify-content: center;
   align-items: center;
   padding: 5px 10px;
-  color: var(--text-white-color);
+  color: var(--always-white-color);
   font-size: 14px;
   background-color: var(--brand-green-color);
   border-radius: 3px;
   cursor: pointer;
 }
 
-.button:hover {
-  background-color: var(--brand-green-color-hover);
+.button:disabled {
+  background-color: var(--text-gray-color);
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
-.button:disabled {
-  cursor: not-allowed;
+.button:hover {
+  background-color: var(--brand-green-color-hover);
 }

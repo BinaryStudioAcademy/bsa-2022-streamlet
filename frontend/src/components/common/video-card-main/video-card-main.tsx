@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import * as dayjsRelativeTime from 'dayjs/plugin/relativeTime';
 import { Link } from 'react-router-dom';
 import { FC, VideoCard as VideoCardType } from 'common/types/types';
-import { AppRoutes, IconName, StreamingStatus } from 'common/enums/enums';
+import { AppRoutes, IconName, StreamStatus } from 'common/enums/enums';
 import { useState, useCallback, useEffect } from 'hooks/hooks';
 import { Icon } from 'components/common/common';
 import { ScheduledVideoBadge } from './components/components';
@@ -11,7 +11,7 @@ import { UPDATE_CARD_TIME_DELAY } from './config';
 import styles from './styles.module.scss';
 import defaultVideoPosterDark from 'assets/img/default-video-poster-dark.jpg';
 import defaultVideoPosterLight from 'assets/img/default-video-poster-light.jpg';
-import defaultUserAvatar from 'assets/img/default-user-avatar.jpg';
+import defaultUserAvatar from 'assets/img/default/user-avatar-default.jpg';
 import clsx from 'clsx';
 
 dayjs.extend(dayjsRelativeTime.default);
@@ -35,9 +35,9 @@ const VideoCardMain: FC<Props> = ({
 }) => {
   const [timeNow, setTimeNow] = useState(dayjs());
 
-  const isWaiting = status === StreamingStatus.WAITING;
-  const isLive = status === StreamingStatus.LIVE;
-  const isFinished = status === StreamingStatus.FINISHED;
+  const isWaiting = status === StreamStatus.WAITING;
+  const isLive = status === StreamStatus.LIVE;
+  const isFinished = status === StreamStatus.FINISHED;
 
   const updateTimeDelay = UPDATE_CARD_TIME_DELAY;
 

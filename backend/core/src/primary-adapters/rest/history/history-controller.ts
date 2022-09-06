@@ -1,6 +1,6 @@
-import { BaseHttpController, controller, httpGet, request, requestParam } from 'inversify-express-utils';
+import { BaseHttpController, controller, httpDelete, httpGet, request, requestParam } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES, HistoryResponseDto, ExtendedAuthenticatedRequest } from '~/shared/types/types';
+import { CONTAINER_TYPES, HistoryResponseDto, ExtendedAuthenticatedRequest, BatchPayload } from '~/shared/types/types';
 import { HistoryService } from '~/core/history/application/history-service';
 import { authenticationMiddleware } from '../middleware';
 import { ApiPath, HistoryApiPath } from '~/shared/enums/api/api';
@@ -60,12 +60,17 @@ export class HistoryController extends BaseHttpController {
    *        401:
    *          $ref: '#/components/responses/NotFound'
    */
-  @httpGet(`${HistoryApiPath.ROOT}:id`, authenticationMiddleware)
+  @httpGet(HistoryApiPath.$ID, authenticationMiddleware)
   public getAllUserHistory(
     @request() req: ExtendedAuthenticatedRequest,
-    @requestParam() { id: page }: { id: string },
+    @requestParam('pageId') page: string,
   ): Promise<HistoryResponseDto> {
     const { id: userId } = req.user;
     return this.historyService.getUserHistory(userId, page);
+  }
+  @httpDelete(`${HistoryApiPath.DELETE}`, authenticationMiddleware)
+  public deleteAllUserHistory(@request() req: ExtendedAuthenticatedRequest): Promise<BatchPayload> {
+    const { id: userId } = req.user;
+    return this.historyService.deleteAllUserHistory(userId);
   }
 }

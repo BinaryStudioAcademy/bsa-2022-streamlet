@@ -1,1 +1,1 @@
-export { StreamingStatus } from 'shared/build';
+export { StreamStatus, StreamPrivacy } from 'shared/build';

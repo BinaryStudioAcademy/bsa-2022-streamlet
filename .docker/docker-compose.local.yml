@@ -80,6 +80,8 @@ services:
       - ../playback:/app/backend/video-transcoding-server/playback
     depends_on:
       - rabbitmq
+    ports:
+      - '5003:5003'
     env_file:
       - ../.env/video-transcoding-server.env
     networks:

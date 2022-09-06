@@ -93,4 +93,9 @@ export class ChannelCrudService {
 
     return castToChannelProfileUpdateResponseDto(updatedChannel);
   }
+
+  async getAuthorByChannelId(id: string): Promise<string | undefined> {
+    const channel = await this.channelRepository.getChannelById(id);
+    return channel?.authorId;
+  }
 }

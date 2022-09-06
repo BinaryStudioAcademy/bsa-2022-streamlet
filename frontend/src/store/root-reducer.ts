@@ -13,6 +13,7 @@ import { reducer as chat } from './chat/reducer';
 import { reducer as history } from './history/reducer';
 import { reducer as subscriptions } from './subscriptions/reducer';
 import { reducer as followingPage } from './following-page/reducer';
+import { reducer as stream } from './stream/reducer';
 import { reducer as socket } from './socket/reducer';
 
 const rootReducer = combineReducers({
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
   history,
   subscriptions,
   followingPage,
+  stream,
   socket,
 });
 

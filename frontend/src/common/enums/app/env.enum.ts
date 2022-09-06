@@ -7,7 +7,7 @@ const ENV = {
   PUSH_PORT: REACT_APP_PUSH_PORT ? Number(REACT_APP_PUSH_PORT) : '',
   // when video url supplied to video player is relative
   // it will automatically add this url at the beginning
-  VIDEO_FALLBACK_BASE_URL: REACT_APP_VIDEO_FALLBACK_BASE_URL || 'https://dev.streamlet.tk',
+  VIDEO_FALLBACK_BASE_URL: REACT_APP_VIDEO_FALLBACK_BASE_URL || 'http://localhost:5001',
 } as const;
 
 export { ENV };

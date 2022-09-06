@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { AppRoutes, SocketEvents, StreamingStatus } from 'common/enums/enums';
+import { AppRoutes, SocketEvents, StreamStatus } from 'common/enums/enums';
 import { Loader } from 'components/common/common';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import { useAppDispatch, useAppSelector, useNavigate, useParams, useState } from 'hooks/hooks';
@@ -14,6 +14,9 @@ import { ChannelInfoRow } from './channel-info-row/channel-info-row';
 import { VideoHeader } from './video-header/video-header';
 import { LinksBlock } from './links-block/links-block';
 import { resetVideoPage } from 'store/video-page/actions';
+import { FilterBlockProps } from 'components/common/filters-block';
+import { activeCategory, clearFilters, getCategories } from 'store/categories/actions';
+import { getVideosByCategory } from 'store/videos/actions';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -28,6 +31,8 @@ const VideoPageContainer: FC = () => {
     navigate(AppRoutes.ANY, { replace: true });
   }
 
+  const categories = useAppSelector((state) => state.category.data);
+
   const { videoData, profile, user, channel } = useAppSelector((state) => ({
     videoData: state.videoPage.video,
     profile: state.profile.profileData,
@@ -36,6 +41,8 @@ const VideoPageContainer: FC = () => {
   }));
 
   useEffect(() => {
+    dispatch(getCategories());
+
     return () => {
       dispatch(resetVideoPage());
     };
@@ -73,6 +80,22 @@ const VideoPageContainer: FC = () => {
     setReactState(true);
   };
 
+  function handleClickFilter(id: string): void {
+    dispatch(activeCategory({ id }));
+    dispatch(getVideosByCategory());
+  }
+
+  function handleClickClearFilters(): void {
+    dispatch(clearFilters());
+    dispatch(getVideosByCategory());
+  }
+
+  const filterBlock: FilterBlockProps = {
+    filterList: categories,
+    handleClickFilter,
+    handleClickClearFilters,
+  };
+
   const handlerCancelForReplyForm = (): void => {
     return void 1;
   };
@@ -82,7 +105,7 @@ const VideoPageContainer: FC = () => {
   }
 
   const { status } = videoData;
-  const isVideoFinished = status === 'finished';
+  const isVideoFinished = status === StreamStatus.FINISHED;
 
   return (
     <div
@@ -94,7 +117,7 @@ const VideoPageContainer: FC = () => {
         <VideoPlayer
           sizingProps={{ aspectRatio: '16 / 9' }}
           url={videoData.videoPath}
-          isLive={videoData.status === StreamingStatus.LIVE}
+          isLive={videoData.status === StreamStatus.LIVE}
           videoAttributes={{ poster: videoData.poster }}
           className={styles['video-player']}
         />
@@ -114,7 +137,7 @@ const VideoPageContainer: FC = () => {
             <VideoChatContainer videoId={videoId} popOutSetting={true} />
           </div>
         )}
-        <LinksBlock />
+        <LinksBlock videoId={videoId} filterBlockProps={filterBlock} />
       </div>
       {isVideoFinished && (
         <div className={styles['video-comment-block']}>

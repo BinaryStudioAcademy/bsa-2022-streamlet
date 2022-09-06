@@ -66,7 +66,7 @@ export class CategoryController extends BaseHttpController {
   }
 
   @httpGet(CategoryApiPath.$ID)
-  public async getById(@requestParam() { id }: DefaultRequestParam): Promise<CategoryResponseDto> {
+  public async getById(@requestParam('categoryId') id: string): Promise<CategoryResponseDto> {
     const category = await this.categoryService.getById(id);
     if (!category) {
       throw new NotFound('Invalid category id');
@@ -92,8 +92,8 @@ export class CategoryController extends BaseHttpController {
 
   @httpPut(CategoryApiPath.$ID, authenticationMiddleware)
   public async updateCategory(
-    @requestParam() { id }: DefaultRequestParam,
     @request() req: ExtendedAuthenticatedRequest,
+    @requestParam('categoryId') id: string,
     @requestBody() body: Omit<CategoryUpdateRequestDto, 'id'>,
   ): Promise<CategoryResponseDto> {
     const payload = normalizeCategoryUpdatePayload(body);
@@ -113,7 +113,7 @@ export class CategoryController extends BaseHttpController {
   }
 
   @httpDelete(CategoryApiPath.$ID, authenticationMiddleware)
-  public async deleteCategory(@requestParam() { id }: DefaultRequestParam): Promise<boolean> {
+  public async deleteCategory(@requestParam('categoryId') id: string): Promise<boolean> {
     const isSuccess = await this.categoryService.deleteCategory(id);
     if (!isSuccess) {
       throw new NotFound('Category not found');

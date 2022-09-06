@@ -2,7 +2,7 @@ export { AppDispatch, AsyncThunkConfig, RootState } from './app/app';
 
 export { RefreshTokenRequestDto, RefreshTokenResponseDto, TokenPair } from './auth/auth';
 
-export { VideoCard } from './component/component';
+export { VideoCard, ChannelCard, SelectOptions } from './component/component';
 
 export { FormControl, FormControlErrors, FormControlPath, FormControlValues } from './form/form';
 
@@ -29,12 +29,28 @@ export * from './profile/profile';
 export { type AvatarImgValue, ImageStorePresetType } from './image/image';
 
 export { ValidationSchema } from './validation/validation';
+
 export { type ToastNotificationParams } from './toast-notification/toast-notifications';
 
 export * from './video/video';
+
 export { BaseSubscriptionResponseDto, DataSubscription } from './subscription/subscription';
 
-declare module 'react-notifications-component';
 export * from './channel/channel';
 
+export {
+  StreamingKeyResponseDto,
+  ResetStreamingKeyRequestDto,
+  CreateStreamRequestDto,
+  VideoStreamResponseDto,
+  StreamPosterUploadRequestDto,
+  StreamUpdateRequestDto,
+  StreamLiveStatusRequestDto,
+} from './stream/stream';
+
 export * from './chat/chat';
+export * from './batch-payload/batch-payload';
+
+export { SearchDataResponseDto } from './search/search';
+
+declare module 'react-notifications-component';

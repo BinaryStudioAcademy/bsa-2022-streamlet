@@ -3,7 +3,7 @@ enum ProfileApiPath {
   UPDATE = '/update',
   UPLOAD = '/upload',
   GET_BY_USER_ID = '/get',
-  $ID = '/:id',
+  $ID = '/:userId',
 }
 
 export { ProfileApiPath };

@@ -1,5 +1,5 @@
 import { Http } from 'services/http/http.service';
-import { ChannelInfoRequestDto, ChannelInfoResponseDto } from 'common/types/types';
+import { ChannelInfoRequestDto, ChannelInfoResponseDto, OwnChannelResponseDto } from 'common/types/types';
 import { ApiPath } from 'common/enums/enums';
 import {
   ChannelCrudApiPath,
@@ -39,7 +39,7 @@ class ChannelCrudApi {
 
   async updateChannelInfo({ id, ...payload }: ChannelProfileUpdateDto): Promise<ChannelProfileUpdateResponseDto> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.CHANNEL_CRUD}${ChannelCrudApiPath.ROOT}/${id}`,
+      url: `${this.#apiPrefix}${ApiPath.CHANNEL_CRUD}/${id}`,
       options: {
         method: HttpMethod.PUT,
         contentType: ContentType.JSON,
@@ -73,6 +73,12 @@ class ChannelCrudApi {
         contentType: ContentType.JSON,
         payload: JSON.stringify({ id, base64Str }),
       },
+    });
+  }
+
+  async getMyChannelInfo(): Promise<OwnChannelResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.CHANNEL_STREAMING}`,
     });
   }
 }

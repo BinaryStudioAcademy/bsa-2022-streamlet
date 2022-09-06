@@ -40,11 +40,15 @@ const CONTAINER_TYPES = {
   ChatService: Symbol.for('ChatService'),
   ChatRepository: Symbol.for('ChatRepository'),
   ChatController: Symbol.for('ChatController'),
+  ChannelService: Symbol.for('ChannelService'),
+  ChannelRepository: Symbol.for('ChannelRepository'),
+  ChannelController: Symbol.for('ChannelController'),
 
   FollowingService: Symbol.for('FollowingService'),
   FollowingController: Symbol.for('FollowingController'),
 
   ChannelOwnerMiddleWare: Symbol.for('ChannelOwnerMiddleware'),
+  ChannelActionMiddleware: Symbol.for('ChannelActionMiddleware'),
 
   PrismaClient: Symbol.for('PrismaClient'),
   Cloudinary: Symbol.for('Cloudinary'),

@@ -52,7 +52,7 @@ export class CategoryService {
   }
 
   async search(categorySearchRequestQueryDto: CategorySearchRequestQueryDto): Promise<BaseVideoResponseDto[]> {
-    const videos = await this.videoRepository.searchByCatergories(categorySearchRequestQueryDto);
+    const videos = await this.videoRepository.searchByCategories(categorySearchRequestQueryDto);
     return videos.map((video) => castToSearchByCategoryResponseDto(video));
   }
 
@@ -71,7 +71,7 @@ export class CategoryService {
     const category = await this.categoryRepository.updateCategory({
       id,
       name,
-      posterPath: posterPath?.url,
+      posterPath: posterPath?.url ?? '',
     });
     if (!category) {
       return;
@@ -98,7 +98,7 @@ export class CategoryService {
     }
     const category = await this.categoryRepository.createCategory({
       name,
-      posterPath: posterPath?.url,
+      posterPath: posterPath?.url ?? '',
     });
     return castToCategoryResponseDto(category);
   }

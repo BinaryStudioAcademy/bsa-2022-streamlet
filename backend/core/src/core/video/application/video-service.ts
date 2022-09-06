@@ -35,6 +35,10 @@ export class VideoService {
     return this.videoRepository.getById(id);
   }
 
+  getAuthorByVideoId(id: string): Promise<string | undefined> {
+    return this.videoRepository.getAuthorById(id);
+  }
+
   addComment(request: VideoCommentRequestDto, userId: string): Promise<VideoCommentResponseDto | null> {
     return this.videoRepository.addComment(request, userId);
   }

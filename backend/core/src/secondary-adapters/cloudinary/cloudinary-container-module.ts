@@ -3,7 +3,7 @@ import { CloudinaryApi, CONTAINER_TYPES } from '~/shared/types/types';
 import { v2 as cloudinary } from 'cloudinary';
 import { CONFIG } from '~/configuration/config';
 import { ImageStorePort } from '~/core/common/port/image-store';
-import { ImageStoreAdapter } from './cloud/clodinary-adapter';
+import { ImageStoreAdapter } from './cloud/cloudinary-adapter';
 import { uploadPresets } from './config/presets';
 
 const cloudinaryContainerModule = new ContainerModule((bind: interfaces.Bind) => {
