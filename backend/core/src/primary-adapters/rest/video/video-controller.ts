@@ -264,7 +264,10 @@ export class VideoController extends BaseHttpController {
         videos: { list: [], total: 0 },
       };
     }
-    if (duration && duration !== DurationFilterId.ANY) {
+    if (
+      (duration && duration !== DurationFilterId.ANY) ||
+      (type && (type === TypeFilterId.VIDEO || type === TypeFilterId.STREAM))
+    ) {
       return {
         channels: { list: [], total: 0 },
         videos: await this.videoService.getVideosBySearch(queryParams),
@@ -309,7 +312,7 @@ export class VideoController extends BaseHttpController {
   }
 
   @httpGet(`${VideoApiPath.REPLIES_COMMENT}${VideoApiPath.$ID}`)
-  public async getRepliesForComment(@requestParam('id') id: string): Promise<Comment[]> {
+  public async getRepliesForComment(@requestParam('videoId') id: string): Promise<Comment[]> {
     const result = await this.videoService.getRepliesForComment(id);
 
     return result;
@@ -351,7 +354,7 @@ export class VideoController extends BaseHttpController {
 
   @httpPost(`${VideoApiPath.REACTION}${VideoApiPath.$ID}`, authenticationMiddleware)
   public async addReaction(
-    @requestParam('id') id: string,
+    @requestParam('videoId') id: string,
     @requestBody() body: CreateReactionRequestDto,
     @request() req: ExtendedAuthenticatedRequest,
   ): Promise<CreateReactionResponseDto> {
@@ -446,7 +449,7 @@ export class VideoController extends BaseHttpController {
 
   @httpPost(`${VideoApiPath.COMMENT}${VideoApiPath.REACTION}${VideoApiPath.$ID}`, authenticationMiddleware)
   public async addCommentReaction(
-    @requestParam('id') id: string,
+    @requestParam('videoId') id: string,
     @requestBody() body: CreateReactionRequestDto,
     @request() req: ExtendedAuthenticatedRequest,
   ): Promise<CreateReactionResponseDto> {

@@ -40,7 +40,6 @@ const StudioStreamContainer: FC = () => {
 
   const handleSettingsModalClose = (): void => {
     setIsSettingsModalOpen(false);
-    // settingsFormReset(defaultSettingsFormValues());
   };
 
   const handleSettingsModalSave = useCallback(

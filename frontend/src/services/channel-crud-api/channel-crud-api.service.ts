@@ -39,7 +39,7 @@ class ChannelCrudApi {
 
   async updateChannelInfo({ id, ...payload }: ChannelProfileUpdateDto): Promise<ChannelProfileUpdateResponseDto> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.CHANNEL_CRUD}${ChannelCrudApiPath.ROOT}/${id}`,
+      url: `${this.#apiPrefix}${ApiPath.CHANNEL_CRUD}/${id}`,
       options: {
         method: HttpMethod.PUT,
         contentType: ContentType.JSON,

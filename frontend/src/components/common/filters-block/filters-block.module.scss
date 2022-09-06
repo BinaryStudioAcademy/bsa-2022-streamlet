@@ -12,12 +12,25 @@
   @media screen and(max-width: 900px) {
     padding: 12px 20px;
   }
+
+  &.in-recommended-section {
+    max-width: 380px;
+    padding: 12px 0;
+
+    @media screen and (min-width: 1550px) {
+      max-width: 420px;
+    }
+  }
 }
 
 .filter-block-wrapper {
   display: flex;
   width: fit-content;
   overflow: auto;
+
+  &.in-recommended-section {
+    padding: 0 10px;
+  }
 
   .blur-container {
     position: absolute;
@@ -27,6 +40,10 @@
     height: 30px;
     background: var(--gray-300-header-menu-background);
     background: linear-gradient(270deg, var(--gray-300-header-menu-background), transparent 100%);
+
+    &.in-recommended-section {
+      right: 0;
+    }
 
     @media screen and (max-width: 900px) {
       right: 20px;
@@ -51,6 +68,7 @@
   border: 1px solid var(--brand-green-color);
   border-radius: 16px;
   cursor: pointer;
+  transition: all 0.3s ease;
 
   &:hover {
     border: 1px solid var(--brand-green-color-hover);

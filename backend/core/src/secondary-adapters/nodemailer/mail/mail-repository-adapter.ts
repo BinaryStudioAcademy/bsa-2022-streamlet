@@ -18,7 +18,7 @@ export class MailRepositoryAdapter implements MailRepository {
     const email = new Email({
       views: { root: 'build/shared/mail-templates' },
       message: {
-        from: `Streamlet <${CONFIG.MAIL_SERVICE.ADDRESS}>`,
+        from: `Streamlet <${CONFIG.MAIL_SERVICE.LOGIN}>`,
       },
       preview: false,
       send: true,
