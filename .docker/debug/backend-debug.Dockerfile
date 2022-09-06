@@ -10,11 +10,11 @@ COPY ./package*.json ./
 COPY ./tsconfig.json ./
 COPY ./.eslintrc.yml ./
 COPY ./shared ./shared/
-COPY ./backend/core/package*.json ./backend/core
+COPY ./backend/core ./backend/core
 
 RUN npm ci -w shared -w backend/core
 
 RUN rm -rf ./shared/src
 
 EXPOSE 5001
-CMD npm run start:dev -w backend
+CMD npm run migrate -w backend/core; npm run seed:soft -w backend/core; npm run start:dev -w backend;

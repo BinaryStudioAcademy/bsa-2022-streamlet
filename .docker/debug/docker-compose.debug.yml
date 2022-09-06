@@ -42,16 +42,18 @@ services:
   backend:
     container_name: backend
     build:
-      context: ./
-      dockerfile: backend-debug.Dockerfile
+      context: ../../
+      dockerfile: .docker/debug/backend-debug.Dockerfile
     depends_on:
       - api-db
     ports:
       - '5001:5001'
     env_file:
-      - ../../.env/api.env
+      - ../../.env/api-debug.env
     volumes:
-      - ../../backend/core:/app/backend/core:ro
+      - ../../backend/core:/app/backend/core
+      - node_modules_backend:/app/backend/core/node_modules:rw
+      - node_modules_backend_shared:/app/shared/node_modules:rw
     networks:
       - backend_network
       - frontend_network
@@ -98,25 +100,40 @@ services:
         max-file: "5"
   frontend:
     build:
-      context: ./
-      dockerfile: frontend-debug.Dockerfile
+      context: ../../
+      dockerfile: .docker/debug/frontend-debug.Dockerfile
     container_name: frontend
     depends_on:
       - backend
-    ports:
-      - '8080:80'
-      - '443:443'
     env_file:
-      - ../../.env/client.env
+      - ../../.env/client-debug.env
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
     volumes:
-      - ../../frontend:/app/frontend:ro
-      - ../../nginx/nginx.local.conf:/etc/nginx/nginx.conf
-      - ../../playback:/assets/segments
+      - ../../frontend:/app/frontend
+      - ../../playback:/assets/segments:rw
+      - node_modules_frontend_upper:/app/node_modules:rw
+      - node_modules_frontend_shared:/app/shared/node_modules:rw
+    networks:
+      - backend_network
+      - frontend_network
+  nginx:
+    build:
+      context: ../../
+      dockerfile: .docker/debug/nginx-debug.Dockerfile
+    container_name: nginx-debug
+    ports:
+      - '8079:80'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    volumes:
+      - ../../playback:/assets/segments:rw
     networks:
       - backend_network
       - frontend_network
@@ -132,6 +149,11 @@ volumes:
     driver: local
   shared:
     driver: local
+  node_modules_frontend_upper:
+  node_modules_backend:
+  node_modules_backend_upper:
+  node_modules_frontend_shared:
+  node_modules_backend_shared:
 
 networks:
   backend_network:

@@ -16,15 +16,9 @@ COPY ./.eslintrc.yml ./
 COPY ./shared ./shared/
 COPY ./frontend/package.json ./frontend/
 
+RUN npm pkg set scripts.postinstall="npm run build:shared"
 RUN npm ci -w shared -w frontend
 
-FROM nginx:1.22.0-alpine
+EXPOSE 3000
 
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
-RUN rm -rf /usr/share/nginx/html/*
-COPY --from=frontend-build /app/frontend/build/ /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD npm run start; nginx -g daemon off;
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+CMD npm run start:frontend;
