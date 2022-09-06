@@ -37,6 +37,10 @@ div .input-error {
   border: var(--input-error-border);
 }
 
+div .input-error-dark {
+  outline: var(--input-error-border);
+}
+
 .input-row {
   position: relative;
   display: grid;

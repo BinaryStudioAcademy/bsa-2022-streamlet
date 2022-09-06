@@ -1,7 +1,7 @@
 import { AppRoutes } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { Input, Link, PasswordInput } from 'components/common/common';
-import { useAppForm } from 'hooks/hooks';
+import { useAppForm, useAppSelector } from 'hooks/hooks';
 import { userSignIn } from 'validation-schemas/validation-schemas';
 import { AuthSubmitButton, ContinueWithParagraph, GoogleButton } from '../common/common';
 import clsx from 'clsx';
@@ -26,6 +26,8 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
     mode: 'onChange',
   });
 
+  const isLightTheme = useAppSelector((store) => store.theme.isLightTheme);
+
   return (
     <>
       <form className={formStyles['form-container']} onSubmit={handleSubmit(onSubmit)}>
@@ -47,7 +49,7 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
           labelClassName={formStyles['label']}
           errorBlockClassName={formStyles['error']}
           wrapperClassName={formStyles['form-input']}
-          inputWrapperErrorClassName={formStyles['input-error']}
+          inputWrapperErrorClassName={isLightTheme ? formStyles['input-error'] : formStyles['input-error-dark']}
           placeholder="Password"
           control={control}
           name="password"
