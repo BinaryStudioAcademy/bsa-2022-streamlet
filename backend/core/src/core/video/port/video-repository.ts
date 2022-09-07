@@ -8,6 +8,7 @@ import {
   PopularVideoResponseDto,
   BaseReplyRequestDto,
   Comment,
+  VideoPaginationParams,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
@@ -35,7 +36,7 @@ export interface VideoRepository {
   searchByTags(searchByTagsDto: TagSearchRequestQueryDto): Promise<VideoWithChannel[]>;
   searchByCategories(searchByCategoryDto: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]>;
   getAuthorById(id: string): Promise<string | undefined>;
-  getAll(queryParams?: { filters?: VideoRepositoryFilters }): Promise<DataVideo>;
+  getAll(queryParams?: { filters?: VideoRepositoryFilters; pagination?: VideoPaginationParams }): Promise<DataVideo>;
   reactionByUser(videoId: string, userId: string): Promise<boolean | null>;
   removeReactionAndAddNew(videoId: string, userId: string, isLike: boolean): Promise<CreateReactionResponseDto | null>;
   addReaction(
