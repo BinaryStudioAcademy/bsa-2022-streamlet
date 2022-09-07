@@ -153,7 +153,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
           publishedAt: 'desc',
         },
       }),
-      this.prismaClient.video.count(),
+      this.prismaClient.video.count({ where: { ...{ privacy: StreamPrivacy.PUBLIC } } }),
     ]);
 
     const list = items.map(trimVideo);
