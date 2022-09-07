@@ -16,7 +16,7 @@ import { LinksBlock } from './links-block/links-block';
 import { resetVideoPage } from 'store/video-page/actions';
 import { FilterBlockProps } from 'components/common/filters-block';
 import { activeCategory, clearFilters, getCategories } from 'store/categories/actions';
-import { getVideosByCategory } from 'store/videos/actions';
+import { getVideosByCategory, resetPaginationMainPage } from 'store/videos/actions';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -45,6 +45,7 @@ const VideoPageContainer: FC = () => {
 
     return () => {
       dispatch(resetVideoPage());
+      dispatch(resetPaginationMainPage());
     };
   }, [dispatch]);
 
