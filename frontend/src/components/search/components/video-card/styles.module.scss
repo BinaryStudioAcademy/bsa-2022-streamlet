@@ -140,7 +140,7 @@ $base-z-index: $page-component-z-index;
 .video-card-desc {
   display: flex;
   flex-flow: column nowrap;
-  gap: 5px;
+  gap: 10px;
   padding-right: 20px;
   padding-bottom: 10px;
   overflow: hidden;
@@ -178,7 +178,6 @@ $base-z-index: $page-component-z-index;
   display: flex;
   align-items: center;
   gap: 2px;
-  padding: 7px 0;
   color: var(--text-gray-color);
 }
 
@@ -334,15 +333,12 @@ $base-z-index: $page-component-z-index;
 
   .video-card-meta {
     align-items: center;
+    gap: 7px;
   }
 
   .video-card-meta.video-card-meta-scheduled {
     display: flex;
     align-items: flex-start;
-  }
-
-  .video-card-meta-data {
-    padding: 0 0 7px;
   }
 
   .video-card-meta-scheduled {
@@ -431,10 +427,6 @@ $base-z-index: $page-component-z-index;
 
   .video-card-info {
     padding-right: 20px;
-  }
-
-  .video-card-desc {
-    gap: 10px;
   }
 }
 

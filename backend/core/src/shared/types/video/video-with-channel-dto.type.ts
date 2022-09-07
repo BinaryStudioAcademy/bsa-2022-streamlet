@@ -14,7 +14,7 @@ export type VideoWithChannel = Prisma.VideoGetPayload<{
 }>;
 
 export type VideoSearch = {
-  searchText: string | undefined;
+  searchText: string;
   duration: DurationOption;
   date: DateOption;
   type: StreamStatus[];

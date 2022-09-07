@@ -13,10 +13,6 @@ import { store } from 'store/store';
 import { ChannelInfoRow } from './channel-info-row/channel-info-row';
 import { VideoHeader } from './video-header/video-header';
 import { LinksBlock } from './links-block/links-block';
-import { resetVideoPage } from 'store/video-page/actions';
-import { FilterBlockProps } from 'components/common/filters-block';
-import { activeCategory, clearFilters, getCategories } from 'store/categories/actions';
-import { getVideosByCategory } from 'store/videos/actions';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -31,22 +27,12 @@ const VideoPageContainer: FC = () => {
     navigate(AppRoutes.ANY, { replace: true });
   }
 
-  const categories = useAppSelector((state) => state.category.data);
-
   const { videoData, profile, user, channel } = useAppSelector((state) => ({
     videoData: state.videoPage.video,
     profile: state.profile.profileData,
     user: state.auth.user,
     channel: state.videoPage.video?.channel,
   }));
-
-  useEffect(() => {
-    dispatch(getCategories());
-
-    return () => {
-      dispatch(resetVideoPage());
-    };
-  }, [dispatch]);
 
   const videoId = isVideoIdProvided as string;
 
@@ -78,22 +64,6 @@ const VideoPageContainer: FC = () => {
     }
     dispatch(videoPageActions.addVideoComment({ videoId, text }));
     setReactState(true);
-  };
-
-  function handleClickFilter(id: string): void {
-    dispatch(activeCategory({ id }));
-    dispatch(getVideosByCategory());
-  }
-
-  function handleClickClearFilters(): void {
-    dispatch(clearFilters());
-    dispatch(getVideosByCategory());
-  }
-
-  const filterBlock: FilterBlockProps = {
-    filterList: categories,
-    handleClickFilter,
-    handleClickClearFilters,
   };
 
   const handlerCancelForReplyForm = (): void => {
@@ -137,7 +107,7 @@ const VideoPageContainer: FC = () => {
             <VideoChatContainer videoId={videoId} popOutSetting={true} />
           </div>
         )}
-        <LinksBlock videoId={videoId} filterBlockProps={filterBlock} />
+        <LinksBlock videoId={videoId} />
       </div>
       {isVideoFinished && (
         <div className={styles['video-comment-block']}>
