@@ -13,17 +13,30 @@ import styles from './styles.module.scss';
 import defaultVideoPosterDark from 'assets/img/default-video-poster-dark.jpg';
 import defaultVideoPosterLight from 'assets/img/default-video-poster-light.jpg';
 import defaultUserAvatar from 'assets/img/default/user-avatar-default.jpg';
+import clsx from 'clsx';
 
 dayjs.extend(dayjsRelativeTime.default);
 
 type Props = {
   video: VideoCardType;
   isLightTheme: boolean;
+  classNames?: {
+    videoCardClassName?: string;
+    previewClassName?: string;
+    infoClassName?: string;
+    metaFooter?: string;
+    metaClassName?: string;
+    channelIcon?: string;
+    author?: string;
+    authorAvatar?: string;
+    desc?: string;
+  };
 };
 
 const VideoCard: FC<Props> = ({
   video: { id, name, status, publishedAt, scheduledStreamDate, poster, duration, videoViews, liveViews, channel },
   isLightTheme,
+  classNames,
 }) => {
   const [timeNow, setTimeNow] = useState(dayjs());
 
@@ -65,8 +78,8 @@ const VideoCard: FC<Props> = ({
   }, [updateTimeDelay]);
 
   return (
-    <div className={styles['video-card']}>
-      <div className={styles['video-card-preview']}>
+    <div className={clsx(styles['video-card'], classNames?.videoCardClassName)}>
+      <div className={clsx(styles['video-card-preview'], classNames?.previewClassName)}>
         <img src={videoPoster} alt="Preview video img" />
         <Link to={linkToVideoPage} className={styles['video-card-play']}>
           {isFinished && <span className={styles['video-card-badge-duration']}>{videoDuration}</span>}
@@ -81,17 +94,17 @@ const VideoCard: FC<Props> = ({
           />
         )}
       </div>
-      <div className={styles['video-card-info']}>
-        <Link to={linkToChannelPage} className={styles['video-card-channel']}>
+      <div className={clsx(styles['video-card-info'], classNames?.infoClassName)}>
+        <Link to={linkToChannelPage} className={clsx(styles['video-card-channel'], classNames?.channelIcon)}>
           <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
         </Link>
-        <div className={styles['video-card-desc']}>
+        <div className={clsx(styles['video-card-desc'], classNames?.desc)}>
           <Link to={linkToVideoPage} className={styles['video-card-title']} title={name}>
             {name}
           </Link>
-          <MetaDataVideo views={views} publishedAt={publishedAt} />
-          <div className={styles['video-card-author']}>
-            <Link to={linkToChannelPage} className={styles['video-card-author-avatar']}>
+          <MetaDataVideo views={views} publishedAt={publishedAt} className={classNames?.metaClassName} />
+          <div className={clsx(styles['video-card-author'], classNames?.author)}>
+            <Link to={linkToChannelPage} className={clsx(styles['video-card-author-avatar'], classNames?.authorAvatar)}>
               <div style={{ backgroundImage: `url(${channelAvatar})` }} className={styles['avatar']} />
             </Link>
             <Link to={linkToChannelPage} className={styles['video-card-author-name']} title={channel.name}>
@@ -113,7 +126,7 @@ const VideoCard: FC<Props> = ({
             {(isLive || isFinished) && isNew() && <VideoTag name={VideoTagName.NEW} />}
           </div>
         </div>
-        <div className={styles['video-card-meta-footer']}>
+        <div className={clsx(styles['video-card-meta-footer'], classNames?.metaFooter)}>
           {isLive && (
             <div className={styles['video-card-meta-tag']}>
               <Icon name={IconName.CIRCLE} />

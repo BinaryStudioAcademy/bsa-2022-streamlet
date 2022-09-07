@@ -10,6 +10,7 @@ export type FilterItem = CategoryResponseDto & {
 
 export interface FilterBlockProps {
   filterList: Array<FilterItem>;
+  className?: string;
   handleClickFilter: (id: string) => void;
   handleClickClearFilters: () => void;
   inRecommendedSection?: boolean;
@@ -20,6 +21,7 @@ const FiltersBlock: FC<FilterBlockProps> = ({
   handleClickFilter,
   handleClickClearFilters,
   inRecommendedSection,
+  className,
 }) => {
   const clearFilters: FilterItem = {
     id: '1',
@@ -27,7 +29,9 @@ const FiltersBlock: FC<FilterBlockProps> = ({
     isActive: filterList.filter((filter) => filter.isActive).length ? false : true,
   };
   return (
-    <div className={clsx(styles['filter-block'], { [styles['in-recommended-section']]: inRecommendedSection })}>
+    <div
+      className={clsx(styles['filter-block'], { [styles['in-recommended-section']]: inRecommendedSection }, className)}
+    >
       <div
         className={clsx({ [styles['in-recommended-section']]: inRecommendedSection }, styles['filter-block-wrapper'])}
       >
