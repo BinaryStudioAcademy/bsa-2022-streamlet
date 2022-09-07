@@ -1,0 +1,60 @@
+.card-container {
+  width: 180px;
+
+  @media screen and (max-width: 1000px) {
+    width: 230px;
+  }
+
+  @media screen and (max-width: 900px) {
+    width: 265px;
+  }
+
+  @media screen and (max-width: 700px) {
+    width: 280px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.06);
+  }
+
+  transition: transform 0.5s ease;
+}
+
+.picked {
+  border: 2px solid var(--brand-green-color);
+}
+
+.name-container {
+  display: flex;
+  justify-content: center;
+  color: var(--white-text-color);
+  font-weight: 400;
+}
+
+.content-checklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  justify-items: center;
+  align-items: center;
+  grid-gap: 20px;
+  width: 100%;
+  padding: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  @media screen and (max-width: 1000px) {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    padding: 0;
+  }
+
+  @media screen and (max-width: 900px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    padding: 0;
+  }
+
+  @media screen and (max-width: 700px) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    padding: 0;
+  }
+}
