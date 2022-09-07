@@ -3,7 +3,7 @@ import { MainPage } from './main-page';
 import { FilterBlockProps } from 'components/common/filters-block';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { getVideos, getVideosByCategory } from 'store/videos/actions';
+import { getVideos, getVideosByCategory, resetPaginationMainPage } from 'store/videos/actions';
 import { VideoCardMain } from 'components/common/common';
 import { activeCategory, clearFilters, getCategories } from 'store/categories/actions';
 
@@ -30,12 +30,19 @@ const MainPageContainer: FC = () => {
     handleClickClearFilters,
   };
   const blockVideo = [
-    { videoCards: videos.map((video) => <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />) },
+    {
+      videoCards: videos.map((video) => <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />),
+      isLazyBlock: true,
+    },
   ];
 
   useEffect(() => {
-    dispatch(getVideos());
+    dispatch(getVideos({ withLazyLoad: true }));
     dispatch(getCategories());
+
+    return () => {
+      dispatch(resetPaginationMainPage());
+    };
   }, [dispatch]);
 
   return <MainPage filterBlockProps={filterBlock} blocksVideo={blockVideo} />;
