@@ -1,5 +1,11 @@
+@use 'assets/css/breakpoint';
+
 .browse-page-container {
-  padding: 20px 40px 0;
+  padding: 20px;
+
+  @media #{breakpoint.$mobile-middle} {
+    padding: 20px 40px;
+  }
 }
 
 .browse-page-header-container,
