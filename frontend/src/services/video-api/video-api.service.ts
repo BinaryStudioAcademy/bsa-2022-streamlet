@@ -14,6 +14,7 @@ import {
   CreateCommentReactionResponseDto,
   Comment,
   BaseReplyRequestDto,
+  VideoPaginationParams,
 } from 'shared/build';
 import { Http } from '../http/http.service';
 
@@ -31,12 +32,18 @@ class VideoApi {
     this.#apiPrefix = apiPrefix;
   }
 
-  public getVideos(): Promise<DataVideo> {
+  public getVideos(pagination?: VideoPaginationParams): Promise<DataVideo> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.VIDEOS}`,
       options: {
         method: HttpMethod.GET,
       },
+      ...(pagination && {
+        query: {
+          skip: pagination?.skip,
+          take: pagination?.take,
+        },
+      }),
     });
   }
 
