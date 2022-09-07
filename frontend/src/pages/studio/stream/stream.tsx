@@ -40,14 +40,10 @@ const StudioStream: FC<Props> = ({
         <div className={styles['settings-block']}>
           <div className={styles['col-1']}>
             <div className={styles['preview-container']}>
-              <div className={styles['preview']} />
+              <div className={styles['preview']}>
+                <img className={styles['preview']} src={stream?.poster ? stream?.poster : ''} alt="Stream preview" />
+              </div>
               <Loader color="white" spinnerSize="40" />
-
-              {/* <img
-                className={styles['preview']}
-                src={stream?.poster ? stream?.poster : defaultPreview}
-                alt="Stream preview"
-              /> */}
             </div>
             <form className={styles['form-container']}>
               <div className={styles['field-container']}>
