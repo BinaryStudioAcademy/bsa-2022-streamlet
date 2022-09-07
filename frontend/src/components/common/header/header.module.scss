@@ -62,6 +62,7 @@
 
 .sign-in-btn:hover {
   background-color: var(--brand-green-color-hover);
+  transition: all 0.3s ease;
 }
 
 .user-avatar,
@@ -131,6 +132,7 @@
 }
 
 .btn-go-stream svg {
+  transition: all 0.3s ease;
   fill: var(--brand-green-color-hover);
 }
 
@@ -183,8 +185,10 @@
 
   .option:hover {
     color: var(--white-text-color);
+    transition: all 0.3s ease;
 
     svg {
+      transition: all 0.3s ease;
       fill: var(--white-text-color);
     }
   }
@@ -340,6 +344,7 @@
 }
 
 .burger-menu:hover svg path {
+  transition: all 0.3s ease;
   stroke: var(--brand-green-color);
 }
 
