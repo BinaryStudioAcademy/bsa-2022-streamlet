@@ -6,11 +6,12 @@ import {
   httpPost,
   httpPut,
   queryParam,
+  request,
   requestBody,
   requestParam,
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES } from '~/shared/types/types';
+import { CONTAINER_TYPES, ExtendedAuthenticatedRequest } from '~/shared/types/types';
 import {
   ApiPath,
   DefaultRequestParam,
@@ -75,9 +76,13 @@ export class CategoryController extends BaseHttpController {
   }
 
   @httpPost(CategoryApiPath.ROOT, authenticationMiddleware)
-  public async createCategory(@requestBody() body: CategoryCreateRequestDto): Promise<CategoryResponseDto> {
+  public async createCategory(
+    @requestBody() body: CategoryCreateRequestDto,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<CategoryResponseDto> {
     const payload = normalizeCategoryPayload(body);
-    const category = await this.categoryService.createCategory(payload);
+    const { id: userId } = req.user;
+    const category = await this.categoryService.createCategory(payload, userId);
     if (!category) {
       throw new DuplicationError('This category already exists');
     }
@@ -87,15 +92,19 @@ export class CategoryController extends BaseHttpController {
 
   @httpPut(CategoryApiPath.$ID, authenticationMiddleware)
   public async updateCategory(
+    @request() req: ExtendedAuthenticatedRequest,
     @requestParam('categoryId') id: string,
     @requestBody() body: Omit<CategoryUpdateRequestDto, 'id'>,
   ): Promise<CategoryResponseDto> {
     const payload = normalizeCategoryUpdatePayload(body);
-
-    const updatedCategory = await this.categoryService.updateCategory({
-      id,
-      ...payload,
-    });
+    const { id: userId } = req.user;
+    const updatedCategory = await this.categoryService.updateCategory(
+      {
+        id,
+        ...payload,
+      },
+      userId,
+    );
     if (!updatedCategory) {
       throw new NotFound('Category not found');
     }

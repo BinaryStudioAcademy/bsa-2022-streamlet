@@ -8,6 +8,6 @@
 .preview-img {
   max-height: 200px;
   aspect-ratio: 16 / 9;
-  object-fit: contain;
+  object-fit: cover;
   outline: 3px solid var(--brand-green-color);
 }
