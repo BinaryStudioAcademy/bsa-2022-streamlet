@@ -512,7 +512,16 @@ export class VideoRepositoryAdapter implements VideoRepository {
 
   async getVideosBySearch({ searchText, duration, date, type, sortBy }: VideoSearch): Promise<DataVideo> {
     const queryOrderByObject = {
-      orderBy: sortBy.map((param) => param as Prisma.VideoOrderByWithRelationAndSearchRelevanceInput),
+      orderBy: [
+        ...sortBy.map((param) => param as Prisma.VideoOrderByWithRelationAndSearchRelevanceInput),
+        {
+          _relevance: {
+            fields: ['name'],
+            search: searchText,
+            sort: 'desc',
+          } as Prisma.VideoOrderByRelevanceInput,
+        },
+      ],
     };
     const queryObject = {
       where: {
