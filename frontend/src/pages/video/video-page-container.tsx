@@ -13,8 +13,6 @@ import { store } from 'store/store';
 import { ChannelInfoRow } from './channel-info-row/channel-info-row';
 import { VideoHeader } from './video-header/video-header';
 import { LinksBlock } from './links-block/links-block';
-import { resetVideoPage } from 'store/video-page/actions';
-import { getCategories } from 'store/categories/actions';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -35,14 +33,6 @@ const VideoPageContainer: FC = () => {
     user: state.auth.user,
     channel: state.videoPage.video?.channel,
   }));
-
-  useEffect(() => {
-    dispatch(getCategories());
-
-    return () => {
-      dispatch(resetVideoPage());
-    };
-  }, [dispatch]);
 
   const videoId = isVideoIdProvided as string;
 
