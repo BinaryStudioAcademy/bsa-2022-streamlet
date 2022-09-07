@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { StreamPosterUploadRequestDto } from 'shared/build';
 import styles from './styles.module.scss';
 import { UploadStreamPreview } from './upload-stream-preview/upload-stream-preview';
