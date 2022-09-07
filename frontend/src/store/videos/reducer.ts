@@ -1,7 +1,7 @@
 import { createReducer, isAnyOf } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 import { BaseVideoResponseDto, DataVideo } from 'shared/build';
-import { getPopularVideos, getVideos, getVideosByCategory } from './actions';
+import { getPopularVideos, getVideos, getVideosByCategory, resetPaginationMainPage } from './actions';
 
 type State = {
   data: DataVideo & {
@@ -13,6 +13,11 @@ type State = {
       lastListLength: number;
       category: string;
     };
+  };
+  pagination: {
+    currentPage: number;
+    countItems: number;
+    lazyLoad: boolean;
   };
   dataStatus: DataStatus;
   error: boolean;
@@ -32,15 +37,40 @@ const initialState: State = {
       category: '',
     },
   },
+  pagination: {
+    currentPage: 1,
+    countItems: 12,
+    lazyLoad: false,
+  },
   dataStatus: DataStatus.IDLE,
   error: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder.addCase(getVideos.fulfilled, (state, { payload }) => {
+    if (payload.lazyLoad) {
+      state.dataStatus = DataStatus.FULFILLED;
+      state.data.list = [...state.data.list, ...payload.list];
+      state.data.total = payload.total;
+      state.pagination.currentPage += 1;
+      state.pagination.lazyLoad = payload.lazyLoad;
+
+      if (state.data.list.length >= state.data.total) {
+        state.pagination.lazyLoad = false;
+      }
+
+      return;
+    }
+
     state.dataStatus = DataStatus.FULFILLED;
     state.data.list = payload.list;
     state.data.total = payload.total;
+  });
+
+  builder.addCase(resetPaginationMainPage, (state) => {
+    state.pagination.lazyLoad = false;
+    state.pagination.currentPage = 1;
+    state.data.list = [];
   });
 
   builder.addCase(getVideosByCategory.fulfilled, (state, { payload }) => {

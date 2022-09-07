@@ -37,12 +37,15 @@ export class ChannelCrudService {
   async updateAvatar({
     id,
     base64Str,
+    userId,
   }: ChannelProfileUpdateMediaRequestDto & {
     id: string;
+    userId: string;
   }): Promise<ChannelProfileUpdateResponseDto> {
     const { url } = await this.imageStore.upload({
       base64Str,
       type: ImageStorePresetType.CHANNEL_AVATAR,
+      userId,
     });
 
     const updatedChannel = await this.channelRepository.updateAvatar({
@@ -56,12 +59,15 @@ export class ChannelCrudService {
   async updateBanner({
     id,
     base64Str,
+    userId,
   }: ChannelProfileUpdateMediaRequestDto & {
     id: string;
+    userId: string;
   }): Promise<ChannelProfileUpdateResponseDto> {
     const { url } = await this.imageStore.upload({
       base64Str,
       type: ImageStorePresetType.CHANNEL_BANNER,
+      userId,
     });
 
     const updatedChannel = await this.channelRepository.updateBanner({

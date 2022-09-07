@@ -1,3 +1,5 @@
+@use 'assets/css/breakpoint';
+
 .links-block {
   display: flex;
   flex-grow: 1;
@@ -5,5 +7,26 @@
 
   & > div:not(:last-child) {
     margin-bottom: 12px;
+  }
+
+  margin: 10px;
+  @media #{breakpoint.$tablet-middle} {
+    margin: 0;
+  }
+}
+
+.videos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.recommended-header {
+  margin-bottom: 10px;
+  color: var(--white-text-color);
+  font-size: 20px;
+
+  @media #{breakpoint.$tablet-large} {
+    display: none;
   }
 }
