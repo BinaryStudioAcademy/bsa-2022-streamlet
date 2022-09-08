@@ -24,6 +24,7 @@ type Props<T> = {
   onBlur?: { (): void };
   readOnly?: boolean;
   disabled?: boolean;
+  defaultValue?: string;
 };
 
 const Input = <T extends FieldValues>({
