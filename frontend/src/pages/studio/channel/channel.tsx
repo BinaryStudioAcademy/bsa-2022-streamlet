@@ -181,7 +181,7 @@ const StudioChannel: FC = () => {
 
       {isNeedBannerUpload && (
         <UploadImage
-          resolutionValidation={{ resolutionType: 'more', resolutionWidth: 1251, resolutionHeight: 401 }}
+          resolutionValidation={{ resolutionType: 'more', resolutionWidth: 1252, resolutionHeight: 401 }}
           images={banners}
           onUpload={onBannerChange}
           onClose={onUploadBannerClose}
