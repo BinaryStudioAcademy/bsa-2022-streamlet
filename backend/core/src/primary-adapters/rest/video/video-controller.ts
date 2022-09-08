@@ -36,6 +36,7 @@ import {
   SearchDataResponseDto,
   Comment,
   BaseReplyRequestDto,
+  VideoPaginationParams,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -53,6 +54,7 @@ import { authenticationMiddleware, CreateVideoHistoryRecordMiddleware } from '..
 import { normalizeCategoryFiltersPayload } from '~/primary-adapters/rest/category/helpers/normalize-category-filters-helper';
 import { ChannelService } from '~/core/channel/application/channel-service';
 import { matchChannelFilterSortBy } from '~/shared/enums/channel/channel-filters-data.config';
+import { getSearchQuerySplit } from '~/shared/helpers/search/search';
 
 /**
  * @swagger
@@ -140,8 +142,8 @@ export class VideoController extends BaseHttpController {
    *                  $ref: '#/components/schemas/Video'
    */
   @httpGet(VideoApiPath.ROOT)
-  public getAllVideos(): Promise<DataVideo> {
-    return this.videoService.getAllVideos();
+  public async getAllVideos(@queryParam() paginationParams: VideoPaginationParams): Promise<DataVideo> {
+    return this.videoService.getAllVideos(paginationParams);
   }
 
   /**
@@ -244,8 +246,15 @@ export class VideoController extends BaseHttpController {
     @queryParam(SearchQueryParam.TYPE) type: TypeFilterId,
     @queryParam(SearchQueryParam.SORT_BY) sortBy: SortByFilterId,
   ): Promise<SearchDataResponseDto> {
+    if (!search) {
+      return {
+        channels: { list: [], total: 0 },
+        videos: { list: [], total: 0 },
+      };
+    }
+
     const queryParams: VideoSearch = {
-      searchText: search ? search.trim().split(' ').join(' & ') : undefined,
+      searchText: getSearchQuerySplit(search).join(' & '),
       duration: matchVideoFilterDuration[duration] || matchVideoFilterDuration[DurationFilterId.ANY],
       date: matchVideoFilterDate[date] || matchVideoFilterDate[DateFilterId.ANYTIME],
       type: matchVideoFilterType[type] || matchVideoFilterType[TypeFilterId.ALL],
