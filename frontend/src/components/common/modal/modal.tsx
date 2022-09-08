@@ -12,9 +12,10 @@ type Props = {
   isOpen: boolean;
   contentContainerClassName?: string;
   onClose: { (): void };
+  isNeedCloseButton?: boolean;
 };
 
-const Modal: FC<Props> = ({ isOpen, onClose, children, contentContainerClassName }) => {
+const Modal: FC<Props> = ({ isOpen, onClose, children, contentContainerClassName, isNeedCloseButton = true }) => {
   const { handleDisableContentContainerClick, handleOutsideClick } = useModal({
     onClose,
   });
@@ -30,14 +31,16 @@ const Modal: FC<Props> = ({ isOpen, onClose, children, contentContainerClassName
           className={clsx(styles['modal-content-container'], contentContainerClassName)}
           onClick={handleDisableContentContainerClick}
         >
-          <Icon
-            name={IconName.CLOSE}
-            color={IconColor.GREEN}
-            width={'20'}
-            height={'20'}
-            className={styles['close-icon']}
-            onClick={onClose}
-          />
+          {isNeedCloseButton && (
+            <Icon
+              name={IconName.CLOSE}
+              color={IconColor.GREEN}
+              width={'20'}
+              height={'20'}
+              className={styles['close-icon']}
+              onClick={onClose}
+            />
+          )}
           {children}
         </div>
       </div>

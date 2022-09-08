@@ -18,6 +18,7 @@ import { store } from '../../../store/store';
 
 import styles from './styles.module.scss';
 import { ImageListType } from 'react-images-uploading';
+import { ChannelBannerEditor } from '../../../components/common/channel-banner-editor/channel-baner-editor';
 
 const StudioChannel: FC = () => {
   const dispatch = useAppDispatch();
@@ -44,13 +45,7 @@ const StudioChannel: FC = () => {
   });
 
   const [banners, setBanners] = useState([]);
-  const [preparedBanner, setPreparedBanner] = useState<AvatarImgValue>({
-    cropperOpen: false,
-    img: null,
-    zoom: 3,
-    croppedImg: '',
-    rotate: 0,
-  });
+  const [preparedBanner, setPreparedBanner] = useState<string | undefined>();
 
   const { data: channelData, status: channelDataStatus } = useAppSelector((state) => ({
     data: state.channel.channelSettings.data,
@@ -84,13 +79,7 @@ const StudioChannel: FC = () => {
 
   const onBannerChange = (imageList: ImageListType): void => {
     setBanners(imageList as never[]);
-    setPreparedBanner({
-      cropperOpen: false,
-      img: imageList[0],
-      zoom: 3,
-      croppedImg: avatar as string,
-      rotate: 0,
-    });
+    setPreparedBanner(imageList[0].dataURL);
     setIsBannerNeedUpload(false);
     setIsNeedBannerEditor(!isNeedAvatarEditor);
 
@@ -192,13 +181,11 @@ const StudioChannel: FC = () => {
 
       {isNeedBannerUpload && <UploadImage images={banners} onUpload={onBannerChange} onClose={onUploadBannerClose} />}
       {isNeedBannerEditor && (
-        <ImageEditor
-          editorWidth={1252}
-          editorHeight={401}
-          avatar={preparedBanner}
-          setAvatar={setPreparedBanner}
-          onClose={(): void => setIsNeedBannerEditor(false)}
+        <ChannelBannerEditor
+          banner={preparedBanner as string}
+          setBanner={setPreparedBanner}
           handleSave={onBannerSave}
+          handleClose={(): void => setIsNeedBannerEditor(false)}
         />
       )}
       <div className={styles['channel-preferences-container']}>
