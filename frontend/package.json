@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "1.8.3",
     "clsx": "1.2.1",
     "dayjs": "1.11.4",
+    "emoji-picker-react": "^4.0.0-rc.19",
     "fscreen": "^1.2.0",
     "hls.js": "1.2.0",
     "query-string": "7.1.1",
