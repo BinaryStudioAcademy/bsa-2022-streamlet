@@ -118,7 +118,7 @@ const App: FC = () => {
           <HeaderContainer />
           <section className={styles['content-section']}>
             <SidebarContainer />
-            <div className={styles['main-content']}>
+            <div id="main-content" className={styles['main-content']}>
               <Routes>
                 <Route path={AppRoutes.ROOT} element={<MainPageContainer />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />

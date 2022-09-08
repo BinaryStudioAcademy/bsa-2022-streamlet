@@ -51,7 +51,7 @@ const initialState: State = {
 
 const reducer = createReducer(initialState, (builder) => {
   builder.addCase(setSearchText, (state: State, action) => {
-    state.searchText = action.payload;
+    state.searchText = action.payload.split(/\s+/).join(' ');
   });
   builder.addCase(setActiveFilterIds, (state: State, action) => {
     state.activeFilterId = {

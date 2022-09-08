@@ -1,7 +1,7 @@
 import { Button, UploadImage } from 'components/common/common';
 import { ErrorBox } from 'components/common/errors/errors';
 import defaultPoster from 'assets/img/default/video-default.png';
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 import { ImageListType } from 'react-images-uploading';
 import { StreamPosterUploadRequestDto } from 'shared/build';
