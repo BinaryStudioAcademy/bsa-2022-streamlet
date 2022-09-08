@@ -14,9 +14,10 @@ type props = {
   setBanner: { (newBannerBase64: string): void };
   handleSave: { (base64Str: string): void };
   handleClose: { (): void };
+  setError: { (errorMessage: string): void };
 };
 
-const ChannelBannerEditor: FC<props> = ({ banner, setBanner, handleClose, handleSave }): ReactElement => {
+const ChannelBannerEditor: FC<props> = ({ banner, setBanner, handleClose, handleSave, setError }): ReactElement => {
   const { width } = useWindowDimensions();
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
@@ -39,16 +40,17 @@ const ChannelBannerEditor: FC<props> = ({ banner, setBanner, handleClose, handle
     try {
       if (croppedAreaPixels && croppedAreaPixels) {
         const croppedImage = await getCroppedImg(banner, croppedAreaPixels);
-        setBanner(croppedImage as string);
-        handleSave(croppedImage as string);
+        setBanner(croppedImage);
+        handleSave(croppedImage);
       }
     } catch (e) {
-      console.error(e);
+      const error = (e as Error).message;
+      setError(error);
     }
-  }, [croppedAreaPixels, banner, setBanner, handleSave]);
+  }, [croppedAreaPixels, banner, setBanner, handleSave, setError]);
 
   const handleZoomPlusButtonClick = (): void => {
-    if (zoom + 1 <= 15) {
+    if (zoom + 1 < 15) {
       setZoom(zoom + 1);
     }
   };
@@ -81,7 +83,7 @@ const ChannelBannerEditor: FC<props> = ({ banner, setBanner, handleClose, handle
             <span className={styles['zoom-indicator']} onClick={handleZoomMinusButtonClick}>
               -
             </span>
-            {width > 500 && (
+            {width > 576 && (
               <ReactSlider
                 className={styleControls['horizontal-slider']}
                 thumbClassName={styleControls['example-thumb']}

@@ -5,13 +5,13 @@ const getCroppedImg = async (
   imageSrc: string,
   pixelCrop: Size & { x: number; y: number },
   flip = { horizontal: false, vertical: false },
-): Promise<string | null> => {
+): Promise<string> => {
   const image = await createImage(imageSrc);
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
   if (!ctx) {
-    return null;
+    throw new Error('ooops something went wrong');
   }
 
   const { width: bBoxWidth, height: bBoxHeight } = image;
@@ -32,11 +32,10 @@ const getCroppedImg = async (
 
   ctx.putImageData(data, 0, 0);
 
-  return new Promise((resolve) => {
-    const dataUrl = canvas.toDataURL('image/jpeg');
-    dataUrl.replace(/^data:image\/(png|jpg);base64,/, '');
-    resolve(dataUrl);
-  });
+  const dataUrl = canvas.toDataURL('image/jpeg');
+  dataUrl.replace(/^data:image\/(png|jpg);base64,/, '');
+
+  return dataUrl;
 };
 
 export { createImage, getCroppedImg };

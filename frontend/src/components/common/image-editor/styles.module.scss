@@ -4,6 +4,8 @@
   align-items: center;
   height: 50px;
   padding: 10px;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .image-editor-control-container button {
@@ -63,7 +65,22 @@
   width: 50%;
 }
 
-.zoom-indicator {
+.image-editor-control-container .zoom-indicator {
   color: var(--text-gray-color);
   font-size: 30px;
+  background: none;
+}
+
+@media screen and (max-width: 576px) {
+  .image-editor-slider-container {
+    justify-content: center;
+  }
+
+  .image-editor-control-container .zoom-indicator {
+    font-size: 50px;
+  }
+
+  .zoom-indicator:nth-child(2n) {
+    margin-left: 20px;
+  }
 }

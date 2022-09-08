@@ -179,13 +179,21 @@ const StudioChannel: FC = () => {
         />
       )}
 
-      {isNeedBannerUpload && <UploadImage images={banners} onUpload={onBannerChange} onClose={onUploadBannerClose} />}
+      {isNeedBannerUpload && (
+        <UploadImage
+          resolutionValidation={{ resolutionType: 'more', resolutionWidth: 1251, resolutionHeight: 401 }}
+          images={banners}
+          onUpload={onBannerChange}
+          onClose={onUploadBannerClose}
+        />
+      )}
       {isNeedBannerEditor && (
         <ChannelBannerEditor
           banner={preparedBanner as string}
           setBanner={setPreparedBanner}
           handleSave={onBannerSave}
           handleClose={(): void => setIsNeedBannerEditor(false)}
+          setError={(errorMessage: string): void => setError(errorMessage)}
         />
       )}
       <div className={styles['channel-preferences-container']}>
