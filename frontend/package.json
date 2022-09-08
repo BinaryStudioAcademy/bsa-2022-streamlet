@@ -28,7 +28,7 @@
     "react-copy-to-clipboard": "5.1.0",
     "react-datepicker": "4.8.0",
     "react-dom": "18.2.0",
-    "react-easy-crop": "^4.5.0",
+    "react-easy-crop": "4.5.0",
     "react-hook-form": "7.33.1",
     "react-images-uploading": "3.1.7",
     "react-infinite-scroll-component": "6.1.0",
