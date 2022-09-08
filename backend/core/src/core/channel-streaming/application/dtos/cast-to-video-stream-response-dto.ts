@@ -17,6 +17,7 @@ const castToVideoStreamResponseDto = ({
   categories,
   channelId,
   privacy,
+  isChatEnabled,
 }: VideoStreamResponseBeforeTrimming): VideoStreamResponseDto => {
   return {
     id,
@@ -34,6 +35,7 @@ const castToVideoStreamResponseDto = ({
     tags,
     categories,
     channelId,
+    isChatEnabled,
   };
 };
 

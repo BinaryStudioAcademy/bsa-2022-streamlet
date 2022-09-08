@@ -60,28 +60,31 @@ const StreamBasicInfoForm: FC<Props> = ({ categoryOptions, control, errors }) =>
         labelClassName={styles['label']}
         inputClassName={styles['input']}
       /> */}
-      <Controller
-        control={control}
-        defaultValue={[]}
-        name="categories"
-        render={({ field: { ref, onChange, value } }): ReactElement => (
-          <div>
-            <label className={styles['label']} htmlFor={catSelectId}>
-              Select a category
-            </label>
-            <Select
-              isMulti
-              ref={ref}
-              options={categoryOptions}
-              value={value}
-              onChange={onChange}
-              className={styles['select-input']}
-              styles={customSelectStyles}
-              inputId={catSelectId}
-            />
-          </div>
-        )}
-      />
+      <div className={clsx(styles['input-wrapper'])}>
+        <label className={clsx(styles.label)} htmlFor="categories">
+          <span>Select a category</span>
+        </label>
+        <Controller
+          control={control}
+          defaultValue={[]}
+          name="categories"
+          render={({ field: { ref, onChange, value } }): ReactElement => (
+            <div>
+              <Select
+                isMulti
+                ref={ref}
+                options={categoryOptions}
+                value={value}
+                onChange={onChange}
+                className={styles['select-input']}
+                styles={customSelectStyles}
+                inputId={catSelectId}
+              />
+            </div>
+          )}
+        />
+      </div>
+
       <Controller
         control={control}
         defaultValue={[]}

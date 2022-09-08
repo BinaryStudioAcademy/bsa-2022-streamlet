@@ -1,6 +1,6 @@
 import { STREAMING_SERVER_URL } from 'common/constants/constants';
-import { IconName, SocketEvents, StreamStatus } from 'common/enums/enums';
-import { FC, StreamUpdateRequestDto } from 'common/types/types';
+import { IconName, SocketEvents, StreamPrivacy, StreamStatus } from 'common/enums/enums';
+import { FC, SelectOptions, StreamUpdateRequestDto } from 'common/types/types';
 import { createToastNotification } from 'components/common/toast-notification';
 import { Forbidden } from 'components/placeholder-page';
 import { NotFound } from 'components/placeholder-page/not-found';
@@ -13,6 +13,7 @@ import { StudioStream } from './stream';
 import { socket } from 'common/config/config';
 import { StreamSettingsModal } from '../common/stream-settings-modal/stream-settings-modal';
 import { store } from 'store/store';
+import { MultiValue, SingleValue } from 'react-select';
 
 socket.on(SocketEvents.notify.STREAM_OBS_STATUS, (isReadyToStream: boolean) => {
   store.dispatch(
@@ -99,6 +100,41 @@ const StudioStreamContainer: FC = () => {
     defaultValues: defaultInfoFormValues(),
   });
 
+  // const firstUpdate = useRef(true);
+  // useEffect(() => {
+  //   if (firstUpdate.current) {
+  //     firstUpdate.current = false;
+  //   } else {
+  //     dispatch(streamActions.editStream({
+  //       privacy: additionalSettingsFormValues('privacy').value as StreamPrivacy,
+  //       isChatEnabled: additionalSettingsFormValues('isChatEnabled'),
+  //     }));
+  //   }
+  // }, [dispatch, additionalSettingsFormValues]);
+
+  // const onChange = useCallback((): void => {
+  //   dispatch(streamActions.editStream({
+  //     privacy: additionalSettingsFormValues('privacy').value as StreamPrivacy,
+  //     isChatEnabled: additionalSettingsFormValues('isChatEnabled'),
+  //   }));
+  // }, [dispatch, additionalSettingsFormValues]);
+
+  const onStreamPrivacyChange = (newValue: MultiValue<SelectOptions>): void => {
+    dispatch(
+      streamActions.editStream({
+        privacy: (newValue as unknown as SingleValue<SelectOptions>)?.value as StreamPrivacy,
+      }),
+    );
+  };
+
+  const onStreamChatToggleChange = (): void => {
+    dispatch(
+      streamActions.editStream({
+        isChatEnabled: !stream?.isChatEnabled,
+      }),
+    );
+  };
+
   const isNotFound = errorCode === errorCodes.stream.NOT_FOUND || errorCode === errorCodes.stream.NO_CHANNELS;
 
   const isForbidden = errorCode === errorCodes.stream.FORBIDDEN || errorCode === errorCodes.stream.ACTIVE_STREAM_EXISTS;
@@ -127,6 +163,8 @@ const StudioStreamContainer: FC = () => {
         infoFormControl={infoFormControl}
         infoFormErrors={infoFormErrors}
         infoFormValues={infoFormValues}
+        onStreamPrivacyChange={onStreamPrivacyChange}
+        onStreamChatToggleChange={onStreamChatToggleChange}
       />
     </>
   );

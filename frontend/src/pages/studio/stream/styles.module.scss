@@ -109,7 +109,7 @@
 .input-eye {
   height: 40px;
   color: white;
-  background-color: #2c4133;
+  background-color: var(--studio-input);
 
   &:disabled {
     color: var(--text-gray-color);

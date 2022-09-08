@@ -11,6 +11,7 @@ type StreamUpdateRequestDto = {
   privacy?: StreamPrivacy;
   videoPath?: string;
   poster?: string;
+  isChatEnabled?: boolean;
 };
 
 export { type StreamUpdateRequestDto };
