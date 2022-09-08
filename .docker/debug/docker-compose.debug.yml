@@ -83,7 +83,7 @@ services:
     image: video-transcoding-server
     container_name: video-transcoding-server
     volumes:
-      - ../../playback:/app/backend/video-transcoding-server/playback
+      - ../../playback:/app/backend/video-transcoding-server/playback:rw
     depends_on:
       - rabbitmq
     ports:
@@ -114,9 +114,10 @@ services:
         max-file: "5"
     volumes:
       - ../../frontend:/app/frontend
-      - ../../playback:/assets/segments:rw
-      - node_modules_frontend_upper:/app/node_modules:rw
-      - node_modules_frontend_shared:/app/shared/node_modules:rw
+      - ../../playback:/assets/segments:ro
+      # - node_modules_frontend:/app/frontend/node_modules:rw
+      # - node_modules_frontend_upper:/app/node_modules:rw
+      # - node_modules_frontend_shared:/app/shared/node_modules:rw
     networks:
       - backend_network
       - frontend_network
@@ -149,6 +150,7 @@ volumes:
     driver: local
   shared:
     driver: local
+  node_modules_frontend:
   node_modules_frontend_upper:
   node_modules_backend:
   node_modules_backend_upper:

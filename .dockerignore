@@ -2,3 +2,5 @@
 **/build
 .dockerignore
 .docker
+.env
+.env.example
