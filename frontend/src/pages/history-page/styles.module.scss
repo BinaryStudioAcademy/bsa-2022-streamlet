@@ -1,5 +1,11 @@
+@use 'assets/css/breakpoint';
+
 .history-page-container {
   padding: 20px;
+
+  @media #{breakpoint.$mobile-middle} {
+    padding: 20px 40px;
+  }
 }
 
 .history-list-container > div {
@@ -23,6 +29,7 @@
 }
 
 .page-header {
+  margin-right: 10px;
   margin-left: 20px;
   color: var(--white-text-color);
   font-weight: 600;
