@@ -1,0 +1,55 @@
+@use 'assets/css/helpers/hide-scrollbar';
+
+.videos-container {
+  position: relative;
+  display: grid;
+  grid-auto-rows: 270px;
+  grid-auto-columns: 280px;
+  grid-auto-flow: column;
+  padding-bottom: 20px;
+  overflow: auto;
+  column-gap: 20px;
+  scroll-behavior: smooth;
+
+  @include hide-scrollbar.hide-scrollbar;
+}
+
+.block-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 100%;
+}
+
+.header-container {
+  display: flex;
+}
+
+.header {
+  flex-grow: 1;
+}
+
+.arrows-container {
+  display: flex;
+  align-self: flex-end;
+  gap: 10px;
+}
+
+.arrow {
+  cursor: pointer;
+
+  &:not(.arrow-disabled) {
+    &:hover {
+      color: var(--brand-dark-green-color);
+    }
+
+    &:active {
+      scale: 1.2;
+    }
+  }
+}
+
+.arrow-disabled {
+  color: var(--text-gray-color);
+  cursor: not-allowed;
+}
