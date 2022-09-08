@@ -37,7 +37,7 @@ import { store } from 'store/store';
 import { StudioHomeContainer } from 'pages/studio/home/home-container';
 
 import styles from './app.module.scss';
-import { PreferencesModalTest } from './tests/preferences-modal/preferences-modal';
+import { loadPreferences } from 'store/preferences/actions';
 
 socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
   store.dispatch(socketActions.addSocketId(id));
@@ -71,6 +71,7 @@ const App: FC = () => {
   useEffect(() => {
     if (hasToken) {
       dispatch(authActions.loadCurrentUser());
+      dispatch(loadPreferences());
     }
   }, [hasToken, dispatch]);
 
@@ -140,7 +141,6 @@ const App: FC = () => {
                   element={<ProtectedRoute element={<ProfilePreferencesPage />} />}
                 />
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
-                <Route path={'test/preferences-modal'} element={<PreferencesModalTest />} />
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
                 <Route path="video-page" element={<VideoPageContainer />} />
                 <Route path={AppRoutes.CHANNEL_$ID} element={<ChannelPage />} />
