@@ -24,6 +24,7 @@
     "docker:build": "npm run docker:build:backend && npm run docker:build:frontend",
     "docker:up:d": "docker-compose -f .docker/docker-compose.local.yml up -d",
     "docker:up:debug": "docker-compose -f .docker/docker-compose.local.yml up -d api-db rabbitmq",
+    "docker:up:debug:frontend": "docker-compose -f .docker/docker-compose.local.yml up -d api-db rabbitmq backend push",
     "docker:up": "docker-compose -f .docker/docker-compose.local.yml up",
     "docker:down": "docker-compose -f .docker/docker-compose.local.yml down",
     "migrate": "npm run migrate -w backend/core",
