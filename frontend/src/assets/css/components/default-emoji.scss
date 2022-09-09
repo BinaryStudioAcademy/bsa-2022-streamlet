@@ -90,3 +90,9 @@
     }
   }
 }
+
+@media #{$tablet-large} {
+  .epr-main {
+    max-width: 300px;
+  }
+}

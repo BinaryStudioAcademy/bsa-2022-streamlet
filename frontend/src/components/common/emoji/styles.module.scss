@@ -11,6 +11,7 @@
 
 .choose-emoji-btn {
   background-color: transparent;
+  cursor: pointer;
 
   & svg path {
     fill: var(--text-gray-color);
