@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "1.11.2",
+    "@types/lodash": "^4.14.184",
     "@typescript-eslint/eslint-plugin": "5.30.6",
     "eslint": "8.19.0",
     "eslint-plugin-import": "2.26.0",
