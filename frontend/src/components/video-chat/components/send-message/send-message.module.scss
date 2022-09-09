@@ -49,14 +49,6 @@ $base-z-index: $page-component-z-index;
   display: block;
 }
 
-.add-comments .group-buttons-reactions .choose-emoji {
-  background-color: transparent;
-}
-
-.add-comments .group-buttons-reactions .choose-emoji svg path {
-  fill: var(--gray-200-input-background);
-}
-
 .add-comments .group-buttons-reactions .send-message {
   padding: 5px 10px;
   background-color: var(--brand-green-color);
@@ -96,4 +88,10 @@ $base-z-index: $page-component-z-index;
 
 .sign-in-modal > div:nth-child(3) {
   padding: 5px 8px 5px 20px;
+}
+
+.emoji-block {
+  bottom: 100px;
+  left: -20px;
+  z-index: $base-z-index + 10;
 }

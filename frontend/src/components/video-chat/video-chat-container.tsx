@@ -3,7 +3,6 @@ import { socket } from 'common/config/config';
 import { useEffect, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
 import { chatActions } from 'store/actions';
 import { VideoChat } from './video-chat';
-import { SendMessageProps } from './components/components';
 import { SocketEvents } from 'common/enums/enums';
 import { store } from 'store/store';
 
@@ -32,9 +31,11 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
       status,
     },
     user,
+    isLightTheme,
   } = useAppSelector((state) => ({
     chat: state.chat,
     user: state.auth.user,
+    isLightTheme: state.theme.isLightTheme,
   }));
 
   const hasUser = Boolean(user);
@@ -46,14 +47,6 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
         message: { text: messageText },
       }),
     ).unwrap();
-
-  const handleChooseEmoji = (): void => void 1;
-
-  const sendMessageProps: SendMessageProps = {
-    handlerSubmitMessage,
-    handleChooseEmoji,
-    hasUser,
-  };
 
   const joinChatRoom = useCallback(async () => {
     if (videoId) {
@@ -76,12 +69,14 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
   return (
     <VideoChat
       chatId={videoId}
+      hasUser={hasUser}
+      isLightTheme={isLightTheme}
       popOutSetting={popOutSetting}
       initialMessages={initialMessages.list}
       messages={messages.list}
       participants={participants}
       chatStatus={status ?? isChatEnabled}
-      sendMessageProps={sendMessageProps}
+      handlerSubmitMessage={handlerSubmitMessage}
     />
   );
 };

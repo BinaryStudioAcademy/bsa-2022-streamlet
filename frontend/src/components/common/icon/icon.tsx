@@ -20,6 +20,7 @@ import { ReactComponent as Home } from 'assets/img/home.svg';
 import { ReactComponent as Play } from 'assets/img/play.svg';
 import { ReactComponent as Search } from 'assets/img/search.svg';
 import { ReactComponent as Smile } from 'assets/img/smile.svg';
+import { ReactComponent as Smile2 } from 'assets/img/smile-2.svg';
 import { ReactComponent as TimeAgo } from 'assets/img/time-ago.svg';
 import { ReactComponent as Watch } from 'assets/img/watch.svg';
 import { ReactComponent as XMark } from 'assets/img/x-mark.svg';
@@ -153,6 +154,10 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.SMILE: {
       return <Smile {...commonProps} />;
+    }
+
+    case IconName.SMILE_2: {
+      return <Smile2 {...commonProps} />;
     }
 
     case IconName.WATCH: {

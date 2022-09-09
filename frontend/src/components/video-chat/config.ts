@@ -36,4 +36,6 @@ const popOutChatParamsString = Object.entries(popOutChatParams)
   .map((kv) => kv.join('='))
   .join(',');
 
-export { allChatMenuOptions, popOutChatParamsString };
+const messageMaxLength = 200;
+
+export { allChatMenuOptions, popOutChatParamsString, messageMaxLength };
