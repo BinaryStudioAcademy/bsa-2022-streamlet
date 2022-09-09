@@ -1,13 +1,39 @@
 import * as Joi from 'joi';
-import { ProfileValidationMessage } from '~/common/enums/enums';
+import { ProfileValidationMessage, UserValidationMessage } from '~/common/enums/enums';
 import { UpdateProfileValue } from '~/common/types/types';
 
 const profileUpdateValidationSchema = Joi.object<UpdateProfileValue, true>({
-  username: Joi.string().required().trim().messages({
-    'string.empty': ProfileValidationMessage.USER_NAME_NOT_EMPTY,
-  }),
-  firstName: Joi.string().trim().allow(''),
-  lastName: Joi.string().trim().allow(''),
+  username: Joi.string()
+    .trim()
+    .min(3)
+    .max(25)
+    .pattern(/^[a-zA-Z0-9-]*$/)
+    .required()
+    .messages({
+      'string.empty': UserValidationMessage.USERNAME_REQUIRE,
+      'string.min': UserValidationMessage.USERNAME_WRONG_LENGTH,
+      'string.max': UserValidationMessage.USERNAME_WRONG_LENGTH,
+      'string.pattern': UserValidationMessage.USERNAME_WRONG_REGEX,
+      'any.required': UserValidationMessage.USERNAME_REQUIRE,
+    }),
+  firstName: Joi.string()
+    .trim()
+    .max(25)
+    .pattern(/^[a-zA-Z0-9-]*$/)
+    .required()
+    .messages({
+      'string.max': ProfileValidationMessage.FIRSTNAME_TO_LONG,
+      'string.pattern.base': ProfileValidationMessage.FIRSTNAME_WRONG_REGEXP,
+    }),
+  lastName: Joi.string()
+    .trim()
+    .max(20)
+    .pattern(/^[a-zA-Z0-9-]*$/)
+    .required()
+    .messages({
+      'string.max': ProfileValidationMessage.LASTNAME_TO_LONG,
+      'string.pattern.base': ProfileValidationMessage.FIRSTNAME_TO_LONG,
+    }),
 });
 
 export { profileUpdateValidationSchema };

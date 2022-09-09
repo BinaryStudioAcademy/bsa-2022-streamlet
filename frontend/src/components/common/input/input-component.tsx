@@ -20,8 +20,8 @@ type Props<T> = {
   labelClassName?: string;
   errorBlockClassName?: string;
   wrapperClassName?: string;
-  onFocus?: { (): void };
-  onBlur?: { (): void };
+  onFocus?: VoidFunction;
+  onBlur?: VoidFunction;
   readOnly?: boolean;
   disabled?: boolean;
 };
