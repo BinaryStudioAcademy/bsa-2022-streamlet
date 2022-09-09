@@ -18,6 +18,7 @@ const profileUpdateValidationSchema = Joi.object<UpdateProfileValue, true>({
     }),
   firstName: Joi.string()
     .trim()
+    .allow('')
     .max(25)
     .pattern(/^[a-zA-Z-]*$/)
     .messages({
@@ -27,6 +28,7 @@ const profileUpdateValidationSchema = Joi.object<UpdateProfileValue, true>({
   lastName: Joi.string()
     .trim()
     .max(20)
+    .allow('')
     .pattern(/^[a-zA-Z-]*$/)
     .messages({
       'string.max': ProfileValidationMessage.LASTNAME_TO_LONG,
