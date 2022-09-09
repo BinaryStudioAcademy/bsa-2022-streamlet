@@ -37,6 +37,7 @@ import { store } from 'store/store';
 import { StudioHomeContainer } from 'pages/studio/home/home-container';
 
 import styles from './app.module.scss';
+import { loadPreferences } from 'store/preferences/actions';
 
 socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
   store.dispatch(socketActions.addSocketId(id));
@@ -70,6 +71,7 @@ const App: FC = () => {
   useEffect(() => {
     if (hasToken) {
       dispatch(authActions.loadCurrentUser());
+      dispatch(loadPreferences());
     }
   }, [hasToken, dispatch]);
 
