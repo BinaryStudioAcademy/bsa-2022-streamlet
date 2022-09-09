@@ -1,7 +1,13 @@
 import { createReducer, isAnyOf } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 import { BaseVideoResponseDto, DataVideo } from 'shared/build';
-import { getPopularVideos, getVideos, getVideosByCategory, resetPaginationMainPage } from './actions';
+import {
+  getPopularVideos,
+  getVideos,
+  getVideosByCategory,
+  resetPaginationMainPage,
+  setNumberOfVideoForLoading,
+} from './actions';
 
 type State = {
   data: DataVideo & {
@@ -96,6 +102,10 @@ const reducer = createReducer(initialState, (builder) => {
     state.dataStatus = DataStatus.PENDING;
     state.error = false;
     state.data.popular.list = [];
+  });
+
+  builder.addCase(setNumberOfVideoForLoading, (state, { payload }) => {
+    state.pagination.countItems = payload.numberOfItems;
   });
 
   builder.addMatcher(isAnyOf(getVideosByCategory.rejected, getVideos.rejected, getPopularVideos.rejected), (state) => {
