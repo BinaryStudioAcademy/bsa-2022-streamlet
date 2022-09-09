@@ -502,6 +502,9 @@
   --header-search-icon-color: #6a726d;
   --logo-text-color: #ffffff;
 
+  /* following page */
+  --see-more-btn-bg: var(--gray-300-header-menu-background);
+
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
   --auth-modal-border-color-1: rgb(34 240 0 / 47%);
@@ -566,6 +569,9 @@ body[data-theme='light'] {
   /* header */
   --header-search-icon-color: var(--brand-green-color);
   --logo-text-color: #363c3a;
+
+  /* following page */
+  --see-more-btn-bg: var(--gray-300-header-menu-background);
 
   /* auth forms */
   --link-color: #006624;

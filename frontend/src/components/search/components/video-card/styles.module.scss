@@ -50,11 +50,11 @@ $base-z-index: $page-component-z-index;
   justify-content: center;
   align-items: center;
   padding: 2px 8px;
-  color: var(--white-text-color);
+  color: var(--always-white-color);
   font-size: 12px;
   line-height: 16px;
   text-align: center;
-  background-color: var(--gray-300-header-menu-background);
+  background-color: var(--always-primary-text-color);
   border-radius: 16px;
 }
 
