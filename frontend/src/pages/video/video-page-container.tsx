@@ -28,12 +28,13 @@ const VideoPageContainer: FC = () => {
     navigate(AppRoutes.ANY, { replace: true });
   }
 
-  const { videoData, profile, user, channel, videoDataStatus } = useAppSelector((state) => ({
+  const { videoData, profile, user, channel, videoDataStatus, isLightTheme } = useAppSelector((state) => ({
     videoData: state.videoPage.video,
     profile: state.profile.profileData,
     user: state.auth.user,
     channel: state.videoPage.video?.channel,
     videoDataStatus: state.videoPage.dataStatus,
+    isLightTheme: state.theme.isLightTheme,
   }));
 
   const videoId = isVideoIdProvided as string;
@@ -122,6 +123,7 @@ const VideoPageContainer: FC = () => {
               firstName: profile?.firstName,
               lastName: profile?.lastName,
             }}
+            isLightTheme={isLightTheme}
             onNewComment={handleMessageSubmit}
             userAvatar={profile?.avatar}
             comments={videoData.comments}
