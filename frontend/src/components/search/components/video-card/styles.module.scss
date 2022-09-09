@@ -1,7 +1,7 @@
 @import 'assets/css/breakpoint.scss';
 @import 'assets/css/config.scss';
 
-$base-z-index: $page-component-z-index;
+$base-z-index: $page-component-z-index - 10;
 
 .video-card {
   display: flex;

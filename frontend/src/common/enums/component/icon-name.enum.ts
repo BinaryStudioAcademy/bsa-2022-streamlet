@@ -18,6 +18,7 @@ enum IconName {
   SEARCH = 'search',
   SIGN_OUT = 'sign-out',
   SMILE = 'smile',
+  SMILE_2 = 'smile-2',
   TIME_AGO = 'time-ago',
   WATCH = 'watch',
   X_MARK = 'x-mark',

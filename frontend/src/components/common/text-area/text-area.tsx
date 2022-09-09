@@ -1,7 +1,7 @@
 import { useFormControl } from 'hooks/hooks';
 import { FormControl, FormControlErrors, FormControlPath } from 'common/types/types';
 import { FieldValues } from 'react-hook-form';
-import { ReactElement, useId } from 'react';
+import { ReactElement, useId, FocusEvent } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import clsx from 'clsx';
 
@@ -22,7 +22,7 @@ type Props<T> = {
   errorBlockClassName?: string;
   wrapperClassName?: string;
   onFocus?: { (): void };
-  onBlur?: { (): void };
+  onBlur?: { (e: FocusEvent<HTMLTextAreaElement>): void };
 };
 
 const Textarea = <T extends FieldValues>({
