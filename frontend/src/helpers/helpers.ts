@@ -9,3 +9,4 @@ export { isObjectUniqueIdContainInTwoArray } from './array/is-object-unique-id-c
 export { generateAbbreviatureNameUser, getUserDisplayName, getGoogleOAuthURL } from './user';
 export { joinExistingValues, getRightUpdateTimeDelay } from './common/common';
 export * from './video/video';
+export { getEmojiCdnUrl } from './emoji/emoji';
