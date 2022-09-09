@@ -148,7 +148,7 @@ const SendMessage: FC<SendMessageProps> = ({
               emojiBlockClassName={styles['emoji-block']}
             />
             <div className={styles['send-btn-group']}>
-              <div className={styles['message-length-count']}>{`${messageText.length} / 200`}</div>
+              <div className={styles['message-length-count']}>{`${messageText.length} / ${messageMaxLength}`}</div>
               <button onClick={handleSubmitMessage} className={styles['send-message']} type="submit">
                 <Icon name={IconName.SEND_MESSAGE} width="18" height="16" />
               </button>
