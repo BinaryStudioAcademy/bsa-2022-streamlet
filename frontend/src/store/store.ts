@@ -13,6 +13,7 @@ import {
   followingApi,
   searchApi,
   channelStreamingApi,
+  preferencesApi,
 } from 'services/services';
 import { rootReducer } from './root-reducer';
 import storage from 'redux-persist/lib/storage';
@@ -32,6 +33,7 @@ const extraArgument = {
   followingApi,
   channelStreamingApi,
   searchApi,
+  preferencesApi,
 };
 
 const persistConfig = {

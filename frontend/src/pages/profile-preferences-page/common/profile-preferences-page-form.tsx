@@ -1,7 +1,7 @@
 import { FC, UpdateProfileValue } from 'common/types/types';
 import style from '../styles.module.scss';
 import React from 'react';
-import { useAppForm } from 'hooks/hooks';
+import { useAppForm, useEffect } from 'hooks/hooks';
 import { profileUpdateValidationSchema } from '../../../validation-schemas/validation-schemas';
 import { Input, Loader } from '../../../components/common/common';
 
@@ -13,11 +13,18 @@ type Props = {
 };
 
 const ProfilePreferencesPageForm: FC<Props> = ({ onSubmit, defaultFormValue, error, isLoading }) => {
-  const { control, errors, handleSubmit } = useAppForm<UpdateProfileValue>({
+  const { control, errors, handleSubmit, setValue } = useAppForm<UpdateProfileValue>({
     defaultValues: defaultFormValue,
     validationSchema: profileUpdateValidationSchema,
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    if (error) {
+      const { username } = defaultFormValue;
+      setValue('username', username);
+    }
+  }, [error, setValue, defaultFormValue]);
 
   return (
     <form className={style['profile-settings-block']} onSubmit={handleSubmit(onSubmit)}>
