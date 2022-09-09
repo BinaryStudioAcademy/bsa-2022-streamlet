@@ -2,8 +2,12 @@
 
 .page-container {
   max-height: 100%;
-  padding: 20px 40px;
+  padding: 20px;
   overflow-y: auto;
+
+  @media #{breakpoint.$mobile-middle} {
+    padding: 20px 40px;
+  }
 }
 
 .page-header-container {
