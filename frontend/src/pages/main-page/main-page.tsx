@@ -1,5 +1,6 @@
 import { FC } from 'common/types/types';
 import { FilterBlockProps, FiltersBlock } from 'components/common/filters-block';
+import { PreferencesModalContainer } from 'components/common/preferences-modal/preferences-modal-container';
 import { EMPTY_VIDEO_BLOCK } from 'components/common/video-skeleton/video-skeleton.config';
 import { VideoBlockProps, VideosBlock } from 'components/common/videos-block/videos-block';
 import { useAppSelector } from 'hooks/hooks';
@@ -16,6 +17,7 @@ const MainPage: FC<MainPageProps> = ({ filterBlockProps, blocksVideo }) => {
 
   return (
     <main className={styles.main}>
+      <PreferencesModalContainer />
       <FiltersBlock {...filterBlockProps} />
       <div className={styles['videos-container']}>
         {!blocksVideo.length && <VideosBlock loadingStatus={loadingStatus} videoCards={EMPTY_VIDEO_BLOCK} />}
