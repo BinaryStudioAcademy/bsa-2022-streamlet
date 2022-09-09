@@ -27,7 +27,7 @@ class CreateVideoHistoryRecordMiddleware extends BaseMiddleware {
 
       const video = await this.videoService.getById(videoId);
       if (!video) {
-        throw new NotFound('Such video doesn`t exist');
+        return next(new NotFound('Such video doesn`t exist'));
       }
 
       await this.historyService.createHistoryItem({ userId, videoId });
