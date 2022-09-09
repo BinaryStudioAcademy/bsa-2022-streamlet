@@ -42,6 +42,7 @@ class Http {
     const makeRequest = (url: string, options: RequestInit): Promise<Response> => fetch(url, options);
 
     let response = await makeRequest(url, requestInit);
+
     for (const postInterceptor of postInterceptors) {
       response = await postInterceptor({
         initialRequest: { options: requestInit, url },
