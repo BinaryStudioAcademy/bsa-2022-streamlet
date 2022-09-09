@@ -16,6 +16,7 @@ import { HistoryApi } from './history/history-api.service';
 import { FollowingApi } from './following-api/following-api.service';
 import { SearchApi } from './search-api/search-api.service';
 import { ChannelStreamingApi } from './channel-streaming-api/channel-streaming-api.service';
+import { PreferencesApi } from './preferences-api/preferences-api.service';
 
 const storageService = new StorageService();
 const tokensStorageService = new TokensStorageService(storageService);
@@ -81,6 +82,11 @@ const channelStreamingApi = new ChannelStreamingApi({
   http,
 });
 
+const preferencesApi = new PreferencesApi({
+  apiPrefix: ENV.API_PATH,
+  http,
+});
+
 export {
   http,
   authApi,
@@ -97,4 +103,5 @@ export {
   historyApi,
   searchApi,
   channelStreamingApi,
+  preferencesApi,
 };

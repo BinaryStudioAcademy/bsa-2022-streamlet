@@ -14,12 +14,8 @@
   }
 
   &.in-recommended-section {
-    max-width: 380px;
+    width: auto;
     padding: 12px 0;
-
-    @media screen and (min-width: 1550px) {
-      max-width: 420px;
-    }
   }
 }
 

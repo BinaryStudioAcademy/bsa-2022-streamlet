@@ -40,7 +40,7 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
   );
 
   const onSubmit = (submitValue: StreamSettingsFormValues): void => {
-    const { name, description, scheduledStreamDate, privacy, tags, categories } = submitValue;
+    const { name, description, scheduledStreamDate, privacy, tags, categories, poster } = submitValue;
     onSave({
       name,
       description,
@@ -49,7 +49,7 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
       videoId: stream?.id ?? '',
       tags: tags?.map((tag) => ({ name: tag.label })) ?? [],
       categories: categories?.map((category) => ({ name: category.label })) ?? [],
-      poster: stream?.poster ?? '',
+      poster: poster ?? '',
     });
   };
 

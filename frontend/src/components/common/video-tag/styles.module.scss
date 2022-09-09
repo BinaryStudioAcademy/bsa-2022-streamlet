@@ -26,14 +26,3 @@
   color: var(--video-card-live-color);
   font-weight: 600;
 }
-
-@media #{$tablet-large} {
-  .video-tag {
-    padding: 4px 12px;
-  }
-
-  .video-tag span {
-    font-size: 14px;
-    line-height: 19px;
-  }
-}

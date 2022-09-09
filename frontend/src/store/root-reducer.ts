@@ -15,6 +15,7 @@ import { reducer as subscriptions } from './subscriptions/reducer';
 import { reducer as followingPage } from './following-page/reducer';
 import { reducer as stream } from './stream/reducer';
 import { reducer as socket } from './socket/reducer';
+import { reducer as preference } from './preferences/reducer';
 
 const rootReducer = combineReducers({
   auth,
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   followingPage,
   stream,
   socket,
+  preference,
 });
 
 export { rootReducer };

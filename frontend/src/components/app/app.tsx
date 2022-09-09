@@ -37,6 +37,7 @@ import { store } from 'store/store';
 import { StudioHomeContainer } from 'pages/studio/home/home-container';
 
 import styles from './app.module.scss';
+import { loadPreferences } from 'store/preferences/actions';
 
 socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
   store.dispatch(socketActions.addSocketId(id));
@@ -70,6 +71,7 @@ const App: FC = () => {
   useEffect(() => {
     if (hasToken) {
       dispatch(authActions.loadCurrentUser());
+      dispatch(loadPreferences());
     }
   }, [hasToken, dispatch]);
 
@@ -116,7 +118,7 @@ const App: FC = () => {
           <HeaderContainer />
           <section className={styles['content-section']}>
             <SidebarContainer />
-            <div className={styles['main-content']}>
+            <div id="main-content" className={styles['main-content']}>
               <Routes>
                 <Route path={AppRoutes.ROOT} element={<MainPageContainer />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />
@@ -140,7 +142,6 @@ const App: FC = () => {
                 />
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
-                <Route path="video-page" element={<VideoPageContainer />} />
                 <Route path={AppRoutes.CHANNEL_$ID} element={<ChannelPage />} />
                 <Route path={AppRoutes.VIDEO_$ID} element={<VideoPageContainer />} />
                 <Route path={AppRoutes.ANY} element={<NotFound />} />
