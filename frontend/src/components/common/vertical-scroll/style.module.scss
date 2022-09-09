@@ -1,0 +1,16 @@
+.arrow:disabled,
+.arrow[disabled] {
+  display: none;
+}
+
+.arrow-container .arrow {
+  padding: 0 10px;
+  color: var(--auth-border);
+  font-weight: 900;
+  font-size: 20px;
+  background: none;
+
+  &:hover {
+    background: none;
+  }
+}
