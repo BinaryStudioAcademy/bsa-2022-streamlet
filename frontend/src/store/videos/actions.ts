@@ -1,7 +1,7 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { AsyncThunkConfig } from 'common/types/types';
 import { DataVideo, PopularVideoResponseDto, PopularVideosRequestDtoType } from 'shared/build';
-import { ActionType } from './common';
+import { ActionType, PayloadForNumberItems } from './common';
 
 const getVideos = createAsyncThunk<DataVideo, Record<'withLazyLoad', boolean> | undefined, AsyncThunkConfig>(
   ActionType.GET_VIDEOS,
@@ -49,5 +49,6 @@ const getPopularVideos = createAsyncThunk<PopularVideoResponseDto, PopularVideos
 );
 
 const resetPaginationMainPage = createAction(ActionType.RESET_PAGINATION_MAIN_PAGE);
+const setNumberOfVideoForLoading = createAction<PayloadForNumberItems>(ActionType.SET_NUMBER_OF_VIDEO_FOR_LOADING);
 
-export { getVideos, getVideosByCategory, getPopularVideos, resetPaginationMainPage };
+export { getVideos, getVideosByCategory, getPopularVideos, resetPaginationMainPage, setNumberOfVideoForLoading };
