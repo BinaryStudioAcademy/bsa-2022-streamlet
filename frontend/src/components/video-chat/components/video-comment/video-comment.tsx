@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { ChatMessageResponseDto, FC } from 'common/types/types';
 import { useState, useEffect } from 'hooks/hooks';
+import { TextWithEmoji } from 'components/common/common';
 import {
   getHowLongAgoString,
   generateAbbreviatureNameUser,
@@ -47,7 +48,7 @@ const VideoComment: FC<Props> = ({ message: { text, createdAt, author }, showTim
               {showTimeStamp && <span className={styles['dispatch-time']}>{createdAtDate}</span>}
             </div>
             <div className="chat-message-tex">
-              <p className={styles['text-comment']}>{text}</p>
+              <TextWithEmoji text={text} textClassName={styles['text-comment']} />
             </div>
           </div>
         </div>

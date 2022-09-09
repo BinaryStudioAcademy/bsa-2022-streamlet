@@ -12,22 +12,26 @@ import styles from './video-chat.module.scss';
 
 interface VideoChatProps {
   chatId: string;
+  hasUser: boolean;
+  isLightTheme: boolean;
   popOutSetting: boolean;
   initialMessages: ChatMessageResponseDto[];
   messages: ChatMessageResponseDto[];
   participants: string[];
   chatStatus: boolean;
-  sendMessageProps: SendMessageProps;
+  handlerSubmitMessage: SendMessageProps['handlerSubmitMessage'];
 }
 
 const VideoChat: FC<VideoChatProps> = ({
   chatId,
+  hasUser,
+  isLightTheme,
   popOutSetting,
   initialMessages,
   messages,
   participants,
   chatStatus,
-  sendMessageProps,
+  handlerSubmitMessage,
 }) => {
   const chatEndEl = useRef<HTMLDivElement>(null);
   const chatViewEl = useRef<HTMLDivElement>(null);
@@ -242,7 +246,13 @@ const VideoChat: FC<VideoChatProps> = ({
             <Icon name={IconName.ARROW_DOWN_2} />
           </div>
         </div>
-        <SendMessage {...sendMessageProps} sendMessageClassName={styles['video-chat-send-form']} />
+        <SendMessage
+          hasUser={hasUser}
+          isLightTheme={isLightTheme}
+          isHide={hideChat}
+          sendMessageClassName={styles['video-chat-send-form']}
+          handlerSubmitMessage={handlerSubmitMessage}
+        />
       </div>
       <div className={styles['video-chat-footer-bar']} onClick={handleSetHideChat}>
         <span>{hideChat ? 'show chat' : 'hide chat'}</span>
