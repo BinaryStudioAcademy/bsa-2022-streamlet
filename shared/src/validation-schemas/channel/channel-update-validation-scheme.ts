@@ -24,6 +24,7 @@ export const channelUpdateValidationSchema = Joi.object<ChannelProfileUpdateRequ
     .messages({
       'string.empty': ChannelProfileValidationMessage.DESCRIPTION_NOT_EMPTY,
       'string.min': ChannelProfileValidationMessage.DESCRIPTION_MIN,
+      'string.max': ChannelProfileValidationMessage.DESCRIPTION_MAX,
       'string.pattern.invert.base': ChannelProfileValidationMessage.CHANNEL_DESCRIPTION_WRONG_REGEXP,
     }),
 });

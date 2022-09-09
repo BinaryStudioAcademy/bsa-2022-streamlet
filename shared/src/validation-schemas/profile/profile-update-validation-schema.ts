@@ -13,14 +13,13 @@ const profileUpdateValidationSchema = Joi.object<UpdateProfileValue, true>({
       'string.empty': UserValidationMessage.USERNAME_REQUIRE,
       'string.min': UserValidationMessage.USERNAME_WRONG_LENGTH,
       'string.max': UserValidationMessage.USERNAME_WRONG_LENGTH,
-      'string.pattern': UserValidationMessage.USERNAME_WRONG_REGEX,
+      'string.pattern.base': UserValidationMessage.USERNAME_WRONG_REGEX,
       'any.required': UserValidationMessage.USERNAME_REQUIRE,
     }),
   firstName: Joi.string()
     .trim()
     .max(25)
     .pattern(/^[a-zA-Z-]*$/)
-    .required()
     .messages({
       'string.max': ProfileValidationMessage.FIRSTNAME_TO_LONG,
       'string.pattern.base': ProfileValidationMessage.FIRSTNAME_WRONG_REGEXP,
@@ -29,7 +28,6 @@ const profileUpdateValidationSchema = Joi.object<UpdateProfileValue, true>({
     .trim()
     .max(20)
     .pattern(/^[a-zA-Z-]*$/)
-    .required()
     .messages({
       'string.max': ProfileValidationMessage.LASTNAME_TO_LONG,
       'string.pattern.base': ProfileValidationMessage.FIRSTNAME_TO_LONG,
