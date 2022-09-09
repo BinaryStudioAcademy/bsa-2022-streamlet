@@ -16,11 +16,12 @@ const PreferencesModalContainer = (): ReactElement => {
   const [isNeedModal, setIsNeedModal] = useState(false);
   const [isNeedConfirmModal, setIsNeedConfirmModal] = useState(false);
 
+  const isHavePreferences = Boolean(choosedPreferences.data.length);
   useEffect(() => {
     if (choosedPreferences.dataStatus === DataStatus.FULFILLED) {
-      setIsNeedModal(!choosedPreferences.data.length);
+      setIsNeedModal(!isHavePreferences);
     }
-  }, [choosedPreferences]);
+  }, [choosedPreferences, isHavePreferences]);
 
   const [pickedCategories, setPickedCategories] = useState<Omit<UserBindCategoriesDto, 'id'>>({
     categories: choosedPreferences.data,
