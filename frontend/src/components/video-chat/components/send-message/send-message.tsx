@@ -16,6 +16,7 @@ export type SendMessageProps = {
   hasUser: boolean;
   isLightTheme: boolean;
   isHide: boolean;
+  currentChatStyle: string;
 };
 
 const SendMessage: FC<SendMessageProps> = ({
@@ -24,6 +25,7 @@ const SendMessage: FC<SendMessageProps> = ({
   hasUser,
   isLightTheme,
   isHide,
+  currentChatStyle,
 }) => {
   const [messageText, setMessageText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -120,7 +122,10 @@ const SendMessage: FC<SendMessageProps> = ({
   }, [hasUser]);
 
   return (
-    <form className={clsx(styles['add-comments'], sendMessageClassName)} onSubmit={handleSubmitForm}>
+    <form
+      className={clsx(styles['add-comments'], styles[currentChatStyle], sendMessageClassName)}
+      onSubmit={handleSubmitForm}
+    >
       {showSigninModal ? (
         <NeedSignInModal
           headerText={'Want to chat about something?'}

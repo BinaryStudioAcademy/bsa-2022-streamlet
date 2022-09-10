@@ -3,7 +3,7 @@ import { socket } from 'common/config/config';
 import { useEffect, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
 import { chatActions } from 'store/actions';
 import { VideoChat } from './video-chat';
-import { SocketEvents } from 'common/enums/enums';
+import { ChatStyle, SocketEvents } from 'common/enums/enums';
 import { store } from 'store/store';
 
 socket.on(SocketEvents.chat.NEW_MESSAGE_TO_CHAT_ROOM_DONE, (message: ChatMessageResponseDto) => {
@@ -21,9 +21,10 @@ socket.on(SocketEvents.chat.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED_DONE, (isChatEnable
 type Props = {
   videoId: string;
   popOutSetting: boolean;
+  chatStyle?: ChatStyle;
 };
 
-const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
+const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting, chatStyle }) => {
   const dispatch = useAppDispatch();
   const {
     chat: {
@@ -77,6 +78,7 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting }) => {
       participants={participants}
       chatStatus={status ?? isChatEnabled}
       handlerSubmitMessage={handlerSubmitMessage}
+      chatStyle={chatStyle}
     />
   );
 };
