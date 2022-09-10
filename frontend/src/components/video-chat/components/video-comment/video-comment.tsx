@@ -15,9 +15,15 @@ type Props = {
   message: ChatMessageResponseDto;
   showTimeStamp: boolean;
   messageClassName?: string;
+  currentChatStyle: string;
 };
 
-const VideoComment: FC<Props> = ({ message: { text, createdAt, author }, showTimeStamp, messageClassName }) => {
+const VideoComment: FC<Props> = ({
+  message: { text, createdAt, author },
+  showTimeStamp,
+  messageClassName,
+  currentChatStyle,
+}) => {
   const [createdAtDate, setCreatedAtDate] = useState(getHowLongAgoString(new Date(createdAt)));
 
   const updateTimeDelay = getRightUpdateTimeDelay(createdAt);
@@ -31,7 +37,7 @@ const VideoComment: FC<Props> = ({ message: { text, createdAt, author }, showTim
 
   return (
     <>
-      <div className={styles['chat-message-wrapper']}>
+      <div className={clsx(styles['chat-message-wrapper'], styles[currentChatStyle])}>
         <div className={clsx(styles['chat-message'], messageClassName)}>
           <div className={styles['chat-message-icon']}>
             {author.profile.avatar ? (
