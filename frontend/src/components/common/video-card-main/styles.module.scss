@@ -220,10 +220,6 @@ $base-z-index: $page-component-z-index - 10;
   width: 10px;
 }
 
-.video-card-meta-tag svg path {
-  fill: var(--video-card-live-color);
-}
-
 .video-card-meta {
   display: flex;
   flex-flow: row nowrap;
@@ -250,6 +246,24 @@ $base-z-index: $page-component-z-index - 10;
 
 .video-card-meta-data svg path {
   fill: var(--text-gray-color);
+}
+
+.live-label {
+  height: 20px;
+  color: var(--always-white-color);
+  font-size: 13px;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+  background-color: var(--video-card-live-color);
+  border-radius: 3px;
+
+  & svg {
+    width: 15px;
+  }
+
+  & svg path {
+    fill: var(--always-white-color);
+  }
 }
 
 @media #{$mobile-large} {

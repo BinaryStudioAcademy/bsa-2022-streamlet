@@ -108,8 +108,8 @@ const VideoCardMain: FC<Props> = ({
           {!isWaiting && (
             <>
               {isLive && (
-                <div className={styles['video-card-meta-tag']}>
-                  <Icon name={IconName.CIRCLE} />
+                <div className={clsx(styles['video-card-meta-tag'], styles['live-label'])}>
+                  <Icon name={IconName.ONLINE_STREAMING_2} />
                   <span>Live</span>
                 </div>
               )}
