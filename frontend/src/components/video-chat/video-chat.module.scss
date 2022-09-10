@@ -71,13 +71,18 @@ $hide-transition-duration: 1s;
   display: flex;
   flex: 1;
   flex-flow: column-reverse nowrap;
+  min-height: 460px;
   margin-bottom: 3px;
   padding: 20px 20px 0;
   overflow: auto;
   overflow-y: overlay;
   background-color: var(--chat-bgc);
   border-radius: 3px;
-  transition: padding 0.75s, margin 0.75s;
+  transition: padding 0.75s, margin 0.75s, min-height $hide-transition-duration;
+
+  @media screen and (max-width: 992px) {
+    min-height: 300px;
+  }
 }
 
 .video-chat.view-participants {
@@ -352,6 +357,7 @@ $hide-transition-duration: 1s;
 }
 
 .hide-chat .video-chat {
+  min-height: 0;
   margin-bottom: 0;
   padding: 0 20px;
   overflow: hidden;
