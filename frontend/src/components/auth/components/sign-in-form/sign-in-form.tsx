@@ -36,7 +36,6 @@ const SignInForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
           name="email"
           label="Email"
-          type="email"
           inputClassName={formStyles['input']}
           inputErrorClassName={formStyles['input-error']}
           labelClassName={formStyles['label']}

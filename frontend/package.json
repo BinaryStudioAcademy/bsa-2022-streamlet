@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "1.8.3",
     "clsx": "1.2.1",
     "dayjs": "1.11.4",
+    "emoji-picker-react": "4.0.0-rc.19",
     "fscreen": "^1.2.0",
     "hls.js": "1.2.0",
     "query-string": "7.1.1",
@@ -41,6 +42,7 @@
     "react-slider": "2.0.1",
     "react-textarea-autosize": "8.3.4",
     "react-tooltip": "4.2.21",
+    "recharts": "^2.1.14",
     "redux-persist": "6.0.0",
     "socket.io-client": "4.5.0"
   },

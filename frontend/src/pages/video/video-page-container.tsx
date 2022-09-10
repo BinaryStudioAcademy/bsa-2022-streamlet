@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { AppRoutes, SocketEvents, StreamStatus } from 'common/enums/enums';
+import { AppRoutes, DataStatus, SocketEvents, StreamStatus } from 'common/enums/enums';
 import { Loader } from 'components/common/common';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
 import { useAppDispatch, useAppSelector, useNavigate, useParams, useState } from 'hooks/hooks';
@@ -13,6 +13,7 @@ import { store } from 'store/store';
 import { ChannelInfoRow } from './channel-info-row/channel-info-row';
 import { VideoHeader } from './video-header/video-header';
 import { LinksBlock } from './links-block/links-block';
+import { NotFound } from 'components/placeholder-page';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -27,11 +28,13 @@ const VideoPageContainer: FC = () => {
     navigate(AppRoutes.ANY, { replace: true });
   }
 
-  const { videoData, profile, user, channel } = useAppSelector((state) => ({
+  const { videoData, profile, user, channel, videoDataStatus, isLightTheme } = useAppSelector((state) => ({
     videoData: state.videoPage.video,
     profile: state.profile.profileData,
     user: state.auth.user,
     channel: state.videoPage.video?.channel,
+    videoDataStatus: state.videoPage.dataStatus,
+    isLightTheme: state.theme.isLightTheme,
   }));
 
   const videoId = isVideoIdProvided as string;
@@ -70,13 +73,16 @@ const VideoPageContainer: FC = () => {
     return void 1;
   };
 
+  if (videoDataStatus === DataStatus.REJECTED) {
+    return <NotFound />;
+  }
+
   if (!videoData || !channel) {
     return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
   }
 
   const { status } = videoData;
   const isVideoFinished = status === StreamStatus.FINISHED;
-
   return (
     <div
       className={clsx(styles['video-page'], {
@@ -117,6 +123,7 @@ const VideoPageContainer: FC = () => {
               firstName: profile?.firstName,
               lastName: profile?.lastName,
             }}
+            isLightTheme={isLightTheme}
             onNewComment={handleMessageSubmit}
             userAvatar={profile?.avatar}
             comments={videoData.comments}

@@ -119,8 +119,9 @@ const VideoCard: FC<Props> = ({
           )}
           <div className={styles['video-card-tag-list']}>
             {isLive && (
-              <div className={styles['video-card-tag-live']}>
-                <VideoTag name={VideoTagName.LIVE} />
+              <div className={clsx(styles['video-card-tag-live'], styles['live-label'])}>
+                <Icon name={IconName.ONLINE_STREAMING_2} />
+                <span>Live</span>
               </div>
             )}
             {(isLive || isFinished) && isNew() && <VideoTag name={VideoTagName.NEW} />}
@@ -128,8 +129,8 @@ const VideoCard: FC<Props> = ({
         </div>
         <div className={clsx(styles['video-card-meta-footer'], classNames?.metaFooter)}>
           {isLive && (
-            <div className={styles['video-card-meta-tag']}>
-              <Icon name={IconName.CIRCLE} />
+            <div className={clsx(styles['video-card-meta-tag'], styles['live-label'])}>
+              <Icon name={IconName.ONLINE_STREAMING_2} />
               <span>Live</span>
             </div>
           )}

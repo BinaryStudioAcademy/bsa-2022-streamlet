@@ -4,7 +4,6 @@ import { SkeletonTheme } from 'react-loading-skeleton';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { DataStatus, LoaderSize } from 'common/enums/enums';
 import {
-  ARRAY_FAKE_VIDEOS,
   DARK_THEME_BASE_COLOR,
   DARK_THEME_HIGHLIGHT_COLOR,
   LIGHT_THEME_BASE_COLOR,
@@ -12,7 +11,7 @@ import {
 } from '../video-skeleton/video-skeleton.config';
 
 import styles from './videos-block.module.scss';
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getVideos } from 'store/videos/actions';
 import { Loader } from '../common';
@@ -25,10 +24,27 @@ export interface VideoBlockProps {
 
 const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, loadingStatus, isLazyBlock }) => {
   const dispatch = useAppDispatch();
-  const { isLightTheme, lazyLoad } = useAppSelector((state) => ({
-    isLightTheme: state.theme.isLightTheme,
-    lazyLoad: state.videos.pagination.lazyLoad,
-  }));
+  const { isLightTheme, lazyLoad, totalVideos, numberOfUploadedVideos, numberOfVideoForUpload } = useAppSelector(
+    (state) => ({
+      isLightTheme: state.theme.isLightTheme,
+      lazyLoad: state.videos.pagination.lazyLoad,
+      totalVideos: state.videos.data.total,
+      numberOfUploadedVideos: state.videos.data.list.length,
+      numberOfVideoForUpload: state.videos.pagination.countItems,
+    }),
+  );
+
+  const numberSkeleton = useMemo(() => {
+    if (!numberOfUploadedVideos) {
+      return numberOfVideoForUpload;
+    }
+
+    if (totalVideos - numberOfUploadedVideos >= numberOfVideoForUpload) {
+      return numberOfVideoForUpload;
+    }
+
+    return totalVideos - numberOfUploadedVideos;
+  }, [numberOfUploadedVideos, totalVideos, numberOfVideoForUpload]);
 
   const colorForSkeleton = {
     baseColor: isLightTheme ? LIGHT_THEME_BASE_COLOR : DARK_THEME_BASE_COLOR,
@@ -37,6 +53,10 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, loadingStatu
 
   const uploadVideos = (): void => {
     dispatch(getVideos({ withLazyLoad: true }));
+  };
+
+  const returnEmptyArrayForSkeleton = (): Array<null> => {
+    return Array(numberSkeleton).fill(null);
   };
 
   return (
@@ -57,7 +77,8 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, loadingStatu
           <div className={styles['videos-block']}>
             {loadingStatus === DataStatus.FULFILLED && !isLazyBlock && videoCards}
             {isLazyBlock && videoCards}
-            {loadingStatus === DataStatus.PENDING && ARRAY_FAKE_VIDEOS.map((_, index) => <VideoSkeleton key={index} />)}
+            {loadingStatus === DataStatus.PENDING &&
+              returnEmptyArrayForSkeleton().map((_, index) => <VideoSkeleton key={index} />)}
           </div>
         </SkeletonTheme>
       </InfiniteScroll>

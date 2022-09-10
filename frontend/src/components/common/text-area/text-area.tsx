@@ -1,7 +1,7 @@
 import { useFormControl } from 'hooks/hooks';
 import { FormControl, FormControlErrors, FormControlPath } from 'common/types/types';
 import { FieldValues } from 'react-hook-form';
-import { ReactElement, useId } from 'react';
+import { ReactElement, useId, FocusEvent } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import clsx from 'clsx';
 
@@ -22,7 +22,7 @@ type Props<T> = {
   errorBlockClassName?: string;
   wrapperClassName?: string;
   onFocus?: { (): void };
-  onBlur?: { (): void };
+  onBlur?: { (e: FocusEvent<HTMLTextAreaElement>): void };
 };
 
 const Textarea = <T extends FieldValues>({
@@ -41,7 +41,7 @@ const Textarea = <T extends FieldValues>({
 }: Props<T>): ReactElement | null => {
   const {
     field,
-    fieldState: { error, isTouched },
+    fieldState: { error },
   } = useFormControl({ name, control });
   const id = useId();
 
@@ -51,16 +51,14 @@ const Textarea = <T extends FieldValues>({
         <label className={clsx(styles.label, labelClassName)} htmlFor={id}>
           <span>{label}</span>
         </label>
-        <div className={clsx(errorBlockClassName)}>
-          {isTouched && (
-            <ErrorMessage
-              errors={errors}
-              name={name}
-              render={({ message }): ReactElement => {
-                return <ErrorBox message={message} />;
-              }}
-            />
-          )}
+        <div className={clsx(styles['error-block'], errorBlockClassName)}>
+          <ErrorMessage
+            errors={errors}
+            name={name}
+            render={({ message }): ReactElement => {
+              return <ErrorBox message={message} />;
+            }}
+          />
         </div>
       </div>
       <TextareaAutosize
@@ -68,7 +66,7 @@ const Textarea = <T extends FieldValues>({
         onFocus={onFocus}
         onBlur={onBlur}
         placeholder={placeholder}
-        className={clsx(styles.textarea, inputClassName, error && isTouched && inputErrorClassName)}
+        className={clsx(styles.textarea, inputClassName, error && inputErrorClassName)}
         id={id}
       />
     </div>

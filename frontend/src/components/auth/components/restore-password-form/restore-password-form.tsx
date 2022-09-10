@@ -30,7 +30,6 @@ const RestorePasswordForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
           name="email"
           label="Email"
-          type="email"
           inputClassName={formStyles['input']}
           inputErrorClassName={formStyles['input-error']}
           errorBlockClassName={formStyles['error']}
