@@ -41,7 +41,12 @@ const NotificationDropdown: FC<NotificationDropdownProps> = ({
 
   return (
     <div className={notificationDropdown['wrapper']}>
-      <button className={notificationDropdown['bell']} data-tip={'Notification'} onClick={onClickDropdown}>
+      <button
+        className={notificationDropdown['bell']}
+        data-tip={'Notification'}
+        data-place="bottom"
+        onClick={onClickDropdown}
+      >
         <Icon color={IconColor.GRAY} name={IconName.ALARM} width="24" height="22" />
         {haveNotifications && <div className={notificationDropdown['unread-mark']} />}
       </button>
