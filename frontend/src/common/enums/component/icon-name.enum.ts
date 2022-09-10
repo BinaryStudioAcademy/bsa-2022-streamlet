@@ -40,6 +40,7 @@ enum IconName {
   TV = 'tv',
   SUN = 'sun',
   ONLINE_STREAMING = 'online-streaming',
+  ONLINE_STREAMING_2 = 'online-streaming-2',
   BELL_OUTLINE = 'bell-outline',
   PROFILE = 'profile',
   TIMESTAMP = 'timestamp',
