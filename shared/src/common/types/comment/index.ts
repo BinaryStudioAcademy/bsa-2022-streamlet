@@ -5,6 +5,7 @@ type Comment = {
   parentId: string | null;
   avatar?: string;
   repliesCount?: number;
+  authorId: string;
   userName: string;
   firstName?: string;
   lastName?: string;

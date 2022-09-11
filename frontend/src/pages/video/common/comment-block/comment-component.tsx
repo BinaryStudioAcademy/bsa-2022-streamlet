@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { FC } from 'common/types/types';
+import { FC, Comment } from 'common/types/types';
 import { AppRoutes, CommentMenuOptions, IconName } from 'common/enums/enums';
 import {
   useAppDispatch,
@@ -11,7 +11,6 @@ import {
   useRef,
   useState,
 } from 'hooks/hooks';
-import { Comment } from 'shared/src/common/types/comment';
 import { Icon, TextWithEmoji } from 'components/common/common';
 import { NeedSignInModal } from 'components/common/sign-in-modal/sign-in-modal';
 import { UserAvatarOrInitials } from 'components/common/user-avatar-or-initials/user-avatar-or-initials';
@@ -222,7 +221,13 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
             <div
               className={styles['comment-menu-toggle']}
               onClick={handleSetIsCommentMenuOpen}
-              style={isCommentMenuOpen ? { visibility: 'visible' } : {}}
+              style={
+                isCommentMenuOpen
+                  ? { visibility: 'visible' }
+                  : comment.authorId !== user?.id
+                  ? { visibility: 'hidden' }
+                  : {}
+              }
             >
               <Icon name={IconName.DOTS_MENU} height="20px" />
             </div>
