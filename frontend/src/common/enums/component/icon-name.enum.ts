@@ -46,6 +46,9 @@ enum IconName {
   TIMESTAMP = 'timestamp',
   OPEN_OUTSIDE = 'open-outside',
   PARTICIPANTS = 'participants',
+  EDIT = 'edit',
+  DELETE = 'delete',
+  REPORT = 'report',
 }
 
 export { IconName };
