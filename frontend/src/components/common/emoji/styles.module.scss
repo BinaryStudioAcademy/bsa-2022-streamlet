@@ -1,0 +1,19 @@
+.emoji-picker {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.emoji-block {
+  position: absolute;
+  box-shadow: -3px 3px 10px 0 rgb(0 0 0 / 15%);
+}
+
+.choose-emoji-btn {
+  background-color: transparent;
+  cursor: pointer;
+
+  & svg path {
+    fill: var(--text-gray-color);
+  }
+}

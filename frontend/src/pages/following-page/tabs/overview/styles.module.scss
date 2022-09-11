@@ -6,14 +6,13 @@
   row-gap: 40px;
 }
 
-.see-all-btn {
-  min-width: 80px;
-  height: 30px;
-  margin: auto;
-  margin-top: 10px;
-}
-
 .spinner {
   z-index: config.$page-component-z-index;
   margin-top: 50px;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }

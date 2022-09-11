@@ -1,7 +1,7 @@
 @import 'assets/css/breakpoint.scss';
 @import 'assets/css/config.scss';
 
-$base-z-index: $page-component-z-index;
+$base-z-index: $page-component-z-index - 10;
 
 .video-card {
   display: flex;
@@ -54,7 +54,7 @@ $base-z-index: $page-component-z-index;
   font-size: 12px;
   line-height: 16px;
   text-align: center;
-  background-color: var(--always-primary-text-color);
+  background-color: var(--always-gray-300-header-menu-background);
   border-radius: 16px;
 }
 
@@ -220,10 +220,6 @@ $base-z-index: $page-component-z-index;
   width: 10px;
 }
 
-.video-card-meta-tag svg path {
-  fill: var(--video-card-live-color);
-}
-
 .video-card-meta {
   display: flex;
   flex-flow: row nowrap;
@@ -250,6 +246,24 @@ $base-z-index: $page-component-z-index;
 
 .video-card-meta-data svg path {
   fill: var(--text-gray-color);
+}
+
+.live-label {
+  height: 20px;
+  color: var(--always-white-color);
+  font-size: 13px;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+  background-color: var(--video-card-live-color);
+  border-radius: 3px;
+
+  & svg {
+    width: 15px;
+  }
+
+  & svg path {
+    fill: var(--always-white-color);
+  }
 }
 
 @media #{$mobile-large} {

@@ -467,6 +467,7 @@
   --green-100-header-menu-background: #ebefe8;
   --primary-text-color: #181a20;
   --always-primary-text-color: #181a20;
+  --always-gray-300-header-menu-background: #1f222a;
   --secondary-text-color: #505565;
   --text-gray-color: #6a726d;
   --white-text-color: #ffffff;
@@ -502,6 +503,9 @@
   /* header */
   --header-search-icon-color: #6a726d;
   --logo-text-color: #ffffff;
+
+  /* following page */
+  --see-more-btn-bg: var(--gray-300-header-menu-background);
 
   /* auth forms */
   --auth-modal-background: rgba(52 79 62 / 47%);
@@ -567,6 +571,9 @@ body[data-theme='light'] {
   /* header */
   --header-search-icon-color: var(--brand-green-color);
   --logo-text-color: #363c3a;
+
+  /* following page */
+  --see-more-btn-bg: var(--gray-300-header-menu-background);
 
   /* auth forms */
   --link-color: #006624;

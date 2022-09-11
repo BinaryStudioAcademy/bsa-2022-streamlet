@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { ChatMessageResponseDto, FC } from 'common/types/types';
 import { useState, useEffect } from 'hooks/hooks';
+import { TextWithEmoji } from 'components/common/common';
 import {
   getHowLongAgoString,
   generateAbbreviatureNameUser,
@@ -14,9 +15,15 @@ type Props = {
   message: ChatMessageResponseDto;
   showTimeStamp: boolean;
   messageClassName?: string;
+  currentChatStyle: string;
 };
 
-const VideoComment: FC<Props> = ({ message: { text, createdAt, author }, showTimeStamp, messageClassName }) => {
+const VideoComment: FC<Props> = ({
+  message: { text, createdAt, author },
+  showTimeStamp,
+  messageClassName,
+  currentChatStyle,
+}) => {
   const [createdAtDate, setCreatedAtDate] = useState(getHowLongAgoString(new Date(createdAt)));
 
   const updateTimeDelay = getRightUpdateTimeDelay(createdAt);
@@ -30,7 +37,7 @@ const VideoComment: FC<Props> = ({ message: { text, createdAt, author }, showTim
 
   return (
     <>
-      <div className={styles['chat-message-wrapper']}>
+      <div className={clsx(styles['chat-message-wrapper'], styles[currentChatStyle])}>
         <div className={clsx(styles['chat-message'], messageClassName)}>
           <div className={styles['chat-message-icon']}>
             {author.profile.avatar ? (
@@ -47,7 +54,7 @@ const VideoComment: FC<Props> = ({ message: { text, createdAt, author }, showTim
               {showTimeStamp && <span className={styles['dispatch-time']}>{createdAtDate}</span>}
             </div>
             <div className="chat-message-tex">
-              <p className={styles['text-comment']}>{text}</p>
+              <TextWithEmoji text={text} textClassName={styles['text-comment']} />
             </div>
           </div>
         </div>
