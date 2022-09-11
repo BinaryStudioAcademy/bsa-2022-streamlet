@@ -20,6 +20,11 @@
   }
 
   @media #{breakpoint.$desktop-small} {
+    grid-template:
+      'video-player side-block'
+      'video-info side-block'
+      'comments-block side-block'
+      '. side-block' / auto 350px;
     padding: 20px;
   }
 }
