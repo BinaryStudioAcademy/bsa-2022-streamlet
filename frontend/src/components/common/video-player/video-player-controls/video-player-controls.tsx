@@ -17,10 +17,18 @@ type Props = {
   videoContainerWrapper: HTMLElement;
   hlsClient: Hls;
   isLive: boolean;
+  isFullscreen: boolean;
   className?: string;
 };
 
-const VideoPlayerControls: FC<Props> = ({ videoContainer, videoContainerWrapper, className, hlsClient, isLive }) => {
+const VideoPlayerControls: FC<Props> = ({
+  videoContainer,
+  videoContainerWrapper,
+  className,
+  hlsClient,
+  isLive,
+  isFullscreen,
+}) => {
   useEffect(() => {
     const handlePause = (): void => {
       videoContainerWrapper.dataset.paused = 'true';
@@ -37,7 +45,7 @@ const VideoPlayerControls: FC<Props> = ({ videoContainer, videoContainerWrapper,
   }, [videoContainer, videoContainerWrapper]);
 
   return (
-    <div className={clsx(styles['video-elements-wrapper'], className)}>
+    <div className={clsx(styles['video-elements-wrapper'], className, isFullscreen && styles['fullscreen'])}>
       <ProgressBar videoContainer={videoContainer} />
       <div className={styles['video-controls-wrapper']}>
         <PlayPauseButton videoContainer={videoContainer} />

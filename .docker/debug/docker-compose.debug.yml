@@ -46,6 +46,7 @@ services:
       dockerfile: .docker/debug/backend-debug.Dockerfile
     depends_on:
       - api-db
+      - rabbitmq
     ports:
       - '5001:5001'
     env_file:
