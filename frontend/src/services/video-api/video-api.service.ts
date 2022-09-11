@@ -15,6 +15,8 @@ import {
   Comment,
   BaseReplyRequestDto,
   VideoPaginationParams,
+  AddVideoViewResponseDto,
+  AddVideoViewRequestDto,
 } from 'shared/build';
 import { Http } from '../http/http.service';
 
@@ -52,6 +54,15 @@ class VideoApi {
       url: `${this.#apiPrefix}${ApiPath.VIDEOS}/${videoId}`,
       options: {
         method: HttpMethod.GET,
+      },
+    });
+  }
+
+  public addVideoView(request: AddVideoViewRequestDto): Promise<AddVideoViewResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}/${request.videoId}${VideoApiPath.VIEW}`,
+      options: {
+        method: HttpMethod.POST,
       },
     });
   }

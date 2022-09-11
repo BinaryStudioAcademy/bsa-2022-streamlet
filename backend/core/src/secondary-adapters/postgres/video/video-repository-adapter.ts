@@ -32,6 +32,24 @@ export class VideoRepositoryAdapter implements VideoRepository {
     this.prismaClient = prismaClient;
   }
 
+  async addView(id: string): Promise<{ currentViews: number } | null> {
+    try {
+      const video = await this.prismaClient.video.update({
+        data: {
+          videoViews: {
+            increment: 1,
+          },
+        },
+        where: {
+          id,
+        },
+      });
+      return { currentViews: video.videoViews };
+    } catch {
+      return null;
+    }
+  }
+
   async reactionByUser(videoId: string, userId: string): Promise<boolean | null> {
     const reaction = await this.prismaClient.reaction.findFirst({
       where: {
