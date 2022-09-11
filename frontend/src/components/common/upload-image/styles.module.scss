@@ -50,7 +50,8 @@
 .error-message {
   display: block;
   width: 100%;
-  color: var(--brand-yellow-color);
+  padding: 10px;
+  color: var(--support-error-color);
   font-size: 16px;
   text-align: center;
 }
