@@ -97,99 +97,101 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
 
   return (
     <div className={styles['video-comment']}>
-      <div className={styles['main-part-comment']}>
-        <UserAvatarOrInitials
-          className={clsx(styles['commentators-avatar'], { [styles['is-reply']]: isReply })}
-          avatar={comment.avatar}
-          userNamingInfo={{ firstName: comment.firstName, lastName: comment.lastName, userName: comment.userName }}
-        />
-        <p className={clsx({ [styles['is-reply']]: isReply }, styles['commentators-name'])}>
-          {getUserDisplayName(comment)}
-        </p>
-        <span className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</span>
-      </div>
-      <div className={clsx({ [styles['is-reply']]: isReply }, styles['content-part-comment'])}>
-        <TextWithEmoji text={comment.text} textClassName={styles['text-comment']} />
-      </div>
-      <div className={styles['reaction-block']}>
-        <>
-          <div className={styles['reaction-container-up']}>
-            <ThumbUp
-              height={'14'}
-              width={'14'}
-              onClick={(): void => handleLikeReact(comment.id)}
-              className={styles['reaction-button']}
-              color={getCommentReactBtnColor(isLightTheme)}
-              fill={getFillReactBtnColor(commentReactions, user, true, isLightTheme)}
-              stroke="currentcolor"
-            />
-            <span className={styles['like-span-up']}>{getLikes(comment.likeNum)}</span>
-          </div>
-          <div className={styles['reaction-container-down']}>
-            <ThumbDown
-              height={'14'}
-              width={'14'}
-              onClick={(): void => handleDislikeReact(comment.id)}
-              className={styles['reaction-button']}
-              color={getCommentReactBtnColor(isLightTheme)}
-              fill={getFillReactBtnColor(commentReactions, user, false, isLightTheme)}
-              stroke="currentcolor"
-            />
-            <span className={styles['like-span-down']}>{getLikes(comment.dislikeNum)}</span>
-            {isUserNotAuthAndReact && (
-              <NeedSignInModal
-                headerText={'Like this video?'}
-                className={styles['sign-in-modal']}
-                mainText={'Sign in so we can take your opinion into account.'}
-                onClose={(): void => {
-                  setIsUserNotAuthAndReact(false);
-                }}
+      <UserAvatarOrInitials
+        className={clsx(styles['commentators-avatar'], { [styles['is-reply']]: isReply })}
+        avatar={comment.avatar}
+        userNamingInfo={{ firstName: comment.firstName, lastName: comment.lastName, userName: comment.userName }}
+      />
+      <div className={styles['video-comment-body']}>
+        <div className={styles['main-part-comment']}>
+          <p className={clsx({ [styles['is-reply']]: isReply }, styles['commentators-name'])}>
+            {getUserDisplayName(comment)}
+          </p>
+          <span className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</span>
+        </div>
+        <div className={clsx({ [styles['is-reply']]: isReply }, styles['content-part-comment'])}>
+          <TextWithEmoji text={comment.text} textClassName={styles['text-comment']} />
+        </div>
+        <div className={styles['reaction-block']}>
+          <>
+            <div className={styles['reaction-container-up']}>
+              <ThumbUp
+                height={'14'}
+                width={'14'}
+                onClick={(): void => handleLikeReact(comment.id)}
+                className={styles['reaction-button']}
+                color={getCommentReactBtnColor(isLightTheme)}
+                fill={getFillReactBtnColor(commentReactions, user, true, isLightTheme)}
+                stroke="currentcolor"
               />
-            )}
+              <span className={styles['like-span-up']}>{getLikes(comment.likeNum)}</span>
+            </div>
+            <div className={styles['reaction-container-down']}>
+              <ThumbDown
+                height={'14'}
+                width={'14'}
+                onClick={(): void => handleDislikeReact(comment.id)}
+                className={styles['reaction-button']}
+                color={getCommentReactBtnColor(isLightTheme)}
+                fill={getFillReactBtnColor(commentReactions, user, false, isLightTheme)}
+                stroke="currentcolor"
+              />
+              <span className={styles['like-span-down']}>{getLikes(comment.dislikeNum)}</span>
+              {isUserNotAuthAndReact && (
+                <NeedSignInModal
+                  headerText={'Like this video?'}
+                  className={styles['sign-in-modal']}
+                  mainText={'Sign in so we can take your opinion into account.'}
+                  onClose={(): void => {
+                    setIsUserNotAuthAndReact(false);
+                  }}
+                />
+              )}
+            </div>
+          </>
+          {!isReply && (
+            <button onClick={handleClickReplyComment} className={styles['button-open-reply-form']}>
+              Reply
+            </button>
+          )}
+        </div>
+        {isReplyFormOpen && (
+          <div className={styles['wrapper-form-reply']}>
+            <VideoPageCommentForm
+              avatar={userAvatar}
+              onSubmit={handleSendForm}
+              className={'form-send-reply'}
+              isLightTheme={isLightTheme}
+              isFormForReply={true}
+              namingInfo={namingInfo}
+              handlerCancelForReplyForm={handlerCancelForReplyForm}
+            />
           </div>
-        </>
-        {!isReply && (
-          <button onClick={handleClickReplyComment} className={styles['button-open-reply-form']}>
-            Reply
+        )}
+        {Boolean(comment.repliesCount) && (
+          <button
+            onClick={handleClickShowReplies}
+            className={clsx(styles['button-show-replies'], { [styles['open-replies']]: isRepliesOpen })}
+          >
+            {comment.repliesCount} replies
           </button>
         )}
+        {isRepliesOpen && (
+          <div className={styles['replies']}>
+            {isRepliesOpen &&
+              replies.map((reply) => (
+                <VideoComment
+                  key={reply.id}
+                  comment={reply}
+                  namingInfo={namingInfo}
+                  onLike={(): void => handleLikeReact(reply.id)}
+                  onDislike={(): void => handleDislikeReact(reply.id)}
+                  isReply={true}
+                />
+              ))}
+          </div>
+        )}
       </div>
-      {isReplyFormOpen && (
-        <div className={styles['wrapper-form-reply']}>
-          <VideoPageCommentForm
-            avatar={userAvatar}
-            onSubmit={handleSendForm}
-            className={'form-send-reply'}
-            isLightTheme={isLightTheme}
-            isFormForReply={true}
-            namingInfo={namingInfo}
-            handlerCancelForReplyForm={handlerCancelForReplyForm}
-          />
-        </div>
-      )}
-      {Boolean(comment.repliesCount) && (
-        <button
-          onClick={handleClickShowReplies}
-          className={clsx(styles['button-show-replies'], { [styles['open-replies']]: isRepliesOpen })}
-        >
-          {comment.repliesCount} replies
-        </button>
-      )}
-      {isRepliesOpen && (
-        <div style={{ marginLeft: '46px' }}>
-          {isRepliesOpen &&
-            replies.map((reply) => (
-              <VideoComment
-                key={reply.id}
-                comment={reply}
-                namingInfo={namingInfo}
-                onLike={(): void => handleLikeReact(reply.id)}
-                onDislike={(): void => handleDislikeReact(reply.id)}
-                isReply={true}
-              />
-            ))}
-        </div>
-      )}
     </div>
   );
 };

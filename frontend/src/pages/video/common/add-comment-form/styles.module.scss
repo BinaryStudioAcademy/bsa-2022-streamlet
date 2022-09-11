@@ -13,11 +13,13 @@ $base-z-index: $page-component-z-index;
 }
 
 .add-comment-block-user-avatar {
+  width: 50px;
+  height: 50px;
   margin-right: 20px;
 
   &.for-reply {
-    width: 24px;
-    height: 24px;
+    width: 34px;
+    height: 34px;
     margin-right: 12px;
   }
 }
@@ -41,12 +43,20 @@ $base-z-index: $page-component-z-index;
   }
 }
 
+.add-comment-input-error {
+  display: none;
+}
+
 .add-comment-input-in-focus {
   border-bottom: var(--brand-green-color) 1px solid;
 }
 
 .add-comment-input-wrapper {
   width: 100%;
+
+  & > div {
+    line-height: 18px;
+  }
 }
 
 .add-comment-submit-active {

@@ -124,6 +124,7 @@ export const VideoPageCommentForm: FC<Props> = ({
           errors={errors}
           label={'Add comment'}
           labelClassName={clsx({ [styles['label-for-reply-form']]: isFormForReply })}
+          errorBlockClassName={styles['add-comment-input-error']}
           name={'comment'}
           placeholder={isFormForReply ? 'Enter reply' : 'Enter new comment text'}
           onFocus={handleInputFocus}

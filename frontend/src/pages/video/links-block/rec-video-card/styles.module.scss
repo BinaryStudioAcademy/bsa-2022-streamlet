@@ -37,6 +37,7 @@
 }
 
 .desc {
+  padding-right: 15px;
   padding-bottom: 0;
   @media #{breakpoint.$tablet-large} {
     gap: 10px;
