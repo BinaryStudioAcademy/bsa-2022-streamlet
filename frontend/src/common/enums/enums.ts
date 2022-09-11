@@ -9,6 +9,7 @@ export {
   LoaderSize,
   VideoTagName,
   ChatMenuOptions,
+  ChatStyle,
   ComponentUpdateDelayTime,
 } from './component/component';
 
