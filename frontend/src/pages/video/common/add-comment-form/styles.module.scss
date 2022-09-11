@@ -27,10 +27,12 @@ $base-z-index: $page-component-z-index;
 .add-comment-input {
   width: 100%;
   height: auto;
+  margin-top: 5px;
   padding: 0 0 3px;
   overflow: hidden;
   color: var(--white-text-color);
   font-weight: 400;
+  line-height: 19px;
   white-space: normal;
   background: none;
   border: none;

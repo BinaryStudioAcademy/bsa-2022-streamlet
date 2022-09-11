@@ -1,6 +1,8 @@
 @use 'assets/css/helpers/break-long-words';
 @import 'assets/css/config.scss';
 
+$base-z-index: $page-component-z-index;
+
 .comment-form {
   margin-bottom: 5px;
 }
@@ -11,6 +13,22 @@
 }
 
 .video-comment-body {
+  display: flex;
+  flex: 1;
+  flex-flow: column nowrap;
+}
+
+.video-comment-body-primary {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.video-comment-body-secondary {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.video-comment-primary-wrp {
   display: flex;
   flex: 1;
   flex-flow: column nowrap;
@@ -44,7 +62,7 @@
 }
 
 .video-comment .main-part-comment .dispatch-time {
-  margin-left: 20px;
+  margin: 0 5px 0 20px;
   color: var(--text-gray-color);
   font-weight: 400;
   font-size: 12px;
@@ -246,4 +264,83 @@
   display: flex;
   flex-flow: column nowrap;
   gap: 10px;
+}
+
+.comment-menu {
+  position: relative;
+
+  &-toggle {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    padding: 0 5px 5px;
+    visibility: hidden;
+    cursor: pointer;
+
+    & path {
+      fill: var(--text-gray-color);
+    }
+
+    @media screen and (max-width: 576px) {
+      visibility: visible;
+    }
+  }
+
+  &-body {
+    position: absolute;
+    top: 25px;
+    right: 0;
+    z-index: $base-z-index + 1;
+    background-color: var(--gray-300-header-menu-background);
+    border-radius: 0 0 3px 3px;
+    box-shadow: -3px 3px 10px 0 rgb(0 0 0 / 15%);
+  }
+
+  &-list {
+    display: flex;
+    flex-flow: column nowrap;
+    list-style: none;
+  }
+
+  &-item {
+    display: grid;
+    grid-template-columns: 33px auto;
+    align-items: center;
+    padding: 5px 15px 5px 5px;
+    color: var(--text-gray-color);
+    cursor: pointer;
+
+    & svg {
+      justify-self: center;
+      height: 15px;
+    }
+
+    & path {
+      fill: var(--text-gray-color);
+    }
+
+    & span {
+      font-size: 15px;
+      white-space: nowrap;
+    }
+  }
+}
+
+.comment-menu-toggle:hover path {
+  fill: var(--white-text-color);
+}
+
+.comment-menu-item:hover {
+  color: var(--white-text-color);
+
+  & path {
+    fill: var(--white-text-color);
+  }
+}
+
+.video-comment-body-primary:hover,
+.comment-menu:focus-within {
+  .comment-menu-toggle {
+    visibility: visible;
+  }
 }
