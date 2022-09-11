@@ -5,21 +5,37 @@ import { Modal } from '../common';
 import style from './styles.module.scss';
 import { getImageUploadError } from '../../../helpers/helpers';
 
+type ResolutionValidation = {
+  resolutionType: 'absolute' | 'less' | 'more' | 'ratio';
+  resolutionWidth: number;
+  resolutionHeight: number;
+};
+
 type UploadImageProps = {
   images: never[];
   onUpload: { (imageList: ImageListType, addUpdateIndex: number[] | undefined): void };
   onClose: { (): void };
   modalClassName?: string;
   maxNumber?: number;
+  resolutionValidation?: ResolutionValidation;
 };
 
-const UploadImage: FC<UploadImageProps> = ({ images, onUpload, onClose, modalClassName, maxNumber = 1 }) => {
+const UploadImage: FC<UploadImageProps> = ({
+  images,
+  onUpload,
+  onClose,
+  modalClassName,
+  maxNumber = 1,
+  resolutionValidation = undefined,
+}) => {
   const [error, setError] = useState<string | undefined>();
   const handleError = (errors: ErrorsType, files: ImageListType | undefined): void => {
     const uploadErrorString: string = getImageUploadError(errors);
     setError(uploadErrorString);
     files?.pop();
   };
+  const { resolutionType, resolutionWidth, resolutionHeight } = resolutionValidation || {};
+
   return (
     <Modal contentContainerClassName={modalClassName} isOpen={true} onClose={onClose}>
       <ImageUploading
@@ -30,6 +46,9 @@ const UploadImage: FC<UploadImageProps> = ({ images, onUpload, onClose, modalCla
         maxFileSize={10000000}
         onError={handleError}
         maxNumber={maxNumber}
+        resolutionType={resolutionType}
+        resolutionHeight={resolutionHeight}
+        resolutionWidth={resolutionWidth}
       >
         {({ onImageUpload, isDragging, dragProps }): ReactNode => (
           <div className={style['upload-image-wrapper']}>

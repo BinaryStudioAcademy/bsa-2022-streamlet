@@ -8,5 +8,9 @@ export const getImageUploadError = (error: ErrorsType): string => {
   if (error?.maxFileSize) {
     return ImageUploadErrorMessage.MAX_SIZE;
   }
+  if (error?.resolution) {
+    return ImageUploadErrorMessage.RESOLUTION_ERROR;
+  }
+
   return ImageUploadErrorMessage.UNKNOWN_ERROR;
 };
