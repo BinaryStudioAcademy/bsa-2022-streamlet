@@ -4,20 +4,19 @@ import { Point, Area } from 'react-easy-crop/types';
 import styleControls from '../image-editor/styles.module.scss';
 import ReactSlider from 'react-slider';
 import styles from './styles.module.scss';
-import { Modal } from '../common';
+import { Button, Modal } from '../common';
 import { useWindowDimensions } from '../../../hooks/hooks';
 import { getChannelBannerEditorSize, getCroppedImg } from '../../../helpers/helpers';
 import { FC } from '../../../common/types/react/fc.type';
 
-type props = {
+type Props = {
   banner: string;
-  setBanner: { (newBannerBase64: string): void };
   handleSave: { (base64Str: string): void };
-  handleClose: { (): void };
+  handleClose: VoidFunction;
   setError: { (errorMessage: string): void };
 };
 
-const ChannelBannerEditor: FC<props> = ({ banner, setBanner, handleClose, handleSave, setError }): ReactElement => {
+const ChannelBannerEditor: FC<Props> = ({ banner, handleClose, handleSave, setError }): ReactElement => {
   const { width } = useWindowDimensions();
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
@@ -40,23 +39,22 @@ const ChannelBannerEditor: FC<props> = ({ banner, setBanner, handleClose, handle
     try {
       if (croppedAreaPixels && croppedAreaPixels) {
         const croppedImage = await getCroppedImg(banner, croppedAreaPixels);
-        setBanner(croppedImage);
         handleSave(croppedImage);
       }
     } catch (e) {
       const error = (e as Error).message;
       setError(error);
     }
-  }, [croppedAreaPixels, banner, setBanner, handleSave, setError]);
+  }, [croppedAreaPixels, banner, handleSave, setError]);
 
   const handleZoomPlusButtonClick = (): void => {
-    if (zoom + 1 < 15) {
+    if (zoom < 15) {
       setZoom(zoom + 1);
     }
   };
 
   const handleZoomMinusButtonClick = (): void => {
-    if (zoom >= 2) {
+    if (zoom > 1) {
       setZoom(zoom - 1);
     }
   };
@@ -101,12 +99,8 @@ const ChannelBannerEditor: FC<props> = ({ banner, setBanner, handleClose, handle
             </span>
           </div>
           <div className={styles['button-container']}>
-            <button type={'button'} onClick={handleClose}>
-              Cancel
-            </button>
-            <button type={'button'} onClick={onSave}>
-              Save
-            </button>
+            <Button type={'button'} onClick={handleClose} content={'Cancel'} />
+            <Button type={'button'} onClick={onSave} content={'Save'} />
           </div>
         </div>
       </div>

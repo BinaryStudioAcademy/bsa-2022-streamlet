@@ -190,7 +190,6 @@ const StudioChannel: FC = () => {
       {isNeedBannerEditor && (
         <ChannelBannerEditor
           banner={preparedBanner as string}
-          setBanner={setPreparedBanner}
           handleSave={onBannerSave}
           handleClose={(): void => setIsNeedBannerEditor(false)}
           setError={(errorMessage: string): void => setError(errorMessage)}

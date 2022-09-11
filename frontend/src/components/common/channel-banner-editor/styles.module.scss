@@ -26,11 +26,13 @@
   background-color: var(--brand-green-color);
   border: none;
   border-radius: 3px;
-  cursor: pointed;
+  cursor: pointer;
 }
 
 .button-container {
+  display: flex;
   justify-self: flex-end;
+  margin-right: 5px;
 }
 
 .controls button:nth-child(2n) {

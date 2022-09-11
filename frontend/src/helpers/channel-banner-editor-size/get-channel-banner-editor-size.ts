@@ -13,11 +13,7 @@ const getChannelBannerEditorSize = ({
   padding,
   controlHeight,
 }: GetChannelBannerEditorSize): Size => {
-  let width = screenWidth - padding;
-
-  if (width > 1251) {
-    width = 1251;
-  }
+  const width = screenWidth - padding > 1251 ? 1251 : screenWidth - padding;
 
   const height = width / aspectRatio + controlHeight + 10;
   return {
@@ -25,4 +21,5 @@ const getChannelBannerEditorSize = ({
     height,
   };
 };
+
 export { getChannelBannerEditorSize };
