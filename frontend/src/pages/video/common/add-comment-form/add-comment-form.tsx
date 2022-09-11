@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import * as Joi from 'joi';
 import { EmojiClickData } from 'emoji-picker-react';
+import { FocusEvent, KeyboardEvent } from 'react';
 import { FC } from 'common/types/types';
 import { useState, useEffect, useAppForm, useCallback } from 'hooks/hooks';
 import { Button, Emoji, Textarea } from 'components/common/common';
 import { UserAvatarOrInitials } from 'components/common/user-avatar-or-initials/user-avatar-or-initials';
 import styles from './styles.module.scss';
-import { FocusEvent } from 'react';
 
 type Props = {
   avatar: string | undefined;
@@ -88,6 +88,12 @@ export const VideoPageCommentForm: FC<Props> = ({
     [getValues, setValue, caretPosition],
   );
 
+  const onHandleKeydownCtrlEnter = (e: KeyboardEvent<HTMLTextAreaElement>): void => {
+    if (e.ctrlKey && e.code === 'Enter') {
+      handleSubmitEvent({ comment: getValues('comment') });
+    }
+  };
+
   useEffect(() => {
     if (selectedEmoji) {
       handleAddEmoji(selectedEmoji);
@@ -122,6 +128,7 @@ export const VideoPageCommentForm: FC<Props> = ({
           placeholder={isFormForReply ? 'Enter reply' : 'Enter new comment text'}
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
+          onKeyDown={onHandleKeydownCtrlEnter}
         />
         <div className={styles['add-comment-form-control']}>
           {(isNeedFormControlElement || isFormForReply) && (
