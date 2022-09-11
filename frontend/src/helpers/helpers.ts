@@ -12,3 +12,4 @@ export { joinExistingValues, getRightUpdateTimeDelay } from './common/common';
 export { getChannelBannerEditorSize } from './channel-banner-editor-size/get-channel-banner-editor-size';
 export * from './image/image';
 export * from './video/video';
+export { getEmojiCdnUrl } from './emoji/emoji';

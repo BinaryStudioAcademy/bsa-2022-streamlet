@@ -9,7 +9,7 @@ import { StreamStatus } from 'shared/build';
 import { StreamInfoFormValues } from './common/stream-info-form-values';
 
 import styles from './styles.module.scss';
-import { StreamPrivacyLabel } from 'common/enums/enums';
+import { ChatStyle, StreamPrivacyLabel } from 'common/enums/enums';
 // import { Select } from 'components/common/select';
 // import { STREAM_PRIVACY_OPTIONS } from 'common/constants/stream/stream';
 
@@ -165,7 +165,7 @@ const StudioStream: FC<Props> = ({
         </div>
       </div>
       <div className={styles['chat-container']}>
-        <VideoChatContainer videoId={stream?.id ?? ''} popOutSetting={false} />
+        <VideoChatContainer videoId={stream?.id ?? ''} popOutSetting={true} chatStyle={ChatStyle.GREEN} />
       </div>
     </div>
   );

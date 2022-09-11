@@ -1,12 +1,12 @@
-import styles from './styles.module.scss';
-import { useAppForm } from '../../../../hooks/use-app-form/use-app-form.hook';
-import { FC } from '../../../../common/types/react/fc.type';
-import { Button, Icon, Textarea } from '../../../../components/common/common';
-import * as Joi from 'joi';
 import clsx from 'clsx';
-import { useState } from '../../../../hooks/hooks';
+import * as Joi from 'joi';
+import { EmojiClickData } from 'emoji-picker-react';
+import { FC } from 'common/types/types';
+import { useState, useEffect, useAppForm, useCallback } from 'hooks/hooks';
+import { Button, Emoji, Textarea } from 'components/common/common';
 import { UserAvatarOrInitials } from 'components/common/user-avatar-or-initials/user-avatar-or-initials';
-import { IconName } from 'common/enums/enums';
+import styles from './styles.module.scss';
+import { FocusEvent } from 'react';
 
 type Props = {
   avatar: string | undefined;
@@ -17,6 +17,7 @@ type Props = {
   };
   onSubmit: { (text: string): void };
   className?: string;
+  isLightTheme: boolean;
   isFormForReply?: boolean;
   handlerCancelForReplyForm: () => void;
 };
@@ -33,12 +34,16 @@ export const VideoPageCommentForm: FC<Props> = ({
   onSubmit,
   className,
   namingInfo,
+  isLightTheme,
   isFormForReply,
   handlerCancelForReplyForm,
 }) => {
   const [isNeedFormControlElement, setIsNeedFormControlElement] = useState(false);
   const [isInputInFocus, setIsInputInFocus] = useState(false);
-  const { control, errors, isValid, reset, handleSubmit } = useAppForm({
+  const [selectedEmoji, setSelectedEmoji] = useState<EmojiClickData | null>(null);
+  const [caretPosition, setCaretPosition] = useState<number[]>([0, 0]);
+
+  const { control, errors, isValid, reset, handleSubmit, setValue, getValues } = useAppForm({
     defaultValues: { comment: '' },
     mode: 'onChange',
     validationSchema: extendedSchema,
@@ -59,9 +64,36 @@ export const VideoPageCommentForm: FC<Props> = ({
     setIsNeedFormControlElement(true);
     setIsInputInFocus(true);
   };
-  const handleInputBlur = (): void => {
+  const handleInputBlur = (e: FocusEvent<HTMLTextAreaElement>): void => {
     setIsInputInFocus(false);
+
+    const { selectionStart, selectionEnd } = e.target;
+    const [caretStart, caretEnd] = caretPosition;
+    if (Number(selectionStart) !== caretStart || Number(selectionEnd) !== caretEnd) {
+      setCaretPosition([Number(selectionStart), Number(selectionEnd)]);
+    }
   };
+
+  const handleAddEmoji = useCallback(
+    (selectedEmoji: EmojiClickData): void => {
+      const emoji = String.fromCodePoint(...selectedEmoji.unified.split('-').map((u) => Number(`0x${u}`)));
+      const deleteTextLength = caretPosition[1] - caretPosition[0];
+      const input = getValues('comment').split('');
+      input.splice(caretPosition[0], deleteTextLength, emoji);
+      setValue('comment', `${input.join('')}`, { shouldValidate: true });
+
+      setCaretPosition(new Array(2).fill(caretPosition[0] + 2));
+      setSelectedEmoji(null);
+    },
+    [getValues, setValue, caretPosition],
+  );
+
+  useEffect(() => {
+    if (selectedEmoji) {
+      handleAddEmoji(selectedEmoji);
+    }
+  }, [selectedEmoji, handleAddEmoji]);
+
   return (
     <form
       onSubmit={handleSubmit(handleSubmitEvent)}
@@ -94,7 +126,11 @@ export const VideoPageCommentForm: FC<Props> = ({
         <div className={styles['add-comment-form-control']}>
           {(isNeedFormControlElement || isFormForReply) && (
             <>
-              <Icon name={IconName.EMOJI} className={styles['emoji-icon']} width="20" height="20" />
+              <Emoji
+                isLightTheme={isLightTheme}
+                setSelectedEmoji={setSelectedEmoji}
+                emojiBlockClassName={styles['emoji-block']}
+              />
               <div className={styles['button-block']}>
                 <Button
                   onClick={handleCancel}
