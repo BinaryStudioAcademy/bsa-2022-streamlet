@@ -10,3 +10,4 @@ export { pushOrDeleteIfExists } from './array/push-or-delete-if-exists-helper';
 export { generateAbbreviatureNameUser, getUserDisplayName, getGoogleOAuthURL } from './user';
 export { joinExistingValues, getRightUpdateTimeDelay } from './common/common';
 export * from './video/video';
+export { getEmojiCdnUrl } from './emoji/emoji';

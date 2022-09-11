@@ -1,4 +1,4 @@
-import { ChatMenuOptions, IconName } from 'common/enums/enums';
+import { ChatMenuOptions, ChatStyle, IconName } from 'common/enums/enums';
 
 const matchMenuOptionWithIconName: Record<ChatMenuOptions, IconName> = {
   [ChatMenuOptions.PARTICIPANTS]: IconName.PARTICIPANTS,
@@ -36,4 +36,11 @@ const popOutChatParamsString = Object.entries(popOutChatParams)
   .map((kv) => kv.join('='))
   .join(',');
 
-export { allChatMenuOptions, popOutChatParamsString };
+const messageMaxLength = 200;
+
+const matchChatStyleWithChatStyleClassName: Record<ChatStyle, string> = {
+  [ChatStyle.DEFAULT]: 'chat-default',
+  [ChatStyle.GREEN]: 'chat-green',
+};
+
+export { allChatMenuOptions, popOutChatParamsString, messageMaxLength, matchChatStyleWithChatStyleClassName };

@@ -4,13 +4,65 @@ $base-z-index: $page-component-z-index;
 $down-btn-height: 35px;
 $hide-transition-duration: 1s;
 
+.chat-default {
+  --chat-wrp-bgc: var(--gray-400-primary-background);
+  --chat-bgc: var(--gray-300-header-menu-background);
+  --chat-welcome-msg-bgc: var(--gray-400-primary-background);
+  --chat-welcome-msg-color: var(--white-text-color);
+  --chat-welcome-msg-close-fill: var(--text-gray-color);
+  --chat-welcome-msg-close-fill-hover: var(--white-text-color);
+  --chat-down-btn-bgc: var(--brand-green-color-hover);
+  --chat-pop-bgc: var(--gray-300-header-menu-background);
+  --chat-pop-span-color: var(--text-gray-color);
+  --chat-pop-restore-btn-bgc: var(--brand-dark-green-color);
+  --chat-pop-restore-btn-bgc-hover: var(--brand-green-color);
+  --chat-header-bgc: var(--gray-300-header-menu-background);
+  --chat-header-brdc: var(--primary-text-color);
+  --chat-header-title-color: var(--white-text-color);
+  --chat-header-back-btn-fill: var(--white-text-color);
+  --chat-header-menu-toggle-fill: var(--text-gray-color);
+  --chat-header-menu-toggle-fill-hover: var(--white-text-color);
+  --chat-header-menu-item-color: var(--text-gray-color);
+  --chat-header-menu-item-color-hover: var(--white-text-color);
+  --chat-footer-bar-bgc: var(--gray-300-header-menu-background);
+  --chat-footer-bar-brdc: var(--gray-400-primary-background);
+  --chat-footer-bar-color: var(--text-gray-color);
+  --chat-footer-bar-color-hover: var(--white-text-color);
+}
+
+.chat-green {
+  --chat-wrp-bgc: var(--green-300-primary-background);
+  --chat-bgc: var(--green-200-header-menu-background);
+  --chat-welcome-msg-bgc: var(--green-300-primary-background);
+  --chat-welcome-msg-color: var(--green-100-header-menu-background);
+  --chat-welcome-msg-close-fill: var(--green-100-header-menu-background);
+  --chat-welcome-msg-close-fill-hover: var(--always-white-color);
+  --chat-down-btn-bgc: var(--brand-green-color-hover);
+  --chat-pop-bgc: var(--green-200-header-menu-background);
+  --chat-pop-span-color: var(--green-100-header-menu-background);
+  --chat-pop-restore-btn-bgc: var(--brand-dark-green-color);
+  --chat-pop-restore-btn-bgc-hover: var(--brand-green-color);
+  --chat-header-bgc: var(--green-200-header-menu-background);
+  --chat-header-brdc: var(--green-300-primary-background);
+  --chat-header-title-color: var(--always-white-color);
+  --chat-header-back-btn-fill: var(--always-white-color);
+  --chat-header-menu-toggle-fill: var(--always-white-color);
+  --chat-header-menu-toggle-fill-hover: var(--always-white-color);
+  --chat-header-menu-item-color: var(--green-100-header-menu-background);
+  --chat-header-menu-item-color-hover: var(--always-white-color);
+  --chat-footer-bar-bgc: var(--green-200-header-menu-background);
+  --chat-footer-bar-brdc: var(--green-300-primary-background);
+  --chat-footer-bar-color: var(--green-100-header-menu-background);
+  --chat-footer-bar-color-hover: var(--always-white-color);
+}
+
 .video-chat-wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
   max-height: 100%;
-  background-color: var(--gray-400-primary-background);
+  background-color: var(--chat-wrp-bgc);
   border-radius: 3px;
   transition: max-height $hide-transition-duration;
 }
@@ -19,13 +71,18 @@ $hide-transition-duration: 1s;
   display: flex;
   flex: 1;
   flex-flow: column-reverse nowrap;
+  min-height: 460px;
   margin-bottom: 3px;
   padding: 20px 20px 0;
   overflow: auto;
   overflow-y: overlay;
-  background-color: var(--gray-300-header-menu-background);
+  background-color: var(--chat-bgc);
   border-radius: 3px;
-  transition: padding 0.75s, margin 0.75s;
+  transition: padding 0.75s, margin 0.75s, min-height $hide-transition-duration;
+
+  @media screen and (max-width: 992px) {
+    min-height: 300px;
+  }
 }
 
 .video-chat.view-participants {
@@ -45,7 +102,7 @@ $hide-transition-duration: 1s;
   grid-auto-rows: auto;
   margin-bottom: 20px;
   padding: 10px 20px;
-  background-color: var(--gray-400-primary-background);
+  background-color: var(--chat-welcome-msg-bgc);
   visibility: visible;
   opacity: 1;
   transition: visibility 0s, opacity 0.5s linear;
@@ -61,7 +118,7 @@ $hide-transition-duration: 1s;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
-  color: var(--white-text-color);
+  color: var(--chat-welcome-msg-color);
   font-size: 13px;
   line-height: 22px;
 }
@@ -72,7 +129,7 @@ $hide-transition-duration: 1s;
 }
 
 .video-chat-welcome-message-close path {
-  fill: var(--text-gray-color);
+  fill: var(--chat-welcome-msg-close-fill);
 }
 
 .video-chat-footer {
@@ -104,7 +161,7 @@ $hide-transition-duration: 1s;
   width: $down-btn-height;
   height: $down-btn-height;
   padding: 10px;
-  background-color: var(--brand-green-color-hover);
+  background-color: var(--chat-down-btn-bgc);
   border-radius: 50%;
   cursor: pointer;
 }
@@ -130,13 +187,13 @@ $hide-transition-duration: 1s;
   min-height: 300px;
   margin-bottom: 3px;
   padding: 20px 20px 0;
-  background-color: var(--gray-300-header-menu-background);
+  background-color: var(--chat-pop-bgc);
   border-radius: 3px;
   transition: min-height 1s;
 }
 
 .video-chat-popout span {
-  color: var(--text-gray-color);
+  color: var(--chat-pop-span-color);
   font-size: 15px;
   line-height: 20px;
 }
@@ -144,12 +201,12 @@ $hide-transition-duration: 1s;
 .video-chat-restore-btn {
   margin-top: 10px;
   color: var(--always-white-color);
-  background-color: var(--brand-dark-green-color);
+  background-color: var(--chat-pop-restore-btn-bgc);
   transition: background-color 0.2s ease;
 }
 
 .video-chat-restore-btn:hover {
-  background-color: var(--brand-green-color);
+  background-color: var(--chat-pop-restore-btn-bgc-hover);
 }
 
 .video-chat-header {
@@ -160,8 +217,8 @@ $hide-transition-duration: 1s;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: var(--gray-300-header-menu-background);
-  border-bottom: 2px solid var(--primary-text-color);
+  background-color: var(--chat-header-bgc);
+  border-bottom: 2px solid var(--chat-header-brdc);
   border-radius: 3px 3px 0 0;
   visibility: visible;
 }
@@ -170,7 +227,7 @@ $hide-transition-duration: 1s;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  color: var(--white-text-color);
+  color: var(--chat-header-title-color);
 }
 
 .video-chat-header-back-btn {
@@ -186,7 +243,7 @@ $hide-transition-duration: 1s;
 }
 
 .video-chat-header-back-btn path {
-  fill: var(--white-text-color);
+  fill: var(--chat-header-back-btn-fill);
 }
 
 .video-chat-header-menu-toggle {
@@ -198,15 +255,15 @@ $hide-transition-duration: 1s;
 }
 
 .video-chat-header-menu-toggle path {
-  fill: var(--text-gray-color);
+  fill: var(--chat-header-menu-toggle-fill);
 }
 
 .video-chat-header-menu-item path {
-  fill: var(--text-gray-color);
+  fill: var(--chat-header-menu-item-color);
 }
 
 .video-chat-header-menu-toggle:hover path {
-  fill: var(--white-text-color);
+  fill: var(--chat-header-menu-toggle-fill-hover);
 }
 
 .video-chat-header-menu-body {
@@ -214,8 +271,8 @@ $hide-transition-duration: 1s;
   top: 100%;
   right: 0;
   z-index: $base-z-index + 1;
-  background-color: var(--gray-300-header-menu-background);
-  border-top: 2px solid var(--primary-text-color);
+  background-color: var(--chat-header-bgc);
+  border-top: 2px solid var(--chat-header-brdc);
   border-radius: 0 0 3px 3px;
   box-shadow: -3px 3px 10px 0 rgb(0 0 0 / 15%);
 }
@@ -231,7 +288,7 @@ $hide-transition-duration: 1s;
   grid-template-columns: 33px auto;
   align-items: center;
   padding: 5px 15px 5px 5px;
-  color: var(--text-gray-color);
+  color: var(--chat-header-menu-item-color);
   cursor: pointer;
 }
 
@@ -246,11 +303,11 @@ $hide-transition-duration: 1s;
 }
 
 .video-chat-header-menu-item:hover {
-  color: var(--white-text-color);
+  color: var(--chat-header-menu-item-color-hover);
 }
 
 .video-chat-header-menu-item:hover path {
-  fill: var(--white-text-color);
+  fill: var(--chat-header-menu-item-color-hover);
 }
 
 .video-chat:hover {
@@ -265,7 +322,7 @@ $hide-transition-duration: 1s;
 
 .video-chat-footer-bar {
   padding: 5px 20px;
-  background-color: var(--gray-300-header-menu-background);
+  background-color: var(--chat-footer-bar-bgc);
 }
 
 .video-chat-footer-bar span {
@@ -273,33 +330,34 @@ $hide-transition-duration: 1s;
   justify-content: center;
   align-items: center;
   width: 100%;
-  color: var(--text-gray-color);
+  color: var(--chat-footer-bar-color);
   font-size: 13px;
   letter-spacing: 1px;
   text-align: center;
   text-transform: uppercase;
-  border-top: 2px solid var(--gray-400-primary-background);
+  border-top: 2px solid var(--chat-footer-bar-brdc);
   cursor: pointer;
   transition: border-top $hide-transition-duration;
 }
 
 .video-chat-footer-bar:hover span {
-  color: var(--white-text-color);
+  color: var(--chat-footer-bar-color-hover);
 }
 
 .chat-disabled .video-chat-footer-bar span {
-  border-top: 2px solid var(--gray-300-header-menu-background);
+  border-top: 2px solid var(--chat-bgc);
 }
 
 .video-chat-welcome-message-close:hover path {
-  fill: var(--white-text-color);
+  fill: var(--chat-welcome-msg-close-fill-hover);
 }
 
 .hide-chat {
-  max-height: 0;
+  max-height: 40px;
 }
 
 .hide-chat .video-chat {
+  min-height: 0;
   margin-bottom: 0;
   padding: 0 20px;
   overflow: hidden;
@@ -337,7 +395,7 @@ $hide-transition-duration: 1s;
 }
 
 .hide-chat .video-chat-footer-bar span {
-  border-top: 2px solid var(--gray-300-header-menu-background);
+  border-top: 2px solid var(--chat-bgc);
 }
 
 .hide-chat .video-chat-popout {

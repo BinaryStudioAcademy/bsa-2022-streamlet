@@ -15,6 +15,7 @@ import { AppRoutes } from 'common/enums/enums';
 import { VideoPageCommentForm } from '../add-comment-form/add-comment-form';
 import { videoPageActions } from 'store/actions';
 import clsx from 'clsx';
+import { TextWithEmoji } from 'components/common/common';
 
 type Props = {
   comment: Comment;
@@ -108,7 +109,7 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
         <span className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</span>
       </div>
       <div className={clsx({ [styles['is-reply']]: isReply }, styles['content-part-comment'])}>
-        <p className={styles['text-comment']}>{comment.text}</p>
+        <TextWithEmoji text={comment.text} textClassName={styles['text-comment']} />
       </div>
       <div className={styles['reaction-block']}>
         <>
@@ -159,6 +160,7 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
             avatar={userAvatar}
             onSubmit={handleSendForm}
             className={'form-send-reply'}
+            isLightTheme={isLightTheme}
             isFormForReply={true}
             namingInfo={namingInfo}
             handlerCancelForReplyForm={handlerCancelForReplyForm}

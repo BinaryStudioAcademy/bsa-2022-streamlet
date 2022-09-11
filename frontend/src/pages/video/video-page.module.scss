@@ -48,14 +48,13 @@
 
 .chat-block {
   min-width: 300px;
-  max-width: 350px;
   height: 100%;
-  max-height: min(860px, 80vh);
+  max-height: min(650px, 80vh);
   padding: 10px;
 
   @media screen and (max-width: 992px) {
     width: 100%;
-    max-width: none;
+    max-height: 500px;
   }
 }
 
