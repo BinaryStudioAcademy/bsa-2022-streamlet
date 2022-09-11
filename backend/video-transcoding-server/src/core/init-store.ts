@@ -2,9 +2,10 @@ import { createMasterPlaylist } from '~/helpers';
 import { FsService } from '~/services';
 import path from 'path';
 import { ProcessPreset } from '~/shared';
+import { CONFIG } from '~/config/config';
 
 export const initStore = async ({ videoId, presets }: { videoId: string; presets: ProcessPreset[] }): Promise<void> => {
-  const staticPath = path.resolve(__dirname, '../../playback');
-  await FsService.createFolder({ path: path.resolve(staticPath, videoId) });
-  await createMasterPlaylist(path.resolve(staticPath, videoId), presets);
+  const pathToStreamFolder = path.resolve(CONFIG.playbackPath, videoId);
+  await FsService.createFolder({ path: pathToStreamFolder });
+  await createMasterPlaylist(pathToStreamFolder, presets);
 };

@@ -10,7 +10,7 @@ export class FsService {
     }
   }
 
-  public static async emptyFolder({ path }: { path: string }): Promise<void> {
+  public static async removeFolder(path: string): Promise<void> {
     try {
       await rm(path, { recursive: true, force: true }); // rm -rf equivalent
     } catch (err) {
