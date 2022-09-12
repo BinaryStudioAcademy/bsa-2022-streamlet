@@ -63,4 +63,6 @@ export interface VideoRepository {
   getVideosBySearch(queryParams: VideoSearch): Promise<DataVideo>;
   getRepliesForComment(commentId: string): Promise<Comment[]>;
   addVideoCommentReply(request: BaseReplyRequestDto, authorId: string): Promise<Comment[]>;
+  getGeneralVideos(userId: string): Promise<DataVideo>;
+  getRecommendedVideos(userId: string | undefined): Promise<DataVideo>;
 }

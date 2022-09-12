@@ -9,10 +9,11 @@ import { activeCategory, clearFilters, getCategories } from 'store/categories/ac
 
 const MainPageContainer: FC = () => {
   const dispatch = useAppDispatch();
-  const videos = useAppSelector((state) => state.videos.data.list);
-  const categories = useAppSelector((state) => state.category.data);
-
-  const isLightTheme = useAppSelector((state) => state.theme.isLightTheme);
+  const { videos, categories, isLightTheme } = useAppSelector((state) => ({
+    videos: state.videos.data.list,
+    categories: state.category.data,
+    isLightTheme: state.theme.isLightTheme,
+  }));
 
   function handleClickFilter(id: string): void {
     dispatch(activeCategory({ id }));
@@ -30,7 +31,13 @@ const MainPageContainer: FC = () => {
     handleClickClearFilters,
   };
   const blockVideo = [
+    // {
+    //   videoCards: videos
+    //     .map((video) => <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />)
+    //     .slice(0, 5),
+    // },
     {
+      blockTitle: 'Recommended for you',
       videoCards: videos.map((video) => <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />),
       isLazyBlock: true,
     },

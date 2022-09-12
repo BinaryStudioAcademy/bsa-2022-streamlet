@@ -62,26 +62,36 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, loadingStatu
   return (
     <div className={styles['separate-video-block']}>
       {blockTitle && <h2 className={styles['video-block-title']}>{blockTitle}</h2>}
-      <InfiniteScroll
-        dataLength={videoCards.length}
-        next={uploadVideos}
-        scrollableTarget="main-content"
-        hasMore={lazyLoad}
-        loader={
-          <div className={styles['loader-block']}>
-            <Loader spinnerSize={LoaderSize.XS} />
-          </div>
-        }
-      >
+      {isLazyBlock && (
+        <InfiniteScroll
+          dataLength={videoCards.length}
+          next={uploadVideos}
+          scrollableTarget="main-content"
+          hasMore={lazyLoad}
+          loader={
+            <div className={styles['loader-block']}>
+              <Loader spinnerSize={LoaderSize.XS} />
+            </div>
+          }
+        >
+          <SkeletonTheme baseColor={colorForSkeleton.baseColor} highlightColor={colorForSkeleton.highlightColor}>
+            <div className={styles['videos-block']}>
+              {loadingStatus === DataStatus.FULFILLED && !isLazyBlock && videoCards}
+              {isLazyBlock && videoCards}
+              {loadingStatus === DataStatus.PENDING &&
+                returnEmptyArrayForSkeleton().map((_, index) => <VideoSkeleton key={index} />)}
+            </div>
+          </SkeletonTheme>
+        </InfiniteScroll>
+      )}
+      {!isLazyBlock && (
         <SkeletonTheme baseColor={colorForSkeleton.baseColor} highlightColor={colorForSkeleton.highlightColor}>
           <div className={styles['videos-block']}>
+            {loadingStatus === DataStatus.PENDING && [1, 2, 3, 4, 5].map((_, index) => <VideoSkeleton key={index} />)}
             {loadingStatus === DataStatus.FULFILLED && !isLazyBlock && videoCards}
-            {isLazyBlock && videoCards}
-            {loadingStatus === DataStatus.PENDING &&
-              returnEmptyArrayForSkeleton().map((_, index) => <VideoSkeleton key={index} />)}
           </div>
         </SkeletonTheme>
-      </InfiniteScroll>
+      )}
     </div>
   );
 };

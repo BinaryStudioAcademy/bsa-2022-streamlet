@@ -146,6 +146,19 @@ export class VideoController extends BaseHttpController {
     return this.videoService.getAllVideos(paginationParams);
   }
 
+  @httpGet(VideoApiPath.GENERAL_VIDEOS, authenticationMiddleware)
+  public async getGeneralVideos(@request() req: ExtendedAuthenticatedRequest): Promise<DataVideo> {
+    const { id } = req.user;
+    return await this.videoService.getGeneralVideos(id);
+  }
+
+  @httpGet(VideoApiPath.RECOMMENDED_VIDEOS, optionalAuthenticationMiddleware)
+  public async getRecommendedVideos(@request() req: ExtendedAuthenticatedRequest): Promise<DataVideo> {
+    const id = req?.user?.id ?? undefined;
+
+    return await this.videoService.getRecommendedVideos(id);
+  }
+
   /**
    * @swagger
    * /videos/search:

@@ -93,4 +93,12 @@ export class VideoService {
   async addVideoCommentReply(request: BaseReplyRequestDto, userId: string): Promise<Comment[]> {
     return this.videoRepository.addVideoCommentReply(request, userId);
   }
+
+  async getGeneralVideos(userId: string): Promise<DataVideo> {
+    return await this.videoRepository.getGeneralVideos(userId);
+  }
+
+  async getRecommendedVideos(userId: string | undefined): Promise<DataVideo> {
+    return await this.videoRepository.getRecommendedVideos(userId);
+  }
 }
