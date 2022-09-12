@@ -20,6 +20,7 @@ const TabHeader: FC<Props> = ({ tabs, currentTab }) => {
         LeftArrow={<LeftArrow isFollowingOrBrowse={true} />}
         RightArrow={<RightArrow isFollowingOrBrowse={true} />}
         wrapperClassName={styles['horizontal-scroll']}
+        scrollContainerClassName={styles['horizontal-scroll']}
       >
         {tabs.map((tabInfo) => {
           return (
