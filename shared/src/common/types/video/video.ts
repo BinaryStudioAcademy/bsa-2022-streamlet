@@ -13,3 +13,4 @@ export { BaseVideoCommentResponseDto } from './base-video-comment-response-dto.t
 export { ResponseRepliesForComment } from './base-replies-response-dto.type';
 export { BaseReplyRequestDto } from './base-reply-request-dto.type';
 export { VideoPaginationParams } from './video-queries-params.dto';
+export * from './add-video-view-dto';
