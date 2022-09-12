@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { FC, FormControl, VideoStreamResponseDto } from 'common/types/types';
 import { Button, Input, Loader, PasswordInput } from 'components/common/common';
-import { VideoChatContainer } from 'components/video-chat/video-chat-container';
+import { ChatSetting, VideoChatContainer } from 'components/video-chat/video-chat-container';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { DeepRequired, FieldErrorsImpl, FieldValues, UseFormGetValues } from 'react-hook-form';
 import { StreamStatus } from 'shared/build';
@@ -34,6 +34,10 @@ const StudioStream: FC<Props> = ({
   infoFormErrors,
   infoFormValues,
 }) => {
+  const chatSettings: ChatSetting = {
+    hideSetting: false,
+  };
+
   return (
     <div className={styles['settings-container']}>
       <div className={styles['settings-block-container']}>
@@ -165,7 +169,7 @@ const StudioStream: FC<Props> = ({
         </div>
       </div>
       <div className={styles['chat-container']}>
-        <VideoChatContainer videoId={stream?.id ?? ''} popOutSetting={true} chatStyle={ChatStyle.GREEN} />
+        <VideoChatContainer videoId={stream?.id ?? ''} chatSettings={chatSettings} chatStyle={ChatStyle.GREEN} />
       </div>
     </div>
   );

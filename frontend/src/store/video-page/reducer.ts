@@ -11,6 +11,7 @@ import {
   getRepliesForComment,
   addVideoCommentReply,
   resetVideoPage,
+  addVideoView,
 } from './actions';
 
 type State = {
@@ -24,6 +25,10 @@ type State = {
   replies: {
     dataStatus: DataStatus;
     data: Record<string, Comment[]>;
+  };
+  videoView: {
+    isViewed: boolean;
+    dataStatus: DataStatus;
   };
 };
 
@@ -39,15 +44,21 @@ const initialState: State = {
     dataStatus: DataStatus.IDLE,
     data: {},
   },
+  videoView: {
+    isViewed: false,
+    dataStatus: DataStatus.IDLE,
+  },
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder.addCase(getVideo.fulfilled, (state, { payload }) => {
     state.video = payload;
+    state.videoView = { ...initialState.videoView };
     state.dataStatus = DataStatus.FULFILLED;
   });
   builder.addCase(getVideo.pending, (state) => {
     state.error = undefined;
+    state.videoView = { ...initialState.videoView };
     state.dataStatus = DataStatus.PENDING;
   });
   builder.addCase(getVideo.rejected, (state, { error }) => {
@@ -64,6 +75,34 @@ const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(addVideoComment.fulfilled, (state, _payload) => {
     state.dataStatus = DataStatus.FULFILLED;
+  });
+
+  builder.addCase(addVideoView.fulfilled, (state, { payload }) => {
+    if (payload === true) {
+      // currently, no-op, video was already viewed previously
+    } else if (payload) {
+      state.videoView.dataStatus = DataStatus.FULFILLED;
+      state.videoView.isViewed = true;
+      if (state.video) {
+        state.video.videoViews = payload.currentViews;
+      }
+    }
+    // video was not present in state yet
+    else if (payload === null) {
+      state.videoView = { ...initialState.videoView };
+    }
+  });
+
+  builder.addCase(addVideoView.pending, (state, payload) => {
+    if (payload) {
+      state.videoView.dataStatus = DataStatus.PENDING;
+    }
+  });
+
+  builder.addCase(addVideoView.rejected, (state, payload) => {
+    if (payload) {
+      state.videoView.dataStatus = DataStatus.REJECTED;
+    }
   });
 
   builder.addCase(videoReact.fulfilled, (state, { payload }) => {

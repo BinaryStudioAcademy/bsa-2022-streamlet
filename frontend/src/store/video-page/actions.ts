@@ -8,6 +8,7 @@ import {
   CreateReactionResponseDto,
   CreateCommentReactionRequestDto,
   CreateCommentReactionResponseDto,
+  AddVideoViewResponseDto,
 } from 'common/types/types';
 import { VideoExpandedResponseDto, ResponseRepliesForComment, BaseReplyRequestDto } from 'shared/build';
 import { ActionType } from './common';
@@ -27,6 +28,23 @@ const addVideoComment = createAsyncThunk<VideoCommentResponseDto, VideoCommentRe
     const { videoApi } = extra;
 
     return await videoApi.comment(payload);
+  },
+);
+
+const addVideoView = createAsyncThunk<AddVideoViewResponseDto | null | true, void, AsyncThunkConfig>(
+  ActionType.ADD_VIEW,
+  async (payload, { extra, getState }) => {
+    const { videoApi } = extra;
+    const state = getState();
+    const currentVideo = state.videoPage.video;
+    const isViewed = state.videoPage.videoView.isViewed;
+    if (!currentVideo) {
+      return null;
+    }
+    if (isViewed) {
+      return true;
+    }
+    return videoApi.addVideoView({ videoId: currentVideo.id });
   },
 );
 
@@ -89,4 +107,5 @@ export {
   getRepliesForComment,
   addVideoCommentReply,
   resetVideoPage,
+  addVideoView,
 };

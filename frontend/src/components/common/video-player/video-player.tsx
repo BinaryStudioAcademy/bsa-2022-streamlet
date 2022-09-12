@@ -19,11 +19,21 @@ type VideoPlayerProps = {
   url: string;
   isLive?: boolean;
   className?: string;
+  // fires when user clicks play (and video was paused),
+  // or when autoplay is used
+  onStartPlay?: () => void;
 };
 
 const FULLSCREEN_INACTIVE_TIME_MS = 2000;
 
-const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps = {}, isLive = false, className }) => {
+const VideoPlayer: FC<VideoPlayerProps> = ({
+  videoAttributes,
+  url,
+  sizingProps = {},
+  isLive = false,
+  className,
+  onStartPlay,
+}) => {
   const videoContainerRef = useRef<HTMLVideoElement | null>(null);
   const videoContainerWrapperRef = useRef<HTMLElement | null>(null);
   const hlsRef = useRef<Hls | null>(null);
@@ -92,7 +102,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
 
       hls.attachMedia(videoContainerRef.current);
       hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-        hls.loadSource(url);
+        hls.loadSource(new URL(url, ENV.VIDEO_FALLBACK_BASE_URL).toString());
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
           hlsRef.current = hls;
           setAreRefsNull((prev) => ({
@@ -168,6 +178,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
             fscreen.requestFullscreen(videoContainerWrapperRef.current);
           }
         }}
+        onPlay={onStartPlay}
       >
         <p>Your browser doesn't support playing video. Please upgrade to a new one.</p>
       </video>
