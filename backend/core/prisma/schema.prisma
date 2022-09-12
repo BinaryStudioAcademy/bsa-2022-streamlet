@@ -149,6 +149,8 @@ model VideoComment {
   author           User              @relation(fields: [authorId], references: [id])
   authorId         String
   commentReactions CommentReaction[]
+  isEdited         Boolean           @default(false)
+  isDeleted        Boolean           @default(false)
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 }
