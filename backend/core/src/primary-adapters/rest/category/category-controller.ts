@@ -14,7 +14,6 @@ import { inject } from 'inversify';
 import { CONTAINER_TYPES, ExtendedAuthenticatedRequest } from '~/shared/types/types';
 import {
   ApiPath,
-  DefaultRequestParam,
   CategoryApiPath,
   CategorySearchRequestQueryDto,
   CategoryResponseDto,
@@ -124,7 +123,7 @@ export class CategoryController extends BaseHttpController {
 
   @httpPost(CategoryApiPath.$BIND, authenticationMiddleware)
   public async bindCategoryToVIdeo(
-    @requestParam() { id }: DefaultRequestParam,
+    @requestParam() { categoryId: id }: { categoryId: string },
     @requestBody() { categories }: BindCategoryToVideoRequestDto,
   ): Promise<CategoryResponseDto[]> {
     const payload = categories.map((category) => normalizeCategoryPayload(category));
