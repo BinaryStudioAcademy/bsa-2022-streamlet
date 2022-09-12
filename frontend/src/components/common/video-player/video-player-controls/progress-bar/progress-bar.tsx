@@ -6,18 +6,26 @@ import styles from './styles.module.scss';
 type Props = {
   videoContainer: HTMLVideoElement;
   className?: string;
+  liveSyncLie: boolean;
 };
 
-const ProgressBar: FC<Props> = ({ videoContainer, className }) => {
+// if current time is within 4s from live edge, snap the bar to the end
+const LIVE_SYNC_LIE_SPAN_SEC = 4;
+
+const ProgressBar: FC<Props> = ({ videoContainer, className, liveSyncLie }) => {
   const progressWrapper = useRef<HTMLDivElement | null>(null);
   const [previewTime, setPreviewTime] = useState(0);
 
   useEffect(() => {
     const onTimeUpdate = (): void => {
       if (progressWrapper.current) {
+        let currentTime = videoContainer.currentTime;
+        if (liveSyncLie) {
+          currentTime += LIVE_SYNC_LIE_SPAN_SEC;
+        }
         progressWrapper.current.style.setProperty(
           '--progress-position',
-          (videoContainer.currentTime / videoContainer.duration).toString(),
+          Math.min(currentTime / videoContainer.duration, 1).toString(),
         );
       }
     };
@@ -25,7 +33,7 @@ const ProgressBar: FC<Props> = ({ videoContainer, className }) => {
     return () => {
       videoContainer.removeEventListener('timeupdate', onTimeUpdate);
     };
-  }, [videoContainer]);
+  }, [liveSyncLie, videoContainer]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>): void => {
     const rect = e.currentTarget.getBoundingClientRect();
