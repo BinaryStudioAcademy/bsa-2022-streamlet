@@ -47,9 +47,9 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
       scheduledStreamDate,
       privacy,
       videoId: stream?.id ?? '',
-      tags: tags?.map((tag) => ({ name: tag.label })) ?? [],
-      categories: categories?.map((category) => ({ name: category.label })) ?? [],
-      poster: stream?.poster ?? '',
+      tags: tags?.map((tag) => tag.label) ?? [],
+      categories: categories?.map((category) => category.label) ?? [],
+      poster: temporaryPoster ?? stream?.poster ?? '',
     });
   };
 
