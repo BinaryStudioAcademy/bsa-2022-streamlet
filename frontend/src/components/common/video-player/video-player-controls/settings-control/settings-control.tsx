@@ -4,6 +4,7 @@ import { ReactComponent as SettingsIcon } from 'assets/img/settings-filled.svg';
 import { ReactComponent as SpeedIcon } from 'assets/img/speedometer.svg';
 import { ReactComponent as QualityIcon } from 'assets/img/settings-tune.svg';
 import styles from './styles.module.scss';
+import headerStyles from './header-styles.module.scss';
 import { GenericSettingsModal } from './generic-settings-modal/generic-settings-modal';
 import { ModalItem } from './modal-item/modal-item';
 import { SpeedSelector } from './speed-selector/speed-selector';
@@ -26,17 +27,28 @@ enum Modal {
 const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, hlsClient }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState<Modal>(Modal.MAIN);
+  const [speed, setSpeed] = useState(videoContainer.playbackRate);
+  const [quality, setQuality] = useState('Auto');
 
   const getModalComponent = useMemo((): ReactElement => {
     switch (currentModal) {
       case Modal.MAIN: {
         return (
           <GenericSettingsModal className={styles['settings-modal']}>
+            <ModalItem isHeader contentContainerClassName={headerStyles['header']} isHoverable={false}>
+              <span className={headerStyles['header-text']}>Settings</span>
+            </ModalItem>
             <ModalItem onClick={(): void => setCurrentModal(Modal.SPEED)} icon={<SpeedIcon height={20} />}>
-              Speed
+              <div className={styles['modal-option-text-wrapper']}>
+                <div>Speed </div>
+                <div className={styles['option-metric']}>{speed}x</div>
+              </div>
             </ModalItem>
             <ModalItem onClick={(): void => setCurrentModal(Modal.QUALITY)} icon={<QualityIcon height={17} />}>
-              Quality
+              <div className={styles['modal-option-text-wrapper']}>
+                <div>Quality </div>
+                <div className={styles['option-metric']}>{quality}</div>
+              </div>
             </ModalItem>
           </GenericSettingsModal>
         );
@@ -47,6 +59,7 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
             className={styles['settings-modal']}
             goBack={(): void => setCurrentModal(Modal.MAIN)}
             hlsClient={hlsClient}
+            setLevelName={setQuality}
           />
         );
       }
@@ -56,11 +69,12 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
             className={styles['settings-modal']}
             goBack={(): void => setCurrentModal(Modal.MAIN)}
             videoContainer={videoContainer}
+            setCurrentSpeed={setSpeed}
           />
         );
       }
     }
-  }, [currentModal, hlsClient, videoContainer]);
+  }, [currentModal, hlsClient, speed, quality, videoContainer]);
 
   useLayoutEffect(() => {
     videoWrapper.setAttribute('data-keep-open-modal', isOpen.toString());
@@ -78,7 +92,7 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
     <div className={styles['settings-wrapper']} onBlur={handleBlur}>
       {isOpen && getModalComponent}
       <ControlButton className={className} onClick={(): void => setIsOpen((prev) => !prev)}>
-        <SettingsIcon height={20} />
+        <SettingsIcon height="70%" />
       </ControlButton>
     </div>
   );

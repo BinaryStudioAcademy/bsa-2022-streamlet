@@ -4,7 +4,7 @@ import { useLocation, useEffect, useAppDispatch, useAppSelector, useWindowDimens
 import { tokensStorageService } from 'services/services';
 import { authActions, socketActions } from 'store/actions';
 import { MainPageContainer } from 'pages/main-page/main-page-container';
-import { Routes, Route, HeaderContainer, SidebarContainer } from 'components/common/common';
+import { Routes, Route, HeaderContainer, SidebarContainer, Tooltip } from 'components/common/common';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 import { Search } from 'components/search/search';
 import { NotFound } from 'components/placeholder-page/not-found';
@@ -106,6 +106,7 @@ const App: FC = () => {
       )}
       {isHasStudioNavigation && (
         <div className={styles['studio-content-section']}>
+          <Tooltip isLightTheme={isLightTheme} />
           <StudioSidebar />
           <div className={styles['main-content']}>
             <Routes>
@@ -119,6 +120,7 @@ const App: FC = () => {
       )}
       {isHasDefaultNavigation && (
         <div className={styles['layout-wrapper']}>
+          <Tooltip isLightTheme={isLightTheme} />
           <HeaderContainer />
           <section className={styles['content-section']}>
             <SidebarContainer />

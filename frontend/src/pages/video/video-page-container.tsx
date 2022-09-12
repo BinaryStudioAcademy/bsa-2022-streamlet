@@ -14,6 +14,7 @@ import { ChannelInfoRow } from './channel-info-row/channel-info-row';
 import { VideoHeader } from './video-header/video-header';
 import { LinksBlock } from './links-block/links-block';
 import { NotFound } from 'components/placeholder-page';
+import { addVideoView } from 'store/video-page/actions';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -81,6 +82,10 @@ const VideoPageContainer: FC = () => {
     return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
   }
 
+  const handlePlay = (): void => {
+    dispatch(addVideoView());
+  };
+
   const { status } = videoData;
   const isVideoFinished = status === StreamStatus.FINISHED;
   return (
@@ -96,6 +101,7 @@ const VideoPageContainer: FC = () => {
           isLive={videoData.status === StreamStatus.LIVE}
           videoAttributes={{ poster: videoData.poster }}
           className={styles['video-player']}
+          onStartPlay={handlePlay}
         />
       </div>
       <div className={styles['video-info-block']}>
@@ -110,7 +116,7 @@ const VideoPageContainer: FC = () => {
       <div className={styles['side-block']}>
         {!isVideoFinished && (
           <div className={styles['chat-block']}>
-            <VideoChatContainer videoId={videoId} popOutSetting={true} />
+            <VideoChatContainer videoId={videoId} />
           </div>
         )}
         <LinksBlock videoId={videoId} />

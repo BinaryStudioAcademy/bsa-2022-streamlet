@@ -13,7 +13,6 @@ import { matchPath } from 'react-router-dom';
 import { useLayoutEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeSidebar } from 'store/layout/actions';
-import { Tooltip } from '../tooltip/tooltip';
 
 interface SidebarProps {
   isSidebarOpen: boolean;
@@ -46,9 +45,10 @@ const Sidebar: FC<SidebarProps> = ({ configRoutePages, activeRouteId, isSidebarO
     }
   }, [dispatch, shouldHideSidebar]);
 
-  const isLightTheme = useAppSelector((state) => state.theme.isLightTheme);
-  const isSideBarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
-  const hasUser = Boolean(useAppSelector((state) => state.auth.user));
+  const { hasUser } = useAppSelector((state) => ({
+    hasUser: Boolean(state.auth.user),
+  }));
+
   return (
     <>
       <MobileSidebar {...mobileSidebarProps} hasBackupForWideScreen={!shouldHideSidebar} />
@@ -61,7 +61,6 @@ const Sidebar: FC<SidebarProps> = ({ configRoutePages, activeRouteId, isSidebarO
             styles.sidebar,
           )}
         >
-          {!isSideBarOpen && <Tooltip place={'right'} isLightTheme={isLightTheme} />}
           <nav className={styles['navigate-menu']}>
             <ul>
               {configRoutePages.map(
@@ -72,7 +71,7 @@ const Sidebar: FC<SidebarProps> = ({ configRoutePages, activeRouteId, isSidebarO
                       to={page.linkTo}
                       className={clsx({ [styles.active]: page.id === activeRouteId })}
                     >
-                      <li data-tip={!isSidebarOpen ? page.textLink : undefined}>
+                      <li data-tip={!isSidebarOpen ? page.textLink : ''} data-place="right">
                         <Icon name={page.iconName} width="24" height="24" />
                         <span className={styles['link-name']}>{page.textLink}</span>
                       </li>

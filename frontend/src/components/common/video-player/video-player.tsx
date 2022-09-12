@@ -6,8 +6,8 @@ import styles from './styles.module.scss';
 import { toggleVideoPlay } from './helpers/toggle-video-play';
 import clsx from 'clsx';
 import { PlayPauseCenterEffect } from './play-pause-center-effect/play-pause-center-effect';
-import { ENV } from 'common/enums/enums';
 import fscreen from 'fscreen';
+import { ENV } from 'common/enums/enums';
 type VideoPlayerProps = {
   sizingProps?: {
     height?: number | string;
@@ -20,11 +20,21 @@ type VideoPlayerProps = {
   url: string;
   isLive?: boolean;
   className?: string;
+  // fires when user clicks play (and video was paused),
+  // or when autoplay is used
+  onStartPlay?: () => void;
 };
 
 const FULLSCREEN_INACTIVE_TIME_MS = 2000;
 
-const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps = {}, isLive = false, className }) => {
+const VideoPlayer: FC<VideoPlayerProps> = ({
+  videoAttributes,
+  url,
+  sizingProps = {},
+  isLive = false,
+  className,
+  onStartPlay,
+}) => {
   const videoContainerRef = useRef<HTMLVideoElement | null>(null);
   const videoContainerWrapperRef = useRef<HTMLElement | null>(null);
   const hlsRef = useRef<Hls | null>(null);
@@ -79,11 +89,21 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
     if (Hls.isSupported()) {
       const hls = new Hls({
         startLevel: -1,
+        // according to docs: "value too low (inferior to ~3 segment durations) is likely to cause playback stalls"
+        // if this is a problem, value may be returned to 3, which will make the video start 6 seconds before live point
+        liveSyncDuration: 0,
+        liveMaxLatencyDuration: 0.5,
+        // ideally, there should be some modifications in the playlist file
+        // when the video turns offline, that would differentiate it from live video
+        // and let the player start from start automatically
+        // but, even if it's not the case, the player may stupidly look at isLive and
+        // modify start position
+        startPosition: isLive ? -1 : 0,
       });
 
       hls.attachMedia(videoContainerRef.current);
       hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-        hls.loadSource(ENV.VIDEO_FALLBACK_BASE_URL + url);
+        hls.loadSource(new URL(url, ENV.VIDEO_FALLBACK_BASE_URL).toString());
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
           hlsRef.current = hls;
           setAreRefsNull((prev) => ({
@@ -118,7 +138,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
         }));
       };
     }
-  }, [areRefsNull.videoContainer, url]);
+  }, [areRefsNull.videoContainer, isLive, url]);
 
   const videoContainerWrapperCallbackRef = useCallback((element: HTMLDivElement | null): void => {
     videoContainerWrapperRef.current = element;
@@ -159,6 +179,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
             fscreen.requestFullscreen(videoContainerWrapperRef.current);
           }
         }}
+        onPlay={onStartPlay}
       >
         <p>Your browser doesn't support playing video. Please upgrade to a new one.</p>
       </video>
@@ -169,6 +190,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
           <VideoPlayerControls
             hlsClient={hlsRef.current}
             isLive={isLive}
+            isFullscreen={isFullscreen}
             videoContainer={videoContainerRef.current}
             videoContainerWrapper={videoContainerWrapperRef.current}
             className={styles['video-elements']}

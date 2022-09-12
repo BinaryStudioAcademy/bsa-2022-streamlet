@@ -32,6 +32,24 @@ export class VideoRepositoryAdapter implements VideoRepository {
     this.prismaClient = prismaClient;
   }
 
+  async addView(id: string): Promise<{ currentViews: number } | null> {
+    try {
+      const video = await this.prismaClient.video.update({
+        data: {
+          videoViews: {
+            increment: 1,
+          },
+        },
+        where: {
+          id,
+        },
+      });
+      return { currentViews: video.videoViews };
+    } catch {
+      return null;
+    }
+  }
+
   async reactionByUser(videoId: string, userId: string): Promise<boolean | null> {
     const reaction = await this.prismaClient.reaction.findFirst({
       where: {
@@ -277,8 +295,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
       where: {
         categories: {
           some: {
-            name: {
-              in: category,
+            category: {
+              name: {
+                in: category,
+              },
             },
           },
         },
@@ -298,8 +318,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         ...{ privacy: StreamPrivacy.PUBLIC },
         categories: {
           some: {
-            name: {
-              in: category,
+            category: {
+              name: {
+                in: category,
+              },
             },
           },
         },
@@ -309,7 +331,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       include: {
         categories: {
           select: {
-            name: true,
+            category: true,
           },
         },
         channel: {
@@ -343,7 +365,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       include: {
         categories: {
           select: {
-            name: true,
+            category: true,
           },
         },
         channel: {
@@ -367,8 +389,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         ...{ privacy: StreamPrivacy.PUBLIC },
         tags: {
           some: {
-            name: {
-              in: tags,
+            tag: {
+              name: {
+                in: tags,
+              },
             },
           },
         },
@@ -393,8 +417,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         ...{ privacy: StreamPrivacy.PUBLIC },
         categories: {
           some: {
-            name: {
-              in: categories,
+            category: {
+              name: {
+                in: categories,
+              },
             },
           },
         },
