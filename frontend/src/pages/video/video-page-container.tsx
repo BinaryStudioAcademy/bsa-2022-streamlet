@@ -116,7 +116,7 @@ const VideoPageContainer: FC = () => {
       <div className={styles['side-block']}>
         {!isVideoFinished && (
           <div className={styles['chat-block']}>
-            <VideoChatContainer videoId={videoId} popOutSetting={true} />
+            <VideoChatContainer videoId={videoId} />
           </div>
         )}
         <LinksBlock videoId={videoId} />
