@@ -1,37 +1,48 @@
-import { VideoCardMain } from 'components/common/common';
-import { FilterBlockProps, FiltersBlock } from 'components/common/filters-block';
+import clsx from 'clsx';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { getVideos } from 'store/videos/actions';
+import { RecVideoCard } from './rec-video-card/rec-video-card';
 import styles from './styles.module.scss';
 
-// currently just a placeholder that can be filled with any content in the future
-
-// NOTE: if you plan to use Infinite scroll for recommendations,
-// remember that on smaller screens the layout of video page collapses into one column
-// and comments are bellow recommendations (as on youtube)
-// so on smaller screen sizes don't use infinite scroll (i guess you could use media queries), because it will be impossible to reach comments
 interface BlockProps {
   videoId?: string;
-  filterBlockProps: FilterBlockProps;
+  className?: string;
 }
 
-const LinksBlock: FC<BlockProps> = ({ filterBlockProps }) => {
+const SHOW_ALL_VIDEOS_AFTER_PX = 992;
+const SMALL_SCREEN_VIDEOS_LIMIT = 10;
+
+const LinksBlock: FC<BlockProps> = ({ className }) => {
   const dispatch = useAppDispatch();
+  const [windowWidth, setWindowWidth] = useState(document.body.clientWidth);
+
+  useEffect(() => {
+    const onPageResize = (): void => {
+      setWindowWidth(document.body.clientWidth);
+    };
+    window.addEventListener('resize', onPageResize);
+    return (): void => {
+      window.removeEventListener('resize', onPageResize);
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(getVideos());
   }, [dispatch]);
 
   const videos = useAppSelector((state) => state.videos.data.list);
-  const isLightTheme = useAppSelector((state) => state.theme.isLightTheme);
 
   return (
-    <div className={styles['links-block']}>
-      <FiltersBlock inRecommendedSection={true} {...filterBlockProps} />
-      {videos.map((video) => (
-        <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />
-      ))}
+    <div className={clsx(styles['links-block'], className)}>
+      <h2 className={styles['recommended-header']}>Recommended</h2>
+      <div className={styles['videos-list']}>
+        {videos
+          .slice(0, windowWidth >= SHOW_ALL_VIDEOS_AFTER_PX ? undefined : SMALL_SCREEN_VIDEOS_LIMIT)
+          .map((video) => (
+            <RecVideoCard key={video.id} video={video} />
+          ))}
+      </div>
     </div>
   );
 };

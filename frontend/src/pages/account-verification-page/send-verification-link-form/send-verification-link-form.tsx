@@ -29,7 +29,6 @@ const SendVerificationLinkForm: FC<Props> = ({ onSubmit, isLoading }) => {
           errors={errors}
           name="email"
           label="Email"
-          type="email"
           inputErrorClassName={formStyles['input-error']}
           wrapperClassName={formStyles['form-input']}
           placeholder="username@gmail.com"

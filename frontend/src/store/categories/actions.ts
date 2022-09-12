@@ -16,6 +16,10 @@ const getCategories = createAsyncThunk<CategoryResponseDto[], void, AsyncThunkCo
           .join(' & '),
       };
     });
+    categories.unshift({
+      id: '1',
+      name: 'All',
+    });
     return categories;
   },
 );

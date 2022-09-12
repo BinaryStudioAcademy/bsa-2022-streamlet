@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { FC, FormControl, VideoStreamResponseDto } from 'common/types/types';
 import { Button, Input, Loader, PasswordInput } from 'components/common/common';
-import { VideoChatContainer } from 'components/video-chat/video-chat-container';
+import { ChatSetting, VideoChatContainer } from 'components/video-chat/video-chat-container';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { DeepRequired, FieldErrorsImpl, FieldValues, UseFormGetValues } from 'react-hook-form';
 import { StreamStatus } from 'shared/build';
@@ -9,7 +9,7 @@ import { StreamStatus } from 'shared/build';
 import { StreamInfoFormValues } from './common/stream-info-form-values';
 
 import styles from './styles.module.scss';
-import { StreamPrivacyLabel } from 'common/enums/enums';
+import { ChatStyle, StreamPrivacyLabel } from 'common/enums/enums';
 // import { Select } from 'components/common/select';
 // import { STREAM_PRIVACY_OPTIONS } from 'common/constants/stream/stream';
 
@@ -34,20 +34,20 @@ const StudioStream: FC<Props> = ({
   infoFormErrors,
   infoFormValues,
 }) => {
+  const chatSettings: ChatSetting = {
+    hideSetting: false,
+  };
+
   return (
     <div className={styles['settings-container']}>
       <div className={styles['settings-block-container']}>
         <div className={styles['settings-block']}>
           <div className={styles['col-1']}>
             <div className={styles['preview-container']}>
-              <div className={styles['preview']} />
+              <div className={styles['preview']}>
+                <img className={styles['preview']} src={stream?.poster ? stream?.poster : ''} alt="Stream preview" />
+              </div>
               <Loader color="white" spinnerSize="40" />
-
-              {/* <img
-                className={styles['preview']}
-                src={stream?.poster ? stream?.poster : defaultPreview}
-                alt="Stream preview"
-              /> */}
             </div>
             <form className={styles['form-container']}>
               <div className={styles['field-container']}>
@@ -169,7 +169,7 @@ const StudioStream: FC<Props> = ({
         </div>
       </div>
       <div className={styles['chat-container']}>
-        <VideoChatContainer videoId={stream?.id ?? ''} popOutSetting={false} />
+        <VideoChatContainer videoId={stream?.id ?? ''} chatSettings={chatSettings} chatStyle={ChatStyle.GREEN} />
       </div>
     </div>
   );

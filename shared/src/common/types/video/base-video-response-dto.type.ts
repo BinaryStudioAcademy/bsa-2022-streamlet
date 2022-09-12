@@ -39,6 +39,7 @@ type BaseSearchVideoResponseDto = {
 type DataVideo = {
   list: BaseVideoResponseDto[];
   total: number;
+  lazyLoad?: boolean;
 };
 
 export { BaseVideoResponseDto, DataVideo, BaseSearchVideoResponseDto };

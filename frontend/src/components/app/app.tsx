@@ -4,7 +4,7 @@ import { useLocation, useEffect, useAppDispatch, useAppSelector, useWindowDimens
 import { tokensStorageService } from 'services/services';
 import { authActions, socketActions } from 'store/actions';
 import { MainPageContainer } from 'pages/main-page/main-page-container';
-import { Routes, Route, HeaderContainer, SidebarContainer } from 'components/common/common';
+import { Routes, Route, HeaderContainer, SidebarContainer, Tooltip } from 'components/common/common';
 import { RestorePasswordPage, SignInPage, SignUpPage } from 'components/auth/auth';
 import { Search } from 'components/search/search';
 import { NotFound } from 'components/placeholder-page/not-found';
@@ -37,6 +37,7 @@ import { store } from 'store/store';
 import { StudioHomeContainer } from 'pages/studio/home/home-container';
 
 import styles from './app.module.scss';
+import { loadPreferences } from 'store/preferences/actions';
 
 socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
   store.dispatch(socketActions.addSocketId(id));
@@ -70,6 +71,7 @@ const App: FC = () => {
   useEffect(() => {
     if (hasToken) {
       dispatch(authActions.loadCurrentUser());
+      dispatch(loadPreferences());
     }
   }, [hasToken, dispatch]);
 
@@ -100,6 +102,7 @@ const App: FC = () => {
       )}
       {isHasStudioNavigation && (
         <div className={styles['studio-content-section']}>
+          <Tooltip isLightTheme={isLightTheme} />
           <StudioSidebar />
           <div className={styles['main-content']}>
             <Routes>
@@ -113,10 +116,11 @@ const App: FC = () => {
       )}
       {isHasDefaultNavigation && (
         <div className={styles['layout-wrapper']}>
+          <Tooltip isLightTheme={isLightTheme} />
           <HeaderContainer />
           <section className={styles['content-section']}>
             <SidebarContainer />
-            <div className={styles['main-content']}>
+            <div id="main-content" className={styles['main-content']}>
               <Routes>
                 <Route path={AppRoutes.ROOT} element={<MainPageContainer />} />
                 <Route path={AppRoutes.SEARCH} element={<Search />} />
@@ -140,7 +144,6 @@ const App: FC = () => {
                 />
                 <Route path={'test/confirmationModal/'} element={<ConfirmationModalTest />} />
                 <Route path={'test/video-card-main-page'} element={<VideoCardTest />} />
-                <Route path="video-page" element={<VideoPageContainer />} />
                 <Route path={AppRoutes.CHANNEL_$ID} element={<ChannelPage />} />
                 <Route path={AppRoutes.VIDEO_$ID} element={<VideoPageContainer />} />
                 <Route path={AppRoutes.ANY} element={<NotFound />} />

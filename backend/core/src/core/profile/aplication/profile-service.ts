@@ -53,7 +53,7 @@ export class ProfileService {
       return null;
     }
 
-    const { url } = await this.imageStore.upload({ base64Str, type: ImageStorePresetType.AVATAR });
+    const { url } = await this.imageStore.upload({ base64Str, type: ImageStorePresetType.AVATAR, userId });
     const isProfileExist = await this.profileRepository.checkProfileExist(userId);
 
     if (!isProfileExist) {

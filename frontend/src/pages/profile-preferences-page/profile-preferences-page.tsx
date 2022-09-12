@@ -44,7 +44,7 @@ const ProfilePreferencesPage: FC = () => {
     return state.profile.profileData;
   });
 
-  const { error: responseError, dataStatus } = useAppSelector((state) => {
+  const { error: responseError } = useAppSelector((state) => {
     return state.profile;
   });
 
@@ -96,22 +96,21 @@ const ProfilePreferencesPage: FC = () => {
   };
 
   const handleUpdateProfileDataSubmit = useCallback(
-    async (payload: ProfileUpdateRequestDto) => {
-      try {
-        setFormLoading(true);
-        await dispatch(profileActions.updateProfile(payload)).unwrap();
-      } catch {
-        setFormError(store.getState().auth.error || ErrorMessage.DEFAULT);
-      } finally {
-        if (dataStatus === DataStatus.FULFILLED) {
+    (payload: ProfileUpdateRequestDto) => {
+      setFormLoading(true);
+      dispatch(profileActions.updateProfile(payload))
+        .unwrap()
+        .then(() =>
           createToastNotification({
             iconName: IconName.PROFILE,
             type: 'success',
             title: 'Profile',
             message: 'Your profile has been successfully updated',
             durationMs: 5000,
-          });
-        } else if (dataStatus === DataStatus.REJECTED) {
+          }),
+        )
+        .catch(() => {
+          setFormError(store.getState().auth.error || ErrorMessage.DEFAULT);
           createToastNotification({
             iconName: IconName.PROFILE,
             type: 'danger',
@@ -119,11 +118,12 @@ const ProfilePreferencesPage: FC = () => {
             message: 'Something went wrong',
             durationMs: 5000,
           });
-        }
-        setFormLoading(false);
-      }
+        })
+        .finally(() => {
+          setFormLoading(false);
+        });
     },
-    [dispatch, dataStatus],
+    [dispatch],
   );
 
   const onFormSubmit = async (submitValue: UpdateProfileValue): Promise<void> => {
@@ -136,6 +136,7 @@ const ProfilePreferencesPage: FC = () => {
 
   if (DataStatus.REJECTED && responseError !== formError) {
     setFormError(responseError);
+    setIsLoading(false);
   }
 
   if (!profile) {

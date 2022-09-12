@@ -6,25 +6,25 @@
     'video-player'
     'video-info'
     'side-block'
-    'comments-block';
-  grid-template-columns: 1fr;
+    'comments-block' / 100%;
   max-width: 1700px;
   margin: auto;
-  padding: 20px;
+  padding: 0;
   column-gap: 20px;
   @media #{breakpoint.$tablet-large} {
     grid-template:
       'video-player side-block'
       'video-info side-block'
-      'comments-block side-block' / 2.3fr 1fr;
-    padding: 20px;
+      'comments-block side-block'
+      '. side-block' / auto 300px;
   }
 
   @media #{breakpoint.$desktop-small} {
     grid-template:
       'video-player side-block'
       'video-info side-block'
-      'comments-block side-block' / 3fr 1fr;
+      'comments-block side-block'
+      '. side-block' / auto 380px;
     padding: 20px;
   }
 }
@@ -48,13 +48,13 @@
 
 .chat-block {
   min-width: 300px;
-  max-width: 350px;
   height: 100%;
-  max-height: min(860px, 80vh);
+  max-height: min(650px, 80vh);
+  padding: 10px;
 
   @media screen and (max-width: 992px) {
     width: 100%;
-    max-width: none;
+    max-height: 500px;
   }
 }
 
@@ -63,16 +63,16 @@
   grid-area: video-info;
   flex-direction: column;
   margin-top: 20px;
-  padding: 0;
+  padding: 10px;
 }
 
 .video-comment-block {
   grid-area: comments-block;
-  padding: 0;
+  padding: 10px;
 }
 
 .description-container {
-  max-width: 65%;
+  max-width: 100%;
   margin-top: 11px;
   color: var(--text-gray-color);
   font-weight: 400;
@@ -91,29 +91,24 @@
   outline-color: var(--gray-200-input-background);
 }
 
-@media screen and (max-width: 768px) {
+@media #{breakpoint.$tablet-middle} {
   .video-page {
-    padding: 0;
+    padding: 20px;
   }
 
   .video-info-block {
-    padding: 10px;
+    padding: 0;
   }
 
   .video-comment-block {
-    padding: 10px;
+    padding: 0;
   }
 
   .chat-block {
-    padding: 10px;
-  }
-
-  .channel-info-container {
-    flex-direction: column;
-    align-items: initial;
+    padding: 0;
   }
 
   .description-container {
-    max-width: 100%;
+    max-width: 65%;
   }
 }

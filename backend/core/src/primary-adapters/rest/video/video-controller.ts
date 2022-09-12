@@ -36,6 +36,8 @@ import {
   SearchDataResponseDto,
   Comment,
   BaseReplyRequestDto,
+  VideoPaginationParams,
+  AddVideoViewResponseDto,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -44,6 +46,7 @@ import { optionalAuthenticationMiddleware } from '../middleware/optional-authent
 import { VideoRepository } from '~/core/video/port/video-repository';
 
 import {
+  exceptionMessages,
   matchVideoFilterDate,
   matchVideoFilterDuration,
   matchVideoFilterSortBy,
@@ -53,6 +56,7 @@ import { authenticationMiddleware, CreateVideoHistoryRecordMiddleware } from '..
 import { normalizeCategoryFiltersPayload } from '~/primary-adapters/rest/category/helpers/normalize-category-filters-helper';
 import { ChannelService } from '~/core/channel/application/channel-service';
 import { matchChannelFilterSortBy } from '~/shared/enums/channel/channel-filters-data.config';
+import { getSearchQuerySplit } from '~/shared/helpers/search/search';
 
 /**
  * @swagger
@@ -140,8 +144,8 @@ export class VideoController extends BaseHttpController {
    *                  $ref: '#/components/schemas/Video'
    */
   @httpGet(VideoApiPath.ROOT)
-  public getAllVideos(): Promise<DataVideo> {
-    return this.videoService.getAllVideos();
+  public async getAllVideos(@queryParam() paginationParams: VideoPaginationParams): Promise<DataVideo> {
+    return this.videoService.getAllVideos(paginationParams);
   }
 
   /**
@@ -244,8 +248,15 @@ export class VideoController extends BaseHttpController {
     @queryParam(SearchQueryParam.TYPE) type: TypeFilterId,
     @queryParam(SearchQueryParam.SORT_BY) sortBy: SortByFilterId,
   ): Promise<SearchDataResponseDto> {
+    if (!search) {
+      return {
+        channels: { list: [], total: 0 },
+        videos: { list: [], total: 0 },
+      };
+    }
+
     const queryParams: VideoSearch = {
-      searchText: search ? search.trim().split(' ').join(' & ') : undefined,
+      searchText: getSearchQuerySplit(search).join(' & '),
       duration: matchVideoFilterDuration[duration] || matchVideoFilterDuration[DurationFilterId.ANY],
       date: matchVideoFilterDate[date] || matchVideoFilterDate[DateFilterId.ANYTIME],
       type: matchVideoFilterType[type] || matchVideoFilterType[TypeFilterId.ALL],
@@ -316,6 +327,52 @@ export class VideoController extends BaseHttpController {
     const result = await this.videoService.getRepliesForComment(id);
 
     return result;
+  }
+
+  /**
+   * @swagger
+   * /videos/{id}/view:
+   *    post:
+   *      tags:
+   *        - video
+   *      operationId: addVideoView
+   *      consumes:
+   *        - application/json
+   *      produces:
+   *        - application/json
+   *      description: Add view to video
+   *      parameters:
+   *        - in: path
+   *          name: id
+   *          description: video ID
+   *          required: true
+   *          schema:
+   *            type: string
+   *      responses:
+   *        '200':
+   *          description: view added
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  videoId:
+   *                    type: string
+   *                  currentViews:
+   *                    type: number
+   *        '404':
+   *          description: video does not exist
+   */
+  @httpPost(`${VideoApiPath.$ID}${VideoApiPath.VIEW}`)
+  public async addView(@requestParam('videoId') id: string): Promise<AddVideoViewResponseDto> {
+    const newViewsCount = await this.videoService.addVideoView(id);
+    if (!newViewsCount) {
+      throw new NotFound(exceptionMessages.video.VIDEO_ID_NOT_FOUND);
+    }
+    return {
+      currentViews: newViewsCount.currentViews,
+      videoId: id,
+    };
   }
 
   /**

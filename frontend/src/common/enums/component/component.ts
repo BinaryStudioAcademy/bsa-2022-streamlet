@@ -5,3 +5,4 @@ export { LoaderSize } from './loader-size.enum';
 export { VideoTagName } from './video-tag-name.enum';
 export { ComponentUpdateDelayTime } from './component-update-delay-time.enum';
 export { ChatMenuOptions } from './chat-menu-options.enum';
+export { ChatStyle } from './chat-style.enum';

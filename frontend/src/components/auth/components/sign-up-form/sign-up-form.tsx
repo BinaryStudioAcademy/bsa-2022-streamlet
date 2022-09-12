@@ -1,6 +1,6 @@
 import { FC, UserSignUpRequestDto } from 'common/types/types';
 import { Input, PasswordInput } from 'components/common/common';
-import { useAppForm } from 'hooks/hooks';
+import { useAppForm, useAppSelector } from 'hooks/hooks';
 
 import { userSignUp as userSignUpValidationSchema } from 'validation-schemas/validation-schemas';
 import { AuthSubmitButton, ContinueWithParagraph, GoogleButton } from '../common/common';
@@ -21,6 +21,8 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
     mode: 'onChange',
   });
 
+  const isLightTheme = useAppSelector((store) => store.theme.isLightTheme);
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className={formStyles['form-container']}>
@@ -30,7 +32,6 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           inputErrorClassName={formStyles['input-error']}
           errorBlockClassName={formStyles['error']}
           labelClassName={formStyles['label']}
-          type="email"
           label="Email"
           placeholder="Enter your email"
           name="email"
@@ -55,7 +56,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
             inputClassName={formStyles['password']}
             labelClassName={formStyles['label']}
             wrapperClassName={formStyles['form-input']}
-            inputWrapperErrorClassName={formStyles['input-error']}
+            inputWrapperErrorClassName={isLightTheme ? formStyles['input-error'] : formStyles['input-error-dark']}
             placeholder="Password"
             control={control}
             name="password"
@@ -69,7 +70,7 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
             inputClassName={formStyles['password']}
             labelClassName={formStyles['label']}
             wrapperClassName={formStyles['form-input']}
-            inputWrapperErrorClassName={formStyles['input-error']}
+            inputWrapperErrorClassName={isLightTheme ? formStyles['input-error'] : formStyles['input-error-dark']}
             placeholder="Confirm password"
             control={control}
             name="passwordConfirm"

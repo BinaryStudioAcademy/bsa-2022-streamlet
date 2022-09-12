@@ -23,6 +23,7 @@
     cursor: pointer;
 
     & path {
+      transition: all 0.3s ease;
       fill: var(--sidebar-studio-icon-hover-color);
     }
   }

@@ -16,12 +16,15 @@ const StudioSidebar: FC = () => {
           <Icon name={IconName.MAIN_LOGO} width="24" height="24" />
         </div>
       </NavLink>
-
       {sideBarItems.map((item: ISideBarItem) => (
         <NavLink key={item.itemName} to={item.routeName as AppRoute}>
           {({ isActive }): ReactNode => {
             return (
-              <div className={cn(styles['button'], isActive && styles['active'])}>
+              <div
+                className={cn(styles['button'], isActive && styles['active'])}
+                data-tip={item.itemName}
+                data-place="right"
+              >
                 <Icon name={item.itemName} width="24" height="24" />
               </div>
             );

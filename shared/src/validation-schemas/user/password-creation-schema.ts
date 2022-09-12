@@ -5,7 +5,7 @@ export const passwordCreationSchema = Joi.string()
   .trim()
   .min(8)
   .max(16)
-  .pattern(/[а-яА-ЯЁё]/, { invert: true })
+  .pattern(/[а-яА-ЯЁёІіЄєЇї]/, { invert: true })
   .required()
   .messages({
     'string.empty': UserValidationMessage.PASSWORD_REQUIRE,

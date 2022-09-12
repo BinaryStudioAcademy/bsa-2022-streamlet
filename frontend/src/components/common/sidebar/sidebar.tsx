@@ -45,7 +45,10 @@ const Sidebar: FC<SidebarProps> = ({ configRoutePages, activeRouteId, isSidebarO
     }
   }, [dispatch, shouldHideSidebar]);
 
-  const hasUser = Boolean(useAppSelector((state) => state.auth.user));
+  const { hasUser } = useAppSelector((state) => ({
+    hasUser: Boolean(state.auth.user),
+  }));
+
   return (
     <>
       <MobileSidebar {...mobileSidebarProps} hasBackupForWideScreen={!shouldHideSidebar} />
@@ -68,7 +71,7 @@ const Sidebar: FC<SidebarProps> = ({ configRoutePages, activeRouteId, isSidebarO
                       to={page.linkTo}
                       className={clsx({ [styles.active]: page.id === activeRouteId })}
                     >
-                      <li>
+                      <li data-tip={!isSidebarOpen ? page.textLink : ''} data-place="right">
                         <Icon name={page.iconName} width="24" height="24" />
                         <span className={styles['link-name']}>{page.textLink}</span>
                       </li>

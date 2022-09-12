@@ -9,6 +9,7 @@ import { Icon } from '../icon';
 import { Modal } from '../modal/modal';
 import { FC } from '../../../common/types/react/fc.type';
 import { useWindowDimensions } from '../../../hooks/hooks';
+import { Button } from '../button/button';
 
 type imageEditorProps = {
   editorWidth?: number;
@@ -59,6 +60,17 @@ const ImageEditor: FC<imageEditorProps> = ({
       rotate: rotate === 360 ? 0 : rotate + 90,
     });
   };
+  const handleZoomPlusButtonClick = (): void => {
+    if (avatar.zoom + 1 <= 15) {
+      handleSlider(avatar.zoom + 1);
+    }
+  };
+
+  const handleZoomMinusButtonClick = (): void => {
+    if (avatar.zoom >= 2) {
+      handleSlider(avatar.zoom - 1);
+    }
+  };
   return (
     <Modal isOpen={true} onClose={onClose}>
       <>
@@ -79,18 +91,20 @@ const ImageEditor: FC<imageEditorProps> = ({
         <div className={style['image-editor-control-container']}>
           <Icon name={IconName.ROTATE} color={IconColor.GRAY} width={'20'} height={'20'} onClick={handleRotate} />
           <div className={style['image-editor-slider-container']}>
-            <span className={style['zoom-indicator']}>-</span>
-            <ReactSlider
-              className={style['horizontal-slider']}
-              thumbClassName={style['example-thumb']}
-              trackClassName={style['example-track']}
-              defaultValue={5}
-              onChange={handleSlider}
-              max={15}
-              min={1}
-              renderThumb={(props): ReactElement => <div {...props}></div>}
-            />
-            <span className={style['zoom-indicator']}>+</span>
+            <Button className={style['zoom-indicator']} onClick={handleZoomMinusButtonClick} content={'-'} />
+            {width > 576 && (
+              <ReactSlider
+                className={style['horizontal-slider']}
+                thumbClassName={style['example-thumb']}
+                trackClassName={style['example-track']}
+                defaultValue={5}
+                onChange={handleSlider}
+                max={15}
+                min={1}
+                renderThumb={(props): ReactElement => <div {...props}></div>}
+              />
+            )}
+            <Button className={style['zoom-indicator']} content={'+'} onClick={handleZoomPlusButtonClick} />
           </div>
           <button type={'button'} onClick={onSave}>
             Save

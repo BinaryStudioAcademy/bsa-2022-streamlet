@@ -14,6 +14,7 @@ import {
   TagSearchRequestQueryDto,
   VideoCommentRequestDto,
   VideoCommentResponseDto,
+  VideoPaginationParams,
 } from 'shared/build';
 import { createVideoCommentResponse } from '~/shared/helpers/video/create-video-comment-response';
 import { createAddReactionResponse } from '~/shared/helpers/video/create-add-reaction-response';
@@ -29,6 +30,24 @@ export class VideoRepositoryAdapter implements VideoRepository {
 
   constructor(@inject(CONTAINER_TYPES.PrismaClient) prismaClient: PrismaClient) {
     this.prismaClient = prismaClient;
+  }
+
+  async addView(id: string): Promise<{ currentViews: number } | null> {
+    try {
+      const video = await this.prismaClient.video.update({
+        data: {
+          videoViews: {
+            increment: 1,
+          },
+        },
+        where: {
+          id,
+        },
+      });
+      return { currentViews: video.videoViews };
+    } catch {
+      return null;
+    }
   }
 
   async reactionByUser(videoId: string, userId: string): Promise<boolean | null> {
@@ -116,42 +135,51 @@ export class VideoRepositoryAdapter implements VideoRepository {
     };
   }
 
-  async getAll(queryParams?: { filters?: VideoRepositoryFilters }): Promise<DataVideo> {
-    const items = await this.prismaClient.video.findMany({
-      where: {
-        ...(queryParams?.filters?.streamStatus ? { status: queryParams.filters.streamStatus } : {}),
-        ...{ privacy: StreamPrivacy.PUBLIC },
-        ...(queryParams?.filters?.fromChannelSubscribedByUserWithId
-          ? {
-              channel: {
-                subscriptions: {
-                  some: {
-                    userId: queryParams.filters.fromChannelSubscribedByUserWithId,
+  async getAll(queryParams?: {
+    filters?: VideoRepositoryFilters;
+    pagination?: VideoPaginationParams;
+  }): Promise<DataVideo> {
+    const [items, total] = await this.prismaClient.$transaction([
+      this.prismaClient.video.findMany({
+        where: {
+          ...(queryParams?.filters?.streamStatus ? { status: queryParams.filters.streamStatus } : {}),
+          ...{ privacy: StreamPrivacy.PUBLIC },
+          ...(queryParams?.filters?.fromChannelSubscribedByUserWithId
+            ? {
+                channel: {
+                  subscriptions: {
+                    some: {
+                      userId: queryParams.filters.fromChannelSubscribedByUserWithId,
+                    },
                   },
                 },
-              },
-            }
-          : {}),
-      },
-      include: {
-        channel: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
+              }
+            : {}),
+        },
+        include: {
+          channel: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+            },
           },
         },
-      },
-      orderBy: {
-        publishedAt: 'desc',
-      },
-    });
-    const total = items.length;
+        ...(queryParams?.pagination?.skip && { skip: Number(queryParams?.pagination?.skip) }),
+        ...(queryParams?.pagination?.take && { take: Number(queryParams?.pagination?.take) }),
+        orderBy: {
+          publishedAt: 'desc',
+        },
+      }),
+      this.prismaClient.video.count({ where: { ...{ privacy: StreamPrivacy.PUBLIC } } }),
+    ]);
+
     const list = items.map(trimVideo);
 
     return {
       list,
       total,
+      lazyLoad: Boolean(queryParams?.pagination?.take),
     };
   }
 
@@ -267,8 +295,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
       where: {
         categories: {
           some: {
-            name: {
-              in: category,
+            category: {
+              name: {
+                in: category,
+              },
             },
           },
         },
@@ -288,8 +318,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         ...{ privacy: StreamPrivacy.PUBLIC },
         categories: {
           some: {
-            name: {
-              in: category,
+            category: {
+              name: {
+                in: category,
+              },
             },
           },
         },
@@ -299,7 +331,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       include: {
         categories: {
           select: {
-            name: true,
+            category: true,
           },
         },
         channel: {
@@ -333,7 +365,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       include: {
         categories: {
           select: {
-            name: true,
+            category: true,
           },
         },
         channel: {
@@ -357,8 +389,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         ...{ privacy: StreamPrivacy.PUBLIC },
         tags: {
           some: {
-            name: {
-              in: tags,
+            tag: {
+              name: {
+                in: tags,
+              },
             },
           },
         },
@@ -383,8 +417,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         ...{ privacy: StreamPrivacy.PUBLIC },
         categories: {
           some: {
-            name: {
-              in: categories,
+            category: {
+              name: {
+                in: categories,
+              },
             },
           },
         },
@@ -502,7 +538,16 @@ export class VideoRepositoryAdapter implements VideoRepository {
 
   async getVideosBySearch({ searchText, duration, date, type, sortBy }: VideoSearch): Promise<DataVideo> {
     const queryOrderByObject = {
-      orderBy: sortBy.map((param) => param as Prisma.VideoOrderByWithRelationAndSearchRelevanceInput),
+      orderBy: [
+        ...sortBy.map((param) => param as Prisma.VideoOrderByWithRelationAndSearchRelevanceInput),
+        {
+          _relevance: {
+            fields: ['name'],
+            search: searchText,
+            sort: 'desc',
+          } as Prisma.VideoOrderByRelevanceInput,
+        },
+      ],
     };
     const queryObject = {
       where: {

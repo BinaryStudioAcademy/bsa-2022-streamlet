@@ -116,11 +116,13 @@ const Header: FC<HeaderProps> = ({
         </button>
         {isLogged ? (
           <>
-            <Link className={styles['btn-go-stream']} to={AppRoutes.STUDIO}>
+            <Link data-tip="Start stream" data-place="bottom" className={styles['btn-go-stream']} to={AppRoutes.STUDIO}>
               <Icon name={IconName.CAMERA} width="24" height="22" />
             </Link>
             {notificationDropdownContent}
             <button
+              data-tip={'User profile'}
+              data-place="bottom"
               onClick={handleClickUserMenu}
               style={{ backgroundImage: `url(${userAvatar})` }}
               className={styles['user-avatar']}

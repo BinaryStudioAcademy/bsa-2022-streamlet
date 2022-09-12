@@ -16,7 +16,11 @@ const initialState: State = {
 };
 
 const reducer = createReducer(initialState, (builder) => {
-  builder.addMatcher(isAnyOf(getProfileByUserId.pending, updateProfile.pending, uploadAvatar.pending), (state) => {
+  builder.addCase(updateProfile.pending, (state) => {
+    state.dataStatus = DataStatus.PENDING;
+    state.error = undefined;
+  });
+  builder.addMatcher(isAnyOf(getProfileByUserId.pending, uploadAvatar.pending), (state) => {
     state.dataStatus = DataStatus.PENDING;
     state.error = undefined;
     state.profileData = null;

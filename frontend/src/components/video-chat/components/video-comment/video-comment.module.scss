@@ -1,3 +1,17 @@
+.chat-default {
+  --msg-time-color: var(--text-gray-color);
+  --msg-color: var(--text-gray-color);
+  --default-avatar-color: var(--green-100-header-menu-background);
+  --default-avatar-bgc: var(--green-200-header-menu-background);
+}
+
+.chat-green {
+  --msg-time-color: var(--green-100-header-menu-background);
+  --msg-color: var(--green-100-header-menu-background);
+  --default-avatar-color: var(--green-100-header-menu-background);
+  --default-avatar-bgc: var(--green-200-header-menu-background);
+}
+
 .chat-message-wrapper {
   width: 100%;
   margin-bottom: 20px;
@@ -40,14 +54,14 @@
 
 .dispatch-time {
   margin-left: 10px;
-  color: var(--text-gray-color);
+  color: var(--msg-time-color);
   font-size: 12px;
   line-height: 14px;
   white-space: nowrap;
 }
 
 .text-comment {
-  color: var(--text-gray-color);
+  color: var(--msg-color);
   font-size: 14px;
   font-style: normal;
   line-height: 19px;
@@ -64,6 +78,6 @@
   color: var(--green-100-header-menu-background);
   font-size: 14px;
   line-height: 14px;
-  background-color: var(--green-200-header-menu-background);
+  background-color: var(--default-avatar-bgc);
   border-radius: 50%;
 }
