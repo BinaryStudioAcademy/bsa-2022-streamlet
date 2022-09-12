@@ -20,7 +20,7 @@ const profileUpdateValidationSchema = Joi.object<UpdateProfileValue, true>({
     .trim()
     .allow('')
     .max(25)
-    .pattern(/^[a-zA-Z-]*$/)
+    .pattern(/^[a-zA-Z-']*$/)
     .messages({
       'string.max': ProfileValidationMessage.FIRSTNAME_TO_LONG,
       'string.pattern.base': ProfileValidationMessage.FIRSTNAME_WRONG_REGEXP,
@@ -29,7 +29,7 @@ const profileUpdateValidationSchema = Joi.object<UpdateProfileValue, true>({
     .trim()
     .max(20)
     .allow('')
-    .pattern(/^[a-zA-Z-]*$/)
+    .pattern(/^[a-zA-Z-']*$/)
     .messages({
       'string.max': ProfileValidationMessage.LASTNAME_TO_LONG,
       'string.pattern.base': ProfileValidationMessage.FIRSTNAME_TO_LONG,
