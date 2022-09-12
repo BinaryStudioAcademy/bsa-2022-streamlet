@@ -3,12 +3,10 @@
 .main-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 5px 20px;
   margin-bottom: 40px;
+}
 
-  @media #{breakpoint.$mobile-large} {
-    flex-direction: row;
-    align-items: unset;
-  }
+.horizontal-scroll {
+  overflow: hidden;
 }
