@@ -7,6 +7,7 @@ import { toggleVideoPlay } from './helpers/toggle-video-play';
 import clsx from 'clsx';
 import { PlayPauseCenterEffect } from './play-pause-center-effect/play-pause-center-effect';
 import fscreen from 'fscreen';
+import { ENV } from 'common/enums/enums';
 type VideoPlayerProps = {
   sizingProps?: {
     height?: number | string;
