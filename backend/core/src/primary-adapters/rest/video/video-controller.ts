@@ -38,6 +38,8 @@ import {
   BaseReplyRequestDto,
   VideoPaginationParams,
   AddVideoViewResponseDto,
+  VideoApiPathParams,
+  GetSimilarVideosResponseDto,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -296,6 +298,31 @@ export class VideoController extends BaseHttpController {
   ): Promise<PopularVideoResponseDto> {
     const preparedCategory = normalizeCategoryFiltersPayload(category)[0];
     return this.videoService.getPopular({ category: preparedCategory, page });
+  }
+
+  /**
+   * @swagger
+   * /videos/:videoId/similar:
+   *    get:
+   *      tags:
+   *      - videos
+   *      operationId: getSimilarVideos
+   *      description: Returns an array of videos
+   *      security: []
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Video'
+   */
+  @httpGet(`${VideoApiPath.$ID}${VideoApiPath.SIMILAR_VIDEOS}`)
+  public async getSimilarVideos(@requestParam(VideoApiPathParams.ID) id: string): Promise<GetSimilarVideosResponseDto> {
+    const similarVideos = await this.videoService.getSimilarVideos(id);
+    return { videos: similarVideos };
   }
 
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware, CreateVideoHistoryRecordMiddleware)
