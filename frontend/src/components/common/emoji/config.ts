@@ -1,10 +1,13 @@
-import { Categories, Props as EmojiPickerProps } from 'emoji-picker-react';
+import { Categories, Props as EmojiPickerProps, SkinTones } from 'emoji-picker-react';
 
 const defaultEmojiPickerConfig: EmojiPickerProps = {
   autoFocusSearch: false,
   lazyLoadEmojis: false,
-  showPreview: false,
+  previewConfig: {
+    showPreview: false,
+  },
   skinTonesDisabled: true,
+  defaultSkinTone: SkinTones.NEUTRAL,
   categories: [
     {
       name: 'Recently Used',
