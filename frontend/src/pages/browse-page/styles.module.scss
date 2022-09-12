@@ -8,6 +8,10 @@
   }
 }
 
+.horizontal-scroll {
+  overflow: hidden;
+}
+
 .browse-page-header-container,
 .browse-page-categories-container {
   display: flex;

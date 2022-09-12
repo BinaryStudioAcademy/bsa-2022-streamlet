@@ -473,6 +473,9 @@
   --secondary-text-color: #505565;
   --text-gray-color: #6a726d;
   --white-text-color: #ffffff;
+  --browse-following-header-color: #181a20;
+  --browse-following-header-color-transparent: #181a2000;
+  --browse-following-header-color-sub-transparent: #181a2050;
   --brand-green-color: #06c149;
   --brand-dark-green-color: #006624;
   --brand-green-color-hover: #1caa4f;
@@ -556,6 +559,9 @@ body[data-theme='light'] {
   --gray-300-header-menu-background: var(--green-100-header-menu-background);
   --primary-text-color: #ffffff;
   --white-text-color: #181a20;
+  --browse-following-header-color: #ffffff;
+  --browse-following-header-color-transparent: #ffffff00;
+  --browse-following-header-color-sub-transparent: #ffffff50;
   --secondary-text-color: #a7a5a5;
   --hover-light-grey: var(--hover-dark-grey);
   --gray-400-primary-background: #ffffff;

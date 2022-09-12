@@ -8,7 +8,7 @@
   right: 2px;
   z-index: 1;
   width: 50px;
-  height: 30px;
+  height: 100%;
   background: var(--gray-300-header-menu-background);
   background: linear-gradient(
     270deg,
@@ -26,6 +26,27 @@
     var(--gray-300-header-menu-background) 50%,
     var(--gray-300-header-menu-background-sub-transparent) 89%,
     var(--gray-300-header-menu-background-transparent) 98%
+  );
+}
+
+.blur-container-following-browse {
+  background: var(--browse-following-header-color);
+  background: linear-gradient(
+    270deg,
+    var(--browse-following-header-color) 50%,
+    var(--browse-following-header-color-sub-transparent) 89%,
+    var(--browse-following-header-color-transparent) 98%
+  );
+}
+
+.blur-container-following-browse-left {
+  left: 2px;
+  background: var(--browse-following-header-color);
+  background: linear-gradient(
+    90deg,
+    var(--browse-following-header-color) 50%,
+    var(--browse-following-header-color-sub-transparent) 89%,
+    var(--browse-following-header-color-transparent) 98%
   );
 }
 
