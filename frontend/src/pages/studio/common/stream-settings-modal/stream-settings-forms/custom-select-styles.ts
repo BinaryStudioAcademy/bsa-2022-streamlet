@@ -39,6 +39,7 @@ export const customSelectStyles: StylesConfig<SelectOptions, true> = {
     borderTopLeftRadius: '20px',
     borderBottomLeftRadius: '20px',
     padding: '0 0 0 5px',
+    marginRight: '5px',
   }),
 
   multiValueLabel: (provided) => ({

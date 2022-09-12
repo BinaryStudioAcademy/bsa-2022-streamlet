@@ -92,17 +92,19 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
         <h1 className={styles['heading']}>Stream settings</h1>
       </div>
       <TabHeader currentTab={currentTab} setTab={setCurrentTab} />
-      <form onSubmit={handleSubmit(onSubmit)} className={styles['form']}>
-        {currentTab === Tab.GeneralInfo && (
-          <StreamBasicInfoForm categoryOptions={categoryOptions} control={control} errors={errors} />
-        )}
-        {currentTab === Tab.Appearance && (
-          <StreamAppearanceForm
-            setParentModalInvisible={setIsParentModalInvisible}
-            currentPreviewPicture={temporaryPoster ?? stream?.poster ?? ''}
-            handleImageUpload={handlePosterUpload}
-          />
-        )}
+      <form onSubmit={handleSubmit(onSubmit)} className={styles['form-container']}>
+        <div className={styles['form']}>
+          {currentTab === Tab.GeneralInfo && (
+            <StreamBasicInfoForm categoryOptions={categoryOptions} control={control} errors={errors} />
+          )}
+          {currentTab === Tab.Appearance && (
+            <StreamAppearanceForm
+              setParentModalInvisible={setIsParentModalInvisible}
+              currentPreviewPicture={temporaryPoster ?? stream?.poster ?? ''}
+              handleImageUpload={handlePosterUpload}
+            />
+          )}
+        </div>
         <div className={styles['footer']}>
           <Button content="Save" type="submit" className={styles['control-btn']} />
           <Button content="Cancel" type="button" className={styles['control-btn']} onClick={handleClose} />
