@@ -118,11 +118,11 @@ $base-z-index: $page-component-z-index;
     --epr-picker-width: 520px;
     --epr-picker-height: 300px;
 
-    @media screen and (max-width: 992px) {
+    @media screen and (max-width: 991px) {
       --epr-picker-width: 450px;
     }
 
-    @media screen and (max-width: 576px) {
+    @media screen and (max-width: 575px) {
       --epr-picker-width: 300px;
     }
   }
