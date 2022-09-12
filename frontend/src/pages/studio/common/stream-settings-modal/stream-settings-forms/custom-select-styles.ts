@@ -5,7 +5,7 @@ export const customSelectStyles: StylesConfig<SelectOptions, true> = {
   control: (provided, state) => ({
     ...provided,
     backgroundColor: 'var(--studio-input)',
-    height: '45px',
+    minHeight: '45px',
     boxShadow: state.isFocused ? '0 0 0 1px var(--brand-green-color)' : 'unset',
     borderColor: state.isFocused ? 'var(--brand-green-color)' : 'transparent',
     borderRadius: '2px',
@@ -36,17 +36,18 @@ export const customSelectStyles: StylesConfig<SelectOptions, true> = {
   multiValue: (provided) => ({
     ...provided,
     backgroundColor: 'var(--brand-green-color)',
-    borderRadius: '20px',
-    padding: '0 5px',
-    height: '35px',
+    borderTopLeftRadius: '20px',
+    borderBottomLeftRadius: '20px',
+    padding: '0 0 0 5px',
   }),
 
   multiValueLabel: (provided) => ({
     ...provided,
     color: 'var(--white-text-color)',
+    padding: '0 5px',
   }),
   multiValueRemove: (provided) => ({
     ...provided,
-    color: 'var(--text-gray-color)',
+    color: 'var(--white-text-color)',
   }),
 };
