@@ -114,12 +114,12 @@ export class CategoryService {
     if (!isVideoExists) {
       return null;
     }
-    console.warn('start binding');
+    console.error('BEFORE DELETING');
+    await this.categoryRepository.clearCategoriesToVideoBinding(videoId);
+    console.error('AFTER DELETING');
     const categories: string[] = [];
     for (const { name } of categoryPayload) {
-      console.warn(name);
       const category = await this.categoryRepository.getByName(name);
-      console.warn(category);
       if (!category) {
         return;
       }

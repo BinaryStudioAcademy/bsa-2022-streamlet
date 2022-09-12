@@ -171,13 +171,13 @@ export class ChannelStreamingService {
       return null;
     }
 
-    if (streamUpdateRequestDto.categories && streamUpdateRequestDto.categories.length) {
+    if (streamUpdateRequestDto.categories !== undefined) {
       await this.categoryService.bindCategories({
         categoryPayload: normalizeCategoryStringArrayPayload(streamUpdateRequestDto.categories),
         videoId,
       });
     }
-    if (streamUpdateRequestDto.tags && streamUpdateRequestDto.tags.length) {
+    if (streamUpdateRequestDto.tags !== undefined) {
       await this.tagService.bindTags({
         tagPayload: normalizeTagStringArrayPayload(streamUpdateRequestDto.tags),
         videoId,
