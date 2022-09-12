@@ -9,6 +9,8 @@ import { videoActions } from '../../store/actions';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { generateBrowsePageSkeleton } from './common/skeleton';
 import { NoVideosYet } from '../../components/common/no-videos-yet/no-videos-yet';
+import { LeftArrow, RightArrow } from '../../components/common/vertical-scroll/vertical-scroll';
+import { ScrollMenu } from 'react-horizontal-scrolling-menu';
 
 const BrowsePage: FC = () => {
   const dispatch = useAppDispatch();
@@ -63,18 +65,25 @@ const BrowsePage: FC = () => {
         <h2 className={styles['browse-page-header']}>Browse</h2>
       </div>
       <div className={styles['browse-page-categories-container']}>
-        {categoryList.map((category, index) => {
-          return (
-            <Button
-              content={category}
-              key={`${category}-${index}`}
-              className={clsx(styles['categories-button'], {
-                [styles['active-categories-button']]: activeCategory === category,
-              })}
-              onClick={(): void => handleCategoryClick(category)}
-            />
-          );
-        })}
+        <ScrollMenu
+          LeftArrow={<LeftArrow isFollowingOrBrowse={true} />}
+          RightArrow={<RightArrow isFollowingOrBrowse={true} />}
+          wrapperClassName={styles['horizontal-scroll']}
+          scrollContainerClassName={styles['horizontal-scroll']}
+        >
+          {categoryList.map((category, index) => {
+            return (
+              <Button
+                content={category}
+                key={`${category}-${index}`}
+                className={clsx(styles['categories-button'], {
+                  [styles['active-categories-button']]: activeCategory === category,
+                })}
+                onClick={(): void => handleCategoryClick(category)}
+              />
+            );
+          })}
+        </ScrollMenu>
       </div>
       <div
         className={clsx(
