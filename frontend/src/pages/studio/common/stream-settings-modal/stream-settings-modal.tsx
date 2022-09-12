@@ -51,6 +51,7 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
       categories: categories?.map((category) => category.label) ?? [],
       poster: temporaryPoster ?? stream?.poster ?? '',
     });
+    onClose();
   };
 
   const defaultValues = useCallback(
