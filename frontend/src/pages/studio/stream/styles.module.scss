@@ -30,6 +30,7 @@
   left: 0;
   display: flex;
   flex: 1 1 auto;
+  justify-content: space-between;
   width: 100%;
   min-width: 900px;
   height: 100%;
@@ -70,6 +71,11 @@
 
 .col-2 {
   flex-basis: 55%;
+  max-width: 55%;
+
+  @media screen and (max-width: 1500px) {
+    max-width: 50%;
+  }
 }
 
 .button {
