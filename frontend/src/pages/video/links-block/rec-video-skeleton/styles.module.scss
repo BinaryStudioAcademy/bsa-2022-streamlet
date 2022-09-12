@@ -1,0 +1,30 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+}
+
+.poster {
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+  height: 110px;
+  aspect-ratio: 16 / 10;
+}
+
+.right-block {
+  flex-grow: 1;
+}
+
+.name {
+  display: block;
+  width: min(70%, 300px);
+  height: 12px;
+}
+
+.title {
+  display: block;
+  width: min(90%, 400px);
+  height: 10px;
+}
