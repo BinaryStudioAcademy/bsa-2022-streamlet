@@ -24,7 +24,7 @@
       'video-player side-block'
       'video-info side-block'
       'comments-block side-block'
-      '. side-block' / auto 380px;
+      '. side-block' / auto 350px;
     padding: 20px;
   }
 }
@@ -68,7 +68,12 @@
 
 .video-comment-block {
   grid-area: comments-block;
+  margin-top: 30px;
   padding: 10px;
+
+  @media #{breakpoint.$tablet-large} {
+    margin-top: 0;
+  }
 }
 
 .description-container {
