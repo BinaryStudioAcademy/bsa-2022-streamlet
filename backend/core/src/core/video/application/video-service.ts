@@ -14,6 +14,7 @@ import {
   VideoCommentRequestDto,
   VideoCommentResponseDto,
   Comment,
+  VideoPaginationParams,
 } from 'shared/build';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { POPULAR_VIDEO_CARD_IN_ONE_PAGE } from '~/shared/constants/constants';
@@ -27,8 +28,8 @@ export class VideoService {
     this.videoRepository = videoRepository;
   }
 
-  getAllVideos(): Promise<DataVideo> {
-    return this.videoRepository.getAll();
+  getAllVideos(paginationParams: VideoPaginationParams): Promise<DataVideo> {
+    return this.videoRepository.getAll({ pagination: paginationParams });
   }
 
   getById(id: string): Promise<VideoExpandedInfo | null> {
@@ -54,6 +55,11 @@ export class VideoService {
       return this.videoRepository.removeReactionAndAddNew(videoId, userId, request.isLike);
     }
     return this.videoRepository.addReaction(request, videoId, userId);
+  }
+
+  async addVideoView(videoId: string): Promise<{ currentViews: number } | null> {
+    const currentViews = await this.videoRepository.addView(videoId);
+    return currentViews;
   }
 
   async addCommentReaction(

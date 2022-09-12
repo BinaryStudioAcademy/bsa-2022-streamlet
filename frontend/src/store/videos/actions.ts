@@ -1,11 +1,23 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { AsyncThunkConfig } from 'common/types/types';
 import { DataVideo, PopularVideoResponseDto, PopularVideosRequestDtoType } from 'shared/build';
-import { ActionType } from './common';
+import { ActionType, PayloadForNumberItems } from './common';
 
-const getVideos = createAsyncThunk<DataVideo, void, AsyncThunkConfig>(
+const getVideos = createAsyncThunk<DataVideo, Record<'withLazyLoad', boolean> | undefined, AsyncThunkConfig>(
   ActionType.GET_VIDEOS,
-  async (_payload, { extra: { videoApi } }) => {
+  async (payload, { extra: { videoApi }, getState }) => {
+    const { countItems, currentPage } = getState().videos.pagination;
+
+    if (payload?.withLazyLoad) {
+      const paginationParams = {
+        skip: (currentPage - 1) * countItems,
+        take: countItems,
+      };
+
+      const data = await videoApi.getVideos(paginationParams);
+      return data;
+    }
+
     const data = await videoApi.getVideos();
     return data;
   },
@@ -36,4 +48,7 @@ const getPopularVideos = createAsyncThunk<PopularVideoResponseDto, PopularVideos
   },
 );
 
-export { getVideos, getVideosByCategory, getPopularVideos };
+const resetPaginationMainPage = createAction(ActionType.RESET_PAGINATION_MAIN_PAGE);
+const setNumberOfVideoForLoading = createAction<PayloadForNumberItems>(ActionType.SET_NUMBER_OF_VIDEO_FOR_LOADING);
+
+export { getVideos, getVideosByCategory, getPopularVideos, resetPaginationMainPage, setNumberOfVideoForLoading };

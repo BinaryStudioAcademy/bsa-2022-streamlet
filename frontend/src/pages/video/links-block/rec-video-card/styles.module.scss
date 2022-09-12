@@ -1,0 +1,58 @@
+@use 'assets/css/breakpoint';
+
+.video-card {
+  flex-flow: row nowrap;
+  gap: 10px;
+  background: none;
+}
+
+.preview {
+  height: 110px;
+  padding-bottom: 0;
+  aspect-ratio: 16 / 10;
+}
+
+.info {
+  display: flex;
+  margin-top: 0;
+  margin-left: 0;
+  padding-right: 0;
+}
+
+.meta-footer {
+  display: none;
+}
+
+.meta {
+  display: none;
+  @media #{breakpoint.$mobile-large} {
+    display: flex;
+  }
+
+  @media #{breakpoint.$tablet-large} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+}
+
+.desc {
+  padding-bottom: 0;
+  @media #{breakpoint.$tablet-large} {
+    gap: 10px;
+  }
+}
+
+.channel-icon {
+  display: none;
+}
+
+.author {
+  display: flex;
+  height: auto;
+  margin-bottom: 0;
+}
+
+.author-avatar {
+  display: none;
+}

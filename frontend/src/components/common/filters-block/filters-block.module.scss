@@ -14,12 +14,8 @@
   }
 
   &.in-recommended-section {
-    max-width: 380px;
+    width: auto;
     padding: 12px 0;
-
-    @media screen and (min-width: 1550px) {
-      max-width: 420px;
-    }
   }
 }
 
@@ -30,24 +26,6 @@
 
   &.in-recommended-section {
     padding: 0 10px;
-  }
-
-  .blur-container {
-    position: absolute;
-    top: 12px;
-    right: 35px;
-    width: 40px;
-    height: 30px;
-    background: var(--gray-300-header-menu-background);
-    background: linear-gradient(270deg, var(--gray-300-header-menu-background), transparent 100%);
-
-    &.in-recommended-section {
-      right: 0;
-    }
-
-    @media screen and (max-width: 900px) {
-      right: 20px;
-    }
   }
 }
 
@@ -64,6 +42,7 @@
   font-size: 14px;
   font-style: normal;
   line-height: 19px;
+  white-space: nowrap;
   background-color: transparent;
   border: 1px solid var(--brand-green-color);
   border-radius: 16px;
@@ -91,4 +70,8 @@
   &:not(:last-child) {
     margin-right: 10px;
   }
+}
+
+.horizontal-scroll {
+  overflow: hidden;
 }

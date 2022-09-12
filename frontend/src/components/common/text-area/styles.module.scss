@@ -23,3 +23,8 @@
   color: var(--white-text-color);
   cursor: pointer;
 }
+
+.error-block {
+  display: flex;
+  justify-content: flex-end;
+}

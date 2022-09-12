@@ -2,12 +2,28 @@
 
 $base-z-index: $page-component-z-index;
 
+.chat-default {
+  --form-bgc: var(--gray-300-header-menu-background);
+  --input-bgc: var(--gray-400-primary-background);
+  --send-btn-bgc: var(--brand-green-color);
+  --msg-length-count-color: var(--text-gray-color);
+  --no-auth-modal-bgc: var(--gray-400-primary-background);
+}
+
+.chat-green {
+  --form-bgc: var(--green-200-header-menu-background);
+  --input-bgc: var(--green-300-primary-background);
+  --send-btn-bgc: var(--brand-green-color);
+  --msg-length-count-color: var(--green-100-header-menu-background);
+  --no-auth-modal-bgc: var(--green-300-primary-background);
+}
+
 .add-comments {
   position: relative;
   z-index: $base-z-index;
-  height: 100px;
+  height: 110px;
   padding: 20px 20px 10px;
-  background-color: var(--gray-300-header-menu-background);
+  background-color: var(--form-bgc);
   border-radius: 3px;
 }
 
@@ -18,7 +34,7 @@ $base-z-index: $page-component-z-index;
   font-size: 15px;
   line-height: 24px;
   letter-spacing: -0.16px;
-  background-color: var(--gray-400-primary-background);
+  background-color: var(--input-bgc);
   border: 1px solid transparent;
   border-radius: 6px;
   outline: none;
@@ -49,17 +65,9 @@ $base-z-index: $page-component-z-index;
   display: block;
 }
 
-.add-comments .group-buttons-reactions .choose-emoji {
-  background-color: transparent;
-}
-
-.add-comments .group-buttons-reactions .choose-emoji svg path {
-  fill: var(--gray-200-input-background);
-}
-
 .add-comments .group-buttons-reactions .send-message {
   padding: 5px 10px;
-  background-color: var(--brand-green-color);
+  background-color: var(--send-btn-bgc);
   border-radius: 3px;
 }
 
@@ -70,13 +78,13 @@ $base-z-index: $page-component-z-index;
 
 .message-length-count {
   margin-right: 10px;
-  color: var(--text-gray-color);
+  color: var(--msg-length-count-color);
   font-size: 14px;
 }
 
 .sign-in-modal {
   font-size: 14px;
-  background-color: var(--gray-400-primary-background);
+  background-color: var(--no-auth-modal-bgc);
 }
 
 .sign-in-modal > div {
@@ -96,4 +104,31 @@ $base-z-index: $page-component-z-index;
 
 .sign-in-modal > div:nth-child(3) {
   padding: 5px 8px 5px 20px;
+}
+
+.emoji-block {
+  bottom: 95px;
+  left: -20px;
+  z-index: $base-z-index + 10;
+
+  & > aside {
+    --epr-picker-width: 380px;
+    --epr-picker-height: 300px;
+
+    @media screen and (max-width: 1199px) {
+      --epr-picker-width: 300px;
+    }
+
+    @media screen and (max-width: 991px) {
+      --epr-picker-width: 400px;
+    }
+
+    @media screen and (max-width: 767px) {
+      --epr-picker-width: 350px;
+    }
+
+    @media screen and (max-width: 575px) {
+      --epr-picker-width: 300px;
+    }
+  }
 }

@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import { FC, FormControl, SelectOptions, VideoStreamResponseDto } from 'common/types/types';
 import { Button, Input, Loader, PasswordInput, ToggleSwitch } from 'components/common/common';
-import { VideoChatContainer } from 'components/video-chat/video-chat-container';
+import { ChatSetting, VideoChatContainer } from 'components/video-chat/video-chat-container';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { DeepRequired, FieldErrorsImpl, FieldValues, UseFormGetValues } from 'react-hook-form';
 import { StreamStatus } from 'shared/build';
 import { StreamInfoFormValues } from './common/stream-info-form-values';
-import { StreamPrivacyLabel } from 'common/enums/enums';
+import { StreamPrivacyLabel, ChatStyle } from 'common/enums/enums';
 import { STREAM_PRIVACY_OPTIONS } from 'common/constants/stream/stream';
 import ReactSelect, { MultiValue } from 'react-select';
 
@@ -39,6 +39,10 @@ const StudioStream: FC<Props> = ({
   onStreamPrivacyChange,
   onStreamChatToggleChange,
 }) => {
+  const chatSettings: ChatSetting = {
+    hideSetting: false,
+  };
+
   return (
     <div className={styles['settings-container']}>
       <div className={styles['settings-block-container']}>
@@ -192,7 +196,7 @@ const StudioStream: FC<Props> = ({
         </div>
       </div>
       <div className={styles['chat-container']}>
-        <VideoChatContainer videoId={stream?.id ?? ''} popOutSetting={false} />
+        <VideoChatContainer videoId={stream?.id ?? ''} chatSettings={chatSettings} chatStyle={ChatStyle.GREEN} />
       </div>
     </div>
   );

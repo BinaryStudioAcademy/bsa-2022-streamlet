@@ -288,8 +288,10 @@ export class ChannelStreamingController extends BaseHttpController {
   @httpPost(ChannelStreamingApiPath.UPLOAD_POSTER, authenticationMiddleware, CONTAINER_TYPES.ChannelActionMiddleware)
   public async uploadPoster(
     @requestBody() payload: StreamPosterUploadRequestDto,
+    @request() req: ExtendedAuthenticatedRequest,
   ): Promise<StreamPosterUploadResponseDto> {
-    const poster = await this.channelStreamingService.uploadStreamPoster(payload);
+    const { id: userId } = req.user;
+    const poster = await this.channelStreamingService.uploadStreamPoster(payload, userId);
     if (!poster) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }

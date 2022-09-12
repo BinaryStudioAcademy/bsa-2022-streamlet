@@ -32,7 +32,6 @@ const SignUpForm: FC<Props> = ({ onSubmit, isLoading }) => {
           inputErrorClassName={formStyles['input-error']}
           errorBlockClassName={formStyles['error']}
           labelClassName={formStyles['label']}
-          type="email"
           label="Email"
           placeholder="Enter your email"
           name="email"

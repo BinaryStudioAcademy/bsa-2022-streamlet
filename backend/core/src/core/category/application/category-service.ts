@@ -56,16 +56,16 @@ export class CategoryService {
     return videos.map((video) => castToSearchByCategoryResponseDto(video));
   }
 
-  async updateCategory({
-    id,
-    name,
-    posterBase64Str,
-  }: CategoryUpdateRequestDto): Promise<CategoryResponseDto | undefined> {
+  async updateCategory(
+    { id, name, posterBase64Str }: CategoryUpdateRequestDto,
+    userId: string,
+  ): Promise<CategoryResponseDto | undefined> {
     let posterPath: ImageUploadResponseDto | undefined;
     if (posterBase64Str) {
       posterPath = await this.imageStore.upload({
         base64Str: posterBase64Str,
         type: ImageStorePresetType.CATEGORY_POSTER,
+        userId,
       });
     }
     const category = await this.categoryRepository.updateCategory({
@@ -80,7 +80,10 @@ export class CategoryService {
     return castToCategoryResponseDto(category);
   }
 
-  async createCategory({ name, posterBase64Str }: CategoryCreateRequestDto): Promise<CategoryResponseDto | undefined> {
+  async createCategory(
+    { name, posterBase64Str }: CategoryCreateRequestDto,
+    userId: string,
+  ): Promise<CategoryResponseDto | undefined> {
     const isCategoryCreated = await this.categoryRepository.getByName(name);
     if (isCategoryCreated) {
       return;
@@ -90,6 +93,7 @@ export class CategoryService {
       posterPath = await this.imageStore.upload({
         base64Str: posterBase64Str,
         type: ImageStorePresetType.CATEGORY_POSTER,
+        userId,
       });
     }
     const category = await this.categoryRepository.createCategory({

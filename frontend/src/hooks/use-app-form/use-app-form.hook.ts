@@ -6,6 +6,7 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
   UseFormReset,
+  UseFormSetValue,
 } from 'react-hook-form';
 
 import { FormControl, FormControlErrors, FormControlValues, ValidationSchema } from 'common/types/types';
@@ -24,6 +25,7 @@ type UseAppFormResult<T extends FormControlValues = FormControlValues> = {
   handleSubmit: UseFormHandleSubmit<T>;
   reset: UseFormReset<T>;
   getValues: UseFormGetValues<T>;
+  setValue: UseFormSetValue<T>;
 };
 
 const useAppForm = <T extends FormControlValues = FormControlValues>({
@@ -37,6 +39,7 @@ const useAppForm = <T extends FormControlValues = FormControlValues>({
     register,
     reset,
     getValues,
+    setValue,
     formState: { errors, isValid },
   } = useForm<T>({
     defaultValues,
@@ -52,6 +55,7 @@ const useAppForm = <T extends FormControlValues = FormControlValues>({
     isValid,
     reset,
     getValues,
+    setValue,
   };
 };
 

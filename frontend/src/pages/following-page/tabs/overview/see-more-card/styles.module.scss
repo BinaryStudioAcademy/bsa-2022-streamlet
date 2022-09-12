@@ -1,0 +1,19 @@
+.see-more-btn {
+  min-width: 120px;
+  height: 50px;
+  color: var(--brand-green-color);
+  font-size: 18px;
+  background-color: transparent;
+  border: 1px solid var(--brand-green-color);
+
+  &:hover {
+    color: var(--always-white-color);
+  }
+}
+
+.see-more-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--see-more-btn-bg);
+}

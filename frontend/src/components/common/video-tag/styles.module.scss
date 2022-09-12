@@ -1,0 +1,28 @@
+@import 'assets/css/breakpoint.scss';
+
+.video-tag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 6px;
+  background-color: transparent;
+  border: 1px solid var(--brand-green-color);
+  border-radius: 16px;
+}
+
+.video-tag span {
+  color: var(--brand-green-color);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  text-transform: capitalize;
+}
+
+.video-tag-live {
+  border: 1px solid var(--video-card-live-color);
+}
+
+.video-tag-live span {
+  color: var(--video-card-live-color);
+  font-weight: 600;
+}

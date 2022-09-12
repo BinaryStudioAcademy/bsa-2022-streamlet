@@ -14,7 +14,16 @@ export class ChannelRepositoryAdapter implements ChannelRepository {
 
   async getChannelsBySearch({ searchText, date, sortBy }: ChannelSearch): Promise<ChannelSearchDataResponseDto> {
     const queryOrderByObject = {
-      orderBy: sortBy.map((param) => param as Prisma.ChannelOrderByWithRelationAndSearchRelevanceInput),
+      orderBy: [
+        ...sortBy.map((param) => param as Prisma.ChannelOrderByWithRelationAndSearchRelevanceInput),
+        {
+          _relevance: {
+            fields: ['name'],
+            search: searchText,
+            sort: 'desc',
+          } as Prisma.ChannelOrderByRelevanceInput,
+        },
+      ],
     };
     const queryObject = {
       where: {

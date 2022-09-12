@@ -1,0 +1,23 @@
+.header-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.line-segment {
+  height: 1px;
+}
+
+.left {
+  background: linear-gradient(to right, transparent, 60%, var(--brand-dark-green-color));
+}
+
+.right {
+  background: linear-gradient(to left, transparent, 60%, var(--brand-dark-green-color));
+}
+
+.header {
+  color: var(--white-text-color);
+  font-size: 22px;
+  line-height: 22px;
+}

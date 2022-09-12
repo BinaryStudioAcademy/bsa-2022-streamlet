@@ -147,16 +147,20 @@ export class ChannelStreamingService {
     return castToVideoStreamResponseDto(stream);
   }
 
-  async uploadStreamPoster({
-    base64Str,
-    videoId,
-  }: StreamPosterUploadRequestDto): Promise<StreamPosterUploadResponseDto | null> {
+  async uploadStreamPoster(
+    { base64Str, videoId }: StreamPosterUploadRequestDto,
+    userId: string,
+  ): Promise<StreamPosterUploadResponseDto | null> {
     const isVideoExisting = await this.videoRepository.getById(videoId);
     if (!isVideoExisting) {
       return null;
     }
 
-    const { url: poster } = await this.imageStore.upload({ base64Str, type: ImageStorePresetType.STREAM_POSTER });
+    const { url: poster } = await this.imageStore.upload({
+      base64Str,
+      type: ImageStorePresetType.STREAM_POSTER,
+      userId,
+    });
 
     return {
       poster,
