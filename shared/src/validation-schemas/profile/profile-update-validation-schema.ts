@@ -7,7 +7,7 @@ const profileUpdateValidationSchema = Joi.object<UpdateProfileValue, true>({
     .trim()
     .min(3)
     .max(25)
-    .pattern(/[а-яА-ЯЁёІіЄєЇї]]/, { invert: true })
+    .pattern(/[а-яА-ЯЁёІіЄєЇї]/, { invert: true })
     .required()
     .messages({
       'string.empty': UserValidationMessage.USERNAME_REQUIRE,
