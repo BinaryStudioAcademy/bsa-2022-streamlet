@@ -2,7 +2,7 @@ import { Categories, Props as EmojiPickerProps } from 'emoji-picker-react';
 
 const defaultEmojiPickerConfig: EmojiPickerProps = {
   autoFocusSearch: false,
-  lazyLoadEmojis: true,
+  lazyLoadEmojis: false,
   showPreview: false,
   skinTonesDisabled: true,
   categories: [

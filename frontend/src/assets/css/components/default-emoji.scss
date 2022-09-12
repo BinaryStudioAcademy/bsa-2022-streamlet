@@ -1,10 +1,12 @@
+/* stylelint-disable selector-class-pattern */
 @import '../breakpoint.scss';
 
-.epr-main {
+aside.EmojiPickerReact.epr-main {
   max-height: 350px;
   padding-bottom: 10px;
   background-color: var(--gray-400-primary-background);
-  border-radius: 3px;
+  border-color: transparent;
+  border-radius: 6px;
   box-shadow: 0 3px 10px 0 rgb(0 0 0 / 15%);
 
   .epr-header {
@@ -45,11 +47,12 @@
 
     .epr-emoji-list {
       .epr-emoji-category {
-        gap: 3px;
+        gap: 0;
         padding: 0;
       }
 
       .epr-emoji-category-label {
+        height: 35px;
         color: var(--text-gray-color);
         font-size: 15px;
         font-family: Gilroy, sans-serif;
@@ -57,6 +60,13 @@
         letter-spacing: -0.16px;
         background-color: var(--gray-300-header-menu-background);
         border-radius: 3px;
+      }
+    }
+
+    button.epr-emoji {
+      img {
+        width: 27px;
+        height: 27px;
       }
     }
 
@@ -77,7 +87,7 @@
 }
 
 @media #{$tablet-middle} {
-  .epr-main {
+  aside.EmojiPickerReact.epr-main {
     .epr-header {
       .epr-header-overlay {
         display: flex;
