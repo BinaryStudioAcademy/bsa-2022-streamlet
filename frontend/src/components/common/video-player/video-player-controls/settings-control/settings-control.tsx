@@ -25,7 +25,7 @@ enum Modal {
 }
 
 const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, hlsClient }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState<Modal>(Modal.MAIN);
   const [speed, setSpeed] = useState(videoContainer.playbackRate);
   const [quality, setQuality] = useState('Auto');
@@ -84,7 +84,7 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
   const handleBlur = (e: React.FocusEvent<HTMLDivElement, Element>): void => {
     if (!e.currentTarget.contains(e.relatedTarget)) {
       // Not triggered when swapping focus between children
-      //setIsOpen(false);
+      setIsOpen(false);
     }
   };
 

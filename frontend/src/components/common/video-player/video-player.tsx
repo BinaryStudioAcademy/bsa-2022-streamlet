@@ -80,7 +80,8 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoAttributes, url, sizingProps =
         startLevel: -1,
         // according to docs: "value too low (inferior to ~3 segment durations) is likely to cause playback stalls"
         // if this is a problem, value may be returned to 3, which will make the video start 6 seconds before live point
-        liveSyncDurationCount: 0,
+        liveSyncDuration: 0,
+        liveMaxLatencyDuration: 0.5,
         // ideally, there should be some modifications in the playlist file
         // when the video turns offline, that would differentiate it from live video
         // and let the player start from start automatically

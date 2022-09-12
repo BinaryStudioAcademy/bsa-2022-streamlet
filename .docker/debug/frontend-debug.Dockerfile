@@ -17,6 +17,8 @@ COPY ./shared ./shared/
 COPY ./frontend/package.json ./frontend/
 
 RUN npm pkg set scripts.postinstall="npm run build:shared"
+RUN npm config set fetch-retry-mintimeout 20000
+RUN npm config set fetch-retry-maxtimeout 120000
 RUN npm ci -w shared -w frontend
 RUN mkdir -p ./frontend/node_modules/.cache && chmod -R 777 ./frontend/node_modules/.cache
 

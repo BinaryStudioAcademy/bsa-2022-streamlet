@@ -11,6 +11,7 @@ import { SettingsControl } from './settings-control/settings-control';
 import Hls from 'hls.js';
 import { LiveIndicator } from './live-indicator/live-indicator';
 import fscreen from 'fscreen';
+import { SyncBtn } from './sync-btn/sync-btn';
 
 type Props = {
   videoContainer: HTMLVideoElement;
@@ -46,12 +47,15 @@ const VideoPlayerControls: FC<Props> = ({
 
   return (
     <div className={clsx(styles['video-elements-wrapper'], className, isFullscreen && styles['fullscreen'])}>
-      <ProgressBar videoContainer={videoContainer} />
+      <ProgressBar videoContainer={videoContainer} liveSyncLie={isLive} />
       <div className={styles['video-controls-wrapper']}>
         <PlayPauseButton videoContainer={videoContainer} />
         <VolumeWrapper videoContainer={videoContainer} />
         {isLive ? (
-          <LiveIndicator className={styles['live-indicator']} />
+          <>
+            <SyncBtn videoContainer={videoContainer} />
+            <LiveIndicator className={styles['live-indicator']} />
+          </>
         ) : (
           <VideoTime videoContainer={videoContainer} className={styles['video-time']} />
         )}

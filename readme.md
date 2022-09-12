@@ -282,6 +282,15 @@ docker build -f .docker/video-transcoding-server.Dockerfile -t video-transcoding
 docker compose -f .docker/docker-compose.local.yml up -d
 ```
 
+## Run the development environment in docker (with hot reloading)
+
+Fill the files `api-debug.env` and `client-debug.env` in `.env` folder.
+When you change the frontend, it requires page refresh.
+
+```
+docker compose -f .docker/debug/docker-compose.debug.yml up --build
+```
+
 ## 📦 CD
 
 [Handled](.github/workflows/cd.yml) by [GitHub Actions](https://docs.github.com/en/actions).
