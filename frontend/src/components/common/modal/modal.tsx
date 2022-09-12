@@ -11,10 +11,17 @@ type Props = {
   children: ReactNode;
   isOpen: boolean;
   contentContainerClassName?: string;
+  closeButtonColor?: IconColor;
   onClose: { (): void };
 };
 
-const Modal: FC<Props> = ({ isOpen, onClose, children, contentContainerClassName }) => {
+const Modal: FC<Props> = ({
+  isOpen,
+  onClose,
+  children,
+  contentContainerClassName,
+  closeButtonColor = IconColor.GREEN,
+}) => {
   const { handleDisableContentContainerClick, handleOutsideClick } = useModal({
     onClose,
   });
@@ -32,7 +39,7 @@ const Modal: FC<Props> = ({ isOpen, onClose, children, contentContainerClassName
         >
           <Icon
             name={IconName.CLOSE}
-            color={IconColor.GREEN}
+            color={closeButtonColor}
             width={'20'}
             height={'20'}
             className={styles['close-icon']}
