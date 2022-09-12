@@ -40,6 +40,7 @@ import { ReactComponent as Success } from 'assets/img/success.svg';
 import { ReactComponent as SendMessage } from 'assets/img/send-message.svg';
 import { ReactComponent as Emoji } from 'assets/img/emoji.svg';
 import { ReactComponent as OnlineStreaming } from 'assets/img/online-streaming.svg';
+import { ReactComponent as OnlineStreaming2 } from 'assets/img/online-streaming-2.svg';
 import { ReactComponent as TV } from 'assets/img/tv.svg';
 import { ReactComponent as Rotate } from 'assets/img/rotate.svg';
 import { ReactComponent as Profile } from 'assets/img/profile.svg';
@@ -238,6 +239,10 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.ONLINE_STREAMING: {
       return <OnlineStreaming {...commonProps} />;
+    }
+
+    case IconName.ONLINE_STREAMING_2: {
+      return <OnlineStreaming2 {...commonProps} />;
     }
 
     case IconName.BELL_OUTLINE: {

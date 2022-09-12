@@ -10,7 +10,6 @@ import { Icon } from 'components/common/common';
 import styles from './header.module.scss';
 import { ToggleSwitch } from '../toggle-switch';
 import { Logo } from '../logo/logo';
-import { Tooltip } from '../tooltip/tooltip';
 
 interface MenuOption {
   type: MenuOptions;
@@ -65,7 +64,6 @@ const Header: FC<HeaderProps> = ({
   themeValue,
 }) => {
   const isSidebarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
-  const isLightTheme = useAppSelector((state) => state.theme.isLightTheme);
   const dispatch = useAppDispatch();
 
   function handleClickBurgerMenu(): void {
@@ -78,7 +76,6 @@ const Header: FC<HeaderProps> = ({
 
   return (
     <header className={styles['header']}>
-      <Tooltip place={'bottom'} isLightTheme={isLightTheme} />
       <div className={styles['logo-block']}>
         <button onClick={handleClickBurgerMenu} className={styles['burger-menu']}>
           <Icon name={IconName.BURGER_MENU} width="24" height="24" />
@@ -119,12 +116,13 @@ const Header: FC<HeaderProps> = ({
         </button>
         {isLogged ? (
           <>
-            <Link data-tip="Start stream" className={styles['btn-go-stream']} to={AppRoutes.STUDIO}>
+            <Link data-tip="Start stream" data-place="bottom" className={styles['btn-go-stream']} to={AppRoutes.STUDIO}>
               <Icon name={IconName.CAMERA} width="24" height="22" />
             </Link>
             {notificationDropdownContent}
             <button
               data-tip={'User profile'}
+              data-place="bottom"
               onClick={handleClickUserMenu}
               style={{ backgroundImage: `url(${userAvatar})` }}
               className={styles['user-avatar']}

@@ -54,7 +54,7 @@ $base-z-index: $page-component-z-index - 10;
   font-size: 12px;
   line-height: 16px;
   text-align: center;
-  background-color: var(--always-primary-text-color);
+  background-color: var(--always-gray-300-header-menu-background);
   border-radius: 16px;
 }
 
@@ -262,7 +262,7 @@ $base-z-index: $page-component-z-index - 10;
   align-items: center;
   gap: 15px;
   margin-left: auto;
-  padding: 0 15px;
+  padding: 7px 15px;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
@@ -281,8 +281,22 @@ $base-z-index: $page-component-z-index - 10;
   width: 12px;
 }
 
-.video-card-meta-tag svg path {
-  fill: var(--video-card-live-color);
+.live-label {
+  height: 20px;
+  color: var(--always-white-color);
+  font-size: 13px;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+  background-color: var(--video-card-live-color);
+  border-radius: 3px;
+
+  & svg {
+    width: 15px;
+  }
+
+  & svg path {
+    fill: var(--always-white-color);
+  }
 }
 
 @media #{$mobile-large} {
@@ -368,7 +382,13 @@ $base-z-index: $page-component-z-index - 10;
   }
 
   .video-card-tag-live {
-    display: block;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 55px;
+    font-size: 13px;
   }
 
   .video-card-meta-footer {

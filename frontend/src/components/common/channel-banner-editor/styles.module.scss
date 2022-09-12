@@ -1,0 +1,74 @@
+@use 'assets/css/breakpoint';
+
+.banner-editor-container {
+  overflow: hidden;
+}
+
+.controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  margin-left: auto;
+  background-color: var(--gray-400-primary-background);
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.controls button {
+  width: 72px;
+  padding: 0 10px;
+  color: var(--always-white-color);
+  background-color: var(--brand-green-color);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.button-container {
+  display: flex;
+  justify-self: flex-end;
+  margin-right: 5px;
+}
+
+.controls button:nth-child(2n) {
+  margin: 0 20px 0 10px;
+}
+
+.zoom-indicator {
+  color: var(--text-gray-color);
+  font-size: 45px;
+  line-height: 22px;
+  cursor: pointer;
+}
+
+.image-editor-slider-container {
+  display: flex;
+  justify-self: center;
+  width: 30%;
+  margin-left: 35%;
+}
+@media screen and (max-width: 576px) {
+  .image-editor-slider-container {
+    width: 30%;
+    margin-left: 10%;
+  }
+
+  .controls {
+    bottom: 0;
+    justify-content: space-between;
+    height: 30px;
+  }
+
+  .zoom-indicator {
+    font-size: 50px;
+  }
+
+  .zoom-indicator:nth-child(2n) {
+    margin-left: 20px;
+  }
+}

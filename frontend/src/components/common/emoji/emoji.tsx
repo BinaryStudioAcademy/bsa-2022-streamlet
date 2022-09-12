@@ -54,14 +54,37 @@ const Emoji: FC<Props> = ({
     }
   }, []);
 
-  useEffect(() => {
+  const addTypesToButtons = (): void => {
     if (emojiBlockEl.current) {
-      const emojiButtons = emojiBlockEl.current.getElementsByTagName('button');
+      const emojiButtons = emojiBlockEl.current.querySelectorAll('button:not([type])');
       for (const button of emojiButtons) {
         button.setAttribute('type', 'button');
       }
     }
-  });
+  };
+
+  const onHandleChangeEmojiSearch = useCallback((): void => {
+    addTypesToButtons();
+  }, []);
+
+  useEffect(() => {
+    const searchEl = emojiBlockEl.current?.querySelector('input.epr-search') as HTMLInputElement | null;
+    if (emojiBlockEl.current) {
+      addTypesToButtons();
+
+      // have to add it due to emojiSearchClearBtn does't have type='button'
+      // and submits form onClick
+      if (searchEl) {
+        searchEl.addEventListener('change', onHandleChangeEmojiSearch);
+      }
+    }
+
+    return () => {
+      if (searchEl) {
+        searchEl.removeEventListener('change', onHandleChangeEmojiSearch);
+      }
+    };
+  }, [onHandleChangeEmojiSearch]);
 
   useEffect(() => {
     if (showEmojiBlock) {

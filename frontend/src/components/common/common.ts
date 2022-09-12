@@ -15,7 +15,7 @@ export { createToastNotification } from './toast-notification';
 export { SubscribeButton } from './subscribe-button/subscribe-button';
 export { HeaderContainer } from './header/header-container';
 export { SidebarContainer } from './sidebar/sidebar-container';
-
+export { Tooltip } from './tooltip/tooltip';
 export { Loader } from './loader/loader';
 export { Emoji } from './emoji/emoji';
 export { TextWithEmoji } from './text-with-emoji/text-with-emoji';

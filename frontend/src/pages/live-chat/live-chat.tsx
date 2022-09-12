@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { NotFound } from 'components/placeholder-page';
-import { VideoChatContainer } from 'components/video-chat/video-chat-container';
+import { ChatSetting, VideoChatContainer } from 'components/video-chat/video-chat-container';
 import { useSearchParams } from 'hooks/hooks';
 import { LiveChatQueryParams } from './config';
 
@@ -13,9 +13,17 @@ const LiveChat: FC = () => {
     return <NotFound />;
   }
 
+  const chatSettings: ChatSetting = {
+    popOutSetting: false,
+    hideSetting: false,
+  };
+
   return (
     <div className={styles['chat-block']}>
-      <VideoChatContainer videoId={queryParams.get(LiveChatQueryParams.CHAT_ID) as string} popOutSetting={false} />
+      <VideoChatContainer
+        videoId={queryParams.get(LiveChatQueryParams.CHAT_ID) as string}
+        chatSettings={chatSettings}
+      />
     </div>
   );
 };
