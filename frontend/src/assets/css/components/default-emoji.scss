@@ -1,10 +1,23 @@
+/* stylelint-disable selector-class-pattern */
 @import '../breakpoint.scss';
 
-.epr-main {
-  max-height: 350px;
+aside.EmojiPickerReact.epr-main {
+  --epr-picker-border-color: transparent;
+  --epr-picker-border-radius: 6px;
+  --epr-bg-color: var(--gray-400-primary-background);
+  --epr-category-label-bg-color: var(--gray-300-header-menu-background);
+  --epr-search-input-bg-color: var(--gray-300-header-menu-background);
+  --epr-search-input-text-color: var(--brand-green-color);
+  --epr-search-input-placeholder-color: var(--text-gray-color);
+  --epr-search-input-bg-color-active: var(--gray-300-header-menu-background);
+  --epr-search-border-color: transparent;
+  --epr-search-input-border-radius: 6px;
+  --epr-emoji-size: 27px;
+  --epr-header-padding: 15px 15px 5px;
+  --epr-category-label-text-color: var(--text-gray-color);
+  --epr-category-label-height: 35px;
+
   padding-bottom: 10px;
-  background-color: var(--gray-400-primary-background);
-  border-radius: 3px;
   box-shadow: 0 3px 10px 0 rgb(0 0 0 / 15%);
 
   .epr-header {
@@ -14,24 +27,12 @@
 
     .epr-search-container {
       input.epr-search {
-        color: var(--brand-green-color);
         font-size: 15px;
         font-family: Gilroy, sans-serif;
         line-height: 24px;
         letter-spacing: -0.16px;
-        background-color: var(--gray-300-header-menu-background);
-        border: 1px solid transparent;
-        border-radius: 6px;
+        border: 1px solid var(--epr-search-border-color);
         outline: none;
-
-        &::placeholder {
-          color: var(--text-gray-color);
-        }
-
-        &:focus {
-          background-color: var(--gray-300-header-menu-background);
-          border: 1px solid transparent;
-        }
       }
     }
 
@@ -44,20 +45,17 @@
     padding-left: 16px;
 
     .epr-emoji-list {
-      .epr-emoji-category {
-        gap: 3px;
-        padding: 0;
-      }
-
       .epr-emoji-category-label {
-        color: var(--text-gray-color);
         font-size: 15px;
         font-family: Gilroy, sans-serif;
         line-height: 24px;
         letter-spacing: -0.16px;
-        background-color: var(--gray-300-header-menu-background);
         border-radius: 3px;
       }
+    }
+
+    button.epr-emoji.epr-emoji-has-variations::after {
+      display: none;
     }
 
     &::-webkit-scrollbar-track {
@@ -77,22 +75,17 @@
 }
 
 @media #{$tablet-middle} {
-  .epr-main {
+  aside.EmojiPickerReact.epr-main {
     .epr-header {
       .epr-header-overlay {
         display: flex;
-        padding: 15px 15px 5px;
       }
 
       .epr-category-nav {
+        justify-content: center;
+        gap: 5px;
         padding: 5px 15px 10px;
       }
     }
-  }
-}
-
-@media #{$tablet-large} {
-  .epr-main {
-    max-width: 300px;
   }
 }
