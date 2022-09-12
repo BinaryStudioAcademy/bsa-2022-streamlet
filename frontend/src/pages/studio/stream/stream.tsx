@@ -149,13 +149,13 @@ const StudioStream: FC<Props> = ({
               <div className={styles['text-field-container']}>
                 <p className={styles['field-caption']}>Categories</p>
                 <p className={styles['field-value']}>
-                  {stream?.categories ? stream?.categories.map((category) => category.name).join(', ') : '-'}
+                  {stream?.categories.length ? stream?.categories.map((category) => category.name).join(', ') : '-'}
                 </p>
               </div>
               <div className={styles['text-field-container']}>
                 <p className={styles['field-caption']}>Tags</p>
                 <p className={styles['field-value']}>
-                  {stream?.tags ? stream?.tags.map((tag) => tag.name).join(', ') : '-'}
+                  {stream?.tags.length ? stream?.tags.map((tag) => tag.name).join(', ') : '-'}
                 </p>
               </div>
               <div className={styles['text-field-container']}>
@@ -188,8 +188,11 @@ const StudioStream: FC<Props> = ({
                 />
               </div>
               <div>
-                <label className={styles['label']}>Toggle stream chat</label>
-                <ToggleSwitch defaultValue={stream?.isChatEnabled ?? true} onToggle={onStreamChatToggleChange} />
+                <label className={styles['label']}>Stream chat</label>
+                <div className={styles['toggle-wrap']}>
+                  <ToggleSwitch defaultValue={stream?.isChatEnabled ?? true} onToggle={onStreamChatToggleChange} />
+                  <span className={styles['label-right']}>{stream?.isChatEnabled ? 'Enabled' : 'Disabled'}</span>
+                </div>
               </div>
             </div>
           </div>
