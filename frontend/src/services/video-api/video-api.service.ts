@@ -49,6 +49,30 @@ class VideoApi {
     });
   }
 
+  public getGeneralVideos(): Promise<DataVideo> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.GENERAL_VIDEOS}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+    });
+  }
+
+  public getRecommendedVideos(pagination: VideoPaginationParams): Promise<DataVideo> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.RECOMMENDED_VIDEOS}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+      ...(pagination && {
+        query: {
+          skip: pagination.skip,
+          take: pagination.take,
+        },
+      }),
+    });
+  }
+
   public getSingleVideo(videoId: string): Promise<VideoExpandedResponseDto> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.VIDEOS}/${videoId}`,

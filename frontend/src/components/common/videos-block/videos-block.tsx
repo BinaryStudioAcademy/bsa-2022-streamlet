@@ -11,40 +11,56 @@ import {
 } from '../video-skeleton/video-skeleton.config';
 
 import styles from './videos-block.module.scss';
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { getVideos } from 'store/videos/actions';
+import { getRecommendedVideos } from 'store/videos/actions';
 import { Loader } from '../common';
+import { middleWidthOfVideoCard } from './videos.config';
 export interface VideoBlockProps {
   blockTitle?: string;
   videoCards: ReactNode[];
+  isGeneralBlock?: boolean;
   loadingStatus: DataStatus;
   isLazyBlock?: boolean;
+  widthContent?: number;
 }
 
-const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, loadingStatus, isLazyBlock }) => {
+const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, isLazyBlock, widthContent, isGeneralBlock }) => {
   const dispatch = useAppDispatch();
-  const { isLightTheme, lazyLoad, totalVideos, numberOfUploadedVideos, numberOfVideoForUpload } = useAppSelector(
-    (state) => ({
-      isLightTheme: state.theme.isLightTheme,
-      lazyLoad: state.videos.pagination.lazyLoad,
-      totalVideos: state.videos.data.total,
-      numberOfUploadedVideos: state.videos.data.list.length,
-      numberOfVideoForUpload: state.videos.pagination.countItems,
-    }),
-  );
+  const {
+    isLightTheme,
+    numberOfVideoForUpload,
+    numberOfRecommendedVideos,
+    totalNumberOfRecommendedVideos,
+    uploadVideosStatus,
+    totalGeneralVideos,
+  } = useAppSelector((state) => ({
+    isLightTheme: state.theme.isLightTheme,
+    numberOfVideoForUpload: state.videos.data.recommendedVideos.numbersOfGetVideos,
+    numberOfRecommendedVideos: state.videos.data.recommendedVideos.list.length,
+    totalNumberOfRecommendedVideos: state.videos.data.recommendedVideos.total,
+    totalGeneralVideos: state.videos.data.generalVideos.list.length,
+    uploadVideosStatus: state.videos.data.recommendedVideos.status,
+  }));
+  const [numberOfVideosForGeneralBlock, setNumberOfVideosForGeneralBlock] = useState(4);
 
   const numberSkeleton = useMemo(() => {
-    if (!numberOfUploadedVideos) {
+    if (!numberOfRecommendedVideos) {
       return numberOfVideoForUpload;
     }
 
-    if (totalVideos - numberOfUploadedVideos >= numberOfVideoForUpload) {
+    if (totalNumberOfRecommendedVideos - numberOfRecommendedVideos >= numberOfVideoForUpload) {
       return numberOfVideoForUpload;
     }
 
-    return totalVideos - numberOfUploadedVideos;
-  }, [numberOfUploadedVideos, totalVideos, numberOfVideoForUpload]);
+    return totalNumberOfRecommendedVideos - numberOfRecommendedVideos;
+  }, [numberOfRecommendedVideos, totalNumberOfRecommendedVideos, numberOfVideoForUpload]);
+
+  useEffect(() => {
+    if (widthContent) {
+      setNumberOfVideosForGeneralBlock(Math.floor(widthContent / middleWidthOfVideoCard));
+    }
+  }, [widthContent]);
 
   const colorForSkeleton = {
     baseColor: isLightTheme ? LIGHT_THEME_BASE_COLOR : DARK_THEME_BASE_COLOR,
@@ -52,12 +68,20 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, loadingStatu
   };
 
   const uploadVideos = (): void => {
-    dispatch(getVideos({ withLazyLoad: true }));
+    dispatch(getRecommendedVideos());
   };
 
-  const returnEmptyArrayForSkeleton = (): Array<null> => {
-    return Array(numberSkeleton).fill(null);
+  const returnEmptyArrayForSkeleton = (value: number): Array<null> => {
+    return Array(value).fill(null);
   };
+
+  const convertValueToBoolean = (param: string | number): boolean => {
+    return Boolean(param);
+  };
+
+  const continueLoading = useMemo((): boolean => {
+    return numberOfRecommendedVideos < totalNumberOfRecommendedVideos;
+  }, [numberOfRecommendedVideos, totalNumberOfRecommendedVideos]);
 
   return (
     <div className={styles['separate-video-block']}>
@@ -67,7 +91,7 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, loadingStatu
           dataLength={videoCards.length}
           next={uploadVideos}
           scrollableTarget="main-content"
-          hasMore={lazyLoad}
+          hasMore={continueLoading}
           loader={
             <div className={styles['loader-block']}>
               <Loader spinnerSize={LoaderSize.XS} />
@@ -76,20 +100,33 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, loadingStatu
         >
           <SkeletonTheme baseColor={colorForSkeleton.baseColor} highlightColor={colorForSkeleton.highlightColor}>
             <div className={styles['videos-block']}>
-              {loadingStatus === DataStatus.FULFILLED && !isLazyBlock && videoCards}
-              {isLazyBlock && videoCards}
-              {loadingStatus === DataStatus.PENDING &&
-                returnEmptyArrayForSkeleton().map((_, index) => <VideoSkeleton key={index} />)}
+              {isLazyBlock && convertValueToBoolean(numberOfRecommendedVideos) && videoCards}
+              {(!convertValueToBoolean(numberOfRecommendedVideos) || uploadVideosStatus === DataStatus.PENDING) &&
+                returnEmptyArrayForSkeleton(numberSkeleton).map((_, index) => <VideoSkeleton key={index} />)}
             </div>
           </SkeletonTheme>
         </InfiniteScroll>
       )}
-      {!isLazyBlock && (
+      {!isLazyBlock && isGeneralBlock && (
         <SkeletonTheme baseColor={colorForSkeleton.baseColor} highlightColor={colorForSkeleton.highlightColor}>
           <div className={styles['videos-block']}>
-            {loadingStatus === DataStatus.PENDING && [1, 2, 3, 4, 5].map((_, index) => <VideoSkeleton key={index} />)}
-            {loadingStatus === DataStatus.FULFILLED && !isLazyBlock && videoCards}
+            {!convertValueToBoolean(totalGeneralVideos) &&
+              returnEmptyArrayForSkeleton(numberOfVideosForGeneralBlock).map((_, index) => (
+                <VideoSkeleton key={index} />
+              ))}
           </div>
+          {convertValueToBoolean(totalGeneralVideos) && (
+            <div className={styles['videos-block']}>{videoCards.slice(0, numberOfVideosForGeneralBlock)}</div>
+          )}
+        </SkeletonTheme>
+      )}
+      {!isGeneralBlock && !isLazyBlock && (
+        <SkeletonTheme baseColor={colorForSkeleton.baseColor} highlightColor={colorForSkeleton.highlightColor}>
+          <div className={styles['videos-block']}>
+            {!convertValueToBoolean(videoCards.length) &&
+              returnEmptyArrayForSkeleton(4).map((_, index) => <VideoSkeleton key={index} />)}
+          </div>
+          {convertValueToBoolean(videoCards.length) && <div className={styles['videos-block']}>{videoCards}</div>}
         </SkeletonTheme>
       )}
     </div>

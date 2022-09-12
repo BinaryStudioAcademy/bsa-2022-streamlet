@@ -2,10 +2,14 @@ import { createReducer, isAnyOf } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 import { BaseVideoResponseDto, DataVideo } from 'shared/build';
 import {
+  getGeneralVideosBlock,
   getPopularVideos,
+  getRecommendedVideos,
   getVideos,
   getVideosByCategory,
+  resetGeneralVideos,
   resetPaginationMainPage,
+  resetRecommendedVideos,
   setNumberOfVideoForLoading,
 } from './actions';
 
@@ -18,6 +22,19 @@ type State = {
       lastPage: number;
       lastListLength: number;
       category: string;
+    };
+  } & {
+    generalVideos: {
+      list: BaseVideoResponseDto[];
+      total: number;
+    };
+  } & {
+    recommendedVideos: {
+      list: BaseVideoResponseDto[];
+      total: number;
+      status: DataStatus;
+      currentPage: number;
+      numbersOfGetVideos: number;
     };
   };
   pagination: {
@@ -41,6 +58,17 @@ const initialState: State = {
       lastPage: -1,
       lastListLength: 0,
       category: '',
+    },
+    generalVideos: {
+      list: [],
+      total: 0,
+    },
+    recommendedVideos: {
+      list: [],
+      total: 0,
+      status: DataStatus.IDLE,
+      currentPage: 1,
+      numbersOfGetVideos: 12,
     },
   },
   pagination: {
@@ -106,6 +134,40 @@ const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(setNumberOfVideoForLoading, (state, { payload }) => {
     state.pagination.countItems = payload.numberOfItems;
+  });
+
+  builder.addCase(getGeneralVideosBlock.fulfilled, (state, { payload }) => {
+    state.data.generalVideos.list = payload.list;
+    state.data.generalVideos.total = payload.total;
+  });
+
+  builder.addCase(getRecommendedVideos.pending, (state) => {
+    state.data.recommendedVideos.status = DataStatus.PENDING;
+  });
+
+  builder.addCase(getRecommendedVideos.fulfilled, (state, { payload }) => {
+    state.data.recommendedVideos.status = DataStatus.FULFILLED;
+    state.data.recommendedVideos.currentPage++;
+    state.data.recommendedVideos.list = [...state.data.recommendedVideos.list, ...payload.list];
+    state.data.recommendedVideos.total = payload.total;
+  });
+
+  builder.addCase(getRecommendedVideos.rejected, (state) => {
+    state.data.recommendedVideos.status = DataStatus.REJECTED;
+    state.data.recommendedVideos.list = [];
+    state.data.recommendedVideos.total = 0;
+  });
+
+  builder.addCase(resetRecommendedVideos, (state) => {
+    state.data.recommendedVideos.list = [];
+    state.data.recommendedVideos.currentPage = 1;
+    state.data.recommendedVideos.total = 0;
+    state.data.recommendedVideos.status = DataStatus.IDLE;
+  });
+
+  builder.addCase(resetGeneralVideos, (state) => {
+    state.data.generalVideos.list = [];
+    state.data.generalVideos.total = 0;
   });
 
   builder.addMatcher(isAnyOf(getVideosByCategory.rejected, getVideos.rejected, getPopularVideos.rejected), (state) => {

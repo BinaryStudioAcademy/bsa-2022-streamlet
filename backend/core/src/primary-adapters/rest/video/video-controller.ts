@@ -38,6 +38,7 @@ import {
   BaseReplyRequestDto,
   VideoPaginationParams,
   AddVideoViewResponseDto,
+  RecommendedVideosParams,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -155,10 +156,18 @@ export class VideoController extends BaseHttpController {
   }
 
   @httpGet(VideoApiPath.RECOMMENDED_VIDEOS, optionalAuthenticationMiddleware)
-  public async getRecommendedVideos(@request() req: ExtendedAuthenticatedRequest): Promise<DataVideo> {
+  public async getRecommendedVideos(
+    @request() req: ExtendedAuthenticatedRequest,
+    @queryParam() paginationParams: Omit<RecommendedVideosParams, 'userId'>,
+  ): Promise<DataVideo> {
     const id = req?.user?.id ?? undefined;
 
-    return await this.videoService.getRecommendedVideos(id);
+    const params: RecommendedVideosParams = {
+      userId: id,
+      ...paginationParams,
+    };
+
+    return await this.videoService.getRecommendedVideos(params);
   }
 
   /**

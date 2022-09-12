@@ -15,6 +15,7 @@ import {
   VideoCommentResponseDto,
   Comment,
   VideoPaginationParams,
+  RecommendedVideosParams,
 } from 'shared/build';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { POPULAR_VIDEO_CARD_IN_ONE_PAGE } from '~/shared/constants/constants';
@@ -103,7 +104,7 @@ export class VideoService {
     return await this.videoRepository.getGeneralVideos(userId);
   }
 
-  async getRecommendedVideos(userId: string | undefined): Promise<DataVideo> {
-    return await this.videoRepository.getRecommendedVideos(userId);
+  async getRecommendedVideos(params: RecommendedVideosParams): Promise<DataVideo> {
+    return await this.videoRepository.getRecommendedVideos(params);
   }
 }

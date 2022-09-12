@@ -10,6 +10,7 @@ import {
   CategorySearchRequestQueryDto,
   CreateReactionRequestDto,
   CreateReactionResponseDto,
+  RecommendedVideosParams,
   StreamStatus,
   TagSearchRequestQueryDto,
   VideoCommentRequestDto,
@@ -23,6 +24,7 @@ import { VideoSearch, VideoWithChannel } from '~/shared/types/video/video-with-c
 import { VideoRepositoryFilters } from '~/core/video/port/video-repository-filters';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { StreamPrivacy } from '~/shared/enums/stream/stream';
+import { NUMBER_OF_VIDEOS_FOR_RESET } from '~/shared/constants/constants';
 
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
@@ -678,6 +680,9 @@ export class VideoRepositoryAdapter implements VideoRepository {
                     },
                   },
                 },
+                orderBy: {
+                  publishedAt: 'desc',
+                },
               },
             },
           },
@@ -695,30 +700,81 @@ export class VideoRepositoryAdapter implements VideoRepository {
     const list = result
       .map(({ channel }) => channel.videos)
       .flat()
-      .map(trimVideo)
-      .filter((video) => !idsWatchedVideos.includes(video.id));
+      .map(trimVideo);
+
+    let filteredList = list.filter((video) => !idsWatchedVideos.includes(video.id));
+
+    if (filteredList.length < NUMBER_OF_VIDEOS_FOR_RESET) {
+      filteredList = list;
+    }
+
     const total = list.length;
 
     return {
-      list,
+      list: filteredList,
       total,
     };
   }
 
-  async getRecommendedVideos(userId: string | undefined): Promise<DataVideo> {
+  async getRecommendedVideos({ userId, skip, take }: RecommendedVideosParams): Promise<DataVideo> {
     if (userId) {
-      const result = await this.prismaClient.video.findMany({
-        where: {
-          privacy: StreamPrivacy.PUBLIC,
-          categories: {
-            some: {
-              users: {
-                some: {
-                  userId,
+      const [result, total] = await this.prismaClient.$transaction([
+        this.prismaClient.video.findMany({
+          where: {
+            privacy: StreamPrivacy.PUBLIC,
+            categories: {
+              some: {
+                users: {
+                  some: {
+                    userId,
+                  },
                 },
               },
             },
           },
+          include: {
+            channel: {
+              select: {
+                id: true,
+                name: true,
+                avatar: true,
+              },
+            },
+          },
+          orderBy: {
+            publishedAt: 'desc',
+          },
+          skip: Number(skip),
+          take: Number(take),
+        }),
+        this.prismaClient.video.count({
+          where: {
+            privacy: StreamPrivacy.PUBLIC,
+            categories: {
+              some: {
+                users: {
+                  some: {
+                    userId,
+                  },
+                },
+              },
+            },
+          },
+        }),
+      ]);
+
+      const list = result.map(trimVideo);
+
+      return {
+        list,
+        total,
+      };
+    }
+
+    const [result, total] = await this.prismaClient.$transaction([
+      this.prismaClient.video.findMany({
+        where: {
+          privacy: StreamPrivacy.PUBLIC,
         },
         include: {
           channel: {
@@ -732,39 +788,17 @@ export class VideoRepositoryAdapter implements VideoRepository {
         orderBy: {
           publishedAt: 'desc',
         },
-        skip: undefined,
-        take: undefined,
-      });
-
-      const list = result.map(trimVideo);
-      const total = result.length;
-
-      return {
-        list,
-        total,
-      };
-    }
-
-    const result = await this.prismaClient.video.findMany({
-      where: {
-        privacy: StreamPrivacy.PUBLIC,
-      },
-      include: {
-        channel: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-          },
+        skip: Number(skip),
+        take: Number(take),
+      }),
+      this.prismaClient.video.count({
+        where: {
+          privacy: StreamPrivacy.PUBLIC,
         },
-      },
-      orderBy: {
-        publishedAt: 'desc',
-      },
-    });
+      }),
+    ]);
 
     const list = result.map(trimVideo);
-    const total = result.length;
 
     return {
       list,

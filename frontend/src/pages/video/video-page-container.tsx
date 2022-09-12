@@ -14,7 +14,7 @@ import { ChannelInfoRow } from './channel-info-row/channel-info-row';
 import { VideoHeader } from './video-header/video-header';
 import { LinksBlock } from './links-block/links-block';
 import { NotFound } from 'components/placeholder-page';
-import { addVideoView } from 'store/video-page/actions';
+import { addVideoView, resetVideoPage } from 'store/video-page/actions';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -44,6 +44,12 @@ const VideoPageContainer: FC = () => {
     dispatch(videoPageActions.getVideo(videoId));
     setReactState(false);
   }, [videoId, dispatch, isReactChanged]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetVideoPage());
+    };
+  }, [dispatch]);
 
   const handleCommentLikeReact = useCallback(
     (commentId: string): void => {
