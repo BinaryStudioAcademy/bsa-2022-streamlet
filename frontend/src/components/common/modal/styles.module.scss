@@ -4,7 +4,8 @@
   min-height: 105px;
   max-height: 100vh;
   padding: 10px;
-  background-color: var(--gray-400-primary-background);
+  overflow-y: auto;
+  background-color: var(--gray-300-header-menu-background);
   border-radius: 3px;
 }
 
