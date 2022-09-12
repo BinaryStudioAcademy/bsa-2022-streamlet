@@ -11,6 +11,8 @@ type Comment = {
   lastName?: string;
   dateAdded: Date;
   text: string;
+  isEdited: boolean;
+  isDeleted: boolean;
   likeNum: number;
   dislikeNum: number;
   commentReactions: BaseCommentReaction[];

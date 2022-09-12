@@ -14,11 +14,11 @@ import {
   CONTAINER_TYPES,
   ExtendedAuthenticatedRequest,
 } from '~/shared/types/types';
-import { exceptionMessages } from '~/shared/enums/enums';
+import { exceptionMessages, ApiPath, ChatApiPath } from '~/shared/enums/enums';
 import { BadRequest, Forbidden, NotFound } from '~/shared/exceptions/exceptions';
 import { ChatService } from '~/core/chat/application/chat-service';
 import { trimChatMessage, trimVideoToChatInfo } from '~/shared/helpers';
-import { ApiPath, ChatApiPath, ChatMessageResponseDto } from 'shared/build';
+import { ChatMessageResponseDto } from 'shared/build';
 import { authenticationMiddleware } from '../middleware';
 
 /**

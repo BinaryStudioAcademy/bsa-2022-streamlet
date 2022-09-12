@@ -26,4 +26,9 @@ export const exceptionMessages = {
     CHAT_MESSAGE_NOT_FOUND: 'Chat message with such id wasn`t found',
     CHAT_MESSAGE_IS_EMPTY: 'Chat message is empty',
   },
+  comment: {
+    COMMENT_NOT_FOUND: 'Comment with such id wasn`t found',
+    COMMENT_IS_EMPTY: 'Comment is empty',
+    COMMENT_FORBIDDEN: 'Comment with such id isn`t yours',
+  },
 };

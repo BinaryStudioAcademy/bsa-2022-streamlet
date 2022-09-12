@@ -1,6 +1,7 @@
 import { User, UserProfile, Video, VideoComment, CommentReaction } from '@prisma/client';
 import { BaseVideoResponseDto, StreamStatus } from 'shared/build';
 import { Comment } from 'shared/build/common/types/comment';
+import { calculateReactions } from './calculate-reactions.helper';
 
 export const trimVideoToBase = (
   video: Video & {
@@ -94,6 +95,8 @@ export const trimVideoWithComments = (
       parentId: comment.parentId,
       repliesCount: comment.repliesCount,
       text: comment.text,
+      isEdited: comment.isEdited,
+      isDeleted: comment.isDeleted,
       authorId: comment.author.id,
       userName: comment.author.username,
       avatar: comment.author.profile?.avatar,
@@ -125,6 +128,8 @@ export const trimCommentsForReplies = (
     firstName: comment.author.profile?.firstName,
     lastName: comment.author.profile?.lastName,
     text: comment.text,
+    isEdited: comment.isEdited,
+    isDeleted: comment.isDeleted,
     dateAdded: comment.createdAt,
     likeNum: calculateReactions(comment.commentReactions, true),
     dislikeNum: calculateReactions(comment.commentReactions, false),
@@ -132,9 +137,4 @@ export const trimCommentsForReplies = (
   }));
 
   return result;
-};
-
-const calculateReactions = (commentReactions: CommentReaction[], isLike: boolean): number => {
-  const likeCount = commentReactions.filter((item) => item.isLike === isLike);
-  return likeCount.length;
 };
