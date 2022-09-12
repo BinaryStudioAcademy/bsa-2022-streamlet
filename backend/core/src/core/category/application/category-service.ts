@@ -118,9 +118,7 @@ export class CategoryService {
     if (!isVideoExists) {
       return null;
     }
-    console.error('BEFORE DELETING');
     await this.categoryRepository.clearCategoriesToVideoBinding(videoId);
-    console.error('AFTER DELETING');
     const categories: string[] = [];
     for (const { name } of categoryPayload) {
       const category = await this.categoryRepository.getByName(name);
@@ -128,7 +126,6 @@ export class CategoryService {
         return;
       }
       categories.push(category.id);
-      console.warn('added category');
     }
 
     const bindedCategories = await this.categoryRepository.bindCategoriesToVideo({
