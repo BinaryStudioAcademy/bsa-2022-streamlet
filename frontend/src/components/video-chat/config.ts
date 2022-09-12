@@ -43,4 +43,15 @@ const matchChatStyleWithChatStyleClassName: Record<ChatStyle, string> = {
   [ChatStyle.GREEN]: 'chat-green',
 };
 
-export { allChatMenuOptions, popOutChatParamsString, messageMaxLength, matchChatStyleWithChatStyleClassName };
+const defaultChatSettings = {
+  popOutSetting: true,
+  hideSetting: true,
+};
+
+export {
+  allChatMenuOptions,
+  popOutChatParamsString,
+  messageMaxLength,
+  matchChatStyleWithChatStyleClassName,
+  defaultChatSettings,
+};
