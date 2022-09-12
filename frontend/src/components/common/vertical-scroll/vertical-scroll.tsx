@@ -4,6 +4,8 @@ import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 import { useEffect, useState } from '../../../hooks/hooks';
 import { ReactElement, ReactNode, useContext } from 'react';
 import clsx from 'clsx';
+import { Icon } from '../common';
+import { IconColor, IconName } from '../../../common/enums/enums';
 
 const Arrow = ({
   children,
@@ -45,7 +47,7 @@ const LeftArrow = (): ReactElement => {
 
   return (
     <Arrow disabled={disabled} onClick={(): void => scrollPrev() as void} isRight={false}>
-      {'<'}
+      <Icon name={IconName.HORIZONTAL_SCROLL_LEFT_ARROW} color={IconColor.GRAY} width={'16'} height={'16'} />
     </Arrow>
   );
 };
@@ -62,7 +64,7 @@ const RightArrow = (): ReactElement => {
 
   return (
     <Arrow disabled={disabled} onClick={(): void => scrollNext() as void} isRight={true}>
-      {'>'}
+      <Icon name={IconName.HORIZONTAL_SCROLL_RIGHT_ARROW} color={IconColor.GRAY} width={'16'} height={'16'} />
     </Arrow>
   );
 };

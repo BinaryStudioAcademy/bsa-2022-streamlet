@@ -36,13 +36,19 @@
 
 .arrow-container .arrow {
   z-index: 2;
-  padding: 0 10px;
+  width: 29px;
+  padding: 0;
   color: var(--auth-border);
-  font-weight: 600;
-  font-size: 20px;
   background: none;
 
   &:hover {
     background: none;
+  }
+
+  &:active {
+    width: 29px;
+    padding: 10px;
+    background-color: var(--gray-200-input-background);
+    border-radius: 100%;
   }
 }
