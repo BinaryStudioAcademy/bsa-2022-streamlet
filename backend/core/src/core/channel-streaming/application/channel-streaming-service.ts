@@ -27,6 +27,8 @@ import { ImageStorePort } from '~/core/common/port/image-store';
 import { VideoStreamResponseBeforeTrimming } from '~/shared/types/stream/stream-info-before-trimming.type';
 import { CategoryService } from '~/core/category/application/category-service';
 import { TagService } from '~/core/tag/application/tag-service';
+import { normalizeTagStringArrayPayload } from '~/primary-adapters/rest/tag/helpers/normalize-tag-string-array-helper';
+import { normalizeCategoryStringArrayPayload } from '~/primary-adapters/rest/category/helpers/normalize-category-string-array-helper';
 
 @injectable()
 export class ChannelStreamingService {
@@ -171,13 +173,13 @@ export class ChannelStreamingService {
 
     if (streamUpdateRequestDto.categories && streamUpdateRequestDto.categories.length) {
       await this.categoryService.bindCategories({
-        categoryPayload: streamUpdateRequestDto.categories,
+        categoryPayload: normalizeCategoryStringArrayPayload(streamUpdateRequestDto.categories),
         videoId,
       });
     }
     if (streamUpdateRequestDto.tags && streamUpdateRequestDto.tags.length) {
       await this.tagService.bindTags({
-        tagPayload: streamUpdateRequestDto.tags,
+        tagPayload: normalizeTagStringArrayPayload(streamUpdateRequestDto.tags),
         videoId,
       });
     }

@@ -114,13 +114,17 @@ export class CategoryService {
     if (!isVideoExists) {
       return null;
     }
+    console.warn('start binding');
     const categories: string[] = [];
     for (const { name } of categoryPayload) {
+      console.warn(name);
       const category = await this.categoryRepository.getByName(name);
+      console.warn(category);
       if (!category) {
         return;
       }
       categories.push(category.id);
+      console.warn('added category');
     }
 
     const bindedCategories = await this.categoryRepository.bindCategoriesToVideo({
