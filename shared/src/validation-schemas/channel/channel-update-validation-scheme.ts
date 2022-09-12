@@ -8,7 +8,7 @@ export const channelUpdateValidationSchema = Joi.object<ChannelProfileUpdateRequ
     .trim()
     .min(4)
     .max(100)
-    .pattern(/^[a-zA-Z0-9!?%*(),.;|'№{} /\\\][]*$/)
+    .pattern(/^[a-zA-Z0-9!?%*(),.;'|№{} /\\\][]*$/)
     .messages({
       'string.empty': ChannelProfileValidationMessage.CHANNEL_NAME_NOT_EMPTY,
       'string.min': ChannelProfileValidationMessage.CHANNEL_NAME_MIN,

@@ -11,6 +11,7 @@ type Props = {
   isSelected?: boolean;
   isSelectable?: boolean;
   icon?: ReactNode;
+  isHoverable?: boolean;
   onClick?: () => void;
 };
 
@@ -22,6 +23,7 @@ const ModalItem: FC<Props> = ({
   isSelectable = false,
   contentContainerClassName,
   icon,
+  isHoverable = true,
 }) => {
   return (
     <div
@@ -30,6 +32,7 @@ const ModalItem: FC<Props> = ({
         [styles['selected']]: isSelected,
         [styles['selectable']]: isSelectable,
         [styles['icon-modal-item']]: icon,
+        [styles['hoverable']]: isHoverable,
       })}
       onClick={onClick}
     >

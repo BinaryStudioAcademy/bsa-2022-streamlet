@@ -1,58 +1,283 @@
-@use 'assets/css/breakpoint';
+@import 'assets/css/breakpoint.scss';
+@import 'assets/css/config.scss';
+
+$base-z-index: $page-component-z-index - 10;
 
 .video-card {
+  display: flex;
   flex-flow: row nowrap;
   gap: 10px;
-  background: none;
+  font-family: Gilroy, sans-serif;
 }
 
-.preview {
-  height: 110px;
-  padding-bottom: 0;
+.video-card-preview {
+  position: relative;
+  z-index: $base-z-index;
+  height: 95px;
   aspect-ratio: 16 / 10;
-}
-
-.info {
-  display: flex;
-  margin-top: 0;
-  margin-left: 0;
-  padding-right: 0;
-}
-
-.meta-footer {
-  display: none;
-}
-
-.meta {
-  display: none;
-  @media #{breakpoint.$mobile-large} {
-    display: flex;
-  }
-
-  @media #{breakpoint.$tablet-large} {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-  }
-}
-
-.desc {
   padding-bottom: 0;
-  @media #{breakpoint.$tablet-large} {
-    gap: 10px;
-  }
+  cursor: pointer;
 }
 
-.channel-icon {
-  display: none;
+.video-card-preview img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: $base-z-index + 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.author {
+.video-card-play {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: $base-z-index + 3;
   display: flex;
-  height: auto;
-  margin-bottom: 0;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
-.author-avatar {
+.video-card-badge-duration {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  z-index: $base-z-index + 5;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 8px;
+  color: var(--always-white-color);
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  background-color: var(--always-gray-300-header-menu-background);
+  border-radius: 16px;
+}
+
+.video-card-badge-scheduled {
+  position: absolute;
+  bottom: 7px;
+  left: 7px;
+  z-index: $base-z-index + 5;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 15px;
+  color: var(--white-text-color);
+  font-size: 10px;
+  line-height: 14px;
+  background-color: var(--video-card-schedule-badge-background);
+  border-radius: 4px;
+}
+
+.video-card-badge-scheduled svg path {
+  fill: var(--white-text-color);
+}
+
+.video-card-badge-scheduled svg {
+  width: 20px;
+}
+
+.video-card-badge-scheduled-data {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.video-card-badge-scheduled-btn {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 10px;
+  height: 24px;
+  margin-left: 15px;
+  padding: 4px 10px;
+  color: var(--always-white-color);
+  background-color: var(--video-card-schedule-btn-background);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.video-card-badge-scheduled-btn svg {
+  width: 13px;
+}
+
+.video-card-badge-scheduled-btn span {
   display: none;
+}
+
+.avatar {
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.video-card-channel {
+  justify-self: end;
+  width: 100%;
+  padding-left: 8px;
+}
+
+.video-card-channel .avatar {
+  height: 32px;
+}
+
+.video-card-desc {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.video-card-title {
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  display: -webkit-box;
+  max-height: 40px;
+  overflow: hidden;
+  color: var(--white-text-color);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  white-space: normal;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  cursor: pointer;
+}
+
+.video-card-meta {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 2px 5px;
+  color: var(--text-gray-color);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.video-card-meta-data {
+  white-space: nowrap;
+}
+
+.video-card-meta-data svg path {
+  fill: var(--text-gray-color);
+}
+
+.video-card-meta-data-scheduled {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 3px;
+  height: 20px;
+  padding: 3px 6px 3px 3px;
+  color: var(--white-text-color);
+  background-color: var(--white-background-video-card);
+  border: 1px solid var(--secondary-text-color);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.video-card-meta-data-scheduled svg path {
+  fill: var(--white-text-color);
+}
+
+.video-card-meta-data-scheduled:hover {
+  background-color: var(--video-card-schedule-btn-background);
+}
+
+.video-card-author {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.video-card-author a {
+  overflow: hidden;
+  color: var(--text-gray-color);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.video-card-author-name {
+  white-space: nowrap;
+  text-transform: none;
+  text-overflow: ellipsis;
+}
+
+.video-card-author-avatar {
+  display: none;
+}
+
+.video-card-tag-list {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 8px;
+}
+
+.video-card-tag-live {
+  display: none;
+}
+
+.video-card-meta-footer {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 15px;
+  border-top: 1px solid var(--gray-400-primary-background);
+}
+
+.video-card-meta-footer > .video-card-meta {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 15px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.video-card-meta-tag {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 55px;
+}
+
+.video-card-meta-tag svg {
+  width: 12px;
+}
+
+.live-label {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  height: 20px;
+  color: var(--always-white-color);
+  font-size: 13px;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+  background-color: var(--video-card-live-color);
+  border-radius: 3px;
+
+  & svg {
+    width: 15px;
+  }
+
+  & svg path {
+    fill: var(--always-white-color);
+  }
 }

@@ -11,11 +11,15 @@
 }
 
 .modal-item {
+  height: calc(38px * clamp(1, var(--size-modifier), 1.2));
   padding: 5px 15px;
   white-space: nowrap;
-  cursor: pointer;
 
-  &:hover {
+  &.hoverable {
+    cursor: pointer;
+  }
+
+  &:hover.hoverable {
     &.selectable:not(.selected) {
       .icon {
         --circle-countour-width: 3px;
@@ -25,13 +29,13 @@
     }
   }
 
-  &:not(.selectable):hover {
+  &:not(.selectable):hover.hoverable {
     background-color: var(--hovered-menu-item-bg);
   }
 }
 
 .header {
-  border-bottom: 1px solid var(--always-white-color);
+  border-bottom: 1px solid var(--always-gray-color);
 }
 
 .icon-modal-item {
@@ -42,4 +46,10 @@
 .icon-container {
   display: flex;
   align-items: center;
+}
+
+.modal-item-content {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }

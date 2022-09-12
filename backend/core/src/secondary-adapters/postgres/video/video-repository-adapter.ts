@@ -295,8 +295,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
       where: {
         categories: {
           some: {
-            name: {
-              in: category,
+            category: {
+              name: {
+                in: category,
+              },
             },
           },
         },
@@ -316,8 +318,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         ...{ privacy: StreamPrivacy.PUBLIC },
         categories: {
           some: {
-            name: {
-              in: category,
+            category: {
+              name: {
+                in: category,
+              },
             },
           },
         },
@@ -327,7 +331,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       include: {
         categories: {
           select: {
-            name: true,
+            category: true,
           },
         },
         channel: {
@@ -361,7 +365,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       include: {
         categories: {
           select: {
-            name: true,
+            category: true,
           },
         },
         channel: {
@@ -385,8 +389,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         ...{ privacy: StreamPrivacy.PUBLIC },
         tags: {
           some: {
-            name: {
-              in: tags,
+            tag: {
+              name: {
+                in: tags,
+              },
             },
           },
         },
@@ -411,8 +417,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         ...{ privacy: StreamPrivacy.PUBLIC },
         categories: {
           some: {
-            name: {
-              in: categories,
+            category: {
+              name: {
+                in: categories,
+              },
             },
           },
         },

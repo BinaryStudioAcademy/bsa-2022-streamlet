@@ -14,9 +14,9 @@ export const trimChannelInfo = (
     initialVideosPage: {
       list: channel.videos.map((video) => ({
         ...video,
-        tags: video.tags.map((tag) => tag.name),
+        tags: video.tags.map((tag) => tag.tag.name),
         status: video.status as StreamStatus,
-        categories: video.categories.map((category) => category.name),
+        categories: video.categories.map((category) => category.category.name),
         publishedAt: video.publishedAt?.toISOString() ?? '',
         scheduledStreamDate: video.scheduledStreamDate.toISOString(),
         updatedAt: video.updatedAt.toISOString(),

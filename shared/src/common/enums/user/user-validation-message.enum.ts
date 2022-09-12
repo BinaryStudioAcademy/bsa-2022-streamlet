@@ -12,8 +12,8 @@ const UserValidationMessage = {
   PASSWORD_WRONG_REGEX: 'Password cannot have non-latin characters',
   PASSWORD_CONFIRM_REQUIRE: 'The passwords do not match',
   PASSWORDS_NOT_MATCH: 'The passwords do not match',
-  USERNAME_WRONG_LENGTH: 'Username should have 3-20 characters',
-  USERNAME_WRONG_REGEX: 'Username cannot have non-latin characters or special symbol',
+  USERNAME_WRONG_LENGTH: 'Username should have 3-25 characters',
+  USERNAME_WRONG_REGEX: 'Username cannot have non-latin characters',
 } as const;
 
 export { UserValidationMessage };
