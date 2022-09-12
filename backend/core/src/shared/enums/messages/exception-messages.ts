@@ -26,6 +26,9 @@ export const exceptionMessages = {
     CHAT_MESSAGE_NOT_FOUND: 'Chat message with such id wasn`t found',
     CHAT_MESSAGE_IS_EMPTY: 'Chat message is empty',
   },
+  video: {
+    VIDEO_ID_NOT_FOUND: 'Video with such id was not found',
+  },
   comment: {
     COMMENT_NOT_FOUND: 'Comment with such id wasn`t found',
     COMMENT_IS_EMPTY: 'Comment is empty',
