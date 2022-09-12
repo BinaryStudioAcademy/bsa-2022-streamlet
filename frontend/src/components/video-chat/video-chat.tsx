@@ -5,6 +5,7 @@ import { AppRoutes, ChatMenuOptions, ChatStyle, IconName } from 'common/enums/en
 import { useCallback, useEffect, useRef, useState } from 'hooks/hooks';
 import { Button, Icon } from 'components/common/common';
 import { Participant, SendMessage, SendMessageProps, VideoComment } from './components/components';
+import { ChatSetting } from './video-chat-container';
 import { debounce } from 'helpers/common/debounce.helper';
 import { allChatMenuOptions, matchChatStyleWithChatStyleClassName, popOutChatParamsString } from './config';
 
@@ -14,7 +15,7 @@ interface VideoChatProps {
   chatId: string;
   hasUser: boolean;
   isLightTheme: boolean;
-  popOutSetting: boolean;
+  chatSettings: ChatSetting;
   initialMessages: ChatMessageResponseDto[];
   messages: ChatMessageResponseDto[];
   participants: string[];
@@ -27,7 +28,7 @@ const VideoChat: FC<VideoChatProps> = ({
   chatId,
   hasUser,
   isLightTheme,
-  popOutSetting,
+  chatSettings: { popOutSetting, hideSetting },
   initialMessages,
   messages,
   participants,
@@ -268,9 +269,11 @@ const VideoChat: FC<VideoChatProps> = ({
           currentChatStyle={currentChatStyle}
         />
       </div>
-      <div className={styles['video-chat-footer-bar']} onClick={handleSetHideChat}>
-        <span>{hideChat ? 'show chat' : 'hide chat'}</span>
-      </div>
+      {hideSetting && (
+        <div className={styles['video-chat-footer-bar']} onClick={handleSetHideChat}>
+          <span>{hideChat ? 'show chat' : 'hide chat'}</span>
+        </div>
+      )}
     </div>
   );
 };

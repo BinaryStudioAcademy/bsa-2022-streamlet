@@ -5,6 +5,7 @@ import { chatActions } from 'store/actions';
 import { VideoChat } from './video-chat';
 import { ChatStyle, SocketEvents } from 'common/enums/enums';
 import { store } from 'store/store';
+import { defaultChatSettings } from './config';
 
 socket.on(SocketEvents.chat.NEW_MESSAGE_TO_CHAT_ROOM_DONE, (message: ChatMessageResponseDto) => {
   store.dispatch(chatActions.appendMessage(message));
@@ -18,13 +19,18 @@ socket.on(SocketEvents.chat.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED_DONE, (isChatEnable
   store.dispatch(chatActions.updateChatStatus(isChatEnabled));
 });
 
+export type ChatSetting = {
+  popOutSetting?: boolean;
+  hideSetting?: boolean;
+};
+
 type Props = {
   videoId: string;
-  popOutSetting: boolean;
+  chatSettings?: ChatSetting | undefined;
   chatStyle?: ChatStyle;
 };
 
-const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting, chatStyle }) => {
+const VideoChatContainer: FC<Props> = ({ videoId, chatStyle, chatSettings }) => {
   const dispatch = useAppDispatch();
   const {
     chat: {
@@ -72,7 +78,7 @@ const VideoChatContainer: FC<Props> = ({ videoId, popOutSetting, chatStyle }) =>
       chatId={videoId}
       hasUser={hasUser}
       isLightTheme={isLightTheme}
-      popOutSetting={popOutSetting}
+      chatSettings={{ ...defaultChatSettings, ...chatSettings }}
       initialMessages={initialMessages.list}
       messages={messages.list}
       participants={participants}

@@ -71,7 +71,7 @@ $hide-transition-duration: 1s;
   display: flex;
   flex: 1;
   flex-flow: column-reverse nowrap;
-  min-height: 460px;
+  min-height: 440px;
   margin-bottom: 3px;
   padding: 20px 20px 0;
   overflow: auto;
@@ -353,7 +353,7 @@ $hide-transition-duration: 1s;
 }
 
 .hide-chat {
-  max-height: 40px;
+  max-height: 41px;
 }
 
 .hide-chat .video-chat {
