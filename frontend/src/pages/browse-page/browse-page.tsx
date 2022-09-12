@@ -1,5 +1,5 @@
 import { DataStatus, IconColor, IconName } from 'common/enums/enums';
-import { Button, Icon, Loader, VideoCardMain } from 'components/common/common';
+import { Button, Icon, VideoCardMain } from 'components/common/common';
 import React, { FC, useEffect } from 'react';
 import styles from './styles.module.scss';
 import clsx from 'clsx';
@@ -56,10 +56,6 @@ const BrowsePage: FC = () => {
     disabled: videoData.error,
   });
 
-  if (dataStatus === DataStatus.PENDING && currentPage < 0) {
-    return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
-  }
-
   return (
     <div className={styles['browse-page-container']}>
       <div className={styles['browse-page-header-container']}>
@@ -81,12 +77,16 @@ const BrowsePage: FC = () => {
         })}
       </div>
       <div
-        className={clsx({
-          [styles['no-video-in-list']]: !popularVideos.list.length && videoData.dataStatus !== DataStatus.PENDING,
-          [styles['browse-page-video-container']]: popularVideos.list.length,
-        })}
+        className={clsx(
+          {
+            [styles['no-video-in-list']]:
+              !popularVideos.list.length && videoData.dataStatus !== DataStatus.PENDING && currentPage > 0,
+          },
+          styles['browse-page-video-container'],
+        )}
       >
-        {!popularVideos.list.length && videoData.dataStatus !== DataStatus.PENDING ? (
+        {dataStatus === DataStatus.PENDING && generateBrowsePageSkeleton(isLightTheme)}
+        {!popularVideos.list.length && videoData.dataStatus !== DataStatus.PENDING && currentPage > 0 ? (
           <div className={styles['no-video-in-list']}>
             <NoVideosYet />
           </div>
