@@ -12,6 +12,7 @@ type Props = {
     firstName?: string;
     lastName?: string;
   };
+  isLightTheme: boolean;
   comments: Comment[];
   onLike: (commentId: string) => void;
   onDislike: (commentId: string) => void;
@@ -24,6 +25,7 @@ const VideoCommentBlock: FC<Props> = ({
   onNewComment,
   onLike,
   onDislike,
+  isLightTheme,
   namingInfo,
   handlerCancelForReplyForm,
 }) => {
@@ -32,6 +34,7 @@ const VideoCommentBlock: FC<Props> = ({
       <VideoPageCommentForm
         avatar={userAvatar}
         onSubmit={onNewComment}
+        isLightTheme={isLightTheme}
         className={styles['comment-form']}
         namingInfo={namingInfo}
         handlerCancelForReplyForm={handlerCancelForReplyForm}

@@ -57,6 +57,11 @@ export class VideoService {
     return this.videoRepository.addReaction(request, videoId, userId);
   }
 
+  async addVideoView(videoId: string): Promise<{ currentViews: number } | null> {
+    const currentViews = await this.videoRepository.addView(videoId);
+    return currentViews;
+  }
+
   async addCommentReaction(
     request: CreateReactionRequestDto,
     commentId: string,

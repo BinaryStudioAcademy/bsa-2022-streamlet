@@ -1,3 +1,7 @@
+@import 'assets/css/config.scss';
+
+$base-z-index: $page-component-z-index;
+
 .add-comment-block {
   display: flex;
   justify-content: space-between;
@@ -103,4 +107,23 @@
 .label-for-reply-form {
   font-size: 13px;
   line-height: 15px;
+}
+
+.emoji-block {
+  top: 30px;
+  left: -20px;
+  z-index: $base-z-index + 10;
+
+  & > aside {
+    --epr-picker-width: 520px;
+    --epr-picker-height: 300px;
+
+    @media screen and (max-width: 991px) {
+      --epr-picker-width: 450px;
+    }
+
+    @media screen and (max-width: 575px) {
+      --epr-picker-width: 300px;
+    }
+  }
 }

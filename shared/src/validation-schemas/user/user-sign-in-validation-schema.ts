@@ -7,7 +7,7 @@ const userSignIn = Joi.object<UserSignInRequestDto, true>({
     .trim()
     .email({ tlds: { allow: false } })
     .min(6)
-    .pattern(/[а-яА-ЯЁё]/, { invert: true })
+    .pattern(/[а-яА-ЯЁёІіЄєЇї]/, { invert: true })
     .required()
     .messages({
       'string.email': UserValidationMessage.EMAIL_WRONG,
@@ -20,7 +20,7 @@ const userSignIn = Joi.object<UserSignInRequestDto, true>({
     .trim()
     .min(8)
     .max(16)
-    .pattern(/[а-яА-ЯЁё]/, { invert: true })
+    .pattern(/[а-яА-ЯЁёІіЄєЇї]/, { invert: true })
     .required()
     .messages({
       'string.empty': UserValidationMessage.PASSWORD_REQUIRE,

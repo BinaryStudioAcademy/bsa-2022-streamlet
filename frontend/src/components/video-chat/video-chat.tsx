@@ -1,33 +1,40 @@
 import { UIEvent } from 'react';
 import clsx from 'clsx';
 import { ChatMessageResponseDto, FC } from 'common/types/types';
-import { AppRoutes, ChatMenuOptions, IconName } from 'common/enums/enums';
+import { AppRoutes, ChatMenuOptions, ChatStyle, IconName } from 'common/enums/enums';
 import { useCallback, useEffect, useRef, useState } from 'hooks/hooks';
 import { Button, Icon } from 'components/common/common';
 import { Participant, SendMessage, SendMessageProps, VideoComment } from './components/components';
+import { ChatSetting } from './video-chat-container';
 import { debounce } from 'helpers/common/debounce.helper';
-import { allChatMenuOptions, popOutChatParamsString } from './config';
+import { allChatMenuOptions, matchChatStyleWithChatStyleClassName, popOutChatParamsString } from './config';
 
 import styles from './video-chat.module.scss';
 
 interface VideoChatProps {
   chatId: string;
-  popOutSetting: boolean;
+  hasUser: boolean;
+  isLightTheme: boolean;
+  chatSettings: ChatSetting;
   initialMessages: ChatMessageResponseDto[];
   messages: ChatMessageResponseDto[];
   participants: string[];
   chatStatus: boolean;
-  sendMessageProps: SendMessageProps;
+  handlerSubmitMessage: SendMessageProps['handlerSubmitMessage'];
+  chatStyle?: ChatStyle;
 }
 
 const VideoChat: FC<VideoChatProps> = ({
   chatId,
-  popOutSetting,
+  hasUser,
+  isLightTheme,
+  chatSettings: { popOutSetting, hideSetting },
   initialMessages,
   messages,
   participants,
   chatStatus,
-  sendMessageProps,
+  handlerSubmitMessage,
+  chatStyle,
 }) => {
   const chatEndEl = useRef<HTMLDivElement>(null);
   const chatViewEl = useRef<HTMLDivElement>(null);
@@ -40,6 +47,8 @@ const VideoChat: FC<VideoChatProps> = ({
   const [showChatDownBtn, setShowChatDownBtn] = useState(false);
   const [hideWelcome, setHideWelcome] = useState(false);
   const [hideChat, setHideChat] = useState(false);
+
+  const currentChatStyle = matchChatStyleWithChatStyleClassName[chatStyle ?? ChatStyle.DEFAULT];
 
   const handleSetShowChatMenu = (): void => setShowChatMenu(!showChatMenu);
 
@@ -124,7 +133,14 @@ const VideoChat: FC<VideoChatProps> = ({
 
   if (!chatStatus) {
     return (
-      <div className={clsx(styles['video-chat-wrapper'], styles['chat-disabled'], hideChat && styles['hide-chat'])}>
+      <div
+        className={clsx(
+          styles['video-chat-wrapper'],
+          styles[currentChatStyle],
+          styles['chat-disabled'],
+          hideChat && styles['hide-chat'],
+        )}
+      >
         <div className={styles['video-chat-popout']}>
           <span>Chat is disabled for this live stream.</span>
         </div>
@@ -136,7 +152,7 @@ const VideoChat: FC<VideoChatProps> = ({
   }
 
   return (
-    <div className={clsx(styles['video-chat-wrapper'], hideChat && styles['hide-chat'])}>
+    <div className={clsx(styles['video-chat-wrapper'], styles[currentChatStyle], hideChat && styles['hide-chat'])}>
       {!popOutWindow && (
         <div className={styles['video-chat-header']}>
           <div className={styles['video-chat-header-title']}>
@@ -202,6 +218,7 @@ const VideoChat: FC<VideoChatProps> = ({
                   message={message}
                   showTimeStamp={showTimeStamp}
                   messageClassName={styles['video-chat-message']}
+                  currentChatStyle={currentChatStyle}
                 />
               ))}
               {!hideWelcome && (
@@ -227,6 +244,7 @@ const VideoChat: FC<VideoChatProps> = ({
                   message={message}
                   showTimeStamp={showTimeStamp}
                   messageClassName={styles['video-chat-message']}
+                  currentChatStyle={currentChatStyle}
                 />
               ))}
             </>
@@ -242,11 +260,20 @@ const VideoChat: FC<VideoChatProps> = ({
             <Icon name={IconName.ARROW_DOWN_2} />
           </div>
         </div>
-        <SendMessage {...sendMessageProps} sendMessageClassName={styles['video-chat-send-form']} />
+        <SendMessage
+          hasUser={hasUser}
+          isLightTheme={isLightTheme}
+          isHide={hideChat}
+          sendMessageClassName={styles['video-chat-send-form']}
+          handlerSubmitMessage={handlerSubmitMessage}
+          currentChatStyle={currentChatStyle}
+        />
       </div>
-      <div className={styles['video-chat-footer-bar']} onClick={handleSetHideChat}>
-        <span>{hideChat ? 'show chat' : 'hide chat'}</span>
-      </div>
+      {hideSetting && (
+        <div className={styles['video-chat-footer-bar']} onClick={handleSetHideChat}>
+          <span>{hideChat ? 'show chat' : 'hide chat'}</span>
+        </div>
+      )}
     </div>
   );
 };

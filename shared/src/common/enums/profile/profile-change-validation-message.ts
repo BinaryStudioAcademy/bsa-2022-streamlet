@@ -1,5 +1,6 @@
 export const ProfileValidationMessage = {
-  USER_NAME_NOT_EMPTY: 'Username cant be empty!',
-  FIRST_NAME_NOT_EMPTY: 'First name cant be empty!',
-  LAST_NAME_NOT_EMPTY: 'Last name cant be empty!',
+  LASTNAME_TO_LONG: 'Lastname must contain no more than 20 characters',
+  FIRSTNAME_TO_LONG: 'Firstname must contain no more than 20 characters',
+  FIRSTNAME_WRONG_REGEXP: 'Firstname must contain only latin and hyphen symbol',
+  LASTNAME_WRONG_REGEXP: 'Lastname must contain only latin and hyphen symbol',
 };

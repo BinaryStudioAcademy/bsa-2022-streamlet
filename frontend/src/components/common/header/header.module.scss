@@ -69,7 +69,6 @@
 .user-menu-avatar {
   width: 32px;
   height: 32px;
-  background-color: var(--white-text-color);
   background-position: center;
   background-size: contain;
   border-radius: 50%;
@@ -158,6 +157,7 @@
 
 .user-menu .option-list {
   width: 100%;
+  padding-top: 12px;
   list-style: none;
 
   .option {
