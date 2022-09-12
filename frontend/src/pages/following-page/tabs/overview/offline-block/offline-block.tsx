@@ -1,5 +1,5 @@
-import { DataStatus, ErrorMessage, LoaderSize } from 'common/enums/enums';
-import { Loader, VideoCardMain } from 'components/common/common';
+import { DataStatus, ErrorMessage } from 'common/enums/enums';
+import { VideoCardMain } from 'components/common/common';
 import { ErrorBox } from 'components/common/errors/errors';
 import { useAppDispatch, useAppSelector, useNavigate } from 'hooks/hooks';
 import React, { FC, useEffect } from 'react';
@@ -39,31 +39,27 @@ const OfflineBlock: FC = () => {
   return (
     <div className={styles['block']}>
       {dataStatus === DataStatus.REJECTED && <ErrorBox message={error || ErrorMessage.DEFAULT} />}
-      {dataStatus === DataStatus.PENDING ? (
-        <Loader hCentered vCentered spinnerSize={LoaderSize.SM} className={styles['spinner']} />
-      ) : (
-        <VideosList title="Recently finished">
-          {videos
-            .slice(0, MAX_VIDEOS_IN_BLOCK)
-            .map((video) => {
-              return <VideoCardMain video={video} isLightTheme={isLightTheme} key={video.id} />;
-            })
-            .concat(
-              videos.length >= SHOW_SEE_ALL_VIDEOS_AFTER ? (
-                <SeeMoreCard
-                  key="see-more"
-                  text="Show All"
-                  onBtnClick={(): void => {
-                    pageContainerRef.current?.scrollTo(0, 0);
-                    navigate(`../${Tab.OFFLINE}`);
-                  }}
-                />
-              ) : (
-                []
-              ),
-            )}
-        </VideosList>
-      )}
+      <VideosList title="Recently finished" dataStatus={dataStatus} isLightTheme={isLightTheme}>
+        {videos
+          .slice(0, MAX_VIDEOS_IN_BLOCK)
+          .map((video) => {
+            return <VideoCardMain video={video} isLightTheme={isLightTheme} key={video.id} />;
+          })
+          .concat(
+            videos.length >= SHOW_SEE_ALL_VIDEOS_AFTER ? (
+              <SeeMoreCard
+                key="see-more"
+                text="Show All"
+                onBtnClick={(): void => {
+                  pageContainerRef.current?.scrollTo(0, 0);
+                  navigate(`../${Tab.OFFLINE}`);
+                }}
+              />
+            ) : (
+              []
+            ),
+          )}
+      </VideosList>
     </div>
   );
 };

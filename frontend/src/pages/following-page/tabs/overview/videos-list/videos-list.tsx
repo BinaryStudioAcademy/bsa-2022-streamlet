@@ -4,10 +4,14 @@ import styles from './styles.module.scss';
 import { ReactComponent as Left } from 'assets/img/arrow-circle-left.svg';
 import { ReactComponent as Right } from 'assets/img/arrow-circle-right.svg';
 import clsx from 'clsx';
+import { DataStatus } from '../../../../../common/enums/app/data-status.enum';
+import { generateBrowsePageSkeleton } from '../../../../browse-page/common/skeleton';
 
 type Props = {
   children: ReactNode;
   title: string;
+  dataStatus: DataStatus;
+  isLightTheme: boolean;
 };
 
 const VIDEO_GAP = 20;
@@ -15,7 +19,7 @@ const VIDEO_GAP = 20;
 const SCROLL_TIMEOUT_MS = 50;
 let lastEventFire = 0;
 
-const VideosList: FC<Props> = ({ children, title }) => {
+const VideosList: FC<Props> = ({ children, title, dataStatus, isLightTheme }) => {
   const videoListRef = useRef<HTMLDivElement | null>(null);
   const [hasScroll, setHasScroll] = useState(false);
   const [hasLeftScroll, setHasLeftScroll] = useState(true);
@@ -123,7 +127,7 @@ const VideosList: FC<Props> = ({ children, title }) => {
           }
         }}
       >
-        {children}
+        {dataStatus === DataStatus.PENDING ? generateBrowsePageSkeleton(isLightTheme) : children}
       </div>
     </div>
   );
