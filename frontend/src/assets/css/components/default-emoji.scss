@@ -17,7 +17,6 @@ aside.EmojiPickerReact.epr-main {
   --epr-category-label-text-color: var(--text-gray-color);
   --epr-category-label-height: 35px;
 
-  max-height: 350px;
   padding-bottom: 10px;
   box-shadow: 0 3px 10px 0 rgb(0 0 0 / 15%);
 
@@ -83,14 +82,10 @@ aside.EmojiPickerReact.epr-main {
       }
 
       .epr-category-nav {
+        justify-content: center;
+        gap: 5px;
         padding: 5px 15px 10px;
       }
     }
-  }
-}
-
-@media #{$tablet-large} {
-  .epr-main {
-    max-width: 300px;
   }
 }
