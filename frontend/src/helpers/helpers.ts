@@ -7,7 +7,7 @@ export { getStringifiedQuery, type SerializedHttpError, serializeHttpError } fro
 export { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from './routes/routes';
 export { isObjectUniqueIdContainInTwoArray } from './array/is-object-unique-id-contain-intwo-array';
 export { pushOrDeleteIfExists } from './array/push-or-delete-if-exists-helper';
-export { generateAbbreviatureNameUser, getUserDisplayName, getGoogleOAuthURL } from './user';
+export { generateAbbreviatureNameUser, getUserDisplayName } from './user';
 export { joinExistingValues, getRightUpdateTimeDelay } from './common/common';
 export { getChannelBannerEditorSize } from './channel-banner-editor-size/get-channel-banner-editor-size';
 export * from './image/image';
