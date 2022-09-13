@@ -41,7 +41,10 @@ describe('Autorization tests', () => {
   //})
 
   it('Sign in', async () => {
-    let response = await auth.signInUser(global.appConfig.users.Margo.email, global.appConfig.users.Margo.password);
+    let response = await auth.signInUser(
+      global.appConfig.users.defaultUser.email,
+      global.appConfig.users.defaultUser.password,
+    );
     checkStatusCode(response, 200);
     checkResponseTime(response, 3000);
     checkSchema(response, schemas.schema_signIn);
@@ -58,7 +61,7 @@ describe('Autorization tests', () => {
       refreshToken = response.body.tokens.refreshToken;
     }),
     it('Restore password init', async () => {
-      let response = await auth.restorePasswordInit(global.appConfig.users.Margo.email);
+      let response = await auth.restorePasswordInit(global.appConfig.users.defaultUser.email);
       checkStatusCode(response, 200);
       checkResponseTime(response, 3000);
       checkResponseBodyMessage(response, 'We`ve sent a password reset instructions to your email');
@@ -69,7 +72,7 @@ describe('Autorization tests', () => {
     //  checkResponseTime(response, 3000);
     //})
     it('Mail test', async () => {
-      let response = await auth.mailTest(global.appConfig.users.Margo.email, 'Margo');
+      let response = await auth.mailTest(global.appConfig.users.defaultUser.email, 'Margo');
       checkStatusCode(response, 200);
       checkResponseTime(response, 3000);
       checkResponseBodyMessage(response, 'The email has been sent!');
