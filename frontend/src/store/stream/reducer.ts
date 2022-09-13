@@ -78,20 +78,14 @@ const reducer = createReducer(initialState, (builder) => {
     }
   });
   builder.addMatcher(
-    isAnyOf(resetStreamingKey.pending, uploadPoster.pending, setReadinessToStream.pending),
+    isAnyOf(resetStreamingKey.pending, uploadPoster.pending, setReadinessToStream.pending, editStream.pending),
     (state) => {
       state.status.error = undefined;
       state.status.errorCode = undefined;
     },
   );
   builder.addMatcher(
-    isAnyOf(
-      createStream.pending,
-      editStream.pending,
-      setStreamStatus.pending,
-      getStreamingInfo.pending,
-      getMyChannel.pending,
-    ),
+    isAnyOf(createStream.pending, setStreamStatus.pending, getStreamingInfo.pending, getMyChannel.pending),
     (state) => {
       state.status.dataStatus = DataStatus.PENDING;
       state.status.error = undefined;

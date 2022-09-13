@@ -1,6 +1,5 @@
-import { Input, Textarea } from 'components/common/common';
-// import { DatetimeInput } from 'components/common/input/datetime-input/datetime-input';
-import React, { FC, ReactElement, useId, useState } from 'react';
+import { Input } from 'components/common/common';
+import React, { FC, ReactElement, useId } from 'react';
 import { StreamSettingsFormValues } from './stream-settings-form-values';
 import Select from 'react-select';
 import { FormControl, SelectOptions } from 'common/types/types';
@@ -9,6 +8,7 @@ import { Controller, DeepRequired, FieldErrorsImpl, FieldValues } from 'react-ho
 import styles from '../styles.module.scss';
 import clsx from 'clsx';
 import { customSelectStyles } from '../custom-select-styles';
+import { AreaInput } from 'components/common/input/area-input/area-input';
 
 type Props = {
   categoryOptions: SelectOptions[];
@@ -17,12 +17,11 @@ type Props = {
 };
 
 const StreamBasicInfoForm: FC<Props> = ({ categoryOptions, control, errors }) => {
-  const [isDescriptionInFocus, setIsDescriptionInFocus] = useState(false);
   const catSelectId = useId();
   const tagSelectId = useId();
 
   return (
-    <>
+    <div className={styles['basic-info-wrapper']}>
       <Input
         control={control}
         errors={errors}
@@ -32,56 +31,39 @@ const StreamBasicInfoForm: FC<Props> = ({ categoryOptions, control, errors }) =>
         labelClassName={styles['label']}
         placeholder="Give it a catchy name"
       />
-      <Textarea
+      <AreaInput
         control={control}
-        wrapperClassName={styles['desc-input-wrapper']}
-        inputClassName={clsx(
-          {
-            [styles['desc-input-in-focus']]: isDescriptionInFocus,
-          },
-          styles['desc-input'],
-        )}
-        errors={errors}
+        inputClassName={styles['area-input']}
         label="Description"
-        labelClassName={styles['label']}
         name="description"
-        placeholder={'Tell what your stream is about'}
-        onFocus={(): void => {
-          setIsDescriptionInFocus(true);
-        }}
-        onBlur={(): void => {
-          setIsDescriptionInFocus(false);
-        }}
-      />
-      {/* <DatetimeInput
-        control={control}
-        name="scheduledStreamDate"
-        label="Scheduled date"
         labelClassName={styles['label']}
-        inputClassName={styles['input']}
-      /> */}
-      <Controller
-        control={control}
-        defaultValue={[]}
-        name="categories"
-        render={({ field: { ref, onChange, value } }): ReactElement => (
-          <div>
-            <label className={styles['label']} htmlFor={catSelectId}>
-              Select a category
-            </label>
-            <Select
-              isMulti
-              ref={ref}
-              options={categoryOptions}
-              value={value}
-              onChange={onChange}
-              className={styles['select-input']}
-              styles={customSelectStyles}
-              inputId={catSelectId}
-            />
-          </div>
-        )}
+        placeholder="Tell what your stream is about"
       />
+      <div className={clsx(styles['input-wrapper'])}>
+        <label className={clsx(styles.label)} htmlFor="categories">
+          <span>Select a category</span>
+        </label>
+        <Controller
+          control={control}
+          defaultValue={[]}
+          name="categories"
+          render={({ field: { ref, onChange, value } }): ReactElement => (
+            <div>
+              <Select
+                isMulti
+                ref={ref}
+                options={categoryOptions}
+                value={value}
+                onChange={onChange}
+                className={styles['select-input']}
+                styles={customSelectStyles}
+                inputId={catSelectId}
+              />
+            </div>
+          )}
+        />
+      </div>
+
       <Controller
         control={control}
         defaultValue={[]}
@@ -103,7 +85,7 @@ const StreamBasicInfoForm: FC<Props> = ({ categoryOptions, control, errors }) =>
           </div>
         )}
       />
-    </>
+    </div>
   );
 };
 

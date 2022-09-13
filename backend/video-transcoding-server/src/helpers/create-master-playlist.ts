@@ -2,8 +2,8 @@ import { FsService } from '~/services';
 import { ProcessPreset } from '~/shared';
 import { presetMatch } from './ffmpeg-preset-matcher';
 
-export const createMasterPlaylist = (path: string, presets: ProcessPreset[]): void => {
-  FsService.createFile({
+export const createMasterPlaylist = async (path: string, presets: ProcessPreset[]): Promise<void> => {
+  await FsService.createFile({
     path,
     filename: 'master.m3u8',
     content: [

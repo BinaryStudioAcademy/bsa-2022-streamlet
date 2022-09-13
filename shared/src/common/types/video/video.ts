@@ -13,6 +13,7 @@ export { BaseVideoCommentResponseDto } from './base-video-comment-response-dto.t
 export { ResponseRepliesForComment } from './base-replies-response-dto.type';
 export { BaseReplyRequestDto } from './base-reply-request-dto.type';
 export { VideoPaginationParams } from './video-queries-params.dto';
+export { GetSimilarVideosResponseDto } from './get-similar-videos-response-dto';
 export { RecommendedVideosParams } from './video-recommended-params.dto';
 export { ResponseVideoQueryRaw } from './video-response-query-raw.dto';
 export * from './add-video-view-dto';

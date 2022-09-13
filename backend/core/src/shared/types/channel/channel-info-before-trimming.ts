@@ -5,8 +5,12 @@ export type ChannelInfoBeforeTrimming = Channel & {
     profile: UserProfile | null;
   };
   videos: (Video & {
-    tags: Tag[];
-    categories: Category[];
+    tags: Array<{
+      tag: Tag;
+    }>;
+    categories: Array<{
+      category: Category;
+    }>;
   })[];
   _count: {
     subscriptions: number;
