@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { PrismaClient, Prisma } from '@prisma/client';
-import { CONTAINER_TYPES, PopularVideoResponseDto } from '~/shared/types/types';
+import { CONTAINER_TYPES, PopularVideoResponseDto, SearchByCategoriesResponseDtoType } from '~/shared/types/types';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimPopular, trimVideo, trimVideoSearch } from '~/shared/helpers';
 import { trimCommentsForReplies, trimVideoWithComments } from '~/shared/helpers/trim-video';
@@ -416,11 +416,11 @@ export class VideoRepositoryAdapter implements VideoRepository {
     skip,
     take,
     categories,
-  }: CategorySearchRequestQueryDto): Promise<{ list: VideoWithChannel[]; total: number }> {
+  }: CategorySearchRequestQueryDto): Promise<SearchByCategoriesResponseDtoType> {
     const [videos, total] = await this.prismaClient.$transaction([
       this.prismaClient.video.findMany({
         where: {
-          ...{ privacy: StreamPrivacy.PUBLIC },
+          privacy: StreamPrivacy.PUBLIC,
           categories: {
             some: {
               category: {
@@ -445,7 +445,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       }),
       this.prismaClient.video.count({
         where: {
-          ...{ privacy: StreamPrivacy.PUBLIC },
+          privacy: StreamPrivacy.PUBLIC,
           categories: {
             some: {
               category: {
