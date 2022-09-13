@@ -1,4 +1,5 @@
 import { Channel } from 'amqplib';
+import { AmqpConnectionError } from 'shared/build';
 import { AmqpConsumeDto, AmqpSendToQueueDto } from '~/shared/types/ampq/ampq';
 
 class AmqpService {
@@ -13,6 +14,11 @@ class AmqpService {
   }
 
   async consume({ queue, onMessage, options }: AmqpConsumeDto): Promise<void> {
+    if (!this.amqpChannel) {
+      throw new AmqpConnectionError({
+        message: 'Forbidden context',
+      });
+    }
     await this.amqpChannel.consume(
       queue,
       (msg) => {
