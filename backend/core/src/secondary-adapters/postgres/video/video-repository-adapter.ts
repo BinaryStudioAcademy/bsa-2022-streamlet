@@ -712,7 +712,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
           v.privacy = 'PUBLIC'
         ORDER BY v."publishedAt" DESC
         OFFSET 0 ROWS
-        FETCH NEXT 7 ROWS ONLY
+        FETCH NEXT 6 ROWS ONLY
       `;
 
     const list = videos.map(trimVideoForQueryRaw);
@@ -735,11 +735,11 @@ export class VideoRepositoryAdapter implements VideoRepository {
           (SELECT CAST(COUNT(*) AS INT)
             FROM
             (SELECT
-              cv."A" as "cid"
+              cv."categoryId" as "cid"
               FROM
-                "_CategoryToVideo" cv
+                "CategoryToVideo" cv
               WHERE
-                cv."B" = v.id
+                cv."videoId" = v.id
             INTERSECT
             SELECT
               cu."categoryId" as "cid"

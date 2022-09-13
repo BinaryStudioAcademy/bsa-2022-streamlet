@@ -85,7 +85,11 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, isLazyBlock,
 
   return (
     <div className={styles['separate-video-block']}>
-      {blockTitle && <h2 className={styles['video-block-title']}>{blockTitle}</h2>}
+      {blockTitle && (
+        <div className={styles['wrapper-for-title']}>
+          <h2 className={styles['video-block-title']}>{blockTitle}</h2>
+        </div>
+      )}
       {isLazyBlock && (
         <InfiniteScroll
           dataLength={videoCards.length}
