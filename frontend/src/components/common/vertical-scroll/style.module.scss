@@ -67,7 +67,8 @@
   }
 
   &:active {
-    padding: 10px;
+    max-height: 31px;
+    padding: 7px;
     background-color: var(--gray-200-input-background);
     border-radius: 100%;
   }
