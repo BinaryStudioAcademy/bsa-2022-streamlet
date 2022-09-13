@@ -40,11 +40,10 @@ type Props = {
 const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingInfo }) => {
   const [isUserNotAuthAndReact, setIsUserNotAuthAndReact] = useState(false);
 
-  const isLightTheme = useAppSelector((store) => store.theme.isLightTheme);
-
-  const user = useAppSelector((state) => {
-    return state.auth.user;
-  });
+  const { isLightTheme, user } = useAppSelector((state) => ({
+    isLightTheme: state.theme.isLightTheme,
+    user: state.auth.user,
+  }));
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -108,9 +107,14 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
     await dispatch(videoPageActions.getVideo(videoId));
   };
 
+  const handleDeleteComment = useCallback(() => {
+    dispatch(videoPageActions.deleteComment(comment.id));
+    setIsCommentMenuOpen(false);
+  }, [comment.id, dispatch]);
+
   const matchCommentMenuOptionWithOnClickHandler: Record<CommentMenuOptions, () => void> = {
     [CommentMenuOptions.EDIT]: () => void 1,
-    [CommentMenuOptions.DELETE]: () => void 1,
+    [CommentMenuOptions.DELETE]: handleDeleteComment,
   };
 
   const commentMenuOptions = allCommentMenuOptions.map((option) => ({
@@ -147,10 +151,16 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
               <p className={clsx({ [styles['is-reply']]: isReply }, styles['commentators-name'])}>
                 {getUserDisplayName(comment)}
               </p>
-              <span className={styles['dispatch-time']}>{getHowLongAgoString(comment.dateAdded)}</span>
+              <span className={styles['dispatch-time']}>{`${comment.isEdited ? '(edited)' : ''} ${getHowLongAgoString(
+                comment.dateAdded,
+              )}`}</span>
             </div>
             <div className={clsx({ [styles['is-reply']]: isReply }, styles['content-part-comment'])}>
-              <TextWithEmoji text={comment.text} textClassName={styles['text-comment']} />
+              {comment.isDeleted ? (
+                <p className={clsx(styles['text-comment'], styles['is-deleted'])}>This comment was deleted by user.</p>
+              ) : (
+                <TextWithEmoji text={comment.text} textClassName={styles['text-comment']} />
+              )}
             </div>
             <div className={styles['reaction-block']}>
               <>
@@ -224,7 +234,7 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
               style={
                 isCommentMenuOpen
                   ? { visibility: 'visible' }
-                  : comment.authorId !== user?.id
+                  : comment.authorId !== user?.id || comment.isDeleted
                   ? { visibility: 'hidden' }
                   : {}
               }

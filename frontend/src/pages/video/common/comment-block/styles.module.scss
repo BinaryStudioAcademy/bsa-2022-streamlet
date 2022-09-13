@@ -292,7 +292,7 @@ $base-z-index: $page-component-z-index;
     right: 0;
     z-index: $base-z-index + 1;
     background-color: var(--gray-300-header-menu-background);
-    border-radius: 0 0 3px 3px;
+    border-radius: 3px;
     box-shadow: -3px 3px 10px 0 rgb(0 0 0 / 15%);
   }
 
