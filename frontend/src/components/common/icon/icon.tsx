@@ -47,6 +47,9 @@ import { ReactComponent as Profile } from 'assets/img/profile.svg';
 import { ReactComponent as Participants } from 'assets/img/users-between-lines.svg';
 import { ReactComponent as OpenOutside } from 'assets/img/up-right-from-square.svg';
 import { ReactComponent as TimeStamp } from 'assets/img/clock-rotate-left.svg';
+import { ReactComponent as PenEdit } from 'assets/img/edit.svg';
+import { ReactComponent as Trash } from 'assets/img/trash.svg';
+import { ReactComponent as ReportFlag } from 'assets/img/report.svg';
 import { ReactComponent as HorizontalScrollRightArrow } from 'assets/img/horizontal-scroll-right-arrow.svg';
 import { ReactComponent as HorizontalScrollLeftArrow } from 'assets/img/horizontal-scroll-left-arrow.svg';
 
@@ -265,6 +268,18 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.OPEN_OUTSIDE: {
       return <OpenOutside {...commonProps} />;
+    }
+
+    case IconName.EDIT: {
+      return <PenEdit {...commonProps} />;
+    }
+
+    case IconName.DELETE: {
+      return <Trash {...commonProps} />;
+    }
+
+    case IconName.REPORT: {
+      return <ReportFlag {...commonProps} />;
     }
 
     case IconName.HORIZONTAL_SCROLL_LEFT_ARROW: {

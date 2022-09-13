@@ -5,4 +5,6 @@ export {
   ChannelCrudApiPath,
   HistoryApiPath,
   FollowingApiPath,
+  ChatApiPath,
+  CommentApiPath,
 } from 'shared/build';

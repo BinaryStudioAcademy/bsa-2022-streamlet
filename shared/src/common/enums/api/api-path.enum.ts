@@ -14,6 +14,7 @@ enum ApiPath {
   CHAT = '/chats',
   USER = '/users',
   HISTORY = '/history',
+  COMMENT = '/comment',
 }
 
 export { ApiPath };

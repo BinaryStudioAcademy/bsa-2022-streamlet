@@ -27,6 +27,8 @@ import { ChatRepository } from '~/core/chat/port/chat-repository';
 import { ChatRepositoryAdapter } from './chat/chat-repository-adapter';
 import { ChannelRepository } from '~/core/channel/port/channel-repository';
 import { ChannelRepositoryAdapter } from './channel/channel-repository-adapter';
+import { CommentRepositoryAdapter } from './comment/comment-repository-adapter';
+import { CommentRepository } from '~/core/comment/port/comment-repository';
 
 const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const client = new PrismaClient();
@@ -47,6 +49,7 @@ const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces
   );
   bind<ChannelRepository>(CONTAINER_TYPES.ChannelRepository).to(ChannelRepositoryAdapter);
   bind<ChatRepository>(CONTAINER_TYPES.ChatRepository).to(ChatRepositoryAdapter);
+  bind<CommentRepository>(CONTAINER_TYPES.CommentRepository).to(CommentRepositoryAdapter);
   bind<HistoryRepository>(CONTAINER_TYPES.HistoryRepository).to(HistoryRepositoryAdapter);
   bind<PrismaClient>(CONTAINER_TYPES.PrismaClient)
     .toConstantValue(client)

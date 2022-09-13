@@ -203,8 +203,11 @@ export class VideoRepositoryAdapter implements VideoRepository {
             createdAt: true,
             updatedAt: true,
             text: true,
+            isEdited: true,
+            isDeleted: true,
             author: {
               select: {
+                id: true,
                 username: true,
                 profile: true,
               },
