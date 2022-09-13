@@ -9,5 +9,6 @@ export { ChannelCrudApiPath } from './channel-crud-api-path.enum';
 export { VideoApiPath, VideoApiPathParams } from './video-api-path.enum';
 export { ChannelSubscriptionApiPath } from './channel-subscription-api-path.enum';
 export { ChatApiPath } from './chat-api-path.enum';
+export { CommentApiPath } from './comment-api-path.enum';
 export { FollowingApiPath } from './following-api-path.enum';
 export { UserApiPath } from './user-api-path.enum';
