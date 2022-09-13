@@ -36,8 +36,6 @@ export const customSelectStyles: StylesConfig<SelectOptions, true> = {
   multiValue: (provided) => ({
     ...provided,
     backgroundColor: 'var(--brand-green-color)',
-    borderTopLeftRadius: '20px',
-    borderBottomLeftRadius: '20px',
     padding: '0 0 0 5px',
     marginRight: '5px',
   }),
