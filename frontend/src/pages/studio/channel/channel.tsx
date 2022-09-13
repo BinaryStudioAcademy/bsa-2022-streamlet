@@ -12,8 +12,6 @@ import {
   updateChannelBanner,
 } from 'store/channel/actions';
 import { ChannelSettingsForm } from './common/channel-settings-form';
-import defaultChannelAvatar from '../../../assets/img/default-channel-avatar.jpg';
-import defaulChannelBanner from '../../../assets/img/default-channel-banner.jpg';
 import { store } from '../../../store/store';
 
 import styles from './styles.module.scss';
@@ -165,7 +163,7 @@ const StudioChannel: FC = () => {
     return <Loader spinnerSize={'lg'} vCentered={true} hCentered={true} />;
   }
 
-  const { name, description, avatar, bannerImage, id } = channelData;
+  const { name, description, avatar, id } = channelData;
 
   return (
     <div className={styles['preference-page-content-container']}>
@@ -203,12 +201,14 @@ const StudioChannel: FC = () => {
               <div className={styles['avatar-container']}>
                 {isLoadingAvatar ? (
                   <Loader spinnerSize={'xs'} className={styles['channel-page-loader-container']} />
+                ) : avatar !== '' ? (
+                  <div className={styles['avatar-placeholder']}> </div>
                 ) : (
                   <img
                     className={styles['channel-image-preview']}
                     width={'96'}
                     height={'96'}
-                    src={avatar === '' ? defaultChannelAvatar : avatar}
+                    src={avatar}
                     alt="channel avatar preview"
                   />
                 )}
@@ -239,12 +239,16 @@ const StudioChannel: FC = () => {
               <div className={styles['banner-container']}>
                 {isLoadingBanner ? (
                   <Loader spinnerSize={'xs'} className={styles['channel-page-loader-container']} />
+                ) : !preparedBanner ? (
+                  <div className={styles['channel-banner-placeholder']}>
+                    <span className={styles['placeholder-text']}>Place for you banner</span>
+                  </div>
                 ) : (
                   <img
                     className={styles['channel-banner-preview']}
                     width={'313'}
                     height={'100'}
-                    src={bannerImage === '' ? defaulChannelBanner : bannerImage}
+                    src={preparedBanner}
                     alt="channel avatar preview"
                   />
                 )}
