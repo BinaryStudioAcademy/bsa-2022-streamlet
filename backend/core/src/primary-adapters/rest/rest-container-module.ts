@@ -15,6 +15,7 @@ import { ChatController } from './chat/chat-controller';
 import { CreateVideoHistoryRecordMiddleware } from '~/primary-adapters/rest/middleware';
 import { HealthcheckController } from '~/primary-adapters/rest/healthcheck/healthcheck-controller';
 import { FollowingController } from './following/following-controller';
+import { CommentController } from './comment/comment-controller';
 
 const restContainerModule = new ContainerModule((bind: interfaces.Bind) => {
   bind<UserController>(CONTAINER_TYPES.UserController).to(UserController);
@@ -25,6 +26,7 @@ const restContainerModule = new ContainerModule((bind: interfaces.Bind) => {
   bind<ChannelStreamingController>(CONTAINER_TYPES.ChannelStreamingController).to(ChannelStreamingController);
   bind<ChannelCrudController>(CONTAINER_TYPES.ChannelCrudController).to(ChannelCrudController);
   bind<ChatController>(CONTAINER_TYPES.ChatController).to(ChatController);
+  bind<CommentController>(CONTAINER_TYPES.CommentController).to(CommentController);
   bind<ProfileController>(CONTAINER_TYPES.ProfileController).to(ProfileController);
   bind<HistoryController>(CONTAINER_TYPES.HistoryController).to(HistoryController);
   bind<CreateVideoHistoryRecordMiddleware>(CreateVideoHistoryRecordMiddleware).toSelf();
