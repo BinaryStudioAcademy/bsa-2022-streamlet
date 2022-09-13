@@ -412,49 +412,53 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
   }
 
-  searchByCategories({ skip, take, categories }: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]> {
-    return this.prismaClient.video.findMany({
-      where: {
-        ...{ privacy: StreamPrivacy.PUBLIC },
-        categories: {
-          some: {
-            category: {
-              name: {
-                in: categories,
+  async searchByCategories({
+    skip,
+    take,
+    categories,
+  }: CategorySearchRequestQueryDto): Promise<{ list: VideoWithChannel[]; total: number }> {
+    const [videos, total] = await this.prismaClient.$transaction([
+      this.prismaClient.video.findMany({
+        where: {
+          ...{ privacy: StreamPrivacy.PUBLIC },
+          categories: {
+            some: {
+              category: {
+                name: {
+                  in: categories,
+                },
               },
             },
           },
         },
-      },
-      take,
-      skip,
-      include: {
-        channel: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
+        take,
+        skip,
+        include: {
+          channel: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+            },
           },
         },
-      },
-    });
-  }
-
-  getAllVideoNumInCategory({ categories }: CategorySearchRequestQueryDto): Promise<number> {
-    return this.prismaClient.video.count({
-      where: {
-        ...{ privacy: StreamPrivacy.PUBLIC },
-        categories: {
-          some: {
-            category: {
-              name: {
-                in: categories,
+      }),
+      this.prismaClient.video.count({
+        where: {
+          ...{ privacy: StreamPrivacy.PUBLIC },
+          categories: {
+            some: {
+              category: {
+                name: {
+                  in: categories,
+                },
               },
             },
           },
         },
-      },
-    });
+      }),
+    ]);
+    return { list: videos, total };
   }
 
   async commentReactionByUser(commentId: string, userId: string): Promise<boolean | null> {

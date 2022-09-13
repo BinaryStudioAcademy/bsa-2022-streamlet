@@ -53,13 +53,14 @@ export class CategoryService {
   async search(
     categorySearchRequestQueryDto: CategorySearchRequestQueryDto,
   ): Promise<BaseVideoResponseArrayWithTotalNum> {
-    const videos = await this.videoRepository.searchByCategories(categorySearchRequestQueryDto);
-    const list = videos.map((video) => castToSearchByCategoryResponseDto(video));
-    const totalVideosNumInCategory = await this.videoRepository.getAllVideoNumInCategory(categorySearchRequestQueryDto);
+    const data = await this.videoRepository.searchByCategories(categorySearchRequestQueryDto);
+
+    const { list, total } = data;
+    const preparedList = list.map((video) => castToSearchByCategoryResponseDto(video));
 
     return {
-      list,
-      totalVideosNum: totalVideosNumInCategory,
+      list: preparedList,
+      totalVideosNum: total,
     };
   }
 

@@ -39,7 +39,7 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, loadingStatu
       return numberOfVideoForUpload;
     }
 
-    if (numberOfUploadedVideos >= numberOfVideoForUpload) {
+    if (numberOfUploadedVideos > numberOfVideoForUpload) {
       return 0;
     }
 
