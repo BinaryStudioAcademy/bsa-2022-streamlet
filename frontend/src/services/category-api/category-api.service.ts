@@ -1,5 +1,5 @@
 import { HttpMethod, ApiPath } from 'common/enums/enums';
-import { BaseVideoResponseDto, CategoryApiPath, CategoryResponseDto } from 'shared/build';
+import { BaseVideoResponseArrayWithTotalNum, CategoryApiPath, CategoryResponseDto } from 'shared/build';
 import { Http } from '../http/http.service';
 
 type Constructor = {
@@ -25,7 +25,7 @@ class CategoryApi {
     });
   }
 
-  public searchByCategories(categories: string[]): Promise<BaseVideoResponseDto[]> {
+  public searchByCategories(categories: string[]): Promise<BaseVideoResponseArrayWithTotalNum> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.CATEGORY}${CategoryApiPath.SEARCH}`,
       options: {

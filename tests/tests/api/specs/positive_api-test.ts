@@ -22,7 +22,10 @@ describe('Positive tests', () => {
   let accessToken;
 
   before('Sign in', async () => {
-    let response = await auth.signInUser(global.appConfig.users.Margo.email, global.appConfig.users.Margo.password);
+    let response = await auth.signInUser(
+      global.appConfig.users.defaultUser.email,
+      global.appConfig.users.defaultUser.password,
+    );
     checkStatusCode(response, 200);
     checkResponseTime(response, 3000);
     checkSchema(response, schemas.schema_signIn);
