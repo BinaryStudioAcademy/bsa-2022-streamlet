@@ -55,12 +55,6 @@ const StudioStream: FC<Props> = ({
               ) : (
                 <Loader color="white" spinnerSize="40" />
               )}
-
-              {/* <img
-                className={styles['preview']}
-                src={stream?.poster ? stream?.poster : defaultPreview}
-                alt="Stream preview"
-              /> */}
             </div>
             <form className={styles['form-container']}>
               <div className={styles['field-container']}>
