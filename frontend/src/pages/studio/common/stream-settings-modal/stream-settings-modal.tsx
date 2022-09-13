@@ -10,6 +10,7 @@ import { Tab } from './tabs/tab.enum';
 import { useAppDispatch, useAppForm, useAppSelector } from 'hooks/hooks';
 import { categoryActions, streamActions } from 'store/actions';
 import { StreamSettingsFormValues } from './stream-settings-forms/stream-basic-info-form/stream-settings-form-values';
+import { IconColor } from 'common/enums/enums';
 
 type Props = {
   isOpen: boolean;
@@ -40,17 +41,18 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
   );
 
   const onSubmit = (submitValue: StreamSettingsFormValues): void => {
-    const { name, description, scheduledStreamDate, privacy, tags, categories, poster } = submitValue;
+    const { name, description, scheduledStreamDate, privacy, tags, categories } = submitValue;
     onSave({
       name,
       description,
       scheduledStreamDate,
       privacy,
       videoId: stream?.id ?? '',
-      tags: tags?.map((tag) => ({ name: tag.label })) ?? [],
-      categories: categories?.map((category) => ({ name: category.label })) ?? [],
-      poster: poster ?? '',
+      tags: tags?.map((tag) => tag.label) ?? [],
+      categories: categories?.map((category) => category.label) ?? [],
+      poster: temporaryPoster ?? stream?.poster ?? '',
     });
+    onClose();
   };
 
   const defaultValues = useCallback(
@@ -86,23 +88,26 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
+      closeButtonColor={IconColor.WHITE}
       contentContainerClassName={clsx(styles['modal-container'], isParentModalInvisible && styles['invisible'])}
     >
       <div className={styles['header']}>
         <h1 className={styles['heading']}>Stream settings</h1>
       </div>
       <TabHeader currentTab={currentTab} setTab={setCurrentTab} />
-      <form onSubmit={handleSubmit(onSubmit)} className={styles['form']}>
-        {currentTab === Tab.GeneralInfo && (
-          <StreamBasicInfoForm categoryOptions={categoryOptions} control={control} errors={errors} />
-        )}
-        {currentTab === Tab.Appearance && (
-          <StreamAppearanceForm
-            setParentModalInvisible={setIsParentModalInvisible}
-            currentPreviewPicture={temporaryPoster ?? stream?.poster ?? ''}
-            handleImageUpload={handlePosterUpload}
-          />
-        )}
+      <form onSubmit={handleSubmit(onSubmit)} className={styles['form-container']}>
+        <div className={styles['form']}>
+          {currentTab === Tab.GeneralInfo && (
+            <StreamBasicInfoForm categoryOptions={categoryOptions} control={control} errors={errors} />
+          )}
+          {currentTab === Tab.Appearance && (
+            <StreamAppearanceForm
+              setParentModalInvisible={setIsParentModalInvisible}
+              currentPreviewPicture={temporaryPoster ?? stream?.poster ?? ''}
+              handleImageUpload={handlePosterUpload}
+            />
+          )}
+        </div>
         <div className={styles['footer']}>
           <Button content="Save" type="submit" className={styles['control-btn']} />
           <Button content="Cancel" type="button" className={styles['control-btn']} onClick={handleClose} />

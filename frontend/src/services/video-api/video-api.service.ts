@@ -17,6 +17,7 @@ import {
   VideoPaginationParams,
   AddVideoViewResponseDto,
   AddVideoViewRequestDto,
+  GetSimilarVideosResponseDto,
 } from 'shared/build';
 import { Http } from '../http/http.service';
 
@@ -49,9 +50,42 @@ class VideoApi {
     });
   }
 
+  public getGeneralVideos(): Promise<DataVideo> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.GENERAL_VIDEOS}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+    });
+  }
+
+  public getRecommendedVideos(pagination: VideoPaginationParams): Promise<DataVideo> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.RECOMMENDED_VIDEOS}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+      ...(pagination && {
+        query: {
+          skip: pagination.skip,
+          take: pagination.take,
+        },
+      }),
+    });
+  }
+
   public getSingleVideo(videoId: string): Promise<VideoExpandedResponseDto> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.VIDEOS}/${videoId}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+    });
+  }
+
+  public getSimilarVideos(videoId: string): Promise<GetSimilarVideosResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}/${videoId}${VideoApiPath.SIMILAR_VIDEOS}`,
       options: {
         method: HttpMethod.GET,
       },

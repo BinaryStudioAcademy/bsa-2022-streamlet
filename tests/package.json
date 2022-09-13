@@ -30,6 +30,7 @@
     "chai-json-schema": "1.5.1",
     "commander": "9.4.0",
     "dependencies": "0.0.1",
+    "dotenv": "16.0.2",
     "got": "11.8.2",
     "junit-report-merger": "3.0.6",
     "mocha": "10.0.0",

@@ -9,8 +9,15 @@ import {
   CreateCommentReactionRequestDto,
   CreateCommentReactionResponseDto,
   AddVideoViewResponseDto,
+  GetSimilarVideosResponseDto,
 } from 'common/types/types';
-import { VideoExpandedResponseDto, ResponseRepliesForComment, BaseReplyRequestDto } from 'shared/build';
+import {
+  VideoExpandedResponseDto,
+  ResponseRepliesForComment,
+  BaseReplyRequestDto,
+  Comment,
+  DeleteCommentResponseDto,
+} from 'shared/build';
 import { ActionType } from './common';
 
 const getVideo = createAsyncThunk<VideoExpandedResponseDto, string, AsyncThunkConfig>(
@@ -19,6 +26,18 @@ const getVideo = createAsyncThunk<VideoExpandedResponseDto, string, AsyncThunkCo
     const { videoApi } = extra;
 
     return await videoApi.getSingleVideo(videoId);
+  },
+);
+
+const loadRecommendedVideos = createAsyncThunk<GetSimilarVideosResponseDto, string, AsyncThunkConfig>(
+  ActionType.LOAD_RECOMMENDED_VIDEOS,
+  // you might think that it's possible to get video id without passing it into parameters
+  // by looking into state, but this info is not there until the video is loaded, and we want
+  // to start loading recommendations even before the video info has been received from the server
+  async (videoId: string, { extra }) => {
+    const { videoApi } = extra;
+    const videos = await videoApi.getSimilarVideos(videoId);
+    return videos;
   },
 );
 
@@ -96,6 +115,25 @@ const getRepliesForComment = createAsyncThunk<ResponseRepliesForComment, string,
   },
 );
 
+const updateComment = createAsyncThunk<
+  Comment,
+  { commentId: string; comment: VideoCommentRequestDto },
+  AsyncThunkConfig
+>(ActionType.UPDATE_COMMENT, async (commentPayload, { extra }) => {
+  const { commentApi } = extra;
+
+  return await commentApi.updateComment(commentPayload);
+});
+
+const deleteComment = createAsyncThunk<Comment | DeleteCommentResponseDto, string, AsyncThunkConfig>(
+  ActionType.DELETE_COMMENT,
+  async (commentId: string, { extra }) => {
+    const { commentApi } = extra;
+
+    return await commentApi.deleteComment(commentId);
+  },
+);
+
 const resetVideoPage = createAction(ActionType.RESET_VIDEO_PAGE);
 
 export {
@@ -108,4 +146,7 @@ export {
   addVideoCommentReply,
   resetVideoPage,
   addVideoView,
+  loadRecommendedVideos,
+  deleteComment,
+  updateComment,
 };

@@ -118,6 +118,7 @@ export class CategoryService {
     if (!isVideoExists) {
       return null;
     }
+    await this.categoryRepository.clearCategoriesToVideoBinding(videoId);
     const categories: string[] = [];
     for (const { name } of categoryPayload) {
       const category = await this.categoryRepository.getByName(name);

@@ -2,6 +2,7 @@ import { FffmpegProcessCreatorDto } from '~/shared';
 import Ffmpeg from 'fluent-ffmpeg';
 import { logger } from '~/config/logger';
 import { CONFIG } from '~/config/config';
+import path from 'path';
 
 export class FfmpegFactory {
   public static create({ videoId, input, width, height, fps }: FffmpegProcessCreatorDto): Ffmpeg.FfmpegCommand {
@@ -23,15 +24,16 @@ export class FfmpegFactory {
       .addOption('-map_metadata', '-1')
       .addOption('-map_chapters', '-1')
       .addOption('-hls_list_size', '0')
-      .addOption('-hls_segment_filename', `playback/${videoId}/segment-${height}p${fps}_%05d.ts`)
-      .output(`playback/${videoId}/playlist-${height}p${fps}.m3u8`)
+      .addOption(
+        '-hls_segment_filename',
+        path.resolve(CONFIG.playbackPath, videoId, `segment-${height}p${fps}_%05d.ts`),
+      )
+      .output(path.resolve(CONFIG.playbackPath, videoId, `playlist-${height}p${fps}.m3u8`))
       .on('start', () => logger.info('ffmpeg started'))
+      .on('end', () => logger.info('ffmpeg done'))
       .on('stderr', function (stderrLine) {
         logger.error('Stderr output: ' + stderrLine);
       })
-      .on('end', () => logger.info('ffmpeg done'))
-      .on('error', (err) => {
-        logger.error(err);
-      });
+      .on('error', (err) => logger.error(err));
   }
 }

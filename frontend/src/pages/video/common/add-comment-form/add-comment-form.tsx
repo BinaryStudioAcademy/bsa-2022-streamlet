@@ -1,15 +1,17 @@
 import clsx from 'clsx';
 import * as Joi from 'joi';
 import { EmojiClickData } from 'emoji-picker-react';
+import { FocusEvent, KeyboardEvent } from 'react';
 import { FC } from 'common/types/types';
 import { useState, useEffect, useAppForm, useCallback } from 'hooks/hooks';
 import { Button, Emoji, Textarea } from 'components/common/common';
 import { UserAvatarOrInitials } from 'components/common/user-avatar-or-initials/user-avatar-or-initials';
 import styles from './styles.module.scss';
-import { FocusEvent } from 'react';
+import { getUserDisplayName } from 'helpers/user';
 
 type Props = {
   avatar: string | undefined;
+  initialValue?: string;
   namingInfo: {
     userName: string;
     firstName?: string;
@@ -19,7 +21,9 @@ type Props = {
   className?: string;
   isLightTheme: boolean;
   isFormForReply?: boolean;
-  handlerCancelForReplyForm: () => void;
+  isFormEdit?: boolean;
+  handlerCancelForReplyForm?: () => void;
+  handlerCancelForEditForm?: () => void;
 };
 interface AddNewCommentFormValues {
   comment: string;
@@ -31,12 +35,15 @@ const extendedSchema = Joi.object<AddNewCommentFormValues, true>({
 
 export const VideoPageCommentForm: FC<Props> = ({
   avatar,
+  initialValue,
   onSubmit,
   className,
   namingInfo,
   isLightTheme,
   isFormForReply,
+  isFormEdit,
   handlerCancelForReplyForm,
+  handlerCancelForEditForm,
 }) => {
   const [isNeedFormControlElement, setIsNeedFormControlElement] = useState(false);
   const [isInputInFocus, setIsInputInFocus] = useState(false);
@@ -48,6 +55,21 @@ export const VideoPageCommentForm: FC<Props> = ({
     mode: 'onChange',
     validationSchema: extendedSchema,
   });
+
+  const handleSetValue = useCallback(
+    (
+      t: string,
+      options?: Partial<{
+        shouldValidate: boolean;
+        shouldDirty: boolean;
+        shouldTouch: boolean;
+      }>,
+    ): void => {
+      setValue('comment', t, { shouldValidate: true, ...options });
+    },
+    [setValue],
+  );
+
   const handleSubmitEvent = ({ comment }: { comment: string }): void => {
     reset({ comment: '' });
     if (isValid) {
@@ -56,9 +78,14 @@ export const VideoPageCommentForm: FC<Props> = ({
     setIsNeedFormControlElement(false);
   };
   const handleCancel = (): void => {
-    reset({ comment: '' });
+    reset({ comment: isFormEdit ? initialValue : '' });
     setIsNeedFormControlElement(false);
-    handlerCancelForReplyForm();
+    if (handlerCancelForReplyForm) {
+      handlerCancelForReplyForm();
+    }
+    if (handlerCancelForEditForm) {
+      handlerCancelForEditForm();
+    }
   };
   const handleInputFocus = (): void => {
     setIsNeedFormControlElement(true);
@@ -80,13 +107,19 @@ export const VideoPageCommentForm: FC<Props> = ({
       const deleteTextLength = caretPosition[1] - caretPosition[0];
       const input = getValues('comment').split('');
       input.splice(caretPosition[0], deleteTextLength, emoji);
-      setValue('comment', `${input.join('')}`, { shouldValidate: true });
+      handleSetValue(`${input.join('')}`);
 
       setCaretPosition(new Array(2).fill(caretPosition[0] + 2));
       setSelectedEmoji(null);
     },
-    [getValues, setValue, caretPosition],
+    [getValues, handleSetValue, caretPosition],
   );
+
+  const onHandleKeydownCtrlEnter = (e: KeyboardEvent<HTMLTextAreaElement>): void => {
+    if (e.ctrlKey && e.code === 'Enter') {
+      handleSubmitEvent({ comment: getValues('comment') });
+    }
+  };
 
   useEffect(() => {
     if (selectedEmoji) {
@@ -94,16 +127,24 @@ export const VideoPageCommentForm: FC<Props> = ({
     }
   }, [selectedEmoji, handleAddEmoji]);
 
+  useEffect(() => {
+    if (initialValue) {
+      handleSetValue(initialValue, { shouldValidate: false });
+    }
+  }, [initialValue, handleSetValue]);
+
   return (
     <form
       onSubmit={handleSubmit(handleSubmitEvent)}
       className={clsx(styles['add-comment-block'], className, { [styles['for-reply']]: isFormForReply })}
     >
-      <UserAvatarOrInitials
-        className={clsx(styles['add-comment-block-user-avatar'], { [styles['for-reply']]: isFormForReply })}
-        avatar={avatar}
-        userNamingInfo={namingInfo}
-      />
+      {!isFormEdit && (
+        <UserAvatarOrInitials
+          className={clsx(styles['add-comment-block-user-avatar'], { [styles['for-reply']]: isFormForReply })}
+          avatar={avatar}
+          userNamingInfo={namingInfo}
+        />
+      )}
       <div className={styles['input-block']}>
         <Textarea
           control={control}
@@ -116,15 +157,20 @@ export const VideoPageCommentForm: FC<Props> = ({
             styles['add-comment-input'],
           )}
           errors={errors}
-          label={'Add comment'}
-          labelClassName={clsx({ [styles['label-for-reply-form']]: isFormForReply })}
+          label={isFormEdit ? getUserDisplayName(namingInfo) : 'Add comment'}
+          labelClassName={clsx({
+            [styles['label-for-reply-form']]: isFormForReply,
+            [styles['label-for-edit-form']]: isFormEdit,
+          })}
+          errorBlockClassName={styles['add-comment-input-error']}
           name={'comment'}
-          placeholder={isFormForReply ? 'Enter reply' : 'Enter new comment text'}
+          placeholder={isFormForReply ? 'Enter reply' : isFormEdit ? 'Edit comment' : 'Enter new comment text'}
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
+          onKeyDown={onHandleKeydownCtrlEnter}
         />
         <div className={styles['add-comment-form-control']}>
-          {(isNeedFormControlElement || isFormForReply) && (
+          {(isNeedFormControlElement || isFormForReply || isFormEdit) && (
             <>
               <Emoji
                 isLightTheme={isLightTheme}
@@ -140,7 +186,7 @@ export const VideoPageCommentForm: FC<Props> = ({
                 />
                 <Button
                   type={'submit'}
-                  content={isFormForReply ? 'Reply' : 'Comment'}
+                  content={isFormForReply ? 'Reply' : isFormEdit ? 'Save' : 'Comment'}
                   className={clsx(
                     {
                       [styles['add-comment-submit-disabled']]: !isValid,

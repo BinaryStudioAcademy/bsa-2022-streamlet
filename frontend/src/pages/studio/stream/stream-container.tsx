@@ -1,6 +1,6 @@
 import { STREAMING_SERVER_URL } from 'common/constants/constants';
-import { IconName, SocketEvents, StreamStatus } from 'common/enums/enums';
-import { FC, StreamUpdateRequestDto } from 'common/types/types';
+import { ENV, IconName, SocketEvents, StreamPrivacy, StreamStatus } from 'common/enums/enums';
+import { FC, SelectOptions, StreamUpdateRequestDto } from 'common/types/types';
 import { createToastNotification } from 'components/common/toast-notification';
 import { Forbidden } from 'components/placeholder-page';
 import { NotFound } from 'components/placeholder-page/not-found';
@@ -13,6 +13,7 @@ import { StudioStream } from './stream';
 import { socket } from 'common/config/config';
 import { StreamSettingsModal } from '../common/stream-settings-modal/stream-settings-modal';
 import { store } from 'store/store';
+import { MultiValue, SingleValue } from 'react-select';
 
 socket.on(SocketEvents.notify.STREAM_OBS_STATUS, (isReadyToStream: boolean) => {
   store.dispatch(
@@ -85,7 +86,7 @@ const StudioStreamContainer: FC = () => {
     () => ({
       streamingKey: streamingKey ?? '',
       streamingServerUrl: STREAMING_SERVER_URL,
-      streamUrl: `https://dev.streamlet.tk/video/${stream?.id}`,
+      streamUrl: `${ENV.VIDEO_FALLBACK_BASE_URL}/video/${stream?.id}`,
     }),
     [stream?.id, streamingKey],
   );
@@ -98,6 +99,22 @@ const StudioStreamContainer: FC = () => {
   } = useAppForm<StreamInfoFormValues>({
     defaultValues: defaultInfoFormValues(),
   });
+
+  const onStreamPrivacyChange = (newValue: MultiValue<SelectOptions>): void => {
+    dispatch(
+      streamActions.editStream({
+        privacy: (newValue as unknown as SingleValue<SelectOptions>)?.value as StreamPrivacy,
+      }),
+    );
+  };
+
+  const onStreamChatToggleChange = (): void => {
+    dispatch(
+      streamActions.editStream({
+        isChatEnabled: !stream?.isChatEnabled,
+      }),
+    );
+  };
 
   const isNotFound = errorCode === errorCodes.stream.NOT_FOUND || errorCode === errorCodes.stream.NO_CHANNELS;
 
@@ -127,6 +144,8 @@ const StudioStreamContainer: FC = () => {
         infoFormControl={infoFormControl}
         infoFormErrors={infoFormErrors}
         infoFormValues={infoFormValues}
+        onStreamPrivacyChange={onStreamPrivacyChange}
+        onStreamChatToggleChange={onStreamChatToggleChange}
       />
     </>
   );

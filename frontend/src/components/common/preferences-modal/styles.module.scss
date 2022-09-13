@@ -108,11 +108,13 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  height: auto;
+  height: 266px;
+  overflow: hidden;
 
   img {
+    width: 100%;
+    object-fit: cover;
     border-radius: 15% 15% 15% 15% / 15% 15% 15% 15%;
-    box-shadow: -1px 8px 40px -13px var(--hover-dark-grey);
   }
 }
 

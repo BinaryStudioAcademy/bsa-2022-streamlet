@@ -3,13 +3,15 @@ import { PrismaClient, Prisma } from '@prisma/client';
 import { CONTAINER_TYPES, PopularVideoResponseDto } from '~/shared/types/types';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimPopular, trimVideo, trimVideoSearch } from '~/shared/helpers';
-import { trimCommentsForReplies, trimVideoWithComments } from '~/shared/helpers/trim-video';
+import { trimCommentsForReplies, trimVideoForQueryRaw, trimVideoWithComments } from '~/shared/helpers/trim-video';
 import { Comment } from 'shared/build/common/types/comment';
 import {
   BaseReplyRequestDto,
   CategorySearchRequestQueryDto,
   CreateReactionRequestDto,
   CreateReactionResponseDto,
+  RecommendedVideosParams,
+  ResponseVideoQueryRaw,
   StreamStatus,
   TagSearchRequestQueryDto,
   VideoCommentRequestDto,
@@ -23,6 +25,7 @@ import { VideoSearch, VideoWithChannel } from '~/shared/types/video/video-with-c
 import { VideoRepositoryFilters } from '~/core/video/port/video-repository-filters';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { StreamPrivacy } from '~/shared/enums/stream/stream';
+import { VideoSearchFilters } from '~/core/video/port/video-search-filters';
 
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
@@ -202,8 +205,11 @@ export class VideoRepositoryAdapter implements VideoRepository {
             createdAt: true,
             updatedAt: true,
             text: true,
+            isEdited: true,
+            isDeleted: true,
             author: {
               select: {
+                id: true,
                 username: true,
                 profile: true,
               },
@@ -536,7 +542,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
     return createAddReactionResponse(newReaction.commentReactions[0], likeNum, dislikeNum);
   }
 
-  async getVideosBySearch({ searchText, duration, date, type, sortBy }: VideoSearch): Promise<DataVideo> {
+  async getVideosBySearch(
+    { searchText, duration, date, type, sortBy }: VideoSearch,
+    videoSearchFilters?: VideoSearchFilters,
+  ): Promise<DataVideo> {
     const queryOrderByObject = {
       orderBy: [
         ...sortBy.map((param) => param as Prisma.VideoOrderByWithRelationAndSearchRelevanceInput),
@@ -551,6 +560,13 @@ export class VideoRepositoryAdapter implements VideoRepository {
     };
     const queryObject = {
       where: {
+        ...(videoSearchFilters?.excludeIds
+          ? {
+              id: {
+                notIn: videoSearchFilters.excludeIds,
+              },
+            }
+          : {}),
         ...{ privacy: StreamPrivacy.PUBLIC },
         ...(searchText && {
           OR: [
@@ -573,13 +589,21 @@ export class VideoRepositoryAdapter implements VideoRepository {
             },
           ],
         }),
-        duration: {
-          gte: duration.gte,
-          lte: duration.lte,
-        },
-        publishedAt: {
-          gte: date,
-        },
+        ...(duration
+          ? {
+              duration: {
+                gte: duration.gte,
+                lte: duration.lte,
+              },
+            }
+          : {}),
+        ...(date
+          ? {
+              publishedAt: {
+                gte: date,
+              },
+            }
+          : {}),
         status: {
           in: type,
         },
@@ -662,5 +686,124 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
 
     return searchResult?.channel.authorId;
+  }
+
+  async getGeneralVideos(userId: string): Promise<DataVideo> {
+    const videos: ResponseVideoQueryRaw[] = await this.prismaClient.$queryRaw`
+        SELECT
+          v.*,
+          ch.id as ch_id,
+          ch.name as ch_name,
+          ch.avatar as ch_avatar
+        FROM
+          "Video" v
+        INNER JOIN
+          "Channel" ch
+        ON
+          ch.id = v."channelId"
+        AND
+          v."channelId"
+        IN
+          (SELECT
+            sb."channelId"
+          FROM
+            "Subscription" sb
+          WHERE
+            sb."userId" = ${userId}
+          )
+        AND
+          v.privacy = 'PUBLIC'
+        ORDER BY v."publishedAt" DESC
+        OFFSET 0 ROWS
+        FETCH NEXT 6 ROWS ONLY
+      `;
+
+    const list = videos.map(trimVideoForQueryRaw);
+    const total = videos.length;
+
+    return {
+      list,
+      total,
+    };
+  }
+
+  async getRecommendedVideos({ userId, skip, take }: RecommendedVideosParams): Promise<DataVideo> {
+    if (userId) {
+      const videos: ResponseVideoQueryRaw[] = await this.prismaClient.$queryRaw`
+        SELECT
+          v.*,
+          ch.id as ch_id,
+          ch.name as ch_name,
+          ch.avatar as ch_avatar,
+          (SELECT CAST(COUNT(*) AS INT)
+            FROM
+            (SELECT
+              cv."categoryId" as "cid"
+              FROM
+                "CategoryToVideo" cv
+              WHERE
+                cv."videoId" = v.id
+            INTERSECT
+            SELECT
+              cu."categoryId" as "cid"
+            FROM
+              "CategoryToUser" cu
+            WHERE
+              cu."userId" = ${userId}) as "_") as "index",
+          (SELECT CAST(COUNT(*) AS INT)  FROM "Video" v WHERE v.privacy = 'PUBLIC') as total
+        FROM 
+          "Video" v
+        INNER JOIN "Channel" ch
+        ON ch.id = v."channelId"
+        AND v.privacy = 'PUBLIC'
+        ORDER BY
+          "index" DESC,
+          "videoViews" DESC
+        OFFSET ${+skip} ROWS
+        FETCH NEXT ${+take} ROWS ONLY
+      `;
+
+      const list = videos.map(trimVideoForQueryRaw);
+      const total = videos[0].total;
+
+      return {
+        list,
+        total,
+      };
+    }
+
+    const [result, total] = await this.prismaClient.$transaction([
+      this.prismaClient.video.findMany({
+        where: {
+          privacy: StreamPrivacy.PUBLIC,
+        },
+        include: {
+          channel: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+            },
+          },
+        },
+        orderBy: {
+          publishedAt: 'desc',
+        },
+        skip: Number(skip),
+        take: Number(take),
+      }),
+      this.prismaClient.video.count({
+        where: {
+          privacy: StreamPrivacy.PUBLIC,
+        },
+      }),
+    ]);
+
+    const list = result.map(trimVideo);
+
+    return {
+      list,
+      total,
+    };
   }
 }

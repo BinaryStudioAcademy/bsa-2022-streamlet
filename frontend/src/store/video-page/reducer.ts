@@ -1,7 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
 
 import { DataStatus } from 'common/enums/enums';
-import { Comment, VideoExpandedResponseDto } from 'shared/build';
+import { removeItemIfExists, replaceItemIfExists } from 'helpers/helpers';
+import { BaseVideoResponseDto, Comment, VideoExpandedResponseDto } from 'shared/build';
 import { channelSubscribe } from 'store/subscriptions/actions';
 import {
   addVideoComment,
@@ -12,6 +13,9 @@ import {
   addVideoCommentReply,
   resetVideoPage,
   addVideoView,
+  loadRecommendedVideos,
+  deleteComment,
+  updateComment,
 } from './actions';
 
 type State = {
@@ -29,6 +33,11 @@ type State = {
   videoView: {
     isViewed: boolean;
     dataStatus: DataStatus;
+  };
+  recommendedVideos: {
+    videos: BaseVideoResponseDto[];
+    dataStatus: DataStatus;
+    error: string | undefined;
   };
 };
 
@@ -48,6 +57,11 @@ const initialState: State = {
     isViewed: false,
     dataStatus: DataStatus.IDLE,
   },
+  recommendedVideos: {
+    dataStatus: DataStatus.IDLE,
+    error: undefined,
+    videos: [],
+  },
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -60,11 +74,27 @@ const reducer = createReducer(initialState, (builder) => {
     state.error = undefined;
     state.videoView = { ...initialState.videoView };
     state.dataStatus = DataStatus.PENDING;
+    state.recommendedVideos = { ...initialState.recommendedVideos };
   });
   builder.addCase(getVideo.rejected, (state, { error }) => {
     state.dataStatus = DataStatus.REJECTED;
     state.error = error.message;
   });
+
+  builder.addCase(loadRecommendedVideos.pending, (state) => {
+    state.recommendedVideos.dataStatus = DataStatus.PENDING;
+    state.recommendedVideos.error = undefined;
+  });
+  builder.addCase(loadRecommendedVideos.rejected, (state, { error }) => {
+    state.recommendedVideos.dataStatus = DataStatus.REJECTED;
+    state.recommendedVideos.error = error.message;
+  });
+  builder.addCase(loadRecommendedVideos.fulfilled, (state, { payload }) => {
+    state.recommendedVideos.dataStatus = DataStatus.FULFILLED;
+    state.recommendedVideos.error = undefined;
+    state.recommendedVideos.videos = payload.videos;
+  });
+
   builder.addCase(channelSubscribe.fulfilled, (state, { payload }) => {
     if (state.video) {
       state.video.isUserSubscribedOnChannel = payload.isSubscribed;
@@ -137,6 +167,44 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(addVideoCommentReply.fulfilled, (state, { payload }) => {
     state.replies.data[payload.commentId] = payload.data;
     state.replies.dataStatus = DataStatus.FULFILLED;
+  });
+
+  builder.addCase(deleteComment.fulfilled, (state, { payload }) => {
+    if (!state.video || state.video.comments.length === 0) {
+      return state;
+    }
+    if ('commentId' in payload) {
+      if (payload.parentId && payload.parentId in state.replies.data) {
+        const replies = [...state.replies.data[payload.parentId]];
+        state.replies.data[payload.parentId] = removeItemIfExists(replies, { id: payload.commentId });
+
+        const comments = [...state.video.comments];
+        const parrentComment = comments.find((c) => c.id === payload.parentId);
+        if (parrentComment && 'repliesCount' in parrentComment) {
+          parrentComment.repliesCount = parrentComment.repliesCount ? parrentComment.repliesCount - 1 : 0;
+          state.video.comments = replaceItemIfExists(comments, { id: payload.parentId }, parrentComment);
+        }
+      } else {
+        const comments = [...state.video.comments];
+        state.video.comments = removeItemIfExists(comments, { id: payload.commentId });
+      }
+    } else {
+      const comments = [...state.video.comments];
+      state.video.comments = replaceItemIfExists(comments, { id: payload.id }, payload);
+    }
+  });
+
+  builder.addCase(updateComment.fulfilled, (state, { payload }) => {
+    if (!state.video || state.video.comments.length === 0) {
+      return state;
+    }
+    if (payload.parentId && payload.parentId in state.replies.data) {
+      const replies = [...state.replies.data[payload.parentId]];
+      state.replies.data[payload.parentId] = replaceItemIfExists(replies, { id: payload.id }, payload);
+    } else {
+      const comments = [...state.video.comments];
+      state.video.comments = replaceItemIfExists(comments, { id: payload.id }, payload);
+    }
   });
 
   builder.addCase(resetVideoPage, (state) => {

@@ -6,4 +6,5 @@ export interface TagRepository {
   getByName(name: string): Promise<Tag | null>;
   createTags(createTagsDto: TagCreateRequestDto[]): Promise<Tag[]>;
   bindTagToVideo(bindTagToVideoDto: BindTagToVideoDto): Promise<Tag[]>;
+  clearTagToVideoBinding(videoId: string): Promise<void>;
 }

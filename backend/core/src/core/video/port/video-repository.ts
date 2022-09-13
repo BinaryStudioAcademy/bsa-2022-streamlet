@@ -9,12 +9,14 @@ import {
   BaseReplyRequestDto,
   Comment,
   VideoPaginationParams,
+  RecommendedVideosParams,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 import { VideoRepositoryFilters } from './video-repository-filters';
 import { VideoSearch } from '~/shared/types/types';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
+import { VideoSearchFilters } from './video-search-filters';
 
 export type GetPopularInputType = {
   category: string;
@@ -61,7 +63,9 @@ export interface VideoRepository {
     userId: string,
     isLike: boolean,
   ): Promise<CreateReactionResponseDto | null>;
-  getVideosBySearch(queryParams: VideoSearch): Promise<DataVideo>;
+  getVideosBySearch(queryParams: VideoSearch, additionalQueryParams?: VideoSearchFilters): Promise<DataVideo>;
   getRepliesForComment(commentId: string): Promise<Comment[]>;
   addVideoCommentReply(request: BaseReplyRequestDto, authorId: string): Promise<Comment[]>;
+  getGeneralVideos(userId: string): Promise<DataVideo>;
+  getRecommendedVideos(params: RecommendedVideosParams): Promise<DataVideo>;
 }

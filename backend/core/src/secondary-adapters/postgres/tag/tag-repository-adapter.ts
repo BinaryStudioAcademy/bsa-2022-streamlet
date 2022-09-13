@@ -69,4 +69,12 @@ export class TagRepositoryAdapter implements TagRepository {
       },
     });
   }
+
+  async clearTagToVideoBinding(videoId: string): Promise<void> {
+    await this.prismaClient.tagToVideo.deleteMany({
+      where: {
+        videoId,
+      },
+    });
+  }
 }
