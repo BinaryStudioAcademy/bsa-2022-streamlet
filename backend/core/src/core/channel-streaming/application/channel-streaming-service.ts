@@ -216,6 +216,10 @@ export class ChannelStreamingService {
     let update: VideoStreamResponseBeforeTrimming | null = null;
 
     if (status === StreamStatus.LIVE) {
+      this.amqpChannel.sendToQueue({
+        queue: AmqpQueue.PREVIEW_STOPPED,
+        content: Buffer.from(JSON.stringify({ videoId })),
+      });
       update = await this.channelStreamingRepository.updateStream(videoId, {
         status,
         publishedAt: new Date(),
