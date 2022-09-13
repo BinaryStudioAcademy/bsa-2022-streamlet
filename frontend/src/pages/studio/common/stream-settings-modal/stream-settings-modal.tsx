@@ -11,6 +11,7 @@ import { useAppDispatch, useAppForm, useAppSelector } from 'hooks/hooks';
 import { categoryActions, streamActions } from 'store/actions';
 import { StreamSettingsFormValues } from './stream-settings-forms/stream-basic-info-form/stream-settings-form-values';
 import { IconColor } from 'common/enums/enums';
+import { prettyDisplayCategoryName } from 'helpers/categories/pretty-display-category-name';
 
 type Props = {
   isOpen: boolean;
@@ -42,6 +43,7 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
 
   const onSubmit = (submitValue: StreamSettingsFormValues): void => {
     const { name, description, scheduledStreamDate, privacy, tags, categories } = submitValue;
+
     onSave({
       name,
       description,
@@ -59,7 +61,10 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
     () => ({
       name: stream?.name,
       tags: stream?.tags.map((tag) => ({ value: tag.id, label: tag.name })),
-      categories: stream?.categories.map((category) => ({ value: category.id, label: category.name })),
+      categories: stream?.categories.map((category) => ({
+        value: category.id,
+        label: prettyDisplayCategoryName(category.name),
+      })),
       description: stream?.description,
       scheduledStreamDate: stream?.scheduledStreamDate ? new Date(stream?.scheduledStreamDate) : new Date(),
       privacy: stream?.privacy,
