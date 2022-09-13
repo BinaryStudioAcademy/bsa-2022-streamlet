@@ -34,6 +34,7 @@
   grid-area: side-block;
   flex-direction: column;
   gap: 20px;
+  margin-bottom: 20px;
 }
 
 .video-block {
@@ -67,7 +68,10 @@
 }
 
 .video-comment-block {
+  display: flex;
   grid-area: comments-block;
+  flex-flow: column nowrap;
+  gap: 5px;
   margin-top: 30px;
   padding: 10px;
 
