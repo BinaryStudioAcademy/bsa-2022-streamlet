@@ -17,7 +17,15 @@ const BrowsePage: FC = () => {
 
   const [activeCategory, setActiveCategory] = useState<string>('live');
 
-  const categoryList = ['live', 'music', 'gaming', 'film&animation'];
+  const { categories, preferences } = useAppSelector((store) => ({
+    categories: store.category.data,
+    preferences: store.preference.data,
+  }));
+
+  const categoryList = [
+    'live',
+    ...categories.filter((category) => preferences.includes(category.id)).map((category) => category.name),
+  ];
 
   const handleCategoryClick = (category: string): void => {
     if (activeCategory === reposnseCategory && activeCategory !== category) {
