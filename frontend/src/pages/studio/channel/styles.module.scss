@@ -22,6 +22,7 @@
 }
 
 .preference-page-content-container button {
+  white-space: nowrap;
   cursor: pointer;
 }
 
@@ -62,7 +63,7 @@
 }
 
 .image-upload-control-container {
-  height: 96px;
+  min-height: 96px;
 }
 
 .image-upload-control-container span {
@@ -79,8 +80,9 @@
 
 .banner-container {
   display: block;
-  width: calc(1251px / 4);
-  height: calc(401px / 4);
+  width: 100%;
+  max-width: 313px;
+  height: fit-content;
   margin-right: 20px;
 }
 
@@ -165,6 +167,27 @@
   text-align: center;
 }
 
+.channel-banner-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 313px;
+  height: 100px;
+  background-color: var(--green-100-header-menu-background);
+}
+
+.avatar-placeholder {
+  width: 96px;
+  height: 96px;
+  background-color: var(--green-100-header-menu-background);
+  border-radius: 100%;
+}
+
+.placeholder-text {
+  color: var(--input-placeholder-color);
+  font-size: 25px;
+}
+
 @media #{$tablet-large} {
   .channel-image-upload-container {
     flex-direction: row;
@@ -188,8 +211,19 @@
 }
 
 @media #{$mobile-small} and (max-width: 768px) {
+  .banner-container {
+    width: 100%;
+    margin: 0 auto 10px;
+  }
+
   .channel-image-upload-container {
     flex-direction: column;
+  }
+
+  .channel-banner-placeholder {
+    width: 100%;
+    max-width: 313px;
+    margin: 0 auto;
   }
 
   .image-upload-control-container {
@@ -197,7 +231,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-left: 10px;
+    height: fit-content;
   }
 
   .image-upload-control-container span {
@@ -237,6 +271,10 @@
 }
 
 @media screen and (max-width: 375px) {
+  .placeholder-text {
+    text-align: center;
+  }
+
   .channel-preferences-container {
     width: 100%;
     padding: 5px;
@@ -258,5 +296,9 @@
   .channel-setting-change-block {
     width: 100%;
     padding: 5px;
+  }
+
+  .image-upload-button {
+    width: 100%;
   }
 }
