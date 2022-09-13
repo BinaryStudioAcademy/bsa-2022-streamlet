@@ -9,6 +9,7 @@ import {
   BaseReplyRequestDto,
   Comment,
   VideoPaginationParams,
+  RecommendedVideosParams,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
@@ -67,4 +68,6 @@ export interface VideoRepository {
   getVideosBySearch(queryParams: VideoSearch, additionalQueryParams?: VideoSearchFilters): Promise<DataVideo>;
   getRepliesForComment(commentId: string): Promise<Comment[]>;
   addVideoCommentReply(request: BaseReplyRequestDto, authorId: string): Promise<Comment[]>;
+  getGeneralVideos(userId: string): Promise<DataVideo>;
+  getRecommendedVideos(params: RecommendedVideosParams): Promise<DataVideo>;
 }
