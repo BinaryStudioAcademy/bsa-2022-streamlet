@@ -86,7 +86,7 @@ const StudioStreamContainer: FC = () => {
     () => ({
       streamingKey: streamingKey ?? '',
       streamingServerUrl: STREAMING_SERVER_URL,
-      streamUrl: `https://dev.streamlet.tk/video/${stream?.id}`,
+      streamUrl: `https://streamlet.tk/video/${stream?.id}`,
     }),
     [stream?.id, streamingKey],
   );
