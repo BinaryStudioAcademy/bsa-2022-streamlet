@@ -99,7 +99,7 @@ model Video {
   tags                TagToVideo[]
   categories          CategoryToVideo[]
   comments            VideoComment[]
-  channel             Channel        @relation(fields: [channelId], references: [id])
+  channel             Channel        @relation(fields: [channelId], references: [id], onDelete: Cascade)
   channelId           String
   isChatEnabled       Boolean         @default(true)
   chatMessages        ChatMessage[]
