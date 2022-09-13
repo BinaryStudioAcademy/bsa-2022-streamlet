@@ -408,14 +408,14 @@ export class VideoController extends BaseHttpController {
    *    post:
    *      tags:
    *        - video
-   *      operationId: addVideoComment
+   *      operationId: addVideoReaction
    *      security:
    *      - bearerAuth: []
    *      consumes:
    *        - application/json
    *      produces:
    *        - application/json
-   *      description: Add comment to video
+   *      description: Add reaction to video
    *      parameters:
    *        - in: body
    *          name: body
@@ -499,7 +499,7 @@ export class VideoController extends BaseHttpController {
 
   /**
    * @swagger
-   * /comment:
+   * /videos/comment/react/{id}:
    *    post:
    *      tags:
    *        - comment

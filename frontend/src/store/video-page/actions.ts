@@ -11,7 +11,13 @@ import {
   AddVideoViewResponseDto,
   GetSimilarVideosResponseDto,
 } from 'common/types/types';
-import { VideoExpandedResponseDto, ResponseRepliesForComment, BaseReplyRequestDto } from 'shared/build';
+import {
+  VideoExpandedResponseDto,
+  ResponseRepliesForComment,
+  BaseReplyRequestDto,
+  Comment,
+  DeleteCommentResponseDto,
+} from 'shared/build';
 import { ActionType } from './common';
 
 const getVideo = createAsyncThunk<VideoExpandedResponseDto, string, AsyncThunkConfig>(
@@ -109,6 +115,25 @@ const getRepliesForComment = createAsyncThunk<ResponseRepliesForComment, string,
   },
 );
 
+const updateComment = createAsyncThunk<
+  Comment,
+  { commentId: string; comment: VideoCommentRequestDto },
+  AsyncThunkConfig
+>(ActionType.UPDATE_COMMENT, async (commentPayload, { extra }) => {
+  const { commentApi } = extra;
+
+  return await commentApi.updateComment(commentPayload);
+});
+
+const deleteComment = createAsyncThunk<Comment | DeleteCommentResponseDto, string, AsyncThunkConfig>(
+  ActionType.DELETE_COMMENT,
+  async (commentId: string, { extra }) => {
+    const { commentApi } = extra;
+
+    return await commentApi.deleteComment(commentId);
+  },
+);
+
 const resetVideoPage = createAction(ActionType.RESET_VIDEO_PAGE);
 
 export {
@@ -122,4 +147,6 @@ export {
   resetVideoPage,
   addVideoView,
   loadRecommendedVideos,
+  deleteComment,
+  updateComment,
 };
