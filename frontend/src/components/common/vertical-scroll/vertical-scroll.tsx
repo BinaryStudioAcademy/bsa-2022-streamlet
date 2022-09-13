@@ -12,7 +12,6 @@ type PropsLeftRightArrow = {
   isFollowingOrBrowse?: boolean;
 };
 
-
 const Arrow = ({
   children,
   disabled,
@@ -94,7 +93,7 @@ const RightArrow: FC<PropsLeftRightArrow> = ({ isFollowingOrBrowse = false }): R
       isRight={true}
       isFollowingOrBrowse={isFollowingOrBrowse}
     >
-       <Icon name={IconName.HORIZONTAL_SCROLL_RIGHT_ARROW} color={IconColor.GRAY} width={'16'} height={'16'} />
+      <Icon name={IconName.HORIZONTAL_SCROLL_RIGHT_ARROW} color={IconColor.GRAY} width={'16'} height={'16'} />
     </Arrow>
   );
 };
