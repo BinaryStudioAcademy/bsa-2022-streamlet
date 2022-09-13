@@ -11,7 +11,7 @@ import { inject } from 'inversify';
 import { CONTAINER_TYPES, ExtendedAuthenticatedRequest } from '~/shared/types/types';
 import { exceptionMessages, ApiPath, CommentApiPath } from '~/shared/enums/enums';
 import { BadRequest, Forbidden, NotFound } from '~/shared/exceptions/exceptions';
-import { Comment, VideoCommentRequestDto } from 'shared/build';
+import { Comment, VideoCommentRequestDto, DeleteCommentResponseDto } from 'shared/build';
 import { authenticationMiddleware } from '../middleware';
 import { CommentService } from '~/core/comment/application/comment-service';
 import { trimComment } from '~/shared/helpers/trim-comment';
@@ -147,7 +147,7 @@ export class CommentController extends BaseHttpController {
   public async deleteVideoCommentById(
     @request() req: ExtendedAuthenticatedRequest,
     @requestParam('commentId') id: string,
-  ): Promise<Comment | boolean> {
+  ): Promise<Comment | DeleteCommentResponseDto> {
     const user = req.user;
     const comment = await this.commentService.getCommentById(id);
     if (!comment) {
@@ -170,6 +170,9 @@ export class CommentController extends BaseHttpController {
       throw new NotFound(exceptionMessages.comment.COMMENT_NOT_FOUND);
     }
 
-    return isSuccess;
+    return {
+      commentId: comment.id,
+      parentId: comment.parentId,
+    };
   }
 }

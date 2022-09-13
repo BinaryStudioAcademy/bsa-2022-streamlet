@@ -18,4 +18,5 @@ type Comment = {
   commentReactions: BaseCommentReaction[];
 };
 
+export { DeleteCommentResponseDto } from './delete-comment-response-dto.type';
 export { Comment, BaseCommentReaction };
