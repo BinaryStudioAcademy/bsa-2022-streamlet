@@ -10,7 +10,7 @@ type Props = {
 
 export const LiveIndicator: FC<Props> = ({ wrapperClassName }) => {
   return (
-    <div className={clsx(wrapperClassName, styles['live-label'])}>
+    <div className={clsx(wrapperClassName, styles['live-label'], styles['video-card-meta-tag'])}>
       <Icon name={IconName.ONLINE_STREAMING_2} />
       <span>Live</span>
     </div>
