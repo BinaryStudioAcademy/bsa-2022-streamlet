@@ -182,7 +182,7 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
                     {getUserDisplayName(comment)}
                   </p>
                   <span className={styles['dispatch-time']}>{`${
-                    comment.isEdited ? '(edited)' : ''
+                    comment.isDeleted ? '(deleted)' : comment.isEdited ? '(edited)' : ''
                   } ${getHowLongAgoString(comment.dateAdded)}`}</span>
                 </div>
                 <div className={clsx({ [styles['is-reply']]: isReply }, styles['content-part-comment'])}>
