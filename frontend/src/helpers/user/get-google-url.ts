@@ -1,7 +1,7 @@
 export const getGoogleOAuthURL = (clientId: string): string => {
   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
 
-  const redirect_uris = ['http://localhost:3000', 'https://streamlet.tk'];
+  const redirect_uris = ['http://localhost:3000', 'https://dev.streamlet.tk'];
 
   const options = {
     redirect_uri: redirect_uris[0],
