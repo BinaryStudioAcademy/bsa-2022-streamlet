@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - production
-      - fix/refactor-trans-server
   workflow_dispatch:
 
 jobs:
