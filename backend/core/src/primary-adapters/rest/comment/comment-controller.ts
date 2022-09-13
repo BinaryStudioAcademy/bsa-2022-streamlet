@@ -14,7 +14,6 @@ import { BadRequest, Forbidden, NotFound } from '~/shared/exceptions/exceptions'
 import { Comment, VideoCommentRequestDto, DeleteCommentResponseDto } from 'shared/build';
 import { authenticationMiddleware } from '../middleware';
 import { CommentService } from '~/core/comment/application/comment-service';
-import { trimComment } from '~/shared/helpers/trim-comment';
 
 /**
  * @swagger
@@ -110,7 +109,7 @@ export class CommentController extends BaseHttpController {
     if (!videoComment) {
       throw new NotFound(exceptionMessages.comment.COMMENT_NOT_FOUND);
     }
-    return trimComment(videoComment);
+    return videoComment;
   }
 
   /**
@@ -162,7 +161,7 @@ export class CommentController extends BaseHttpController {
       if (!videoComment) {
         throw new NotFound(exceptionMessages.comment.COMMENT_NOT_FOUND);
       }
-      return trimComment(videoComment);
+      return videoComment;
     }
 
     const isSuccess = await this.commentService.deleteCommentById(id);
