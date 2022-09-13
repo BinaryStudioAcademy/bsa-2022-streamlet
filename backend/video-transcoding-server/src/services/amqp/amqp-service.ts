@@ -15,14 +15,7 @@ export class AmqpService {
     await this.initQueues(amqpChannel);
 
     this.amqpChannel = amqpChannel;
-
-    // connection.on('close', this.reconnect());
   }
-
-  // async reconnect(...args): void {
-  //   logger.warn('Rabbitmq connection lost');
-  //   // this.connect();
-  // }
 
   async initQueues(amqpChannel: Channel): Promise<void> {
     await Promise.all([

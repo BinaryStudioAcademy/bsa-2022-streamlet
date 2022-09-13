@@ -96,7 +96,7 @@ export class StreamingService {
         }
 
         logger.info(`Preview stopped - release stream. VideoId: ${id}`);
-        currentStream.processes.map((process) => process.kill('SIGINT'));
+        currentStream.processes.map((process) => process.kill(''));
 
         logger.info(`Deleting stream precesses. VideoId: ${id}`);
         this.deleteStreamProcess({ videoId: id });
@@ -129,7 +129,7 @@ export class StreamingService {
         }
 
         logger.info(`Stream interrupted. StreamKey: ${streamingKey}`);
-        currentStream.processes.map((process) => process.kill('SIGINT'));
+        currentStream.processes.map((process) => process.kill(''));
 
         logger.info(`Deleting stream processes. StreamKey: ${streamingKey}`);
         this.deleteStreamProcess({ streamKey: streamingKey });

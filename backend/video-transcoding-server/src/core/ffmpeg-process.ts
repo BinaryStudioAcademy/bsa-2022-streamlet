@@ -6,7 +6,6 @@ import { ProcessPreset } from '~/shared';
 
 export const createProcess = (presets: ProcessPreset[], streamKey: string, videoId: string): Ffmpeg.FfmpegCommand[] => {
   const input = createRtmpUrl(streamKey);
-  console.warn(input);
 
   return presets.map((processType) => {
     const preset = presetMatch[processType];
