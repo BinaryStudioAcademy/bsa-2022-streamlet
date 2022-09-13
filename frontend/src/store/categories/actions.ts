@@ -10,16 +10,9 @@ const getCategories = createAsyncThunk<CategoryResponseDto[], void, AsyncThunkCo
     const categories = data.map((category) => {
       return {
         ...category,
-        name: category.name
-          .split('&')
-          .map((x) => x.charAt(0).toUpperCase() + x.slice(1))
-          .join(' & '),
+        name: category.name,
       };
     });
-    // categories.unshift({
-    //   id: '1',
-    //   name: 'All',
-    // });
     return categories;
   },
 );
