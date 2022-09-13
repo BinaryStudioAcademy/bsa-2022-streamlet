@@ -1,6 +1,7 @@
 enum ActionType {
   GET_VIDEO = 'video/get',
   GET_COMMENT = 'comment/get',
+  DELETE_COMMENT = 'comment/delete',
   REACT = 'video/react',
   COMMENT = 'video/comment',
   UPDATE_LIVE_VIEWS = 'video/update-live-views',
