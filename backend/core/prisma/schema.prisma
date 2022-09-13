@@ -35,6 +35,7 @@ model User {
   videoPreferences   CategoryToUser[]
   reactions          Reaction[]
   commentReactions   CommentReaction[]
+  videoStats         VideoStats[]
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
 }
@@ -82,6 +83,25 @@ enum Privacy {
   PRIVATE
 }
 
+enum DeviceCategory {
+  MOBILE
+  TABLET
+  DESKTOP
+  UNKNOWN
+}
+
+enum ReactionStatus {
+  NONE
+  LIKED
+  DISLIKED
+}
+
+enum SubscriptionStatus {
+  NONE
+  SUBSCRIBED
+  UNSUBSCRIBED
+}
+
 model Video {
   id                  String         @id @default(uuid())
   name                String         @default("My new stream")
@@ -106,6 +126,7 @@ model Video {
   notifications       Notification[]
   historyRecords      History[]
   reactions           Reaction[]
+  stats               VideoStats[]
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
 }
@@ -265,4 +286,23 @@ model CommentReaction {
   updatedAt DateTime     @updatedAt
 
   @@unique([userId, commentId])
+}
+
+model VideoStats {
+  id                String              @id @default(uuid())
+  video             Video               @relation(fields: [videoId], references: [id])
+  videoId           String
+  user              User?               @relation(fields: [userId], references: [id])
+  userId            String?
+  watchTime         Int
+  device            DeviceCategory      @default(UNKNOWN)
+  language          String
+  isLive            Boolean
+  reaction          ReactionStatus      @default(NONE)
+  subscription      SubscriptionStatus  @default(NONE)
+  wasSubscribed     Boolean             @default(false)
+  commentsActivity  Int                 @default(0)
+  chatsActivity     Int                 @default(0)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
 }
