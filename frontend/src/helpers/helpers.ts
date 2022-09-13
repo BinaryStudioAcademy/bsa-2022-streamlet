@@ -9,7 +9,7 @@ export { isObjectUniqueIdContainInTwoArray } from './array/is-object-unique-id-c
 export { removeItemIfExists } from './array/remove-item-if-exists.helper';
 export { replaceItemIfExists } from './array/replace-item-if-exists.helper';
 export { pushOrDeleteIfExists } from './array/push-or-delete-if-exists-helper';
-export { generateAbbreviatureNameUser, getUserDisplayName, getGoogleOAuthURL } from './user';
+export { generateAbbreviatureNameUser, getUserDisplayName } from './user';
 export { joinExistingValues, getRightUpdateTimeDelay } from './common/common';
 export { getChannelBannerEditorSize } from './channel-banner-editor-size/get-channel-banner-editor-size';
 export * from './image/image';
