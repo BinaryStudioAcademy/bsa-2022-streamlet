@@ -10,6 +10,7 @@ import { Tab } from './tabs/tab.enum';
 import { useAppDispatch, useAppForm, useAppSelector } from 'hooks/hooks';
 import { categoryActions, streamActions } from 'store/actions';
 import { StreamSettingsFormValues } from './stream-settings-forms/stream-basic-info-form/stream-settings-form-values';
+import { IconColor } from 'common/enums/enums';
 
 type Props = {
   isOpen: boolean;
@@ -87,6 +88,7 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
+      closeButtonColor={IconColor.WHITE}
       contentContainerClassName={clsx(styles['modal-container'], isParentModalInvisible && styles['invisible'])}
     >
       <div className={styles['header']}>
