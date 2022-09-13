@@ -27,6 +27,7 @@ type State = {
     generalVideos: {
       list: BaseVideoResponseDto[];
       total: number;
+      status: DataStatus;
     };
   } & {
     recommendedVideos: {
@@ -62,6 +63,7 @@ const initialState: State = {
     generalVideos: {
       list: [],
       total: 0,
+      status: DataStatus.IDLE,
     },
     recommendedVideos: {
       list: [],
@@ -105,6 +107,7 @@ const reducer = createReducer(initialState, (builder) => {
     state.pagination.lazyLoad = false;
     state.pagination.currentPage = 1;
     state.data.list = [];
+    state.data.total = 0;
   });
 
   builder.addCase(getVideosByCategory.fulfilled, (state, { payload }) => {
@@ -133,12 +136,13 @@ const reducer = createReducer(initialState, (builder) => {
   });
 
   builder.addCase(setNumberOfVideoForLoading, (state, { payload }) => {
-    state.pagination.countItems = payload.numberOfItems;
+    state.data.recommendedVideos.numbersOfGetVideos = payload.numberOfItems;
   });
 
   builder.addCase(getGeneralVideosBlock.fulfilled, (state, { payload }) => {
     state.data.generalVideos.list = payload.list;
     state.data.generalVideos.total = payload.total;
+    state.data.generalVideos.status = DataStatus.FULFILLED;
   });
 
   builder.addCase(getRecommendedVideos.pending, (state) => {
@@ -168,6 +172,7 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(resetGeneralVideos, (state) => {
     state.data.generalVideos.list = [];
     state.data.generalVideos.total = 0;
+    state.data.generalVideos.status = DataStatus.IDLE;
   });
 
   builder.addMatcher(isAnyOf(getVideosByCategory.rejected, getVideos.rejected, getPopularVideos.rejected), (state) => {

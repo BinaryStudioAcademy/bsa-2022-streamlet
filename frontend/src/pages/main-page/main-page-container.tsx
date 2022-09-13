@@ -13,15 +13,29 @@ import {
 } from 'store/videos/actions';
 import { VideoCardMain } from 'components/common/common';
 import { activeCategory, clearFilters, getCategories } from 'store/categories/actions';
+import { DataStatus } from 'common/enums/enums';
+import { VideoBlockProps } from 'components/common/videos-block/videos-block';
 
 const MainPageContainer: FC = () => {
   const dispatch = useAppDispatch();
-  const { categories, isLightTheme, user, generalVideoBlock, recommendedVideoBlock } = useAppSelector((state) => ({
+  const {
+    categories,
+    isLightTheme,
+    user,
+    generalVideoBlock,
+    recommendedVideoBlock,
+    statusGeneralVideos,
+    totalVideosByCategory,
+    selectedVideosByCategory,
+  } = useAppSelector((state) => ({
     generalVideoBlock: state.videos.data.generalVideos.list,
     recommendedVideoBlock: state.videos.data.recommendedVideos.list,
+    selectedVideosByCategory: state.videos.data.list,
+    totalVideosByCategory: state.videos.data.total,
     categories: state.category.data,
     isLightTheme: state.theme.isLightTheme,
     user: state.auth.user,
+    statusGeneralVideos: state.videos.data.generalVideos.status,
   }));
 
   const isLogin = Boolean(user);
@@ -33,7 +47,7 @@ const MainPageContainer: FC = () => {
 
   function handleClickClearFilters(): void {
     dispatch(clearFilters());
-    dispatch(getVideosByCategory());
+    dispatch(resetPaginationMainPage());
   }
 
   const filterBlock: FilterBlockProps = {
@@ -42,27 +56,41 @@ const MainPageContainer: FC = () => {
     handleClickClearFilters,
   };
 
+  let blockVideo: Omit<VideoBlockProps, 'loadingStatus'>[] = [];
   const generalVideos = {
-    blockTitle: '',
     videoCards: generalVideoBlock.map((video) => (
       <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />
     )),
-    isLazyBlock: false,
     isGeneralBlock: true,
   };
+  const recommendedBlock = {
+    blockTitle: isLogin ? 'Recommended for you' : '',
+    videoCards: recommendedVideoBlock.map((video) => (
+      <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />
+    )),
+    isLazyBlock: true,
+  };
 
-  const blockVideo = [
-    {
-      blockTitle: isLogin ? 'Recommended for you' : '',
-      videoCards: recommendedVideoBlock.map((video) => (
-        <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />
-      )),
-      isLazyBlock: true,
-    },
-  ];
+  if (
+    (isLogin && statusGeneralVideos === DataStatus.FULFILLED && generalVideoBlock.length) ||
+    (isLogin && statusGeneralVideos === DataStatus.IDLE)
+  ) {
+    blockVideo.push(generalVideos);
+  }
 
-  if (isLogin) {
-    blockVideo.unshift(generalVideos);
+  if (!totalVideosByCategory) {
+    blockVideo.push(recommendedBlock);
+  }
+
+  if (totalVideosByCategory) {
+    blockVideo = [
+      {
+        videoCards: selectedVideosByCategory.map((video) => (
+          <VideoCardMain key={video.id} video={video} isLightTheme={isLightTheme} />
+        )),
+        isLazyBlock: false,
+      },
+    ];
   }
 
   useEffect(() => {
