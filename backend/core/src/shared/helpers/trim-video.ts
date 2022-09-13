@@ -1,5 +1,5 @@
 import { User, UserProfile, Video, VideoComment, CommentReaction } from '@prisma/client';
-import { BaseVideoResponseDto, StreamStatus } from 'shared/build';
+import { BaseVideoResponseDto, ResponseVideoQueryRaw, StreamStatus } from 'shared/build';
 import { Comment } from 'shared/build/common/types/comment';
 import { calculateReactions } from './calculate-reactions.helper';
 
@@ -138,3 +138,20 @@ export const trimCommentsForReplies = (
 
   return result;
 };
+
+export const trimVideoForQueryRaw = (video: ResponseVideoQueryRaw): BaseVideoResponseDto => ({
+  id: video.id,
+  name: video.name,
+  status: video.status,
+  publishedAt: video.publishedAt,
+  scheduledStreamDate: video.scheduledStreamDate,
+  poster: video.poster,
+  duration: video.duration,
+  videoViews: video.videoViews,
+  liveViews: video.liveViews,
+  channel: {
+    id: video.ch_id,
+    name: video.ch_name,
+    avatar: video.ch_avatar,
+  },
+});
