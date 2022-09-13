@@ -25,6 +25,7 @@ type State = {
     countItems: number;
     lazyLoad: boolean;
   };
+  isFirstTimeGetVideoByCategory: boolean;
   dataStatus: DataStatus;
   error: boolean;
 };
@@ -48,6 +49,7 @@ const initialState: State = {
     countItems: 12,
     lazyLoad: false,
   },
+  isFirstTimeGetVideoByCategory: true,
   dataStatus: DataStatus.IDLE,
   error: false,
 };
@@ -82,13 +84,16 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(getVideosByCategory.fulfilled, (state, { payload }) => {
     state.dataStatus = DataStatus.FULFILLED;
     const { list, total } = payload;
+    const { currentPage } = state.pagination;
+    const { isFirstTimeGetVideoByCategory } = state;
     state.data.list = list;
-    state.data.total = list.length;
+    state.data.total = total;
     state.pagination = {
       lazyLoad: false,
-      countItems: total,
-      currentPage: 1,
+      countItems: list.length,
+      currentPage: isFirstTimeGetVideoByCategory ? 1 : currentPage + 1,
     };
+    state.isFirstTimeGetVideoByCategory = false;
   });
 
   builder.addCase(getPopularVideos.fulfilled, (state, { payload }) => {
