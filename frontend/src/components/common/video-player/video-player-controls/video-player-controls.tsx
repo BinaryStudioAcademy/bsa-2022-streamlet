@@ -9,9 +9,9 @@ import { VideoTime } from './video-time/video-time';
 import { ProgressBar } from './progress-bar/progress-bar';
 import { SettingsControl } from './settings-control/settings-control';
 import Hls from 'hls.js';
-import { LiveIndicator } from './live-indicator/live-indicator';
 import fscreen from 'fscreen';
 import { SyncBtn } from './sync-btn/sync-btn';
+import { LiveIndicator } from '../../common';
 
 type Props = {
   videoContainer: HTMLVideoElement;
@@ -54,7 +54,7 @@ const VideoPlayerControls: FC<Props> = ({
         {isLive ? (
           <>
             <SyncBtn videoContainer={videoContainer} />
-            <LiveIndicator className={styles['live-indicator']} />
+            <LiveIndicator wrapperClassName={styles['live-indicator']} />
           </>
         ) : (
           <VideoTime videoContainer={videoContainer} className={styles['video-time']} />
