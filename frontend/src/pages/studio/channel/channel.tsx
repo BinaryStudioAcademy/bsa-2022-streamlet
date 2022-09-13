@@ -17,6 +17,7 @@ import { store } from '../../../store/store';
 import styles from './styles.module.scss';
 import { ImageListType } from 'react-images-uploading';
 import { ChannelBannerEditor } from '../../../components/common/channel-banner-editor/channel-baner-editor';
+import { ChannelAvatar, ChannelBanner } from './common/channel-images-component/channel-images';
 
 const StudioChannel: FC = () => {
   const dispatch = useAppDispatch();
@@ -201,16 +202,8 @@ const StudioChannel: FC = () => {
               <div className={styles['avatar-container']}>
                 {isLoadingAvatar ? (
                   <Loader spinnerSize={'xs'} className={styles['channel-page-loader-container']} />
-                ) : avatar !== '' ? (
-                  <div className={styles['avatar-placeholder']}> </div>
                 ) : (
-                  <img
-                    className={styles['channel-image-preview']}
-                    width={'96'}
-                    height={'96'}
-                    src={avatar}
-                    alt="channel avatar preview"
-                  />
+                  <ChannelAvatar src={avatar} />
                 )}
               </div>
               <div className={styles['image-upload-control-container']}>
@@ -239,18 +232,8 @@ const StudioChannel: FC = () => {
               <div className={styles['banner-container']}>
                 {isLoadingBanner ? (
                   <Loader spinnerSize={'xs'} className={styles['channel-page-loader-container']} />
-                ) : !preparedBanner ? (
-                  <div className={styles['channel-banner-placeholder']}>
-                    <span className={styles['placeholder-text']}>Place for you banner</span>
-                  </div>
                 ) : (
-                  <img
-                    className={styles['channel-banner-preview']}
-                    width={'313'}
-                    height={'100'}
-                    src={preparedBanner}
-                    alt="channel avatar preview"
-                  />
+                  <ChannelBanner src={preparedBanner} />
                 )}
               </div>
               <div className={styles['image-upload-control-container']}>
