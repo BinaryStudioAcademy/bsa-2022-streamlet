@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FC, VideoCard as VideoCardType } from 'common/types/types';
 import { AppRoutes, IconName, StreamStatus } from 'common/enums/enums';
 import { useState, useCallback, useEffect } from 'hooks/hooks';
-import { Icon } from 'components/common/common';
+import { Icon, LiveIndicator } from 'components/common/common';
 import { ScheduledVideoBadge } from './components/components';
 import { getDividedViewsString, getFormatDurationString, getHowLongAgoString } from 'helpers/helpers';
 import { UPDATE_CARD_TIME_DELAY } from './config';
@@ -107,12 +107,7 @@ const VideoCardMain: FC<Props> = ({
         <div className={styles['video-card-meta-footer']}>
           {!isWaiting && (
             <>
-              {isLive && (
-                <div className={clsx(styles['video-card-meta-tag'], styles['live-label'])}>
-                  <Icon name={IconName.ONLINE_STREAMING_2} />
-                  <span>Live</span>
-                </div>
-              )}
+              {isLive && <LiveIndicator wrapperClassName={styles['video-card-meta-tag']} />}
               <div className={styles['video-card-meta']}>
                 <div className={styles['video-card-meta-data']}>
                   <Icon name={IconName.WATCH} />

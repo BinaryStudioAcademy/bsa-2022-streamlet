@@ -3,6 +3,7 @@ export { ErrorMessage } from '@hookform/error-message';
 
 export { Button } from './button/button';
 export * from './input/input';
+export { LiveIndicator } from './live-indicator/live-indicator';
 export { Link } from './link/link';
 export { Icon } from './icon';
 export { ToggleSwitch } from './toggle-switch';
