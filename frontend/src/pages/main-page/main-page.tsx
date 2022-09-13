@@ -3,7 +3,8 @@ import { FilterBlockProps, FiltersBlock } from 'components/common/filters-block'
 import { PreferencesModalContainer } from 'components/common/preferences-modal/preferences-modal-container';
 import { EMPTY_VIDEO_BLOCK } from 'components/common/video-skeleton/video-skeleton.config';
 import { VideoBlockProps, VideosBlock } from 'components/common/videos-block/videos-block';
-import { useAppDispatch, useAppSelector, useEffect, useWindowDimensions } from 'hooks/hooks';
+import { useAppDispatch, useAppSelector, useEffect, useRef, useWindowDimensions } from 'hooks/hooks';
+import { useLayoutEffect, useState } from 'react';
 import { setNumberOfVideoForLoading } from 'store/videos/actions';
 import { matchScreenSize, ScreenSizesForMainPage } from './main-page-number-of-videos-loading.config';
 
@@ -16,8 +17,13 @@ interface MainPageProps {
 
 const MainPage: FC<MainPageProps> = ({ filterBlockProps, blocksVideo }) => {
   const dispatch = useAppDispatch();
-  const loadingStatus = useAppSelector((state) => state.videos.dataStatus);
+  const { loadingStatus, isOpenSidebar } = useAppSelector((state) => ({
+    loadingStatus: state.videos.dataStatus,
+    isOpenSidebar: state.layout.isOpenSidebar,
+  }));
   const { width } = useWindowDimensions();
+  const mainPageRef = useRef<HTMLDivElement>(null);
+  const [widthContent, setWidthContent] = useState(0);
 
   useEffect(calculateNumberOfVideosLoading, [width, dispatch]);
 
@@ -39,14 +45,18 @@ const MainPage: FC<MainPageProps> = ({ filterBlockProps, blocksVideo }) => {
     dispatch(setNumberOfVideoForLoading({ numberOfItems: matchScreenSize[ScreenSizesForMainPage.VERY_LARGE] }));
   }
 
+  useLayoutEffect(() => {
+    setWidthContent(mainPageRef.current?.offsetWidth ?? 0);
+  }, [mainPageRef.current?.offsetWidth, isOpenSidebar]);
+
   return (
-    <main className={styles.main}>
+    <main ref={mainPageRef} className={styles.main}>
       <PreferencesModalContainer />
       <FiltersBlock {...filterBlockProps} />
       <div className={styles['videos-container']}>
         {!blocksVideo.length && <VideosBlock loadingStatus={loadingStatus} videoCards={EMPTY_VIDEO_BLOCK} />}
         {blocksVideo.map((videoBlock, index) => (
-          <VideosBlock key={index} {...videoBlock} loadingStatus={loadingStatus} />
+          <VideosBlock key={index} {...videoBlock} loadingStatus={loadingStatus} widthContent={widthContent} />
         ))}
       </div>
     </main>
