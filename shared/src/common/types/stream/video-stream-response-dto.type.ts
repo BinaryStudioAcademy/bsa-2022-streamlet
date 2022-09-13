@@ -17,6 +17,7 @@ type VideoStreamResponseDto = {
   categories: CategoryResponseDto[];
   channelId: string;
   privacy: StreamPrivacy;
+  isChatEnabled: boolean;
 };
 
 export { type VideoStreamResponseDto };
