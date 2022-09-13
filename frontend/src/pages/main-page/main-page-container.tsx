@@ -25,7 +25,14 @@ const MainPageContainer: FC = () => {
   }
 
   const filterBlock: FilterBlockProps = {
-    filterList: categories,
+    filterList: [
+      {
+        id: '1',
+        name: 'All',
+        isActive: true,
+      },
+      ...categories,
+    ],
     handleClickFilter,
     handleClickClearFilters,
   };

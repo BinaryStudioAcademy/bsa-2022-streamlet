@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 
 import { DataStatus } from 'common/enums/enums';
 import { removeItemIfExists, replaceItemIfExists } from 'helpers/helpers';
-import { Comment, VideoExpandedResponseDto } from 'shared/build';
+import { BaseVideoResponseDto, Comment, VideoExpandedResponseDto } from 'shared/build';
 import { channelSubscribe } from 'store/subscriptions/actions';
 import {
   addVideoComment,
@@ -13,6 +13,7 @@ import {
   addVideoCommentReply,
   resetVideoPage,
   addVideoView,
+  loadRecommendedVideos,
   deleteComment,
   updateComment,
 } from './actions';
@@ -33,6 +34,11 @@ type State = {
     isViewed: boolean;
     dataStatus: DataStatus;
   };
+  recommendedVideos: {
+    videos: BaseVideoResponseDto[];
+    dataStatus: DataStatus;
+    error: string | undefined;
+  };
 };
 
 const initialState: State = {
@@ -51,6 +57,11 @@ const initialState: State = {
     isViewed: false,
     dataStatus: DataStatus.IDLE,
   },
+  recommendedVideos: {
+    dataStatus: DataStatus.IDLE,
+    error: undefined,
+    videos: [],
+  },
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -63,11 +74,27 @@ const reducer = createReducer(initialState, (builder) => {
     state.error = undefined;
     state.videoView = { ...initialState.videoView };
     state.dataStatus = DataStatus.PENDING;
+    state.recommendedVideos = { ...initialState.recommendedVideos };
   });
   builder.addCase(getVideo.rejected, (state, { error }) => {
     state.dataStatus = DataStatus.REJECTED;
     state.error = error.message;
   });
+
+  builder.addCase(loadRecommendedVideos.pending, (state) => {
+    state.recommendedVideos.dataStatus = DataStatus.PENDING;
+    state.recommendedVideos.error = undefined;
+  });
+  builder.addCase(loadRecommendedVideos.rejected, (state, { error }) => {
+    state.recommendedVideos.dataStatus = DataStatus.REJECTED;
+    state.recommendedVideos.error = error.message;
+  });
+  builder.addCase(loadRecommendedVideos.fulfilled, (state, { payload }) => {
+    state.recommendedVideos.dataStatus = DataStatus.FULFILLED;
+    state.recommendedVideos.error = undefined;
+    state.recommendedVideos.videos = payload.videos;
+  });
+
   builder.addCase(channelSubscribe.fulfilled, (state, { payload }) => {
     if (state.video) {
       state.video.isUserSubscribedOnChannel = payload.isSubscribed;

@@ -100,12 +100,19 @@ async function seedTags(): Promise<void> {
     await prisma.tag.create({
       data: {
         name: tags[i],
-        videos: {
-          connect: getRandomSample(videos, videosPerTag).map((video) => ({
-            id: video.id,
-          })),
-        },
       },
+    });
+  }
+
+  const allTags = await prisma.tag.findMany();
+
+  //connect to video
+  for (const { id: videoId } of videos) {
+    await prisma.tagToVideo.createMany({
+      data: getRandomSample(allTags, videosPerTag).map(({ id: tagId }) => ({
+        videoId,
+        tagId,
+      })),
     });
   }
 }
@@ -157,6 +164,7 @@ async function seedCategories(): Promise<void> {
     'h4a87a26-4ade-4209-9222-24dfe36b08f5',
     'e7b87l09-4ade-4209-9111-12dfs34b08f5',
   ]);
+  videosByCategory.set('comedy', []);
 
   const totalCategories = categories.length;
   for (let i = 0; i < totalCategories; i++) {
@@ -164,18 +172,23 @@ async function seedCategories(): Promise<void> {
       data: {
         name: categories[i],
         posterPath: 'https://static-cdn.jtvnw.net/ttv-boxart/509658-285x380.jpg',
-        videos: {
-          connect: videosByCategory.get(categories[i])?.map((videoId) => ({
-            id: videoId,
-          })),
-        },
       },
     });
   }
 
-  //connect to user
   const allCategories = await prisma.category.findMany();
 
+  // connect to video
+  for (const { id: categoryId, name } of allCategories) {
+    await prisma.categoryToVideo.createMany({
+      data: videosByCategory.get(name)?.map((videoId) => ({
+        categoryId,
+        videoId,
+      })) as Array<{ categoryId: string; videoId: string }>,
+    });
+  }
+
+  //connect to user
   for (const { id: userId } of users) {
     await prisma.categoryToUser.createMany({
       data: getRandomSample(allCategories, preferencesPerUser).map(({ id: categoryId }) => ({

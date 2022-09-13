@@ -96,8 +96,8 @@ model Video {
   privacy             Privacy        @default(UNLISTED)
   liveViews           Int            @default(0)
   videoViews          Int            @default(0)
-  tags                Tag[]
-  categories          Category[]
+  tags                TagToVideo[]
+  categories          CategoryToVideo[]
   comments            VideoComment[]
   channel             Channel        @relation(fields: [channelId], references: [id])
   channelId           String
@@ -113,17 +113,25 @@ model Video {
 model Tag {
   id        String   @id @default(uuid())
   name      String   @unique
-  videos    Video[]
+  videos    TagToVideo[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-//NOTE: make explicit many to many for Category<>Video and Tag<>Video
+model TagToVideo {
+  tag        Tag       @relation(fields: [tagId], references: [id])
+  tagId      String
+  video      Video     @relation(fields: [videoId], references: [id])
+  videoId    String
+
+  @@id([tagId, videoId])
+}
+
 model Category {
   id         String           @id @default(uuid())
   name       String           @unique
   posterPath String          @default("")
-  videos     Video[]
+  videos     CategoryToVideo[]
   users      CategoryToUser[]
   createdAt  DateTime         @default(now())
   updatedAt  DateTime         @updatedAt
@@ -136,6 +144,15 @@ model CategoryToUser {
   userId     String
 
   @@id([categoryId, userId])
+}
+
+model CategoryToVideo {
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+  video       Video   @relation(fields: [videoId], references: [id])
+  videoId     String
+
+  @@id([categoryId, videoId])
 }
 
 model VideoComment {

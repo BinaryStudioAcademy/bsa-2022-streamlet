@@ -24,7 +24,7 @@
       'video-player side-block'
       'video-info side-block'
       'comments-block side-block'
-      '. side-block' / auto 380px;
+      '. side-block' / auto 350px;
     padding: 20px;
   }
 }
@@ -72,7 +72,12 @@
   grid-area: comments-block;
   flex-flow: column nowrap;
   gap: 5px;
+  margin-top: 30px;
   padding: 10px;
+
+  @media #{breakpoint.$tablet-large} {
+    margin-top: 0;
+  }
 }
 
 .description-container {

@@ -7,6 +7,11 @@ enum VideoApiPath {
   POPULAR = '/popular',
   SEARCH = '/search',
   REPLIES_COMMENT = '/comment/replies',
+  SIMILAR_VIDEOS = '/similar',
 }
 
-export { VideoApiPath };
+enum VideoApiPathParams {
+  ID = 'videoId',
+}
+
+export { VideoApiPath, VideoApiPathParams };

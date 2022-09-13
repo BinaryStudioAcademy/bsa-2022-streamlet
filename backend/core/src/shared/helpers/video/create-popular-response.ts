@@ -1,11 +1,11 @@
-import { Video } from '@prisma/client';
+import { Category, Video } from '@prisma/client';
 import { PopularVideoResponseDto } from 'shared/build';
 import { trimVideoToBase } from '~/shared/helpers/trim-video';
 
 export const trimPopular = (
   videos: (Video & {
     categories: {
-      name: string;
+      category: Category;
     }[];
     channel: {
       id: string;

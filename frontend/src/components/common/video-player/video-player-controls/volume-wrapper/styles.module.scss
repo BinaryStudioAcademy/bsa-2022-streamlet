@@ -1,3 +1,6 @@
+$delay: 200ms;
+$timing-function: ease-out;
+
 /* this module styles sliders and so needs non-standard rules */
 /* stylelint-disable property-no-vendor-prefix */
 .volume-wrapper {
@@ -9,15 +12,16 @@
 .volume-slider {
   width: 0;
   max-width: 0;
+  will-change: transform, width, max-width;
   transform: scaleX(0);
   transform-origin: left;
-  transition: width 150ms ease-in-out, max-width 150ms ease-in-out, transform 150ms ease-in-out;
+  transition: width $delay $timing-function, max-width $delay $timing-function, transform $delay $timing-function;
 }
 
 @mixin thumb-initial {
   transform: scale(0);
   opacity: 0;
-  transition: transform 150ms ease-in-out, opacity 150ms ease-in-out;
+  transition: transform $delay $timing-function, opacity $delay $timing-function;
 }
 
 .volume-slider::-moz-range-thumb {
@@ -29,8 +33,8 @@
 }
 
 .volume-wrapper:hover .volume-slider {
-  width: 80px;
-  max-width: 80px;
+  width: calc(80px * clamp(1, var(--size-modifier), 1.5));
+  max-width: calc(80px * clamp(1, var(--size-modifier), 1.5));
   transform: scaleX(1);
 
   @mixin visible-thumb {

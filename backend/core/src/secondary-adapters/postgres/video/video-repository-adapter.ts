@@ -23,6 +23,7 @@ import { VideoSearch, VideoWithChannel } from '~/shared/types/video/video-with-c
 import { VideoRepositoryFilters } from '~/core/video/port/video-repository-filters';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { StreamPrivacy } from '~/shared/enums/stream/stream';
+import { VideoSearchFilters } from '~/core/video/port/video-search-filters';
 
 @injectable()
 export class VideoRepositoryAdapter implements VideoRepository {
@@ -298,8 +299,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
       where: {
         categories: {
           some: {
-            name: {
-              in: category,
+            category: {
+              name: {
+                in: category,
+              },
             },
           },
         },
@@ -319,8 +322,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         ...{ privacy: StreamPrivacy.PUBLIC },
         categories: {
           some: {
-            name: {
-              in: category,
+            category: {
+              name: {
+                in: category,
+              },
             },
           },
         },
@@ -330,7 +335,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       include: {
         categories: {
           select: {
-            name: true,
+            category: true,
           },
         },
         channel: {
@@ -364,7 +369,7 @@ export class VideoRepositoryAdapter implements VideoRepository {
       include: {
         categories: {
           select: {
-            name: true,
+            category: true,
           },
         },
         channel: {
@@ -388,8 +393,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         ...{ privacy: StreamPrivacy.PUBLIC },
         tags: {
           some: {
-            name: {
-              in: tags,
+            tag: {
+              name: {
+                in: tags,
+              },
             },
           },
         },
@@ -414,8 +421,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         ...{ privacy: StreamPrivacy.PUBLIC },
         categories: {
           some: {
-            name: {
-              in: categories,
+            category: {
+              name: {
+                in: categories,
+              },
             },
           },
         },
@@ -531,7 +540,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
     return createAddReactionResponse(newReaction.commentReactions[0], likeNum, dislikeNum);
   }
 
-  async getVideosBySearch({ searchText, duration, date, type, sortBy }: VideoSearch): Promise<DataVideo> {
+  async getVideosBySearch(
+    { searchText, duration, date, type, sortBy }: VideoSearch,
+    videoSearchFilters?: VideoSearchFilters,
+  ): Promise<DataVideo> {
     const queryOrderByObject = {
       orderBy: [
         ...sortBy.map((param) => param as Prisma.VideoOrderByWithRelationAndSearchRelevanceInput),
@@ -546,6 +558,13 @@ export class VideoRepositoryAdapter implements VideoRepository {
     };
     const queryObject = {
       where: {
+        ...(videoSearchFilters?.excludeIds
+          ? {
+              id: {
+                notIn: videoSearchFilters.excludeIds,
+              },
+            }
+          : {}),
         ...{ privacy: StreamPrivacy.PUBLIC },
         ...(searchText && {
           OR: [
@@ -568,13 +587,21 @@ export class VideoRepositoryAdapter implements VideoRepository {
             },
           ],
         }),
-        duration: {
-          gte: duration.gte,
-          lte: duration.lte,
-        },
-        publishedAt: {
-          gte: date,
-        },
+        ...(duration
+          ? {
+              duration: {
+                gte: duration.gte,
+                lte: duration.lte,
+              },
+            }
+          : {}),
+        ...(date
+          ? {
+              publishedAt: {
+                gte: date,
+              },
+            }
+          : {}),
         status: {
           in: type,
         },
