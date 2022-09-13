@@ -233,7 +233,7 @@ const StudioChannel: FC = () => {
                 {isLoadingBanner ? (
                   <Loader spinnerSize={'xs'} className={styles['channel-page-loader-container']} />
                 ) : (
-                  <ChannelBanner src={preparedBanner} />
+                  <ChannelBanner src={channelData.bannerImage} />
                 )}
               </div>
               <div className={styles['image-upload-control-container']}>
