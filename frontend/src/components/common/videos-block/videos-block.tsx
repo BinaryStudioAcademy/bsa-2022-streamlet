@@ -49,10 +49,6 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, isLazyBlock,
       return numberOfVideoForUpload;
     }
 
-    if (numberOfUploadedVideos > numberOfVideoForUpload) {
-      return 0;
-    }
-
     if (totalNumberOfRecommendedVideos - numberOfRecommendedVideos >= numberOfVideoForUpload) {
       return numberOfVideoForUpload;
     }
@@ -76,6 +72,10 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, isLazyBlock,
   };
 
   const returnEmptyArrayForSkeleton = (value: number): Array<null> => {
+    if (value <= 0) {
+      return [];
+    }
+
     return Array(value).fill(null);
   };
 
