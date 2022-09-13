@@ -6,5 +6,15 @@
   position: absolute;
   right: 0;
   bottom: 100%;
-  margin-bottom: 120%;
+  min-width: min(95vw, 200px * clamp(1, var(--size-modifier), 1.5));
+  margin-bottom: 40px;
+}
+
+.modal-option-text-wrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+.option-metric {
+  margin-left: auto;
 }

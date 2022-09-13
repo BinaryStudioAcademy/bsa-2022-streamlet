@@ -1,5 +1,5 @@
 .time-container {
   display: flex;
   align-items: center;
-  font-size: 13px;
+  font-size: calc(13px * clamp(1, var(--size-modifier), 1.5));
 }

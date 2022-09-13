@@ -17,6 +17,7 @@ import {
   VideoPaginationParams,
   AddVideoViewResponseDto,
   AddVideoViewRequestDto,
+  GetSimilarVideosResponseDto,
 } from 'shared/build';
 import { Http } from '../http/http.service';
 
@@ -52,6 +53,15 @@ class VideoApi {
   public getSingleVideo(videoId: string): Promise<VideoExpandedResponseDto> {
     return this.#http.load({
       url: `${this.#apiPrefix}${ApiPath.VIDEOS}/${videoId}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+    });
+  }
+
+  public getSimilarVideos(videoId: string): Promise<GetSimilarVideosResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}/${videoId}${VideoApiPath.SIMILAR_VIDEOS}`,
       options: {
         method: HttpMethod.GET,
       },

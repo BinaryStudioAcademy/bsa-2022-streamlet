@@ -77,8 +77,16 @@ export class ChannelCrudRepositoryAdapter implements ChannelCrudRepository {
             createdAt: 'desc',
           },
           include: {
-            tags: true,
-            categories: true,
+            categories: {
+              select: {
+                category: true,
+              },
+            },
+            tags: {
+              select: {
+                tag: true,
+              },
+            },
           },
         },
         _count: {

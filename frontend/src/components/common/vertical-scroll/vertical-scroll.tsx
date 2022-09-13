@@ -6,22 +6,36 @@ import { ReactElement, ReactNode, useContext } from 'react';
 import clsx from 'clsx';
 import { Icon } from '../common';
 import { IconColor, IconName } from '../../../common/enums/enums';
+import { FC } from '../../../common/types/react/fc.type';
+
+type PropsLeftRightArrow = {
+  isFollowingOrBrowse?: boolean;
+};
+
 
 const Arrow = ({
   children,
   disabled,
   onClick,
   isRight,
+  isFollowingOrBrowse = false,
 }: {
   children: ReactNode;
   disabled: boolean;
   onClick: VoidFunction;
   isRight: boolean;
+  isFollowingOrBrowse?: boolean;
 }): ReactElement => {
   if (isRight) {
     return (
       <div className={styles['arrow-container']}>
-        {!disabled && <div className={styles['blur-container']} />}
+        {!disabled && (
+          <div
+            className={clsx(styles['blur-container'], {
+              [styles['blur-container-following-browse']]: isFollowingOrBrowse && isRight,
+            })}
+          />
+        )}
         <Button disabled={disabled} onClick={onClick} content={children} className={styles['arrow']} />
       </div>
     );
@@ -29,13 +43,19 @@ const Arrow = ({
 
   return (
     <div className={styles['arrow-container']}>
-      {!disabled && <div className={clsx(styles['blur-container'], styles['blur-container-left'])} />}
+      {!disabled && (
+        <div
+          className={clsx(styles['blur-container'], [styles['blur-container-left']], {
+            [styles['blur-container-following-browse-left']]: isFollowingOrBrowse,
+          })}
+        />
+      )}
       <Button disabled={disabled} onClick={onClick} content={children} className={styles['arrow']} />
     </div>
   );
 };
 
-const LeftArrow = (): ReactElement => {
+const LeftArrow: FC<PropsLeftRightArrow> = ({ isFollowingOrBrowse = false }): ReactElement => {
   const { isFirstItemVisible, scrollPrev, visibleItemsWithoutSeparators, initComplete } = useContext(VisibilityContext);
 
   const [disabled, setDisabled] = useState(!initComplete || (initComplete && isFirstItemVisible));
@@ -46,13 +66,18 @@ const LeftArrow = (): ReactElement => {
   }, [isFirstItemVisible, visibleItemsWithoutSeparators]);
 
   return (
-    <Arrow disabled={disabled} onClick={(): void => scrollPrev() as void} isRight={false}>
+    <Arrow
+      disabled={disabled}
+      onClick={(): void => scrollPrev() as void}
+      isRight={false}
+      isFollowingOrBrowse={isFollowingOrBrowse}
+    >
       <Icon name={IconName.HORIZONTAL_SCROLL_LEFT_ARROW} color={IconColor.GRAY} width={'16'} height={'16'} />
     </Arrow>
   );
 };
 
-const RightArrow = (): ReactElement => {
+const RightArrow: FC<PropsLeftRightArrow> = ({ isFollowingOrBrowse = false }): ReactElement => {
   const { isLastItemVisible, scrollNext, visibleItemsWithoutSeparators } = useContext(VisibilityContext);
 
   const [disabled, setDisabled] = useState(!visibleItemsWithoutSeparators.length && isLastItemVisible);
@@ -63,8 +88,13 @@ const RightArrow = (): ReactElement => {
   }, [isLastItemVisible, visibleItemsWithoutSeparators]);
 
   return (
-    <Arrow disabled={disabled} onClick={(): void => scrollNext() as void} isRight={true}>
-      <Icon name={IconName.HORIZONTAL_SCROLL_RIGHT_ARROW} color={IconColor.GRAY} width={'16'} height={'16'} />
+    <Arrow
+      disabled={disabled}
+      onClick={(): void => scrollNext() as void}
+      isRight={true}
+      isFollowingOrBrowse={isFollowingOrBrowse}
+    >
+       <Icon name={IconName.HORIZONTAL_SCROLL_RIGHT_ARROW} color={IconColor.GRAY} width={'16'} height={'16'} />
     </Arrow>
   );
 };

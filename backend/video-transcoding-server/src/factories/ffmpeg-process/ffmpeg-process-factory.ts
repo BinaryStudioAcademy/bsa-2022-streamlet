@@ -25,6 +25,10 @@ export class FfmpegFactory {
       .addOption('-hls_list_size', '0')
       .addOption('-hls_segment_filename', `playback/${videoId}/segment-${height}p${fps}_%05d.ts`)
       .output(`playback/${videoId}/playlist-${height}p${fps}.m3u8`)
+      .on('start', () => logger.info('ffmpeg started'))
+      .on('stderr', function (stderrLine) {
+        logger.error('Stderr output: ' + stderrLine);
+      })
       .on('end', () => logger.info('ffmpeg done'))
       .on('error', (err) => {
         logger.error(err);

@@ -1,17 +1,18 @@
 import clsx from 'clsx';
-import { FC, FormControl, VideoStreamResponseDto } from 'common/types/types';
-import { Button, Input, Loader, PasswordInput } from 'components/common/common';
+import { FC, FormControl, SelectOptions, VideoStreamResponseDto } from 'common/types/types';
+import { Button, Input, Loader, PasswordInput, ToggleSwitch } from 'components/common/common';
 import { ChatSetting, VideoChatContainer } from 'components/video-chat/video-chat-container';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { DeepRequired, FieldErrorsImpl, FieldValues, UseFormGetValues } from 'react-hook-form';
 import { StreamStatus } from 'shared/build';
-// import defaultPreview from 'assets/img/default/video-default.png';
 import { StreamInfoFormValues } from './common/stream-info-form-values';
+import { StreamPrivacyLabel, ChatStyle } from 'common/enums/enums';
+import { STREAM_PRIVACY_OPTIONS } from 'common/constants/stream/stream';
+import ReactSelect, { MultiValue } from 'react-select';
 
 import styles from './styles.module.scss';
-import { ChatStyle, StreamPrivacyLabel } from 'common/enums/enums';
-// import { Select } from 'components/common/select';
-// import { STREAM_PRIVACY_OPTIONS } from 'common/constants/stream/stream';
+import { customSelectStyles } from '../common/stream-settings-modal/stream-settings-forms/custom-select-styles';
+import { VideoPlayer } from 'components/common/video-player/video-player';
 
 type Props = {
   handleSettingsModalOpen(): void;
@@ -22,6 +23,8 @@ type Props = {
   infoFormControl: FormControl<StreamInfoFormValues>;
   infoFormErrors: FieldErrorsImpl<DeepRequired<FieldValues>>;
   infoFormValues: UseFormGetValues<StreamInfoFormValues>;
+  onStreamPrivacyChange(newValue: MultiValue<SelectOptions>): void;
+  onStreamChatToggleChange(): void;
 };
 
 const StudioStream: FC<Props> = ({
@@ -33,6 +36,8 @@ const StudioStream: FC<Props> = ({
   infoFormControl,
   infoFormErrors,
   infoFormValues,
+  onStreamPrivacyChange,
+  onStreamChatToggleChange,
 }) => {
   const chatSettings: ChatSetting = {
     hideSetting: false,
@@ -44,10 +49,12 @@ const StudioStream: FC<Props> = ({
         <div className={styles['settings-block']}>
           <div className={styles['col-1']}>
             <div className={styles['preview-container']}>
-              <div className={styles['preview']}>
-                <img className={styles['preview']} src={stream?.poster ? stream?.poster : ''} alt="Stream preview" />
-              </div>
-              <Loader color="white" spinnerSize="40" />
+              <div className={styles['preview']} />
+              {stream?.isReadyToStream ? (
+                <VideoPlayer url={stream?.videoPath ?? ''} />
+              ) : (
+                <Loader color="white" spinnerSize="40" />
+              )}
             </div>
             <form className={styles['form-container']}>
               <div className={styles['field-container']}>
@@ -136,13 +143,13 @@ const StudioStream: FC<Props> = ({
               <div className={styles['text-field-container']}>
                 <p className={styles['field-caption']}>Categories</p>
                 <p className={styles['field-value']}>
-                  {stream?.categories ? stream?.categories.map((category) => category.name).join(', ') : '-'}
+                  {stream?.categories.length ? stream?.categories.map((category) => category.name).join(', ') : '-'}
                 </p>
               </div>
               <div className={styles['text-field-container']}>
                 <p className={styles['field-caption']}>Tags</p>
                 <p className={styles['field-value']}>
-                  {stream?.tags ? stream?.tags.map((tag) => tag.name).join(', ') : '-'}
+                  {stream?.tags.length ? stream?.tags.map((tag) => tag.name).join(', ') : '-'}
                 </p>
               </div>
               <div className={styles['text-field-container']}>
@@ -160,10 +167,27 @@ const StudioStream: FC<Props> = ({
                   type="button"
                 />
               </div>
-              {/* <div className={styles['text-field-container']}>
-                <p className={styles['field-caption']}>Privacy</p>
-                <Select options={STREAM_PRIVACY_OPTIONS} selectClassName={styles['input']} />
-              </div> */}
+              <div className={styles['text-field-container']}>
+                <label className={styles['label']}>Stream privacy</label>
+                <ReactSelect
+                  options={STREAM_PRIVACY_OPTIONS}
+                  defaultValue={
+                    {
+                      value: stream?.privacy ?? '',
+                      label: STREAM_PRIVACY_OPTIONS.find((opt) => opt.value === stream?.privacy)?.label ?? '',
+                    } ?? STREAM_PRIVACY_OPTIONS[1]
+                  }
+                  onChange={onStreamPrivacyChange}
+                  styles={customSelectStyles}
+                />
+              </div>
+              <div>
+                <label className={styles['label']}>Stream chat</label>
+                <div className={styles['toggle-wrap']}>
+                  <ToggleSwitch defaultValue={stream?.isChatEnabled ?? true} onToggle={onStreamChatToggleChange} />
+                  <span className={styles['label-right']}>{stream?.isChatEnabled ? 'Enabled' : 'Disabled'}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

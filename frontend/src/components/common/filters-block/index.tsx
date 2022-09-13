@@ -27,7 +27,7 @@ const FiltersBlock: FC<FilterBlockProps> = ({ filterList, handleClickFilter, han
           const isItClearAllFilter = filter.id === '1' && filter.name === 'All';
 
           if (isItClearAllFilter) {
-            const isActive = !filterList.filter((filter) => filter.isActive).length;
+            const isActive = !filterList.filter((filter) => filter.isActive && filter.id !== '1').length;
             return (
               <button
                 onClick={handleClickClearFilters}

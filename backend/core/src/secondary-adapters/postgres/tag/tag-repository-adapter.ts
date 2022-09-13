@@ -42,19 +42,39 @@ export class TagRepositoryAdapter implements TagRepository {
     );
   }
 
-  bindTagToVideo({ tags, videoId }: BindTagToVideoDto): Promise<Tag[]> {
-    const values = tags.map((tagId) => {
-      return `('${tagId}', '${videoId}')`;
-    });
-    const query = `insert into "_TagToVideo" ("A", "B") values ${values.join(',')} on conflict do nothing`;
-    return this.prismaClient.$queryRawUnsafe(query).then(() => {
-      return this.prismaClient.tag.findMany({
-        where: {
-          id: {
-            in: tags,
+  async bindTagToVideo({ tags, videoId }: BindTagToVideoDto): Promise<Tag[]> {
+    await this.prismaClient.$transaction(
+      tags.map((tagId) => {
+        return this.prismaClient.tagToVideo.upsert({
+          where: {
+            tagId_videoId: {
+              videoId,
+              tagId,
+            },
           },
+          update: {},
+          create: {
+            videoId,
+            tagId,
+          },
+        });
+      }),
+    );
+
+    return this.prismaClient.tag.findMany({
+      where: {
+        id: {
+          in: tags,
         },
-      });
+      },
+    });
+  }
+
+  async clearTagToVideoBinding(videoId: string): Promise<void> {
+    await this.prismaClient.tagToVideo.deleteMany({
+      where: {
+        videoId,
+      },
     });
   }
 }

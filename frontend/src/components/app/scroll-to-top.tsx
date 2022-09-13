@@ -6,7 +6,7 @@ type Props = {
   querySelectors?: string[];
 };
 
-export const ScrollToTop: FC<Props> = ({ elements }) => {
+export const ScrollToTop: FC<Props> = ({ elements, querySelectors }) => {
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -17,15 +17,15 @@ export const ScrollToTop: FC<Props> = ({ elements }) => {
     }
   }, [elements, pathname]);
 
-  // useEffect(() => {
-  //   if (querySelectors) {
-  //     querySelectors.forEach((querySelector) => {
-  //       document.querySelectorAll(querySelector).forEach((item) => {
-  //         item.scrollTo(0, 0);
-  //       });
-  //     });
-  //   }
-  // }, [querySelectors, pathname]);
+  useEffect(() => {
+    if (querySelectors) {
+      querySelectors.forEach((querySelector) => {
+        document.querySelectorAll(querySelector).forEach((item) => {
+          item.scrollTo(0, 0);
+        });
+      });
+    }
+  }, [querySelectors, pathname]);
 
   return null;
 };

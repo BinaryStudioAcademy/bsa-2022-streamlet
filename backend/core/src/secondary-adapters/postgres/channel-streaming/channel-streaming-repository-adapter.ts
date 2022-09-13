@@ -29,8 +29,16 @@ export class ChannelStreamingRepositoryAdapter implements ChannelStreamingReposi
         ],
       },
       include: {
-        categories: true,
-        tags: true,
+        categories: {
+          select: {
+            category: true,
+          },
+        },
+        tags: {
+          select: {
+            tag: true,
+          },
+        },
       },
     });
   }
@@ -83,8 +91,16 @@ export class ChannelStreamingRepositoryAdapter implements ChannelStreamingReposi
         channelId: channelId,
       },
       include: {
-        categories: true,
-        tags: true,
+        categories: {
+          select: {
+            category: true,
+          },
+        },
+        tags: {
+          select: {
+            tag: true,
+          },
+        },
       },
     });
   }
@@ -98,8 +114,16 @@ export class ChannelStreamingRepositoryAdapter implements ChannelStreamingReposi
         ...props,
       },
       include: {
-        categories: true,
-        tags: true,
+        categories: {
+          select: {
+            category: true,
+          },
+        },
+        tags: {
+          select: {
+            tag: true,
+          },
+        },
       },
     });
   }
