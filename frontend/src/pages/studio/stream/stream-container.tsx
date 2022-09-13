@@ -86,7 +86,7 @@ const StudioStreamContainer: FC = () => {
     () => ({
       streamingKey: streamingKey ?? '',
       streamingServerUrl: STREAMING_SERVER_URL,
-      streamUrl: `https://${ENV.SERVER_HOST}${ENV.SERVER_PORT && `:${ENV.SERVER_PORT}`}/video/${stream?.id}`,
+      streamUrl: `${ENV.VIDEO_FALLBACK_BASE_URL}/video/${stream?.id}`,
     }),
     [stream?.id, streamingKey],
   );
