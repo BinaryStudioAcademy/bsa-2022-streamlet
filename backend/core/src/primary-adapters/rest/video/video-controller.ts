@@ -40,6 +40,7 @@ import {
   AddVideoViewResponseDto,
   VideoApiPathParams,
   GetSimilarVideosResponseDto,
+  RecommendedVideosParams,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -148,6 +149,27 @@ export class VideoController extends BaseHttpController {
   @httpGet(VideoApiPath.ROOT)
   public async getAllVideos(@queryParam() paginationParams: VideoPaginationParams): Promise<DataVideo> {
     return this.videoService.getAllVideos(paginationParams);
+  }
+
+  @httpGet(VideoApiPath.GENERAL_VIDEOS, authenticationMiddleware)
+  public async getGeneralVideos(@request() req: ExtendedAuthenticatedRequest): Promise<DataVideo> {
+    const { id } = req.user;
+    return await this.videoService.getGeneralVideos(id);
+  }
+
+  @httpGet(VideoApiPath.RECOMMENDED_VIDEOS, optionalAuthenticationMiddleware)
+  public async getRecommendedVideos(
+    @request() req: ExtendedAuthenticatedRequest,
+    @queryParam() paginationParams: Omit<RecommendedVideosParams, 'userId'>,
+  ): Promise<DataVideo> {
+    const id = req?.user?.id ?? undefined;
+
+    const params: RecommendedVideosParams = {
+      userId: id,
+      ...paginationParams,
+    };
+
+    return await this.videoService.getRecommendedVideos(params);
   }
 
   /**
@@ -408,14 +430,14 @@ export class VideoController extends BaseHttpController {
    *    post:
    *      tags:
    *        - video
-   *      operationId: addVideoComment
+   *      operationId: addVideoReaction
    *      security:
    *      - bearerAuth: []
    *      consumes:
    *        - application/json
    *      produces:
    *        - application/json
-   *      description: Add comment to video
+   *      description: Add reaction to video
    *      parameters:
    *        - in: body
    *          name: body
@@ -499,7 +521,7 @@ export class VideoController extends BaseHttpController {
 
   /**
    * @swagger
-   * /comment:
+   * /videos/comment/react/{id}:
    *    post:
    *      tags:
    *        - comment
