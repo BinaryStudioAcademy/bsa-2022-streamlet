@@ -68,7 +68,7 @@ const HistoryPage: FC = () => {
       <div className={styles['header']}>
         <Icon name={IconName.TIME_AGO} color={IconColor.GRAY} width={'40'} height={'40'}></Icon>
         <h2 className={styles['page-header']}>History</h2>
-        <Button content={'delete all'} onClick={handleDeleteAllHistory} className={styles['delete-all-btn']} />
+        <Button content={'clear all'} onClick={handleDeleteAllHistory} className={styles['delete-all-btn']} />
       </div>
 
       <div className={styles['history-list-container']}>
