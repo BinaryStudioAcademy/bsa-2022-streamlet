@@ -1,6 +1,7 @@
 export {
   VideosOfflineResponseDto,
   VideosLiveResponseDto,
+  BaseVideoResponseArrayWithTotalNum,
   PopularVideosRequestDtoType,
   PopularVideoResponseDto,
   DataVideo,

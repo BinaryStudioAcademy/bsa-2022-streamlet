@@ -440,6 +440,23 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
   }
 
+  getAllVideoNumInCategory({ categories }: CategorySearchRequestQueryDto): Promise<number> {
+    return this.prismaClient.video.count({
+      where: {
+        ...{ privacy: StreamPrivacy.PUBLIC },
+        categories: {
+          some: {
+            category: {
+              name: {
+                in: categories,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
   async commentReactionByUser(commentId: string, userId: string): Promise<boolean | null> {
     const reaction = await this.prismaClient.commentReaction.findFirst({
       where: {

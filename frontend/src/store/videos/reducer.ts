@@ -81,8 +81,14 @@ const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(getVideosByCategory.fulfilled, (state, { payload }) => {
     state.dataStatus = DataStatus.FULFILLED;
-    state.data.list = payload.list;
-    state.data.total = payload.total;
+    const { list, total } = payload;
+    state.data.list = list;
+    state.data.total = list.length;
+    state.pagination = {
+      lazyLoad: false,
+      countItems: total,
+      currentPage: 1,
+    };
   });
 
   builder.addCase(getPopularVideos.fulfilled, (state, { payload }) => {

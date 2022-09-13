@@ -37,6 +37,7 @@ export interface VideoRepository {
   addView(id: string): Promise<{ currentViews: number } | null>;
   searchByTags(searchByTagsDto: TagSearchRequestQueryDto): Promise<VideoWithChannel[]>;
   searchByCategories(searchByCategoryDto: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]>;
+  getAllVideoNumInCategory(searchByCategoryDto: CategorySearchRequestQueryDto): Promise<number>;
   getAuthorById(id: string): Promise<string | undefined>;
   getAll(queryParams?: { filters?: VideoRepositoryFilters; pagination?: VideoPaginationParams }): Promise<DataVideo>;
   reactionByUser(videoId: string, userId: string): Promise<boolean | null>;
