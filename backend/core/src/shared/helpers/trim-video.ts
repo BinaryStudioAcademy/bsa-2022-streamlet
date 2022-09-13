@@ -1,6 +1,7 @@
 import { User, UserProfile, Video, VideoComment, CommentReaction } from '@prisma/client';
 import { BaseVideoResponseDto, ResponseVideoQueryRaw, StreamStatus } from 'shared/build';
 import { Comment } from 'shared/build/common/types/comment';
+import { calculateReactions } from './calculate-reactions.helper';
 
 export const trimVideoToBase = (
   video: Video & {
@@ -94,6 +95,9 @@ export const trimVideoWithComments = (
       parentId: comment.parentId,
       repliesCount: comment.repliesCount,
       text: comment.text,
+      isEdited: comment.isEdited,
+      isDeleted: comment.isDeleted,
+      authorId: comment.author.id,
       userName: comment.author.username,
       avatar: comment.author.profile?.avatar,
       firstName: comment.author.profile?.firstName,
@@ -119,10 +123,13 @@ export const trimCommentsForReplies = (
     id: comment.id,
     parentId: comment.parentId,
     avatar: comment.author.profile?.avatar,
+    authorId: comment.author.id,
     userName: comment.author.username,
     firstName: comment.author.profile?.firstName,
     lastName: comment.author.profile?.lastName,
     text: comment.text,
+    isEdited: comment.isEdited,
+    isDeleted: comment.isDeleted,
     dateAdded: comment.createdAt,
     likeNum: calculateReactions(comment.commentReactions, true),
     dislikeNum: calculateReactions(comment.commentReactions, false),

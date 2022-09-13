@@ -57,7 +57,13 @@ const MainPageContainer: FC = () => {
         name: 'All',
         isActive: true,
       },
-      ...categories,
+      ...categories.map(({ name, ...rest }) => ({
+        name: name
+          .split('&')
+          .map((x) => x.charAt(0).toUpperCase() + x.slice(1))
+          .join(' & '),
+        ...rest,
+      })),
     ],
     handleClickFilter,
     handleClickClearFilters,
