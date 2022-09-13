@@ -32,7 +32,7 @@ const profileUpdateValidationSchema = Joi.object<UpdateProfileValue, true>({
     .pattern(/^[a-zA-Z-']*$/)
     .messages({
       'string.max': ProfileValidationMessage.LASTNAME_TO_LONG,
-      'string.pattern.base': ProfileValidationMessage.FIRSTNAME_TO_LONG,
+      'string.pattern.base': ProfileValidationMessage.LASTNAME_WRONG_REGEXP,
     }),
 });
 
