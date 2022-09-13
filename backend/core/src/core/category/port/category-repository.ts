@@ -9,4 +9,5 @@ export interface CategoryRepository {
   createCategory(createCategoryDto: CategoryCreateDto): Promise<Category>;
   deleteCategory(id: string): Promise<boolean>;
   bindCategoriesToVideo(bindCategoryToVideoDto: BindCategoryToVideoDto): Promise<Category[]>;
+  clearCategoriesToVideoBinding(videoId: string): Promise<void>;
 }

@@ -1,6 +1,8 @@
 .modal-container {
-  width: 400px;
-  height: 600px;
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  height: 80%;
   padding: 20px;
   background-color: var(--stream-settings-modal-bg);
 }
@@ -14,19 +16,30 @@
   display: flex;
   justify-content: flex-end;
   gap: 20px;
+  margin-top: auto;
 }
 
 .control-btn {
   margin-top: 20px;
+  padding: 5px 20px;
+  font-size: 110%;
+  background-color: transparent;
 }
 
 .heading {
   color: var(--white-text-color);
   font-weight: 500;
-  font-size: 18px;
+  font-size: 22px;
   line-height: 20px;
+  text-transform: uppercase;
 }
 
 .invisible {
   visibility: hidden;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
