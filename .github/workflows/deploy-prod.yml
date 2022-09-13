@@ -1,9 +1,10 @@
-name: Deploy staging
+name: Deploy production
 
 on:
   push:
     branches:
-      - development
+      - production
+      - fix/refactor-trans-server
   workflow_dispatch:
 
 jobs:
@@ -19,7 +20,7 @@ jobs:
         with:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          image_name: streamlet-backend-dev
+          image_name: streamlet-backend
           registry: ghcr.io
           image_tag: latest
           context: ./
@@ -36,7 +37,7 @@ jobs:
         with:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          image_name: streamlet-push-dev
+          image_name: streamlet-push
           registry: ghcr.io
           image_tag: latest
           context: ./
@@ -53,7 +54,7 @@ jobs:
         with:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          image_name: streamlet-video-transcoding-server-dev
+          image_name: streamlet-video-transcoding-server
           registry: ghcr.io
           image_tag: latest
           context: ./
@@ -70,12 +71,12 @@ jobs:
         with:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          image_name: streamlet-frontend-dev
+          image_name: streamlet-frontend
           registry: ghcr.io
           image_tag: latest
           context: ./
           dockerfile: ./.docker/frontend.Dockerfile
-          build_extra_args: "--build-arg=REACT_APP_API_ORIGIN_URL=${{ secrets.REACT_APP_API_ORIGIN_URL }} --build-arg=REACT_APP_PUSH_HOST=${{ secrets.REACT_APP_PUSH_HOST }} --build-arg=REACT_APP_VIDEO_FALLBACK_BASE_URL=${{ secrets.REACT_APP_VIDEO_FALLBACK_BASE_URL }}"
+          build_extra_args: "--build-arg=REACT_APP_API_ORIGIN_URL=${{ secrets.REACT_APP_API_ORIGIN_URL }} --build-arg=REACT_APP_PUSH_HOST=${{ secrets.REACT_APP_PUSH_HOST }} --build-arg=REACT_APP_VIDEO_FALLBACK_BASE_URL=${{ secrets.REACT_APP_VIDEO_FALLBACK_BASE_URL_PROD }}"
 
   deploy:
     needs: [build-backend, build-frontend, build-push-server, build-video-transcoding-server]
@@ -88,13 +89,13 @@ jobs:
       - name: Copy docker-compose.dev.yml to deployment server
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.DEPLOYMENT_HOST }}
-          username: ${{ secrets.DEPLOYMENT_USERNAME }}
-          password: ${{ secrets.DEPLOYMENT_SSH_PASSWORD }}
-          source: ".docker/docker-compose.dev.yml,.docker/healthcheck.sh,nginx/nginx.rtmp.conf,backend/core/prisma"
+          host: ${{ secrets.DEPLOYMENT_HOST_PROD }}
+          username: ${{ secrets.DEPLOYMENT_USERNAME_PROD }}
+          password: ${{ secrets.DEPLOYMENT_SSH_PASSWORD_PROD }}
+          source: ".docker/docker-compose.prod.yml,.docker/healthcheck.sh,nginx/nginx.rtmp.conf,backend/core/prisma"
           target: app
 
-      - name: Run docker-compose.dev.yml on deployment server
+      - name: Run docker-compose.prod.yml on production server
         uses: appleboy/ssh-action@master
         env:
           GITHUB_USERNAME: ${{ github.actor }}
@@ -109,28 +110,28 @@ jobs:
             export GITHUB_USERNAME=$GITHUB_USERNAME
             export GITHUB_TOKEN=$GITHUB_TOKEN
             echo "$GITHUB_TOKEN" | sudo docker login ghcr.io -u $GITHUB_USERNAME --password-stdin
-            sudo docker compose -f docker-compose.dev.yml rm --force --stop
-            sudo docker compose -f docker-compose.dev.yml pull
-            sudo docker compose -f docker-compose.dev.yml --env-file ../.env/healthcheck.env up -d
+            sudo docker compose -f docker-compose.prod.yml rm --force --stop
+            sudo docker compose -f docker-compose.prod.yml pull
+            sudo docker compose -f docker-compose.prod.yml --env-file ../.env/healthcheck.env up -d
             sudo chmod +x healthcheck.sh
             sudo ./healthcheck.sh
 
-#  notify:
-#    needs: deploy
-#    runs-on: ubuntu-latest
-#    if: always()
-#    environment: development
-#    steps:
-#      - name: Trigger this job at the end of workflow
-#        uses: technote-space/workflow-conclusion-action@v2
-#
-#      - name: Slack Notification
-#        if: always()
-#        uses: rtCamp/action-slack-notify@v2.2.0
-#        env:
-#          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-#          SLACK_USERNAME: Deployment Bot
-#          SLACK_ICON: https://avatar-prod-us-east-2.webexcontent.com/Avtr~V1~6078fba4-49d9-4291-9f7b-80116aab6974/V1~8d90dcca-87c5-4a7c-9808-8965a02be966~07b1fecf53a948688dabf01402621a0a
-#          SLACK_MESSAGE: "Deployment finished with ${{ env.WORKFLOW_CONCLUSION == 'success' && 'Success 🟢' || env.WORKFLOW_CONCLUSION == 'cancelled' && 'Cancelled 🟡' || env.WORKFLOW_CONCLUSION == 'skipped' && 'Skipped 🔵' || 'Error 🔴' }} result"
-#          SLACK_FOOTER: "Git branch: `development`"
-#          MSG_MINIMAL: event,actions url
+  notify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: always()
+    environment: development
+    steps:
+      - name: Trigger this job at the end of workflow
+        uses: technote-space/workflow-conclusion-action@v2
+
+      - name: Slack Notification
+        if: always()
+        uses: rtCamp/action-slack-notify@v2.2.0
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_USERNAME: Deployment Bot - PRODUCTION
+          SLACK_ICON: https://i.imgur.com/JELO6xS.png
+          SLACK_MESSAGE: "Deployment finished with ${{ env.WORKFLOW_CONCLUSION == 'success' && 'Success 🟢' || env.WORKFLOW_CONCLUSION == 'cancelled' && 'Cancelled 🟡' || env.WORKFLOW_CONCLUSION == 'skipped' && 'Skipped 🔵' || 'Error 🔴' }} result"
+          SLACK_FOOTER: "Git branch: `production`"
+          MSG_MINIMAL: event,actions url
