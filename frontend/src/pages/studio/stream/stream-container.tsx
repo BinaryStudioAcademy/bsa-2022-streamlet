@@ -100,25 +100,6 @@ const StudioStreamContainer: FC = () => {
     defaultValues: defaultInfoFormValues(),
   });
 
-  // const firstUpdate = useRef(true);
-  // useEffect(() => {
-  //   if (firstUpdate.current) {
-  //     firstUpdate.current = false;
-  //   } else {
-  //     dispatch(streamActions.editStream({
-  //       privacy: additionalSettingsFormValues('privacy').value as StreamPrivacy,
-  //       isChatEnabled: additionalSettingsFormValues('isChatEnabled'),
-  //     }));
-  //   }
-  // }, [dispatch, additionalSettingsFormValues]);
-
-  // const onChange = useCallback((): void => {
-  //   dispatch(streamActions.editStream({
-  //     privacy: additionalSettingsFormValues('privacy').value as StreamPrivacy,
-  //     isChatEnabled: additionalSettingsFormValues('isChatEnabled'),
-  //   }));
-  // }, [dispatch, additionalSettingsFormValues]);
-
   const onStreamPrivacyChange = (newValue: MultiValue<SelectOptions>): void => {
     dispatch(
       streamActions.editStream({
