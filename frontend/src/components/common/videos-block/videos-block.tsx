@@ -72,6 +72,10 @@ const VideosBlock: FC<VideoBlockProps> = ({ blockTitle, videoCards, isLazyBlock,
   };
 
   const returnEmptyArrayForSkeleton = (value: number): Array<null> => {
+    if (value <= 0) {
+      return [];
+    }
+
     return Array(value).fill(null);
   };
 

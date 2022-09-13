@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { PrismaClient, Prisma } from '@prisma/client';
-import { CONTAINER_TYPES, PopularVideoResponseDto } from '~/shared/types/types';
+import { CONTAINER_TYPES, PopularVideoResponseDto, SearchByCategoriesResponseDtoType } from '~/shared/types/types';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimPopular, trimVideo, trimVideoSearch } from '~/shared/helpers';
 import { trimCommentsForReplies, trimVideoForQueryRaw, trimVideoWithComments } from '~/shared/helpers/trim-video';
@@ -417,32 +417,53 @@ export class VideoRepositoryAdapter implements VideoRepository {
     });
   }
 
-  searchByCategories({ skip, take, categories }: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]> {
-    return this.prismaClient.video.findMany({
-      where: {
-        ...{ privacy: StreamPrivacy.PUBLIC },
-        categories: {
-          some: {
-            category: {
-              name: {
-                in: categories,
+  async searchByCategories({
+    skip,
+    take,
+    categories,
+  }: CategorySearchRequestQueryDto): Promise<SearchByCategoriesResponseDtoType> {
+    const [videos, total] = await this.prismaClient.$transaction([
+      this.prismaClient.video.findMany({
+        where: {
+          privacy: StreamPrivacy.PUBLIC,
+          categories: {
+            some: {
+              category: {
+                name: {
+                  in: categories,
+                },
               },
             },
           },
         },
-      },
-      take,
-      skip,
-      include: {
-        channel: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
+        take,
+        skip,
+        include: {
+          channel: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+            },
           },
         },
-      },
-    });
+      }),
+      this.prismaClient.video.count({
+        where: {
+          privacy: StreamPrivacy.PUBLIC,
+          categories: {
+            some: {
+              category: {
+                name: {
+                  in: categories,
+                },
+              },
+            },
+          },
+        },
+      }),
+    ]);
+    return { list: videos, total };
   }
 
   async commentReactionByUser(commentId: string, userId: string): Promise<boolean | null> {
