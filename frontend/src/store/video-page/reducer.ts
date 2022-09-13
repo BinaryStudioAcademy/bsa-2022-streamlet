@@ -14,6 +14,7 @@ import {
   resetVideoPage,
   addVideoView,
   deleteComment,
+  updateComment,
 } from './actions';
 
 type State = {
@@ -160,6 +161,19 @@ const reducer = createReducer(initialState, (builder) => {
         const comments = [...state.video.comments];
         state.video.comments = removeItemIfExists(comments, { id: payload.commentId });
       }
+    } else {
+      const comments = [...state.video.comments];
+      state.video.comments = replaceItemIfExists(comments, { id: payload.id }, payload);
+    }
+  });
+
+  builder.addCase(updateComment.fulfilled, (state, { payload }) => {
+    if (!state.video || state.video.comments.length === 0) {
+      return state;
+    }
+    if (payload.parentId && payload.parentId in state.replies.data) {
+      const replies = [...state.replies.data[payload.parentId]];
+      state.replies.data[payload.parentId] = replaceItemIfExists(replies, { id: payload.id }, payload);
     } else {
       const comments = [...state.video.comments];
       state.video.comments = replaceItemIfExists(comments, { id: payload.id }, payload);

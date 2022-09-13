@@ -102,6 +102,16 @@ const getRepliesForComment = createAsyncThunk<ResponseRepliesForComment, string,
   },
 );
 
+const updateComment = createAsyncThunk<
+  Comment,
+  { commentId: string; comment: VideoCommentRequestDto },
+  AsyncThunkConfig
+>(ActionType.UPDATE_COMMENT, async (commentPayload, { extra }) => {
+  const { commentApi } = extra;
+
+  return await commentApi.updateComment(commentPayload);
+});
+
 const deleteComment = createAsyncThunk<Comment | DeleteCommentResponseDto, string, AsyncThunkConfig>(
   ActionType.DELETE_COMMENT,
   async (commentId: string, { extra }) => {
@@ -124,4 +134,5 @@ export {
   resetVideoPage,
   addVideoView,
   deleteComment,
+  updateComment,
 };
