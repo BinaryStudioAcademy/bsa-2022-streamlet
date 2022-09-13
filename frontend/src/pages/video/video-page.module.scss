@@ -50,7 +50,7 @@
 .chat-block {
   min-width: 300px;
   height: 100%;
-  max-height: min(650px, 80vh);
+  max-height: min(650px);
   padding: 10px;
 
   @media screen and (max-width: 992px) {
