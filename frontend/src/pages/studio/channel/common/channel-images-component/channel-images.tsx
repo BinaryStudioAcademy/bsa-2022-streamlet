@@ -9,7 +9,7 @@ const ChannelBanner: FC<ChannelImagesProps> = ({ src }) => {
   if (!src) {
     return (
       <div className={styles['channel-banner-placeholder']}>
-        <span className={styles['placeholder-text']}>Place for you banner</span>
+        <span className={styles['placeholder-text']}>Place for your banner</span>
       </div>
     );
   }
