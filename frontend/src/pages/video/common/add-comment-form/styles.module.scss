@@ -121,6 +121,20 @@ $base-z-index: $page-component-z-index;
   line-height: 15px;
 }
 
+.label-for-edit-form {
+  color: var(--white-text-color);
+  font-size: 14px;
+  line-height: 16px;
+
+  & span {
+    display: block;
+    max-width: 450px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
 .emoji-block {
   top: 30px;
   left: -20px;

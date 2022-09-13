@@ -50,6 +50,7 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
 
   const [isRepliesOpen, setIsRepliesOpen] = useState(false);
   const [isReplyFormOpen, setIsReplyFormOpen] = useState(false);
+  const [isEditFormOpen, setIsEditFormOpen] = useState(false);
   const [isCommentMenuOpen, setIsCommentMenuOpen] = useState(false);
 
   const commentMenuEl = useRef<HTMLDivElement>(null);
@@ -97,6 +98,10 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
     setIsReplyFormOpen(false);
   };
 
+  const handlerCancelForEditForm = (): void => {
+    setIsEditFormOpen(false);
+  };
+
   const handleSendForm = async (text: string): Promise<void> => {
     if (!user) {
       navigate(AppRoutes.SIGN_IN, { replace: true });
@@ -107,13 +112,23 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
     await dispatch(videoPageActions.getVideo(videoId));
   };
 
+  const handleSendFormEdit = async (text: string): Promise<void> => {
+    await dispatch(videoPageActions.updateComment({ commentId: comment.id, comment: { text, videoId } }));
+    setIsEditFormOpen(false);
+  };
+
+  const handleEditCommentOpen = (): void => {
+    setIsEditFormOpen(true);
+    setIsCommentMenuOpen(false);
+  };
+
   const handleDeleteComment = useCallback(() => {
     dispatch(videoPageActions.deleteComment(comment.id));
     setIsCommentMenuOpen(false);
   }, [comment.id, dispatch]);
 
   const matchCommentMenuOptionWithOnClickHandler: Record<CommentMenuOptions, () => void> = {
-    [CommentMenuOptions.EDIT]: () => void 1,
+    [CommentMenuOptions.EDIT]: handleEditCommentOpen,
     [CommentMenuOptions.DELETE]: handleDeleteComment,
   };
 
@@ -147,21 +162,40 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
       <div className={styles['video-comment-body']}>
         <div className={styles['video-comment-body-primary']}>
           <div className={styles['video-comment-primary-wrp']}>
-            <div className={styles['main-part-comment']}>
-              <p className={clsx({ [styles['is-reply']]: isReply }, styles['commentators-name'])}>
-                {getUserDisplayName(comment)}
-              </p>
-              <span className={styles['dispatch-time']}>{`${comment.isEdited ? '(edited)' : ''} ${getHowLongAgoString(
-                comment.dateAdded,
-              )}`}</span>
-            </div>
-            <div className={clsx({ [styles['is-reply']]: isReply }, styles['content-part-comment'])}>
-              {comment.isDeleted ? (
-                <p className={clsx(styles['text-comment'], styles['is-deleted'])}>This comment was deleted by user.</p>
-              ) : (
-                <TextWithEmoji text={comment.text} textClassName={styles['text-comment']} />
-              )}
-            </div>
+            {isEditFormOpen ? (
+              <div className={styles['wrapper-form-reply']}>
+                <VideoPageCommentForm
+                  avatar={userAvatar}
+                  initialValue={comment.text}
+                  onSubmit={handleSendFormEdit}
+                  className={'form-send-reply'}
+                  isLightTheme={isLightTheme}
+                  isFormEdit={true}
+                  namingInfo={namingInfo}
+                  handlerCancelForEditForm={handlerCancelForEditForm}
+                />
+              </div>
+            ) : (
+              <>
+                <div className={styles['main-part-comment']}>
+                  <p className={clsx({ [styles['is-reply']]: isReply }, styles['commentators-name'])}>
+                    {getUserDisplayName(comment)}
+                  </p>
+                  <span className={styles['dispatch-time']}>{`${
+                    comment.isEdited ? '(edited)' : ''
+                  } ${getHowLongAgoString(comment.dateAdded)}`}</span>
+                </div>
+                <div className={clsx({ [styles['is-reply']]: isReply }, styles['content-part-comment'])}>
+                  {comment.isDeleted ? (
+                    <p className={clsx(styles['text-comment'], styles['is-deleted'])}>
+                      This comment was deleted by user.
+                    </p>
+                  ) : (
+                    <TextWithEmoji text={comment.text} textClassName={styles['text-comment']} />
+                  )}
+                </div>
+              </>
+            )}
             <div className={styles['reaction-block']}>
               <>
                 <div className={styles['reaction-container-up']}>
@@ -234,7 +268,7 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
               style={
                 isCommentMenuOpen
                   ? { visibility: 'visible' }
-                  : comment.authorId !== user?.id || comment.isDeleted
+                  : comment.authorId !== user?.id || comment.isDeleted || isEditFormOpen
                   ? { visibility: 'hidden' }
                   : {}
               }
