@@ -10,6 +10,8 @@ import {
 } from './skeleton-config';
 import { SkeletonTheme } from 'react-loading-skeleton';
 
+import style from '../../styles.module.scss';
+
 type props = {
   isLightTheme: boolean;
 };
@@ -33,19 +35,23 @@ const HistoryLoader: FC<props> = ({ isLightTheme }): ReactElement => {
 
   return (
     <ContentLoader speed={2} viewBox="0 0 450 100" backgroundColor={baseColor} foregroundColor={highlightColor}>
-      <rect x="231" y="9" rx="3" ry="3" width="320" height="6" />
-      <rect x="254" y="49" rx="3" ry="3" width="178" height="6" />
-      <circle cx="240" cy="52" r="13" />
-      <rect x="-1" y="1" rx="0" ry="0" width="225" height="149" />
-      <rect x="231" y="25" rx="3" ry="3" width="178" height="6" />
+      <rect x="210" y="9" rx="3" ry="3" width="320" height="6" />
+      <rect x="239" y="49" rx="3" ry="3" width="178" height="6" />
+      <circle cx="220" cy="52" r="13" />
+      <rect x="-1" y="1" rx="0" ry="0" width="200" height="149" />
+      <rect x="210" y="25" rx="3" ry="3" width="178" height="6" />
     </ContentLoader>
   );
 };
 
-const generateHistorySkeletons = (isLightTheme: boolean): ReactElement[] => {
-  return new Array(10)
-    .fill('skeleton')
-    .map((value, index) => <HistoryLoader key={`${value}${index}`} isLightTheme={isLightTheme} />);
+const generateHistorySkeletons = (isLightTheme: boolean): ReactElement => {
+  return (
+    <div className={style['skeleton-container']}>
+      {new Array(10).fill('skeleton').map((value, index) => (
+        <HistoryLoader key={`${value}${index}`} isLightTheme={isLightTheme} />
+      ))}
+    </div>
+  );
 };
 
 export { generateHistorySkeletons };
