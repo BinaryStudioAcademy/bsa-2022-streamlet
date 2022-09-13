@@ -1,7 +1,7 @@
 import { ENV } from 'common/enums/enums';
 import { StreamPrivacy } from 'shared/build';
 
-export const STREAMING_SERVER_URL = `rtmp://${ENV.PUSH_HOST}:1935/live`;
+export const STREAMING_SERVER_URL = `rtmp://${ENV.SERVER_HOST}:${ENV.RTMP_PORT}/live`;
 
 export const STREAM_PRIVACY_OPTIONS = [
   { value: StreamPrivacy.PRIVATE, label: 'Private' },
