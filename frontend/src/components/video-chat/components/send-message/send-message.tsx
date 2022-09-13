@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, FocusEvent } from 'react';
+import { ChangeEvent, FocusEvent, KeyboardEvent } from 'react';
 import clsx from 'clsx';
 import { EmojiClickData } from 'emoji-picker-react';
 import { ChatMessageResponseDto, FC } from 'common/types/types';
@@ -91,9 +91,10 @@ const SendMessage: FC<SendMessageProps> = ({
     }
   };
 
-  const handleSubmitForm = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    handleSubmitMessage();
+  const onHandleKeydownEnter = (e: KeyboardEvent<HTMLInputElement>): void => {
+    if (e.code === 'Enter') {
+      handleSubmitMessage();
+    }
   };
 
   useEffect(() => {
@@ -122,10 +123,7 @@ const SendMessage: FC<SendMessageProps> = ({
   }, [hasUser]);
 
   return (
-    <form
-      className={clsx(styles['add-comments'], styles[currentChatStyle], sendMessageClassName)}
-      onSubmit={handleSubmitForm}
-    >
+    <div className={clsx(styles['add-comments'], styles[currentChatStyle], sendMessageClassName)}>
       {showSigninModal ? (
         <NeedSignInModal
           headerText={'Want to chat about something?'}
@@ -140,6 +138,7 @@ const SendMessage: FC<SendMessageProps> = ({
             onChange={handleInputChange}
             onFocus={!hasUser ? handleInputFocus : (): void => void 1}
             onBlur={handleInputBlur}
+            onKeyDown={onHandleKeydownEnter}
             ref={messageInputEl}
             className={clsx(styles['input-add-comments'], error && styles['input-error'])}
             type="text"
@@ -161,7 +160,7 @@ const SendMessage: FC<SendMessageProps> = ({
           </div>
         </>
       )}
-    </form>
+    </div>
   );
 };
 
