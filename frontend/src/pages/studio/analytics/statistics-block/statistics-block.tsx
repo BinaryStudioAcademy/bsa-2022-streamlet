@@ -27,10 +27,14 @@ export const StatisticsBlock: FC<Props> = ({ data, tab }) => {
         <div className={styles['text']}>Maximum</div>
         <span className={styles['amount']}>{amount.toLocaleString('ru-RU')}</span>
       </div>
-      <div className={styles['block']}>
-        <div className={styles['text']}>Watched minutes</div>
-        <span className={styles['amount']}>{minutes.toLocaleString('ru-RU')}</span>
-      </div>
+      {tab === 'Views' ? (
+        <div className={styles['block']}>
+          <div className={styles['text']}>Watched minutes</div>
+          <span className={styles['amount']}>{minutes.toLocaleString('ru-RU')}</span>
+        </div>
+      ) : (
+        ''
+      )}
       <div className={styles['block']}>
         <div className={styles['text']}>Peack time</div>
         <span className={styles['amount']}>{dayjs(peakData[0].date).format('MMM DD')}</span>

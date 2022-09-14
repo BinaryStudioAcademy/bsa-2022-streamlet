@@ -37,7 +37,7 @@ const ViewsTab: FC = () => {
         <CustomLineChart data={data} days={days} />
       </div>
       <div className={cn(styles['element'], styles['statistics'])}>
-        <StatisticsBlock data={data} tab="Veiws" />
+        <StatisticsBlock data={data} tab="Views" />
       </div>
     </div>
   );
