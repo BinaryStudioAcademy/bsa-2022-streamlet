@@ -7,6 +7,7 @@ import { generateAbbreviatureNameUser } from 'helpers/user';
 import { SubscribeButton } from 'components/common/common';
 import { NeedSignInModal } from 'components/common/sign-in-modal/sign-in-modal';
 import { channelSubscribe } from 'store/subscriptions/actions';
+import { searchActions } from 'store/actions';
 
 import styles from './styles.module.scss';
 
@@ -59,7 +60,16 @@ const ChannelCard: FC<Props> = ({
           isDisabled={id === undefined}
           onSubscribeClick={(): void => {
             if (id !== undefined) {
-              dispatch(channelSubscribe(id));
+              dispatch(channelSubscribe(id))
+                .unwrap()
+                .then(() => {
+                  dispatch(
+                    searchActions.updateChannelCardSubscriptionCount({
+                      id,
+                      count: subscribersCount + (isCurrentUserSubscribed ? -1 : 1),
+                    }),
+                  );
+                });
             }
           }}
           onUserUnauthenticated={(): void => setShowSigninModal(true)}
