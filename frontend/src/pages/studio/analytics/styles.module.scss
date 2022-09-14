@@ -1,21 +1,27 @@
+@use 'assets/css/breakpoint';
 @import 'assets/css/styles.scss';
 
-.studio {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
+.page-container {
   height: 100%;
+  padding: 20px;
+  overflow-y: auto;
   background: var(--green-300-primary-background);
+
+  @media #{breakpoint.$mobile-middle} {
+    padding: 20px 40px;
+  }
 }
 
-.header {
+.page-header-container {
   display: flex;
-  flex-grow: 2;
   align-items: center;
-  color: white;
+  margin-bottom: 20px;
 }
 
-.body {
-  flex-grow: 8;
+.page-header {
+  margin-left: 20px;
+  color: var(--white-text-color);
+  font-weight: 600;
+  font-family: Gilroy, sans-serif;
+  text-transform: capitalize;
 }
