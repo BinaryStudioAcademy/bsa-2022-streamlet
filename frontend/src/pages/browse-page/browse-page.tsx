@@ -11,6 +11,7 @@ import { generateBrowsePageSkeleton } from './common/skeleton';
 import { NoVideosYet } from '../../components/common/no-videos-yet/no-videos-yet';
 import { LeftArrow, RightArrow } from '../../components/common/vertical-scroll/vertical-scroll';
 import { ScrollMenu } from 'react-horizontal-scrolling-menu';
+import { uglyDisplayCategoryName } from 'helpers/categories/categories';
 
 const BrowsePage: FC = () => {
   const dispatch = useAppDispatch();
@@ -28,7 +29,7 @@ const BrowsePage: FC = () => {
   ];
 
   const handleCategoryClick = (category: string): void => {
-    if (activeCategory === reposnseCategory && activeCategory !== category) {
+    if (uglyDisplayCategoryName(activeCategory) === reposnseCategory && activeCategory !== category) {
       setActiveCategory(category);
     }
   };
@@ -51,7 +52,7 @@ const BrowsePage: FC = () => {
     if (firstLoad) {
       dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
       dispatch(categoryActions.getCategories());
-    } else if (activeCategory !== reposnseCategory) {
+    } else if (uglyDisplayCategoryName(activeCategory) !== reposnseCategory) {
       dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
     }
   }, [activeCategory, dispatch, firstLoad, reposnseCategory]);
