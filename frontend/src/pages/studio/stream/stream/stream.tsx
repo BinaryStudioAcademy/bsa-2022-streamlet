@@ -63,7 +63,13 @@ const StudioStream: FC<Props> = ({
                   showControls={true}
                 />
               ) : (
-                <Loader color="white" spinnerSize="40px" hCentered vCentered />
+                <div className={styles['not-loaded-container']}>
+                  <Loader color="white" spinnerSize="40px" hCentered={false} vCentered={false} />
+                  <p>
+                    Connect your streaming software, like OBS by using the key and url below. You should see the stream
+                    preview, once the connection is established
+                  </p>
+                </div>
               )}
             </div>
             <form className={styles['form-container']}>

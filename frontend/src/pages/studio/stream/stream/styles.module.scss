@@ -62,6 +62,7 @@ $label-input-spacing: 5px;
 .col-1 {
   flex-grow: 4;
   flex-basis: 0;
+  gap: 20px;
 }
 
 .col-2 {
@@ -88,8 +89,22 @@ $label-input-spacing: 5px;
 }
 
 .preview-container {
-  width: 400px;
-  height: 225px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: black;
+}
+
+.not-loaded-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  color: var(--text-gray-color);
+  text-align: center;
 }
 
 .form-container {
