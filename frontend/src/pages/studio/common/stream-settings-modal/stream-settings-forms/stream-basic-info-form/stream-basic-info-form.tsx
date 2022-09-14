@@ -21,7 +21,7 @@ const StreamBasicInfoForm: FC<Props> = ({ categoryOptions, control, errors }) =>
   const tagSelectId = useId();
 
   return (
-    <div className={styles['basic-info-wrapper']}>
+    <div className={clsx(styles['form'], styles['basic-info-wrapper'])}>
       <Input
         control={control}
         errors={errors}
@@ -69,7 +69,7 @@ const StreamBasicInfoForm: FC<Props> = ({ categoryOptions, control, errors }) =>
         defaultValue={[]}
         name="tags"
         render={({ field: { ref, onChange, value } }): ReactElement => (
-          <div>
+          <div className={styles['input-wrapper']}>
             <label className={styles['label']} htmlFor={tagSelectId}>
               Add a couple of tags
             </label>

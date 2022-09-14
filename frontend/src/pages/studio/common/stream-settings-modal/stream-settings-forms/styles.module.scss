@@ -1,19 +1,22 @@
+$label-input-spacing: 10px;
+
 .form {
   display: flex;
   flex-direction: column;
-  row-gap: 10px;
+  gap: 15px;
   padding: 0 0 5px;
+
+  .label {
+    margin-bottom: $label-input-spacing;
+    color: var(--white-text-color);
+    line-height: 20px;
+    cursor: pointer;
+  }
 }
 
 .input-wrapper {
   display: flex;
   flex-direction: column;
-}
-
-.label {
-  margin: 10px 0 3px;
-  color: var(--white-text-color);
-  cursor: pointer;
 }
 
 .input {

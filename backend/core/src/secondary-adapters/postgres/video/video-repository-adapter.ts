@@ -1,6 +1,11 @@
 import { inject, injectable } from 'inversify';
 import { PrismaClient, Prisma } from '@prisma/client';
-import { CONTAINER_TYPES, PopularVideoResponseDto, SearchByCategoriesResponseDtoType } from '~/shared/types/types';
+import {
+  CONTAINER_TYPES,
+  PopularVideoResponseDto,
+  VideoWithReactionsAndComments,
+  SearchByCategoriesResponseDtoType,
+} from '~/shared/types/types';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { trimPopular, trimVideo, trimVideoSearch } from '~/shared/helpers';
 import { trimCommentsForReplies, trimVideoForQueryRaw, trimVideoWithComments } from '~/shared/helpers/trim-video';
@@ -14,6 +19,8 @@ import {
   ResponseVideoQueryRaw,
   StreamStatus,
   TagSearchRequestQueryDto,
+  UpdateVideoInfoDto,
+  UpdateVideoVisibilityDto,
   VideoCommentRequestDto,
   VideoCommentResponseDto,
   VideoPaginationParams,
@@ -33,6 +40,71 @@ export class VideoRepositoryAdapter implements VideoRepository {
 
   constructor(@inject(CONTAINER_TYPES.PrismaClient) prismaClient: PrismaClient) {
     this.prismaClient = prismaClient;
+  }
+  getMyVideos(authorId: string): Promise<VideoWithReactionsAndComments[]> {
+    return this.prismaClient.video.findMany({
+      where: {
+        channel: {
+          authorId,
+        },
+      },
+      include: {
+        comments: true,
+        reactions: true,
+      },
+    });
+  }
+
+  async deleteByIds(ids: string[]): Promise<VideoWithReactionsAndComments[]> {
+    const deletedVideos = await this.prismaClient.video.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+      include: {
+        comments: true,
+        reactions: true,
+      },
+    });
+    await this.prismaClient.video.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    return deletedVideos;
+  }
+  updateVisibility({ videoId, visibility }: UpdateVideoVisibilityDto): Promise<VideoWithReactionsAndComments | null> {
+    return this.prismaClient.video.update({
+      where: {
+        id: videoId,
+      },
+      data: {
+        privacy: visibility,
+      },
+      include: {
+        comments: true,
+        reactions: true,
+      },
+    });
+  }
+  updateVideoInfo({ videoId, title, description }: UpdateVideoInfoDto): Promise<VideoWithReactionsAndComments | null> {
+    return this.prismaClient.video.update({
+      where: {
+        id: videoId,
+      },
+      data: {
+        description,
+        name: title,
+      },
+      include: {
+        comments: true,
+        reactions: true,
+      },
+    });
   }
 
   async addView(id: string): Promise<{ currentViews: number } | null> {

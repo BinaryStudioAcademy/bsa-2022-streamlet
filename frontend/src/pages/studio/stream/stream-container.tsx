@@ -1,6 +1,6 @@
 import { STREAMING_SERVER_URL } from 'common/constants/constants';
-import { ENV, IconName, SocketEvents, StreamPrivacy, StreamStatus } from 'common/enums/enums';
-import { FC, SelectOptions, StreamUpdateRequestDto } from 'common/types/types';
+import { ENV, IconName, SocketEvents, StreamStatus } from 'common/enums/enums';
+import { FC, StreamUpdateRequestDto } from 'common/types/types';
 import { createToastNotification } from 'components/common/toast-notification';
 import { Forbidden } from 'components/placeholder-page';
 import { NotFound } from 'components/placeholder-page/not-found';
@@ -9,11 +9,11 @@ import { useAppDispatch, useAppForm, useAppSelector } from 'hooks/hooks';
 import { useCallback, useEffect, useState } from 'react';
 import { streamActions } from 'store/actions';
 import { StreamInfoFormValues } from './common/stream-info-form-values';
-import { StudioStream } from './stream';
+import { StudioStream } from './stream/stream';
 import { socket } from 'common/config/config';
 import { StreamSettingsModal } from '../common/stream-settings-modal/stream-settings-modal';
 import { store } from 'store/store';
-import { MultiValue, SingleValue } from 'react-select';
+import { shallowEqual } from 'react-redux';
 
 socket.on(SocketEvents.notify.STREAM_OBS_STATUS, (isReadyToStream: boolean) => {
   store.dispatch(
@@ -26,12 +26,17 @@ socket.on(SocketEvents.notify.STREAM_OBS_STATUS, (isReadyToStream: boolean) => {
 
 const StudioStreamContainer: FC = () => {
   const dispatch = useAppDispatch();
-  const { stream, channel, streamingKey, errorCode } = useAppSelector((state) => ({
-    stream: state.stream.stream,
-    channel: state.stream.channel,
-    streamingKey: state.stream.streamingKey,
-    errorCode: state.stream.status.errorCode,
-  }));
+  const { channel, streamingKey, errorCode } = useAppSelector(
+    (state) => ({
+      channel: state.stream.channel,
+      streamingKey: state.stream.streamingKey,
+      errorCode: state.stream.status.errorCode,
+    }),
+    shallowEqual,
+  );
+
+  const streamStatus = useAppSelector((state) => state.stream.stream?.status);
+  const streamId = useAppSelector((state) => state.stream.stream?.id);
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
@@ -52,10 +57,10 @@ const StudioStreamContainer: FC = () => {
 
   const handleChangeStreamStatus = useCallback(() => {
     let newStatus;
-    if (stream?.status === StreamStatus.WAITING) {
+    if (streamStatus === StreamStatus.WAITING) {
       newStatus = StreamStatus.LIVE;
     }
-    if (stream?.status === StreamStatus.LIVE) {
+    if (streamStatus === StreamStatus.LIVE) {
       newStatus = StreamStatus.FINISHED;
     }
     if (!newStatus) {
@@ -64,10 +69,10 @@ const StudioStreamContainer: FC = () => {
     dispatch(
       streamActions.setStreamStatus({
         status: newStatus,
-        videoId: stream?.id ?? '',
+        videoId: streamId ?? '',
       }),
     );
-  }, [dispatch, stream?.status, stream?.id]);
+  }, [dispatch, streamStatus, streamId]);
 
   const handleCopy = (): void => {
     createToastNotification({
@@ -86,9 +91,9 @@ const StudioStreamContainer: FC = () => {
     () => ({
       streamingKey: streamingKey ?? '',
       streamingServerUrl: STREAMING_SERVER_URL,
-      streamUrl: `${ENV.VIDEO_FALLBACK_BASE_URL}/video/${stream?.id}`,
+      streamUrl: `${ENV.VIDEO_FALLBACK_BASE_URL}/video/${streamId}`,
     }),
-    [stream?.id, streamingKey],
+    [streamId, streamingKey],
   );
 
   const {
@@ -99,22 +104,6 @@ const StudioStreamContainer: FC = () => {
   } = useAppForm<StreamInfoFormValues>({
     defaultValues: defaultInfoFormValues(),
   });
-
-  const onStreamPrivacyChange = (newValue: MultiValue<SelectOptions>): void => {
-    dispatch(
-      streamActions.editStream({
-        privacy: (newValue as unknown as SingleValue<SelectOptions>)?.value as StreamPrivacy,
-      }),
-    );
-  };
-
-  const onStreamChatToggleChange = (): void => {
-    dispatch(
-      streamActions.editStream({
-        isChatEnabled: !stream?.isChatEnabled,
-      }),
-    );
-  };
 
   const isNotFound = errorCode === errorCodes.stream.NOT_FOUND || errorCode === errorCodes.stream.NO_CHANNELS;
 
@@ -140,12 +129,9 @@ const StudioStreamContainer: FC = () => {
         handleChangeStreamStatus={handleChangeStreamStatus}
         handleCopy={handleCopy}
         handleStreamingKeyReset={handleStreamingKeyReset}
-        stream={stream}
         infoFormControl={infoFormControl}
         infoFormErrors={infoFormErrors}
         infoFormValues={infoFormValues}
-        onStreamPrivacyChange={onStreamPrivacyChange}
-        onStreamChatToggleChange={onStreamChatToggleChange}
       />
     </>
   );
