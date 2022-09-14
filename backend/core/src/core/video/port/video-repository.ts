@@ -9,12 +9,14 @@ import {
   BaseReplyRequestDto,
   Comment,
   VideoPaginationParams,
+  UpdateVideoVisibilityDto,
+  UpdateVideoInfoDto,
   RecommendedVideosParams,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 import { VideoRepositoryFilters } from './video-repository-filters';
-import { VideoSearch } from '~/shared/types/types';
+import { VideoSearch, VideoWithReactionsAndComments } from '~/shared/types/types';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { VideoSearchFilters } from './video-search-filters';
 
@@ -68,6 +70,11 @@ export interface VideoRepository {
   getVideosBySearch(queryParams: VideoSearch, additionalQueryParams?: VideoSearchFilters): Promise<DataVideo>;
   getRepliesForComment(commentId: string): Promise<Comment[]>;
   addVideoCommentReply(request: BaseReplyRequestDto, authorId: string): Promise<Comment[]>;
+
+  getMyVideos(authorId: string): Promise<VideoWithReactionsAndComments[]>;
+  deleteByIds(ids: string[]): Promise<VideoWithReactionsAndComments[]>;
+  updateVisibility(updateVideoVisibilityDto: UpdateVideoVisibilityDto): Promise<VideoWithReactionsAndComments | null>;
+  updateVideoInfo(updateVideoInfo: UpdateVideoInfoDto): Promise<VideoWithReactionsAndComments | null>;
   getGeneralVideos(userId: string): Promise<DataVideo>;
   getRecommendedVideos(params: RecommendedVideosParams): Promise<DataVideo>;
 }
