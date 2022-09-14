@@ -90,6 +90,7 @@ $label-input-spacing: 5px;
 
 .preview-container {
   width: 100%;
+  min-width: 400px;
   aspect-ratio: 16 / 9;
   background-color: black;
 }
@@ -167,6 +168,8 @@ $label-input-spacing: 5px;
 
 .status-indicator {
   width: 10px;
+  min-width: 10px;
+  max-width: 10px;
   height: 10px;
   background-color: var(--stream-indicator-offline);
   border-radius: 50%;

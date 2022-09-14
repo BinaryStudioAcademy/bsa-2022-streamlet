@@ -12,10 +12,10 @@ COPY ./.eslintrc.yml ./
 COPY ./shared ./shared/
 COPY ./backend/core ./backend/core
 
-RUN npm config set fetch-retry-mintimeout 120000
-RUN npm config set fetch-retry-maxtimeout 240000
+RUN npm config set fetch-retry-mintimeout 1200000
+RUN npm config set fetch-retry-maxtimeout 2400000
 
-RUN npm ci -w shared -w backend/core
+RUN npm i -w shared -w backend/core
 
 RUN rm -rf ./shared/src
 
