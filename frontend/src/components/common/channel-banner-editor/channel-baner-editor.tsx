@@ -60,7 +60,7 @@ const ChannelBannerEditor: FC<Props> = ({ banner, handleClose, handleSave, setEr
   };
 
   return (
-    <Modal isOpen={true} onClose={handleClose} isNeedCloseButton={false}>
+    <Modal isOpen={true} onClose={handleClose} isNeedCloseButton={false} isNeedHiddenOverflow={true}>
       <div className={styles['banner-editor-container']} style={{ width: editorWidth, height: editorHeight }}>
         <div className={styles['crop-container']}>
           <Cropper

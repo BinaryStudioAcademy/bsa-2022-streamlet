@@ -1,30 +1,29 @@
 import clsx from 'clsx';
-import { FC, FormControl, SelectOptions, VideoStreamResponseDto } from 'common/types/types';
-import { Button, Input, Loader, PasswordInput, ToggleSwitch } from 'components/common/common';
+import { FC, FormControl } from 'common/types/types';
+import { Button, Input, Loader, PasswordInput } from 'components/common/common';
 import { ChatSetting, VideoChatContainer } from 'components/video-chat/video-chat-container';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { DeepRequired, FieldErrorsImpl, FieldValues, UseFormGetValues } from 'react-hook-form';
 import { StreamStatus } from 'shared/build';
-import { StreamInfoFormValues } from './common/stream-info-form-values';
-import { StreamPrivacyLabel, ChatStyle } from 'common/enums/enums';
-import { STREAM_PRIVACY_OPTIONS } from 'common/constants/stream/stream';
-import ReactSelect, { MultiValue } from 'react-select';
+import { StreamInfoFormValues } from '../common/stream-info-form-values';
+import { ChatStyle } from 'common/enums/enums';
 
 import styles from './styles.module.scss';
-import { customSelectStyles } from '../common/stream-settings-modal/stream-settings-forms/custom-select-styles';
 import { VideoPlayer } from 'components/common/video-player/video-player';
+import { useAppSelector } from 'hooks/hooks';
+import { ChatToggle } from './chat-toggle';
+import { CategoriesDisplay } from './categories-display';
+import { PrivacyDisplay } from './privacy-display';
+import { PrivacySelector } from './privacy-selector';
 
 type Props = {
   handleSettingsModalOpen(): void;
   handleChangeStreamStatus(): void;
   handleCopy(): void;
   handleStreamingKeyReset(): void;
-  stream: VideoStreamResponseDto | null;
   infoFormControl: FormControl<StreamInfoFormValues>;
   infoFormErrors: FieldErrorsImpl<DeepRequired<FieldValues>>;
   infoFormValues: UseFormGetValues<StreamInfoFormValues>;
-  onStreamPrivacyChange(newValue: MultiValue<SelectOptions>): void;
-  onStreamChatToggleChange(): void;
 };
 
 const StudioStream: FC<Props> = ({
@@ -32,16 +31,21 @@ const StudioStream: FC<Props> = ({
   handleChangeStreamStatus,
   handleCopy,
   handleStreamingKeyReset,
-  stream,
   infoFormControl,
   infoFormErrors,
   infoFormValues,
-  onStreamPrivacyChange,
-  onStreamChatToggleChange,
 }) => {
   const chatSettings: ChatSetting = {
     hideSetting: false,
   };
+
+  const streamReadiness = useAppSelector((state) => state.stream.stream?.isReadyToStream);
+  const streamVideoPath = useAppSelector((state) => state.stream.stream?.videoPath);
+  const streamStatus = useAppSelector((state) => state.stream.stream?.status);
+  const streamId = useAppSelector((state) => state.stream.stream?.id);
+  const streamDesc = useAppSelector((state) => state.stream.stream?.description);
+  const streamName = useAppSelector((state) => state.stream.stream?.name);
+  const streamTags = useAppSelector((state) => state.stream.stream?.tags);
 
   return (
     <div className={styles['settings-container']}>
@@ -49,11 +53,23 @@ const StudioStream: FC<Props> = ({
         <div className={styles['settings-block']}>
           <div className={styles['col-1']}>
             <div className={styles['preview-container']}>
-              <div className={styles['preview']} />
-              {stream?.isReadyToStream ? (
-                <VideoPlayer url={stream?.videoPath ?? ''} />
+              {streamReadiness ? (
+                <VideoPlayer
+                  url={streamVideoPath ?? ''}
+                  sizingProps={{ height: '100%', width: '100%' }}
+                  isLive
+                  mute
+                  maxControlsShadowHeight="200px"
+                  showControls={true}
+                />
               ) : (
-                <Loader color="white" spinnerSize="40" />
+                <div className={styles['not-loaded-container']}>
+                  <Loader color="white" spinnerSize="40px" hCentered={false} vCentered={false} />
+                  <p>
+                    Connect your streaming software, like OBS by using the key and url below. You should see the stream
+                    preview, once the connection is established
+                  </p>
+                </div>
               )}
             </div>
             <form className={styles['form-container']}>
@@ -112,54 +128,26 @@ const StudioStream: FC<Props> = ({
           <div className={styles['col-2']}>
             <div className={styles['status-container']}>
               <div className={styles['status']}>
-                <div className={clsx(styles['status-indicator'], stream?.isReadyToStream && styles['live'])} />
-                <p className={styles['status-text']}>{!stream?.isReadyToStream ? 'Not connected' : 'Connected'}</p>
+                <div className={clsx(styles['status-indicator'], streamReadiness && styles['live'])} />
+                <p className={styles['status-text']}>{!streamReadiness ? 'Not connected' : 'Connected'}</p>
               </div>
               <Button
                 content={
-                  stream?.status === StreamStatus.WAITING
-                    ? 'Go live'
-                    : StreamStatus.LIVE
-                    ? 'End stream'
-                    : 'Disconnected'
+                  streamStatus === StreamStatus.WAITING ? 'Go live' : StreamStatus.LIVE ? 'End stream' : 'Disconnected'
                 }
                 className={clsx(styles['button'], styles['padding-button'], styles['live-button'])}
                 onClick={handleChangeStreamStatus}
                 disabled={
-                  (!stream?.isReadyToStream && stream?.status === StreamStatus.WAITING) ||
-                  stream?.status === StreamStatus.FINISHED
+                  (!streamReadiness && streamStatus === StreamStatus.WAITING) || streamStatus === StreamStatus.FINISHED
                 }
               />
             </div>
             <div className={styles['stream-details']}>
-              <div className={styles['text-field-container']}>
-                <p className={styles['field-caption']}>Title</p>
-                <p className={styles['field-value']}>{stream?.name}</p>
-              </div>
-              <div className={styles['text-field-container']}>
-                <p className={styles['field-caption']}>Privacy</p>
-                <p className={styles['field-value']}>{StreamPrivacyLabel[stream?.privacy ?? 'PUBLIC']}</p>
-              </div>
-              <div className={styles['text-field-container']}>
-                <p className={styles['field-caption']}>Categories</p>
-                <p className={styles['field-value']}>
-                  {stream?.categories.length ? stream?.categories.map((category) => category.name).join(', ') : '-'}
-                </p>
-              </div>
-              <div className={styles['text-field-container']}>
-                <p className={styles['field-caption']}>Tags</p>
-                <p className={styles['field-value']}>
-                  {stream?.tags.length ? stream?.tags.map((tag) => tag.name).join(', ') : '-'}
-                </p>
-              </div>
-              <div className={styles['text-field-container']}>
-                <p className={styles['field-caption']}>Description</p>
-                <p className={clsx(styles['field-value'], styles['field-value-description'])}>
-                  {stream?.description ? stream.description : '-'}
-                </p>
-              </div>
-
-              <div className={styles['button-wrapper']}>
+              <div className={styles['first-line']}>
+                <div className={styles['text-field-container']}>
+                  <p className={styles['field-caption']}>Title:</p>
+                  <p className={styles['field-value']}>{streamName}</p>
+                </div>
                 <Button
                   content={'Edit'}
                   className={clsx(styles['button'], styles['padding-button'], styles['stream-edit'])}
@@ -167,33 +155,28 @@ const StudioStream: FC<Props> = ({
                   type="button"
                 />
               </div>
+              <PrivacyDisplay />
+              <CategoriesDisplay />
               <div className={styles['text-field-container']}>
-                <label className={styles['label']}>Stream privacy</label>
-                <ReactSelect
-                  options={STREAM_PRIVACY_OPTIONS}
-                  defaultValue={
-                    {
-                      value: stream?.privacy ?? '',
-                      label: STREAM_PRIVACY_OPTIONS.find((opt) => opt.value === stream?.privacy)?.label ?? '',
-                    } ?? STREAM_PRIVACY_OPTIONS[1]
-                  }
-                  onChange={onStreamPrivacyChange}
-                  styles={customSelectStyles}
-                />
+                <p className={styles['field-caption']}>Tags:</p>
+                <p className={styles['field-value']}>
+                  {streamTags?.length ? streamTags.map((tag) => tag.name).join(', ') : '-'}
+                </p>
               </div>
-              <div>
-                <label className={styles['label']}>Stream chat</label>
-                <div className={styles['toggle-wrap']}>
-                  <ToggleSwitch defaultValue={stream?.isChatEnabled ?? true} onToggle={onStreamChatToggleChange} />
-                  <span className={styles['label-right']}>{stream?.isChatEnabled ? 'Enabled' : 'Disabled'}</span>
-                </div>
+              <div className={styles['text-field-container']}>
+                <p className={styles['field-caption']}>Description:</p>
+                <p className={clsx(styles['field-value'], styles['field-value-description'])}>
+                  {streamDesc ? streamDesc : '-'}
+                </p>
               </div>
+              <PrivacySelector />
+              <ChatToggle />
             </div>
           </div>
         </div>
       </div>
       <div className={styles['chat-container']}>
-        <VideoChatContainer videoId={stream?.id ?? ''} chatSettings={chatSettings} chatStyle={ChatStyle.GREEN} />
+        <VideoChatContainer videoId={streamId ?? ''} chatSettings={chatSettings} chatStyle={ChatStyle.GREEN} />
       </div>
     </div>
   );

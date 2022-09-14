@@ -52,7 +52,10 @@ services:
     env_file:
       - ../../.env/api-debug.env
     volumes:
-      - ../../backend/core:/app/backend/core
+      - ../../backend/core:/app/backend/core:ro
+      # prisma doesn't have permissions to write to node_modules
+      # for some reason, if this volume is turned on
+      # - node_modules_backend_upper:/app/node_modules:rw
       - node_modules_backend:/app/backend/core/node_modules:rw
       - node_modules_backend_shared:/app/shared/node_modules:rw
     networks:

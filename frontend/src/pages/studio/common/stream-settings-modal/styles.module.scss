@@ -1,26 +1,48 @@
 .modal-container {
   display: flex;
   flex-direction: column;
-  width: 600px;
+  width: min(600px, 100vw);
+  max-width: 600px;
   height: 80%;
-  padding: 20px;
+  padding: 0;
   background-color: var(--stream-settings-modal-bg);
 }
 
+.content {
+  padding: 0 20px;
+}
+
+.header,
+.footer {
+  padding: 10px;
+}
+
 .header {
-  padding: 10px 0;
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--stream-settings-modal-bg);
   border-bottom: 1px solid var(--white-text-color);
 }
 
+.close-icon {
+  color: var(--always-white-color);
+  cursor: pointer;
+}
+
 .footer {
+  position: sticky;
+  bottom: 0;
   display: flex;
   justify-content: flex-end;
-  gap: 20px;
+  gap: 10px;
   margin-top: auto;
+  background-color: var(--stream-settings-modal-bg);
+  border-top: 1px solid var(--white-text-color);
 }
 
 .control-btn {
-  margin-top: 20px;
   padding: 5px 20px;
   font-size: 110%;
   background-color: transparent;
