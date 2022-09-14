@@ -53,11 +53,17 @@ const StudioStream: FC<Props> = ({
         <div className={styles['settings-block']}>
           <div className={styles['col-1']}>
             <div className={styles['preview-container']}>
-              <div className={styles['preview']} />
               {streamReadiness ? (
-                <VideoPlayer url={streamVideoPath ?? ''} />
+                <VideoPlayer
+                  url={streamVideoPath ?? ''}
+                  sizingProps={{ height: '100%', width: '100%' }}
+                  isLive
+                  mute
+                  maxControlsShadowHeight="200px"
+                  showControls={true}
+                />
               ) : (
-                <Loader color="white" spinnerSize="40" />
+                <Loader color="white" spinnerSize="40px" hCentered vCentered />
               )}
             </div>
             <form className={styles['form-container']}>

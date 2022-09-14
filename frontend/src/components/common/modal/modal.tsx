@@ -10,7 +10,7 @@ import clsx from 'clsx';
 type Props = {
   children: ReactNode;
   isOpen: boolean;
-  addShadowOverlay?: boolean;
+  portalClassName?: string;
   contentContainerClassName?: string;
   closeButtonColor?: IconColor;
   onClose: { (): void };
@@ -23,9 +23,9 @@ const Modal: FC<Props> = ({
   isNeedHiddenOverflow = false,
   onClose,
   children,
-  addShadowOverlay = false,
   contentContainerClassName,
   isNeedCloseButton = true,
+  portalClassName,
   closeButtonColor = IconColor.GREEN,
 }) => {
   const { handleDisableContentContainerClick, handleOutsideClick } = useModal({
@@ -37,11 +37,8 @@ const Modal: FC<Props> = ({
   }
 
   return (
-    <Portal>
-      <div
-        className={clsx(styles['modal-container'], addShadowOverlay && styles['shadow-overlay'])}
-        onClick={handleOutsideClick}
-      >
+    <Portal className={portalClassName}>
+      <div className={styles['modal-container']} onClick={handleOutsideClick}>
         <div
           className={clsx(styles['modal-content-container'], contentContainerClassName)}
           style={{ overflow: isNeedHiddenOverflow ? 'hidden' : 'auto' }}

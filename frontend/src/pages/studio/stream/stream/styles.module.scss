@@ -37,6 +37,8 @@ $label-input-spacing: 5px;
 .chat-container {
   display: flex;
   width: 350px;
+  min-width: 250px;
+  max-width: 350px;
   overflow: hidden;
 }
 
@@ -86,20 +88,8 @@ $label-input-spacing: 5px;
 }
 
 .preview-container {
-  position: relative;
-  min-width: 400px;
-  margin-bottom: 30px;
-  padding-bottom: 56.25%;
-}
-
-.preview {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background-color: black;
+  width: 400px;
+  height: 225px;
 }
 
 .form-container {

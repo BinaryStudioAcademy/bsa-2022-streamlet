@@ -20,6 +20,9 @@ type VideoPlayerProps = {
   url: string;
   isLive?: boolean;
   className?: string;
+  showControls?: boolean;
+  maxControlsShadowHeight?: string;
+  mute?: boolean;
   // fires when user clicks play (and video was paused),
   // or when autoplay is used
   onStartPlay?: () => void;
@@ -33,7 +36,10 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
   sizingProps = {},
   isLive = false,
   className,
+  showControls = true,
   onStartPlay,
+  mute = false,
+  maxControlsShadowHeight = '100vh',
 }) => {
   const videoContainerRef = useRef<HTMLVideoElement | null>(null);
   const videoContainerWrapperRef = useRef<HTMLElement | null>(null);
@@ -160,11 +166,19 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
     <div
       ref={videoContainerWrapperCallbackRef}
       className={clsx({ [styles['fullscreen']]: isFullscreen }, styles['video-container-wrapper'], className)}
-      style={{ height: sizingProps.height, width: sizingProps.width, aspectRatio: sizingProps.aspectRatio }}
+      style={
+        {
+          height: sizingProps.height,
+          width: sizingProps.width,
+          aspectRatio: sizingProps.aspectRatio,
+          '--max-controls-shadow-height': maxControlsShadowHeight,
+        } as React.CSSProperties
+      }
       data-paused="true"
     >
       <video
         autoPlay
+        muted={mute}
         playsInline
         ref={videoContainerCallbackRef}
         {...videoAttributes}
@@ -184,7 +198,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
         <p>Your browser doesn't support playing video. Please upgrade to a new one.</p>
       </video>
       <div></div>
-      {videoContainerRef.current && videoContainerWrapperRef.current && hlsRef.current && (
+      {videoContainerRef.current && videoContainerWrapperRef.current && hlsRef.current && showControls && (
         <>
           <PlayPauseCenterEffect videoContainer={videoContainerRef.current} className={styles['playpause-effect']} />
           <VideoPlayerControls
