@@ -4,6 +4,7 @@ import {
   httpDelete,
   httpGet,
   httpPost,
+  httpPut,
   queryParam,
   request,
   requestBody,
@@ -62,6 +63,8 @@ import { ChannelService } from '~/core/channel/application/channel-service';
 import { matchChannelFilterSortBy } from '~/shared/enums/channel/channel-filters-data.config';
 import { getSearchQuerySplit } from '~/shared/helpers/search/search';
 import { Forbidden } from '~/shared/exceptions/forbidden';
+import { stringToEnumHelper } from './helpers/string-to-enum-helper';
+import { BadRequest } from '~/shared/exceptions/bad-request';
 
 /**
  * @swagger
@@ -185,6 +188,72 @@ export class VideoController extends BaseHttpController {
     }
 
     return deletedVideos;
+  }
+
+  @httpPut(VideoApiPath.$PRIVACY, authenticationMiddleware)
+  public async updatePrivacy(
+    @requestBody()
+    {
+      authorId,
+      visibility,
+    }: {
+      authorId: string;
+      visibility: string;
+    },
+    @requestParam('videoId') videoId: string,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<VideoInfoDto> {
+    const { id } = req.user;
+    if (authorId !== id) {
+      throw new Forbidden();
+    }
+
+    const privacyStatus = stringToEnumHelper(visibility);
+    if (!privacyStatus) {
+      throw new BadRequest('Invalid video visibility parameter');
+    }
+
+    const updatedVideo = await this.videoService.updateVisibility({
+      videoId,
+      visibility: privacyStatus,
+    });
+    if (!updatedVideo) {
+      throw new NotFound('Video not found');
+    }
+
+    return updatedVideo;
+  }
+
+  @httpPut(VideoApiPath.$ID, authenticationMiddleware)
+  public async updateInfo(
+    @requestBody()
+    {
+      authorId,
+      title,
+      description,
+    }: {
+      authorId: string;
+      title?: string;
+      description?: string;
+    },
+    @requestParam('videoId') videoId: string,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<VideoInfoDto> {
+    const { id } = req.user;
+    if (authorId !== id) {
+      throw new Forbidden();
+    }
+
+    const updatedVideo = await this.videoService.updateInfo({
+      videoId,
+      title,
+      description,
+    });
+    if (!updatedVideo) {
+      throw new NotFound('Video not found');
+    }
+
+    return updatedVideo;
   }
 
   /**

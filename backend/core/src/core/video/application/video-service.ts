@@ -17,12 +17,14 @@ import {
   VideoPaginationParams,
   StreamStatus,
   VideoInfoDto,
+  UpdateVideoVisibilityDto,
+  UpdateVideoInfoDto,
 } from 'shared/build';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { POPULAR_VIDEO_CARD_IN_ONE_PAGE } from '~/shared/constants/constants';
 import { usePagination } from '~/shared/helpers';
 import { getSearchQuerySplit } from '~/shared/helpers/search/get-search-query-split.helper';
-import { castToVideoInfoDto } from './dtos/castToVideoInfo';
+import { castToVideoInfoDto } from './dtos/cast-to-video-info';
 
 @injectable()
 export class VideoService {
@@ -138,5 +140,40 @@ export class VideoService {
     const videos = await this.videoRepository.getMyVideos(authorId);
 
     return videos.map((video) => castToVideoInfoDto(video));
+  }
+
+  async updateVisibility({ videoId, visibility }: UpdateVideoVisibilityDto): Promise<VideoInfoDto | null> {
+    const isVideoExists = await this.videoRepository.getById(videoId);
+    if (!isVideoExists) {
+      return null;
+    }
+    const video = await this.videoRepository.updateVisibility({
+      videoId,
+      visibility,
+    });
+
+    if (!video) {
+      return null;
+    }
+
+    return castToVideoInfoDto(video);
+  }
+
+  async updateInfo({ videoId, title, description }: UpdateVideoInfoDto): Promise<VideoInfoDto | null> {
+    const isVideoExists = await this.videoRepository.getById(videoId);
+    if (!isVideoExists) {
+      return null;
+    }
+    const video = await this.videoRepository.updateVideoInfo({
+      videoId,
+      title,
+      description,
+    });
+
+    if (!video) {
+      return null;
+    }
+
+    return castToVideoInfoDto(video);
   }
 }
