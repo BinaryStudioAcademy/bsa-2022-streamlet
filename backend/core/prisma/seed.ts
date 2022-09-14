@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, ReactionStatus, SubscriptionStatus } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { faker } from '@faker-js/faker';
 import { users, userProfiles, channels, videos } from './seed-data';
@@ -21,6 +21,7 @@ async function seedSampleData(): Promise<void> {
   await seedNotifications();
   await seedHistory();
   await seedReactions();
+  await seedVideoStats();
 }
 
 async function canSeed(): Promise<boolean> {
@@ -282,6 +283,49 @@ async function seedReactions(): Promise<void> {
           isLike: faker.datatype.boolean(),
           userId: user.id,
           videoId: video.id,
+        },
+      });
+    }
+  }
+}
+
+async function seedVideoStats(): Promise<void> {
+  const users = await prisma.user.findMany();
+  const videos = await prisma.video.findMany();
+
+  const usersCount = Math.floor(users.length / 2);
+  const videosPerUser = 2;
+  const usersSample = getRandomSample(users, usersCount);
+
+  const languages = ['en', 'en', 'uk']; // for
+  const reactions = Object.values(ReactionStatus);
+  const subscriptions = Object.values(SubscriptionStatus);
+
+  for (const user of usersSample) {
+    const videosSample = getRandomSample(videos, videosPerUser);
+    for (const video of videosSample) {
+      const reaction = getRandomSample(reactions, 1)[0];
+      const subscription = getRandomSample(subscriptions, 1)[0];
+      const isLive = Boolean(Math.round(Math.random()));
+      await prisma.videoStats.create({
+        data: {
+          videoId: video.id,
+          ...(Boolean(Math.round(Math.random())) && {
+            userId: user.id,
+          }),
+          watchTime: Math.floor(Math.random() * 60),
+          language: getRandomSample(languages, 1)[0],
+          isLive,
+          reaction: reaction as ReactionStatus,
+          subscription: subscription as SubscriptionStatus,
+          wasSubscribed: Boolean(Math.round(Math.random())),
+          ...(isLive
+            ? {
+                chatsActivity: Math.floor(Math.random() * 3),
+              }
+            : {
+                commentsActivity: Math.floor(Math.random() * 3),
+              }),
         },
       });
     }
