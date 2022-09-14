@@ -10,6 +10,7 @@ import clsx from 'clsx';
 type Props = {
   children: ReactNode;
   isOpen: boolean;
+  portalClassName?: string;
   contentContainerClassName?: string;
   closeButtonColor?: IconColor;
   onClose: { (): void };
@@ -24,6 +25,7 @@ const Modal: FC<Props> = ({
   children,
   contentContainerClassName,
   isNeedCloseButton = true,
+  portalClassName,
   closeButtonColor = IconColor.GREEN,
 }) => {
   const { handleDisableContentContainerClick, handleOutsideClick } = useModal({
@@ -35,7 +37,7 @@ const Modal: FC<Props> = ({
   }
 
   return (
-    <Portal>
+    <Portal className={portalClassName}>
       <div className={styles['modal-container']} onClick={handleOutsideClick}>
         <div
           className={clsx(styles['modal-content-container'], contentContainerClassName)}

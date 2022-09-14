@@ -1,49 +1,44 @@
 @import 'assets/css/styles.scss';
 
+$label-input-spacing: 5px;
+
 .settings-container {
   position: relative;
   display: flex;
+  flex-wrap: nowrap;
   justify-content: space-around;
-  align-items: flex-start;
-  height: 100vh;
   background: var(--green-300-primary-background);
 }
 
 .settings-block-container {
-  position: relative;
   display: flex;
-  flex-grow: 1;
+  flex: 1 1 auto;
   justify-content: center;
   align-items: center;
-  width: 800px;
-  height: calc(100vh - 40px);
-  margin: 20px 40px;
+  height: calc(100vh - 80px);
+  margin: 40px;
   overflow: auto;
   border-radius: 5px;
 }
 
 .settings-block {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   display: flex;
   flex: 1 1 auto;
+  flex-flow: row nowrap;
   justify-content: space-between;
+  gap: 40px;
   width: 100%;
-  min-width: 900px;
   height: 100%;
-  padding: 20px;
+  padding: 30px;
+  overflow: auto;
   background: var(--green-200-header-menu-background);
 }
 
 .chat-container {
   display: flex;
-  flex-basis: 0.0001px;
-  min-width: 350px;
+  width: 350px;
+  min-width: 250px;
   max-width: 350px;
-  height: 100%;
   overflow: hidden;
 }
 
@@ -62,21 +57,18 @@
 .col-2 {
   display: flex;
   flex-direction: column;
-  max-height: 100vh;
-  padding: 0 20px;
 }
 
 .col-1 {
-  flex-basis: 45%;
+  flex-grow: 4;
+  flex-basis: 0;
+  gap: 20px;
 }
 
 .col-2 {
-  flex-basis: 55%;
-  max-width: 55%;
-
-  @media screen and (max-width: 1500px) {
-    max-width: 50%;
-  }
+  flex-grow: 5;
+  flex-basis: 0;
+  gap: 20px;
 }
 
 .button {
@@ -97,20 +89,29 @@
 }
 
 .preview-container {
-  position: relative;
+  width: 100%;
   min-width: 400px;
-  margin-bottom: 30px;
-  padding-bottom: 56.25%;
+  aspect-ratio: 16 / 9;
+  background-color: black;
 }
 
-.preview {
-  position: absolute;
-  top: 0;
-  left: 0;
+.not-loaded-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  background-color: black;
+  padding: 40px;
+  color: var(--text-gray-color);
+  text-align: center;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .input,
@@ -141,18 +142,14 @@
 }
 
 .label {
-  margin: 0;
+  margin-bottom: $label-input-spacing;
 }
 
-.label-green {
-  margin: 0;
-  color: var(--text-gray-color);
-}
-
-.button-wrapper {
+.first-line {
   display: flex;
-  justify-content: flex-end;
-  gap: 5px;
+  flex-flow: row wrap-reverse;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .padding-button {
@@ -175,6 +172,8 @@
 
 .status-indicator {
   width: 10px;
+  min-width: 10px;
+  max-width: 10px;
   height: 10px;
   background-color: var(--stream-indicator-offline);
   border-radius: 50%;
@@ -200,8 +199,9 @@
 .status-container {
   position: relative;
   display: flex;
+  flex-flow: row wrap;
   justify-content: space-between;
-  margin-bottom: 10px;
+  gap: 10px;
   padding-bottom: 20px;
 }
 
@@ -210,7 +210,7 @@
   position: absolute;
   bottom: 0;
   left: 50%;
-  width: 80%;
+  width: 100%;
   height: 1px;
   border-bottom: 1px solid var(--always-white-color);
   transform: translateX(-50%);
@@ -218,27 +218,28 @@
 
 .stream-details {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   width: 100%;
-}
-
-.stream-details > * {
-  padding-bottom: 6px;
 }
 
 .text-field-container {
   display: flex;
   flex-direction: column;
-  width: 80%;
-  line-height: 20px;
 }
 
 .field-caption {
-  color: var(--text-gray-color);
-  font-size: 95%;
+  margin-bottom: $label-input-spacing;
+  color: var(--text-grayish-color);
+  font-size: 16px;
+  line-height: 20px;
 }
 
 .field-value {
   overflow: hidden;
+  font-size: 18px;
+  line-height: 20px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -252,8 +253,6 @@
 }
 
 .stream-edit {
-  position: absolute;
-  top: 5%;
   width: 70px;
 }
 
