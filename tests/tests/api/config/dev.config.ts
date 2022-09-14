@@ -1,12 +1,14 @@
+import { CONFIG } from 'tests/config/config';
+
 global.appConfig = {
-  envName: 'DEV Environment',
-  baseUrl: 'https://dev.streamlet.tk/api/v1/',
-  swaggerUrl: 'https://dev.streamlet.tk/api-docs/',
+  envName: CONFIG.ENV_NAME,
+  baseUrl: CONFIG.BASE_URL,
+  swaggerUrl: CONFIG.SWAGGER_URL,
 
   users: {
-    Margo: {
-      email: 'ozirna.margo@gmail.com',
-      password: '12345678',
+    defaultUser: {
+      email: CONFIG.USER_EMAIL,
+      password: CONFIG.USER_PASSWORD,
     },
   },
 };

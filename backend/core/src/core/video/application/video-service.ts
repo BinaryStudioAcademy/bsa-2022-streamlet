@@ -16,6 +16,7 @@ import {
   Comment,
   VideoPaginationParams,
   StreamStatus,
+  RecommendedVideosParams,
 } from 'shared/build';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { POPULAR_VIDEO_CARD_IN_ONE_PAGE } from '~/shared/constants/constants';
@@ -120,5 +121,13 @@ export class VideoService {
 
   async addVideoCommentReply(request: BaseReplyRequestDto, userId: string): Promise<Comment[]> {
     return this.videoRepository.addVideoCommentReply(request, userId);
+  }
+
+  async getGeneralVideos(userId: string): Promise<DataVideo> {
+    return await this.videoRepository.getGeneralVideos(userId);
+  }
+
+  async getRecommendedVideos(params: RecommendedVideosParams): Promise<DataVideo> {
+    return await this.videoRepository.getRecommendedVideos(params);
   }
 }
