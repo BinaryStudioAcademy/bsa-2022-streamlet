@@ -1,8 +1,10 @@
 import {
   BaseHttpController,
   controller,
+  httpDelete,
   httpGet,
   httpPost,
+  httpPut,
   queryParam,
   request,
   requestBody,
@@ -40,6 +42,7 @@ import {
   AddVideoViewResponseDto,
   VideoApiPathParams,
   GetSimilarVideosResponseDto,
+  VideoInfoDto,
   RecommendedVideosParams,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
@@ -60,6 +63,9 @@ import { normalizeCategoryFiltersPayload } from '~/primary-adapters/rest/categor
 import { ChannelService } from '~/core/channel/application/channel-service';
 import { matchChannelFilterSortBy } from '~/shared/enums/channel/channel-filters-data.config';
 import { getSearchQuerySplit } from '~/shared/helpers/search/search';
+import { Forbidden } from '~/shared/exceptions/forbidden';
+import { stringToVideoPrivacyHelper } from './helpers/string-to-video-privacy-helper';
+import { BadRequest } from '~/shared/exceptions/bad-request';
 
 /**
  * @swagger
@@ -111,6 +117,7 @@ import { getSearchQuerySplit } from '~/shared/helpers/search/search';
  *          channel:
  *            $ref: '#/components/schemas/Channel'
  */
+
 @controller(ApiPath.VIDEOS)
 export class VideoController extends BaseHttpController {
   private videoService: VideoService;
@@ -170,6 +177,105 @@ export class VideoController extends BaseHttpController {
     };
 
     return await this.videoService.getRecommendedVideos(params);
+  }
+
+  @httpGet(VideoApiPath.GET_MY_VIDEO, authenticationMiddleware)
+  public async getMyVideos(@request() req: ExtendedAuthenticatedRequest): Promise<VideoInfoDto[]> {
+    const { id: authorId } = req.user;
+
+    const videos = await this.videoService.getMyVideos(authorId);
+    return videos;
+  }
+
+  @httpDelete(VideoApiPath.ROOT, authenticationMiddleware)
+  public async deleteByIds(
+    @request() req: ExtendedAuthenticatedRequest,
+    @requestBody()
+    {
+      authorId,
+      ids,
+    }: {
+      authorId: string;
+      ids: string[];
+    },
+  ): Promise<VideoInfoDto[]> {
+    const { id } = req.user;
+    if (authorId !== id) {
+      throw new Forbidden();
+    }
+
+    const deletedVideos = await this.videoService.deleteByIds(ids);
+    if (!deletedVideos) {
+      throw new NotFound('Videos with this ids doesnt exists');
+    }
+
+    return deletedVideos;
+  }
+
+  @httpPut(VideoApiPath.$PRIVACY, authenticationMiddleware)
+  public async updatePrivacy(
+    @requestBody()
+    {
+      authorId,
+      visibility,
+    }: {
+      authorId: string;
+      visibility: string;
+    },
+    @requestParam('videoId') videoId: string,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<VideoInfoDto> {
+    const { id } = req.user;
+    if (authorId !== id) {
+      throw new Forbidden();
+    }
+
+    const privacyStatus = stringToVideoPrivacyHelper(visibility);
+    if (!privacyStatus) {
+      throw new BadRequest('Invalid video visibility parameter');
+    }
+
+    const updatedVideo = await this.videoService.updateVisibility({
+      videoId,
+      visibility: privacyStatus,
+    });
+    if (!updatedVideo) {
+      throw new NotFound('Video not found');
+    }
+
+    return updatedVideo;
+  }
+
+  @httpPut(VideoApiPath.$ID, authenticationMiddleware)
+  public async updateInfo(
+    @requestBody()
+    {
+      authorId,
+      title,
+      description,
+    }: {
+      authorId: string;
+      title?: string;
+      description?: string;
+    },
+    @requestParam('videoId') videoId: string,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<VideoInfoDto> {
+    const { id } = req.user;
+    if (authorId !== id) {
+      throw new Forbidden();
+    }
+
+    const updatedVideo = await this.videoService.updateInfo({
+      videoId,
+      title,
+      description,
+    });
+    if (!updatedVideo) {
+      throw new NotFound('Video not found');
+    }
+
+    return updatedVideo;
   }
 
   /**

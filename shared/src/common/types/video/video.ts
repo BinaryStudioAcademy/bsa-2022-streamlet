@@ -17,3 +17,6 @@ export { GetSimilarVideosResponseDto } from './get-similar-videos-response-dto';
 export { RecommendedVideosParams } from './video-recommended-params.dto';
 export { ResponseVideoQueryRaw } from './video-response-query-raw.dto';
 export * from './add-video-view-dto';
+export { UpdateVideoVisibilityDto } from './update-video-visibillity-dto';
+export { UpdateVideoInfoDto } from './update-video-info-dto';
+export { VideoInfoDto } from './video-info-dto';
