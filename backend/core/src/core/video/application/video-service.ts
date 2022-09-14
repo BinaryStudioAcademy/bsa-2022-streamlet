@@ -153,11 +153,7 @@ export class VideoService {
       visibility,
     });
 
-    if (!video) {
-      return null;
-    }
-
-    return castToVideoInfoDto(video);
+    return video && castToVideoInfoDto(video);
   }
 
   async updateInfo({ videoId, title, description }: UpdateVideoInfoDto): Promise<VideoInfoDto | null> {
@@ -171,11 +167,7 @@ export class VideoService {
       description,
     });
 
-    if (!video) {
-      return null;
-    }
-
-    return castToVideoInfoDto(video);
+    return video && castToVideoInfoDto(video);
   }
 
   async getGeneralVideos(userId: string): Promise<DataVideo> {

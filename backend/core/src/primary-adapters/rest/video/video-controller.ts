@@ -64,7 +64,7 @@ import { ChannelService } from '~/core/channel/application/channel-service';
 import { matchChannelFilterSortBy } from '~/shared/enums/channel/channel-filters-data.config';
 import { getSearchQuerySplit } from '~/shared/helpers/search/search';
 import { Forbidden } from '~/shared/exceptions/forbidden';
-import { stringToEnumHelper } from './helpers/string-to-enum-helper';
+import { stringToVideoPrivacyHelper } from './helpers/string-to-video-privacy-helper';
 import { BadRequest } from '~/shared/exceptions/bad-request';
 
 /**
@@ -230,7 +230,7 @@ export class VideoController extends BaseHttpController {
       throw new Forbidden();
     }
 
-    const privacyStatus = stringToEnumHelper(visibility);
+    const privacyStatus = stringToVideoPrivacyHelper(visibility);
     if (!privacyStatus) {
       throw new BadRequest('Invalid video visibility parameter');
     }
