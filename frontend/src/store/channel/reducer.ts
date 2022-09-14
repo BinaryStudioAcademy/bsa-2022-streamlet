@@ -10,6 +10,7 @@ import {
   updateChannelAvatar,
   updateChannelBanner,
   updateChannelInfo,
+  updateChannelSubscriptionCount,
 } from './actions';
 
 type ChannelInfo = Omit<ChannelInfoResponseDto, 'initialVideosPage'>;
@@ -112,6 +113,13 @@ const reducer = createReducer(initialState, (builder) => {
     }
     state.currentChannel.subscription.dataStatus = DataStatus.FULFILLED;
     state.currentChannel.subscription.error = undefined;
+  });
+
+  builder.addCase(updateChannelSubscriptionCount, (state, { payload }) => {
+    if (!state.currentChannel.data) {
+      return state;
+    }
+    state.currentChannel.data.subscribersCount = payload;
   });
 
   builder.addMatcher(
