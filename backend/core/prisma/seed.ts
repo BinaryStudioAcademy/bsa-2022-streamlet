@@ -22,6 +22,7 @@ async function seedSampleData(): Promise<void> {
   await seedHistory();
   await seedReactions();
   await seedVideoStats();
+  await seedChannelStats();
 }
 
 async function canSeed(): Promise<boolean> {
@@ -329,6 +330,22 @@ async function seedVideoStats(): Promise<void> {
         },
       });
     }
+  }
+}
+
+async function seedChannelStats(): Promise<void> {
+  const users = await prisma.user.findMany({ include: { subscriptions: true } });
+
+  for (const user of users) {
+    await prisma.channelStats.createMany({
+      data: [
+        ...user.subscriptions.map((s) => ({
+          channelId: s.channelId,
+          userId: user.id,
+          subscription: SubscriptionStatus.SUBSCRIBED,
+        })),
+      ],
+    });
   }
 }
 
