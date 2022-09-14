@@ -11,7 +11,11 @@ import {
   requestParam,
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES, ExtendedAuthenticatedRequest } from '~/shared/types/types';
+import {
+  BaseVideoResponseArrayWithTotalNum,
+  CONTAINER_TYPES,
+  ExtendedAuthenticatedRequest,
+} from '~/shared/types/types';
 import {
   ApiPath,
   CategoryApiPath,
@@ -20,7 +24,6 @@ import {
   CategoryCreateRequestDto,
   CategoryGetAllDto,
   CategoryUpdateRequestDto,
-  BaseVideoResponseDto,
   BindCategoryToVideoRequestDto,
 } from 'shared/build';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -56,7 +59,7 @@ export class CategoryController extends BaseHttpController {
   @httpGet(CategoryApiPath.SEARCH)
   public async search(
     @queryParam() { take, skip, categories }: CategorySearchRequestQueryDto,
-  ): Promise<BaseVideoResponseDto[]> {
+  ): Promise<BaseVideoResponseArrayWithTotalNum> {
     return this.categoryService.search({
       take: Number(take) || undefined,
       skip: Number(skip) || undefined,

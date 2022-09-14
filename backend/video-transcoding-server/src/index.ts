@@ -1,10 +1,9 @@
-import { bootstrapApp } from './app';
-import { amqpConnect } from './config/amqp-connection';
 import { logger } from './config/logger';
-import { amqpService } from './services';
 import Express from 'express';
 import bodyParser from 'body-parser';
 import * as http from 'http';
+import { AmqpService } from '~/services/amqp/amqp-service';
+import { StreamingService } from '~/services/stream/streaming-service';
 
 const app = Express();
 
@@ -15,20 +14,21 @@ app.get('/healthcheck', (req, res) => {
   res.sendStatus(200);
 });
 
-export { app };
-
 const server: http.Server = http.createServer(app);
 
 server.on('error', (error: Error) => {
   logger.error(error, 'Server start error: ');
   process.exit(1);
 });
+
 server.listen(5003, async () => {
   logger.info(`Server started on ${5003} PORT`);
   try {
-    const amqpConnection = await amqpConnect();
-    amqpService.connect(amqpConnection);
-    bootstrapApp();
+    const amqpService = new AmqpService();
+    await amqpService.connect();
+
+    const streamingService = new StreamingService(amqpService);
+    await streamingService.initConsumers();
   } catch (err) {
     logger.error(err, 'Amqp connection initialization error: ');
     process.exit(1);

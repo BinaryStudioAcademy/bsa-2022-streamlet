@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 
 import { DataStatus } from 'common/enums/enums';
+import { removeItemIfExists, replaceItemIfExists } from 'helpers/helpers';
 import { BaseVideoResponseDto, Comment, VideoExpandedResponseDto } from 'shared/build';
 import { channelSubscribe } from 'store/subscriptions/actions';
 import {
@@ -13,6 +14,8 @@ import {
   resetVideoPage,
   addVideoView,
   loadRecommendedVideos,
+  deleteComment,
+  updateComment,
 } from './actions';
 
 type State = {
@@ -164,6 +167,44 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(addVideoCommentReply.fulfilled, (state, { payload }) => {
     state.replies.data[payload.commentId] = payload.data;
     state.replies.dataStatus = DataStatus.FULFILLED;
+  });
+
+  builder.addCase(deleteComment.fulfilled, (state, { payload }) => {
+    if (!state.video || state.video.comments.length === 0) {
+      return state;
+    }
+    if ('commentId' in payload) {
+      if (payload.parentId && payload.parentId in state.replies.data) {
+        const replies = [...state.replies.data[payload.parentId]];
+        state.replies.data[payload.parentId] = removeItemIfExists(replies, { id: payload.commentId });
+
+        const comments = [...state.video.comments];
+        const parrentComment = comments.find((c) => c.id === payload.parentId);
+        if (parrentComment && 'repliesCount' in parrentComment) {
+          parrentComment.repliesCount = parrentComment.repliesCount ? parrentComment.repliesCount - 1 : 0;
+          state.video.comments = replaceItemIfExists(comments, { id: payload.parentId }, parrentComment);
+        }
+      } else {
+        const comments = [...state.video.comments];
+        state.video.comments = removeItemIfExists(comments, { id: payload.commentId });
+      }
+    } else {
+      const comments = [...state.video.comments];
+      state.video.comments = replaceItemIfExists(comments, { id: payload.id }, payload);
+    }
+  });
+
+  builder.addCase(updateComment.fulfilled, (state, { payload }) => {
+    if (!state.video || state.video.comments.length === 0) {
+      return state;
+    }
+    if (payload.parentId && payload.parentId in state.replies.data) {
+      const replies = [...state.replies.data[payload.parentId]];
+      state.replies.data[payload.parentId] = replaceItemIfExists(replies, { id: payload.id }, payload);
+    } else {
+      const comments = [...state.video.comments];
+      state.video.comments = replaceItemIfExists(comments, { id: payload.id }, payload);
+    }
   });
 
   builder.addCase(resetVideoPage, (state) => {

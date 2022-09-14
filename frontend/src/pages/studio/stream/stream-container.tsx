@@ -1,5 +1,5 @@
 import { STREAMING_SERVER_URL } from 'common/constants/constants';
-import { IconName, SocketEvents, StreamStatus } from 'common/enums/enums';
+import { ENV, IconName, SocketEvents, StreamStatus } from 'common/enums/enums';
 import { FC, StreamUpdateRequestDto } from 'common/types/types';
 import { createToastNotification } from 'components/common/toast-notification';
 import { Forbidden } from 'components/placeholder-page';
@@ -91,7 +91,7 @@ const StudioStreamContainer: FC = () => {
     () => ({
       streamingKey: streamingKey ?? '',
       streamingServerUrl: STREAMING_SERVER_URL,
-      streamUrl: `https://dev.streamlet.tk/video/${streamId}`,
+      streamUrl: `${ENV.VIDEO_FALLBACK_BASE_URL}/video/${streamId}`,
     }),
     [streamId, streamingKey],
   );

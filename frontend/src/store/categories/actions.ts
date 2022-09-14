@@ -14,10 +14,6 @@ const getCategories = createAsyncThunk<CategoryResponseDto[], void, AsyncThunkCo
         name: prettyDisplayCategoryName(category.name),
       };
     });
-    // categories.unshift({
-    //   id: '1',
-    //   name: 'All',
-    // });
     return categories;
   },
 );

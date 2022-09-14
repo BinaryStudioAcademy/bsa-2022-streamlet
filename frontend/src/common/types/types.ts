@@ -49,6 +49,7 @@ export {
 } from './stream/stream';
 
 export * from './chat/chat';
+export * from './comment/comment';
 export * from './batch-payload/batch-payload';
 
 export { SearchDataResponseDto } from './search/search';

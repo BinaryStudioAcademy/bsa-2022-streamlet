@@ -1,6 +1,7 @@
 import { User, UserProfile, Video, VideoComment, CommentReaction } from '@prisma/client';
-import { BaseVideoResponseDto, StreamStatus } from 'shared/build';
+import { BaseVideoResponseDto, ResponseVideoQueryRaw, StreamStatus } from 'shared/build';
 import { Comment } from 'shared/build/common/types/comment';
+import { calculateReactions } from './calculate-reactions.helper';
 
 export const trimVideoToBase = (
   video: Video & {
@@ -94,6 +95,9 @@ export const trimVideoWithComments = (
       parentId: comment.parentId,
       repliesCount: comment.repliesCount,
       text: comment.text,
+      isEdited: comment.isEdited,
+      isDeleted: comment.isDeleted,
+      authorId: comment.author.id,
       userName: comment.author.username,
       avatar: comment.author.profile?.avatar,
       firstName: comment.author.profile?.firstName,
@@ -119,10 +123,13 @@ export const trimCommentsForReplies = (
     id: comment.id,
     parentId: comment.parentId,
     avatar: comment.author.profile?.avatar,
+    authorId: comment.author.id,
     userName: comment.author.username,
     firstName: comment.author.profile?.firstName,
     lastName: comment.author.profile?.lastName,
     text: comment.text,
+    isEdited: comment.isEdited,
+    isDeleted: comment.isDeleted,
     dateAdded: comment.createdAt,
     likeNum: calculateReactions(comment.commentReactions, true),
     dislikeNum: calculateReactions(comment.commentReactions, false),
@@ -132,7 +139,19 @@ export const trimCommentsForReplies = (
   return result;
 };
 
-const calculateReactions = (commentReactions: CommentReaction[], isLike: boolean): number => {
-  const likeCount = commentReactions.filter((item) => item.isLike === isLike);
-  return likeCount.length;
-};
+export const trimVideoForQueryRaw = (video: ResponseVideoQueryRaw): BaseVideoResponseDto => ({
+  id: video.id,
+  name: video.name,
+  status: video.status,
+  publishedAt: video.publishedAt,
+  scheduledStreamDate: video.scheduledStreamDate,
+  poster: video.poster,
+  duration: video.duration,
+  videoViews: video.videoViews,
+  liveViews: video.liveViews,
+  channel: {
+    id: video.ch_id,
+    name: video.ch_name,
+    avatar: video.ch_avatar,
+  },
+});

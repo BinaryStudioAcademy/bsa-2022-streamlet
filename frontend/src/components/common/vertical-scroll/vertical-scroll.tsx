@@ -4,6 +4,8 @@ import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 import { useEffect, useState } from '../../../hooks/hooks';
 import { ReactElement, ReactNode, useContext } from 'react';
 import clsx from 'clsx';
+import { Icon } from '../common';
+import { IconColor, IconName } from '../../../common/enums/enums';
 import { FC } from '../../../common/types/react/fc.type';
 
 type PropsLeftRightArrow = {
@@ -69,7 +71,7 @@ const LeftArrow: FC<PropsLeftRightArrow> = ({ isFollowingOrBrowse = false }): Re
       isRight={false}
       isFollowingOrBrowse={isFollowingOrBrowse}
     >
-      {'<'}
+      <Icon name={IconName.HORIZONTAL_SCROLL_LEFT_ARROW} color={IconColor.GRAY} width={'16'} height={'16'} />
     </Arrow>
   );
 };
@@ -91,7 +93,7 @@ const RightArrow: FC<PropsLeftRightArrow> = ({ isFollowingOrBrowse = false }): R
       isRight={true}
       isFollowingOrBrowse={isFollowingOrBrowse}
     >
-      {'>'}
+      <Icon name={IconName.HORIZONTAL_SCROLL_RIGHT_ARROW} color={IconColor.GRAY} width={'16'} height={'16'} />
     </Arrow>
   );
 };
