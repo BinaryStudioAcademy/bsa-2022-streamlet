@@ -61,8 +61,8 @@ const getVideosByCategory = createAsyncThunk<DataVideo, void, AsyncThunkConfig>(
     }
     const data = await categoryApi.searchByCategories(pickedCategories);
     return {
-      list: data,
-      total: data.length,
+      list: data.list,
+      total: data.totalVideosNum,
     };
   },
 );
