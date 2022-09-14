@@ -168,7 +168,7 @@ const StudioStream: FC<Props> = ({
                 />
               </div>
               <div className={styles['text-field-container']}>
-                <label className={styles['label']}>Stream privacy</label>
+                <label className={styles['label-green']}>Stream privacy</label>
                 <ReactSelect
                   options={STREAM_PRIVACY_OPTIONS}
                   defaultValue={
@@ -182,7 +182,7 @@ const StudioStream: FC<Props> = ({
                 />
               </div>
               <div>
-                <label className={styles['label']}>Stream chat</label>
+                <label className={styles['label-green']}>Stream chat</label>
                 <div className={styles['toggle-wrap']}>
                   <ToggleSwitch defaultValue={stream?.isChatEnabled ?? true} onToggle={onStreamChatToggleChange} />
                   <span className={styles['label-right']}>{stream?.isChatEnabled ? 'Enabled' : 'Disabled'}</span>

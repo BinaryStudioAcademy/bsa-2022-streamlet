@@ -123,6 +123,10 @@
     color: var(--text-gray-color);
     background-color: var(--studio-input-disabled);
   }
+
+  &:hover {
+    background-color: var(--studio-input);
+  }
 }
 
 .field-container {
@@ -138,6 +142,11 @@
 
 .label {
   margin: 0;
+}
+
+.label-green {
+  margin: 0;
+  color: var(--text-gray-color);
 }
 
 .button-wrapper {
