@@ -26,7 +26,12 @@ const FiltersBlock: FC<FilterBlockProps> = ({ filterList, handleClickFilter, han
 
   return (
     <div className={styles['filter-block']}>
-      <ScrollMenu LeftArrow={LeftArrow} RightArrow={RightArrow} wrapperClassName={styles['horizontal-scroll']}>
+      <ScrollMenu
+        LeftArrow={LeftArrow}
+        RightArrow={RightArrow}
+        wrapperClassName={styles['horizontal-scroll']}
+        separatorClassName={styles['separator-for-items']}
+      >
         {filterList.map((filter): ReactElement => {
           const isItClearAllFilter = filter.id === '1' && filter.name === 'All';
 

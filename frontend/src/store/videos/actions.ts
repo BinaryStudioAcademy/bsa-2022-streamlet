@@ -23,6 +23,32 @@ const getVideos = createAsyncThunk<DataVideo, Record<'withLazyLoad', boolean> | 
   },
 );
 
+const getGeneralVideosBlock = createAsyncThunk<DataVideo, void, AsyncThunkConfig>(
+  ActionType.GET_GENERAL_VIDEOS,
+  async (_payload, { extra: { videoApi } }) => {
+    return await videoApi.getGeneralVideos();
+  },
+);
+
+const getRecommendedVideos = createAsyncThunk<DataVideo, void, AsyncThunkConfig>(
+  ActionType.GET_RECOMMENDED_VIDEOS,
+  async (_payload, { extra: { videoApi }, getState }) => {
+    const { numbersOfGetVideos, currentPage } = getState().videos.data.recommendedVideos;
+
+    const paginationParams = {
+      skip: (currentPage - 1) * numbersOfGetVideos,
+      take: numbersOfGetVideos,
+    };
+
+    const data = await videoApi.getRecommendedVideos(paginationParams);
+    return data;
+  },
+);
+
+const resetRecommendedVideos = createAction(ActionType.RESET_RECOMMENDED_VIDEOS);
+
+const resetGeneralVideos = createAction(ActionType.RESET_GENERAL_VIDEOS);
+
 const getVideosByCategory = createAsyncThunk<DataVideo, void, AsyncThunkConfig>(
   ActionType.GET_VIDEOS_BY_CATEGORY,
   async (_, { extra: { categoryApi, videoApi }, getState }) => {
@@ -35,8 +61,8 @@ const getVideosByCategory = createAsyncThunk<DataVideo, void, AsyncThunkConfig>(
     }
     const data = await categoryApi.searchByCategories(pickedCategories);
     return {
-      list: data,
-      total: data.length,
+      list: data.list,
+      total: data.totalVideosNum,
     };
   },
 );
@@ -51,4 +77,14 @@ const getPopularVideos = createAsyncThunk<PopularVideoResponseDto, PopularVideos
 const resetPaginationMainPage = createAction(ActionType.RESET_PAGINATION_MAIN_PAGE);
 const setNumberOfVideoForLoading = createAction<PayloadForNumberItems>(ActionType.SET_NUMBER_OF_VIDEO_FOR_LOADING);
 
-export { getVideos, getVideosByCategory, getPopularVideos, resetPaginationMainPage, setNumberOfVideoForLoading };
+export {
+  getVideos,
+  getVideosByCategory,
+  getPopularVideos,
+  resetPaginationMainPage,
+  setNumberOfVideoForLoading,
+  getGeneralVideosBlock,
+  getRecommendedVideos,
+  resetRecommendedVideos,
+  resetGeneralVideos,
+};

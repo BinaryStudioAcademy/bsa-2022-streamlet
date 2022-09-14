@@ -17,6 +17,8 @@ type BaseVideoResponseDto = {
   };
 };
 
+type BaseVideoResponseArrayWithTotalNum = { list: BaseVideoResponseDto[]; totalVideosNum: number };
+
 type BaseSearchVideoResponseDto = {
   id: string;
   name: string;
@@ -42,4 +44,4 @@ type DataVideo = {
   lazyLoad?: boolean;
 };
 
-export { BaseVideoResponseDto, DataVideo, BaseSearchVideoResponseDto };
+export { BaseVideoResponseDto, DataVideo, BaseSearchVideoResponseDto, BaseVideoResponseArrayWithTotalNum };

@@ -7,14 +7,17 @@ type CommentWithAuthor = {
   createdAt: Date;
   updatedAt: Date;
   text: string;
-  author: { username: string; profile: UserProfile | null };
+  isEdited: boolean;
+  isDeleted: boolean;
+  author: { id: string; username: string; profile: UserProfile | null };
 };
 
 export const createVideoCommentResponse = (comments: CommentWithAuthor[]): Comment[] => {
   const commentsResponse = comments.map((comment) => {
-    const { profile, username } = comment.author;
+    const { profile, username, id } = comment.author;
     return {
       ...comment,
+      authorId: id,
       userName: username,
       firstName: profile?.firstName,
       lastName: profile?.lastName,

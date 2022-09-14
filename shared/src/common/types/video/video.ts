@@ -1,4 +1,4 @@
-export { BaseVideoResponseDto, DataVideo } from './base-video-response-dto.type';
+export { BaseVideoResponseDto, DataVideo, BaseVideoResponseArrayWithTotalNum } from './base-video-response-dto.type';
 export { VideoExpandedResponseDto } from './video-expanded-response-dto';
 export { CreateReactionRequestDto } from './create-reaction-request-dto.type';
 export { CreateReactionResponseDto } from './create-reaction-response-dto.type';
@@ -14,6 +14,8 @@ export { ResponseRepliesForComment } from './base-replies-response-dto.type';
 export { BaseReplyRequestDto } from './base-reply-request-dto.type';
 export { VideoPaginationParams } from './video-queries-params.dto';
 export { GetSimilarVideosResponseDto } from './get-similar-videos-response-dto';
+export { RecommendedVideosParams } from './video-recommended-params.dto';
+export { ResponseVideoQueryRaw } from './video-response-query-raw.dto';
 export * from './add-video-view-dto';
 export { UpdateVideoVisibilityDto } from './update-video-visibillity-dto';
 export { UpdateVideoInfoDto } from './update-video-info-dto';

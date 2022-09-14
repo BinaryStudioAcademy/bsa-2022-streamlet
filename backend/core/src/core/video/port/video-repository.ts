@@ -11,6 +11,7 @@ import {
   VideoPaginationParams,
   UpdateVideoVisibilityDto,
   UpdateVideoInfoDto,
+  RecommendedVideosParams,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
@@ -38,7 +39,9 @@ export interface VideoRepository {
   getById(id: string): Promise<VideoExpandedInfo | null>;
   addView(id: string): Promise<{ currentViews: number } | null>;
   searchByTags(searchByTagsDto: TagSearchRequestQueryDto): Promise<VideoWithChannel[]>;
-  searchByCategories(searchByCategoryDto: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]>;
+  searchByCategories(
+    searchRequest: CategorySearchRequestQueryDto,
+  ): Promise<{ list: VideoWithChannel[]; total: number }>;
   getAuthorById(id: string): Promise<string | undefined>;
   getAll(queryParams?: { filters?: VideoRepositoryFilters; pagination?: VideoPaginationParams }): Promise<DataVideo>;
   reactionByUser(videoId: string, userId: string): Promise<boolean | null>;
@@ -72,4 +75,6 @@ export interface VideoRepository {
   deleteByIds(ids: string[]): Promise<VideoWithReactionsAndComments[]>;
   updateVisibility(updateVideoVisibilityDto: UpdateVideoVisibilityDto): Promise<VideoWithReactionsAndComments | null>;
   updateVideoInfo(updateVideoInfo: UpdateVideoInfoDto): Promise<VideoWithReactionsAndComments | null>;
+  getGeneralVideos(userId: string): Promise<DataVideo>;
+  getRecommendedVideos(params: RecommendedVideosParams): Promise<DataVideo>;
 }
