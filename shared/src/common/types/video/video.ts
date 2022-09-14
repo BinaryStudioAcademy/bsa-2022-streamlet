@@ -15,3 +15,6 @@ export { BaseReplyRequestDto } from './base-reply-request-dto.type';
 export { VideoPaginationParams } from './video-queries-params.dto';
 export { GetSimilarVideosResponseDto } from './get-similar-videos-response-dto';
 export * from './add-video-view-dto';
+export { UpdateVideoVisibilityDto } from './update-video-visibillity-dto';
+export { UpdateVideoInfoDto } from './update-video-info-dto';
+export { VideoInfoDto } from './video-info-dto';

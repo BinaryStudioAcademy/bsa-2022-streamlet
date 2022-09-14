@@ -1,6 +1,7 @@
 import {
   BaseHttpController,
   controller,
+  httpDelete,
   httpGet,
   httpPost,
   queryParam,
@@ -40,6 +41,7 @@ import {
   AddVideoViewResponseDto,
   VideoApiPathParams,
   GetSimilarVideosResponseDto,
+  VideoInfoDto,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -59,6 +61,7 @@ import { normalizeCategoryFiltersPayload } from '~/primary-adapters/rest/categor
 import { ChannelService } from '~/core/channel/application/channel-service';
 import { matchChannelFilterSortBy } from '~/shared/enums/channel/channel-filters-data.config';
 import { getSearchQuerySplit } from '~/shared/helpers/search/search';
+import { Forbidden } from '~/shared/exceptions/forbidden';
 
 /**
  * @swagger
@@ -110,6 +113,7 @@ import { getSearchQuerySplit } from '~/shared/helpers/search/search';
  *          channel:
  *            $ref: '#/components/schemas/Channel'
  */
+
 @controller(ApiPath.VIDEOS)
 export class VideoController extends BaseHttpController {
   private videoService: VideoService;
@@ -148,6 +152,39 @@ export class VideoController extends BaseHttpController {
   @httpGet(VideoApiPath.ROOT)
   public async getAllVideos(@queryParam() paginationParams: VideoPaginationParams): Promise<DataVideo> {
     return this.videoService.getAllVideos(paginationParams);
+  }
+
+  @httpGet(VideoApiPath.GET_MY_VIDEO, authenticationMiddleware)
+  public async getMyVideos(@request() req: ExtendedAuthenticatedRequest): Promise<VideoInfoDto[]> {
+    const { id: authorId } = req.user;
+
+    const videos = await this.videoService.getMyVideos(authorId);
+    return videos;
+  }
+
+  @httpDelete(VideoApiPath.ROOT, authenticationMiddleware)
+  public async deleteByIds(
+    @request() req: ExtendedAuthenticatedRequest,
+    @requestBody()
+    {
+      authorId,
+      ids,
+    }: {
+      authorId: string;
+      ids: string[];
+    },
+  ): Promise<VideoInfoDto[]> {
+    const { id } = req.user;
+    if (authorId !== id) {
+      throw new Forbidden();
+    }
+
+    const deletedVideos = await this.videoService.deleteByIds(ids);
+    if (!deletedVideos) {
+      throw new NotFound('Videos with this ids doesnt exists');
+    }
+
+    return deletedVideos;
   }
 
   /**

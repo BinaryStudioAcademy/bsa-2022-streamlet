@@ -8,6 +8,7 @@ enum VideoApiPath {
   SEARCH = '/search',
   REPLIES_COMMENT = '/comment/replies',
   SIMILAR_VIDEOS = '/similar',
+  GET_MY_VIDEO = '/me',
 }
 
 enum VideoApiPathParams {
