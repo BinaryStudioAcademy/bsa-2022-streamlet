@@ -36,6 +36,7 @@ model User {
   reactions          Reaction[]
   commentReactions   CommentReaction[]
   videoStats         VideoStats[]
+  channelStats       ChannelStats[]
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
 }
@@ -203,6 +204,7 @@ model Channel {
   authorId      String
   streamingKeys StreamingKey[]
   subscriptions Subscription[]
+  stats         ChannelStats[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 }
@@ -303,6 +305,17 @@ model VideoStats {
   wasSubscribed     Boolean             @default(false)
   commentsActivity  Int                 @default(0)
   chatsActivity     Int                 @default(0)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+}
+
+model ChannelStats {
+  id                String              @id @default(uuid())
+  channel           Channel             @relation(fields: [channelId], references: [id])
+  channelId         String
+  user              User                @relation(fields: [userId], references: [id])
+  userId            String
+  subscription      SubscriptionStatus  @default(NONE)
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
 }
