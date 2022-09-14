@@ -124,6 +124,10 @@ $label-input-spacing: 5px;
     color: var(--text-gray-color);
     background-color: var(--studio-input-disabled);
   }
+
+  &:hover {
+    background-color: var(--studio-input);
+  }
 }
 
 .field-container {
