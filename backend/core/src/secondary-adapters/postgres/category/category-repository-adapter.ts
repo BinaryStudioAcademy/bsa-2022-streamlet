@@ -90,4 +90,12 @@ export class CategoryRepositoryAdapter implements CategoryRepository {
       },
     });
   }
+
+  async clearCategoriesToVideoBinding(videoId: string): Promise<void> {
+    await this.prismaClient.categoryToVideo.deleteMany({
+      where: {
+        videoId,
+      },
+    });
+  }
 }

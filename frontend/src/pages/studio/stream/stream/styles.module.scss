@@ -1,0 +1,263 @@
+@import 'assets/css/styles.scss';
+
+$label-input-spacing: 5px;
+
+.settings-container {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  background: var(--green-300-primary-background);
+}
+
+.settings-block-container {
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 80px);
+  margin: 40px;
+  overflow: auto;
+  border-radius: 5px;
+}
+
+.settings-block {
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  gap: 40px;
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+  overflow: auto;
+  background: var(--green-200-header-menu-background);
+}
+
+.chat-container {
+  display: flex;
+  width: 350px;
+  min-width: 250px;
+  max-width: 350px;
+  overflow: hidden;
+}
+
+.area {
+  height: 250px;
+  color: var(--white-text-color);
+  background-color: var(--studio-input);
+
+  &:disabled {
+    color: var(--text-gray-color);
+    background-color: var(--studio-input-disabled);
+  }
+}
+
+.col-1,
+.col-2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.col-1 {
+  flex-grow: 4;
+  flex-basis: 0;
+  gap: 20px;
+}
+
+.col-2 {
+  flex-grow: 5;
+  flex-basis: 0;
+  gap: 20px;
+}
+
+.button {
+  flex: 0 0 0;
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  color: var(--white-text-color);
+  line-height: 16px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  background-color: var(--brand-green-color);
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+}
+
+.preview-container {
+  width: 100%;
+  min-width: 400px;
+  aspect-ratio: 16 / 9;
+  background-color: black;
+}
+
+.not-loaded-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  color: var(--text-gray-color);
+  text-align: center;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input,
+.input-eye {
+  height: 40px;
+  color: var(--white-text-color);
+  background-color: var(--studio-input);
+
+  &:disabled {
+    color: var(--text-gray-color);
+    background-color: var(--studio-input-disabled);
+  }
+
+  &:hover {
+    background-color: var(--studio-input);
+  }
+}
+
+.field-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.field-container > * {
+  width: 100%;
+}
+
+.label {
+  margin-bottom: $label-input-spacing;
+}
+
+.first-line {
+  display: flex;
+  flex-flow: row wrap-reverse;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.padding-button {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.input-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  column-gap: 20px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-indicator {
+  width: 10px;
+  min-width: 10px;
+  max-width: 10px;
+  height: 10px;
+  background-color: var(--stream-indicator-offline);
+  border-radius: 50%;
+}
+
+.live {
+  background-color: var(--live-red);
+}
+
+.live-button {
+  background-color: var(--live-red);
+
+  &:hover {
+    background-color: var(--live-red-hover);
+  }
+}
+
+.status-text {
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.status-container {
+  position: relative;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 20px;
+}
+
+.status-container::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px solid var(--always-white-color);
+  transform: translateX(-50%);
+}
+
+.stream-details {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.text-field-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-caption {
+  margin-bottom: $label-input-spacing;
+  color: var(--text-grayish-color);
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.field-value {
+  overflow: hidden;
+  font-size: 18px;
+  line-height: 20px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.field-value.field-value-description {
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  white-space: unset;
+  -webkit-box-orient: vertical;
+}
+
+.stream-edit {
+  width: 70px;
+}
+
+.toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}

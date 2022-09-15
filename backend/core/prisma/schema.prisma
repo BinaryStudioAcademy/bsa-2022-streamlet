@@ -46,7 +46,7 @@ model UserProfile {
   firstName String
   lastName  String
   avatar    String   @default("")
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -57,7 +57,7 @@ model RefreshToken {
   token     String
   // assuming there should be at most one token for a user at any given time
   userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -67,7 +67,7 @@ model ResetPasswordToken {
   token     String
   // assuming there should be at most one token for a user at any given time
   userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -127,7 +127,7 @@ model Video {
   tags                TagToVideo[]
   categories          CategoryToVideo[]
   comments            VideoComment[]
-  channel             Channel        @relation(fields: [channelId], references: [id])
+  channel             Channel        @relation(fields: [channelId], references: [id], onDelete: Cascade)
   channelId           String
   isChatEnabled       Boolean         @default(true)
   chatMessages        ChatMessage[]
@@ -148,9 +148,9 @@ model Tag {
 }
 
 model TagToVideo {
-  tag        Tag       @relation(fields: [tagId], references: [id])
+  tag        Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade)
   tagId      String
-  video      Video     @relation(fields: [videoId], references: [id])
+  video      Video     @relation(fields: [videoId], references: [id], onDelete: Cascade)
   videoId    String
 
   @@id([tagId, videoId])
@@ -167,18 +167,18 @@ model Category {
 }
 
 model CategoryToUser {
-  category   Category @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId String
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
 
   @@id([categoryId, userId])
 }
 
 model CategoryToVideo {
-  category   Category @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId String
-  video       Video   @relation(fields: [videoId], references: [id])
+  video       Video   @relation(fields: [videoId], references: [id], onDelete: Cascade)
   videoId     String
 
   @@id([categoryId, videoId])
@@ -188,13 +188,15 @@ model VideoComment {
   id               String            @id @default(uuid())
   parentId         String?
   childComments    VideoComment[]    @relation("ParentChildVideoComment")
-  parentComment    VideoComment?     @relation("ParentChildVideoComment", fields: [parentId], references: [id])
+  parentComment    VideoComment?     @relation("ParentChildVideoComment", fields: [parentId], references: [id], onDelete: Cascade)
   text             String
-  video            Video             @relation(fields: [videoId], references: [id])
+  video            Video             @relation(fields: [videoId], references: [id], onDelete: Cascade)
   videoId          String
-  author           User              @relation(fields: [authorId], references: [id])
+  author           User              @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId         String
   commentReactions CommentReaction[]
+  isEdited         Boolean           @default(false)
+  isDeleted        Boolean           @default(false)
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 }
@@ -207,7 +209,7 @@ model Channel {
   videos        Video[]
   contactEmail  String         @default("")
   bannerImage   String         @default("")
-  author        User           @relation(fields: [authorId], references: [id])
+  author        User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId      String
   streamingKeys StreamingKey[]
   subscriptions Subscription[]
@@ -219,15 +221,15 @@ model Channel {
 model StreamingKey {
   id        String  @id @default(uuid())
   key       String  @unique @default(uuid())
-  channel   Channel @relation(fields: [channelId], references: [id])
+  channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
   channelId String  @unique
 }
 
 model Subscription {
   id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  channel   Channel  @relation(fields: [channelId], references: [id])
+  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
   channelId String
   notify    Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -239,9 +241,9 @@ model Subscription {
 model ChatMessage {
   id        String   @id @default(uuid())
   text      String
-  video     Video    @relation(fields: [videoId], references: [id])
+  video     Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
   videoId   String
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -250,9 +252,9 @@ model ChatMessage {
 model Notification {
   id        String   @id @default(uuid())
   text      String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  video     Video    @relation(fields: [videoId], references: [id])
+  video     Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
   videoId   String
   viewed    Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -263,9 +265,9 @@ model Notification {
 
 model History {
   id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  video     Video    @relation(fields: [videoId], references: [id])
+  video     Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
   videoId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -273,9 +275,9 @@ model History {
 
 model Reaction {
   id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  video     Video    @relation(fields: [videoId], references: [id])
+  video     Video    @relation(fields: [videoId], references: [id], onDelete: Cascade)
   videoId   String
   isLike    Boolean
   createdAt DateTime @default(now())
@@ -286,9 +288,9 @@ model Reaction {
 
 model CommentReaction {
   id        String       @id @default(uuid())
-  user      User         @relation(fields: [userId], references: [id])
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  comment   VideoComment @relation(fields: [commentId], references: [id])
+  comment   VideoComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId String
   isLike    Boolean
   createdAt DateTime     @default(now())

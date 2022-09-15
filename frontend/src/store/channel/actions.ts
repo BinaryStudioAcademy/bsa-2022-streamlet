@@ -67,6 +67,8 @@ const updateChannelBanner = createAsyncThunk<
 
 const unloadChannelInfo = createAction(ActionsTypes.UNLOAD_CHANNEL_SETTINGS);
 
+const updateChannelSubscriptionCount = createAction<number>(ActionsTypes.UPDATE_CHANNEL_SUBSCRIPTION_COUNT);
+
 export {
   loadChannel,
   loadMyChannelInfo,
@@ -74,4 +76,5 @@ export {
   updateChannelInfo,
   updateChannelAvatar,
   updateChannelBanner,
+  updateChannelSubscriptionCount,
 };

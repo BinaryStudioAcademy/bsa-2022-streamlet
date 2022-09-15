@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { CONTAINER_TYPES } from '~/shared/types/types';
+import { BaseVideoResponseArrayWithTotalNum, CONTAINER_TYPES } from '~/shared/types/types';
 
 import {
   CategoryCreateRequestDto,
@@ -9,7 +9,6 @@ import {
   ImageStorePresetType,
   ImageUploadResponseDto,
   CategoryUpdateRequestDto,
-  BaseVideoResponseDto,
   CategoryCreateDto,
 } from 'shared/build';
 
@@ -51,9 +50,18 @@ export class CategoryService {
     return categories.map((category) => castToCategoryResponseDto(category));
   }
 
-  async search(categorySearchRequestQueryDto: CategorySearchRequestQueryDto): Promise<BaseVideoResponseDto[]> {
-    const videos = await this.videoRepository.searchByCategories(categorySearchRequestQueryDto);
-    return videos.map((video) => castToSearchByCategoryResponseDto(video));
+  async search(
+    categorySearchRequestQueryDto: CategorySearchRequestQueryDto,
+  ): Promise<BaseVideoResponseArrayWithTotalNum> {
+    const data = await this.videoRepository.searchByCategories(categorySearchRequestQueryDto);
+
+    const { list, total } = data;
+    const preparedList = list.map((video) => castToSearchByCategoryResponseDto(video));
+
+    return {
+      list: preparedList,
+      totalVideosNum: total,
+    };
   }
 
   async updateCategory(
@@ -118,6 +126,7 @@ export class CategoryService {
     if (!isVideoExists) {
       return null;
     }
+    await this.categoryRepository.clearCategoriesToVideoBinding(videoId);
     const categories: string[] = [];
     for (const { name } of categoryPayload) {
       const category = await this.categoryRepository.getByName(name);

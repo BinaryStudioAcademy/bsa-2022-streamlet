@@ -3,7 +3,7 @@ import styles from './styles.module.scss';
 
 interface ToggleSwitchProps {
   defaultValue: boolean;
-  onToggle: () => void;
+  onToggle: (isOn: boolean) => void;
 }
 
 export const ToggleSwitch: FC<ToggleSwitchProps> = ({ onToggle, defaultValue }) => {
@@ -11,7 +11,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({ onToggle, defaultValue }) 
   const handleChange = (): void => {
     setChecked(!checked);
 
-    onToggle();
+    onToggle(!checked);
   };
 
   return (

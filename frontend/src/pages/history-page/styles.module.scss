@@ -19,13 +19,23 @@
 }
 
 .delete-all-btn {
+  height: fit-content;
   margin-left: auto;
-  padding: 0 30px;
+  padding: 11px 20px;
   color: var(--always-white-color);
-  font-size: 20px;
-  white-space: nowrap;
+  font-size: 14px;
+  line-height: 14px;
+  letter-spacing: 0.5px;
   text-transform: capitalize;
-  border: 3px var(--brand-green-color) solid;
+  background-color: var(--brand-green-color);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--brand-green-color-hover);
+    transition: all 0.3s ease;
+  }
 }
 
 .page-header {
@@ -51,5 +61,5 @@
 }
 
 .skeleton-container {
-  max-width: 1000px;
+  max-width: 810px;
 }

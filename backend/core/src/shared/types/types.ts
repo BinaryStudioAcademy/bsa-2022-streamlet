@@ -13,6 +13,7 @@ export * from './tag/tag';
 export * from './profile/profile';
 export * from './history/history';
 export * from './chat/chat';
+export * from './comment/comment';
 export * from './search/search';
 export * from './subscription/subscription';
 export * from './video/video';

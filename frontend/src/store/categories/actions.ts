@@ -1,5 +1,6 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { AsyncThunkConfig } from 'common/types/types';
+import { prettyDisplayCategoryName } from 'helpers/categories/pretty-display-category-name';
 import { CategoryResponseDto } from 'shared/build';
 import { ActionType } from './common';
 
@@ -10,16 +11,9 @@ const getCategories = createAsyncThunk<CategoryResponseDto[], void, AsyncThunkCo
     const categories = data.map((category) => {
       return {
         ...category,
-        name: category.name
-          .split('&')
-          .map((x) => x.charAt(0).toUpperCase() + x.slice(1))
-          .join(' & '),
+        name: prettyDisplayCategoryName(category.name),
       };
     });
-    // categories.unshift({
-    //   id: '1',
-    //   name: 'All',
-    // });
     return categories;
   },
 );

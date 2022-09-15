@@ -1,6 +1,5 @@
-import { FC } from 'common/types/types';
+import { FC, Comment } from 'common/types/types';
 import styles from './styles.module.scss';
-import { Comment } from 'shared/src/common/types/comment';
 import { VideoComment } from './comment-component';
 import { VideoPageCommentForm } from '../add-comment-form/add-comment-form';
 
