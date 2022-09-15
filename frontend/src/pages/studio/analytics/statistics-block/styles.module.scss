@@ -1,0 +1,40 @@
+.blocks {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  height: 100%;
+  padding: 20px;
+  overflow-y: auto;
+  font-weight: 100;
+  font-size: 14px;
+  background-color: rgb(52 79 62 / 70%);
+  border-radius: 10px;
+}
+
+.block {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.text {
+  width: 50%;
+}
+
+.amount {
+  font-weight: 400;
+  font-size: 16px;
+  text-align: start;
+}
+
+@media screen and (max-width: 768px) {
+  .text {
+    font-weight: 100;
+    font-size: 12px;
+  }
+
+  .amount {
+    font-weight: 300;
+    font-size: 14px;
+  }
+}
