@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './styles.module.scss';
 import { Tab } from './tabs/tab';
 import { TabInfo } from './tabs/tab-info';

@@ -1,0 +1,37 @@
+@use 'assets/css/breakpoint';
+@import 'assets/css/styles.scss';
+
+.blocks {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-right: 5%;
+}
+
+.block {
+  width: 150px;
+  height: 40px;
+  padding: 7px;
+  color: #c4c4c4;
+  font-weight: 400;
+  font-size: 16px;
+  background: #344f3e;
+  border-radius: 20px;
+}
+
+.item {
+  color: #c4c4c4;
+  background: #344f3e;
+}
+
+@media screen and (max-width: 768px) {
+  .text {
+    font-weight: 100;
+    font-size: 12px;
+  }
+
+  .amount {
+    font-weight: 300;
+    font-size: 14px;
+  }
+}
