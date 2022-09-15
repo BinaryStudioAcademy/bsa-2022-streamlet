@@ -19,4 +19,15 @@ const setSearchResults = createAsyncThunk<SearchDataResponseDto, { searchParamUR
   },
 );
 
-export { setSearchText, setActiveFilterIds, clearActiveFilterIds, clearSearchResults, setSearchResults };
+const updateChannelCardSubscriptionCount = createAction<{ id: string; count: number }>(
+  ActionType.UPDATE_CHANNEL_CARD_SUBSCRIPTION_COUNT,
+);
+
+export {
+  setSearchText,
+  setActiveFilterIds,
+  clearActiveFilterIds,
+  clearSearchResults,
+  setSearchResults,
+  updateChannelCardSubscriptionCount,
+};

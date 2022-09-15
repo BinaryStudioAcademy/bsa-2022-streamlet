@@ -65,7 +65,7 @@ const Header: FC<HeaderProps> = ({
   userLastName,
   userEmail,
   menuRef,
-  notificationDropdownContent,
+  // notificationDropdownContent,
   themeValue,
 }) => {
   const isSidebarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
@@ -124,7 +124,7 @@ const Header: FC<HeaderProps> = ({
             <Link data-tip="Start stream" data-place="bottom" className={styles['btn-go-stream']} to={AppRoutes.STUDIO}>
               <Icon name={IconName.CAMERA} width="24" height="22" />
             </Link>
-            {notificationDropdownContent}
+            {/* {notificationDropdownContent} */}
             <button
               data-tip={'User profile'}
               data-place="bottom"
