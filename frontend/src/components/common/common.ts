@@ -21,3 +21,4 @@ export { Loader } from './loader/loader';
 export { Emoji } from './emoji/emoji';
 export { TextWithEmoji } from './text-with-emoji/text-with-emoji';
 export { VideoCardMain } from './video-card-main/video-card-main';
+export { NeedRequestModal } from './request-modal/request-modal';

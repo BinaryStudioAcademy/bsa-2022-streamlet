@@ -1,10 +1,18 @@
-import { BaseHttpController, controller, httpGet, httpPost, request, requestBody } from 'inversify-express-utils';
+import {
+  BaseHttpController,
+  controller,
+  httpGet,
+  httpPost,
+  httpPut,
+  request,
+  requestBody,
+} from 'inversify-express-utils';
 import { inject } from 'inversify';
 import { CONTAINER_TYPES, ExtendedAuthenticatedRequest } from '~/shared/types/types';
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
 import { authenticationMiddleware } from '../middleware';
-import { ApiPath, CategoryResponseDto, UserApiPath, UserBindCategoriesDto } from 'shared/build';
+import { ApiPath, CategoryResponseDto, UserApiPath, UserBindCategoriesDto, StreamPermission } from 'shared/build';
 
 /**
  * @swagger
@@ -141,5 +149,22 @@ export class UserController extends BaseHttpController {
     }
 
     return preferences;
+  }
+
+  /**
+   * @swagger
+   * /users/permission/requested:
+   *    post:
+   *        tags:
+   *          - users
+   *        summary: Update user stream permission
+   *        security:
+   *          - bearerAuth: []
+   */
+  @httpPut(`${UserApiPath.$PERMISSION}${UserApiPath.$REQUESTED}`, authenticationMiddleware)
+  public changeStreamPermission(@request() req: ExtendedAuthenticatedRequest): Promise<User> {
+    const { id } = req.user;
+
+    return this.userService.updateStreamPermission(id, StreamPermission.REQUESTED);
   }
 }

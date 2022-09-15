@@ -1,0 +1,24 @@
+.need-request-modal {
+  display: flex;
+  flex-flow: column nowrap;
+  color: var(--text-gray-color);
+  background-color: var(--gray-300-header-menu-background);
+  border-radius: 3px;
+}
+
+.need-request-modal-header {
+  margin: 20px 0 10px;
+  padding: 0 20px;
+}
+
+.need-request-main-text {
+  margin: 0 0 20px;
+  padding: 0 20px;
+}
+
+.redirect-to-request {
+  padding: 8px 8px 8px 20px;
+  color: var(--brand-green-color);
+  text-decoration: none;
+  border-top: 2px solid var(--gray-200-input-background);
+}

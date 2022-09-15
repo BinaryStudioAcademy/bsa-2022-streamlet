@@ -27,6 +27,7 @@ model User {
   resetPasswordToken ResetPasswordToken?
   comments           VideoComment[]
   channels           Channel[]
+  streamPermission   StreamPermission    @default(DISABLED)
   subscriptions      Subscription[]
   chatMessages       ChatMessage[]
   notifications      Notification[]
@@ -80,6 +81,13 @@ enum Privacy {
   PUBLIC
   UNLISTED
   PRIVATE
+}
+
+enum StreamPermission {
+  DISABLED
+  REQUESTED
+  ALLOWED
+  DECLINED
 }
 
 model Video {

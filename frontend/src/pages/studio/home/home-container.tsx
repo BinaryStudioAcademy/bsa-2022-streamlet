@@ -1,15 +1,18 @@
 import { DataStatus, IconName } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { createToastNotification, Loader } from 'components/common/common';
+import { createToastNotification, Loader, NeedRequestModal } from 'components/common/common';
 import { Forbidden, NotFound } from 'components/placeholder-page';
-import { useAppDispatch, useAppSelector, useCallback, useEffect } from 'hooks/hooks';
+import { useAppDispatch, useAppSelector, useCallback, useEffect, useState } from 'hooks/hooks';
 import { errorCodes } from 'shared/build';
 import { streamActions } from 'store/actions';
 import { StudioStreamContainer } from '../stream/stream-container';
 import { StudioHome } from './home';
 
+import styles from './styles.module.scss';
+
 const StudioHomeContainer: FC = () => {
   const dispatch = useAppDispatch();
+  const [isUserAuthToStream, setIsUserAuthToStream] = useState(false);
 
   const { channel, stream, errorCode, error, status } = useAppSelector((state) => ({
     stream: state.stream.stream,
@@ -20,8 +23,10 @@ const StudioHomeContainer: FC = () => {
   }));
 
   const handleStartStreaming = useCallback(() => {
-    dispatch(streamActions.createStream({ channelId: channel?.id ?? 'ERROR' }));
-  }, [dispatch, channel?.id]);
+    if (isUserAuthToStream) {
+      dispatch(streamActions.createStream({ channelId: channel?.id ?? 'ERROR' }));
+    }
+  }, [dispatch, channel?.id, isUserAuthToStream]);
 
   useEffect(() => {
     if (error) {
@@ -42,7 +47,16 @@ const StudioHomeContainer: FC = () => {
 
   const isForbidden = errorCode === errorCodes.stream.FORBIDDEN || errorCode === errorCodes.stream.ACTIVE_STREAM_EXISTS;
 
-  return isForbidden ? (
+  return !isUserAuthToStream ? (
+    <NeedRequestModal
+      headerText={'Would you like to start streaming?'}
+      className={styles['request-modal']}
+      mainText={'Send us request in order to start streaming.'}
+      onClose={(): void => {
+        setIsUserAuthToStream(false);
+      }}
+    />
+  ) : isForbidden ? (
     <Forbidden />
   ) : isNotFound ? (
     <NotFound />
