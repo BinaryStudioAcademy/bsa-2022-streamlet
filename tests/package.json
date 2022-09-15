@@ -7,8 +7,8 @@
     "clean": "rimraf ./allure-report ./allure-results & rimraf ./output/junit-report*.xml",
     "junit-api-report": "node ./scripts/merge-api-reports.js & rimraf ./output/junit-report*.xml",
     "allure-report": "allure generate ./allure-results --clean -o allure-report && allure open -h localhost -p 5555 allure-report",
-    "api:tests": "npm run clean && mocha 'tests/api/specs/**/*_api-test.ts' & npm run junit-api-report ",
-    "api:tests:dev": "npm run clean && mocha --api.configName dev 'tests/api/specs/**/*_api-test.ts' & npm run junit-api-report"
+    "api:tests": "npm run clean && mocha 'tests/api/specs/**/*_api-test.ts' --timeout 5000 & npm run junit-api-report ",
+    "api:tests:dev": "npm run clean && mocha --api.configName dev 'tests/api/specs/**/*_api-test.ts' --timeout 5000 & npm run junit-api-report"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/margarita-ozirna/Streamlet#readme",
   "dependencies": {
+    "@types/chai": "^4.3.3",
+    "@types/chai-json-schema": "^1.4.6",
     "@types/got": "9.6.12",
     "@types/mocha": "9.1.1",
     "@types/node": "17.0.31",
