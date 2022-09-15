@@ -150,6 +150,19 @@
   text-align: center;
 }
 
+.input-error {
+  border-radius: 3px;
+  box-shadow: 0 0 3px 0 rgb(var(--input-error-color) / 80%), 0 0 5px 0 rgb(var(--input-error-color) / 50%);
+}
+
+div .input-error {
+  border: var(--input-error-border);
+}
+
+div .input-error-dark {
+  outline: var(--input-error-border);
+}
+
 @media #{$tablet-large} {
   .channel-image-upload-container {
     flex-direction: row;
