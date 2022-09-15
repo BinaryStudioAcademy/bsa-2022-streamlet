@@ -1,6 +1,6 @@
-import { CONFIG } from 'tests/config/config';
+import { CONFIG } from '../../config/config';
 
-global.appConfig = {
+export const appConfig = {
   envName: CONFIG.ENV_NAME,
   baseUrl: CONFIG.BASE_URL,
   swaggerUrl: CONFIG.SWAGGER_URL,
