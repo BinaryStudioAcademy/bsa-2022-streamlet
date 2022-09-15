@@ -1,0 +1,67 @@
+.video-container {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  height: 100px;
+}
+
+.video-preview-container {
+  position: relative;
+  width: 180px;
+  height: auto;
+  cursor: pointer;
+}
+
+.video-preview-poster {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.video-labels {
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+  display: flex;
+}
+
+.video-duration-label {
+  min-width: 47px;
+  padding: 5px;
+  color: var(--white-text-color);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 10px;
+  letter-spacing: 0;
+  text-align: center;
+  background-color: var(--gray-300-header-menu-background);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.video-info {
+  display: flex;
+  flex-direction: column;
+  max-width: 60%;
+  padding-left: 15px;
+}
+
+.video-info-segment {
+  height: 20%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  &:last-child {
+    height: 80%;
+    color: var(--text-gray-color);
+    font-size: 15px;
+  }
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--brand-green-color);
+}
