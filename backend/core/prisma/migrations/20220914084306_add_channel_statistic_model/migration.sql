@@ -4,6 +4,7 @@ CREATE TABLE "ChannelStats" (
     "channelId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "subscription" "SubscriptionStatus" NOT NULL DEFAULT 'NONE',
+    "source" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

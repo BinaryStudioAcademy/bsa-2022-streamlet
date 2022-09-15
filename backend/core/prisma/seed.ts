@@ -362,7 +362,8 @@ async function seedVideoStats(): Promise<void> {
               : ReactionStatus.NONE,
             wasSubscribed: wasSubscribed,
             chatsActivity: c._count.id,
-          } as Prisma.VideoStatsUncheckedCreateInput;
+            source: 'video',
+          } as Prisma.VideoStatsCreateManyInput;
         }),
         ...commentGroupBy.map((c) => {
           const device = getRandomSample(devices, 1)[0];
@@ -390,7 +391,8 @@ async function seedVideoStats(): Promise<void> {
               : ReactionStatus.NONE,
             wasSubscribed: wasSubscribed,
             commentsActivity: c._count.id,
-          } as Prisma.VideoStatsUncheckedCreateInput;
+            source: 'video',
+          } as Prisma.VideoStatsCreateManyInput;
         }),
       ],
     });
@@ -403,11 +405,15 @@ async function seedChannelStats(): Promise<void> {
   for (const user of users) {
     await prisma.channelStats.createMany({
       data: [
-        ...user.subscriptions.map((s) => ({
-          channelId: s.channelId,
-          userId: user.id,
-          subscription: SubscriptionStatus.SUBSCRIBED,
-        })),
+        ...user.subscriptions.map(
+          (s) =>
+            ({
+              channelId: s.channelId,
+              userId: user.id,
+              subscription: SubscriptionStatus.SUBSCRIBED,
+              source: 'channel',
+            } as Prisma.ChannelStatsCreateManyInput),
+        ),
       ],
     });
   }

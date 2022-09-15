@@ -103,6 +103,13 @@ enum SubscriptionStatus {
   UNSUBSCRIBED
 }
 
+// enum StatsSource {
+//   UNKNOWN
+//   VIDEO_PAGE
+//   CHANNEL_PAGE
+//   SEARCH_PAGE
+// }
+
 model Video {
   id                  String         @id @default(uuid())
   name                String         @default("My new stream")
@@ -305,6 +312,7 @@ model VideoStats {
   wasSubscribed     Boolean             @default(false)
   commentsActivity  Int                 @default(0)
   chatsActivity     Int                 @default(0)
+  source            String
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
 }
@@ -316,6 +324,7 @@ model ChannelStats {
   user              User                @relation(fields: [userId], references: [id])
   userId            String
   subscription      SubscriptionStatus  @default(NONE)
+  source            String
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
 }

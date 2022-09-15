@@ -21,6 +21,7 @@ CREATE TABLE "VideoStats" (
     "wasSubscribed" BOOLEAN NOT NULL DEFAULT false,
     "commentsActivity" INTEGER NOT NULL DEFAULT 0,
     "chatsActivity" INTEGER NOT NULL DEFAULT 0,
+    "source" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
