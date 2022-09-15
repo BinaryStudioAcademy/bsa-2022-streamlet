@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import type { Options, Method, Response, GotRequestFunction } from 'got';
 import got from 'got';
 import { allure } from 'allure-mocha/dist/MochaAllureReporter';
@@ -76,21 +77,21 @@ export class ApiRequest extends BaseHttpRequest {
       responseType: 'json',
       hooks: {
         afterResponse: [
-          (response, retryWithMergedOptions) => {
+          (response, _retryWithMergedOptions) => {
             const stepName = `${response.statusCode} | ${this?.options?.method ?? 'GET'} ${this?.options?.url} | ${
               response?.timings?.phases?.total
             }ms`;
             allure.createStep(stepName, () => {
               if (this?.options?.json) {
                 allure.createAttachment(
-                  `Request BODY`,
+                  'Request BODY',
                   JSON.stringify(this?.options?.json, null, 2),
                   'application/json' as any,
                 );
               }
               if (response.body) {
                 allure.createAttachment(
-                  `Response BODY`,
+                  'Response BODY',
                   JSON.stringify(response.body, null, 2),
                   'application/json' as any,
                 );

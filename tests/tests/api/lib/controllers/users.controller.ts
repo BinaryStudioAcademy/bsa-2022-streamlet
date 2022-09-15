@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { appConfig } from '../../config/dev.config';
 import { ApiRequest } from '../request';
 
-let baseUrl: string = global.appConfig.baseUrl;
+const { baseUrl } = appConfig;
 
 export class UsersController {
   async getAllUsers(tokenVal: string) {

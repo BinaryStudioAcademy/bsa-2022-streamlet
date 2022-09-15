@@ -1,5 +1,4 @@
 import { AuthController } from '../lib/controllers/auth.controller';
-import { expect } from 'chai';
 import {
   checkStatusCode,
   checkResponseTime,
@@ -8,9 +7,11 @@ import {
 } from '../../helpers/functionsForChecking.helpers';
 
 const auth = new AuthController();
-const schemas = require('./data/schemas_testData.json');
-let chai = require('chai');
-chai.use(require('chai-json-schema'));
+import schemas from './data/schemas_testData.json';
+import chai from 'chai';
+import chaiJsonSchema from 'chai-json-schema';
+import { appConfig } from '../config/dev.config';
+chai.use(chaiJsonSchema);
 
 describe('Autorization tests', () => {
   let accessToken, refreshToken;
@@ -41,10 +42,7 @@ describe('Autorization tests', () => {
   //})
 
   it('Sign in', async () => {
-    let response = await auth.signInUser(
-      global.appConfig.users.defaultUser.email,
-      global.appConfig.users.defaultUser.password,
-    );
+    const response = await auth.signInUser(appConfig.users.defaultUser.email, appConfig.users.defaultUser.password);
     checkStatusCode(response, 200);
     checkResponseTime(response, 3000);
     checkSchema(response, schemas.schema_signIn);
@@ -53,7 +51,7 @@ describe('Autorization tests', () => {
     refreshToken = response.body.tokens.refreshToken;
   }),
     it('Refresh tokens', async () => {
-      let response = await auth.refreshTokens(refreshToken);
+      const response = await auth.refreshTokens(refreshToken);
       checkStatusCode(response, 200);
       checkResponseTime(response, 3000);
       checkSchema(response, schemas.schema_refreshToken);
@@ -61,7 +59,7 @@ describe('Autorization tests', () => {
       refreshToken = response.body.tokens.refreshToken;
     }),
     it('Restore password init', async () => {
-      let response = await auth.restorePasswordInit(global.appConfig.users.defaultUser.email);
+      const response = await auth.restorePasswordInit(appConfig.users.defaultUser.email);
       checkStatusCode(response, 200);
       checkResponseTime(response, 3000);
       checkResponseBodyMessage(response, 'We`ve sent a password reset instructions to your email');
@@ -72,19 +70,19 @@ describe('Autorization tests', () => {
     //  checkResponseTime(response, 3000);
     //})
     it('Mail test', async () => {
-      let response = await auth.mailTest(global.appConfig.users.defaultUser.email, 'Margo');
+      const response = await auth.mailTest(appConfig.users.defaultUser.email, 'Margo');
       checkStatusCode(response, 200);
       checkResponseTime(response, 3000);
       checkResponseBodyMessage(response, 'The email has been sent!');
     }),
     it('User info', async () => {
-      let response = await auth.userInfo(accessToken);
+      const response = await auth.userInfo(accessToken);
       checkStatusCode(response, 200);
       checkResponseTime(response, 3000);
       checkSchema(response, schemas.schema_userInfo);
     }),
     it('Sign out', async () => {
-      let response = await auth.signOut(accessToken);
+      const response = await auth.signOut(accessToken);
       checkStatusCode(response, 204);
       checkResponseTime(response, 3000);
     });

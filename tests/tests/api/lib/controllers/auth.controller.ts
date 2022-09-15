@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { appConfig } from '../../config/dev.config';
 import { ApiRequest } from '../request';
 
-let baseUrl: string = global.appConfig.baseUrl;
+const { baseUrl } = appConfig;
 
 export class AuthController {
   async signUpUser(newUser: object) {
-    const response = await new ApiRequest().prefixUrl(baseUrl).method('POST').url(`auth/sign-up`).body(newUser).send();
+    const response = await new ApiRequest().prefixUrl(baseUrl).method('POST').url('auth/sign-up').body(newUser).send();
     return response;
   }
 
@@ -12,7 +14,7 @@ export class AuthController {
     const response = await new ApiRequest()
       .prefixUrl(baseUrl)
       .method('POST')
-      .url(`auth/sign-in`)
+      .url('auth/sign-in')
       .body({
         email: emailVal,
         password: passwordVal,
@@ -25,7 +27,7 @@ export class AuthController {
     const response = await new ApiRequest()
       .prefixUrl(baseUrl)
       .method('POST')
-      .url(`auth/refresh-tokens`)
+      .url('auth/refresh-tokens')
       .body({
         refreshToken: refreshTokenVal,
       })
@@ -37,7 +39,7 @@ export class AuthController {
     const response = await new ApiRequest()
       .prefixUrl(baseUrl)
       .method('POST')
-      .url(`auth/sign-out`)
+      .url('auth/sign-out')
       .bearerToken(accessToken)
       .send();
     return response;
@@ -47,7 +49,7 @@ export class AuthController {
     const response = await new ApiRequest()
       .prefixUrl(baseUrl)
       .method('POST')
-      .url(`auth/restore-password-confirm`)
+      .url('auth/restore-password-confirm')
       .body({
         token: tokenVal,
         password: passwordVal,
@@ -60,7 +62,7 @@ export class AuthController {
     const response = await new ApiRequest()
       .prefixUrl(baseUrl)
       .method('POST')
-      .url(`auth/restore-password-init`)
+      .url('auth/restore-password-init')
       .body({
         email: emailVal,
       })
@@ -72,7 +74,7 @@ export class AuthController {
     const response = await new ApiRequest()
       .prefixUrl(baseUrl)
       .method('POST')
-      .url(`auth/account-verification-confirm`)
+      .url('auth/account-verification-confirm')
       .body({
         token: tokenVal,
       })
@@ -84,7 +86,7 @@ export class AuthController {
     const response = await new ApiRequest()
       .prefixUrl(baseUrl)
       .method('POST')
-      .url(`auth/account-verification-init`)
+      .url('auth/account-verification-init')
       .body({
         email: emailVal,
       })
@@ -96,7 +98,7 @@ export class AuthController {
     const response = await new ApiRequest()
       .prefixUrl(baseUrl)
       .method('GET')
-      .url(`auth/user`)
+      .url('auth/user')
       .bearerToken(accessToken)
       .send();
     return response;
@@ -106,7 +108,7 @@ export class AuthController {
     const response = await new ApiRequest()
       .prefixUrl(baseUrl)
       .method('POST')
-      .url(`auth/mail-test`)
+      .url('auth/mail-test')
       .body({
         email: emailVal,
         name: nameVal,
