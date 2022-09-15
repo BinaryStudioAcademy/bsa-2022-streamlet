@@ -33,7 +33,8 @@ const TextWithEmoji: FC<Props> = ({ text, emojiStyle, emojiClassname, textClassN
           return (
             <img
               key={`${textId}-e-${index}`}
-              src={`${getEmojiCdnUrl(emojiStyle)}${emojiParts[index++]}.png`}
+              src={`${getEmojiCdnUrl(emojiStyle)}${emojiParts[index]}.png`}
+              alt={String.fromCodePoint(Number(`0x${emojiParts[index++]}`))}
               className={clsx(styles['emoji'], emojiClassname)}
             />
           );

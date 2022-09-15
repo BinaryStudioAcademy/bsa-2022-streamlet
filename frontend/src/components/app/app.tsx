@@ -46,6 +46,10 @@ socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
   store.dispatch(socketActions.addSocketId(id));
 });
 
+// do not move into App function, since array will be recreated on every render,
+// and it's used in useEffect
+const scrollToTopQuerySelectors = [`.${styles['main-content']}`];
+
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const { pathname, search } = useLocation();
@@ -90,7 +94,7 @@ const App: FC = () => {
 
   return (
     <>
-      <ScrollToTop querySelectors={[`.${styles['main-content']}`]} />
+      <ScrollToTop querySelectors={scrollToTopQuerySelectors} />
       <ReactNotifications />
       {!isHasDefaultNavigation && !isHasStudioNavigation && (
         <Routes>

@@ -10,6 +10,7 @@ import { Icon } from 'components/common/common';
 import styles from './header.module.scss';
 import { ToggleSwitch } from '../toggle-switch';
 import { Logo } from '../logo/logo';
+import { UserAvatarOrInitials } from '../user-avatar-or-initials/user-avatar-or-initials';
 
 interface MenuOption {
   type: MenuOptions;
@@ -33,8 +34,10 @@ interface HeaderProps {
   handleClickSearchMobileToggle(): void;
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
   options: MenuOption[];
-  userAvatar: string;
+  userAvatar: string | undefined;
   userName: string | undefined;
+  userFirstName: string | undefined;
+  userLastName: string | undefined;
   userEmail: string | undefined;
   menuRef: RefObject<HTMLDivElement>;
   notificationDropdownContent: React.ReactNode;
@@ -58,9 +61,11 @@ const Header: FC<HeaderProps> = ({
   options,
   userAvatar,
   userName,
+  userFirstName,
+  userLastName,
   userEmail,
   menuRef,
-  notificationDropdownContent,
+  // notificationDropdownContent,
   themeValue,
 }) => {
   const isSidebarOpen = useAppSelector((state) => state.layout.isOpenSidebar);
@@ -119,18 +124,27 @@ const Header: FC<HeaderProps> = ({
             <Link data-tip="Start stream" data-place="bottom" className={styles['btn-go-stream']} to={AppRoutes.STUDIO}>
               <Icon name={IconName.CAMERA} width="24" height="22" />
             </Link>
-            {notificationDropdownContent}
+            {/* {notificationDropdownContent} */}
             <button
               data-tip={'User profile'}
               data-place="bottom"
               onClick={handleClickUserMenu}
-              style={{ backgroundImage: `url(${userAvatar})` }}
               className={styles['user-avatar']}
-            ></button>
+            >
+              <UserAvatarOrInitials
+                className={styles['user-avatar-default']}
+                avatar={userAvatar}
+                userNamingInfo={{ firstName: userFirstName, lastName: userLastName, userName: userName ?? '' }}
+              />
+            </button>
             {isMenuOpen && (
               <div ref={menuRef} className={styles['user-menu']}>
                 <div className={styles['user-menu-header']}>
-                  <div style={{ backgroundImage: `url(${userAvatar})` }} className={styles['user-menu-avatar']} />
+                  <UserAvatarOrInitials
+                    className={styles['user-menu-avatar']}
+                    avatar={userAvatar}
+                    userNamingInfo={{ firstName: userFirstName, lastName: userLastName, userName: userName ?? '' }}
+                  />
                   <div className={styles['user-menu-info']}>
                     <div className={styles['user-menu-username']}>{userName}</div>
                     <div className={styles['user-menu-email']}>{userEmail}</div>

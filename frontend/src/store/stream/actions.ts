@@ -61,19 +61,24 @@ const uploadPoster = createAsyncThunk<
   }
 });
 
-const editStream = createAsyncThunk<VideoStreamResponseDto, StreamUpdateRequestDto, AsyncThunkConfigHttpError>(
-  ActionType.UPDATE_STREAM_DATA,
-  async (payload, { extra: { channelStreamingApi }, rejectWithValue }) => {
-    try {
-      return await channelStreamingApi.editStream(payload);
-    } catch (error) {
-      if (error instanceof HttpError) {
-        return rejectWithValue(serializeHttpError(error));
-      }
-      throw error;
+const editStream = createAsyncThunk<
+  VideoStreamResponseDto,
+  Omit<StreamUpdateRequestDto, 'videoId'>,
+  AsyncThunkConfigHttpError
+>(ActionType.UPDATE_STREAM_DATA, async (payload, { extra: { channelStreamingApi }, rejectWithValue, getState }) => {
+  try {
+    const videoId = getState().stream.stream?.id ?? '';
+    return await channelStreamingApi.editStream({
+      ...payload,
+      videoId,
+    });
+  } catch (error) {
+    if (error instanceof HttpError) {
+      return rejectWithValue(serializeHttpError(error));
     }
-  },
-);
+    throw error;
+  }
+});
 
 const getStreamingInfo = createAsyncThunk<StreamingInfoResponseDto, void, AsyncThunkConfigHttpError>(
   ActionType.GET_STREAM_DATA,

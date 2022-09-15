@@ -9,12 +9,16 @@ import {
   BaseReplyRequestDto,
   Comment,
   VideoPaginationParams,
+  UpdateVideoVisibilityDto,
+  UpdateVideoInfoDto,
+  RecommendedVideosParams,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { VideoWithChannel } from '~/shared/types/video/video-with-channel-dto.type';
 import { VideoRepositoryFilters } from './video-repository-filters';
-import { VideoSearch } from '~/shared/types/types';
+import { VideoSearch, VideoWithReactionsAndComments } from '~/shared/types/types';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
+import { VideoSearchFilters } from './video-search-filters';
 
 export type GetPopularInputType = {
   category: string;
@@ -33,8 +37,11 @@ export type GetPopularLiveInputType = {
 
 export interface VideoRepository {
   getById(id: string): Promise<VideoExpandedInfo | null>;
+  addView(id: string): Promise<{ currentViews: number } | null>;
   searchByTags(searchByTagsDto: TagSearchRequestQueryDto): Promise<VideoWithChannel[]>;
-  searchByCategories(searchByCategoryDto: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]>;
+  searchByCategories(
+    searchRequest: CategorySearchRequestQueryDto,
+  ): Promise<{ list: VideoWithChannel[]; total: number }>;
   getAuthorById(id: string): Promise<string | undefined>;
   getAll(queryParams?: { filters?: VideoRepositoryFilters; pagination?: VideoPaginationParams }): Promise<DataVideo>;
   reactionByUser(videoId: string, userId: string): Promise<boolean | null>;
@@ -60,7 +67,14 @@ export interface VideoRepository {
     userId: string,
     isLike: boolean,
   ): Promise<CreateReactionResponseDto | null>;
-  getVideosBySearch(queryParams: VideoSearch): Promise<DataVideo>;
+  getVideosBySearch(queryParams: VideoSearch, additionalQueryParams?: VideoSearchFilters): Promise<DataVideo>;
   getRepliesForComment(commentId: string): Promise<Comment[]>;
   addVideoCommentReply(request: BaseReplyRequestDto, authorId: string): Promise<Comment[]>;
+
+  getMyVideos(authorId: string): Promise<VideoWithReactionsAndComments[]>;
+  deleteByIds(ids: string[]): Promise<VideoWithReactionsAndComments[]>;
+  updateVisibility(updateVideoVisibilityDto: UpdateVideoVisibilityDto): Promise<VideoWithReactionsAndComments | null>;
+  updateVideoInfo(updateVideoInfo: UpdateVideoInfoDto): Promise<VideoWithReactionsAndComments | null>;
+  getGeneralVideos(userId: string): Promise<DataVideo>;
+  getRecommendedVideos(params: RecommendedVideosParams): Promise<DataVideo>;
 }

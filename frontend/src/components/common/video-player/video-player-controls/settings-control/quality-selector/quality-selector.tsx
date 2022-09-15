@@ -9,6 +9,7 @@ type Props = {
   className?: string;
   goBack: () => void;
   hlsClient: Hls;
+  setLevelName: (level: string) => void;
 };
 
 type BasicLevel = {
@@ -41,7 +42,7 @@ const levelToString = (level: BasicLevel, otherLevelNames: LevelRepresentation[]
   return { name, index: null };
 };
 
-const QualitySelector: FC<Props> = ({ className, goBack, hlsClient }) => {
+const QualitySelector: FC<Props> = ({ className, goBack, hlsClient, setLevelName }) => {
   const [isAuto, setIsAuto] = useState(hlsClient.autoLevelEnabled);
   const [currentLevel, setCurrentLevel] = useState<number>(hlsClient.currentLevel);
   const [levels, setLevels] = useState<BasicLevel[]>(hlsClient.levels.map(levelToBasicLevel));
@@ -69,6 +70,12 @@ const QualitySelector: FC<Props> = ({ className, goBack, hlsClient }) => {
     const levelRepr = levelToString(level, allLevelRepresentations);
     allLevelRepresentations.push(levelRepr);
   });
+
+  useEffect(() => {
+    if (isAuto || levels[currentLevel]) {
+      setLevelName(isAuto ? 'Auto' : levelToString(levels[currentLevel], []).name);
+    }
+  }, [currentLevel, isAuto, levels, setLevelName]);
 
   return (
     <GenericSettingsModal className={className}>

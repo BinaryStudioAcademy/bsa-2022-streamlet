@@ -1,24 +1,35 @@
 import { DataStatus, IconColor, IconName } from 'common/enums/enums';
-import { Button, Icon, Loader, VideoCardMain } from 'components/common/common';
+import { Button, Icon, VideoCardMain } from 'components/common/common';
 import React, { FC, useEffect } from 'react';
 import styles from './styles.module.scss';
 import clsx from 'clsx';
 import { useAppDispatch, useAppSelector, useState } from '../../hooks/hooks';
 
-import { videoActions } from '../../store/actions';
+import { categoryActions, videoActions } from '../../store/actions';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import { generateBrowsePageSkeleton } from './common/skeleton';
 import { NoVideosYet } from '../../components/common/no-videos-yet/no-videos-yet';
+import { LeftArrow, RightArrow } from '../../components/common/vertical-scroll/vertical-scroll';
+import { ScrollMenu } from 'react-horizontal-scrolling-menu';
+import { uglyDisplayCategoryName } from 'helpers/categories/categories';
 
 const BrowsePage: FC = () => {
   const dispatch = useAppDispatch();
 
   const [activeCategory, setActiveCategory] = useState<string>('live');
 
-  const categoryList = ['live', 'music', 'gaming', 'film&animation'];
+  const { categories, preferences } = useAppSelector((store) => ({
+    categories: store.category.data,
+    preferences: store.preference.data,
+  }));
+
+  const categoryList = [
+    'live',
+    ...categories.filter((category) => preferences.includes(category.id)).map((category) => category.name),
+  ];
 
   const handleCategoryClick = (category: string): void => {
-    if (activeCategory === reposnseCategory && activeCategory !== category) {
+    if (uglyDisplayCategoryName(activeCategory) === reposnseCategory && activeCategory !== category) {
       setActiveCategory(category);
     }
   };
@@ -40,7 +51,8 @@ const BrowsePage: FC = () => {
   useEffect(() => {
     if (firstLoad) {
       dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
-    } else if (activeCategory !== reposnseCategory) {
+      dispatch(categoryActions.getCategories());
+    } else if (uglyDisplayCategoryName(activeCategory) !== reposnseCategory) {
       dispatch(videoActions.getPopularVideos({ page: 1, category: activeCategory }));
     }
   }, [activeCategory, dispatch, firstLoad, reposnseCategory]);
@@ -56,10 +68,6 @@ const BrowsePage: FC = () => {
     disabled: videoData.error,
   });
 
-  if (dataStatus === DataStatus.PENDING && currentPage < 0) {
-    return <Loader hCentered={true} vCentered={true} spinnerSize={'lg'} />;
-  }
-
   return (
     <div className={styles['browse-page-container']}>
       <div className={styles['browse-page-header-container']}>
@@ -67,26 +75,37 @@ const BrowsePage: FC = () => {
         <h2 className={styles['browse-page-header']}>Browse</h2>
       </div>
       <div className={styles['browse-page-categories-container']}>
-        {categoryList.map((category, index) => {
-          return (
-            <Button
-              content={category}
-              key={`${category}-${index}`}
-              className={clsx(styles['categories-button'], {
-                [styles['active-categories-button']]: activeCategory === category,
-              })}
-              onClick={(): void => handleCategoryClick(category)}
-            />
-          );
-        })}
+        <ScrollMenu
+          LeftArrow={<LeftArrow isFollowingOrBrowse={true} />}
+          RightArrow={<RightArrow isFollowingOrBrowse={true} />}
+          wrapperClassName={styles['horizontal-scroll']}
+          scrollContainerClassName={styles['horizontal-scroll']}
+        >
+          {categoryList.map((category, index) => {
+            return (
+              <Button
+                content={category}
+                key={`${category}-${index}`}
+                className={clsx(styles['categories-button'], {
+                  [styles['active-categories-button']]: activeCategory === category,
+                })}
+                onClick={(): void => handleCategoryClick(category)}
+              />
+            );
+          })}
+        </ScrollMenu>
       </div>
       <div
-        className={clsx({
-          [styles['no-video-in-list']]: !popularVideos.list.length && videoData.dataStatus !== DataStatus.PENDING,
-          [styles['browse-page-video-container']]: popularVideos.list.length,
-        })}
+        className={clsx(
+          {
+            [styles['no-video-in-list']]:
+              !popularVideos.list.length && videoData.dataStatus !== DataStatus.PENDING && currentPage > 0,
+          },
+          styles['browse-page-video-container'],
+        )}
       >
-        {!popularVideos.list.length && videoData.dataStatus !== DataStatus.PENDING ? (
+        {dataStatus === DataStatus.PENDING && generateBrowsePageSkeleton(isLightTheme)}
+        {!popularVideos.list.length && videoData.dataStatus !== DataStatus.PENDING && currentPage > 0 ? (
           <div className={styles['no-video-in-list']}>
             <NoVideosYet />
           </div>

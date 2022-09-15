@@ -11,17 +11,19 @@ import {
   requestParam,
 } from 'inversify-express-utils';
 import { inject } from 'inversify';
-import { CONTAINER_TYPES, ExtendedAuthenticatedRequest } from '~/shared/types/types';
+import {
+  BaseVideoResponseArrayWithTotalNum,
+  CONTAINER_TYPES,
+  ExtendedAuthenticatedRequest,
+} from '~/shared/types/types';
 import {
   ApiPath,
-  DefaultRequestParam,
   CategoryApiPath,
   CategorySearchRequestQueryDto,
   CategoryResponseDto,
   CategoryCreateRequestDto,
   CategoryGetAllDto,
   CategoryUpdateRequestDto,
-  BaseVideoResponseDto,
   BindCategoryToVideoRequestDto,
 } from 'shared/build';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -57,7 +59,7 @@ export class CategoryController extends BaseHttpController {
   @httpGet(CategoryApiPath.SEARCH)
   public async search(
     @queryParam() { take, skip, categories }: CategorySearchRequestQueryDto,
-  ): Promise<BaseVideoResponseDto[]> {
+  ): Promise<BaseVideoResponseArrayWithTotalNum> {
     return this.categoryService.search({
       take: Number(take) || undefined,
       skip: Number(skip) || undefined,
@@ -124,7 +126,7 @@ export class CategoryController extends BaseHttpController {
 
   @httpPost(CategoryApiPath.$BIND, authenticationMiddleware)
   public async bindCategoryToVIdeo(
-    @requestParam() { id }: DefaultRequestParam,
+    @requestParam() { categoryId: id }: { categoryId: string },
     @requestBody() { categories }: BindCategoryToVideoRequestDto,
   ): Promise<CategoryResponseDto[]> {
     const payload = categories.map((category) => normalizeCategoryPayload(category));

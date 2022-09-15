@@ -1,8 +1,10 @@
 import {
   BaseHttpController,
   controller,
+  httpDelete,
   httpGet,
   httpPost,
+  httpPut,
   queryParam,
   request,
   requestBody,
@@ -37,6 +39,11 @@ import {
   Comment,
   BaseReplyRequestDto,
   VideoPaginationParams,
+  AddVideoViewResponseDto,
+  VideoApiPathParams,
+  GetSimilarVideosResponseDto,
+  VideoInfoDto,
+  RecommendedVideosParams,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -45,6 +52,7 @@ import { optionalAuthenticationMiddleware } from '../middleware/optional-authent
 import { VideoRepository } from '~/core/video/port/video-repository';
 
 import {
+  exceptionMessages,
   matchVideoFilterDate,
   matchVideoFilterDuration,
   matchVideoFilterSortBy,
@@ -55,6 +63,9 @@ import { normalizeCategoryFiltersPayload } from '~/primary-adapters/rest/categor
 import { ChannelService } from '~/core/channel/application/channel-service';
 import { matchChannelFilterSortBy } from '~/shared/enums/channel/channel-filters-data.config';
 import { getSearchQuerySplit } from '~/shared/helpers/search/search';
+import { Forbidden } from '~/shared/exceptions/forbidden';
+import { stringToVideoPrivacyHelper } from './helpers/string-to-video-privacy-helper';
+import { BadRequest } from '~/shared/exceptions/bad-request';
 
 /**
  * @swagger
@@ -106,6 +117,7 @@ import { getSearchQuerySplit } from '~/shared/helpers/search/search';
  *          channel:
  *            $ref: '#/components/schemas/Channel'
  */
+
 @controller(ApiPath.VIDEOS)
 export class VideoController extends BaseHttpController {
   private videoService: VideoService;
@@ -144,6 +156,126 @@ export class VideoController extends BaseHttpController {
   @httpGet(VideoApiPath.ROOT)
   public async getAllVideos(@queryParam() paginationParams: VideoPaginationParams): Promise<DataVideo> {
     return this.videoService.getAllVideos(paginationParams);
+  }
+
+  @httpGet(VideoApiPath.GENERAL_VIDEOS, authenticationMiddleware)
+  public async getGeneralVideos(@request() req: ExtendedAuthenticatedRequest): Promise<DataVideo> {
+    const { id } = req.user;
+    return await this.videoService.getGeneralVideos(id);
+  }
+
+  @httpGet(VideoApiPath.RECOMMENDED_VIDEOS, optionalAuthenticationMiddleware)
+  public async getRecommendedVideos(
+    @request() req: ExtendedAuthenticatedRequest,
+    @queryParam() paginationParams: Omit<RecommendedVideosParams, 'userId'>,
+  ): Promise<DataVideo> {
+    const id = req?.user?.id ?? undefined;
+
+    const params: RecommendedVideosParams = {
+      userId: id,
+      ...paginationParams,
+    };
+
+    return await this.videoService.getRecommendedVideos(params);
+  }
+
+  @httpGet(VideoApiPath.GET_MY_VIDEO, authenticationMiddleware)
+  public async getMyVideos(@request() req: ExtendedAuthenticatedRequest): Promise<VideoInfoDto[]> {
+    const { id: authorId } = req.user;
+
+    const videos = await this.videoService.getMyVideos(authorId);
+    return videos;
+  }
+
+  @httpDelete(VideoApiPath.ROOT, authenticationMiddleware)
+  public async deleteByIds(
+    @request() req: ExtendedAuthenticatedRequest,
+    @requestBody()
+    {
+      authorId,
+      ids,
+    }: {
+      authorId: string;
+      ids: string[];
+    },
+  ): Promise<VideoInfoDto[]> {
+    const { id } = req.user;
+    if (authorId !== id) {
+      throw new Forbidden();
+    }
+
+    const deletedVideos = await this.videoService.deleteByIds(ids);
+    if (!deletedVideos) {
+      throw new NotFound('Videos with this ids doesnt exists');
+    }
+
+    return deletedVideos;
+  }
+
+  @httpPut(VideoApiPath.$PRIVACY, authenticationMiddleware)
+  public async updatePrivacy(
+    @requestBody()
+    {
+      authorId,
+      visibility,
+    }: {
+      authorId: string;
+      visibility: string;
+    },
+    @requestParam('videoId') videoId: string,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<VideoInfoDto> {
+    const { id } = req.user;
+    if (authorId !== id) {
+      throw new Forbidden();
+    }
+
+    const privacyStatus = stringToVideoPrivacyHelper(visibility);
+    if (!privacyStatus) {
+      throw new BadRequest('Invalid video visibility parameter');
+    }
+
+    const updatedVideo = await this.videoService.updateVisibility({
+      videoId,
+      visibility: privacyStatus,
+    });
+    if (!updatedVideo) {
+      throw new NotFound('Video not found');
+    }
+
+    return updatedVideo;
+  }
+
+  @httpPut(VideoApiPath.$ID, authenticationMiddleware)
+  public async updateInfo(
+    @requestBody()
+    {
+      authorId,
+      title,
+      description,
+    }: {
+      authorId: string;
+      title?: string;
+      description?: string;
+    },
+    @requestParam('videoId') videoId: string,
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<VideoInfoDto> {
+    const { id } = req.user;
+    if (authorId !== id) {
+      throw new Forbidden();
+    }
+
+    const updatedVideo = await this.videoService.updateInfo({
+      videoId,
+      title,
+      description,
+    });
+    if (!updatedVideo) {
+      throw new NotFound('Video not found');
+    }
+
+    return updatedVideo;
   }
 
   /**
@@ -296,6 +428,31 @@ export class VideoController extends BaseHttpController {
     return this.videoService.getPopular({ category: preparedCategory, page });
   }
 
+  /**
+   * @swagger
+   * /videos/:videoId/similar:
+   *    get:
+   *      tags:
+   *      - videos
+   *      operationId: getSimilarVideos
+   *      description: Returns an array of videos
+   *      security: []
+   *      responses:
+   *        200:
+   *          description: Successful operation
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/Video'
+   */
+  @httpGet(`${VideoApiPath.$ID}${VideoApiPath.SIMILAR_VIDEOS}`)
+  public async getSimilarVideos(@requestParam(VideoApiPathParams.ID) id: string): Promise<GetSimilarVideosResponseDto> {
+    const similarVideos = await this.videoService.getSimilarVideos(id);
+    return { videos: similarVideos };
+  }
+
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware, CreateVideoHistoryRecordMiddleware)
   public async get(
     @requestParam('videoId') videoId: string,
@@ -329,18 +486,64 @@ export class VideoController extends BaseHttpController {
 
   /**
    * @swagger
+   * /videos/{id}/view:
+   *    post:
+   *      tags:
+   *        - video
+   *      operationId: addVideoView
+   *      consumes:
+   *        - application/json
+   *      produces:
+   *        - application/json
+   *      description: Add view to video
+   *      parameters:
+   *        - in: path
+   *          name: id
+   *          description: video ID
+   *          required: true
+   *          schema:
+   *            type: string
+   *      responses:
+   *        '200':
+   *          description: view added
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: object
+   *                properties:
+   *                  videoId:
+   *                    type: string
+   *                  currentViews:
+   *                    type: number
+   *        '404':
+   *          description: video does not exist
+   */
+  @httpPost(`${VideoApiPath.$ID}${VideoApiPath.VIEW}`)
+  public async addView(@requestParam('videoId') id: string): Promise<AddVideoViewResponseDto> {
+    const newViewsCount = await this.videoService.addVideoView(id);
+    if (!newViewsCount) {
+      throw new NotFound(exceptionMessages.video.VIDEO_ID_NOT_FOUND);
+    }
+    return {
+      currentViews: newViewsCount.currentViews,
+      videoId: id,
+    };
+  }
+
+  /**
+   * @swagger
    * /videos/react/{id}:
    *    post:
    *      tags:
    *        - video
-   *      operationId: addVideoComment
+   *      operationId: addVideoReaction
    *      security:
    *      - bearerAuth: []
    *      consumes:
    *        - application/json
    *      produces:
    *        - application/json
-   *      description: Add comment to video
+   *      description: Add reaction to video
    *      parameters:
    *        - in: body
    *          name: body
@@ -424,7 +627,7 @@ export class VideoController extends BaseHttpController {
 
   /**
    * @swagger
-   * /comment:
+   * /videos/comment/react/{id}:
    *    post:
    *      tags:
    *        - comment

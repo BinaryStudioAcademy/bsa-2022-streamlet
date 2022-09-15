@@ -63,19 +63,39 @@ export class CategoryRepositoryAdapter implements CategoryRepository {
       .then((category) => !!category);
   }
 
-  bindCategoriesToVideo({ categories, videoId }: BindCategoryToVideoDto): Promise<Category[]> {
-    const values = categories.map((categoryId) => {
-      return `('${categoryId}', '${videoId}')`;
-    });
-    const query = `insert into "_CategoryToVideo" ("A", "B") values ${values.join(',')} on conflict do nothing`;
-    return this.prismaClient.$queryRawUnsafe(query).then(() => {
-      return this.prismaClient.category.findMany({
-        where: {
-          id: {
-            in: categories,
+  async bindCategoriesToVideo({ categories, videoId }: BindCategoryToVideoDto): Promise<Category[]> {
+    await this.prismaClient.$transaction(
+      categories.map((categoryId) => {
+        return this.prismaClient.categoryToVideo.upsert({
+          where: {
+            categoryId_videoId: {
+              videoId,
+              categoryId,
+            },
           },
+          update: {},
+          create: {
+            videoId,
+            categoryId,
+          },
+        });
+      }),
+    );
+
+    return this.prismaClient.category.findMany({
+      where: {
+        id: {
+          in: categories,
         },
-      });
+      },
+    });
+  }
+
+  async clearCategoriesToVideoBinding(videoId: string): Promise<void> {
+    await this.prismaClient.categoryToVideo.deleteMany({
+      where: {
+        videoId,
+      },
     });
   }
 }

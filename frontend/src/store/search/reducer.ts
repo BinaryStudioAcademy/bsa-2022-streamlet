@@ -9,7 +9,9 @@ import {
   clearActiveFilterIds,
   clearSearchResults,
   setSearchResults,
+  updateChannelCardSubscriptionCount,
 } from './actions';
+import { updateItemIfExists } from 'helpers/helpers';
 
 type State = {
   searchText: string;
@@ -83,6 +85,14 @@ const reducer = createReducer(initialState, (builder) => {
     state.results.channels = payload.channels;
     state.results.videos = payload.videos;
     state.results.dataStatus = DataStatus.FULFILLED;
+  });
+
+  builder.addCase(updateChannelCardSubscriptionCount, (state: State, { payload }) => {
+    if (state.results.channels.list.length === 0) {
+      return state;
+    }
+    const channels = [...state.results.channels.list];
+    state.results.channels.list = updateItemIfExists(channels, { id: payload.id }, { subscribersCount: payload.count });
   });
 });
 

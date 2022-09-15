@@ -1,1 +1,1 @@
-export { StudioStream } from './stream';
+export { StudioStream } from './stream/stream';

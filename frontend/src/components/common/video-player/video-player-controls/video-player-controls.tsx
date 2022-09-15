@@ -9,18 +9,27 @@ import { VideoTime } from './video-time/video-time';
 import { ProgressBar } from './progress-bar/progress-bar';
 import { SettingsControl } from './settings-control/settings-control';
 import Hls from 'hls.js';
-import { LiveIndicator } from './live-indicator/live-indicator';
 import fscreen from 'fscreen';
+import { SyncBtn } from './sync-btn/sync-btn';
+import { LiveIndicator } from '../../common';
 
 type Props = {
   videoContainer: HTMLVideoElement;
   videoContainerWrapper: HTMLElement;
   hlsClient: Hls;
   isLive: boolean;
+  isFullscreen: boolean;
   className?: string;
 };
 
-const VideoPlayerControls: FC<Props> = ({ videoContainer, videoContainerWrapper, className, hlsClient, isLive }) => {
+const VideoPlayerControls: FC<Props> = ({
+  videoContainer,
+  videoContainerWrapper,
+  className,
+  hlsClient,
+  isLive,
+  isFullscreen,
+}) => {
   useEffect(() => {
     const handlePause = (): void => {
       videoContainerWrapper.dataset.paused = 'true';
@@ -37,13 +46,16 @@ const VideoPlayerControls: FC<Props> = ({ videoContainer, videoContainerWrapper,
   }, [videoContainer, videoContainerWrapper]);
 
   return (
-    <div className={clsx(styles['video-elements-wrapper'], className)}>
-      <ProgressBar videoContainer={videoContainer} />
+    <div className={clsx(styles['video-elements-wrapper'], className, isFullscreen && styles['fullscreen'])}>
+      <ProgressBar videoContainer={videoContainer} liveSyncLie={isLive} />
       <div className={styles['video-controls-wrapper']}>
         <PlayPauseButton videoContainer={videoContainer} />
         <VolumeWrapper videoContainer={videoContainer} />
         {isLive ? (
-          <LiveIndicator className={styles['live-indicator']} />
+          <>
+            <SyncBtn videoContainer={videoContainer} />
+            <LiveIndicator wrapperClassName={styles['live-indicator']} />
+          </>
         ) : (
           <VideoTime videoContainer={videoContainer} className={styles['video-time']} />
         )}

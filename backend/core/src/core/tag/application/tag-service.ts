@@ -52,6 +52,7 @@ export class TagService {
     if (!isVideoExists) {
       return null;
     }
+    await this.tagRepository.clearTagToVideoBinding(videoId);
     const createdTags = await this.createTags(tagPayload);
     const tags = await this.tagRepository.bindTagToVideo({
       tags: createdTags.map((tag) => tag.id),

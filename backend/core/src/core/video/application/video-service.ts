@@ -6,7 +6,7 @@ import {
   VideoSearch,
 } from '~/shared/types/types';
 import { VideoRepository } from '~/core/video/port/video-repository';
-import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
+import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import {
   BaseReplyRequestDto,
   CreateReactionRequestDto,
@@ -15,10 +15,17 @@ import {
   VideoCommentResponseDto,
   Comment,
   VideoPaginationParams,
+  StreamStatus,
+  VideoInfoDto,
+  UpdateVideoVisibilityDto,
+  UpdateVideoInfoDto,
+  RecommendedVideosParams,
 } from 'shared/build';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { POPULAR_VIDEO_CARD_IN_ONE_PAGE } from '~/shared/constants/constants';
 import { usePagination } from '~/shared/helpers';
+import { getSearchQuerySplit } from '~/shared/helpers/search/get-search-query-split.helper';
+import { castToVideoInfoDto } from './dtos/cast-to-video-info';
 
 @injectable()
 export class VideoService {
@@ -34,6 +41,27 @@ export class VideoService {
 
   getById(id: string): Promise<VideoExpandedInfo | null> {
     return this.videoRepository.getById(id);
+  }
+
+  async getSimilarVideos(id: string): Promise<BaseVideoResponseDto[]> {
+    const video = await this.videoRepository.getById(id);
+    if (!video) {
+      return [];
+    }
+    const query: VideoSearch = {
+      searchText: getSearchQuerySplit(video.name).join(' | '),
+      type: [StreamStatus.FINISHED, StreamStatus.LIVE],
+      sortBy: [],
+      duration: {
+        gte: undefined,
+        lte: undefined,
+      },
+      date: undefined,
+    };
+    const searchResult = await this.videoRepository.getVideosBySearch(query, {
+      excludeIds: [id],
+    });
+    return searchResult.list;
   }
 
   getAuthorByVideoId(id: string): Promise<string | undefined> {
@@ -55,6 +83,11 @@ export class VideoService {
       return this.videoRepository.removeReactionAndAddNew(videoId, userId, request.isLike);
     }
     return this.videoRepository.addReaction(request, videoId, userId);
+  }
+
+  async addVideoView(videoId: string): Promise<{ currentViews: number } | null> {
+    const currentViews = await this.videoRepository.addView(videoId);
+    return currentViews;
   }
 
   async addCommentReaction(
@@ -92,5 +125,56 @@ export class VideoService {
 
   async addVideoCommentReply(request: BaseReplyRequestDto, userId: string): Promise<Comment[]> {
     return this.videoRepository.addVideoCommentReply(request, userId);
+  }
+
+  //NOTE: remove segments and poster from cloud
+  async deleteByIds(ids: string[]): Promise<VideoInfoDto[] | null> {
+    const deletedVideos = await this.videoRepository.deleteByIds(ids);
+    if (!deletedVideos.length) {
+      return null;
+    }
+
+    return deletedVideos.map((video) => castToVideoInfoDto(video));
+  }
+
+  async getMyVideos(authorId: string): Promise<VideoInfoDto[]> {
+    const videos = await this.videoRepository.getMyVideos(authorId);
+
+    return videos.map((video) => castToVideoInfoDto(video));
+  }
+
+  async updateVisibility({ videoId, visibility }: UpdateVideoVisibilityDto): Promise<VideoInfoDto | null> {
+    const isVideoExists = await this.videoRepository.getById(videoId);
+    if (!isVideoExists) {
+      return null;
+    }
+    const video = await this.videoRepository.updateVisibility({
+      videoId,
+      visibility,
+    });
+
+    return video && castToVideoInfoDto(video);
+  }
+
+  async updateInfo({ videoId, title, description }: UpdateVideoInfoDto): Promise<VideoInfoDto | null> {
+    const isVideoExists = await this.videoRepository.getById(videoId);
+    if (!isVideoExists) {
+      return null;
+    }
+    const video = await this.videoRepository.updateVideoInfo({
+      videoId,
+      title,
+      description,
+    });
+
+    return video && castToVideoInfoDto(video);
+  }
+
+  async getGeneralVideos(userId: string): Promise<DataVideo> {
+    return await this.videoRepository.getGeneralVideos(userId);
+  }
+
+  async getRecommendedVideos(params: RecommendedVideosParams): Promise<DataVideo> {
+    return await this.videoRepository.getRecommendedVideos(params);
   }
 }

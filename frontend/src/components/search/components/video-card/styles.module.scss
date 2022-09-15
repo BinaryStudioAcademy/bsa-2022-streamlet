@@ -151,7 +151,7 @@ $base-z-index: $page-component-z-index - 10;
   display: -webkit-box;
   max-height: 40px;
   overflow: hidden;
-  color: var(--white-text-color);
+  color: var(--video-card-search-title-text);
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
@@ -178,11 +178,11 @@ $base-z-index: $page-component-z-index - 10;
   display: flex;
   align-items: center;
   gap: 2px;
-  color: var(--text-gray-color);
+  color: var(--video-card-search-info-text);
 }
 
 .video-card-meta-data svg path {
-  fill: var(--text-gray-color);
+  fill: var(--video-card-search-info-icon);
 }
 
 .video-card-meta-data-scheduled {
@@ -216,7 +216,7 @@ $base-z-index: $page-component-z-index - 10;
 
 .video-card-author a {
   overflow: hidden;
-  color: var(--text-gray-color);
+  color: var(--video-card-search-channel-text);
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
@@ -279,6 +279,7 @@ $base-z-index: $page-component-z-index - 10;
 
 .video-card-meta-tag svg {
   width: 12px;
+  fill: red;
 }
 
 .live-label {

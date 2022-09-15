@@ -8,7 +8,7 @@
   right: 2px;
   z-index: 1;
   width: 50px;
-  height: 30px;
+  height: 100%;
   background: var(--gray-300-header-menu-background);
   background: linear-gradient(
     270deg,
@@ -29,6 +29,27 @@
   );
 }
 
+.blur-container-following-browse {
+  background: var(--browse-following-header-color);
+  background: linear-gradient(
+    270deg,
+    var(--browse-following-header-color) 50%,
+    var(--browse-following-header-color-sub-transparent) 89%,
+    var(--browse-following-header-color-transparent) 98%
+  );
+}
+
+.blur-container-following-browse-left {
+  left: 2px;
+  background: var(--browse-following-header-color);
+  background: linear-gradient(
+    90deg,
+    var(--browse-following-header-color) 50%,
+    var(--browse-following-header-color-sub-transparent) 89%,
+    var(--browse-following-header-color-transparent) 98%
+  );
+}
+
 .arrow-container {
   position: relative;
   display: flex;
@@ -36,13 +57,19 @@
 
 .arrow-container .arrow {
   z-index: 2;
-  padding: 0 10px;
+  width: 29px;
+  padding: 0;
   color: var(--auth-border);
-  font-weight: 600;
-  font-size: 20px;
   background: none;
 
   &:hover {
     background: none;
+  }
+
+  &:active {
+    max-height: 31px;
+    padding: 7px;
+    background-color: var(--gray-200-input-background);
+    border-radius: 100%;
   }
 }

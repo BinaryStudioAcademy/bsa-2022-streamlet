@@ -472,7 +472,11 @@
   --always-gray-300-header-menu-background: #1f222a;
   --secondary-text-color: #505565;
   --text-gray-color: #6a726d;
+  --text-grayish-color: #a5a5a5;
   --white-text-color: #ffffff;
+  --browse-following-header-color: #181a20;
+  --browse-following-header-color-transparent: #181a2000;
+  --browse-following-header-color-sub-transparent: #181a2050;
   --brand-green-color: #06c149;
   --brand-dark-green-color: #006624;
   --brand-green-color-hover: #1caa4f;
@@ -489,6 +493,7 @@
   --input-error-border: 1px solid var(--input-error-color);
   --input-background-color: #ffffff;
   --always-white-color: #ffffff;
+  --always-gray-color: #6a726d;
   --live-red: #e63232;
   --live-red-hover: #b11919;
   --stream-indicator-offline: #a59c9c;
@@ -522,6 +527,7 @@
   /* stream */
   --stream-settings-modal-bg: rgba(52 79 62);
   --stream-select-item-hover-bg: rgb(36 65 47);
+  --studio-input: #2c4133;
 
   /* subscription */
   --subscribed-btn-background-color: rgb(104 104 104);
@@ -549,12 +555,21 @@
   --progress-bar-done-bg: #006624;
   --selectable-not-selected-bg: rgb(255 255 255 / 56.2%);
   --live-indicator-bg: #00501c;
+
+  /* video card search page */
+  --video-card-search-channel-text: #ffffff;
+  --video-card-search-info-text: #77807b;
+  --video-card-search-info-icon: #363c3a;
+  --video-card-search-title-text: #ffffff;
 }
 
 body[data-theme='light'] {
   --gray-300-header-menu-background: var(--green-100-header-menu-background);
   --primary-text-color: #ffffff;
   --white-text-color: #181a20;
+  --browse-following-header-color: #ffffff;
+  --browse-following-header-color-transparent: #ffffff00;
+  --browse-following-header-color-sub-transparent: #ffffff50;
   --secondary-text-color: #a7a5a5;
   --hover-light-grey: var(--hover-dark-grey);
   --gray-400-primary-background: #ffffff;
@@ -593,6 +608,12 @@ body[data-theme='light'] {
 
   /* video-card */
   --video-card-schedule-btn-background: #d1d1d140;
+
+  /* video card search page */
+  --video-card-search-channel-text: #6a726d;
+  --video-card-search-info-text: #77807b;
+  --video-card-search-info-icon: #c4c4c4;
+  --video-card-search-title-text: #1f222a;
 }
 
 html {

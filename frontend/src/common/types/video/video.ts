@@ -10,4 +10,7 @@ export {
   BaseVideoCommentResponseDto,
   VideosLiveResponseDto,
   VideosOfflineResponseDto,
+  AddVideoViewRequestDto,
+  AddVideoViewResponseDto,
+  GetSimilarVideosResponseDto,
 } from 'shared/build';

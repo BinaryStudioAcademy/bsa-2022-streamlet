@@ -15,7 +15,6 @@ import { authActions, searchActions, profileActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
 import { switchTheme } from 'store/theme-switch/actions';
 import { Header } from './header';
-import defaultAvatar from 'assets/img/default/user-avatar-default.jpg';
 
 const HeaderContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -178,8 +177,10 @@ const HeaderContainer: FC = () => {
       handleClickSearchBtn={handleClickSearchBtn}
       handleClickSearchMobileToggle={handleClickSearchMobileToggle}
       handleSubmitSearch={handleSubmitSearch}
-      userAvatar={profile?.avatar ? profile.avatar : defaultAvatar}
+      userAvatar={profile?.avatar}
       userName={profile?.username}
+      userFirstName={profile?.firstName}
+      userLastName={profile?.lastName}
       userEmail={user?.email}
       options={options}
       themeValue={!isLightTheme}
