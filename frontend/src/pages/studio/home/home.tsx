@@ -16,10 +16,10 @@ const StudioHome: FC<Props> = ({ handleStartStreaming }) => {
           <Icon name={IconName.CAMERA} color={IconColor.WHITE} width="74" height="74" className={styles['icon']} />
           <p>Start streaming</p>
         </button>
-        <button className={styles['button']}>
+        {/* <button className={styles['button']}>
           <Icon name={IconName.TIME_AGO} color={IconColor.WHITE} width="70" height="70" />
           <p>Schedule the stream</p>
-        </button>
+        </button> */}
       </div>
     </div>
   );

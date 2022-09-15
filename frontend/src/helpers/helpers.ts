@@ -8,6 +8,7 @@ export { isRouteHasDefaultNavigation, isRouteHasStudioNavigation } from './route
 export { isObjectUniqueIdContainInTwoArray } from './array/is-object-unique-id-contain-intwo-array';
 export { removeItemIfExists } from './array/remove-item-if-exists.helper';
 export { replaceItemIfExists } from './array/replace-item-if-exists.helper';
+export { updateItemIfExists } from './array/update-item-if-exists.helper';
 export { pushOrDeleteIfExists } from './array/push-or-delete-if-exists-helper';
 export { generateAbbreviatureNameUser, getUserDisplayName } from './user';
 export { joinExistingValues, getRightUpdateTimeDelay } from './common/common';

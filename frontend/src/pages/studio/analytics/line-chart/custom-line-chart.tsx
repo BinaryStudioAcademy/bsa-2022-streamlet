@@ -3,16 +3,15 @@ import dayjs from 'dayjs';
 import { AxisDomain } from 'recharts/types/util/types';
 import { CustomTooltip } from './tooltip/custom-tooltip';
 import { FC } from 'common/types/types';
+import { ChartData } from './types/types';
+import { getMonthData } from './mock-helper/mock-helper';
 
 const strokeColor = '#C4C4C4';
 const lineColor = '#06C149';
 
-type ChartProps = {
-  data: { date: Date; value: number }[];
-};
-
-const dateFormatter = (date: string): string => {
-  return dayjs(new Date(date)).format('MMM');
+export type ChartProps = {
+  data: ChartData;
+  days: number;
 };
 
 const getTicks = (startDate: Date, endDate: Date, num: number): number[] => {
@@ -35,17 +34,29 @@ const getTicks = (startDate: Date, endDate: Date, num: number): number[] => {
   return ticks;
 };
 
-export const CustomLineChart: FC<ChartProps> = ({ data }) => {
-  const startDate = data[0].date;
-  const endDate = data[data.length - 1].date;
-  const ticks = getTicks(startDate, endDate, data.length);
+export const CustomLineChart: FC<ChartProps> = ({ data, days }) => {
+  const dataLength = data.dataLength;
+  const startDate = data.data[0].date;
+  const endDate = data.data[data.data.length - 1].date;
+  const ticks = getTicks(startDate, endDate, dataLength);
   const domain: AxisDomain = [(dataMin: Date): Date => dataMin, (): number => endDate.getTime()];
+  const realData = days === 365 ? getMonthData(data.data) : data.data;
+
+  const dateFormatter = (date: string): string => {
+    switch (data.format) {
+      case 'day':
+        return dayjs(new Date(date)).format('ddd DD');
+
+      default:
+        return dayjs(new Date(date)).format('MMM');
+    }
+  };
 
   return (
     <>
-      <ResponsiveContainer width="90%" aspect={3}>
+      <ResponsiveContainer aspect={3}>
         <LineChart
-          data={data}
+          data={realData}
           margin={{
             top: 20,
             right: 30,
@@ -64,7 +75,7 @@ export const CustomLineChart: FC<ChartProps> = ({ data }) => {
             domain={domain}
             ticks={ticks}
             tickLine={false}
-            dx={60}
+            textAnchor="middle"
           />
           <YAxis
             tick={{ fill: strokeColor }}

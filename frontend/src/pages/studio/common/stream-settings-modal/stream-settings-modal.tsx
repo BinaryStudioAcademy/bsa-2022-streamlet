@@ -124,11 +124,11 @@ const StreamSettingsModal: FC<Props> = ({ onClose, isOpen, onSave }) => {
               />
             )}
           </div>
+          <div className={styles['footer']}>
+            <Button content="Save" type="submit" className={styles['control-btn']} />
+            <Button content="Cancel" type="button" className={styles['control-btn']} onClick={handleClose} />
+          </div>
         </form>
-      </div>
-      <div className={styles['footer']}>
-        <Button content="Save" type="submit" className={styles['control-btn']} />
-        <Button content="Cancel" type="button" className={styles['control-btn']} onClick={handleClose} />
       </div>
     </Modal>
   );
