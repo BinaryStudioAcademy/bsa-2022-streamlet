@@ -1,16 +1,20 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 import { VideoInfoDto } from 'shared/build';
-import { getMyVideos, unloadVideos } from './actions';
+import { getMyVideos, pickAllVideo, pickVideo, unloadVideos } from './actions';
 
 type State = {
-  data: VideoInfoDto[];
+  data: Array<
+    VideoInfoDto & {
+      isActive: boolean;
+    }
+  >;
   dataStatus: DataStatus;
   error: boolean;
 };
 
 const initialState: State = {
-  data: [] as VideoInfoDto[],
+  data: [],
   dataStatus: DataStatus.IDLE,
   error: false,
 };
@@ -22,7 +26,10 @@ const reducer = createReducer(initialState, (builder) => {
   });
   builder.addCase(getMyVideos.fulfilled, (state, { payload }) => {
     state.dataStatus = DataStatus.FULFILLED;
-    state.data = payload;
+    state.data = payload.map((video) => ({
+      ...video,
+      isActive: false,
+    }));
   });
   builder.addCase(getMyVideos.rejected, (state) => {
     state.error = true;
@@ -34,6 +41,19 @@ const reducer = createReducer(initialState, (builder) => {
     state.error = false;
     state.data = [];
     state.dataStatus = DataStatus.IDLE;
+  });
+
+  builder.addCase(pickVideo, (state, { payload }) => {
+    state.data = state.data.map((video) => {
+      return {
+        ...video,
+        isActive: video.id === payload.id ? !video.isActive : video.isActive,
+      };
+    });
+  });
+
+  builder.addCase(pickAllVideo, (state, { payload }) => {
+    state.data = state.data.map((video) => ({ ...video, isActive: payload.isPick }));
   });
 });
 

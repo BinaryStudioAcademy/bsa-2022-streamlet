@@ -47,10 +47,10 @@
   }
 
   tr {
-    border-top: 1px solid var(--green-200-header-menu-background);
+    border-bottom: 1px solid var(--green-200-header-menu-background);
 
     &:last-child {
-      border-bottom: 1px solid var(--green-200-header-menu-background);
+      border: none;
     }
   }
 }
@@ -58,4 +58,18 @@
 .checkbox {
   width: 20px;
   height: 20px;
+}
+
+.extended-menu-closed,
+.extended-menu-open {
+  width: 100%;
+  min-height: 1px;
+  background-color: var(--green-200-header-menu-background);
+  transition: min-height 0.2s ease-out;
+}
+
+.extended-menu-open {
+  min-height: 70px;
+  box-shadow: inset 0 0 6px 4px rgba(0 0 0 45%);
+  transition: min-height 0.2s ease-in;
 }

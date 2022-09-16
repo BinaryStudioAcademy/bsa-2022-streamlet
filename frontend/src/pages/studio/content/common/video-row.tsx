@@ -1,15 +1,16 @@
 import { getFormatDurationString } from 'helpers/helpers';
-import React, { EventHandler, FC, SyntheticEvent, useState } from 'react';
+import React, { EventHandler, FC, SyntheticEvent } from 'react';
 import { VideoInfoDto } from 'shared/build';
 import styles from './styles.module.scss';
 import defaulVideoPoster from 'assets/img/default-video-poster-light.jpg';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from 'components/common/icon';
 import { IconColor, IconName, VideoMenuOptions } from 'common/enums/enums';
-import { useOutsideClick } from 'hooks/hooks';
+import { useAppDispatch, useOutsideClick } from 'hooks/hooks';
 import { allMenuOptions } from '../config';
+import { pickVideo } from 'store/content-page/actions';
 
-export const VideoRow: FC<VideoInfoDto> = ({
+export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
   id,
   name,
   description,
@@ -21,19 +22,20 @@ export const VideoRow: FC<VideoInfoDto> = ({
   likeCount,
   dislikeCount,
   duration,
+  isActive,
 }) => {
   const imgFallbackHandler: EventHandler<SyntheticEvent<HTMLImageElement, Event>> = ({ currentTarget }): void => {
     currentTarget.onerror = null;
     currentTarget.src = defaulVideoPoster;
   };
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const redirectHandler = (): void => {
     navigate(`/video/${id}`);
   };
 
-  const [isChecked, setIsChecked] = useState(false);
   const chekboxHandler = (): void => {
-    setIsChecked(!isChecked);
+    dispatch(pickVideo({ id }));
   };
 
   const { isOpened: isMenuOpen, open: openMenu, close: closeMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
@@ -52,9 +54,9 @@ export const VideoRow: FC<VideoInfoDto> = ({
   }));
 
   return (
-    <tr className={styles[isChecked ? 'wrapper-checked' : 'wrapper']}>
+    <tr className={styles[isActive ? 'wrapper-checked' : 'wrapper']}>
       <th>
-        <input onClick={chekboxHandler} className={styles['checkbox']} type="checkbox" />
+        <input checked={isActive} onChange={chekboxHandler} className={styles['checkbox']} type="checkbox" />
       </th>
       <th>
         <div className={styles['video-container']}>

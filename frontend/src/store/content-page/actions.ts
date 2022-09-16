@@ -12,5 +12,7 @@ const getMyVideos = createAsyncThunk<VideoInfoDto[], void, AsyncThunkConfig>(
 );
 
 const unloadVideos = createAction(ActionType.UNLOAD_VIDEOS);
+const pickVideo = createAction<{ id: string }>(ActionType.PICK_VIDEO);
+const pickAllVideo = createAction<{ isPick: boolean }>(ActionType.PICK_ALL_VIDEO);
 
-export { getMyVideos, unloadVideos };
+export { getMyVideos, unloadVideos, pickVideo, pickAllVideo };
