@@ -29,6 +29,7 @@ import { OverviewTab } from 'pages/following-page/tabs/overview/overview-tab';
 import { LiveVideosTab } from 'pages/following-page/tabs/live-videos/live-videos-tab';
 import { OfflineVideosTab } from 'pages/following-page/tabs/offline-videos/offline-videos-tab';
 import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
+import { Tab as StreamTab } from 'pages/studio/stream/stream/tabs/tabs';
 import { BrowsePage } from '../../pages/browse-page/browse-page';
 import { closeSidebar } from 'store/layout/actions';
 import { ScrollToTop } from './scroll-to-top';
@@ -38,6 +39,8 @@ import { StudioHomeContainer } from 'pages/studio/home/home-container';
 
 import styles from './app.module.scss';
 import { loadPreferences } from 'store/preferences/actions';
+import { LiveSettings } from 'pages/studio/stream/stream/tabs/live-settings/live-settings';
+import { LiveAnalytics } from 'pages/studio/stream/stream/tabs/live-analytics/live-analytics';
 
 socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
   store.dispatch(socketActions.addSocketId(id));
@@ -110,7 +113,12 @@ const App: FC = () => {
           <StudioSidebar />
           <div className={styles['main-content']}>
             <Routes>
-              <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHomeContainer />} />} />
+              <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHomeContainer />} />}>
+                <Route index element={<LiveSettings />} />
+                <Route path={StreamTab.SETTINGS} element={<LiveSettings />} />
+                <Route path={StreamTab.ANALYTICS} element={<LiveAnalytics />} />
+                <Route path="*" element={<Navigate to={`${AppRoutes.STUDIO}/${StreamTab.SETTINGS}`} replace />} />
+              </Route>
               <Route path={AppRoutes.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />
               <Route path={AppRoutes.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />} />
               <Route path={AppRoutes.ANY} element={<NotFound />} />
