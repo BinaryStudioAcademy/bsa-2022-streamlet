@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 import { VideoInfoDto } from 'shared/build';
-import { getMyVideos, pickAllVideo, pickVideo, unloadVideos } from './actions';
+import { changePrivacy, getMyVideos, pickAllVideo, pickVideo, unloadVideos } from './actions';
 
 type State = {
   data: Array<
@@ -32,6 +32,23 @@ const reducer = createReducer(initialState, (builder) => {
     }));
   });
   builder.addCase(getMyVideos.rejected, (state) => {
+    state.error = true;
+    state.data = [];
+    state.dataStatus = DataStatus.REJECTED;
+  });
+
+  builder.addCase(changePrivacy.pending, (state) => {
+    state.error = false;
+    state.dataStatus = DataStatus.PENDING;
+  });
+  builder.addCase(changePrivacy.fulfilled, (state, { payload }) => {
+    state.dataStatus = DataStatus.FULFILLED;
+    state.data = [...state.data].map((video) => ({
+      ...video,
+      privacy: video.id === payload.id ? payload.privacy : video.privacy,
+    }));
+  });
+  builder.addCase(changePrivacy.rejected, (state) => {
     state.error = true;
     state.data = [];
     state.dataStatus = DataStatus.REJECTED;

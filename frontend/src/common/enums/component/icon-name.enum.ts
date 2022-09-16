@@ -52,6 +52,7 @@ enum IconName {
   HORIZONTAL_SCROLL_LEFT_ARROW = 'horizontal-scroll-left-arrow',
   HORIZONTAL_SCROLL_RIGHT_ARROW = 'horizontal-scroll-right-arrow',
   CONTENT = 'content',
+  DOWNLOAD = 'download',
 }
 
 export { IconName };

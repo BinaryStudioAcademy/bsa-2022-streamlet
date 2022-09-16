@@ -85,11 +85,13 @@ $base-z-index: $page-component-z-index;
   text-overflow: ellipsis;
 }
 
-.video-info-menu {
+.video-info-menu,
+.privacy-menu {
   cursor: pointer;
 }
 
-.video-menu-body {
+.video-menu-body,
+.privacy-menu-body {
   position: relative;
   top: 8px;
   left: 20px;
@@ -101,13 +103,20 @@ $base-z-index: $page-component-z-index;
   box-shadow: -3px 3px 10px 0 rgb(0 0 0 / 15%);
 }
 
-.video-menu-list {
+.privacy-menu-body {
+  top: 8px;
+  left: -5px;
+}
+
+.video-menu-list,
+.privacy-menu-list {
   display: flex;
   flex-flow: column nowrap;
   list-style: none;
 }
 
-.video-menu-item {
+.video-menu-item,
+.privacy-menu-item {
   display: grid;
   grid-template-columns: 20px auto;
   align-items: center;
@@ -134,5 +143,20 @@ $base-z-index: $page-component-z-index;
     path {
       fill: var(--always-white-color);
     }
+  }
+}
+
+.privacy-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.privacy-menu {
+  display: flex;
+  margin-left: 10px;
+
+  svg {
+    align-self: center;
   }
 }

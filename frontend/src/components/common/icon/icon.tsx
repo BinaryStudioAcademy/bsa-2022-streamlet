@@ -53,6 +53,7 @@ import { ReactComponent as ReportFlag } from 'assets/img/report.svg';
 import { ReactComponent as HorizontalScrollRightArrow } from 'assets/img/horizontal-scroll-right-arrow.svg';
 import { ReactComponent as HorizontalScrollLeftArrow } from 'assets/img/horizontal-scroll-left-arrow.svg';
 import { ReactComponent as Content } from 'assets/img/content.svg';
+import { ReactComponent as Download } from 'assets/img/download.svg';
 
 import clsx from 'clsx';
 const getColor = (color: string): string => styles[`fill${color}`];
@@ -293,6 +294,10 @@ const Icon = ({ name, color, width, height, className, onClick }: IconProps): JS
 
     case IconName.CONTENT: {
       return <Content {...commonProps} />;
+    }
+
+    case IconName.DOWNLOAD: {
+      return <Download {...commonProps} />;
     }
 
     default: {

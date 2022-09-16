@@ -1,5 +1,6 @@
-import { DataStatus } from 'common/enums/enums';
-import { Tooltip } from 'components/common/common';
+import clsx from 'clsx';
+import { DataStatus, IconColor, IconName } from 'common/enums/enums';
+import { Icon, Tooltip } from 'components/common/common';
 import { useAppDispatch, useAppSelector, useWindowDimensions } from 'hooks/hooks';
 import React, { FC, useEffect, useState } from 'react';
 import { getMyVideos, pickAllVideo, unloadVideos } from 'store/content-page/actions';
@@ -38,7 +39,21 @@ export const StudioContent: FC = () => {
       <Tooltip isLightTheme={false} />
       <h1 className={styles['header']}>Channel content</h1>
       <div className={styles['body']}>
-        <div className={styles[isNeedExtendedMeny ? 'extended-menu-open' : 'extended-menu-closed']}></div>
+        <div className={styles[isNeedExtendedMeny ? 'extended-menu-open' : 'extended-menu-closed']}>
+          <div className={clsx(styles['extended-menu-body'], { [styles.displaynone]: !isNeedExtendedMeny })}>
+            <div className={styles['picked-count']}>{`Picked ${pickedCount} ${
+              pickedCount > 1 ? 'videos' : 'video'
+            }`}</div>
+            <div className={styles['extented-segment']}>
+              <div className={styles['extented-segment-title']}>Change</div>
+              <Icon name={IconName.ARROW_DOWN} color={IconColor.WHITE} />
+            </div>
+            <div className={styles['extented-segment']}>
+              <div className={styles['extented-segment-title']}>Others</div>
+              <Icon name={IconName.ARROW_DOWN} color={IconColor.WHITE} />
+            </div>
+          </div>
+        </div>
         <table className={styles['table']}>
           <tr>
             <th>
