@@ -899,4 +899,76 @@ export class VideoRepositoryAdapter implements VideoRepository {
       total,
     };
   }
+
+  async getSimilarVideos(videoId: string, { skip, take }: Omit<RecommendedVideosParams, 'userId'>): Promise<DataVideo> {
+    const IMPORTANCE_FACTOR = 10;
+    const videos: ResponseVideoQueryRaw[] = await this.prismaClient.$queryRaw`
+      SELECT
+        v.*,
+        ch.id as ch_id,
+        ch.name as ch_name,
+        ch.avatar as ch_avatar,
+        (((SELECT ${IMPORTANCE_FACTOR} * CAST(COUNT(*) AS INT)
+          FROM
+          (SELECT cv."categoryId"
+          FROM
+            "CategoryToVideo" cv
+          WHERE
+            cv."videoId" = v.id
+          INTERSECT
+          SELECT
+            cv."categoryId"
+          FROM
+            "CategoryToVideo" cv
+          WHERE
+            cv."videoId" = ${videoId}
+          ) as _
+        )) + ((SELECT CAST(COUNT(*) AS INT)
+          FROM
+          (SELECT
+            UNNEST(string_to_array(LOWER(regexp_replace(v.name, '[[:punct:]]', '', 'g')), ' '))   
+          INTERSECT
+          SELECT
+            UNNEST(string_to_array(LOWER(regexp_replace(curv.name, '[[:punct:]]', '', 'g')), ' '))
+          FROM
+            "Video" curv
+          WHERE
+            curv.id = ${videoId}
+          ) as _
+        ))) as matchResult
+    FROM
+      "Video" v
+    INNER JOIN
+      "Channel" ch
+    ON
+      v."channelId" = ch.id
+    AND
+      v.id != ${videoId}
+    AND
+      v.privacy = 'PUBLIC'
+    ORDER BY
+      matchResult DESC,
+      v.id DESC
+    OFFSET ${+skip} ROWS
+    FETCH NEXT ${+take} ROWS ONLY
+    `;
+
+    const [total]: { total: number }[] = await this.prismaClient.$queryRaw`
+      SELECT
+        CAST(COUNT(*) AS INT) as total
+      FROM
+        "Video" tv
+      WHERE
+        tv.privacy = 'PUBLIC'
+      AND
+        tv.id != ${videoId}
+      `;
+
+    const list = videos.map(trimVideoForQueryRaw);
+
+    return {
+      list,
+      total: total.total,
+    };
+  }
 }

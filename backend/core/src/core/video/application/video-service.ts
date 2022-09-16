@@ -6,7 +6,7 @@ import {
   VideoSearch,
 } from '~/shared/types/types';
 import { VideoRepository } from '~/core/video/port/video-repository';
-import { BaseVideoResponseDto, DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
+import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import {
   BaseReplyRequestDto,
   CreateReactionRequestDto,
@@ -15,7 +15,6 @@ import {
   VideoCommentResponseDto,
   Comment,
   VideoPaginationParams,
-  StreamStatus,
   VideoInfoDto,
   UpdateVideoVisibilityDto,
   UpdateVideoInfoDto,
@@ -24,7 +23,6 @@ import {
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { POPULAR_VIDEO_CARD_IN_ONE_PAGE } from '~/shared/constants/constants';
 import { usePagination } from '~/shared/helpers';
-import { getSearchQuerySplit } from '~/shared/helpers/search/get-search-query-split.helper';
 import { castToVideoInfoDto } from './dtos/cast-to-video-info';
 
 @injectable()
@@ -43,25 +41,8 @@ export class VideoService {
     return this.videoRepository.getById(id);
   }
 
-  async getSimilarVideos(id: string): Promise<BaseVideoResponseDto[]> {
-    const video = await this.videoRepository.getById(id);
-    if (!video) {
-      return [];
-    }
-    const query: VideoSearch = {
-      searchText: getSearchQuerySplit(video.name).join(' | '),
-      type: [StreamStatus.FINISHED, StreamStatus.LIVE],
-      sortBy: [],
-      duration: {
-        gte: undefined,
-        lte: undefined,
-      },
-      date: undefined,
-    };
-    const searchResult = await this.videoRepository.getVideosBySearch(query, {
-      excludeIds: [id],
-    });
-    return searchResult.list;
+  async getSimilarVideos(id: string, paginationParams: Omit<RecommendedVideosParams, 'userId'>): Promise<DataVideo> {
+    return await this.videoRepository.getSimilarVideos(id, paginationParams);
   }
 
   getAuthorByVideoId(id: string): Promise<string | undefined> {

@@ -77,4 +77,5 @@ export interface VideoRepository {
   updateVideoInfo(updateVideoInfo: UpdateVideoInfoDto): Promise<VideoWithReactionsAndComments | null>;
   getGeneralVideos(userId: string): Promise<DataVideo>;
   getRecommendedVideos(params: RecommendedVideosParams): Promise<DataVideo>;
+  getSimilarVideos(videoId: string, paginationParams: Omit<RecommendedVideosParams, 'userId'>): Promise<DataVideo>;
 }
