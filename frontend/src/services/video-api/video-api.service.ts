@@ -18,6 +18,7 @@ import {
   AddVideoViewResponseDto,
   AddVideoViewRequestDto,
   GetSimilarVideosResponseDto,
+  VideoInfoDto,
 } from 'shared/build';
 import { Http } from '../http/http.service';
 
@@ -168,6 +169,15 @@ class VideoApi {
         method: HttpMethod.POST,
         contentType: ContentType.JSON,
         payload: JSON.stringify(payload),
+      },
+    });
+  }
+
+  public getMyVideos(): Promise<VideoInfoDto[]> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.GET_MY_VIDEO}`,
+      options: {
+        method: HttpMethod.GET,
       },
     });
   }

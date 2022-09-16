@@ -1,7 +1,19 @@
+@import 'assets/css/config.scss';
+
+$base-z-index: $page-component-z-index;
+
+.wrapper {
+  background-color: transparent;
+}
+
+.wrapper-checked {
+  background-color: var(--green-200-header-menu-background);
+}
+
 .video-container {
   display: flex;
   flex-direction: row;
-  width: auto;
+  justify-content: space-between;
   height: 100px;
 }
 
@@ -15,7 +27,7 @@
 .video-preview-poster {
   display: block;
   width: 100%;
-  height: auto;
+  min-width: 180px;
   object-fit: cover;
 }
 
@@ -63,5 +75,64 @@
 .checkbox {
   width: 20px;
   height: 20px;
-  accent-color: var(--brand-green-color);
+}
+
+.video-container-wrapper {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.video-info-menu {
+  cursor: pointer;
+}
+
+.video-menu-body {
+  position: relative;
+  top: 8px;
+  left: 20px;
+  z-index: $base-z-index + 1;
+  height: fit-content;
+  padding: 15px;
+  background-color: var(--always-gray-300-header-menu-background);
+  border-radius: 0 0 3px 3px;
+  box-shadow: -3px 3px 10px 0 rgb(0 0 0 / 15%);
+}
+
+.video-menu-list {
+  display: flex;
+  flex-flow: column nowrap;
+  list-style: none;
+}
+
+.video-menu-item {
+  display: grid;
+  grid-template-columns: 20px auto;
+  align-items: center;
+  padding: 4px;
+  cursor: pointer;
+
+  span {
+    color: var(--always-text-gray-color);
+    font-size: 15px;
+    white-space: nowrap;
+  }
+
+  svg {
+    justify-self: center;
+    height: 15px;
+    fill: var(--always-text-gray-color);
+  }
+
+  &:hover {
+    span {
+      color: var(--always-white-color);
+    }
+
+    path {
+      fill: var(--always-white-color);
+    }
+  }
 }

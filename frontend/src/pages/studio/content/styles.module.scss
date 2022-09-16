@@ -1,12 +1,12 @@
 .studio {
   display: flex;
   flex-direction: column;
+  height: 100%;
   background: var(--green-300-primary-background);
 }
 
 .header {
   display: flex;
-  flex-grow: 0.2;
   justify-content: flex-start;
   align-items: center;
   align-self: center;
@@ -17,7 +17,6 @@
 }
 
 .body {
-  flex-grow: 15;
   align-self: center;
   width: 80%;
   padding-top: 20px;
@@ -28,16 +27,19 @@
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  border-spacing: 10px;
 
   th {
     width: 50px;
-    padding: 18px 15px;
+    padding: 18px 10px;
     overflow: hidden;
     white-space: nowrap;
     text-align: left;
     text-overflow: ellipsis;
     vertical-align: top;
+
+    &:first-child {
+      width: 10px;
+    }
 
     &:nth-child(2) {
       width: 200px;
@@ -56,14 +58,4 @@
 .checkbox {
   width: 20px;
   height: 20px;
-  background-color: var(--always-white-color);
-  border: 1px solid #34495e;
-  outline: none;
-  cursor: pointer;
-  transition-duration: 0.3s;
-  appearance: none;
-
-  &:checked {
-    background-color: var(--brand-green-color);
-  }
 }
