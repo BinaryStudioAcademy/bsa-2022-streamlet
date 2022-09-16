@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useLayoutEffect, useMemo, useState } from 'react';
+import React, { FC, ReactNode, useLayoutEffect, useMemo, useState } from 'react';
 import { ControlButton } from '../control-button/control-button';
 import { ReactComponent as SettingsIcon } from 'assets/img/settings-filled.svg';
 import { ReactComponent as SpeedIcon } from 'assets/img/speedometer.svg';
@@ -15,7 +15,7 @@ type Props = {
   videoWrapper: HTMLElement;
   videoContainer: HTMLVideoElement;
   className?: string;
-  hlsClient: Hls;
+  hlsClient: Hls | null;
 };
 
 enum Modal {
@@ -30,7 +30,7 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
   const [speed, setSpeed] = useState(videoContainer.playbackRate);
   const [quality, setQuality] = useState('Auto');
 
-  const getModalComponent = useMemo((): ReactElement => {
+  const getModalComponent = useMemo((): ReactNode => {
     switch (currentModal) {
       case Modal.MAIN: {
         return (
@@ -44,24 +44,26 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
                 <div className={styles['option-metric']}>{speed}x</div>
               </div>
             </ModalItem>
-            <ModalItem onClick={(): void => setCurrentModal(Modal.QUALITY)} icon={<QualityIcon height={17} />}>
-              <div className={styles['modal-option-text-wrapper']}>
-                <div>Quality </div>
-                <div className={styles['option-metric']}>{quality}</div>
-              </div>
-            </ModalItem>
+            {hlsClient && (
+              <ModalItem onClick={(): void => setCurrentModal(Modal.QUALITY)} icon={<QualityIcon height={17} />}>
+                <div className={styles['modal-option-text-wrapper']}>
+                  <div>Quality </div>
+                  <div className={styles['option-metric']}>{quality}</div>
+                </div>
+              </ModalItem>
+            )}
           </GenericSettingsModal>
         );
       }
       case Modal.QUALITY: {
-        return (
+        return hlsClient ? (
           <QualitySelector
             className={styles['settings-modal']}
             goBack={(): void => setCurrentModal(Modal.MAIN)}
             hlsClient={hlsClient}
             setLevelName={setQuality}
           />
-        );
+        ) : null;
       }
       case Modal.SPEED: {
         return (

@@ -16,7 +16,7 @@ import { LiveIndicator } from '../../common';
 type Props = {
   videoContainer: HTMLVideoElement;
   videoContainerWrapper: HTMLElement;
-  hlsClient: Hls;
+  hlsClient: Hls | null;
   isLive: boolean;
   isFullscreen: boolean;
   className?: string;

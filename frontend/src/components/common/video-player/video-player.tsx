@@ -144,6 +144,9 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
         }));
       };
     }
+    if (videoContainerRef.current.canPlayType('application/vnd.apple.mpegurl')) {
+      videoContainerRef.current.src = new URL(url, ENV.VIDEO_FALLBACK_BASE_URL).toString();
+    }
   }, [areRefsNull.videoContainer, isLive, url]);
 
   const videoContainerWrapperCallbackRef = useCallback((element: HTMLDivElement | null): void => {
@@ -198,7 +201,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
         <p>Your browser doesn't support playing video. Please upgrade to a new one.</p>
       </video>
       <div></div>
-      {videoContainerRef.current && videoContainerWrapperRef.current && hlsRef.current && showControls && (
+      {videoContainerRef.current && videoContainerWrapperRef.current && showControls && (
         <>
           <PlayPauseCenterEffect videoContainer={videoContainerRef.current} className={styles['playpause-effect']} />
           <VideoPlayerControls
