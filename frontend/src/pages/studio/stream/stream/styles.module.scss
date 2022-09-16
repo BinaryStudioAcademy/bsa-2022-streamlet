@@ -48,6 +48,20 @@ $label-input-spacing: 5px;
 }
 
 .tab-header {
+  --solid-color-h-scroll: #344f3e;
+  --sub-transparent-h-scroll: #344f3e50;
+  --transparent-h-scroll: #344f3e00;
+
+  .tab-btn {
+    color: var(--text-grayish-color);
+  }
+}
+
+.header-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  gap: 20px;
   margin-bottom: 20px;
 }
 
@@ -85,6 +99,7 @@ $label-input-spacing: 5px;
   flex-grow: 5;
   flex-basis: 0;
   gap: 20px;
+  overflow: hidden;
 }
 
 .button {
@@ -243,6 +258,7 @@ $label-input-spacing: 5px;
 .text-field-container {
   display: flex;
   flex-direction: column;
+  max-width: 100%;
 }
 
 .field-caption {

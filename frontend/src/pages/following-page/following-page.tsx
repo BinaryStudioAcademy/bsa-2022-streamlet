@@ -55,6 +55,7 @@ const FollowingPage: FC = () => {
           navigate(tab);
         }}
         containerClassName={styles['tab-header']}
+        isFollowingOrBrowsePage={true}
       />
       <div className={styles['tab-container']}>
         <Outlet context={pageContainerRef} />

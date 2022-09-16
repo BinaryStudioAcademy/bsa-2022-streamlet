@@ -11,14 +11,23 @@ type Props = {
   onTabClick: (tab: string) => void;
   currentTab: string;
   containerClassName?: string;
+  buttonClassName?: string;
+  isFollowingOrBrowsePage?: boolean;
 };
 
-const TabHeader: FC<Props> = ({ tabs, currentTab, onTabClick, containerClassName }) => {
+const TabHeader: FC<Props> = ({
+  tabs,
+  currentTab,
+  onTabClick,
+  containerClassName,
+  buttonClassName,
+  isFollowingOrBrowsePage = false,
+}) => {
   return (
     <nav className={clsx(styles['main-container'], containerClassName)}>
       <ScrollMenu
-        LeftArrow={<LeftArrow isFollowingOrBrowse={true} />}
-        RightArrow={<RightArrow isFollowingOrBrowse={true} />}
+        LeftArrow={<LeftArrow isFollowingOrBrowse={isFollowingOrBrowsePage} />}
+        RightArrow={<RightArrow isFollowingOrBrowse={isFollowingOrBrowsePage} />}
         wrapperClassName={styles['horizontal-scroll']}
         scrollContainerClassName={styles['horizontal-scroll']}
       >
@@ -30,6 +39,7 @@ const TabHeader: FC<Props> = ({ tabs, currentTab, onTabClick, containerClassName
               onClick={(): void => {
                 onTabClick(tab.tab);
               }}
+              className={buttonClassName}
               isActive={tab.tab === currentTab}
             />
           );

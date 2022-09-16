@@ -1,46 +1,28 @@
-import { ViewsChart } from 'pages/studio/common/live-stream-analytics/viewers-chart/viewers-chart';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { Header } from './header/header';
 import styles from './styles.module.scss';
+import { All } from './tabs/all/all';
+import { Chat } from './tabs/chat/chat';
+import { Tab } from './tabs/tab.enum';
+import { Views } from './tabs/views/views';
 
 const LiveAnalytics: FC = () => {
+  const [currentTab, setCurrentTab] = useState<Tab>(Tab.VIEWS);
+  const headerRef = useOutletContext() as HTMLElement | null;
   return (
     <div className={styles['analytics-container']}>
-      <Header />
-      <ViewsChart
-        viewsData={[
-          {
-            secondsFromStart: 0,
-            subs: 0,
-            unsubs: 0,
-          },
-          {
-            secondsFromStart: 30,
-            subs: 20,
-            unsubs: 2,
-          },
-          {
-            secondsFromStart: 60,
-            subs: 10,
-            unsubs: 20,
-          },
-          {
-            secondsFromStart: 90,
-            subs: 80,
-            unsubs: 60,
-          },
-          {
-            secondsFromStart: 120,
-            subs: 79,
-            unsubs: 100,
-          },
-          {
-            secondsFromStart: 150,
-            subs: 9,
-            unsubs: 20,
-          },
-        ]}
-      />
+      {headerRef && (
+        <Header
+          portal={headerRef}
+          onTabChange={(tab: Tab): void => {
+            setCurrentTab(tab);
+          }}
+        />
+      )}
+      {currentTab === Tab.VIEWS && <Views />}
+      {currentTab === Tab.CHAT && <Chat />}
+      {currentTab === Tab.ALL && <All />}
     </div>
   );
 };

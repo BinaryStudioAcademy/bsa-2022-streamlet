@@ -42,6 +42,8 @@ const StudioStream: FC<Props> = ({ handleSettingsModalOpen, handleChangeStreamSt
     }
   }, [currentTab, activeSegment]);
 
+  const [placeForAnalyticsSelect, setPlaceForAnalyticsSelect] = useState<HTMLElement | null>(null);
+
   return (
     <div className={styles['settings-container']}>
       <div className={styles['settings-block-container']}>
@@ -109,15 +111,24 @@ const StudioStream: FC<Props> = ({ handleSettingsModalOpen, handleChangeStreamSt
             </div>
           </div>
           <section className={styles['tab']}>
-            <TabHeader
-              tabs={Object.values(tabs)}
-              currentTab={currentTab}
-              onTabClick={(tab): void => {
-                navigate(tab);
-              }}
-              containerClassName={styles['tab-header']}
-            />
-            <Outlet />
+            <div className={styles['header-wrapper']}>
+              <TabHeader
+                isFollowingOrBrowsePage={false}
+                tabs={Object.values(tabs)}
+                currentTab={currentTab}
+                onTabClick={(tab): void => {
+                  navigate(tab);
+                }}
+                containerClassName={styles['tab-header']}
+                buttonClassName={styles['tab-btn']}
+              />
+              <div
+                ref={(newRef): void => {
+                  setPlaceForAnalyticsSelect(newRef);
+                }}
+              ></div>
+            </div>
+            <Outlet context={placeForAnalyticsSelect} />
           </section>
         </div>
       </div>
