@@ -16,6 +16,7 @@ import {
   loadRecommendedVideos,
   deleteComment,
   updateComment,
+  setNumberOfLoadingVideo,
 } from './actions';
 
 type State = {
@@ -38,6 +39,9 @@ type State = {
     videos: BaseVideoResponseDto[];
     dataStatus: DataStatus;
     error: string | undefined;
+    numbersOfGetVideos: number;
+    total: number;
+    currentPage: number;
   };
 };
 
@@ -61,6 +65,9 @@ const initialState: State = {
     dataStatus: DataStatus.IDLE,
     error: undefined,
     videos: [],
+    currentPage: 1,
+    numbersOfGetVideos: 12,
+    total: 0,
   },
 };
 
@@ -92,7 +99,13 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(loadRecommendedVideos.fulfilled, (state, { payload }) => {
     state.recommendedVideos.dataStatus = DataStatus.FULFILLED;
     state.recommendedVideos.error = undefined;
-    state.recommendedVideos.videos = payload.videos;
+    state.recommendedVideos.currentPage++;
+    state.recommendedVideos.total = payload.total;
+    state.recommendedVideos.videos = [...state.recommendedVideos.videos, ...payload.list];
+  });
+
+  builder.addCase(setNumberOfLoadingVideo, (state, { payload }) => {
+    state.recommendedVideos.numbersOfGetVideos = payload;
   });
 
   builder.addCase(channelSubscribe.fulfilled, (state, { payload }) => {
@@ -211,6 +224,9 @@ const reducer = createReducer(initialState, (builder) => {
     state.video = null;
     state.replies.dataStatus = DataStatus.IDLE;
     state.replies.data = {};
+    state.recommendedVideos.currentPage = 1;
+    state.recommendedVideos.total = 0;
+    state.recommendedVideos.videos = [];
   });
 });
 

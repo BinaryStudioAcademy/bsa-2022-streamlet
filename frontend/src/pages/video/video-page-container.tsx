@@ -16,6 +16,7 @@ import { LinksBlock } from './links-block/links-block';
 import { NotFound } from 'components/placeholder-page';
 import { addVideoView, resetVideoPage } from 'store/video-page/actions';
 import { resetPaginationMainPage } from 'store/videos/actions';
+import { openSidebar } from 'store/layout/actions';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -50,6 +51,7 @@ const VideoPageContainer: FC = () => {
     return () => {
       dispatch(resetVideoPage());
       dispatch(resetPaginationMainPage());
+      dispatch(openSidebar());
     };
   }, [dispatch]);
 
