@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 20px 100px;
+}
+
+.display-tab-container {
+  flex-basis: max(200px, 15%);
+}
+
+.label {
+  color: var(--text-grayish-color);
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.value {
+  font-size: 20px;
+}
