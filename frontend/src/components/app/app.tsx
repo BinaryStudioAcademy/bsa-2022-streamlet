@@ -36,6 +36,9 @@ import { ScrollToTop } from './scroll-to-top';
 import { socket } from 'common/config/config';
 import { store } from 'store/store';
 import { StudioHomeContainer } from 'pages/studio/home/home-container';
+import { ViewsTab } from 'pages/studio/analytics/tabs/views/views-tab';
+import { FollowersTab } from 'pages/studio/analytics/tabs/followers/followers-tab';
+import { Tab as AnalyticsTab } from 'pages/studio/analytics/tabs/tab';
 
 import styles from './app.module.scss';
 import { loadPreferences } from 'store/preferences/actions';
@@ -120,7 +123,15 @@ const App: FC = () => {
                 <Route path="*" element={<Navigate to={`${AppRoutes.STUDIO}/${StreamTab.SETTINGS}`} replace />} />
               </Route>
               <Route path={AppRoutes.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />
-              <Route path={AppRoutes.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />} />
+              <Route path={AppRoutes.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />}>
+                <Route index element={<ViewsTab />} />
+                <Route path={AnalyticsTab.VIEWS} element={<ViewsTab />} />
+                <Route path={AnalyticsTab.FOLLOWERS} element={<FollowersTab />} />
+                <Route
+                  path="*"
+                  element={<Navigate to={`${AppRoutes.STUDIO_ANALYTICS}/${AnalyticsTab.VIEWS}`} replace />}
+                />
+              </Route>
               <Route path={AppRoutes.ANY} element={<NotFound />} />
             </Routes>
           </div>
