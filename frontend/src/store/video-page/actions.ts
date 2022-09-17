@@ -9,7 +9,6 @@ import {
   CreateCommentReactionRequestDto,
   CreateCommentReactionResponseDto,
   AddVideoViewResponseDto,
-  GetSimilarVideosResponseDto,
 } from 'common/types/types';
 import {
   VideoExpandedResponseDto,
@@ -17,6 +16,7 @@ import {
   BaseReplyRequestDto,
   Comment,
   DeleteCommentResponseDto,
+  DataVideo,
 } from 'shared/build';
 import { ActionType } from './common';
 
@@ -29,17 +29,26 @@ const getVideo = createAsyncThunk<VideoExpandedResponseDto, string, AsyncThunkCo
   },
 );
 
-const loadRecommendedVideos = createAsyncThunk<GetSimilarVideosResponseDto, string, AsyncThunkConfig>(
+const loadRecommendedVideos = createAsyncThunk<DataVideo, string, AsyncThunkConfig>(
   ActionType.LOAD_RECOMMENDED_VIDEOS,
   // you might think that it's possible to get video id without passing it into parameters
   // by looking into state, but this info is not there until the video is loaded, and we want
   // to start loading recommendations even before the video info has been received from the server
-  async (videoId: string, { extra }) => {
+  async (videoId: string, { extra, getState }) => {
     const { videoApi } = extra;
-    const videos = await videoApi.getSimilarVideos(videoId);
+    const { numbersOfGetVideos, currentPage } = getState().videoPage.recommendedVideos;
+
+    const pagination = {
+      skip: (currentPage - 1) * numbersOfGetVideos,
+      take: numbersOfGetVideos,
+    };
+
+    const videos = await videoApi.getSimilarVideos(videoId, pagination);
     return videos;
   },
 );
+
+const setNumberOfLoadingVideo = createAction<number>(ActionType.SET_NUMBER_OF_LOADING_VIDEO);
 
 const addVideoComment = createAsyncThunk<VideoCommentResponseDto, VideoCommentRequestDto, AsyncThunkConfig>(
   ActionType.COMMENT,
@@ -149,4 +158,5 @@ export {
   loadRecommendedVideos,
   deleteComment,
   updateComment,
+  setNumberOfLoadingVideo,
 };

@@ -1,19 +1,15 @@
-import { STREAMING_SERVER_URL } from 'common/constants/constants';
-import { ENV, IconName, SocketEvents, StreamStatus } from 'common/enums/enums';
+import { SocketEvents, StreamStatus } from 'common/enums/enums';
 import { FC, StreamUpdateRequestDto } from 'common/types/types';
-import { createToastNotification } from 'components/common/toast-notification';
 import { Forbidden } from 'components/placeholder-page';
 import { NotFound } from 'components/placeholder-page/not-found';
 import { errorCodes } from 'exceptions/exceptions';
-import { useAppDispatch, useAppForm, useAppSelector } from 'hooks/hooks';
-import { useCallback, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { useCallback, useState } from 'react';
 import { streamActions } from 'store/actions';
-import { StreamInfoFormValues } from './common/stream-info-form-values';
 import { StudioStream } from './stream/stream';
 import { socket } from 'common/config/config';
 import { StreamSettingsModal } from '../common/stream-settings-modal/stream-settings-modal';
 import { store } from 'store/store';
-import { shallowEqual } from 'react-redux';
 
 socket.on(SocketEvents.notify.STREAM_OBS_STATUS, (isReadyToStream: boolean) => {
   store.dispatch(
@@ -26,14 +22,7 @@ socket.on(SocketEvents.notify.STREAM_OBS_STATUS, (isReadyToStream: boolean) => {
 
 const StudioStreamContainer: FC = () => {
   const dispatch = useAppDispatch();
-  const { channel, streamingKey, errorCode } = useAppSelector(
-    (state) => ({
-      channel: state.stream.channel,
-      streamingKey: state.stream.streamingKey,
-      errorCode: state.stream.status.errorCode,
-    }),
-    shallowEqual,
-  );
+  const errorCode = useAppSelector((state) => state.stream.status.errorCode);
 
   const streamStatus = useAppSelector((state) => state.stream.stream?.status);
   const streamId = useAppSelector((state) => state.stream.stream?.id);
@@ -74,44 +63,9 @@ const StudioStreamContainer: FC = () => {
     );
   }, [dispatch, streamStatus, streamId]);
 
-  const handleCopy = (): void => {
-    createToastNotification({
-      type: 'success',
-      message: 'Copied!',
-      iconName: IconName.INFO,
-      title: '',
-    });
-  };
-
-  const handleStreamingKeyReset = useCallback(() => {
-    dispatch(streamActions.resetStreamingKey({ channelId: channel?.id ?? '' }));
-  }, [dispatch, channel?.id]);
-
-  const defaultInfoFormValues = useCallback(
-    () => ({
-      streamingKey: streamingKey ?? '',
-      streamingServerUrl: STREAMING_SERVER_URL,
-      streamUrl: `${ENV.VIDEO_FALLBACK_BASE_URL}/video/${streamId}`,
-    }),
-    [streamId, streamingKey],
-  );
-
-  const {
-    control: infoFormControl,
-    errors: infoFormErrors,
-    getValues: infoFormValues,
-    reset: infoFormReset,
-  } = useAppForm<StreamInfoFormValues>({
-    defaultValues: defaultInfoFormValues(),
-  });
-
   const isNotFound = errorCode === errorCodes.stream.NOT_FOUND || errorCode === errorCodes.stream.NO_CHANNELS;
 
   const isForbidden = errorCode === errorCodes.stream.FORBIDDEN || errorCode === errorCodes.stream.ACTIVE_STREAM_EXISTS;
-
-  useEffect(() => {
-    infoFormReset(defaultInfoFormValues());
-  }, [infoFormReset, defaultInfoFormValues]);
 
   return isNotFound ? (
     <NotFound />
@@ -127,11 +81,6 @@ const StudioStreamContainer: FC = () => {
       <StudioStream
         handleSettingsModalOpen={handleSettingsModalOpen}
         handleChangeStreamStatus={handleChangeStreamStatus}
-        handleCopy={handleCopy}
-        handleStreamingKeyReset={handleStreamingKeyReset}
-        infoFormControl={infoFormControl}
-        infoFormErrors={infoFormErrors}
-        infoFormValues={infoFormValues}
       />
     </>
   );
