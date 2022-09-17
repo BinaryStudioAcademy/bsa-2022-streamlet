@@ -194,7 +194,6 @@ const HeaderContainer: FC = () => {
 
       default:
         setShowRequestModal(true);
-        break;
     }
   }, [streamPermission]);
 
