@@ -18,6 +18,7 @@ import { SearchApi } from './search-api/search-api.service';
 import { ChannelStreamingApi } from './channel-streaming-api/channel-streaming-api.service';
 import { PreferencesApi } from './preferences-api/preferences-api.service';
 import { CommentApi } from './comment-api/comment-api.service';
+import { StatsApi } from './stats-api/stats-api.service';
 
 const storageService = new StorageService();
 const tokensStorageService = new TokensStorageService(storageService);
@@ -39,6 +40,11 @@ const notificationApi = new NotificationApi({
 });
 
 const channelCrudApi = new ChannelCrudApi({
+  apiPrefix: ENV.API_PATH,
+  http,
+});
+
+const statsApi = new StatsApi({
   apiPrefix: ENV.API_PATH,
   http,
 });
@@ -103,6 +109,7 @@ export {
   videoApi,
   categoryApi,
   channelCrudApi,
+  statsApi,
   channelSubscriptionApi,
   chatApi,
   commentApi,
