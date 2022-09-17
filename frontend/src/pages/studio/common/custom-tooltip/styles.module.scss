@@ -1,0 +1,11 @@
+.custom-tooltip {
+  padding: 10px;
+  color: var(--graph-tooltip-text-color);
+  background-color: var(--graph-tooltip-bg);
+  border-radius: 3px;
+  box-shadow: 0 0 5px var(--graph-tooltip-box-shadow-color);
+}
+
+.data-entry {
+  font-weight: 500;
+}

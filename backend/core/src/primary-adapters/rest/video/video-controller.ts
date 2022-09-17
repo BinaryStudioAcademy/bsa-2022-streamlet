@@ -41,7 +41,6 @@ import {
   VideoPaginationParams,
   AddVideoViewResponseDto,
   VideoApiPathParams,
-  GetSimilarVideosResponseDto,
   VideoInfoDto,
   RecommendedVideosParams,
 } from 'shared/build';
@@ -448,9 +447,11 @@ export class VideoController extends BaseHttpController {
    *                  $ref: '#/components/schemas/Video'
    */
   @httpGet(`${VideoApiPath.$ID}${VideoApiPath.SIMILAR_VIDEOS}`)
-  public async getSimilarVideos(@requestParam(VideoApiPathParams.ID) id: string): Promise<GetSimilarVideosResponseDto> {
-    const similarVideos = await this.videoService.getSimilarVideos(id);
-    return { videos: similarVideos };
+  public async getSimilarVideos(
+    @requestParam(VideoApiPathParams.ID) id: string,
+    @queryParam() paginationParams: Omit<RecommendedVideosParams, 'userId'>,
+  ): Promise<DataVideo> {
+    return await this.videoService.getSimilarVideos(id, paginationParams);
   }
 
   @httpGet(`${VideoApiPath.$ID}`, optionalAuthenticationMiddleware, CreateVideoHistoryRecordMiddleware)
