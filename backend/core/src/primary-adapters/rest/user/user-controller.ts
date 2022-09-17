@@ -12,7 +12,14 @@ import { CONTAINER_TYPES, ExtendedAuthenticatedRequest } from '~/shared/types/ty
 import { UserService } from '~/core/user/application/user-service';
 import { User } from '@prisma/client';
 import { authenticationMiddleware } from '../middleware';
-import { ApiPath, CategoryResponseDto, UserApiPath, UserBindCategoriesDto, StreamPermission } from 'shared/build';
+import {
+  ApiPath,
+  CategoryResponseDto,
+  UserApiPath,
+  UserBindCategoriesDto,
+  StreamPermission,
+  UserStreamPermissionResponseDto,
+} from 'shared/build';
 
 /**
  * @swagger
@@ -153,6 +160,39 @@ export class UserController extends BaseHttpController {
 
   /**
    * @swagger
+   * /users/preferences/:
+   *    get:
+   *      tags:
+   *        - users
+   *      summary: Get user preferences
+   *      security:
+   *        - bearerAuth: []
+   *      responses:
+   *        '200':
+   *          description: OK
+   *          content:
+   *            application/json:
+   *              schema:
+   *                type: array
+   *                items:
+   *                  $ref: '#/components/schemas/CategoryDto'
+   */
+  @httpGet(UserApiPath.$PERMISSION, authenticationMiddleware)
+  public async getUserStreamPermission(
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<UserStreamPermissionResponseDto> {
+    const { id } = req.user;
+
+    const user = await this.userService.getUserById(id);
+    if (!user) {
+      return { streamPermission: StreamPermission.DISABLED };
+    }
+
+    return { streamPermission: user.streamPermission as StreamPermission };
+  }
+
+  /**
+   * @swagger
    * /users/permission/requested:
    *    post:
    *        tags:
@@ -162,9 +202,16 @@ export class UserController extends BaseHttpController {
    *          - bearerAuth: []
    */
   @httpPut(`${UserApiPath.$PERMISSION}${UserApiPath.$REQUESTED}`, authenticationMiddleware)
-  public changeStreamPermission(@request() req: ExtendedAuthenticatedRequest): Promise<User> {
+  public async changeStreamPermission(
+    @request() req: ExtendedAuthenticatedRequest,
+  ): Promise<UserStreamPermissionResponseDto> {
     const { id } = req.user;
 
-    return this.userService.updateStreamPermission(id, StreamPermission.REQUESTED);
+    const user = await this.userService.updateStreamPermission(id, StreamPermission.REQUESTED);
+    if (!user) {
+      return { streamPermission: StreamPermission.DISABLED };
+    }
+
+    return { streamPermission: user.streamPermission as StreamPermission };
   }
 }

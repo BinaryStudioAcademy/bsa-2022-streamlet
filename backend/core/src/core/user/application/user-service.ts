@@ -183,7 +183,7 @@ export class UserService {
     return preferedCategories.videoPreferences.map(({ category }) => castToCategoryResponseDto(category));
   }
 
-  updateStreamPermission(userId: string, streamPermission: StreamPermission): Promise<User> {
+  async updateStreamPermission(userId: string, streamPermission: StreamPermission): Promise<User> {
     return this.userRepository.updateStreamPermission(userId, streamPermission);
   }
 }

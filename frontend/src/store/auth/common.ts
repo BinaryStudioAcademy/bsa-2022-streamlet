@@ -6,6 +6,8 @@ enum ActionType {
   LOAD_CURRENT_USER = 'auth/load-current-user',
   SIGN_IN_GOOGLE = 'auth/sign-in-google',
   GOOGLE_ATHORIZATION = 'auth/google-athorization',
+  STREAM_PERMISSION = 'auth/stream-permission',
+  STREAM_PERMISSION_UPDATE = 'auth/stream-permission-update',
 }
 
 export { ActionType };
