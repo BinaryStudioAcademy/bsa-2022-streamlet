@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { UserRepository } from '~/core/user/port/user-repository';
-import { Category, Prisma, PrismaClient, User } from '@prisma/client';
+import { Category, Prisma, PrismaClient, User, StreamPermission } from '@prisma/client';
 import { CONTAINER_TYPES, UserGetPreferencesDto, UserSignUpRequestDto } from '~/shared/types/types';
 import { hashValue } from '~/shared/helpers';
 import { DefaultRequestParam, ImageUploadErrorMessage, UserBindCategoriesDto } from 'shared/build';
@@ -101,6 +101,7 @@ export class UserRepositoryAdapter implements UserRepository {
         updatedAt: true,
         email: true,
         isActivated: true,
+        streamPermission: true,
       },
     });
   }
@@ -125,6 +126,7 @@ export class UserRepositoryAdapter implements UserRepository {
     }
     return new BadRequest(ImageUploadErrorMessage.UNKNOWN_ERROR);
   }
+
   getByEmail(email: string): Promise<User | null> {
     return this.prismaClient.user.findFirst({
       where: {
@@ -152,6 +154,17 @@ export class UserRepositoryAdapter implements UserRepository {
       },
       data: {
         isActivated: shouldBeActivated,
+      },
+    });
+  }
+
+  async updateStreamPermission(userId: string, streamPermission: StreamPermission): Promise<User> {
+    return await this.prismaClient.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        streamPermission,
       },
     });
   }

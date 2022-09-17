@@ -1,8 +1,7 @@
 import { FormEvent, MouseEvent, RefObject } from 'react';
-import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { FC } from 'common/types/types';
-import { AppRoutes, IconName, MenuOptions } from 'common/enums/enums';
+import { IconName, MenuOptions } from 'common/enums/enums';
 import { useAppSelector, useAppDispatch } from 'hooks/hooks';
 import { closeSidebar, openSidebar } from 'store/layout/actions';
 import { Icon } from 'components/common/common';
@@ -33,6 +32,7 @@ interface HeaderProps {
   handleClickSearchBtn(e: MouseEvent<HTMLElement>): void;
   handleClickSearchMobileToggle(): void;
   handleSubmitSearch(e: FormEvent<HTMLFormElement>): void;
+  handleClickStudio(): void;
   options: MenuOption[];
   userAvatar: string | undefined;
   userName: string | undefined;
@@ -58,6 +58,7 @@ const Header: FC<HeaderProps> = ({
   handleClickSearchMobileToggle,
   handleSubmitSearch,
   handleClickThemeSwitch,
+  handleClickStudio,
   options,
   userAvatar,
   userName,
@@ -121,9 +122,14 @@ const Header: FC<HeaderProps> = ({
         </button>
         {isLogged ? (
           <>
-            <Link data-tip="Start stream" data-place="bottom" className={styles['btn-go-stream']} to={AppRoutes.STUDIO}>
+            <div
+              data-tip="Start stream"
+              data-place="bottom"
+              className={styles['btn-go-stream']}
+              onClick={handleClickStudio}
+            >
               <Icon name={IconName.CAMERA} width="24" height="22" />
-            </Link>
+            </div>
             {/* {notificationDropdownContent} */}
             <button
               data-tip={'User profile'}

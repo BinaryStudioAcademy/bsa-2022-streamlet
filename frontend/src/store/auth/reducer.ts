@@ -3,13 +3,23 @@ import { createReducer, isAnyOf } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 import { UserBaseResponseDto } from 'common/types/types';
 import { getRejectedErrorData } from 'helpers/redux/get-rejected-error-data';
-import { signOut, refreshTokens, signIn, signUp, loadCurrentUser } from './actions';
+import { StreamPermission, UserStreamPermissionResponseDto } from 'shared/build';
+import {
+  signOut,
+  refreshTokens,
+  signIn,
+  signUp,
+  loadCurrentUser,
+  getUserStreamPermission,
+  updateUserStreamPermission,
+} from './actions';
 
 type State = {
   dataStatus: DataStatus;
   error: string | undefined;
   errorCode: string | undefined;
   user: UserBaseResponseDto | null;
+  streamPermission: UserStreamPermissionResponseDto;
 };
 
 const initialState: State = {
@@ -17,6 +27,7 @@ const initialState: State = {
   user: null,
   error: undefined,
   errorCode: undefined,
+  streamPermission: { streamPermission: StreamPermission.DECLINED },
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -32,6 +43,12 @@ const reducer = createReducer(initialState, (builder) => {
   });
   builder.addCase(signIn.fulfilled, (state, { payload }) => {
     state.user = payload;
+  });
+  builder.addCase(getUserStreamPermission.fulfilled, (state, { payload }) => {
+    state.streamPermission = payload;
+  });
+  builder.addCase(updateUserStreamPermission.fulfilled, (state, { payload }) => {
+    state.streamPermission = payload;
   });
   builder.addMatcher(isAnyOf(signOut.rejected, signOut.fulfilled), (state) => {
     state.user = null;

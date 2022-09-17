@@ -15,6 +15,15 @@ import { authActions, searchActions, profileActions } from 'store/actions';
 import { NotificationDropdownContainer } from 'components/notification-dropdown/notification-dropdown-container';
 import { switchTheme } from 'store/theme-switch/actions';
 import { Header } from './header';
+import { StreamPermission } from 'shared/build';
+import { RequestModal } from '../common';
+import { updateUserStreamPermission } from 'store/auth/actions';
+
+const modalInitialState = {
+  headerText: 'Would you like to start streaming?',
+  mainText: 'Send us request in order to start streaming.',
+  buttonText: 'Send Request',
+};
 
 const HeaderContainer: FC = () => {
   const dispatch = useAppDispatch();
@@ -22,10 +31,12 @@ const HeaderContainer: FC = () => {
     search: { searchText },
     user,
     profile,
+    streamPermission,
   } = useAppSelector((state) => ({
     search: state.search,
     user: state.auth.user,
     profile: state.profile.profileData,
+    streamPermission: state.auth.streamPermission,
   }));
   const navigate = useNavigate();
 
@@ -34,6 +45,10 @@ const HeaderContainer: FC = () => {
   const { isOpened: isMenuOpen, open: openMenu, close: closeMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
   const [searchValue, setSearchValue] = useState(searchText);
   const [mobileSearchToggle, setMobileSearchToggle] = useState(false);
+
+  const [showModal, setShowRequestModal] = useState(false);
+  const [modalTexts, setModalTexts] = useState(modalInitialState);
+  const [isModalCloseButton, setModalCloseButton] = useState(false);
 
   const emptyOnClickHandler = (): void => void 0;
 
@@ -161,31 +176,70 @@ const HeaderContainer: FC = () => {
     dispatch(switchTheme());
   };
 
+  const handleClickStudio = useCallback(() => {
+    switch (streamPermission.streamPermission) {
+      case StreamPermission.ALLOWED:
+        setShowRequestModal(false);
+        break;
+
+      case StreamPermission.REQUESTED:
+        setModalTexts({
+          headerText: 'You have already sent your request.',
+          mainText: 'Please wait until we confirm it.',
+          buttonText: 'Close',
+        });
+        setShowRequestModal(true);
+        setModalCloseButton(true);
+        break;
+
+      default:
+        setShowRequestModal(true);
+    }
+  }, [streamPermission]);
+
+  const handleUpdateStartStreaming = useCallback(() => {
+    dispatch(updateUserStreamPermission());
+    setShowRequestModal(false);
+  }, [dispatch]);
+
+  const handleModalClose = (): void => {
+    setShowRequestModal(false);
+  };
+
   return (
-    <Header
-      menuRef={menuRef}
-      isLogged={hasUser}
-      isMenuOpen={isMenuOpen}
-      searchValue={searchValue}
-      searchInputEl={searchInputEl}
-      isMobileSearchOpen={mobileSearchToggle}
-      handleClickUserMenu={handleClickUserMenu}
-      handleClickSignIn={handleClickSignIn}
-      handleClickThemeSwitch={handleThemeToggle}
-      handleChangeInputSearch={handleChangeInputSearch}
-      handleClearInputSearch={handleClearInputSearch}
-      handleClickSearchBtn={handleClickSearchBtn}
-      handleClickSearchMobileToggle={handleClickSearchMobileToggle}
-      handleSubmitSearch={handleSubmitSearch}
-      userAvatar={profile?.avatar}
-      userName={profile?.username}
-      userFirstName={profile?.firstName}
-      userLastName={profile?.lastName}
-      userEmail={user?.email}
-      options={options}
-      themeValue={!isLightTheme}
-      notificationDropdownContent={<NotificationDropdownContainer />}
-    />
+    <>
+      <Header
+        menuRef={menuRef}
+        isLogged={hasUser}
+        isMenuOpen={isMenuOpen}
+        searchValue={searchValue}
+        searchInputEl={searchInputEl}
+        isMobileSearchOpen={mobileSearchToggle}
+        handleClickUserMenu={handleClickUserMenu}
+        handleClickSignIn={handleClickSignIn}
+        handleClickThemeSwitch={handleThemeToggle}
+        handleChangeInputSearch={handleChangeInputSearch}
+        handleClearInputSearch={handleClearInputSearch}
+        handleClickSearchBtn={handleClickSearchBtn}
+        handleClickSearchMobileToggle={handleClickSearchMobileToggle}
+        handleSubmitSearch={handleSubmitSearch}
+        handleClickStudio={handleClickStudio}
+        userAvatar={profile?.avatar}
+        userName={profile?.username}
+        userFirstName={profile?.firstName}
+        userLastName={profile?.lastName}
+        userEmail={user?.email}
+        options={options}
+        themeValue={!isLightTheme}
+        notificationDropdownContent={<NotificationDropdownContainer />}
+      />
+      <RequestModal
+        isOpen={showModal}
+        onSubmit={isModalCloseButton ? handleModalClose : handleUpdateStartStreaming}
+        onClose={handleModalClose}
+        modalTexts={modalTexts}
+      />
+    </>
   );
 };
 
