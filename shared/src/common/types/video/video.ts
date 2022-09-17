@@ -20,3 +20,4 @@ export * from './add-video-view-dto';
 export { UpdateVideoVisibilityDto } from './update-video-visibillity-dto';
 export { UpdateVideoInfoDto } from './update-video-info-dto';
 export { VideoInfoDto } from './video-info-dto';
+export * from './video-stats/video-stats';

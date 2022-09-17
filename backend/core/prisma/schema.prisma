@@ -103,13 +103,6 @@ enum SubscriptionStatus {
   UNSUBSCRIBED
 }
 
-// enum StatsSource {
-//   UNKNOWN
-//   VIDEO_PAGE
-//   CHANNEL_PAGE
-//   SEARCH_PAGE
-// }
-
 model Video {
   id                  String         @id @default(uuid())
   name                String         @default("My new stream")
@@ -129,7 +122,7 @@ model Video {
   comments            VideoComment[]
   channel             Channel        @relation(fields: [channelId], references: [id], onDelete: Cascade)
   channelId           String
-  isChatEnabled       Boolean         @default(true)
+  isChatEnabled       Boolean        @default(true)
   chatMessages        ChatMessage[]
   notifications       Notification[]
   historyRecords      History[]
