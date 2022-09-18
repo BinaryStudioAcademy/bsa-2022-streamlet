@@ -74,7 +74,9 @@ jobs:
         run: npm run lint --max-warnings=0
 
       - name: Migrate and Seed Database
-        run: npm run migrate
+        run: |
+          npm run migrate
+          npm run seed:soft -w backend/core
 
       - name: Start backend
         run: npm run start:backend & npx wait-on $(echo tcp:localhost:$PORT)
