@@ -5,6 +5,8 @@ on:
     branches:
       - development
       - production
+  push:
+    branches:
       - ci/tests-integration
 
   workflow_dispatch:
