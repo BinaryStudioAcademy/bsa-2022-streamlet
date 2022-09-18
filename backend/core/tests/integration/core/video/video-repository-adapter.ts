@@ -11,7 +11,10 @@ import {
   CreateReactionResponseDto,
   DataVideo,
   PopularVideoResponseDto,
+  RecommendedVideosParams,
   TagSearchRequestQueryDto,
+  UpdateVideoInfoDto,
+  UpdateVideoVisibilityDto,
   VideoCommentRequestDto,
   VideoCommentResponseDto,
   VideoPaginationParams,
@@ -19,8 +22,9 @@ import {
 import { VideoExpandedInfo } from '../../../../src/shared/types/video/video-expanded-dto-before-trimming';
 import { VideoSearch, VideoWithChannel } from '../../../../src/shared/types/video/video-with-channel-dto.type';
 import { VideoRepositoryFilters } from '../../../../src/core/video/port/video-repository-filters';
+import { VideoWithReactionsAndComments } from '../../../../src/shared/types/video/video-with-reactions-and-comments-dto';
 
-export class TestVideoReposirotyAdapter implements VideoRepository {
+export class TestVideoRepositoryAdapter implements VideoRepository {
   addComment(request: VideoCommentRequestDto, authorId: string): Promise<VideoCommentResponseDto | null> {
     // only for ignoring eslint errors
     if (!request || !authorId) {
@@ -193,12 +197,18 @@ export class TestVideoReposirotyAdapter implements VideoRepository {
     return Promise.resolve(null);
   }
 
-  searchByCategories(searchByCategoryDto: CategorySearchRequestQueryDto): Promise<VideoWithChannel[]> {
+  searchByCategories(
+    searchByCategoryDto: CategorySearchRequestQueryDto,
+  ): Promise<{ list: VideoWithChannel[]; total: number }> {
+    const defaultSample = {
+      list: [],
+      total: 0,
+    };
     // only for ignoring eslint errors
     if (!searchByCategoryDto) {
-      return Promise.resolve([]);
+      return Promise.resolve(defaultSample);
     }
-    return Promise.resolve([]);
+    return Promise.resolve(defaultSample);
   }
 
   searchByTags(searchByTagsDto: TagSearchRequestQueryDto): Promise<VideoWithChannel[]> {
@@ -207,5 +217,78 @@ export class TestVideoReposirotyAdapter implements VideoRepository {
       return Promise.resolve([]);
     }
     return Promise.resolve([]);
+  }
+
+  addView(id: string): Promise<{ currentViews: number } | null> {
+    // only for ignoring eslint errors
+    if (!id) {
+      return Promise.resolve(null);
+    }
+    return Promise.resolve(null);
+  }
+
+  deleteByIds(ids: string[]): Promise<VideoWithReactionsAndComments[]> {
+    if (!ids) {
+      return Promise.resolve([]);
+    }
+    return Promise.resolve([]);
+  }
+
+  getGeneralVideos(userId: string): Promise<DataVideo> {
+    const defaultSample = {
+      list: [],
+      total: 0,
+    };
+
+    if (!userId) {
+      return Promise.resolve(defaultSample);
+    }
+    return Promise.resolve(defaultSample);
+  }
+
+  getMyVideos(authorId: string): Promise<VideoWithReactionsAndComments[]> {
+    if (!authorId) {
+      return Promise.resolve([]);
+    }
+    return Promise.resolve([]);
+  }
+
+  getRecommendedVideos(params: RecommendedVideosParams): Promise<DataVideo> {
+    const defaultSample = {
+      list: [],
+      total: 0,
+    };
+
+    if (!params) {
+      return Promise.resolve(defaultSample);
+    }
+    return Promise.resolve(defaultSample);
+  }
+
+  getSimilarVideos(videoId: string, paginationParams: Omit<RecommendedVideosParams, 'userId'>): Promise<DataVideo> {
+    const defaultSample = {
+      list: [],
+      total: 0,
+    };
+
+    if (!videoId || !paginationParams) {
+      return Promise.resolve(defaultSample);
+    }
+
+    return Promise.resolve(defaultSample);
+  }
+
+  updateVideoInfo(updateVideoInfo: UpdateVideoInfoDto): Promise<VideoWithReactionsAndComments | null> {
+    if (!updateVideoInfo) {
+      return Promise.resolve(null);
+    }
+    return Promise.resolve(null);
+  }
+
+  updateVisibility(updateVideoVisibilityDto: UpdateVideoVisibilityDto): Promise<VideoWithReactionsAndComments | null> {
+    if (!updateVideoVisibilityDto) {
+      return Promise.resolve(null);
+    }
+    return Promise.resolve(null);
   }
 }

@@ -1,6 +1,6 @@
 const path = require('path');
 const {
-  mergeFiles
+  mergeFiles,
 } = require('junit-report-merger');
 let today = new Date();
 let id =

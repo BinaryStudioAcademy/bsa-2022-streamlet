@@ -1,4 +1,9 @@
-import { expect } from 'chai';
+import chai from 'chai';
+import chaiJsonSchema from 'chai-json-schema';
+
+chai.use(chaiJsonSchema);
+
+const { expect } = chai;
 
 export function checkStatusCode(response, statusCode: 200 | 201 | 204 | 400 | 401 | 403 | 404 | 409 | 500) {
   expect(response.statusCode, `Status code should be ${statusCode}`).to.equal(statusCode);
