@@ -29,15 +29,21 @@ import { OverviewTab } from 'pages/following-page/tabs/overview/overview-tab';
 import { LiveVideosTab } from 'pages/following-page/tabs/live-videos/live-videos-tab';
 import { OfflineVideosTab } from 'pages/following-page/tabs/offline-videos/offline-videos-tab';
 import { Tab as FollowingTab } from 'pages/following-page/tabs/tab';
+import { Tab as StreamTab } from 'pages/studio/stream/stream/tabs/tabs';
 import { BrowsePage } from '../../pages/browse-page/browse-page';
 import { closeSidebar } from 'store/layout/actions';
 import { ScrollToTop } from './scroll-to-top';
 import { socket } from 'common/config/config';
 import { store } from 'store/store';
 import { StudioHomeContainer } from 'pages/studio/home/home-container';
+import { ViewsTab } from 'pages/studio/analytics/tabs/views/views-tab';
+import { FollowersTab } from 'pages/studio/analytics/tabs/followers/followers-tab';
+import { Tab as AnalyticsTab } from 'pages/studio/analytics/tabs/tab';
 
 import styles from './app.module.scss';
 import { loadPreferences } from 'store/preferences/actions';
+import { LiveSettings } from 'pages/studio/stream/stream/tabs/live-settings/live-settings';
+import { LiveAnalytics } from 'pages/studio/stream/stream/tabs/live-analytics/live-analytics';
 
 socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
   store.dispatch(socketActions.addSocketId(id));
@@ -110,10 +116,23 @@ const App: FC = () => {
           <StudioSidebar />
           <div className={styles['main-content']}>
             <Routes>
-              <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHomeContainer />} />} />
+              <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHomeContainer />} />}>
+                <Route index element={<LiveSettings />} />
+                <Route path={StreamTab.SETTINGS} element={<LiveSettings />} />
+                <Route path={StreamTab.ANALYTICS} element={<LiveAnalytics />} />
+                <Route path="*" element={<Navigate to={`${AppRoutes.STUDIO}/${StreamTab.SETTINGS}`} replace />} />
+              </Route>
               <Route path={AppRoutes.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />
               <Route path={AppRoutes.STUDIO_CONTENT} element={<ProtectedRoute element={<StudioContent />} />} />
-              <Route path={AppRoutes.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />} />
+              <Route path={AppRoutes.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />}>
+                <Route index element={<ViewsTab />} />
+                <Route path={AnalyticsTab.VIEWS} element={<ViewsTab />} />
+                <Route path={AnalyticsTab.FOLLOWERS} element={<FollowersTab />} />
+                <Route
+                  path="*"
+                  element={<Navigate to={`${AppRoutes.STUDIO_ANALYTICS}/${AnalyticsTab.VIEWS}`} replace />}
+                />
+              </Route>
               <Route path={AppRoutes.ANY} element={<NotFound />} />
             </Routes>
           </div>

@@ -16,6 +16,7 @@ import {
 import { HttpError } from 'exceptions/exceptions';
 import { serializeHttpError } from 'helpers/http/http';
 import { authApi, tokensStorageService } from 'services/services';
+import { UserStreamPermissionResponseDto } from 'shared/build';
 import { ActionType } from './common';
 
 const signUp = createAsyncThunk<void, UserSignUpRequestDto, AsyncThunkConfig>(
@@ -115,4 +116,32 @@ const googleAuthorization = createAsyncThunk<UserBaseResponseDto, GoogleRequestD
   },
 );
 
-export { signUp, signIn, refreshTokens, signOut, loadCurrentUser, signInGoogle, googleAuthorization };
+const getUserStreamPermission = createAsyncThunk<UserStreamPermissionResponseDto, void, AsyncThunkConfig>(
+  ActionType.STREAM_PERMISSION,
+  async (_, { extra }) => {
+    const { authApi } = extra;
+
+    return authApi.getUserStreamPermission();
+  },
+);
+
+const updateUserStreamPermission = createAsyncThunk<UserStreamPermissionResponseDto, void, AsyncThunkConfig>(
+  ActionType.STREAM_PERMISSION_UPDATE,
+  async (_, { extra }) => {
+    const { authApi } = extra;
+
+    return authApi.updateUserStreamPermission();
+  },
+);
+
+export {
+  signUp,
+  signIn,
+  refreshTokens,
+  signOut,
+  loadCurrentUser,
+  signInGoogle,
+  googleAuthorization,
+  getUserStreamPermission,
+  updateUserStreamPermission,
+};

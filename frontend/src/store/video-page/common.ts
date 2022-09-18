@@ -12,6 +12,7 @@ enum ActionType {
   RESET_VIDEO_PAGE = 'video/page/reset',
   ADD_VIEW = 'video/add-view',
   LOAD_RECOMMENDED_VIDEOS = 'video/load-recommended',
+  SET_NUMBER_OF_LOADING_VIDEO = 'video/number-of-video',
 }
 
 export { ActionType };

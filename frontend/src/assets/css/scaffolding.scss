@@ -501,6 +501,11 @@
   --stream-indicator-offline: #a59c9c;
   --input-disabled-color: #d6d4d4;
 
+  /* horizontal-scroll */
+  --solid-color-h-scroll: #1f222a;
+  --sub-transparent-h-scroll: #181a2050;
+  --transparent-h-scroll: #181a2000;
+
   /* sidebar */
   --sidebar-scrollbar-track-background: var(--gray-300-header-menu-background);
   --sidebar-icon-color: #6a726d;
@@ -530,6 +535,9 @@
   --stream-settings-modal-bg: rgba(52 79 62);
   --stream-select-item-hover-bg: rgb(36 65 47);
   --studio-input: #2c4133;
+  --graph-tooltip-bg: rgb(255 255 255 / 66.4%);
+  --graph-tooltip-text-color: rgb(39 39 39);
+  --graph-tooltip-box-shadow-color: rgb(0 0 0 / 20%);
 
   /* subscription */
   --subscribed-btn-background-color: rgb(104 104 104);
@@ -578,6 +586,11 @@ body[data-theme='light'] {
   --gray-200-input-background: #dadada;
   --gray-300-header-menu-background-transparent: #ebefe800;
   --gray-300-header-menu-background-sub-transparent: #ebefe850;
+
+  /* horizontal-scroll */
+  --solid-color-h-scroll: var(--green-100-header-menu-background);
+  --sub-transparent-h-scroll: #ebefe850;
+  --transparent-h-scroll: #ebefe800;
 
   /* channel page */
   --banner-background: #94a098;

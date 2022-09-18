@@ -9,28 +9,25 @@
   z-index: 1;
   width: 50px;
   height: 100%;
-  background: var(--gray-300-header-menu-background);
   background: linear-gradient(
     270deg,
-    var(--gray-300-header-menu-background) 50%,
-    var(--gray-300-header-menu-background-sub-transparent) 89%,
-    var(--gray-300-header-menu-background-transparent) 98%
+    var(--solid-color-h-scroll) 50%,
+    var(--sub-transparent-h-scroll) 89%,
+    var(--transparent-h-scroll) 98%
   );
 }
 
 .blur-container-left {
   left: 2px;
-  background: var(--gray-300-header-menu-background);
   background: linear-gradient(
     90deg,
-    var(--gray-300-header-menu-background) 50%,
-    var(--gray-300-header-menu-background-sub-transparent) 89%,
-    var(--gray-300-header-menu-background-transparent) 98%
+    var(--solid-color-h-scroll) 50%,
+    var(--sub-transparent-h-scroll) 89%,
+    var(--transparent-h-scroll) 98%
   );
 }
 
 .blur-container-following-browse {
-  background: var(--browse-following-header-color);
   background: linear-gradient(
     270deg,
     var(--browse-following-header-color) 50%,
@@ -41,7 +38,6 @@
 
 .blur-container-following-browse-left {
   left: 2px;
-  background: var(--browse-following-header-color);
   background: linear-gradient(
     90deg,
     var(--browse-following-header-color) 50%,

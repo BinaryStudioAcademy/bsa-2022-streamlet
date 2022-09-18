@@ -26,6 +26,7 @@ const VideoPageContainer: FC = () => {
   const navigate = useNavigate();
   const { videoId: isVideoIdProvided } = useParams();
   const [isReactChanged, setReactState] = useState(false);
+
   if (!isVideoIdProvided) {
     navigate(AppRoutes.ANY, { replace: true });
   }
