@@ -58,6 +58,7 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
 
   const [isNeedConfirmModal, setIsNeedConfirmModal] = useState(false);
   const deleteHandler = (): void => {
+    setIsNeedConfirmModal(false);
     if (authorId) {
       dispatch(deleteVideo({ authorId, ids: [id] }));
     }

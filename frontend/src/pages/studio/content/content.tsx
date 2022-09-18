@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { DataStatus, IconColor, IconName } from 'common/enums/enums';
-import { Icon, Tooltip } from 'components/common/common';
+import { ConfirmationModal, Icon, Tooltip } from 'components/common/common';
 import { useAppDispatch, useAppSelector, useWindowDimensions } from 'hooks/hooks';
 import React, { FC, useEffect, useState } from 'react';
-import { changePrivacy, getMyVideos, pickAllVideo, unloadVideos } from 'store/content-page/actions';
+import { changePrivacy, deleteVideo, getMyVideos, pickAllVideo, unloadVideos } from 'store/content-page/actions';
 import { VideoRow } from './common/video-row';
 import { ReactComponent as Eye } from 'assets/img/eye.svg';
 import styles from './styles.module.scss';
@@ -51,6 +51,14 @@ export const StudioContent: FC = () => {
     setIsNeedPrivacyModal(false);
   };
 
+  const [isNeedConfirmModal, setIsNeedConfirmModal] = useState(false);
+  const deleteHandler = (): void => {
+    setIsNeedConfirmModal(false);
+    if (authorId) {
+      dispatch(deleteVideo({ authorId, ids: pickedVideos }));
+    }
+  };
+
   return (
     <div className={styles['studio']}>
       <Tooltip isLightTheme={false} />
@@ -59,6 +67,12 @@ export const StudioContent: FC = () => {
         currentPicked={VideoPrivacy.PUBLIC}
         onOk={confirmPrivacyChangesHandler}
         onCancel={cancelPrivacyChangesHandler}
+      />
+      <ConfirmationModal
+        confirmationText={'Are you sure? Changes cannot be reverted'}
+        isOpen={isNeedConfirmModal}
+        onCancel={(): void => setIsNeedConfirmModal(false)}
+        onOk={deleteHandler}
       />
       <h1 className={styles['header']}>Channel content</h1>
       <div className={styles['body']}>
@@ -74,7 +88,11 @@ export const StudioContent: FC = () => {
                   <Eye onClick={(): void => setIsNeedPrivacyModal(true)} />
                 </div>
                 <div className={clsx(styles['extented-menu-segment'], { [styles.displaynone]: !isNeedExtendedMenu })}>
-                  <Icon name={IconName.DELETE} color={IconColor.GRAY} />
+                  <Icon
+                    onClick={(): void => setIsNeedConfirmModal(true)}
+                    name={IconName.DELETE}
+                    color={IconColor.GRAY}
+                  />
                 </div>
               </div>
             </th>
