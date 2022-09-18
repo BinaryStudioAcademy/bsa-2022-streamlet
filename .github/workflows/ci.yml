@@ -83,6 +83,12 @@ jobs:
         run: npm test -w backend/core
 
       - name: Run ent-to-end API tests
+        env:
+          TESTS_ENV_NAME: "development"
+          TESTS_BASE_URL: "http://localhost:5001/api/test/"
+          TESTS_SWAGGER_URL: "https://localhost:5001/api-docs/"
+          TESTS_USER_EMAIL: "alsan@mailsac.com"
+          TESTS_USER_PASSWORD: "Test-1234"
         run: npm run api:tests:ci -w tests
 
   build-backend:
