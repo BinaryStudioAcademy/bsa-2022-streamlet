@@ -5,14 +5,57 @@ on:
     branches:
       - development
       - production
+      - ci/tests-integration
 
   workflow_dispatch:
 
 jobs:
-  lint:
-    name: streamlet build test
+  test:
+    name: streamlet test
     runs-on: ubuntu-latest
+    env:
+      DB_NAME: streamlet
+      DB_USER: postgres
+      DB_PASSWORD: admin
 
+      API_BASE_PREFIX: /api/test
+      NODE_ENV: development
+      HOST: localhost
+      RABBITMQ_HOST: localhost
+      PORT: 5001
+      RABBITMQ_PORT: 5672
+
+      DATABASE_URL: "postgresql://postgres:admin@localhost:5432/streamlet"
+
+      CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+      CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+      CLOUDINARY_NAME: ${{ secrets.CLOUDINARY_NAME }}
+
+      MAIL_LOGIN: ${{ secrets.MAIL_LOGIN }}
+      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+
+      ACCESS_TOKEN_SECRET: secret0
+      REFRESH_SECRET: secret1
+      RESET_PASSWORD_TOKEN_SECRET: secret2
+      VERIFICATION_TOKEN_SECRET: secret3
+
+      GOOGLE_CLIENT_ID_GSI: ${{ secrets.GOOGLE_CLIENT_ID_GSI }}
+      GOOGLE_SECRET_GSI: ${{ secrets.GOOGLE_SECRET_GSI }}
+
+      CLIENT_URL: "http://localhost:3000"
+    services:
+      db:
+        image: postgres:14.5
+        env:
+          POSTGRES_DB: ${{ env.DB_NAME }}
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+        ports:
+          - 5432:5432
+      rabbitMq:
+        image: rabbitmq:3-management-alpine
+        ports:
+          - 5672:5672
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2
@@ -23,16 +66,22 @@ jobs:
           node-version-file: .nvmrc
 
       - name: Install Dependencies
-        run: |
-          npm install
+        run: npm install
 
       - name: Code Linting
-        run: |
-          npm run lint --max-warnings=0
+        run: npm run lint --max-warnings=0
 
-      - name: Code Building
-        run: |
-          npm run build
+      - name: Migrate and Seed Database
+        run: npm run migrate
+
+      - name: Start backend
+        run: npm run start:backend & npx wait-on $(echo tcp:localhost:$PORT)
+
+      - name: Run integration tests
+        run: npm test -w backend/core
+
+      - name: Run ent-to-end API tests
+        run: npm run api:tests:ci -w tests
 
   build-backend:
     name: streamlet build backend.Dockerfile
@@ -60,7 +109,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build push Dockerfile
-        run: docker build -f .docker/video-transcoding-server.Dockerfile -t video-transcoding-server .      
+        run: docker build -f .docker/video-transcoding-server.Dockerfile -t video-transcoding-server .
   build-frontend:
     name: streamlet build frontend.Dockerfile
     runs-on: ubuntu-latest
