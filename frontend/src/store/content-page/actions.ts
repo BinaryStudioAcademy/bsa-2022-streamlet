@@ -10,14 +10,15 @@ const getMyVideos = createAsyncThunk<VideoInfoDto[], void, AsyncThunkConfig>(
     return data;
   },
 );
-const changePrivacy = createAsyncThunk<VideoInfoDto, UpdateVideoVisibilityDto & { authorId: string }, AsyncThunkConfig>(
-  ActionType.CHANGE_PRIVACY,
-  async (payload, { extra: { videoApi } }) => {
-    const updatedVideo = await videoApi.editVisibility(payload);
+const changePrivacy = createAsyncThunk<
+  VideoInfoDto[],
+  UpdateVideoVisibilityDto & { authorId: string },
+  AsyncThunkConfig
+>(ActionType.CHANGE_PRIVACY, async (payload, { extra: { videoApi } }) => {
+  const updatedVideos = await videoApi.editVisibility(payload);
 
-    return updatedVideo;
-  },
-);
+  return updatedVideos;
+});
 
 const editInfo = createAsyncThunk<VideoInfoDto, UpdateVideoInfoDto & { authorId: string }, AsyncThunkConfig>(
   ActionType.EDIT_INFO,

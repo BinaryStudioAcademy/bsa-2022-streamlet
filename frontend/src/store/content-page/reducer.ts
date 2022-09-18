@@ -43,10 +43,15 @@ const reducer = createReducer(initialState, (builder) => {
   });
   builder.addCase(changePrivacy.fulfilled, (state, { payload }) => {
     state.dataStatus = DataStatus.FULFILLED;
-    state.data = [...state.data].map((video) => ({
-      ...video,
-      privacy: video.id === payload.id ? payload.privacy : video.privacy,
-    }));
+    state.data = [...state.data].map((video) => {
+      const found = payload.find(({ id }) => video.id === id);
+      return found
+        ? {
+            ...found,
+            isActive: false,
+          }
+        : video;
+    });
   });
   builder.addCase(changePrivacy.rejected, (state) => {
     state.error = true;

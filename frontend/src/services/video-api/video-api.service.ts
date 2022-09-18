@@ -195,12 +195,9 @@ class VideoApi {
     });
   }
 
-  public editVisibility({
-    videoId,
-    ...payload
-  }: UpdateVideoVisibilityDto & { authorId: string }): Promise<VideoInfoDto> {
+  public editVisibility(payload: UpdateVideoVisibilityDto & { authorId: string }): Promise<VideoInfoDto[]> {
     return this.#http.load({
-      url: `${this.#apiPrefix}${ApiPath.VIDEOS}/privacy/${videoId}`,
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.PRIVACY}`,
       options: {
         method: HttpMethod.PUT,
         contentType: ContentType.JSON,

@@ -9,9 +9,9 @@ import { IconColor, IconName } from 'common/enums/enums';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { changePrivacy, deleteVideo, editInfo, pickVideo } from 'store/content-page/actions';
 import { ReactComponent as Eye } from 'assets/img/eye.svg';
-import { ReactComponent as EyeSlash } from 'assets/img/eye-slash.svg';
 import { InfoFormValues, InfoModal } from './info-modal';
 import { ConfirmationModal } from 'components/common/common';
+import { PrivacyModal } from './privacy-modal';
 
 export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
   id,
@@ -56,18 +56,22 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
     setIsNeedInfoModal(false);
   };
 
-  const changePrivacyHandler = (): void => {
-    if (authorId) {
-      const visibility = currentPrivacy === VideoPrivacy.PUBLIC ? VideoPrivacy.PRIVATE : VideoPrivacy.PUBLIC;
-      dispatch(changePrivacy({ authorId, videoId: id, visibility }));
-    }
-  };
-
   const [isNeedConfirmModal, setIsNeedConfirmModal] = useState(false);
   const deleteHandler = (): void => {
     if (authorId) {
       dispatch(deleteVideo({ authorId, ids: [id] }));
     }
+  };
+
+  const [isNeedPrivacyModal, setIsNeedPrivacyModal] = useState(false);
+  const confirmPrivacyChangesHandler = (visibility: VideoPrivacy): void => {
+    if (authorId) {
+      setIsNeedPrivacyModal(false);
+      dispatch(changePrivacy({ authorId, videoIds: [id], visibility }));
+    }
+  };
+  const cancelPrivacyChangesHandler = (): void => {
+    setIsNeedPrivacyModal(false);
   };
 
   return (
@@ -85,6 +89,12 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
         isOpen={isNeedConfirmModal}
         onCancel={(): void => setIsNeedConfirmModal(false)}
         onOk={deleteHandler}
+      />
+      <PrivacyModal
+        isOpen={isNeedPrivacyModal}
+        onOk={confirmPrivacyChangesHandler}
+        onCancel={cancelPrivacyChangesHandler}
+        currentPicked={currentPrivacy}
       />
       <th>
         <input checked={isActive} onChange={cheсkboxHandler} className={styles['checkbox']} type="checkbox" />
@@ -130,11 +140,7 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
             color={IconColor.GRAY}
           />
           <Icon onClick={(): void => setIsNeedConfirmModal(true)} name={IconName.DELETE} color={IconColor.GRAY} />
-          {currentPrivacy === VideoPrivacy.PUBLIC ? (
-            <Eye onClick={changePrivacyHandler} />
-          ) : (
-            <EyeSlash onClick={changePrivacyHandler} />
-          )}
+          <Eye onClick={(): void => setIsNeedPrivacyModal(true)} />
         </div>
       </th>
     </tr>
