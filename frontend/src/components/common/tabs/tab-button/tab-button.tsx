@@ -5,12 +5,13 @@ import styles from './styles.module.scss';
 type Props = {
   content: ReactNode;
   isActive?: boolean;
+  className?: string;
   onClick: () => void;
 };
 
-const TabButton: FC<Props> = ({ content, onClick, isActive = false }) => {
+const TabButton: FC<Props> = ({ content, onClick, isActive = false, className }) => {
   return (
-    <button onClick={onClick} className={clsx(styles['button'], { [styles['active']]: isActive })}>
+    <button onClick={onClick} className={clsx(styles['button'], { [styles['active']]: isActive }, className)}>
       {content}
     </button>
   );

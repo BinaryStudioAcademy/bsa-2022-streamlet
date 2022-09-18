@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { StreamStatus, VideoReaction } from 'shared/build';
 import { videoPageActions } from 'store/actions';
 import styles from './styles.module.scss';

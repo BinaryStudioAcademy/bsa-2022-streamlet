@@ -133,6 +133,11 @@
   }
 }
 
+.btn-go-stream {
+  margin-top: 9px;
+  cursor: pointer;
+}
+
 .btn-go-stream svg {
   transition: all 0.3s ease;
   fill: var(--brand-green-color-hover);
