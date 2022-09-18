@@ -5,7 +5,7 @@ type windowDimensionsType = {
   height: number;
 };
 
-const getWindowDimensions = (): windowDimensionsType => {
+export const getWindowDimensions = (): windowDimensionsType => {
   const { innerWidth: width, innerHeight: height } = window;
   return {
     width,

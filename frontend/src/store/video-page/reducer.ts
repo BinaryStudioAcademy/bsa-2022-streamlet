@@ -81,7 +81,11 @@ const reducer = createReducer(initialState, (builder) => {
     state.error = undefined;
     state.videoView = { ...initialState.videoView };
     state.dataStatus = DataStatus.PENDING;
-    state.recommendedVideos = { ...initialState.recommendedVideos };
+    state.recommendedVideos.dataStatus = DataStatus.IDLE;
+    state.recommendedVideos.currentPage = 1;
+    state.recommendedVideos.videos = [];
+    state.recommendedVideos.total = 0;
+    state.recommendedVideos.error = undefined;
   });
   builder.addCase(getVideo.rejected, (state, { error }) => {
     state.dataStatus = DataStatus.REJECTED;

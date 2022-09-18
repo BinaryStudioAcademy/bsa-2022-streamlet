@@ -1,15 +1,6 @@
-enum ScreenSizesForMainPage {
-  SMALL = 1525,
-  AVERAGE = 1700,
-  LARGE = 2000,
-  VERY_LARGE = 4000,
-}
-
-const matchScreenSize: Record<ScreenSizesForMainPage, number> = {
-  [ScreenSizesForMainPage.SMALL]: 12,
-  [ScreenSizesForMainPage.AVERAGE]: 16,
-  [ScreenSizesForMainPage.LARGE]: 20,
-  [ScreenSizesForMainPage.VERY_LARGE]: 40,
-};
-
-export { ScreenSizesForMainPage, matchScreenSize };
+export const HEIGHT_FILTER_BLOCK = 53;
+export const HEIGHT_HEADER = 56;
+export const VIDEO_AVERAGE_HEIGHT = 270;
+export const VIDEO_AVERAGE_WIDTH = 280;
+export const WIDTH_CLOSED_SIDEBAR = 64;
+export const PADDING_ON_MAIN_PAGE = 30;
