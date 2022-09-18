@@ -19,6 +19,8 @@ import {
   AddVideoViewRequestDto,
   GetSimilarVideosResponseDto,
   VideoInfoDto,
+  UpdateVideoInfoDto,
+  UpdateVideoVisibilityDto,
 } from 'shared/build';
 import { Http } from '../http/http.service';
 
@@ -178,6 +180,31 @@ class VideoApi {
       url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.GET_MY_VIDEO}`,
       options: {
         method: HttpMethod.GET,
+      },
+    });
+  }
+
+  public editVideo({ videoId, ...payload }: UpdateVideoInfoDto & { authorId: string }): Promise<VideoInfoDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}${VideoApiPath.ROOT}${videoId}`,
+      options: {
+        method: HttpMethod.PUT,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+      },
+    });
+  }
+
+  public editVisibility({
+    videoId,
+    ...payload
+  }: UpdateVideoVisibilityDto & { authorId: string }): Promise<VideoInfoDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}/privacy/${videoId}`,
+      options: {
+        method: HttpMethod.PUT,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
       },
     });
   }

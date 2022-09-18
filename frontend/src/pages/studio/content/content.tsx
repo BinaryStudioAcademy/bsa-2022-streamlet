@@ -65,16 +65,11 @@ export const StudioContent: FC = () => {
             <th data-tip={width >= 1300 ? '' : 'Views'}>Views</th>
             <th data-tip={width >= 1300 ? '' : 'Comments'}>Comments</th>
             <th data-tip={width >= 1300 ? '' : 'Likes / Dislikes'}>{width >= 1300 ? 'Likes / Dislikes' : 'L/D'}</th>
+            <th></th>
           </tr>
           {videos.map((video) => (
             <VideoRow {...video} key={video.id} />
           ))}
-          {/* {videos.map((video) => (
-            <VideoRow {...video} key={video.id} />
-          ))}
-          {videos.map((video) => (
-            <VideoRow {...video} key={video.id} />
-          ))} */}
         </table>
       </div>
     </div>

@@ -1,14 +1,16 @@
 import { getFormatDurationString } from 'helpers/helpers';
-import React, { EventHandler, FC, SyntheticEvent } from 'react';
+import React, { EventHandler, FC, SyntheticEvent, useState } from 'react';
 import { VideoInfoDto, VideoPrivacy } from 'shared/build';
 import styles from './styles.module.scss';
 import defaulVideoPoster from 'assets/img/default-video-poster-light.jpg';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from 'components/common/icon';
-import { IconColor, IconName, VideoMenuOptions } from 'common/enums/enums';
-import { useAppDispatch, useOutsideClick } from 'hooks/hooks';
-import { allMenuOptions, allPrivacyMenuOptions } from '../config';
-import { changePrivacy, pickVideo } from 'store/content-page/actions';
+import { IconColor, IconName } from 'common/enums/enums';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { changePrivacy, editInfo, pickVideo } from 'store/content-page/actions';
+import { ReactComponent as Eye } from 'assets/img/eye.svg';
+import { ReactComponent as EyeSlash } from 'assets/img/eye-slash.svg';
+import { InfoFormValues, InfoModal } from './info-modal';
 
 export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
   id,
@@ -24,6 +26,10 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
   duration,
   isActive,
 }) => {
+  const { authorId, currentPrivacy } = useAppSelector((store) => ({
+    authorId: store.auth.user?.id,
+    currentPrivacy: store.contentPage.data.filter((video) => video.id === id)[0].privacy,
+  }));
   const imgFallbackHandler: EventHandler<SyntheticEvent<HTMLImageElement, Event>> = ({ currentTarget }): void => {
     currentTarget.onerror = null;
     currentTarget.src = defaulVideoPoster;
@@ -34,58 +40,40 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
     navigate(`/video/${id}`);
   };
 
-  const chekboxHandler = (): void => {
+  const cheсkboxHandler = (): void => {
     dispatch(pickVideo({ id }));
   };
 
-  const { isOpened: isMenuOpen, open: openMenu, close: closeMenu, ref: menuRef } = useOutsideClick<HTMLDivElement>();
-  const matchMenuOptionClickHandler: Record<VideoMenuOptions, () => void> = {
-    [VideoMenuOptions.EDIT]: () => {
-      closeMenu();
-    },
-    [VideoMenuOptions.DELETE]: () => {
-      closeMenu();
-    },
-    [VideoMenuOptions.DOWNLOAD]: () => {
-      closeMenu();
-    },
+  const [isNeedInfoModal, setIsNeedInfoModal] = useState(false);
+  const confirmInfoChangesHandler = (formValues: InfoFormValues): void => {
+    if (authorId) {
+      setIsNeedInfoModal(false);
+      dispatch(editInfo({ videoId: id, authorId, ...formValues }));
+    }
+  };
+  const cancelInfoChangesHandler = (): void => {
+    setIsNeedInfoModal(false);
   };
 
-  const menuOptions = allMenuOptions.map((option) => ({
-    ...option,
-    onClick: matchMenuOptionClickHandler[option.type],
-  }));
-
-  const {
-    isOpened: isPrivacyMenuOpen,
-    open: openPrivacyMenu,
-    close: closePrivacyMenu,
-    ref: privacyMenuRef,
-  } = useOutsideClick<HTMLDivElement>();
-  const matchPrivacyMenuOptionsClickHandler: Record<VideoPrivacy, () => void> = {
-    [VideoPrivacy.PUBLIC]: () => {
-      dispatch(changePrivacy({ id, privacy: VideoPrivacy.PUBLIC }));
-      closePrivacyMenu();
-    },
-    [VideoPrivacy.PRIVATE]: () => {
-      dispatch(changePrivacy({ id, privacy: VideoPrivacy.PRIVATE }));
-      closePrivacyMenu();
-    },
-    [VideoPrivacy.UNLISTED]: () => {
-      dispatch(changePrivacy({ id, privacy: VideoPrivacy.UNLISTED }));
-      closePrivacyMenu();
-    },
+  const changePrivacyHandler = (): void => {
+    if (authorId) {
+      const visibility = currentPrivacy === VideoPrivacy.PUBLIC ? VideoPrivacy.PRIVATE : VideoPrivacy.PUBLIC;
+      dispatch(changePrivacy({ authorId, videoId: id, visibility }));
+    }
   };
-
-  const privacyMenuOptions = allPrivacyMenuOptions.map((option) => ({
-    ...option,
-    onClick: matchPrivacyMenuOptionsClickHandler[option.type],
-  }));
 
   return (
     <tr className={styles[isActive ? 'wrapper-checked' : 'wrapper']}>
+      <InfoModal
+        isOpen={isNeedInfoModal}
+        id={id}
+        name={name}
+        description={description}
+        onOk={confirmInfoChangesHandler}
+        onCancel={cancelInfoChangesHandler}
+      />
       <th>
-        <input checked={isActive} onChange={chekboxHandler} className={styles['checkbox']} type="checkbox" />
+        <input checked={isActive} onChange={cheсkboxHandler} className={styles['checkbox']} type="checkbox" />
       </th>
       <th>
         <div className={styles['video-container']}>
@@ -107,55 +95,33 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
               </div>
             </div>
           </div>
-          {isMenuOpen && (
-            <div ref={menuRef} className={styles['video-menu-body']}>
-              <ul className={styles['video-menu-list']}>
-                {menuOptions.map((option) => {
-                  return (
-                    <li key={option.type}>
-                      <div className={styles['video-menu-item']} onClick={option.onClick}>
-                        <Icon name={option.icon} color={IconColor.GRAY} />
-                        <span>{option.text}</span>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          )}
-          <div onClick={openMenu} className={styles['video-info-menu']} data-tip={description}>
-            <Icon name={IconName.DOTS_MENU} color={IconColor.WHITE} />
-          </div>
         </div>
       </th>
       <th>
         <div className={styles['privacy-wrapper']}>
           <div className={styles['privacy-container']}>{privacy}</div>
-          <div onClick={openPrivacyMenu} className={styles['privacy-menu']}>
-            <Icon name={IconName.ARROW_DOWN} color={IconColor.WHITE} />
-          </div>
         </div>
-        {isPrivacyMenuOpen && (
-          <div ref={privacyMenuRef} className={styles['privacy-menu-body']}>
-            <ul className={styles['privacy-menu-list']}>
-              {privacyMenuOptions.map((option) => {
-                return (
-                  <li key={option.type}>
-                    <div className={styles['privacy-menu-item']} onClick={option.onClick}>
-                      <span>{option.text}</span>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        )}
       </th>
       <th>{publishedAt}</th>
       <th>{viewsCount}</th>
       <th>{commentsCount}</th>
       <th>
         {likeCount} / {dislikeCount}
+      </th>
+      <th>
+        <div className={styles['control-block']}>
+          <Icon
+            onClick={(): void => setIsNeedInfoModal(!isNeedInfoModal)}
+            name={IconName.EDIT}
+            color={IconColor.GRAY}
+          />
+          <Icon name={IconName.DELETE} color={IconColor.GRAY} />
+          {currentPrivacy === VideoPrivacy.PUBLIC ? (
+            <Eye onClick={changePrivacyHandler} />
+          ) : (
+            <EyeSlash onClick={changePrivacyHandler} />
+          )}
+        </div>
       </th>
     </tr>
   );

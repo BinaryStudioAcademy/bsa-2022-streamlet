@@ -160,3 +160,36 @@ $base-z-index: $page-component-z-index;
     align-self: center;
   }
 }
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+
+  svg {
+    display: none;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    fill: var(--always-text-gray-color);
+
+    &:hover {
+      path {
+        fill: var(--always-white-color);
+      }
+    }
+  }
+}
+
+.wrapper:hover,
+.wrapper-checked:hover {
+  background-color: var(--green-200-header-menu-background);
+
+  .control-block {
+    svg {
+      display: block;
+    }
+  }
+}
