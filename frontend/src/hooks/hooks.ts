@@ -7,3 +7,4 @@ export { useAppSelector } from './use-app-selector/use-app-selector.hook';
 export { useFormControl } from './use-form-control/use-form-control.hook';
 export { useOutsideClick } from './use-outside-click/use-outside-click.hook';
 export { useWindowDimensions } from './use-window-dimension/use-window-dimension';
+export { getWindowDimensions as useGetWindowDimensions } from './use-window-dimension/use-window-dimension';
