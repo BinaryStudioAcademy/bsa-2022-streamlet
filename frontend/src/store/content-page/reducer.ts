@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 import { VideoInfoDto } from 'shared/build';
-import { changePrivacy, editInfo, getMyVideos, pickAllVideo, pickVideo, unloadVideos } from './actions';
+import { changePrivacy, deleteVideo, editInfo, getMyVideos, pickAllVideo, pickVideo, unloadVideos } from './actions';
 
 type State = {
   data: Array<
@@ -71,26 +71,25 @@ const reducer = createReducer(initialState, (builder) => {
           : video;
       }),
     ];
-    // const editedPayload = payload.map(({ id, name, description }) => ({
-    //   id,
-    //   name,
-    //   description,
-    // }));
-    // state.data = [
-    //   ...state.data.map((video) => {
-    //     if (editedIds.includes(video.id)) {
-    //       return {
-    //         ...video,
-    //         ...editedPayload.filter((payload) => payload.id === video.id),
-    //       };
-    //     }
-    //     return {
-    //       ...video,
-    //     };
-    //   }),
-    // ];
   });
   builder.addCase(editInfo.rejected, (state) => {
+    state.error = true;
+    state.dataStatus = DataStatus.REJECTED;
+  });
+
+  builder.addCase(deleteVideo.pending, (state) => {
+    state.error = false;
+    state.dataStatus = DataStatus.PENDING;
+  });
+
+  builder.addCase(deleteVideo.fulfilled, (state, { payload }) => {
+    state.error = false;
+    const deletedVideoIds = payload.map((video) => video.id);
+    state.data = [...state.data].filter((video) => deletedVideoIds.indexOf(video.id) === -1);
+    state.dataStatus = DataStatus.FULFILLED;
+  });
+
+  builder.addCase(deleteVideo.rejected, (state) => {
     state.error = true;
     state.dataStatus = DataStatus.REJECTED;
   });

@@ -208,6 +208,17 @@ class VideoApi {
       },
     });
   }
+
+  public deleteVideos(payload: { authorId: string; ids: string[] }): Promise<VideoInfoDto[]> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.VIDEOS}`,
+      options: {
+        method: HttpMethod.DELETE,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(payload),
+      },
+    });
+  }
 }
 
 export { VideoApi };

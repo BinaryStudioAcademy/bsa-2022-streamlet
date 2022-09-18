@@ -27,8 +27,16 @@ const editInfo = createAsyncThunk<VideoInfoDto, UpdateVideoInfoDto & { authorId:
   },
 );
 
+const deleteVideo = createAsyncThunk<VideoInfoDto[], { authorId: string; ids: string[] }, AsyncThunkConfig>(
+  ActionType.DELETE_VIDEO,
+  async (payload, { extra: { videoApi } }) => {
+    const deletedVideo = await videoApi.deleteVideos(payload);
+    return deletedVideo;
+  },
+);
+
 const unloadVideos = createAction(ActionType.UNLOAD_VIDEOS);
 const pickVideo = createAction<{ id: string }>(ActionType.PICK_VIDEO);
 const pickAllVideo = createAction<{ isPick: boolean }>(ActionType.PICK_ALL_VIDEO);
 
-export { getMyVideos, unloadVideos, pickVideo, pickAllVideo, changePrivacy, editInfo };
+export { getMyVideos, unloadVideos, pickVideo, pickAllVideo, changePrivacy, editInfo, deleteVideo };

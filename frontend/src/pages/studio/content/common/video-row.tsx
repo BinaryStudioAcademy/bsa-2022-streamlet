@@ -7,10 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import { Icon } from 'components/common/icon';
 import { IconColor, IconName } from 'common/enums/enums';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { changePrivacy, editInfo, pickVideo } from 'store/content-page/actions';
+import { changePrivacy, deleteVideo, editInfo, pickVideo } from 'store/content-page/actions';
 import { ReactComponent as Eye } from 'assets/img/eye.svg';
 import { ReactComponent as EyeSlash } from 'assets/img/eye-slash.svg';
 import { InfoFormValues, InfoModal } from './info-modal';
+import { ConfirmationModal } from 'components/common/common';
 
 export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
   id,
@@ -62,6 +63,13 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
     }
   };
 
+  const [isNeedConfirmModal, setIsNeedConfirmModal] = useState(false);
+  const deleteHandler = (): void => {
+    if (authorId) {
+      dispatch(deleteVideo({ authorId, ids: [id] }));
+    }
+  };
+
   return (
     <tr className={styles[isActive ? 'wrapper-checked' : 'wrapper']}>
       <InfoModal
@@ -71,6 +79,12 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
         description={description}
         onOk={confirmInfoChangesHandler}
         onCancel={cancelInfoChangesHandler}
+      />
+      <ConfirmationModal
+        confirmationText={'Are you sure? Changes cannot be reverted'}
+        isOpen={isNeedConfirmModal}
+        onCancel={(): void => setIsNeedConfirmModal(false)}
+        onOk={deleteHandler}
       />
       <th>
         <input checked={isActive} onChange={cheсkboxHandler} className={styles['checkbox']} type="checkbox" />
@@ -115,7 +129,7 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
             name={IconName.EDIT}
             color={IconColor.GRAY}
           />
-          <Icon name={IconName.DELETE} color={IconColor.GRAY} />
+          <Icon onClick={(): void => setIsNeedConfirmModal(true)} name={IconName.DELETE} color={IconColor.GRAY} />
           {currentPrivacy === VideoPrivacy.PUBLIC ? (
             <Eye onClick={changePrivacyHandler} />
           ) : (
