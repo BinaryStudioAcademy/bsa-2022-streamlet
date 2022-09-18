@@ -1,6 +1,7 @@
 import { ApiRequest } from '../request';
+import { CONFIG } from '../../../config/config';
 
-let baseUrl: string = global.appConfig.baseUrl;
+let baseUrl: string = CONFIG.BASE_URL;
 
 export class VideosController {
   async getAllVideos() {
