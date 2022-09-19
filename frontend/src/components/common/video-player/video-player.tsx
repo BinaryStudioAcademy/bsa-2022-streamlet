@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { PlayPauseCenterEffect } from './play-pause-center-effect/play-pause-center-effect';
 import fscreen from 'fscreen';
 import { ENV } from 'common/enums/enums';
+import { enterFullScreen, exitFullScreen } from './video-player-controls/fullscreen-button/helpers/fscreen';
 type VideoPlayerProps = {
   sizingProps?: {
     height?: number | string;
@@ -144,6 +145,9 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
         }));
       };
     }
+    if (videoContainerRef.current.canPlayType('application/vnd.apple.mpegurl')) {
+      videoContainerRef.current.src = new URL(url, ENV.VIDEO_FALLBACK_BASE_URL).toString();
+    }
   }, [areRefsNull.videoContainer, isLive, url]);
 
   const videoContainerWrapperCallbackRef = useCallback((element: HTMLDivElement | null): void => {
@@ -187,10 +191,10 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
           toggleVideoPlay(e.currentTarget);
         }}
         onDoubleClick={(): void => {
-          if (fscreen.fullscreenElement !== null) {
-            fscreen.exitFullscreen();
-          } else if (videoContainerWrapperRef.current) {
-            fscreen.requestFullscreen(videoContainerWrapperRef.current);
+          if (isFullscreen && videoContainerRef.current) {
+            exitFullScreen(videoContainerRef.current);
+          } else if (videoContainerWrapperRef.current && videoContainerRef.current) {
+            enterFullScreen(videoContainerWrapperRef.current, videoContainerRef.current);
           }
         }}
         onPlay={onStartPlay}
@@ -198,7 +202,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
         <p>Your browser doesn't support playing video. Please upgrade to a new one.</p>
       </video>
       <div></div>
-      {videoContainerRef.current && videoContainerWrapperRef.current && hlsRef.current && showControls && (
+      {videoContainerRef.current && videoContainerWrapperRef.current && showControls && (
         <>
           <PlayPauseCenterEffect videoContainer={videoContainerRef.current} className={styles['playpause-effect']} />
           <VideoPlayerControls

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useLayoutEffect, useMemo, useState } from 'react';
+import React, { FC, ReactNode, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ControlButton } from '../control-button/control-button';
 import { ReactComponent as SettingsIcon } from 'assets/img/settings-filled.svg';
 import { ReactComponent as SpeedIcon } from 'assets/img/speedometer.svg';
@@ -10,12 +10,13 @@ import { ModalItem } from './modal-item/modal-item';
 import { SpeedSelector } from './speed-selector/speed-selector';
 import { QualitySelector } from './quality-selector/quality-selector';
 import Hls from 'hls.js';
+import clsx from 'clsx';
 
 type Props = {
   videoWrapper: HTMLElement;
   videoContainer: HTMLVideoElement;
   className?: string;
-  hlsClient: Hls;
+  hlsClient: Hls | null;
 };
 
 enum Modal {
@@ -30,7 +31,7 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
   const [speed, setSpeed] = useState(videoContainer.playbackRate);
   const [quality, setQuality] = useState('Auto');
 
-  const getModalComponent = useMemo((): ReactElement => {
+  const getModalComponent = useMemo((): ReactNode => {
     switch (currentModal) {
       case Modal.MAIN: {
         return (
@@ -59,6 +60,7 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
             className={styles['settings-modal']}
             goBack={(): void => setCurrentModal(Modal.MAIN)}
             hlsClient={hlsClient}
+            videoContainer={videoContainer}
             setLevelName={setQuality}
           />
         );
@@ -81,17 +83,26 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
     setCurrentModal(Modal.MAIN);
   }, [isOpen, videoWrapper]);
 
+  const settingsButtonRef = useRef<HTMLAnchorElement | null>(null);
+
   const handleBlur = (e: React.FocusEvent<HTMLDivElement, Element>): void => {
-    if (!e.currentTarget.contains(e.relatedTarget)) {
+    if (!e.currentTarget.contains(e.relatedTarget) && e.relatedTarget !== settingsButtonRef.current) {
       // Not triggered when swapping focus between children
+      // also, not trigerred when clicked the settings icon (it has its own handler)
       setIsOpen(false);
     }
   };
 
   return (
     <div className={styles['settings-wrapper']} onBlur={handleBlur}>
-      {isOpen && getModalComponent}
-      <ControlButton className={className} onClick={(): void => setIsOpen((prev) => !prev)}>
+      {isOpen && <div className={styles['settings-modal-wrp']}>{getModalComponent}</div>}
+      <ControlButton
+        ref={settingsButtonRef}
+        className={clsx(styles['settings-btn'], className)}
+        onClick={(): void => {
+          setIsOpen((prev) => !prev);
+        }}
+      >
         <SettingsIcon height="70%" />
       </ControlButton>
     </div>
