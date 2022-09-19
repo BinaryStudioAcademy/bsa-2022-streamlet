@@ -29,6 +29,15 @@ const getVideo = createAsyncThunk<VideoExpandedResponseDto, string, AsyncThunkCo
   },
 );
 
+const getVideoWithoutRecommended = createAsyncThunk<VideoExpandedResponseDto, string, AsyncThunkConfig>(
+  ActionType.GET_VIDEO_WITHOUT_RECOMMENDED,
+  async (videoId: string, { extra }) => {
+    const { videoApi } = extra;
+
+    return await videoApi.getSingleVideo(videoId);
+  },
+);
+
 const loadRecommendedVideos = createAsyncThunk<DataVideo, string, AsyncThunkConfig>(
   ActionType.LOAD_RECOMMENDED_VIDEOS,
   // you might think that it's possible to get video id without passing it into parameters
@@ -159,4 +168,5 @@ export {
   deleteComment,
   updateComment,
   setNumberOfLoadingVideo,
+  getVideoWithoutRecommended,
 };
