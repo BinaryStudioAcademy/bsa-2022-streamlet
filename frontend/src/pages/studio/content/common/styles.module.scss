@@ -6,6 +6,10 @@ $base-z-index: $page-component-z-index;
   background-color: transparent;
 }
 
+.modal {
+  background-color: var(--green-200-header-menu-background);
+}
+
 .wrapper-checked {
   background-color: var(--green-200-header-menu-background);
 }
@@ -192,4 +196,8 @@ $base-z-index: $page-component-z-index;
       display: block;
     }
   }
+}
+
+.confirm-modal-btn-container {
+  border-top: none;
 }

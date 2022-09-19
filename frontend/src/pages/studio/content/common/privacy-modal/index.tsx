@@ -19,10 +19,16 @@ export const PrivacyModal: FC<PrivacyModalProps> = ({ currentPicked, onOk, onCan
 
   const privacyOptions = allPrivacyMenuOptions;
   return (
-    <Modal isOpen={isOpen} onClose={onCancel} isNeedCloseButton={false} isNeedHiddenOverflow={false}>
+    <Modal
+      isOpen={isOpen}
+      onClose={onCancel}
+      contentContainerClassName={style['modal']}
+      isNeedCloseButton={false}
+      isNeedHiddenOverflow={false}
+    >
       <div className={style['content-container']}>
         {privacyOptions.map(({ type, text }) => (
-          <div className={style['option']}>
+          <div key={type} className={style['option']}>
             <div onClick={(): void => radioBtnHandler(type)} className={style['radio-btn']}>
               {picked === type && <div className={style['picked']} />}
             </div>

@@ -1,4 +1,5 @@
-import { Input, Modal, Textarea } from 'components/common/common';
+import { Input, Modal } from 'components/common/common';
+import { AreaInput } from 'components/common/input/area-input/area-input';
 import { useAppForm } from 'hooks/hooks';
 import { FC } from 'react';
 import { channelUpdateValidationSchema } from 'validation-schemas/validation-schemas';
@@ -25,7 +26,7 @@ export const InfoModal: FC<InfoModalProps> = ({ name, description, onOk, onCance
     mode: 'onChange',
   });
   return (
-    <Modal isOpen={isOpen} onClose={onCancel} isNeedCloseButton={false}>
+    <Modal isOpen={isOpen} onClose={onCancel} contentContainerClassName={style['modal']} isNeedCloseButton={false}>
       <div className={style['content-container']}>
         <div className={style['form-container']}>
           <Input
@@ -40,15 +41,12 @@ export const InfoModal: FC<InfoModalProps> = ({ name, description, onOk, onCance
             wrapperClassName={style['form-input']}
             placeholder={'Enter video name...'}
           />
-          <Textarea
+          <AreaInput
             control={control}
-            errors={errors}
             name="description"
             label="Description"
             inputClassName={style['text-area']}
-            inputErrorClassName={style['input-error']}
             labelClassName={style['label']}
-            errorBlockClassName={style['error']}
             wrapperClassName={style['form-input']}
             placeholder={'What is your video about?...'}
           />
