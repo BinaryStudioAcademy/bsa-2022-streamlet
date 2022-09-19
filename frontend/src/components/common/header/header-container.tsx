@@ -180,6 +180,7 @@ const HeaderContainer: FC = () => {
     switch (streamPermission.streamPermission) {
       case StreamPermission.ALLOWED:
         setShowRequestModal(false);
+        navigate(AppRoutes.STUDIO, { replace: true });
         break;
 
       case StreamPermission.REQUESTED:
@@ -195,7 +196,7 @@ const HeaderContainer: FC = () => {
       default:
         setShowRequestModal(true);
     }
-  }, [streamPermission]);
+  }, [streamPermission, navigate]);
 
   const handleUpdateStartStreaming = useCallback(() => {
     dispatch(updateUserStreamPermission());
