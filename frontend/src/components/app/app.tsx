@@ -44,6 +44,7 @@ import styles from './app.module.scss';
 import { loadPreferences } from 'store/preferences/actions';
 import { LiveSettings } from 'pages/studio/stream/stream/tabs/live-settings/live-settings';
 import { LiveAnalytics } from 'pages/studio/stream/stream/tabs/live-analytics/live-analytics';
+import { getUserStreamPermission } from 'store/auth/actions';
 
 socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
   store.dispatch(socketActions.addSocketId(id));
@@ -89,7 +90,7 @@ const App: FC = () => {
     if (userId) {
       socket.emit(SocketEvents.socket.HANDSHAKE, userId);
     }
-
+    dispatch(getUserStreamPermission());
     return () => {
       dispatch(socketActions.removeSocketId());
     };
