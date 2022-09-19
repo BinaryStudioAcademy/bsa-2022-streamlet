@@ -17,6 +17,7 @@ import {
   deleteComment,
   updateComment,
   setNumberOfLoadingVideo,
+  getVideoWithoutRecommended,
 } from './actions';
 
 type State = {
@@ -88,6 +89,21 @@ const reducer = createReducer(initialState, (builder) => {
     state.recommendedVideos.error = undefined;
   });
   builder.addCase(getVideo.rejected, (state, { error }) => {
+    state.dataStatus = DataStatus.REJECTED;
+    state.error = error.message;
+  });
+
+  builder.addCase(getVideoWithoutRecommended.fulfilled, (state, { payload }) => {
+    state.video = payload;
+    state.videoView = { ...initialState.videoView };
+    state.dataStatus = DataStatus.FULFILLED;
+  });
+  builder.addCase(getVideoWithoutRecommended.pending, (state) => {
+    state.error = undefined;
+    state.videoView = { ...initialState.videoView };
+    state.dataStatus = DataStatus.PENDING;
+  });
+  builder.addCase(getVideoWithoutRecommended.rejected, (state, { error }) => {
     state.dataStatus = DataStatus.REJECTED;
     state.error = error.message;
   });

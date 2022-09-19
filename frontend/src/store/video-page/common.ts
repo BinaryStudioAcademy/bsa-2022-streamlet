@@ -13,6 +13,7 @@ enum ActionType {
   ADD_VIEW = 'video/add-view',
   LOAD_RECOMMENDED_VIDEOS = 'video/load-recommended',
   SET_NUMBER_OF_LOADING_VIDEO = 'video/number-of-video',
+  GET_VIDEO_WITHOUT_RECOMMENDED = 'video/get/without-recommended',
 }
 
 export { ActionType };
