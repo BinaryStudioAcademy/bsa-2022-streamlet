@@ -11,6 +11,7 @@ import styles from './styles.module.scss';
 type Props<T> = {
   control: FormControl<T>;
   errors: FormControlErrors;
+  value?: string;
   label: string;
   name: FormControlPath<T>;
   placeholder?: string;
