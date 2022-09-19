@@ -63,7 +63,7 @@ const App: FC = () => {
     if (width <= SizesWindow.SIZE_FOR_HIDDEN_SIDEBAR) {
       dispatch(closeSidebar());
     }
-  }, [width, dispatch]);
+  }, [width, dispatch, pathname]);
 
   const hasToken = Boolean(tokensStorageService.getTokens().accessToken);
 

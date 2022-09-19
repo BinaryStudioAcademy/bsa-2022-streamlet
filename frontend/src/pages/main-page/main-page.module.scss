@@ -5,4 +5,8 @@
 .videos-container {
   padding: 30px;
   background-color: var(--primary-text-color);
+
+  @media screen and (max-width: 375px) {
+    padding: 10px;
+  }
 }

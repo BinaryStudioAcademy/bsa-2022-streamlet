@@ -65,6 +65,10 @@
   flex-direction: column;
   margin-top: 20px;
   padding: 10px;
+
+  @media screen and (max-width: 560px) {
+    margin-top: 0;
+  }
 }
 
 .video-comment-block {
