@@ -42,7 +42,8 @@ $base-z-index: $page-component-z-index;
   display: flex;
 }
 
-.video-duration-label {
+.video-duration-label,
+.video-live-label {
   min-width: 47px;
   padding: 5px;
   color: var(--white-text-color);
@@ -69,10 +70,40 @@ $base-z-index: $page-component-z-index;
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  &:last-child {
-    height: 80%;
+  &:nth-child(2) {
+    height: 60%;
     color: var(--text-gray-color);
     font-size: 15px;
+  }
+
+  &:last-child {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 3px;
+  }
+}
+
+.live-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 55px;
+  height: 20px;
+  color: var(--always-white-color);
+  font-size: 13px;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+  background-color: var(--video-card-live-color);
+  border-radius: 3px;
+
+  & svg {
+    width: 15px;
+  }
+
+  & svg path {
+    fill: var(--always-white-color);
   }
 }
 

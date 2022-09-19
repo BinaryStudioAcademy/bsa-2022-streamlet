@@ -9,6 +9,7 @@ import { ReactComponent as Eye } from 'assets/img/eye.svg';
 import styles from './styles.module.scss';
 import { PrivacyModal } from './common/privacy-modal';
 import { VideoPrivacy } from 'shared/build';
+import { NoVideosYet } from 'components/common/no-videos-yet/no-videos-yet';
 
 export const StudioContent: FC = () => {
   const { width } = useWindowDimensions();
@@ -35,7 +36,7 @@ export const StudioContent: FC = () => {
   };
   useEffect(() => {
     if (!isLoading) {
-      setIsChecked(pickedCount === videos.length);
+      setIsChecked(pickedCount === videos.length && videos.length !== 0);
     }
   }, [pickedCount, isLoading, videos]);
 
@@ -75,39 +76,43 @@ export const StudioContent: FC = () => {
         onOk={deleteHandler}
       />
       <h1 className={styles['header']}>Channel content</h1>
-      <div className={styles['body']}>
-        <table className={styles['table']}>
-          <tr>
-            <th>
-              <input checked={isChecked} onChange={checkAllHanler} type="checkbox" className={styles['checkbox']} />
-            </th>
-            <th>
-              <div className={styles['extended-menu']}>
-                <div className={styles['extended-menu-segment']}>Video</div>
-                <div className={clsx(styles['extented-menu-segment'], { [styles.displaynone]: !isNeedExtendedMenu })}>
-                  <Eye onClick={(): void => setIsNeedPrivacyModal(true)} />
+      {videos.length === 0 ? (
+        <NoVideosYet className={styles['no-video-yes']} />
+      ) : (
+        <div className={styles['body']}>
+          <table className={styles['table']}>
+            <tr>
+              <th>
+                <input checked={isChecked} onChange={checkAllHanler} type="checkbox" className={styles['checkbox']} />
+              </th>
+              <th>
+                <div className={styles['extended-menu']}>
+                  <div className={styles['extended-menu-segment']}>Video</div>
+                  <div className={clsx(styles['extented-menu-segment'], { [styles.displaynone]: !isNeedExtendedMenu })}>
+                    <Eye onClick={(): void => setIsNeedPrivacyModal(true)} />
+                  </div>
+                  <div className={clsx(styles['extented-menu-segment'], { [styles.displaynone]: !isNeedExtendedMenu })}>
+                    <Icon
+                      onClick={(): void => setIsNeedConfirmModal(true)}
+                      name={IconName.DELETE}
+                      color={IconColor.GRAY}
+                    />
+                  </div>
                 </div>
-                <div className={clsx(styles['extented-menu-segment'], { [styles.displaynone]: !isNeedExtendedMenu })}>
-                  <Icon
-                    onClick={(): void => setIsNeedConfirmModal(true)}
-                    name={IconName.DELETE}
-                    color={IconColor.GRAY}
-                  />
-                </div>
-              </div>
-            </th>
-            <th data-tip={width >= 1300 ? '' : 'Visibility'}>Visibility</th>
-            <th data-tip={width >= 1300 ? '' : 'Date'}>Date</th>
-            <th data-tip={width >= 1300 ? '' : 'Views'}>Views</th>
-            <th data-tip={width >= 1300 ? '' : 'Comments'}>Comments</th>
-            <th data-tip={width >= 1300 ? '' : 'Likes / Dislikes'}>{width >= 1300 ? 'Likes / Dislikes' : 'L/D'}</th>
-            <th></th>
-          </tr>
-          {videos.map((video) => (
-            <VideoRow {...video} key={video.id} />
-          ))}
-        </table>
-      </div>
+              </th>
+              <th data-tip={width >= 1300 ? '' : 'Visibility'}>Visibility</th>
+              <th data-tip={width >= 1300 ? '' : 'Date'}>Date</th>
+              <th data-tip={width >= 1300 ? '' : 'Views'}>Views</th>
+              <th data-tip={width >= 1300 ? '' : 'Comments'}>Comments</th>
+              <th data-tip={width >= 1300 ? '' : 'Likes / Dislikes'}>{width >= 1300 ? 'Likes / Dislikes' : 'L/D'}</th>
+              <th></th>
+            </tr>
+            {videos.map((video) => (
+              <VideoRow {...video} key={video.id} />
+            ))}
+          </table>
+        </div>
+      )}
     </div>
   );
 };

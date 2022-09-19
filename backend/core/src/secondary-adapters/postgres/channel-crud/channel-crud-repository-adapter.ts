@@ -1,6 +1,6 @@
 import { Channel, PrismaClient, User } from '@prisma/client';
 import { inject, injectable } from 'inversify';
-import { ChannelProfileUpdateDto, ChannelProfileUpdateMediaDto } from 'shared/build';
+import { ChannelProfileUpdateDto, ChannelProfileUpdateMediaDto, StreamPrivacy, StreamStatus } from 'shared/build';
 import { ChannelCrudRepository } from '~/core/channel-crud/port/channel-crud-repository';
 import { CONTAINER_TYPES } from '~/shared/types/container-type-keys';
 import { ChannelInfoBeforeTrimming } from '~/shared/types/types';
@@ -73,6 +73,14 @@ export class ChannelCrudRepositoryAdapter implements ChannelCrudRepository {
         // when pagination is implemented will only return n first results for preview
         // other pages will hit a separate endpoint
         videos: {
+          where: {
+            AND: [
+              { privacy: StreamPrivacy.PUBLIC },
+              {
+                OR: [{ status: StreamStatus.FINISHED }, { status: StreamStatus.LIVE }],
+              },
+            ],
+          },
           orderBy: {
             createdAt: 'desc',
           },
