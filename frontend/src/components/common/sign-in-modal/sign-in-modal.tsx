@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import styles from './styles.module.scss';
-import React, { useEffect, RefObject } from 'react';
+import { useEffect, RefObject } from 'react';
 import { useRef } from '../../../hooks/hooks';
 import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../../common/enums/app/app';

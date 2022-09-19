@@ -10,7 +10,7 @@ import { Search } from 'components/search/search';
 import { NotFound } from 'components/placeholder-page/not-found';
 import { ReactNotifications } from 'react-notifications-component';
 import { ConfirmationModalTest } from './tests/confirmation-modal/confirmation-modal';
-import { StudioAnalytics, StudioSidebar, StudioChannel } from '../../pages/studio';
+import { StudioAnalytics, StudioSidebar, StudioChannel, StudioContent } from '../../pages/studio';
 import { VideoCardTest } from './tests/video-card/video-card';
 import { VideoPageContainer } from 'pages/video/video-page-container';
 import { ProtectedRoute } from 'components/common/protected-route/protected-route';
@@ -44,6 +44,7 @@ import styles from './app.module.scss';
 import { loadPreferences } from 'store/preferences/actions';
 import { LiveSettings } from 'pages/studio/stream/stream/tabs/live-settings/live-settings';
 import { LiveAnalytics } from 'pages/studio/stream/stream/tabs/live-analytics/live-analytics';
+import { getUserStreamPermission } from 'store/auth/actions';
 
 socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
   store.dispatch(socketActions.addSocketId(id));
@@ -89,7 +90,7 @@ const App: FC = () => {
     if (userId) {
       socket.emit(SocketEvents.socket.HANDSHAKE, userId);
     }
-
+    dispatch(getUserStreamPermission());
     return () => {
       dispatch(socketActions.removeSocketId());
     };
@@ -123,6 +124,7 @@ const App: FC = () => {
                 <Route path="*" element={<Navigate to={`${AppRoutes.STUDIO}/${StreamTab.SETTINGS}`} replace />} />
               </Route>
               <Route path={AppRoutes.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />
+              <Route path={AppRoutes.STUDIO_CONTENT} element={<ProtectedRoute element={<StudioContent />} />} />
               <Route path={AppRoutes.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />}>
                 <Route index element={<ViewsTab />} />
                 <Route path={AnalyticsTab.VIEWS} element={<ViewsTab />} />

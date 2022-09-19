@@ -13,3 +13,4 @@ export * as chatActions from './chat/actions';
 export * as historyActions from './history/actions';
 export * as socketActions from './socket/actions';
 export * as preferencesActions from './preferences/actions';
+export * as contentPageActions from './content-page/actions';

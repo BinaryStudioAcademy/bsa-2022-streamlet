@@ -15,10 +15,12 @@ import {
   GoogleRequestDto,
   GoogleResponseDto,
 } from 'common/types/types';
+import { UserApiPath } from 'shared/build';
 import {
   RestorePasswordConfirmRequestDto,
   RestorePasswordInitRequestDto,
   RestorePasswordInitResponseDto,
+  UserStreamPermissionResponseDto,
 } from 'shared/build/common/types/types';
 import { Http } from '../http/http.service';
 
@@ -170,6 +172,24 @@ class AuthApi {
       },
       preInterceptors: [],
       postInterceptors: [],
+    });
+  }
+
+  public getUserStreamPermission(): Promise<UserStreamPermissionResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.USER}${UserApiPath.$PERMISSION}`,
+      options: {
+        method: HttpMethod.GET,
+      },
+    });
+  }
+
+  public updateUserStreamPermission(): Promise<UserStreamPermissionResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.USER}${UserApiPath.$PERMISSION}${UserApiPath.$REQUESTED}`,
+      options: {
+        method: HttpMethod.PUT,
+      },
     });
   }
 }

@@ -47,6 +47,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         channel: {
           authorId,
         },
+        OR: [{ status: StreamStatus.FINISHED }, { status: StreamStatus.LIVE }],
+      },
+      orderBy: {
+        publishedAt: 'desc',
       },
       include: {
         comments: true,
@@ -77,19 +81,34 @@ export class VideoRepositoryAdapter implements VideoRepository {
 
     return deletedVideos;
   }
-  updateVisibility({ videoId, visibility }: UpdateVideoVisibilityDto): Promise<VideoWithReactionsAndComments | null> {
-    return this.prismaClient.video.update({
+  async updateVisibility({
+    videoIds,
+    visibility,
+  }: UpdateVideoVisibilityDto): Promise<VideoWithReactionsAndComments[] | null> {
+    await this.prismaClient.video.updateMany({
       where: {
-        id: videoId,
+        id: {
+          in: videoIds,
+        },
       },
       data: {
         privacy: visibility,
+      },
+    });
+
+    const updatedVideos = await this.prismaClient.video.findMany({
+      where: {
+        id: {
+          in: videoIds,
+        },
       },
       include: {
         comments: true,
         reactions: true,
       },
     });
+
+    return updatedVideos;
   }
   updateVideoInfo({ videoId, title, description }: UpdateVideoInfoDto): Promise<VideoWithReactionsAndComments | null> {
     return this.prismaClient.video.update({

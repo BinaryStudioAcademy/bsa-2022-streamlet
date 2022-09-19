@@ -16,3 +16,4 @@ export { type GoogleRequestDto } from './google-request-dto.type';
 export { type GoogleResponseDto } from './google-response-dto.type';
 export { type GoogleUserResultDto } from './google-user-result-dto.type';
 export { type UserBindCategoriesDto } from './user-bind-categories-dto';
+export { type UserStreamPermissionResponseDto } from './user-stream-permission-response-dto';

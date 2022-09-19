@@ -10,7 +10,6 @@ import { StudioHome } from './home';
 
 const StudioHomeContainer: FC = () => {
   const dispatch = useAppDispatch();
-
   const { channel, stream, errorCode, error, status } = useAppSelector((state) => ({
     stream: state.stream.stream,
     channel: state.stream.channel,

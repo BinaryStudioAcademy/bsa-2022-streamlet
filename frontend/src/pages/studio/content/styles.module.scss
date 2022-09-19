@@ -1,0 +1,103 @@
+.studio {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: var(--green-300-primary-background);
+}
+
+.no-video-yes {
+  width: 80%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  width: 80%;
+  padding-top: 50px;
+  color: var(--always-white-color);
+  font-size: 30px;
+}
+
+.body {
+  align-self: center;
+  width: 80%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+
+  th {
+    width: 50px;
+    padding: 18px 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: left;
+    text-overflow: ellipsis;
+    vertical-align: top;
+
+    &:first-child {
+      width: 10px;
+      overflow: unset;
+    }
+
+    &:nth-child(2) {
+      width: 200px;
+    }
+  }
+
+  tr {
+    border-bottom: 1px solid var(--green-200-header-menu-background);
+
+    &:last-child {
+      border: none;
+    }
+  }
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+}
+
+.extended-menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 35%;
+}
+
+.displaynone {
+  visibility: hidden;
+}
+
+.extented-menu-segment {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 20px;
+  cursor: pointer;
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  path {
+    fill: var(--always-text-gray-color);
+  }
+
+  svg:hover {
+    path {
+      fill: white;
+    }
+  }
+}

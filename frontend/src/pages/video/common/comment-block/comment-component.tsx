@@ -109,7 +109,7 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
     }
 
     await dispatch(addVideoCommentReply({ parentId: comment.id, text, videoId: videoId }));
-    await dispatch(videoPageActions.getVideo(videoId));
+    await dispatch(videoPageActions.getVideoWithoutRecommended(videoId));
   };
 
   const handleSendFormEdit = async (text: string): Promise<void> => {

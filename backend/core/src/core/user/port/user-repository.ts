@@ -1,4 +1,4 @@
-import { Category, User } from '@prisma/client';
+import { Category, StreamPermission, User } from '@prisma/client';
 import { UserGetPreferencesDto, UserSignUpRequestDto } from '~/shared/types/types';
 import { DefaultRequestParam, UserBindCategoriesDto } from 'shared/build';
 import { BadRequest } from '~/shared/exceptions/bad-request';
@@ -14,4 +14,5 @@ export interface UserRepository {
   updateUserName(userId: string, username: string): Promise<User | BadRequest>;
   bindCategories(bindCategoriesDto: UserBindCategoriesDto): Promise<Category[]>;
   getPreferedCategories(getPreferencesDto: DefaultRequestParam): Promise<UserGetPreferencesDto | null>;
+  updateStreamPermission(userId: string, streamPermission: StreamPermission): Promise<User>;
 }

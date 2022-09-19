@@ -124,17 +124,19 @@ export class VideoService {
     return videos.map((video) => castToVideoInfoDto(video));
   }
 
-  async updateVisibility({ videoId, visibility }: UpdateVideoVisibilityDto): Promise<VideoInfoDto | null> {
-    const isVideoExists = await this.videoRepository.getById(videoId);
-    if (!isVideoExists) {
-      return null;
+  async updateVisibility({ videoIds, visibility }: UpdateVideoVisibilityDto): Promise<VideoInfoDto[] | null> {
+    for (const videoId of videoIds) {
+      const isVideoExists = await this.videoRepository.getById(videoId);
+      if (!isVideoExists) {
+        return null;
+      }
     }
-    const video = await this.videoRepository.updateVisibility({
-      videoId,
+    const videos = await this.videoRepository.updateVisibility({
+      videoIds,
       visibility,
     });
 
-    return video && castToVideoInfoDto(video);
+    return videos && videos.map((video) => castToVideoInfoDto(video));
   }
 
   async updateInfo({ videoId, title, description }: UpdateVideoInfoDto): Promise<VideoInfoDto | null> {

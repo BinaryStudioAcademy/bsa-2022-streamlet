@@ -9,7 +9,7 @@ enum VideoApiPath {
   REPLIES_COMMENT = '/comment/replies',
   SIMILAR_VIDEOS = '/similar',
   GET_MY_VIDEO = '/me',
-  $PRIVACY = '/privacy/:videoId',
+  PRIVACY = '/privacy',
   GENERAL_VIDEOS = '/general-videos',
   RECOMMENDED_VIDEOS = '/recommended-videos',
 }

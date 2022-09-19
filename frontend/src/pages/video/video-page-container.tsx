@@ -16,7 +16,6 @@ import { LinksBlock } from './links-block/links-block';
 import { NotFound } from 'components/placeholder-page';
 import { addVideoView, resetVideoPage } from 'store/video-page/actions';
 import { resetPaginationMainPage } from 'store/videos/actions';
-import { openSidebar } from 'store/layout/actions';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -26,7 +25,8 @@ const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { videoId: isVideoIdProvided } = useParams();
-  const [isReactChanged, setReactState] = useState(false);
+  const [isReactChanged, setReactState] = useState<boolean | string>(false);
+
   if (!isVideoIdProvided) {
     navigate(AppRoutes.ANY, { replace: true });
   }
@@ -43,22 +43,31 @@ const VideoPageContainer: FC = () => {
   const videoId = isVideoIdProvided as string;
 
   useEffect(() => {
-    dispatch(videoPageActions.getVideo(videoId));
     setReactState(false);
+  }, [videoId]);
+
+  useEffect(() => {
+    if (isReactChanged) {
+      dispatch(videoPageActions.getVideoWithoutRecommended(videoId));
+    }
+    if (!isReactChanged) {
+      dispatch(videoPageActions.getVideo(videoId));
+    }
   }, [videoId, dispatch, isReactChanged]);
 
   useEffect(() => {
     return () => {
       dispatch(resetVideoPage());
       dispatch(resetPaginationMainPage());
-      dispatch(openSidebar());
     };
   }, [dispatch]);
 
   const handleCommentLikeReact = useCallback(
     (commentId: string): void => {
       dispatch(videoPageActions.commentReact({ commentId, isLike: true }));
-      setReactState(true);
+
+      const generatedUniqueString = String(new Date());
+      setReactState(generatedUniqueString);
     },
     [dispatch],
   );
@@ -66,7 +75,9 @@ const VideoPageContainer: FC = () => {
   const handleCommentDislikeReact = useCallback(
     (commentId: string): void => {
       dispatch(videoPageActions.commentReact({ commentId, isLike: false }));
-      setReactState(true);
+
+      const generatedUniqueString = String(new Date());
+      setReactState(generatedUniqueString);
     },
     [dispatch],
   );
@@ -76,8 +87,11 @@ const VideoPageContainer: FC = () => {
       navigate(AppRoutes.SIGN_IN, { replace: true });
       return;
     }
+
     dispatch(videoPageActions.addVideoComment({ videoId, text }));
-    setReactState(true);
+
+    const generatedUniqueString = String(new Date());
+    setReactState(generatedUniqueString);
   };
 
   const handlerCancelForReplyForm = (): void => {
