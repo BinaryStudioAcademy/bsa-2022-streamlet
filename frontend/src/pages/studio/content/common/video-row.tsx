@@ -1,6 +1,6 @@
 import { getFormatDurationString } from 'helpers/helpers';
 import React, { EventHandler, FC, SyntheticEvent, useState } from 'react';
-import { VideoInfoDto, VideoPrivacy } from 'shared/build';
+import { VideoInfoDto, VideoPrivacy, VideoStatus } from 'shared/build';
 import styles from './styles.module.scss';
 import defaulVideoPoster from 'assets/img/default-video-poster-light.jpg';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +26,7 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
   dislikeCount,
   duration,
   isActive,
+  status,
 }) => {
   const { authorId, currentPrivacy } = useAppSelector((store) => ({
     authorId: store.auth.user?.id,
@@ -119,6 +120,15 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
               </div>
               <div className={styles['video-info-segment']} data-tip={description}>
                 {description}
+              </div>
+
+              <div className={styles['video-info-segment']} data-tip={description}>
+                {status === VideoStatus.LIVE && (
+                  <div className={styles['live-label']}>
+                    <Icon name={IconName.ONLINE_STREAMING_2} />
+                    <span>Live</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

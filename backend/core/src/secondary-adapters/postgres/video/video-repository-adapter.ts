@@ -47,6 +47,10 @@ export class VideoRepositoryAdapter implements VideoRepository {
         channel: {
           authorId,
         },
+        OR: [{ status: StreamStatus.FINISHED }, { status: StreamStatus.LIVE }],
+      },
+      orderBy: {
+        publishedAt: 'desc',
       },
       include: {
         comments: true,
