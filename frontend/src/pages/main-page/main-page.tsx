@@ -13,6 +13,7 @@ import {
   VIDEO_AVERAGE_WIDTH,
   WIDTH_CLOSED_SIDEBAR,
   PADDING_ON_MAIN_PAGE,
+  SMALL_SCREEN_SIZE,
 } from './main-page-number-of-videos-loading.config';
 
 import styles from './main-page.module.scss';
@@ -35,6 +36,11 @@ const MainPage: FC<MainPageProps> = ({ filterBlockProps, blocksVideo }) => {
   useEffect(calculateNumberOfVideosLoading, [dispatch, width, height]);
 
   function calculateNumberOfVideosLoading(): void {
+    if (width <= SMALL_SCREEN_SIZE) {
+      dispatch(setNumberOfVideoForLoading({ numberOfItems: 4 }));
+      return;
+    }
+
     const widthMainPage = width - WIDTH_CLOSED_SIDEBAR - PADDING_ON_MAIN_PAGE * 2;
     const heightMainPage = height - HEIGHT_FILTER_BLOCK - HEIGHT_HEADER - PADDING_ON_MAIN_PAGE * 2;
     const numbersOfVideosFitOnThePage =

@@ -18,6 +18,10 @@
   font-size: 24px;
   font-family: Gilroy, sans-serif;
   line-height: 34px;
+
+  @media screen and (max-width: 560px) {
+    font-size: 18px;
+  }
 }
 
 .reaction-block {
