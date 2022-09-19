@@ -5,14 +5,12 @@ $label-input-spacing: 5px;
 .settings-container {
   position: relative;
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-around;
+  justify-content: space-between;
   background: var(--green-300-primary-background);
 }
 
 .settings-block-container {
   display: flex;
-  flex: 1 1 auto;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 80px);
@@ -68,7 +66,7 @@ $label-input-spacing: 5px;
 .chat-container {
   display: flex;
   width: 350px;
-  min-width: 250px;
+  min-width: 350px;
   max-width: 350px;
   overflow: hidden;
 }
