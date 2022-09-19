@@ -1,4 +1,5 @@
 enum VideoStatsApiPath {
+  ROOT = '/',
   $ID = '/:videoId',
 }
 

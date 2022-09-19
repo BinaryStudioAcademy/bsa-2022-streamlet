@@ -1,6 +1,6 @@
 import { inject } from 'inversify';
-import { BaseHttpController, controller, httpPost, requestBody, request, requestParam } from 'inversify-express-utils';
-import { CreateVideoStatRequestDto, StreamStatus } from 'shared/build';
+import { BaseHttpController, controller, httpPost, requestBody, request } from 'inversify-express-utils';
+import { CreateManyVideoStatsRequestDto, errorCodes } from 'shared/build';
 import { ChannelSubscriptionService } from '~/core/channel-subscription/application/channel-subscription-service';
 import { VideoStatsService } from '~/core/video-stats/application/video-stats-service';
 import { VideoService } from '~/core/video/application/video-service';
@@ -20,33 +20,37 @@ export class VideoStatsController extends BaseHttpController {
     super();
   }
 
-  @httpPost(VideoStatsApiPath.$ID, optionalAuthenticationMiddleware)
-  public async createVideoStats(
-    @requestParam('videoId') id: string,
-    @requestBody() { stats }: CreateVideoStatRequestDto,
+  @httpPost(VideoStatsApiPath.ROOT, optionalAuthenticationMiddleware)
+  public async createManyVideoStats(
+    @requestBody() reqVideoStats: CreateManyVideoStatsRequestDto,
     @request() req: ExtendedRequest,
-  ): Promise<boolean> {
-    const video = await this.videoService.getById(id);
-    if (!video) {
-      throw new NotFound(exceptionMessages.video.VIDEO_ID_NOT_FOUND);
+  ): Promise<Record<string, boolean>> {
+    const reqVideoIds = Object.keys(reqVideoStats);
+    const videos = await this.videoService.getVideosByIds(reqVideoIds);
+    if (videos.length === 0) {
+      throw new NotFound(exceptionMessages.video.VIDEOS_NOT_FOUND, errorCodes.video.NO_VIDEOS);
     }
-    const referer = req.headers.referer;
-    const source = referer ? new URL(referer).pathname.split('/')[1] : '';
-    let wasSubscribed = false;
+    const videoIds = videos.map((v) => v.id);
+    const videoStatsData = reqVideoIds
+      .filter((id) => videoIds.includes(id))
+      .reduce((data, id) => {
+        data[id] = reqVideoStats[id];
+        return data;
+      }, {} as CreateManyVideoStatsRequestDto);
     const user = req.user;
-    if (user) {
-      const subs = await this.channelSubscriptionService.getUserSubscriptions(user.id);
-      wasSubscribed = Boolean(subs.list.find((s) => s.channelId === video.channel.id));
-    }
-    const videoStats = await this.videoStatsService.createManyVideoStats({
-      videoId: id,
+    await this.videoStatsService.createManyVideoStats({
       userId: user?.id,
-      isLive: video.status === StreamStatus.LIVE,
-      wasSubscribed: wasSubscribed,
-      source,
-      stats,
+      data: videoStatsData,
     });
 
-    return videoStats;
+    const res = reqVideoIds.reduce(
+      (o, id) => ({
+        ...o,
+        [id]: videoIds.includes(id),
+      }),
+      {} as Record<string, boolean>,
+    );
+
+    return res;
   }
 }

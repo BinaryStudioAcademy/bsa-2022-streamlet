@@ -7,33 +7,36 @@ import { VideoStatsRepository } from '../port/video-stats-repository';
 export class VideoStatsService {
   constructor(@inject(CONTAINER_TYPES.VideoStatsRepository) private videoStatsRepository: VideoStatsRepository) {}
 
-  async createManyVideoStats({
-    videoId,
-    userId,
-    isLive,
-    wasSubscribed,
-    source,
-    stats,
-  }: CreateManyVideoStatsDto): Promise<boolean> {
+  async createManyVideoStats({ userId, data }: CreateManyVideoStatsDto): Promise<boolean> {
+    const videoIds = Object.keys(data);
+
     const videoStats = await this.videoStatsRepository.createManyVideoStats({
-      data: stats.map(
-        (vs) =>
-          ({
-            videoId,
-            ...(userId && { userId }),
-            watchTime: vs.watchTime,
-            device: vs.device,
-            language: vs.language,
-            isLive,
-            ...(vs.reaction && { reaction: vs.reaction }),
-            ...(vs.subscription && { subscription: vs.subscription }),
-            wasSubscribed,
-            ...(vs.commentsActivity && { commentsActivity: vs.commentsActivity }),
-            ...(vs.chatsActivity && { chatsActivity: vs.chatsActivity }),
-            source,
-            createdAt: vs.createdAt,
-          } as Prisma.VideoStatsCreateManyInput),
-      ),
+      data: videoIds
+        .map((vId) =>
+          data[vId].stats
+            .filter((vs) => vs.videoId === vId)
+            .map(
+              (vs) =>
+                ({
+                  videoId: vId,
+                  ...(userId && {
+                    userId,
+                    wasSubscribed: vs.wasSubscribed,
+                  }),
+                  watchTime: vs.watchTime,
+                  device: vs.device,
+                  language: vs.language,
+                  isLive: vs.isLive,
+                  ...(vs.reaction && { reaction: vs.reaction }),
+                  ...(vs.subscription && { subscription: vs.subscription }),
+                  ...(vs.commentsActivity && { commentsActivity: vs.commentsActivity }),
+                  ...(vs.chatsActivity && { chatsActivity: vs.chatsActivity }),
+                  source: vs.source,
+                  createdAt: vs.createdAt,
+                } as Prisma.VideoStatsCreateManyInput),
+            ),
+        )
+        .flat(),
     });
 
     return videoStats;
