@@ -21,7 +21,7 @@ export const castToVideoInfoDto = ({
     description,
     status: status as VideoStatus,
     privacy: privacy as VideoPrivacy,
-    publishedAt: publishedAt?.toDateString() || '',
+    publishedAt: publishedAt?.toISOString().substring(0, 10).split('-').join(' ') || '',
     duration,
     viewsCount: videoViews,
     commentsCount: comments.length,

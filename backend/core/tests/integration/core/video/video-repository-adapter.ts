@@ -285,7 +285,9 @@ export class TestVideoRepositoryAdapter implements VideoRepository {
     return Promise.resolve(null);
   }
 
-  updateVisibility(updateVideoVisibilityDto: UpdateVideoVisibilityDto): Promise<VideoWithReactionsAndComments | null> {
+  updateVisibility(
+    updateVideoVisibilityDto: UpdateVideoVisibilityDto,
+  ): Promise<VideoWithReactionsAndComments[] | null> {
     if (!updateVideoVisibilityDto) {
       return Promise.resolve(null);
     }

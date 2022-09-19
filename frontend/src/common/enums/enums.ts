@@ -12,6 +12,7 @@ export {
   ChatStyle,
   ComponentUpdateDelayTime,
   CommentMenuOptions,
+  VideoMenuOptions,
 } from './component/component';
 
 export { ContentType } from './file/file';
