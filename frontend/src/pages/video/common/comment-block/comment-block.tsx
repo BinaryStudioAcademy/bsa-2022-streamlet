@@ -1,4 +1,4 @@
-import { FC, Comment } from 'common/types/types';
+import { FC, Comment, StatsData } from 'common/types/types';
 import styles from './styles.module.scss';
 import { VideoComment } from './comment-component';
 import { VideoPageCommentForm } from '../add-comment-form/add-comment-form';
@@ -16,6 +16,7 @@ type Props = {
   onLike: (commentId: string) => void;
   onDislike: (commentId: string) => void;
   handlerCancelForReplyForm: () => void;
+  statsData?: StatsData;
 };
 
 const VideoCommentBlock: FC<Props> = ({
@@ -27,6 +28,7 @@ const VideoCommentBlock: FC<Props> = ({
   isLightTheme,
   namingInfo,
   handlerCancelForReplyForm,
+  statsData,
 }) => {
   return (
     <>
@@ -46,6 +48,7 @@ const VideoCommentBlock: FC<Props> = ({
             namingInfo={namingInfo}
             onLike={onLike}
             onDislike={onDislike}
+            statsData={statsData}
           />
         );
       })}

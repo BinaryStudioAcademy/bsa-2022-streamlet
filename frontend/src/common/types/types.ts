@@ -49,6 +49,7 @@ export {
 } from './stream/stream';
 
 export * from './chat/chat';
+export * from './stats/stats';
 export * from './comment/comment';
 export * from './batch-payload/batch-payload';
 

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { FC, Comment } from 'common/types/types';
+import { FC, Comment, StatsData } from 'common/types/types';
 import { AppRoutes, CommentMenuOptions, IconName } from 'common/enums/enums';
 import {
   useAppDispatch,
@@ -18,7 +18,7 @@ import { VideoPageCommentForm } from '../add-comment-form/add-comment-form';
 import { getHowLongAgoString, getUserDisplayName } from 'helpers/helpers';
 import { getCommentReactBtnColor, getFillReactBtnColor, getLikes } from 'helpers/video/get-react-button-color.helper';
 import { addVideoCommentReply, getRepliesForComment } from 'store/video-page/actions';
-import { videoPageActions } from 'store/actions';
+import { statsActions, videoPageActions } from 'store/actions';
 import { ReactComponent as ThumbUp } from 'assets/img/thumb-up.svg';
 import { ReactComponent as ThumbDown } from 'assets/img/thumb-down.svg';
 import { allCommentMenuOptions } from './config';
@@ -35,9 +35,10 @@ type Props = {
   onLike: (commentId: string) => void;
   onDislike: (commentId: string) => void;
   isReply?: boolean;
+  statsData?: StatsData;
 };
 
-const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingInfo }) => {
+const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingInfo, statsData }) => {
   const [isUserNotAuthAndReact, setIsUserNotAuthAndReact] = useState(false);
 
   const { isLightTheme, user } = useAppSelector((state) => ({
@@ -108,7 +109,21 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
       return;
     }
 
-    await dispatch(addVideoCommentReply({ parentId: comment.id, text, videoId: videoId }));
+    await dispatch(addVideoCommentReply({ parentId: comment.id, text, videoId: videoId }))
+      .unwrap()
+      .then(() => {
+        if (statsData) {
+          dispatch(
+            statsActions.updateVideoStat({
+              statId: statsData.statId,
+              data: {
+                videoId: statsData.videoId,
+                commentsActivity: 1,
+              },
+            }),
+          );
+        }
+      });
     await dispatch(videoPageActions.getVideo(videoId));
   };
 
