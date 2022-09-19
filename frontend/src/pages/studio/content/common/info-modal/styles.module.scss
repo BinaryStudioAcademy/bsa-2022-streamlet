@@ -6,6 +6,10 @@
   border: none;
 }
 
+.modal {
+  background-color: var(--green-200-header-menu-background);
+}
+
 .button-container {
   display: flex;
   justify-content: flex-end;
@@ -61,14 +65,16 @@ div .input-error-dark {
 }
 
 .input {
+  height: 45px;
   margin-bottom: 5px;
+  color: white;
+  background-color: var(--studio-input);
 }
 
 .text-area {
-  width: 100%;
-  min-height: 300px;
-  padding-top: 5px;
-  resize: none;
+  min-height: 200px;
+  color: white;
+  background-color: var(--studio-input);
 }
 
 .button {

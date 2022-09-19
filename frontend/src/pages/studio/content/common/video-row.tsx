@@ -86,7 +86,9 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
         onCancel={cancelInfoChangesHandler}
       />
       <ConfirmationModal
+        contentContainerClassName={styles['modal']}
         confirmationText={'Are you sure? Changes cannot be reverted'}
+        buttonContainerClassName={styles['confirm-modal-btn-container']}
         isOpen={isNeedConfirmModal}
         onCancel={(): void => setIsNeedConfirmModal(false)}
         onOk={deleteHandler}
