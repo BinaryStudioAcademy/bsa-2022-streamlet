@@ -2,12 +2,12 @@ import { Input, Modal } from 'components/common/common';
 import { AreaInput } from 'components/common/input/area-input/area-input';
 import { useAppForm } from 'hooks/hooks';
 import { FC } from 'react';
-import { channelUpdateValidationSchema } from 'validation-schemas/validation-schemas';
+import { videoUpdateValidationSchema } from 'validation-schemas/validation-schemas';
 import style from './styles.module.scss';
 
 type InfoModalProps = {
   id: string;
-  name: string;
+  title: string;
   description: string;
   onOk: (formValues: InfoFormValues) => void;
   onCancel: () => void;
@@ -15,14 +15,14 @@ type InfoModalProps = {
 };
 
 export interface InfoFormValues {
-  name: string;
+  title: string;
   description: string;
 }
 
-export const InfoModal: FC<InfoModalProps> = ({ name, description, onOk, onCancel, isOpen }) => {
+export const InfoModal: FC<InfoModalProps> = ({ title, description, onOk, onCancel, isOpen }) => {
   const { control, errors, getValues, isValid, reset } = useAppForm<InfoFormValues>({
-    defaultValues: { name, description },
-    validationSchema: channelUpdateValidationSchema,
+    defaultValues: { title, description },
+    validationSchema: videoUpdateValidationSchema,
     mode: 'onChange',
   });
   return (
@@ -32,7 +32,7 @@ export const InfoModal: FC<InfoModalProps> = ({ name, description, onOk, onCance
           <Input
             control={control}
             errors={errors}
-            name="name"
+            name="title"
             label="Name"
             inputClassName={style['input']}
             inputErrorClassName={style['input-error']}
