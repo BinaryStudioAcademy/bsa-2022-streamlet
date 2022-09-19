@@ -80,7 +80,7 @@ export const VideoRow: FC<VideoInfoDto & { isActive: boolean }> = ({
       <InfoModal
         isOpen={isNeedInfoModal}
         id={id}
-        name={name}
+        title={name}
         description={description}
         onOk={confirmInfoChangesHandler}
         onCancel={cancelInfoChangesHandler}
