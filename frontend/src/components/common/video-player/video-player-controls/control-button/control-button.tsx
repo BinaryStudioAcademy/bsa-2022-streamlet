@@ -1,27 +1,31 @@
 import clsx from 'clsx';
-import React, { FC } from 'react';
+import React from 'react';
 import styles from './styles.module.scss';
 
 type Props = {
   className?: string;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  onFocus?: (e: React.FocusEvent<HTMLButtonElement>) => void;
-  onBlur?: (e: React.FocusEvent<HTMLButtonElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  onFocus?: (e: React.FocusEvent<HTMLAnchorElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLAnchorElement>) => void;
   children: React.ReactNode;
 };
 
-const ControlButton: FC<Props> = ({ onClick, className, children, onFocus, onBlur }) => {
-  return (
-    <button
-      type="button"
-      className={clsx(styles['button'], className)}
-      onClick={onClick}
-      onFocus={onFocus}
-      onBlur={onBlur}
-    >
-      {children}
-    </button>
-  );
-};
+const ControlButton = React.forwardRef<HTMLAnchorElement | null, Props>(
+  ({ onClick, className, children, onFocus, onBlur }, ref) => {
+    return (
+      <a
+        tabIndex={0}
+        role="button"
+        ref={ref}
+        className={clsx(styles['button'], className)}
+        onClick={onClick}
+        onFocus={onFocus}
+        onBlur={onBlur}
+      >
+        {children}
+      </a>
+    );
+  },
+);
 
 export { ControlButton };

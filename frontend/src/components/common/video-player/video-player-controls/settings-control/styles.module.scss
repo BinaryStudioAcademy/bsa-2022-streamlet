@@ -1,13 +1,44 @@
+@use 'assets/css/breakpoint';
+@use 'assets/css/config';
+
 .settings-wrapper {
   position: relative;
 }
 
+.settings-modal-wrp {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: calc(config.$page-component-z-index) + 1;
+  background-color: rgb(0 0 0 / 90%);
+
+  @media #{breakpoint.$tablet-middle} {
+    position: unset;
+    top: unset;
+    right: unset;
+    bottom: unset;
+    left: unset;
+    background-color: unset;
+  }
+}
+
 .settings-modal {
   position: absolute;
-  right: 0;
-  bottom: 100%;
-  min-width: min(95vw, 200px * clamp(1, var(--size-modifier), 1.5));
-  margin-bottom: 40px;
+  bottom: 70px;
+  left: 50%;
+  min-width: 80vw;
+  transform: translateX(-50%);
+
+  @media #{breakpoint.$tablet-middle} {
+    right: 0;
+    bottom: 100%;
+    left: unset;
+    min-width: min(95vw, 200px * clamp(1, var(--size-modifier), 1.5));
+    margin-bottom: 40px;
+    transform: unset;
+  }
 }
 
 .modal-option-text-wrapper {
@@ -17,4 +48,9 @@
 
 .option-metric {
   margin-left: auto;
+}
+
+.settings-btn {
+  position: relative;
+  z-index: calc(config.$page-component-z-index - 1);
 }

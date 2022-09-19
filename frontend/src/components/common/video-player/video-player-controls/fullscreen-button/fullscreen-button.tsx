@@ -3,19 +3,22 @@ import { ControlButton } from '../control-button/control-button';
 import { ReactComponent as FullScreenOpenIcon } from 'assets/img/fullscreen-open.svg';
 import { ReactComponent as FullScreenCloseIcon } from 'assets/img/fullscreen-close.svg';
 import fscreen from 'fscreen';
+import { enterFullScreen, exitFullScreen } from './helpers/fscreen';
 
 type Props = {
   videoContainerWrapper: HTMLElement;
+  videoContainer: HTMLVideoElement;
   className?: string;
 };
 
-const FullScreenButton: FC<Props> = ({ videoContainerWrapper, className }) => {
+const FullScreenButton: FC<Props> = ({ videoContainerWrapper, className, videoContainer }) => {
   const [isFullScreen, setIsFullScreen] = useState(fscreen.fullscreenElement ?? false);
+
   const handleClick = (): void => {
-    if (fscreen.fullscreenElement !== null) {
-      fscreen.exitFullscreen();
+    if (isFullScreen) {
+      exitFullScreen(videoContainer);
     } else {
-      fscreen.requestFullscreen(videoContainerWrapper);
+      enterFullScreen(videoContainerWrapper, videoContainer);
     }
   };
 

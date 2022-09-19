@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styles from './styles.module.scss';
 import { ReactComponent as PlayIcon } from 'assets/img/play-player.svg';
 import { ReactComponent as PauseIcon } from 'assets/img/pause.svg';
@@ -34,11 +34,12 @@ const PlayPauseCenterEffect: FC<Props> = ({ videoContainer, className }) => {
     el.style.animation = '';
   }, [isPaused]);
 
-  return firstUpdate.current ? null : (
+  const displayComponent: ReactNode = firstUpdate.current ? null : (
     <div className={clsx(className, styles['container'])} ref={containerRef}>
       {isPaused ? <PauseIcon height="100%" /> : <PlayIcon height="100%" />}
     </div>
   );
+  return displayComponent;
 };
 
 export { PlayPauseCenterEffect };

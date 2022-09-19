@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { PlayPauseCenterEffect } from './play-pause-center-effect/play-pause-center-effect';
 import fscreen from 'fscreen';
 import { ENV } from 'common/enums/enums';
+import { enterFullScreen, exitFullScreen } from './video-player-controls/fullscreen-button/helpers/fscreen';
 type VideoPlayerProps = {
   sizingProps?: {
     height?: number | string;
@@ -190,10 +191,10 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
           toggleVideoPlay(e.currentTarget);
         }}
         onDoubleClick={(): void => {
-          if (fscreen.fullscreenElement !== null) {
-            fscreen.exitFullscreen();
-          } else if (videoContainerWrapperRef.current) {
-            fscreen.requestFullscreen(videoContainerWrapperRef.current);
+          if (isFullscreen && videoContainerRef.current) {
+            exitFullScreen(videoContainerRef.current);
+          } else if (videoContainerWrapperRef.current && videoContainerRef.current) {
+            enterFullScreen(videoContainerWrapperRef.current, videoContainerRef.current);
           }
         }}
         onPlay={onStartPlay}

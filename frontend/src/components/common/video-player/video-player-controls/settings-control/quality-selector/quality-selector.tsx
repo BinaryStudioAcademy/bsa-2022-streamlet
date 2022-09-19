@@ -8,7 +8,8 @@ import styles from '../header-styles.module.scss';
 type Props = {
   className?: string;
   goBack: () => void;
-  hlsClient: Hls;
+  hlsClient: Hls | null;
+  videoContainer: HTMLVideoElement;
   setLevelName: (level: string) => void;
 };
 
@@ -42,12 +43,67 @@ const levelToString = (level: BasicLevel, otherLevelNames: LevelRepresentation[]
   return { name, index: null };
 };
 
-const QualitySelector: FC<Props> = ({ className, goBack, hlsClient, setLevelName }) => {
-  const [isAuto, setIsAuto] = useState(hlsClient.autoLevelEnabled);
-  const [currentLevel, setCurrentLevel] = useState<number>(hlsClient.currentLevel);
-  const [levels, setLevels] = useState<BasicLevel[]>(hlsClient.levels.map(levelToBasicLevel));
+// the thing on iOS, safari is the following:
+// it doesn't support hls
+// according to my research, you can't see available resolutions, nor have
+// you any api to set one
+// one way to bypass it, is to just replace url
+
+const isResolutionAuto = (src: string): boolean => {
+  return src.includes('master');
+};
+
+const getCurrentResolution = (src: string): string => {
+  if (isResolutionAuto(src)) {
+    return 'auto';
+  }
+  const firstIndex = src.lastIndexOf('-') + 1;
+  const lastIndex = src.lastIndexOf('p') + 1;
+  return src.slice(firstIndex, lastIndex);
+};
+
+type ManualLevel = {
+  name: string;
+  src: string;
+};
+
+// bonus point if later rewritten to ask this from back
+const getResolutions = (): Record<string, ManualLevel> => {
+  return {
+    'auto': {
+      name: 'Auto',
+      src: 'master.m3u8',
+    },
+    '360p': {
+      name: '360p',
+      src: 'playlist-360p30.m3u8',
+    },
+    '480p': {
+      name: '480p',
+      src: 'playlist-480p30.m3u8',
+    },
+    '720p': {
+      name: '720p',
+      src: 'playlist-720p30.m3u8',
+    },
+  };
+};
+
+const QualitySelector: FC<Props> = ({ className, goBack, hlsClient, setLevelName, videoContainer }) => {
+  //iOS
+  const [baseSrc] = useState(videoContainer.src.substring(0, videoContainer.src.lastIndexOf('/')));
+  const [isAuto, setIsAuto] = useState(hlsClient?.autoLevelEnabled ?? isResolutionAuto(videoContainer.src));
+  const [currentLevel, setCurrentLevel] = useState<number | null>(hlsClient?.currentLevel ?? null);
+  // iOS
+  const [currentResolution, setCurrentResolution] = useState<string>(getCurrentResolution(videoContainer.src));
+  const [levels, setLevels] = useState<BasicLevel[] | null>(hlsClient?.levels?.map(levelToBasicLevel) ?? null);
+  // iOS
+  const [manualLevels] = useState<Record<string, ManualLevel>>(getResolutions());
 
   useEffect(() => {
+    if (!hlsClient) {
+      return;
+    }
     const handleCurrentLevelChange = (_: unknown, data: LevelSwitchedData): void => {
       setCurrentLevel(data.level);
     };
@@ -65,17 +121,30 @@ const QualitySelector: FC<Props> = ({ className, goBack, hlsClient, setLevelName
     };
   }, [hlsClient]);
 
-  const allLevelRepresentations: LevelRepresentation[] = [];
-  levels.forEach((level) => {
-    const levelRepr = levelToString(level, allLevelRepresentations);
-    allLevelRepresentations.push(levelRepr);
-  });
+  const allLevelRepresentations: LevelRepresentation[] | null = levels ? [] : null;
+  if (levels) {
+    levels.forEach((level) => {
+      const levelRepr = levelToString(level, allLevelRepresentations as LevelRepresentation[]);
+      (allLevelRepresentations as LevelRepresentation[]).push(levelRepr);
+    });
+  }
 
   useEffect(() => {
-    if (isAuto || levels[currentLevel]) {
-      setLevelName(isAuto ? 'Auto' : levelToString(levels[currentLevel], []).name);
+    if (isAuto) {
+      setLevelName('Auto');
+    } else if (levels && currentLevel !== null && levels[currentLevel] !== undefined) {
+      setLevelName(levelToString(levels[currentLevel], []).name);
+    } else {
+      setLevelName(currentResolution);
     }
-  }, [currentLevel, isAuto, levels, setLevelName]);
+  }, [currentLevel, isAuto, levels, setLevelName, currentResolution]);
+
+  const manuallySetLevel = (levelKey: string): void => {
+    // dont forget to save time, as changing src resets it
+    const currentVideoTime = videoContainer.currentTime;
+    videoContainer.src = `${baseSrc}/${manualLevels[levelKey].src}`;
+    videoContainer.currentTime = currentVideoTime;
+  };
 
   return (
     <GenericSettingsModal className={className}>
@@ -87,30 +156,60 @@ const QualitySelector: FC<Props> = ({ className, goBack, hlsClient, setLevelName
         isSelectable
         isSelected={isAuto}
         onClick={(): void => {
-          hlsClient.currentLevel = -1;
+          if (hlsClient) {
+            hlsClient.currentLevel = -1;
+          } else {
+            setCurrentResolution('auto');
+            manuallySetLevel('auto');
+          }
           setIsAuto(true);
         }}
       >
         Auto
       </ModalItem>
-      {levels.map((level, index) => {
-        const levelName =
-          allLevelRepresentations[index].name +
-          (allLevelRepresentations[index].index === null ? '' : ` (${allLevelRepresentations[index].index})`);
-        return (
-          <ModalItem
-            key={levelName}
-            isSelectable
-            isSelected={index === currentLevel && !isAuto}
-            onClick={(): void => {
-              hlsClient.currentLevel = index;
-              setIsAuto(false);
-            }}
-          >
-            {levelName}
-          </ModalItem>
-        );
-      })}
+      {levels &&
+        allLevelRepresentations &&
+        hlsClient &&
+        levels.map((level, index) => {
+          const levelName =
+            allLevelRepresentations[index].name +
+            (allLevelRepresentations[index].index === null ? '' : ` (${allLevelRepresentations[index].index})`);
+          return (
+            <ModalItem
+              key={levelName}
+              isSelectable
+              isSelected={index === currentLevel && !isAuto}
+              onClick={(): void => {
+                hlsClient.currentLevel = index;
+                setIsAuto(false);
+              }}
+            >
+              {levelName}
+            </ModalItem>
+          );
+        })}
+      {!levels &&
+        Object.entries(manualLevels).map(([key, level]) => {
+          if (key === 'auto') {
+            // already rendered above
+            return null;
+          }
+          const levelName = level.name;
+          return (
+            <ModalItem
+              key={levelName}
+              isSelectable
+              isSelected={currentResolution === key}
+              onClick={(): void => {
+                setCurrentResolution(key);
+                setIsAuto(false);
+                manuallySetLevel(key);
+              }}
+            >
+              {levelName}
+            </ModalItem>
+          );
+        })}
     </GenericSettingsModal>
   );
 };
