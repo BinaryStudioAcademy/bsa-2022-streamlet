@@ -16,6 +16,8 @@ CREATE TABLE "VideoStats" (
     "device" "DeviceCategory" NOT NULL DEFAULT 'UNKNOWN',
     "language" TEXT NOT NULL,
     "isLive" BOOLEAN NOT NULL,
+    "durationStamp" INTEGER NOT NULL,
+    "view" BOOLEAN NOT NULL DEFAULT false,
     "reaction" "ReactionStatus" NOT NULL DEFAULT 'NONE',
     "subscription" "SubscriptionStatus" NOT NULL DEFAULT 'NONE',
     "wasSubscribed" BOOLEAN NOT NULL DEFAULT false,
@@ -29,7 +31,7 @@ CREATE TABLE "VideoStats" (
 );
 
 -- AddForeignKey
-ALTER TABLE "VideoStats" ADD CONSTRAINT "VideoStats_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "VideoStats" ADD CONSTRAINT "VideoStats_videoId_fkey" FOREIGN KEY ("videoId") REFERENCES "Video"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "VideoStats" ADD CONSTRAINT "VideoStats_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

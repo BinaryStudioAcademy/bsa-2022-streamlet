@@ -332,6 +332,10 @@ async function seedVideoStats(): Promise<void> {
         .map((v) => [v.id, v.channelId]),
     );
 
+    const videoIdToVideo = new Map(
+      videos.filter((v) => commentVideoIds.includes(v.id) || chatMessageVideoIds.includes(v.id)).map((v) => [v.id, v]),
+    );
+
     const reactionToVideos = <string[]>[];
 
     const language = getRandomSample(languages, 1)[0];
@@ -347,6 +351,7 @@ async function seedVideoStats(): Promise<void> {
           const wasSubscribed = Boolean(
             user.subscriptions.find((s) => s.channelId === videoIdToChannelId.get(c.videoId)),
           );
+          const durationStamp = getRandomIntFromInterval(1, videoIdToVideo.get(c.videoId)?.duration ?? 1);
 
           return {
             videoId: c.videoId,
@@ -355,6 +360,8 @@ async function seedVideoStats(): Promise<void> {
             device: DeviceCategory[device],
             language: language,
             isLive: true,
+            durationStamp,
+            view: true,
             reaction: reaction
               ? reaction.isLike
                 ? ReactionStatus.LIKED
@@ -376,6 +383,7 @@ async function seedVideoStats(): Promise<void> {
           const wasSubscribed = Boolean(
             user.subscriptions.find((s) => s.channelId === videoIdToChannelId.get(c.videoId)),
           );
+          const durationStamp = getRandomIntFromInterval(1, videoIdToVideo.get(c.videoId)?.duration ?? 1);
 
           return {
             videoId: c.videoId,
@@ -384,6 +392,8 @@ async function seedVideoStats(): Promise<void> {
             device: DeviceCategory[device],
             language: language,
             isLive: false,
+            durationStamp,
+            view: true,
             reaction: reaction
               ? reaction.isLike
                 ? ReactionStatus.LIKED

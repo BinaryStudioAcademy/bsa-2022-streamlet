@@ -294,7 +294,7 @@ model CommentReaction {
 
 model VideoStats {
   id                String              @id @default(uuid())
-  video             Video               @relation(fields: [videoId], references: [id])
+  video             Video               @relation(fields: [videoId], references: [id], onDelete: Cascade)
   videoId           String
   user              User?               @relation(fields: [userId], references: [id])
   userId            String?
@@ -302,6 +302,8 @@ model VideoStats {
   device            DeviceCategory      @default(UNKNOWN)
   language          String
   isLive            Boolean
+  durationStamp     Int
+  view              Boolean             @default(false)
   reaction          ReactionStatus      @default(NONE)
   subscription      SubscriptionStatus  @default(NONE)
   wasSubscribed     Boolean             @default(false)
@@ -314,10 +316,10 @@ model VideoStats {
 
 model ChannelStats {
   id                String              @id @default(uuid())
-  channel           Channel             @relation(fields: [channelId], references: [id])
+  channel           Channel             @relation(fields: [channelId], references: [id], onDelete: Cascade)
   channelId         String
-  user              User                @relation(fields: [userId], references: [id])
-  userId            String
+  user              User?               @relation(fields: [userId], references: [id])
+  userId            String?
   subscription      SubscriptionStatus  @default(NONE)
   source            String
   createdAt         DateTime            @default(now())
