@@ -7,6 +7,8 @@ type CreateVideoStatDto = {
   device: VideoDeviceCategory;
   language: string;
   isLive: boolean;
+  durationStamp: number;
+  view?: boolean;
   reaction?: VideoReactionStatus;
   wasSubscribed: boolean;
   subscription?: ChannelSubscriptionStatus;

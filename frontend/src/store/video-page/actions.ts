@@ -10,6 +10,7 @@ import {
   CreateCommentReactionResponseDto,
   AddVideoViewResponseDto,
 } from 'common/types/types';
+import { getDeviceCategoryByNavigator } from 'helpers/helpers';
 import {
   VideoExpandedResponseDto,
   ResponseRepliesForComment,
@@ -17,6 +18,8 @@ import {
   Comment,
   DeleteCommentResponseDto,
   DataVideo,
+  StreamStatus,
+  AddVideoViewRequestDto,
 } from 'shared/build';
 import { ActionType } from './common';
 
@@ -66,13 +69,27 @@ const addVideoView = createAsyncThunk<AddVideoViewResponseDto | null | true, voi
     const state = getState();
     const currentVideo = state.videoPage.video;
     const isViewed = state.videoPage.videoView.isViewed;
+    const subs = state.subscriptions.subscriptionsData.subscriptionsList.ids;
+
     if (!currentVideo) {
       return null;
     }
+
+    const additionalDataForStats = {
+      watchTime: 0,
+      device: getDeviceCategoryByNavigator(window.navigator),
+      language: window.navigator.language,
+      isLive: currentVideo.status === StreamStatus.LIVE,
+      durationStamp: 0,
+      wasSubscribed: subs.includes(currentVideo.channel.id),
+      source: window.location.pathname.split('/')[1],
+      createdAt: new Date().toISOString(),
+    } as AddVideoViewRequestDto['data'];
+
     if (isViewed) {
       return true;
     }
-    return videoApi.addVideoView({ videoId: currentVideo.id });
+    return await videoApi.addVideoView({ videoId: currentVideo.id, data: additionalDataForStats });
   },
 );
 
