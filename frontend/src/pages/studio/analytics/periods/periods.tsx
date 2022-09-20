@@ -27,7 +27,9 @@ export const Periods: FC<Props> = ({ onChange }) => {
     <div className={styles['blocks']}>
       <select className={styles['block']} value={value} onChange={handleChange}>
         {options.map((option) => (
-          <option value={option.value}>{option.label}</option>
+          <option key={option.label} value={option.value}>
+            {option.label}
+          </option>
         ))}
       </select>
     </div>
