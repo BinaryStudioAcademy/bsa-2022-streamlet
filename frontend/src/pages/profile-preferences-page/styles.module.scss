@@ -163,6 +163,16 @@ div .input-error-dark {
   text-align: left;
 }
 
+.profile-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.button-change-preferences {
+  margin-bottom: 20px;
+}
+
 @media #{$tablet-large} {
   .profile-image-upload-container {
     flex-direction: row;
