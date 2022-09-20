@@ -1,5 +1,4 @@
 @use 'assets/css/breakpoint';
-@use 'assets/css/config';
 
 .settings-wrapper {
   position: relative;
@@ -7,21 +6,10 @@
 
 .settings-modal-wrp {
   position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: calc(config.$page-component-z-index) + 1;
-  background-color: rgb(0 0 0 / 90%);
+}
 
-  @media #{breakpoint.$tablet-middle} {
-    position: unset;
-    top: unset;
-    right: unset;
-    bottom: unset;
-    left: unset;
-    background-color: unset;
-  }
+.settings-modal-portal-wrp {
+  background-color: rgba(0 0 0 / 90%);
 }
 
 .settings-modal {
@@ -29,6 +17,7 @@
   bottom: 70px;
   left: 50%;
   min-width: 80vw;
+  color: var(--always-white-color);
   transform: translateX(-50%);
 
   @media #{breakpoint.$tablet-middle} {
@@ -52,5 +41,4 @@
 
 .settings-btn {
   position: relative;
-  z-index: calc(config.$page-component-z-index - 1);
 }

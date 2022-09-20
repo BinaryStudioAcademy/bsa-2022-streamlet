@@ -2,11 +2,11 @@ import { useEffect, useMemo } from 'hooks/hooks';
 import styles from './styles.module.scss';
 import { FC } from 'common/types/types';
 import ReactDOM from 'react-dom';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import clsx from 'clsx';
 
 type Props = {
-  children: ReactElement;
+  children: ReactNode;
   className?: string;
 };
 const Portal: FC<Props> = ({ children, className }) => {
