@@ -18,13 +18,15 @@ const ProtectedRoute: FC<Props> = ({ element }) => {
   }));
   const { pathname } = useLocation();
 
-  useEffect(() => {
-    dispatch(getUserStreamPermission());
-  }, [dispatch]);
-
   const hasUser = Boolean(user);
 
-  if (pathname.includes('/studio') && streamPermission.streamPermission !== StreamPermission.ALLOWED) {
+  useEffect(() => {
+    if (hasUser) {
+      dispatch(getUserStreamPermission());
+    }
+  }, [dispatch, hasUser]);
+
+  if (hasUser && pathname.includes('/studio') && streamPermission.streamPermission !== StreamPermission.ALLOWED) {
     navigate(AppRoutes.ROOT, { replace: true });
   }
 

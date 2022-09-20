@@ -83,6 +83,7 @@ const App: FC = () => {
     if (hasToken) {
       dispatch(authActions.loadCurrentUser());
       dispatch(loadPreferences());
+      dispatch(getUserStreamPermission());
     }
   }, [hasToken, dispatch]);
 
@@ -90,7 +91,6 @@ const App: FC = () => {
     if (userId) {
       socket.emit(SocketEvents.socket.HANDSHAKE, userId);
     }
-    dispatch(getUserStreamPermission());
     return () => {
       dispatch(socketActions.removeSocketId());
     };
