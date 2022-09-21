@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { FC } from 'common/types/types';
 import { Button, Loader } from 'components/common/common';
 import { ChatSetting, VideoChatContainer } from 'components/video-chat/video-chat-container';
-import { StreamStatus } from 'shared/build';
+// import { StreamStatus } from 'shared/build';
 import { ChatStyle } from 'common/enums/enums';
 
 import styles from './styles.module.scss';
@@ -19,14 +19,14 @@ type Props = {
   handleChangeStreamStatus(): void;
 };
 
-const StudioStream: FC<Props> = ({ handleSettingsModalOpen, handleChangeStreamStatus }) => {
+const StudioStream: FC<Props> = ({ handleSettingsModalOpen }) => {
   const chatSettings: ChatSetting = {
     hideSetting: false,
   };
 
   const streamReadiness = useAppSelector((state) => state.stream.stream?.isReadyToStream);
   const streamVideoPath = useAppSelector((state) => state.stream.stream?.videoPath);
-  const streamStatus = useAppSelector((state) => state.stream.stream?.status);
+  // const streamStatus = useAppSelector((state) => state.stream.stream?.status);
   const streamId = useAppSelector((state) => state.stream.stream?.id);
   const streamName = useAppSelector((state) => state.stream.stream?.name);
 
@@ -75,9 +75,9 @@ const StudioStream: FC<Props> = ({ handleSettingsModalOpen, handleChangeStreamSt
               <div className={styles['status-container']}>
                 <div className={styles['status']}>
                   <div className={clsx(styles['status-indicator'], streamReadiness && styles['live'])} />
-                  <p className={styles['status-text']}>{!streamReadiness ? 'Not connected' : 'Connected'}</p>
+                  <p className={styles['status-text']}>{!streamReadiness ? 'Not connected' : 'Live'}</p>
                 </div>
-                <Button
+                {/* <Button
                   content={
                     streamStatus === StreamStatus.WAITING
                       ? 'Go live'
@@ -91,7 +91,7 @@ const StudioStream: FC<Props> = ({ handleSettingsModalOpen, handleChangeStreamSt
                     (!streamReadiness && streamStatus === StreamStatus.WAITING) ||
                     streamStatus === StreamStatus.FINISHED
                   }
-                />
+                /> */}
               </div>
               <div className={styles['stream-details']}>
                 <div className={styles['first-line']}>
