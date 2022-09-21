@@ -8,7 +8,7 @@ import {
 } from 'common/types/types';
 import style from './styles.module.scss';
 import defaultAvatar from '../../assets/img/default/user-avatar-default.jpg';
-import { UploadImage, ImageEditor, Loader, createToastNotification, Button } from '../../components/common/common';
+import { UploadImage, ImageEditor, Loader, createToastNotification } from '../../components/common/common';
 import React, { useCallback, useState } from 'react';
 import { profileActions } from 'store/actions';
 import { ImageListType } from 'react-images-uploading';
@@ -206,11 +206,12 @@ const ProfilePreferencesPage: FC = () => {
               <h2 className={style['profile-settings-header']}>Profile settings</h2>
               <h3 className={style['profile-settings-sub-header']}>Change your personal information</h3>
             </div>
-            <Button
-              content="Change preferences"
+            <button
               className={style['button-change-preferences']}
               onClick={(): void => setIsOpenPreferencesModal(true)}
-            />
+            >
+              Change preferences
+            </button>
           </div>
           <ProfilePreferencesPageForm
             onSubmit={onFormSubmit}
