@@ -11,6 +11,8 @@ type Props = {
   color?: string;
 };
 
+// Note: setting vCentered when the item is already aligned (e.g. with flex or by default in a button),
+// might interfere with its resulting vertical position
 const Loader: FC<Props> = ({ hCentered = true, vCentered = true, className, spinnerSize = LoaderSize.MD, color }) => {
   const isSpinnerSizeCustom = Object.values(LoaderSize).includes(spinnerSize as LoaderSize);
   const styleProps = {
