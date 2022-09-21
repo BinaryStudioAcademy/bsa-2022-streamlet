@@ -202,7 +202,7 @@ const ProfilePreferencesPage: FC = () => {
             </div>
           </div>
           <div className={style['profile-header-wrapper']}>
-            <div>
+            <div className={style['profile-text-wrapper']}>
               <h2 className={style['profile-settings-header']}>Profile settings</h2>
               <h3 className={style['profile-settings-sub-header']}>Change your personal information</h3>
             </div>
