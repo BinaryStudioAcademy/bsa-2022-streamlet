@@ -10,4 +10,10 @@ const isDateSameByDayMonthYear = (date1: Date, date2: Date): boolean => {
   return isDaySame && isMonthSame && isYearSame;
 };
 
-export { isDateSameByDayMonthYear };
+const prettyDate = (date: string): string => {
+  const prettyDateValue = dayjs(date).fromNow();
+
+  return prettyDateValue[0].toUpperCase() + prettyDateValue.slice(1);
+};
+
+export { isDateSameByDayMonthYear, prettyDate };
