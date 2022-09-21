@@ -167,6 +167,16 @@ div .input-error-dark {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+
+  @media screen and (max-width: 770px) {
+    flex-direction: column;
+  }
+}
+
+.profile-text-wrapper {
+  @media screen and (max-width: 770px) {
+    width: 100%;
+  }
 }
 
 .button-change-preferences {
