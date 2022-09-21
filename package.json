@@ -20,7 +20,7 @@
     "docker:build:backend": "docker build -f .docker/backend.Dockerfile -t backend .",
     "docker:build:push": "docker build -f .docker/push.Dockerfile -t push .",
     "docker:build:vts": "docker build -f .docker/video-transcoding-server.Dockerfile -t video-transcoding-server .",
-    "docker:build:frontend": "docker build --build-arg REACT_APP_API_ORIGIN_URL=/api/v1 --build-arg REACT_APP_SERVER_HOST=localhost --build-arg REACT_APP_PUSH_PORT=5002 -f .docker/frontend.Dockerfile -t frontend .",
+    "docker:build:frontend": "docker build --build-arg REACT_APP_API_ORIGIN_URL=/api/v1 --build-arg REACT_APP_SERVER_HOST=localhost --build-arg REACT_APP_PUSH_PORT=5002 --build-arg REACT_APP_VIDEO_FALLBACK_BASE_URL=http://localhost:8080 -f .docker/frontend.Dockerfile -t frontend .",
     "docker:build": "npm run docker:build:backend && npm run docker:build:frontend",
     "docker:up:d": "docker-compose -f .docker/docker-compose.local.yml up -d",
     "docker:up:debug": "docker-compose -f .docker/docker-compose.local.yml up -d api-db rabbitmq",
