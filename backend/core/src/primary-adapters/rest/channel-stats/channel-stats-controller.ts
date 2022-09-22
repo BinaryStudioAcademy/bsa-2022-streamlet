@@ -87,6 +87,7 @@ export class ChannelStatsController extends BaseHttpController {
       views: viewsStats.views,
       watchTime: watchTimeStats.watchTime,
       subscribers: channel._count.subscriptions,
+      videos: channel.videos.length,
     };
   }
 }

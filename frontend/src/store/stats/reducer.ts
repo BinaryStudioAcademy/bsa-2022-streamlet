@@ -18,6 +18,7 @@ import {
   getChannelStatsChartData,
   updatePlayerTime,
   getChannelOverviewData,
+  clearChannelOverviewData,
 } from './actions';
 import { setStateChartData, setStatePieChartData } from './helpers';
 
@@ -114,6 +115,10 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(getChannelOverviewData.fulfilled, (state, { payload }) => {
     state.channelStats.overview.dataStatus = DataStatus.FULFILLED;
     state.channelStats.overview.data = payload;
+  });
+
+  builder.addCase(clearChannelOverviewData, (state) => {
+    state.channelStats.overview = initialState.channelStats.overview;
   });
 
   builder.addCase(getChannelStatsChartData.pending, (state) => {

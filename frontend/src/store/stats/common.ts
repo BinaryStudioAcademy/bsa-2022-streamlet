@@ -8,7 +8,8 @@ enum ActionType {
   CLEAR_CHANNEL_STATS_CHARTS = 'stats/channel-charts/clear/all',
   GET_CHANNEL_STATS_DATA = 'stats/channel-charts/get/all',
   UPDATE_PLAYER_TIME = 'stats/video/player/update-time',
-  GET_CHANNEL_OVERVIEW = 'stats/channel/overview',
+  GET_CHANNEL_OVERVIEW = 'stats/channel/overview/get',
+  CLEAR_CHANNEL_OVERVIEW = 'stats/channel/overview/clear',
 }
 
 export { ActionType };

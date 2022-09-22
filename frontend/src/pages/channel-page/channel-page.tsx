@@ -5,6 +5,7 @@ import { ErrorBox } from 'components/common/errors/errors';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { statsActions } from 'store/actions';
 import { loadChannel } from 'store/channel/actions';
 import { AboutSection } from './components/about-section/about-section';
 import { ChannelHeader } from './components/channel-header/channel-header';
@@ -19,6 +20,11 @@ const ChannelPage: FC = () => {
   useEffect(() => {
     if (!channelId) return;
     dispatch(loadChannel({ id: channelId }));
+    dispatch(statsActions.getChannelOverviewData({ channelId }));
+
+    return () => {
+      dispatch(statsActions.clearChannelOverviewData());
+    };
   }, [channelId, dispatch]);
 
   const channelDataStatus = useAppSelector((state) => state.channel.currentChannel.dataStatus);

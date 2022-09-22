@@ -16,5 +16,6 @@ export const matchOverviewChartTabWithTitle: Record<OverviewChartTab, string> = 
 export const matchOverviewChartTabWithValueFunc: Record<OverviewChartTab, (v: number) => string> = {
   [OverviewChartTab.VIEWS]: (v: number): string => getTextFormatedViewsString(v),
   [OverviewChartTab.WATCH_TIME]: (v: number): string => getTextFormatedViewsString(Math.round(secondsToHours(v))),
-  [OverviewChartTab.SUBSCRIBERS]: (v: number): string => getTextFormatedViewsString(v),
+  [OverviewChartTab.SUBSCRIBERS]: (v: number): string =>
+    `${v < 0 ? '-' : v > 0 ? '+' : ''}${getTextFormatedViewsString(Math.abs(v))}`,
 };

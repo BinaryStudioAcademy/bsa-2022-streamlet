@@ -55,6 +55,8 @@ const setStatsConfigPeriod = createAction<StatsPeriodValue>(ActionType.SET_STATS
 
 const clearChannelStatsCharts = createAction<void>(ActionType.CLEAR_CHANNEL_STATS_CHARTS);
 
+const clearChannelOverviewData = createAction<void>(ActionType.CLEAR_CHANNEL_OVERVIEW);
+
 const getChannelStatsChartData = createAsyncThunk<
   ChannelStatsChartDataResponseDto,
   { channelId: string; period: StatsPeriodValue },
@@ -88,4 +90,5 @@ export {
   getChannelStatsChartData,
   updatePlayerTime,
   getChannelOverviewData,
+  clearChannelOverviewData,
 };

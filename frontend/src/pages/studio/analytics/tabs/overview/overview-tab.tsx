@@ -8,7 +8,7 @@ import { matchOverviewChartTabWithTitle, matchOverviewChartTabWithValueFunc, Ove
 
 import styles from './styles.module.scss';
 import { getWatchTimeDataInHours } from '../watch-time/helpers';
-import { getSumOfChartDataValue1, secondsToHours } from './helpers';
+import { getSumOfChartDataValue, secondsToHours } from './helpers';
 import { getTextFormatedViewsString } from 'helpers/helpers';
 import clsx from 'clsx';
 
@@ -39,9 +39,10 @@ const OverviewTab: FC = () => {
   const watchTimeDataInHours = getWatchTimeDataInHours(watchTimeData);
 
   const matchOverviewChartTabWithValue: Record<OverviewChartTab, number | undefined> = {
-    [OverviewChartTab.VIEWS]: getSumOfChartDataValue1(viewData),
-    [OverviewChartTab.WATCH_TIME]: getSumOfChartDataValue1(watchTimeData),
-    [OverviewChartTab.SUBSCRIBERS]: getSumOfChartDataValue1(subsData),
+    [OverviewChartTab.VIEWS]: getSumOfChartDataValue(viewData, 'value1'),
+    [OverviewChartTab.WATCH_TIME]: getSumOfChartDataValue(watchTimeData, 'value1'),
+    [OverviewChartTab.SUBSCRIBERS]:
+      getSumOfChartDataValue(subsData, 'value1') - getSumOfChartDataValue(subsData, 'value2'),
   };
 
   const overviewChartTabs = [OverviewChartTab.VIEWS, OverviewChartTab.WATCH_TIME, OverviewChartTab.SUBSCRIBERS].map(
@@ -130,6 +131,12 @@ const OverviewTab: FC = () => {
             </div>
             <div className={styles['overview-block-part']}>
               <span className={clsx(styles['overview-block-part-title'], styles['summary'])}>Summary</span>
+              <div className={styles['overview-block-summary']}>
+                <span className={styles['overview-block-summary-title']}>Videos</span>
+                <span className={styles['overview-block-summary-count']}>
+                  {overviewData?.videos !== undefined ? getTextFormatedViewsString(overviewData.videos) : ''}
+                </span>
+              </div>
               <div className={styles['overview-block-summary']}>
                 <span className={styles['overview-block-summary-title']}>Views</span>
                 <span className={styles['overview-block-summary-count']}>

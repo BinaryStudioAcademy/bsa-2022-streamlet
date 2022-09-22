@@ -3,4 +3,5 @@ export type ChannelStatsOverviewResponseDto = {
   views: number;
   watchTime: number;
   subscribers: number;
+  videos: number;
 };
