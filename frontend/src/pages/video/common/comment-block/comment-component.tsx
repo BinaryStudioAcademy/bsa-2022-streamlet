@@ -6,6 +6,7 @@ import {
   useAppSelector,
   useCallback,
   useEffect,
+  useLocation,
   useNavigate,
   useParams,
   useRef,
@@ -48,6 +49,7 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const [isRepliesOpen, setIsRepliesOpen] = useState(false);
   const [isReplyFormOpen, setIsReplyFormOpen] = useState(false);
@@ -105,7 +107,7 @@ const VideoComment: FC<Props> = ({ comment, onLike, onDislike, isReply, namingIn
 
   const handleSendForm = async (text: string): Promise<void> => {
     if (!user) {
-      navigate(AppRoutes.SIGN_IN, { replace: true });
+      navigate({ pathname: AppRoutes.SIGN_IN, hash: pathname });
       return;
     }
 

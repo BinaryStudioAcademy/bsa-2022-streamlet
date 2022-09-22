@@ -138,7 +138,7 @@ const VideoPageContainer: FC = () => {
 
   const handleMessageSubmit = (text: string): void => {
     if (!user) {
-      navigate(AppRoutes.SIGN_IN, { replace: true });
+      navigate({ pathname: AppRoutes.SIGN_IN, hash: pathname });
       return;
     }
 
@@ -266,7 +266,6 @@ const VideoPageContainer: FC = () => {
               handleHideChat={handleHideChat}
               statsData={{ statId, videoId }}
             />
-            {/*  */}
           </div>
         )}
         <LinksBlock videoId={videoId} />
