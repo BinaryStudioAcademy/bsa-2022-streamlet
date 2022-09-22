@@ -11,11 +11,17 @@ import { socket } from 'common/config/config';
 import { StreamSettingsModal } from '../common/stream-settings-modal/stream-settings-modal';
 import { store } from 'store/store';
 
-socket.on(SocketEvents.notify.STREAM_OBS_STATUS, (isReadyToStream: boolean) => {
-  store.dispatch(
+socket.on(SocketEvents.notify.STREAM_OBS_STATUS, async (isReadyToStream: boolean) => {
+  await store.dispatch(
     streamActions.setReadinessToStream({
       videoId: store.getState().stream.stream?.id ?? '',
       isReadyToStream,
+    }),
+  );
+  await store.dispatch(
+    streamActions.setStreamStatus({
+      status: isReadyToStream ? StreamStatus.LIVE : StreamStatus.FINISHED,
+      videoId: store.getState().stream.stream?.id ?? '',
     }),
   );
 });

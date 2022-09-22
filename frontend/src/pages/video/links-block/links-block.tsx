@@ -46,6 +46,7 @@ const LinksBlock: FC<BlockProps> = ({ className, videoId }) => {
 
   useEffect(() => {
     const mainPage = document.getElementById('main-content');
+
     if (!mainPage) throw new Error();
 
     if (width >= SMALL_SCREEN_SIZE_IN_PX) {
@@ -54,7 +55,7 @@ const LinksBlock: FC<BlockProps> = ({ className, videoId }) => {
     }
 
     dispatch(setNumberOfLoadingVideo(6));
-  }, [isSmallScreen, dispatch, width]);
+  }, [isSmallScreen, dispatch, width, videoId]);
 
   useEffect(() => {
     if (dataStatus === DataStatus.IDLE) {

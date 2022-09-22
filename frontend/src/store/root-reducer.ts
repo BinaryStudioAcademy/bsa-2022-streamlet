@@ -16,6 +16,7 @@ import { reducer as followingPage } from './following-page/reducer';
 import { reducer as stream } from './stream/reducer';
 import { reducer as socket } from './socket/reducer';
 import { reducer as preference } from './preferences/reducer';
+import { reducer as contentPage } from './content-page/reducer';
 import { reducer as stats } from './stats/reducer';
 
 const rootReducer = combineReducers({
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   stream,
   socket,
   preference,
+  contentPage,
   stats,
 });
 

@@ -75,7 +75,7 @@ export interface VideoRepository {
 
   getMyVideos(authorId: string): Promise<VideoWithReactionsAndComments[]>;
   deleteByIds(ids: string[]): Promise<VideoWithReactionsAndComments[]>;
-  updateVisibility(updateVideoVisibilityDto: UpdateVideoVisibilityDto): Promise<VideoWithReactionsAndComments | null>;
+  updateVisibility(updateVideoVisibilityDto: UpdateVideoVisibilityDto): Promise<VideoWithReactionsAndComments[] | null>;
   updateVideoInfo(updateVideoInfo: UpdateVideoInfoDto): Promise<VideoWithReactionsAndComments | null>;
   getGeneralVideos(userId: string): Promise<DataVideo>;
   getRecommendedVideos(params: RecommendedVideosParams): Promise<DataVideo>;

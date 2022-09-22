@@ -1,7 +1,7 @@
 import styles from '../../styles.module.scss';
 import { getDateStringAtDdMmYyyyFormat } from '../../../../helpers/date/get-date-string-at-dd-mm-yyyy-format/get-date-string-at-dd-mm-yyyy-format';
 import { VideoCard } from '../../../../components/search/components/video-card/video-card';
-import { isDateSameByDayMonthYear } from '../../../../helpers/date/is-date-same-by-day-mounth-year/is-date-same-by-day-mounth-year';
+import { prettyDate } from '../../../../helpers/date/is-date-same-by-day-mounth-year/is-date-same-by-day-mounth-year';
 import React, { ReactElement } from 'react';
 import { HistoryResponseDto } from 'shared/build';
 import { FC } from '../../../../common/types/react/fc.type';
@@ -15,6 +15,7 @@ type props = {
 
 const HistoryList: FC<props> = ({ historyData, isLightTheme, containerClassName }): ReactElement => {
   const { list } = historyData;
+
   if (!list.length) {
     return (
       <div className={styles['no-video-in-list']}>
@@ -22,32 +23,38 @@ const HistoryList: FC<props> = ({ historyData, isLightTheme, containerClassName 
       </div>
     );
   }
+
+  const sortedVideosWithDateStamp = [];
+
+  for (let i = 0; i < list.length; i++) {
+    if (!i) {
+      sortedVideosWithDateStamp.push(String(list[i].updatedAt), list[i]);
+    }
+
+    if (
+      i &&
+      getDateStringAtDdMmYyyyFormat(list[i].updatedAt) !== getDateStringAtDdMmYyyyFormat(list[i - 1].updatedAt)
+    ) {
+      sortedVideosWithDateStamp.push(String(list[i].updatedAt), list[i]);
+    } else {
+      sortedVideosWithDateStamp.push(list[i]);
+    }
+  }
+
   return (
     <div className={containerClassName}>
-      {historyData.list.map((historyRecord, index) => {
-        if (!index) {
+      {sortedVideosWithDateStamp.map((historyRecord) => {
+        if (typeof historyRecord === 'string') {
           return (
-            <div key={historyRecord.id}>
-              <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(historyRecord.updatedAt)}</p>
-              <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={isLightTheme} />
-            </div>
+            <p key={historyRecord} className={styles['date']}>
+              {prettyDate(historyRecord)}
+            </p>
           );
         }
-        const prevHistoryRecordUpdatedAt = historyData.list[index - 1].updatedAt;
-        const currentHistoryUpdatedAt = historyRecord.updatedAt;
-        const isPrevAndCurrentHistoryUpdatedAtSame = isDateSameByDayMonthYear(
-          prevHistoryRecordUpdatedAt,
-          currentHistoryUpdatedAt,
-        );
 
-        return isPrevAndCurrentHistoryUpdatedAtSame ? (
-          <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={isLightTheme} />
-        ) : (
-          <div key={historyRecord.id}>
-            <p className={styles['date']}>{getDateStringAtDdMmYyyyFormat(prevHistoryRecordUpdatedAt)}</p>
-            <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={isLightTheme} />
-          </div>
-        );
+        if (typeof historyRecord === 'object') {
+          return <VideoCard key={historyRecord.id} video={historyRecord.video} isLightTheme={isLightTheme} />;
+        }
       })}
     </div>
   );

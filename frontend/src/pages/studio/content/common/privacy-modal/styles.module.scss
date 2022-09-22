@@ -1,0 +1,61 @@
+.content-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 400px;
+  margin-top: 24px;
+  padding: 10px;
+  border: none;
+}
+
+.modal {
+  background-color: var(--green-200-header-menu-background);
+}
+
+.option {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 16px;
+
+  .option-name {
+    margin-left: 10px;
+    color: var(--always-white-color);
+    font-size: 15px;
+  }
+}
+
+.radio-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--brand-green-color);
+  border-radius: calc(20px / 2);
+
+  .picked {
+    width: 11px;
+    height: 11px;
+    background-color: var(--brand-green-color);
+    border-radius: calc(11px / 2);
+  }
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 8px 8px 8px 24px;
+}
+
+.button-container > button {
+  display: inline-block;
+  height: 40px;
+  padding: 10px 16px;
+  color: var(--brand-green-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+}

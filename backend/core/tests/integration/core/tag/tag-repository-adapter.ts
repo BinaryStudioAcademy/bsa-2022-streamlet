@@ -42,4 +42,12 @@ export class TestTagRepositoryAdapter implements TagRepository {
     }
     return Promise.resolve(null);
   }
+
+  clearTagToVideoBinding(videoId: string): Promise<void> {
+    // only for ignoring eslint errors
+    if (!videoId) {
+      return Promise.resolve(undefined);
+    }
+    return Promise.resolve(undefined);
+  }
 }

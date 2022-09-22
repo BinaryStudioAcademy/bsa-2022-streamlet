@@ -1,12 +1,19 @@
 import { DataStatus } from 'common/enums/enums';
+import { FC } from 'common/types/types';
 import { ConfirmationModal } from 'components/common/common';
 import { PreferencesModal } from 'components/common/preferences-modal/preferences-modal';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { ReactElement, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { UserBindCategoriesDto } from 'shared/build';
 import { bindPreferences, chooseAllPreferences } from 'store/preferences/actions';
 
-const PreferencesModalContainer = (): ReactElement => {
+interface Props {
+  isOpenModal?: boolean;
+  manualOpenModal?: boolean;
+  closeManualModal?: (value: boolean) => void;
+}
+
+const PreferencesModalContainer: FC<Props> = ({ isOpenModal, manualOpenModal, closeManualModal }) => {
   const dispatch = useAppDispatch();
 
   const { choosedPreferences } = useAppSelector((state) => ({
@@ -16,12 +23,20 @@ const PreferencesModalContainer = (): ReactElement => {
   const [isNeedModal, setIsNeedModal] = useState(false);
   const [isNeedConfirmModal, setIsNeedConfirmModal] = useState(false);
 
-  const isHavePreferences = Boolean(choosedPreferences.data.length);
-  useEffect(() => {
-    if (choosedPreferences.dataStatus === DataStatus.FULFILLED) {
-      setIsNeedModal(!isHavePreferences);
-    }
-  }, [choosedPreferences, isHavePreferences]);
+  if (manualOpenModal) {
+    useEffect(() => {
+      setIsNeedModal(Boolean(isOpenModal));
+    }, [isOpenModal]);
+  }
+
+  if (!manualOpenModal) {
+    const isHavePreferences = Boolean(choosedPreferences.data.length);
+    useEffect(() => {
+      if (choosedPreferences.dataStatus === DataStatus.FULFILLED) {
+        setIsNeedModal(!isHavePreferences);
+      }
+    }, [choosedPreferences, isHavePreferences]);
+  }
 
   const [pickedCategories, setPickedCategories] = useState<Omit<UserBindCategoriesDto, 'id'>>({
     categories: choosedPreferences.data,
@@ -38,6 +53,10 @@ const PreferencesModalContainer = (): ReactElement => {
   };
 
   const handleSubmit = (): void => {
+    if (manualOpenModal && closeManualModal) {
+      closeManualModal(false);
+    }
+
     setIsNeedModal(false);
     if (pickedCategories) {
       dispatch(bindPreferences(pickedCategories));
@@ -45,6 +64,10 @@ const PreferencesModalContainer = (): ReactElement => {
   };
 
   const handleConfirm = (): void => {
+    if (manualOpenModal && closeManualModal) {
+      closeManualModal(false);
+    }
+
     dispatch(chooseAllPreferences());
     setIsNeedConfirmModal(false);
     setIsNeedModal(!isNeedModal);

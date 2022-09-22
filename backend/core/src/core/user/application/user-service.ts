@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { User } from '@prisma/client';
+import { StreamPermission, User } from '@prisma/client';
 import axios from 'axios';
 import { CONTAINER_TYPES, MailTestRequestDto, UserSignUpRequestDto } from '~/shared/types/types';
 import { UserRepository } from '~/core/user/port/user-repository';
@@ -181,5 +181,9 @@ export class UserService {
       return;
     }
     return preferedCategories.videoPreferences.map(({ category }) => castToCategoryResponseDto(category));
+  }
+
+  async updateStreamPermission(userId: string, streamPermission: StreamPermission): Promise<User> {
+    return this.userRepository.updateStreamPermission(userId, streamPermission);
   }
 }

@@ -37,7 +37,7 @@ const GoogleButton: FC<{ disabled: boolean }> = ({ disabled }) => {
         onClick={handleSignUpGoogle}
         className={clsx(styles['google-btn'])}
         type="button"
-        content={isLoading ? <Loader spinnerSize="xs" /> : <img src={googleLogo} alt="Google" />}
+        content={isLoading ? <Loader spinnerSize="xs" vCentered={false} /> : <img src={googleLogo} alt="Google" />}
         disabled={disabled}
       />
     </>

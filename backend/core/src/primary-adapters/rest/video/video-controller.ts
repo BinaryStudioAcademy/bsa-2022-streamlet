@@ -214,19 +214,20 @@ export class VideoController extends BaseHttpController {
     return deletedVideos;
   }
 
-  @httpPut(VideoApiPath.$PRIVACY, authenticationMiddleware)
+  @httpPut(VideoApiPath.PRIVACY, authenticationMiddleware)
   public async updatePrivacy(
     @requestBody()
     {
+      videoIds,
       authorId,
       visibility,
     }: {
+      videoIds: string[];
       authorId: string;
       visibility: string;
     },
-    @requestParam('videoId') videoId: string,
     @request() req: ExtendedAuthenticatedRequest,
-  ): Promise<VideoInfoDto> {
+  ): Promise<VideoInfoDto[]> {
     const { id } = req.user;
     if (authorId !== id) {
       throw new Forbidden();
@@ -237,15 +238,15 @@ export class VideoController extends BaseHttpController {
       throw new BadRequest('Invalid video visibility parameter');
     }
 
-    const updatedVideo = await this.videoService.updateVisibility({
-      videoId,
+    const updatedVideos = await this.videoService.updateVisibility({
+      videoIds,
       visibility: privacyStatus,
     });
-    if (!updatedVideo) {
+    if (!updatedVideos) {
       throw new NotFound('Video not found');
     }
 
-    return updatedVideo;
+    return updatedVideos;
   }
 
   @httpPut(VideoApiPath.$ID, authenticationMiddleware)

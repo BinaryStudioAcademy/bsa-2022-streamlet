@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector, useEffect, useNavigate } from 'hooks/ho
 import { AppRoutes, DataStatus, ErrorMessage, IconName } from '../../common/enums/enums';
 import { store } from '../../store/store';
 import { ProfilePreferencesPageForm } from './common/profile-preferences-page-form';
+import { PreferencesModalContainer } from 'components/common/preferences-modal/preferences-modal-container';
 
 const ProfilePreferencesPage: FC = () => {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const ProfilePreferencesPage: FC = () => {
     croppedImg: '',
     rotate: 0,
   });
+  const [isOpenPreferencesModal, setIsOpenPreferencesModal] = useState(false);
 
   const user: UserBaseResponseDto | null = useAppSelector((state) => {
     return state.auth.user;
@@ -147,6 +149,11 @@ const ProfilePreferencesPage: FC = () => {
 
   return (
     <div className={style['preference-page-content-container']}>
+      <PreferencesModalContainer
+        isOpenModal={isOpenPreferencesModal}
+        manualOpenModal={true}
+        closeManualModal={(val): void => setIsOpenPreferencesModal(val)}
+      />
       {isNeedUpload && <UploadImage images={images} onUpload={onChange} onClose={onUploadImageClose} />}
       {isNeedImageEditor && (
         <ImageEditor
@@ -194,8 +201,18 @@ const ProfilePreferencesPage: FC = () => {
               </div>
             </div>
           </div>
-          <h2 className={style['profile-settings-header']}>Profile settings</h2>
-          <h3 className={style['profile-settings-sub-header']}>Change your personal information</h3>
+          <div className={style['profile-header-wrapper']}>
+            <div className={style['profile-text-wrapper']}>
+              <h2 className={style['profile-settings-header']}>Profile settings</h2>
+              <h3 className={style['profile-settings-sub-header']}>Change your personal information</h3>
+            </div>
+            <button
+              className={style['button-change-preferences']}
+              onClick={(): void => setIsOpenPreferencesModal(true)}
+            >
+              Change preferences
+            </button>
+          </div>
           <ProfilePreferencesPageForm
             onSubmit={onFormSubmit}
             error={formError}

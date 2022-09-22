@@ -1,12 +1,18 @@
+@use 'assets/css/breakpoint';
+
 $delay: 200ms;
 $timing-function: ease-out;
 
 /* this module styles sliders and so needs non-standard rules */
 /* stylelint-disable property-no-vendor-prefix */
 .volume-wrapper {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 5px;
+
+  @media #{breakpoint.$tablet-small} {
+    display: flex;
+  }
 }
 
 .volume-slider {
