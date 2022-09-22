@@ -23,6 +23,7 @@ import { VideoExpandedInfo } from '../../../../src/shared/types/video/video-expa
 import { VideoSearch, VideoWithChannel } from '../../../../src/shared/types/video/video-with-channel-dto.type';
 import { VideoRepositoryFilters } from '../../../../src/core/video/port/video-repository-filters';
 import { VideoWithReactionsAndComments } from '../../../../src/shared/types/video/video-with-reactions-and-comments-dto';
+import { Video } from '@prisma/client';
 
 export class TestVideoRepositoryAdapter implements VideoRepository {
   addComment(request: VideoCommentRequestDto, authorId: string): Promise<VideoCommentResponseDto | null> {
@@ -108,6 +109,14 @@ export class TestVideoRepositoryAdapter implements VideoRepository {
       return Promise.resolve(null);
     }
     return Promise.resolve(null);
+  }
+
+  getVideosByIds(ids: string[]): Promise<Video[]> {
+    // only for ignoring eslint errors
+    if (!ids) {
+      return Promise.resolve([]);
+    }
+    return Promise.resolve([]);
   }
 
   getPopular(arg: GetPopularInputType): Promise<PopularVideoResponseDto> {
