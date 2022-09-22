@@ -1,2 +1,2 @@
-export { VideoCard, ChannelCard } from 'shared/build';
+export { VideoCard, ChannelCard, LineChartDataPeriod, LineChartData } from 'shared/build';
 export { SelectOptions } from './select-options.type';
