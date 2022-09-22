@@ -64,21 +64,18 @@ $hide-transition-duration: 1s;
   max-height: 100%;
   background-color: var(--chat-wrp-bgc);
   border-radius: 3px;
-  transition: max-height $hide-transition-duration;
 }
 
 .video-chat {
   display: flex;
   flex: 1;
   flex-flow: column-reverse nowrap;
-  min-height: 440px;
   margin-bottom: 3px;
   padding: 20px 20px 0;
   overflow: auto;
   overflow-y: overlay;
   background-color: var(--chat-bgc);
   border-radius: 3px;
-  transition: padding 0.75s, margin 0.75s, min-height $hide-transition-duration;
 
   @media screen and (max-width: 992px) {
     min-height: 300px;
@@ -92,8 +89,6 @@ $hide-transition-duration: 1s;
 .video-chat-message {
   visibility: visible;
   opacity: 1;
-  transition: visibility 0s, opacity 0.5s linear;
-  transition-delay: $hide-transition-duration;
 }
 
 .video-chat-welcome-message {
@@ -105,8 +100,6 @@ $hide-transition-duration: 1s;
   background-color: var(--chat-welcome-msg-bgc);
   visibility: visible;
   opacity: 1;
-  transition: visibility 0s, opacity 0.5s linear;
-  transition-delay: $hide-transition-duration;
 }
 
 .video-chat-welcome-message-icon {

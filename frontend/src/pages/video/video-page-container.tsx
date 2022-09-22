@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useLayoutEffect } from 'react';
 import { AppRoutes, DataStatus, SocketEvents, StreamStatus } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { Loader } from 'components/common/common';
@@ -10,8 +11,10 @@ import {
   useParams,
   useState,
   useEffect,
+  useRef,
   useCallback,
   useLocation,
+  useWindowDimensions,
 } from 'hooks/hooks';
 import { statsActions, videoPageActions } from 'store/actions';
 import styles from './video-page.module.scss';
@@ -31,14 +34,21 @@ socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
 });
 
+const SIZE_BLOCK_WITH_HIDDEN_CHAT = 41;
+const SCREEN_SIZE_AT_WHICH_CHAT_MOVES = 992;
+
 const getStatId = createCounter();
 
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { width } = useWindowDimensions();
   const { pathname } = useLocation();
   const { videoId: isVideoIdProvided } = useParams();
   const [isReactChanged, setReactState] = useState<boolean | string>(false);
+  const videoRef = useRef<HTMLDivElement>(null);
+  const [heightVideo, setHeightVideo] = useState(0);
+  const [isHideChat, setIsHideChat] = useState(true);
 
   if (!isVideoIdProvided) {
     navigate(AppRoutes.ANY, { replace: true });
@@ -63,6 +73,10 @@ const VideoPageContainer: FC = () => {
   const [statId, setStatId] = useState(0);
 
   const videoId = isVideoIdProvided as string;
+
+  const handleHideChat = (param: boolean): void => {
+    setIsHideChat(param);
+  };
 
   useEffect(() => {
     setReactState(false);
@@ -132,6 +146,10 @@ const VideoPageContainer: FC = () => {
     return void 1;
   };
 
+  useLayoutEffect(() => {
+    setHeightVideo(videoRef.current ? videoRef.current.clientHeight : 0);
+  }, [width, videoData]);
+
   const source = pathname.split('/')[1];
   const wasSubscribed = subscriptionsIds.includes(videoData?.channel.id ?? '');
 
@@ -194,7 +212,7 @@ const VideoPageContainer: FC = () => {
         [styles['finished']]: isVideoFinished,
       })}
     >
-      <div className={styles['video-block']}>
+      <div ref={videoRef} className={styles['video-block']}>
         <VideoPlayer
           sizingProps={{ aspectRatio: '16 / 9' }}
           url={videoData.videoPath}
@@ -216,8 +234,21 @@ const VideoPageContainer: FC = () => {
       </div>
       <div className={styles['side-block']}>
         {!isVideoFinished && (
-          <div className={styles['chat-block']}>
-            <VideoChatContainer videoId={videoId} statsData={{ statId, videoId }} />
+          <div
+            className={styles['chat-block']}
+            style={
+              heightVideo && isHideChat
+                ? { height: width > SCREEN_SIZE_AT_WHICH_CHAT_MOVES ? heightVideo : 'auto' }
+                : { height: SIZE_BLOCK_WITH_HIDDEN_CHAT }
+            }
+          >
+            <VideoChatContainer
+              heightVideoBlock={heightVideo}
+              videoId={videoId}
+              handleHideChat={handleHideChat}
+              statsData={{ statId, videoId }}
+            />
+            {/*  */}
           </div>
         )}
         <LinksBlock videoId={videoId} />

@@ -36,7 +36,12 @@ const HistoryList: FC<props> = ({ historyData, isLightTheme, containerClassName 
       getDateStringAtDdMmYyyyFormat(list[i].updatedAt) !== getDateStringAtDdMmYyyyFormat(list[i - 1].updatedAt)
     ) {
       sortedVideosWithDateStamp.push(String(list[i].updatedAt), list[i]);
-    } else {
+    }
+
+    if (
+      i &&
+      getDateStringAtDdMmYyyyFormat(list[i].updatedAt) === getDateStringAtDdMmYyyyFormat(list[i - 1].updatedAt)
+    ) {
       sortedVideosWithDateStamp.push(list[i]);
     }
   }
