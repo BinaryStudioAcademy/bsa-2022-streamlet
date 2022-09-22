@@ -7,9 +7,10 @@ const COLORS = ['#06c149', '#246966', '#00a8c7', '#6a726d'];
 
 export type PieChartProps = {
   data: PieChartData;
+  hidePercents?: boolean;
 };
 
-const CustomPieChart: FC<PieChartProps> = ({ data }) => {
+const CustomPieChart: FC<PieChartProps> = ({ data, hidePercents = false }) => {
   const chartId = useId();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,12 +19,14 @@ const CustomPieChart: FC<PieChartProps> = ({ data }) => {
 
     return (
       <g>
-        <text x={cx} y={cy - 12} dy={8} textAnchor="middle" fill={strokeColor}>
+        <text x={cx} y={cy - (hidePercents ? 0 : 12)} dy={8} textAnchor="middle" fill={strokeColor}>
           {`${payload.name}`}
         </text>
-        <text x={cx} y={cy + 12} dy={8} textAnchor="middle" fill={strokeColor}>
-          {`${(percent * 100).toFixed(2)}%`}
-        </text>
+        {!hidePercents && (
+          <text x={cx} y={cy + 12} dy={8} textAnchor="middle" fill={strokeColor}>
+            {`${(percent * 100).toFixed(2)}%`}
+          </text>
+        )}
         <Sector
           cx={cx}
           cy={cy}

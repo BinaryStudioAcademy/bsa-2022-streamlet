@@ -4,7 +4,7 @@ import { AxisDomain } from 'recharts/types/util/types';
 import { CustomTooltip } from './tooltip/custom-tooltip';
 import { FC, LineChartData, LineChartDataPeriod } from 'common/types/types';
 import { useId } from 'hooks/hooks';
-import { getFormattedDate } from '../chart-helpers';
+import { getDefaultPeriod, getEmptyPeriodsForChart, getFormattedDate } from '../chart-helpers';
 import { StatsPeriodValue } from 'common/enums/enums';
 
 const strokeColor = '#C4C4C4';
@@ -38,31 +38,24 @@ const getTicks = (startDate: Date, endDate: Date, num: number): number[] => {
 };
 
 export const CustomLineChart: FC<ChartProps> = ({ data, valueNames, period, aspect = 3 }) => {
-  const dataLength = data.dataLength;
+  let { data: realData, format, dataLength } = data;
 
   if (dataLength === 0) {
-    return (
-      <p
-        style={{
-          textAlign: 'center',
-        }}
-      >
-        No data yet.
-      </p>
-    );
+    realData = getEmptyPeriodsForChart(period);
+    format = getDefaultPeriod(period);
+    dataLength = realData.length;
   }
 
-  const realData = data.data;
   const startDate = new Date(realData[0].date);
-  const endDate = new Date(realData[realData.length - 1].date);
+  const endDate = new Date(realData[dataLength - 1].date);
   const ticks = getTicks(startDate, endDate, dataLength);
   const domain: AxisDomain = [(): number => startDate.getTime(), (): number => endDate.getTime()];
-  const values: string[] = realData.length > 0 ? Object.keys(realData[0]).filter((k) => k !== 'date') : [];
+  const values: string[] = dataLength > 0 ? Object.keys(realData[0]).filter((k) => k !== 'date') : [];
 
   const chartId = useId();
 
   const handleDateFormatter = (date: string): string => {
-    return getFormattedDate(date, data.format, period);
+    return getFormattedDate(date, format, period);
   };
 
   return (
@@ -89,7 +82,14 @@ export const CustomLineChart: FC<ChartProps> = ({ data, valueNames, period, aspe
             ticks={ticks}
             tickLine={false}
           />
-          <YAxis tick={{ fill: strokeColor }} axisLine={false} tickCount={7} tickLine={false} tickMargin={40} />
+          <YAxis
+            tick={{ fill: strokeColor }}
+            width={40}
+            axisLine={false}
+            tickCount={7}
+            tickLine={false}
+            tickMargin={40}
+          />
           <Tooltip
             cursor={false}
             isAnimationActive={false}

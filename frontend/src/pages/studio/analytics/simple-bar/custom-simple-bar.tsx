@@ -2,7 +2,7 @@ import { BarChart, Bar, XAxis, YAxis, Legend, CartesianGrid, Tooltip, Responsive
 import { FC, LineChartData, LineChartDataPeriod } from 'common/types/types';
 import { CustomTooltip } from '../line-chart/tooltip/custom-tooltip';
 import { useId } from 'hooks/hooks';
-import { getFormattedDate } from '../chart-helpers';
+import { getDefaultPeriod, getEmptyPeriodsForChart, getFormattedDate } from '../chart-helpers';
 import { StatsPeriodValue } from 'common/enums/enums';
 
 const strokeColor = '#C4C4C4';
@@ -16,22 +16,15 @@ export type BarChartProps = {
 };
 
 const CustomSimpleBar: FC<BarChartProps> = ({ data, valueNames, period, aspect = 3 }) => {
-  const dataLength = data.dataLength;
+  let { data: realData, format, dataLength } = data;
 
   if (dataLength === 0) {
-    return (
-      <p
-        style={{
-          textAlign: 'center',
-        }}
-      >
-        No data yet.
-      </p>
-    );
+    realData = getEmptyPeriodsForChart(period);
+    format = getDefaultPeriod(period);
+    dataLength = realData.length;
   }
 
-  const realData = data.data;
-  const values: string[] = realData.length > 0 ? Object.keys(realData[0]).filter((k) => k !== 'date') : [];
+  const values: string[] = dataLength > 0 ? Object.keys(realData[0]).filter((k) => k !== 'date') : [];
 
   const chartId = useId();
 
@@ -44,7 +37,7 @@ const CustomSimpleBar: FC<BarChartProps> = ({ data, valueNames, period, aspect =
   };
 
   const handleDateFormatter = (date: string): string => {
-    return getFormattedDate(date, data.format, period);
+    return getFormattedDate(date, format, period);
   };
 
   return (

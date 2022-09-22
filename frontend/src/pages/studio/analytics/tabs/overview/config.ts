@@ -19,3 +19,14 @@ export const matchOverviewChartTabWithValueFunc: Record<OverviewChartTab, (v: nu
   [OverviewChartTab.SUBSCRIBERS]: (v: number): string =>
     `${v < 0 ? '-' : v > 0 ? '+' : ''}${getTextFormatedViewsString(Math.abs(v))}`,
 };
+
+export const LANG_DATA_LIMIT = 5;
+
+export const defaultLangs = ['en', 'de', 'uk', 'es', 'ja'];
+
+export const defaultLangData = defaultLangs.map((l) => ({
+  language: l,
+  languageCount: 0,
+}));
+
+export const defaultDeviceData = [{ name: 'Unknown', value: 1 }];
