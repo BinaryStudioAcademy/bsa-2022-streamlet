@@ -72,7 +72,7 @@ export const videos: Omit<Video, 'updatedAt' | 'createdAt' | 'publishedAt' | 'sc
     'name': 'Binary Studio Summer Trip | 2019',
     'description':
       'Binary Studio team travels to one of the peaks of Koprowski Shtit, near the Slovak region. Prepare to watch our journey - 18 kilometers of trekking, 10 hours under the rain, hail and the stinging sun',
-    'status': 'LIVE',
+    'status': 'FINISHED',
     'isReadyToStream': false,
     'privacy': 'PUBLIC',
     'videoPath': '/segments/6/master.m3u8',
