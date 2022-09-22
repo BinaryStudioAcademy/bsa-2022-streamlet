@@ -44,7 +44,7 @@ const VideoPageContainer: FC = () => {
     navigate(AppRoutes.ANY, { replace: true });
   }
 
-  const { videoData, profile, user, channel, videoDataStatus, isLightTheme, subscriptionsIds, videoStats } =
+  const { videoData, profile, user, channel, videoDataStatus, isLightTheme, subscriptionsIds, videoStats, playerTime } =
     useAppSelector((state) => ({
       videoData: state.videoPage.video,
       profile: state.profile.profileData,
@@ -54,12 +54,13 @@ const VideoPageContainer: FC = () => {
       isLightTheme: state.theme.isLightTheme,
       subscriptionsIds: state.subscriptions.subscriptionsData.subscriptionsList.ids,
       videoStats: state.stats.video.data,
+      playerTime: state.stats.video.playerTime,
     }));
 
-  const updateVideoStatTimeDelay = UPDATE_VIDEO_STAT_TIME_DELAY;
+  const updateVideoStatTimeDelay = UPDATE_VIDEO_STAT_TIME_DELAY * 1000;
+  const updateVideoPlayerTimeDelay = UPDATE_VIDEO_STAT_TIME_DELAY - 5;
 
   const [statId, setStatId] = useState(0);
-  const [stopWatchStatus, setStopWatchStatus] = useState(false);
 
   const videoId = isVideoIdProvided as string;
 
@@ -132,6 +133,7 @@ const VideoPageContainer: FC = () => {
             device: getDeviceCategoryByNavigator(window.navigator),
             language: window.navigator.language,
             isLive: videoData?.status === StreamStatus.LIVE,
+            durationStamp: playerTime,
             wasSubscribed,
             source,
           },
@@ -139,7 +141,7 @@ const VideoPageContainer: FC = () => {
       );
       setStatId(curStatId);
     }
-  }, [videoData?.id, videoData?.status, dispatch, source, wasSubscribed]);
+  }, [videoData?.id, videoData?.status, playerTime, dispatch, source, wasSubscribed]);
 
   useEffect(() => {
     handleAddVideoStat();
@@ -150,34 +152,6 @@ const VideoPageContainer: FC = () => {
 
     return () => clearInterval(updateTimeInterval);
   }, [updateVideoStatTimeDelay, handleAddVideoStat]);
-
-  const statsHandlePlay = (): void => {
-    setStopWatchStatus(true);
-  };
-  const statsHandlePause = (): void => {
-    setStopWatchStatus(false);
-  };
-
-  useEffect(() => {
-    let stopWatch: ReturnType<typeof setInterval>;
-    if (stopWatchStatus) {
-      stopWatch = setInterval(() => {
-        dispatch(
-          statsActions.updateVideoStat({
-            statId,
-            data: {
-              videoId,
-              watchTime: 1,
-            },
-          }),
-        );
-      }, 1000);
-    }
-
-    return () => {
-      clearInterval(stopWatch);
-    };
-  }, [stopWatchStatus, statId, videoId, dispatch]);
 
   useEffect(() => {
     if (Object.keys(videoStats).length !== 0) {
@@ -198,7 +172,6 @@ const VideoPageContainer: FC = () => {
 
   const handlePlay = (): void => {
     dispatch(videoPageActions.addVideoView());
-    setStopWatchStatus(true);
   };
 
   return (
@@ -215,8 +188,7 @@ const VideoPageContainer: FC = () => {
           videoAttributes={{ poster: videoData.poster }}
           className={styles['video-player']}
           onStartPlay={handlePlay}
-          statsHandlePlay={statsHandlePlay}
-          statsHandlePause={statsHandlePause}
+          statsData={{ statId, videoId, timer: updateVideoPlayerTimeDelay }}
         />
       </div>
       <div className={styles['video-info-block']}>
