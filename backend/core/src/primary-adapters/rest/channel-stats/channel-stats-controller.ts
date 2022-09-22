@@ -1,11 +1,12 @@
 import { inject } from 'inversify';
 import { BaseHttpController, controller, httpPost, requestBody, request, requestParam } from 'inversify-express-utils';
-import { CreateChannelStatRequestDto } from 'shared/build';
+import { ChannelStatsChartDataResponseDto, CreateChannelStatRequestDto, GetChannelStatsRequestDto } from 'shared/build';
 import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud-service';
 import { ChannelStatsService } from '~/core/channel-stats/application/channel-stats-service';
 import { ApiPath, ChannelStatsApiPath } from '~/shared/enums/api/api';
 import { exceptionMessages } from '~/shared/enums/messages';
 import { errorCodes, NotFound } from '~/shared/exceptions/exceptions';
+import { getDateTruncFormatByDateFrom } from '~/shared/helpers';
 import { CONTAINER_TYPES, ExtendedAuthenticatedRequest } from '~/shared/types/types';
 import { authenticationMiddleware } from '../middleware';
 
@@ -16,6 +17,11 @@ export class ChannelStatsController extends BaseHttpController {
     @inject(CONTAINER_TYPES.ChannelCrudService) private channelCrudService: ChannelCrudService,
   ) {
     super();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (BigInt.prototype as any).toJSON = function (): string {
+      return this.toString();
+    };
   }
 
   @httpPost(ChannelStatsApiPath.$ID, authenticationMiddleware)
@@ -39,5 +45,20 @@ export class ChannelStatsController extends BaseHttpController {
     });
 
     return channelStats;
+  }
+
+  @httpPost(
+    `${ChannelStatsApiPath.GET}${ChannelStatsApiPath.$ID}`,
+    authenticationMiddleware,
+    CONTAINER_TYPES.ChannelActionMiddleware,
+  )
+  public async getChannelStats(
+    @requestParam('channelId') id: string,
+    @requestBody() channelStatsReq: GetChannelStatsRequestDto,
+  ): Promise<ChannelStatsChartDataResponseDto> {
+    const format = getDateTruncFormatByDateFrom(new Date(channelStatsReq.dateFrom));
+
+    const viewsChartData = await this.channelStatsService.getChannelStats(id, channelStatsReq.dateFrom, format);
+    return viewsChartData;
   }
 }
