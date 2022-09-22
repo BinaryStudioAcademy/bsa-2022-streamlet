@@ -16,6 +16,7 @@ import { LinksBlock } from './links-block/links-block';
 import { NotFound } from 'components/placeholder-page';
 import { addVideoView, resetVideoPage } from 'store/video-page/actions';
 import { resetPaginationMainPage } from 'store/videos/actions';
+import { setPathForBackToStreamVideo } from 'store/auth/actions';
 
 socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
@@ -38,14 +39,23 @@ const VideoPageContainer: FC = () => {
     navigate(AppRoutes.ANY, { replace: true });
   }
 
-  const { videoData, profile, user, channel, videoDataStatus, isLightTheme } = useAppSelector((state) => ({
-    videoData: state.videoPage.video,
-    profile: state.profile.profileData,
-    user: state.auth.user,
-    channel: state.videoPage.video?.channel,
-    videoDataStatus: state.videoPage.dataStatus,
-    isLightTheme: state.theme.isLightTheme,
-  }));
+  const { videoData, profile, user, channel, videoDataStatus, isLightTheme, pathForBackToStreamVideo } = useAppSelector(
+    (state) => ({
+      videoData: state.videoPage.video,
+      profile: state.profile.profileData,
+      user: state.auth.user,
+      channel: state.videoPage.video?.channel,
+      videoDataStatus: state.videoPage.dataStatus,
+      isLightTheme: state.theme.isLightTheme,
+      pathForBackToStreamVideo: state.auth.pathForBackToStreamVideo,
+    }),
+  );
+
+  useEffect(() => {
+    if (pathForBackToStreamVideo) {
+      dispatch(setPathForBackToStreamVideo(null));
+    }
+  }, [dispatch, pathForBackToStreamVideo]);
 
   const videoId = isVideoIdProvided as string;
 

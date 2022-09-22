@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 
 import { Loader } from 'components/common/common';
-import { useAppDispatch, useCallback, useState, useNavigate } from 'hooks/hooks';
+import { useAppDispatch, useCallback, useState, useNavigate, useAppSelector } from 'hooks/hooks';
 
 import { AuthApiPath, ErrorMessage } from 'common/enums/enums';
 import { googleAuthorization } from 'store/auth/actions';
@@ -12,6 +12,9 @@ const GoogleAuthorization: FC<{ query: string }> = ({ query }) => {
   const dispatch = useAppDispatch();
   const [error, setError] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
+  const { pathForBackToStreamVideo } = useAppSelector((state) => ({
+    pathForBackToStreamVideo: state.auth.pathForBackToStreamVideo,
+  }));
 
   const handleSignUpGoogle = useCallback(async (): Promise<void> => {
     setError(undefined);
@@ -25,9 +28,13 @@ const GoogleAuthorization: FC<{ query: string }> = ({ query }) => {
     } catch {
       setError(store.getState().auth.error || ErrorMessage.DEFAULT);
     } finally {
-      navigate(`${AuthApiPath.ROOT}`, { replace: true });
+      if (pathForBackToStreamVideo) {
+        navigate(pathForBackToStreamVideo.replace('#', ''), { replace: true });
+      } else {
+        navigate(`${AuthApiPath.ROOT}`, { replace: true });
+      }
     }
-  }, [query, dispatch, navigate]);
+  }, [query, dispatch, navigate, pathForBackToStreamVideo]);
 
   useEffect(() => {
     handleSignUpGoogle();

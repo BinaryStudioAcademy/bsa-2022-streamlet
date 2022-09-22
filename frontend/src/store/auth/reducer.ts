@@ -12,6 +12,7 @@ import {
   loadCurrentUser,
   getUserStreamPermission,
   updateUserStreamPermission,
+  setPathForBackToStreamVideo,
 } from './actions';
 
 type State = {
@@ -20,6 +21,7 @@ type State = {
   errorCode: string | undefined;
   user: UserBaseResponseDto | null;
   streamPermission: UserStreamPermissionResponseDto;
+  pathForBackToStreamVideo: null | string;
 };
 
 const initialState: State = {
@@ -28,6 +30,7 @@ const initialState: State = {
   error: undefined,
   errorCode: undefined,
   streamPermission: { streamPermission: StreamPermission.DECLINED },
+  pathForBackToStreamVideo: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -50,6 +53,11 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(updateUserStreamPermission.fulfilled, (state, { payload }) => {
     state.streamPermission = payload;
   });
+
+  builder.addCase(setPathForBackToStreamVideo, (state, { payload }) => {
+    state.pathForBackToStreamVideo = payload;
+  });
+
   builder.addMatcher(isAnyOf(signOut.rejected, signOut.fulfilled), (state) => {
     state.user = null;
   });

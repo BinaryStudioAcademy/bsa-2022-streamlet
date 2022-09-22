@@ -2,7 +2,7 @@ import { FC } from 'common/types/types';
 import styles from './styles.module.scss';
 import { useEffect, RefObject } from 'react';
 import { useRef } from '../../../hooks/hooks';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AppRoutes } from '../../../common/enums/app/app';
 import clsx from 'clsx';
 type Event = MouseEvent | TouchEvent;
@@ -40,15 +40,17 @@ type Props = {
 
 const NeedSignInModal: FC<Props> = ({ headerText, mainText, onClose, className }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const { pathname } = useLocation();
   const clickOutsideHandle = (): void => {
     onClose();
   };
   useOnClickOutside(modalRef, clickOutsideHandle);
+
   return (
     <div className={clsx(styles['need-sign-in-modal'], className)} ref={modalRef}>
       <div className={styles['need-sign-in-modal-header']}>{headerText}</div>
       <div className={styles['need-sign-in-main-text']}>{mainText}</div>
-      <Link to={AppRoutes.SIGN_IN} className={styles['redirect-to-sign-in']}>
+      <Link to={{ pathname: AppRoutes.SIGN_IN, hash: pathname }} className={styles['redirect-to-sign-in']}>
         Sign in
       </Link>
     </div>

@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { HttpCode } from 'common/enums/enums';
 import { AsyncThunkConfigHttpError } from 'common/types/app/app';
 
@@ -134,6 +134,8 @@ const updateUserStreamPermission = createAsyncThunk<UserStreamPermissionResponse
   },
 );
 
+const setPathForBackToStreamVideo = createAction<null | string>(ActionType.SET_PATH_FOR_BACK_TO_STREAM_VIDEO);
+
 export {
   signUp,
   signIn,
@@ -144,4 +146,5 @@ export {
   googleAuthorization,
   getUserStreamPermission,
   updateUserStreamPermission,
+  setPathForBackToStreamVideo,
 };
