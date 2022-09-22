@@ -1,8 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { DataStatus, StatsPeriodValue } from 'common/enums/enums';
-import { LineChartData } from 'common/types/types';
+import { LineChartData, PieChartData } from 'common/types/types';
 import { getRejectedErrorData } from 'helpers/redux/get-rejected-error-data';
-import { CreateVideoStatDto, DateTruncFormat, errorCodes } from 'shared/build';
+import {
+  ChannelStatsLanguageChartDataResponse,
+  ChannelStatsOverviewResponseDto,
+  CreateVideoStatDto,
+  DateTruncFormat,
+  errorCodes,
+} from 'shared/build';
 import {
   addVideoStat,
   updateVideoStat,
@@ -11,8 +17,9 @@ import {
   clearChannelStatsCharts,
   getChannelStatsChartData,
   updatePlayerTime,
+  getChannelOverviewData,
 } from './actions';
-import { setStateChartData } from './helpers';
+import { setStateChartData, setStatePieChartData } from './helpers';
 
 type State = {
   video: {
@@ -28,12 +35,17 @@ type State = {
       views: LineChartData;
       subs: LineChartData;
       watchTime: LineChartData;
-      // device: {},
-      // language: {},
+      device: PieChartData;
+      language: ChannelStatsLanguageChartDataResponse;
       dataStatus: DataStatus;
       error: string | undefined;
     };
     liveChart: null;
+    overview: {
+      data: ChannelStatsOverviewResponseDto | null;
+      dataStatus: DataStatus;
+      error: string | undefined;
+    };
   };
   statsConfig: {
     period: StatsPeriodValue;
@@ -60,12 +72,19 @@ const initialState: State = {
       views: initialLineChartData,
       subs: initialLineChartData,
       watchTime: initialLineChartData,
-      // device: {},
-      // language: {},
+      device: [],
+      language: {
+        data: [],
+      },
       dataStatus: DataStatus.IDLE,
       error: undefined,
     },
     liveChart: null,
+    overview: {
+      data: null,
+      dataStatus: DataStatus.IDLE,
+      error: undefined,
+    },
   },
   statsConfig: {
     period: StatsPeriodValue.LAST_7_DAYS,
@@ -79,6 +98,22 @@ const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(clearChannelStatsCharts, (state) => {
     state.channelStats.chart = initialState.channelStats.chart;
+    state.channelStats.overview = initialState.channelStats.overview;
+  });
+
+  builder.addCase(getChannelOverviewData.pending, (state) => {
+    state.channelStats.overview = {
+      ...initialState.channelStats.overview,
+      dataStatus: DataStatus.PENDING,
+    };
+  });
+  builder.addCase(getChannelOverviewData.rejected, (state, { error }) => {
+    state.channelStats.overview.dataStatus = DataStatus.REJECTED;
+    state.channelStats.overview.error = error.message;
+  });
+  builder.addCase(getChannelOverviewData.fulfilled, (state, { payload }) => {
+    state.channelStats.overview.dataStatus = DataStatus.FULFILLED;
+    state.channelStats.overview.data = payload;
   });
 
   builder.addCase(getChannelStatsChartData.pending, (state) => {
@@ -94,10 +129,12 @@ const reducer = createReducer(initialState, (builder) => {
   builder.addCase(getChannelStatsChartData.fulfilled, (state, { payload }) => {
     state.channelStats.chart.dataStatus = DataStatus.FULFILLED;
 
-    const { views, watchTime, subs } = payload;
+    const { views, watchTime, subs, device, language } = payload;
     state.channelStats.chart.views = setStateChartData(views);
     state.channelStats.chart.watchTime = setStateChartData(watchTime);
     state.channelStats.chart.subs = setStateChartData(subs);
+    state.channelStats.chart.device = setStatePieChartData(device);
+    state.channelStats.chart.language = language;
   });
 
   builder.addCase(updatePlayerTime, (state, { payload }) => {

@@ -11,10 +11,11 @@ const lineColor = ['#06c149', '#246966', '#00a8c7'];
 export type BarChartProps = {
   data: LineChartData;
   period: StatsPeriodValue;
+  aspect?: number;
   valueNames?: Partial<Record<keyof Omit<LineChartDataPeriod, 'date'>, string>>;
 };
 
-const CustomSimpleBar: FC<BarChartProps> = ({ data, valueNames, period }) => {
+const CustomSimpleBar: FC<BarChartProps> = ({ data, valueNames, period, aspect = 3 }) => {
   const dataLength = data.dataLength;
 
   if (dataLength === 0) {
@@ -47,7 +48,7 @@ const CustomSimpleBar: FC<BarChartProps> = ({ data, valueNames, period }) => {
   };
 
   return (
-    <ResponsiveContainer aspect={3} width="100%">
+    <ResponsiveContainer aspect={aspect} width="100%">
       <BarChart
         data={realData}
         margin={{

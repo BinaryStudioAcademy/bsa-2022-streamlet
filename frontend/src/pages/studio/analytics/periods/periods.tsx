@@ -1,6 +1,7 @@
-import { StatsPeriodValue } from 'common/enums/enums';
+import { IconName, StatsPeriodValue } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { useState } from 'hooks/hooks';
+import { Icon } from 'components/common/common';
+import { useState, useId } from 'hooks/hooks';
 import { ChangeEvent } from 'react';
 import { periodsOrder } from './config';
 import { matchStatsPeriodWithLabel, matchStatsPeriodWithValue } from './helpers';
@@ -20,6 +21,7 @@ export const Periods: FC<Props> = ({ onChange, defaultValue }) => {
   }));
 
   const [value, setValue] = useState(defaultValue);
+  const selectId = useId();
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>): void => {
     setValue(e.target.value as StatsPeriodValue);
@@ -28,13 +30,16 @@ export const Periods: FC<Props> = ({ onChange, defaultValue }) => {
 
   return (
     <div className={styles['blocks']}>
-      <select className={styles['block']} value={value} onChange={handleChange}>
-        {options.map((option) => (
-          <option key={option.type} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <label htmlFor={selectId} className={styles['select-label']}>
+        <select id={selectId} className={styles['select']} value={value} onChange={handleChange}>
+          {options.map((option) => (
+            <option key={option.type} value={option.value} className={styles['item']}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <Icon name={IconName.ARROW_DOWN} />
+      </label>
     </div>
   );
 };

@@ -7,6 +7,7 @@ import {
   HttpMethod,
   ChannelStatsApiPath,
   ChannelStatsChartDataResponseDto,
+  ChannelStatsOverviewResponseDto,
 } from 'shared/build';
 
 type Constructor = {
@@ -56,6 +57,12 @@ class StatsApi {
         contentType: ContentType.JSON,
         payload: JSON.stringify({ dateFrom: request.dateFrom }),
       },
+    });
+  }
+
+  async getChannelOverviewData(request: { channelId: string }): Promise<ChannelStatsOverviewResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.CHANNEL_STATS}/${request.channelId}`,
     });
   }
 }

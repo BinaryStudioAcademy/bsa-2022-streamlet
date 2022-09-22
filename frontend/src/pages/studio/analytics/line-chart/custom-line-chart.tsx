@@ -13,6 +13,7 @@ const lineColor = ['#06c149', '#246966', '#00a8c7'];
 export type ChartProps = {
   data: LineChartData;
   period: StatsPeriodValue;
+  aspect?: number;
   valueNames?: Partial<Record<keyof Omit<LineChartDataPeriod, 'date'>, string>>;
 };
 
@@ -36,7 +37,7 @@ const getTicks = (startDate: Date, endDate: Date, num: number): number[] => {
   return ticks;
 };
 
-export const CustomLineChart: FC<ChartProps> = ({ data, valueNames, period }) => {
+export const CustomLineChart: FC<ChartProps> = ({ data, valueNames, period, aspect = 3 }) => {
   const dataLength = data.dataLength;
 
   if (dataLength === 0) {
@@ -66,7 +67,7 @@ export const CustomLineChart: FC<ChartProps> = ({ data, valueNames, period }) =>
 
   return (
     <>
-      <ResponsiveContainer aspect={3}>
+      <ResponsiveContainer aspect={aspect}>
         <LineChart
           data={realData}
           margin={{

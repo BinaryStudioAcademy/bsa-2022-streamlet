@@ -8,6 +8,7 @@ import {
   CreateManyVideoStatsRequestDto,
   CreateVideoStatDto,
   ChannelStatsChartDataResponseDto,
+  ChannelStatsOverviewResponseDto,
 } from 'shared/build';
 
 import { ActionType } from './common';
@@ -69,6 +70,14 @@ const getChannelStatsChartData = createAsyncThunk<
   });
 });
 
+const getChannelOverviewData = createAsyncThunk<
+  ChannelStatsOverviewResponseDto,
+  { channelId: string },
+  AsyncThunkConfig
+>(ActionType.GET_CHANNEL_OVERVIEW, async (request, { extra: { statsApi } }) => {
+  return statsApi.getChannelOverviewData(request);
+});
+
 export {
   sendChannelStat,
   addVideoStat,
@@ -78,4 +87,5 @@ export {
   clearChannelStatsCharts,
   getChannelStatsChartData,
   updatePlayerTime,
+  getChannelOverviewData,
 };

@@ -1,9 +1,11 @@
 import {
+  ChannelStatsDeviceChartDataResponse,
   ChannelStatsSubsChartDataResponse,
   ChannelStatsViewsChartDataResponse,
   ChannelStatsWatchTimeChartDataResponse,
   DateTruncFormat,
   LineChartData,
+  PieChartData,
 } from 'shared/build';
 
 type PayloadChartData =
@@ -22,4 +24,19 @@ export const setStateChartData = (payloadData: PayloadChartData): LineChartData 
     format: payloadData.format as DateTruncFormat,
     dataLength: payloadData.data.length,
   } as LineChartData;
+};
+
+const matchPayloadDeviceKeyWithString: Record<keyof ChannelStatsDeviceChartDataResponse, string> = {
+  mobileCount: 'Mobile',
+  tabletCount: 'Tablet',
+  desktopCount: 'Desktop',
+  unknownCount: 'Unknown',
+};
+
+export const setStatePieChartData = (payload: ChannelStatsDeviceChartDataResponse): PieChartData => {
+  const pKeys = Object.keys(payload) as Array<keyof ChannelStatsDeviceChartDataResponse>;
+  return pKeys.map((k) => ({
+    name: matchPayloadDeviceKeyWithString[k],
+    value: payload[k],
+  })) as PieChartData;
 };
