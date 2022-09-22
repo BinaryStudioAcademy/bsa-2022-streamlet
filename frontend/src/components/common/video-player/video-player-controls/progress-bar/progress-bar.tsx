@@ -1,5 +1,8 @@
+import React from 'react';
 import clsx from 'clsx';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import { FC } from 'common/types/types';
+import { useEffect, useRef, useState, useAppDispatch } from 'hooks/hooks';
+import { statsActions } from 'store/actions';
 import { secondsToDisplay } from '../../helpers/seconds-to-display';
 import styles from './styles.module.scss';
 
@@ -13,6 +16,7 @@ type Props = {
 const LIVE_SYNC_LIE_SPAN_SEC = 4;
 
 const ProgressBar: FC<Props> = ({ videoContainer, className, liveSyncLie }) => {
+  const dispatch = useAppDispatch();
   const progressWrapper = useRef<HTMLDivElement | null>(null);
   const [previewTime, setPreviewTime] = useState(0);
 
@@ -52,7 +56,9 @@ const ProgressBar: FC<Props> = ({ videoContainer, className, liveSyncLie }) => {
         if (progressWrapper.current) {
           progressWrapper.current.style.setProperty('--progress-position', pos.toString());
         }
-        videoContainer.currentTime = pos * videoContainer.duration;
+        const currentTime = pos * videoContainer.duration;
+        videoContainer.currentTime = currentTime;
+        dispatch(statsActions.updatePlayerTime(Math.floor(currentTime)));
       }}
       className={clsx(styles['progress-bar-wrapper'], className)}
       ref={progressWrapper}
