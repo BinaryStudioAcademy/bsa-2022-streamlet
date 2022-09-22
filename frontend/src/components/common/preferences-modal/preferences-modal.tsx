@@ -43,7 +43,13 @@ const PreferencesModal: FC<PreferencesModalProps> = ({
     Boolean(pickedCategories.categories.filter((category) => category === id).length);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isNeedHiddenOverflow={true}>
+    <Modal
+      contentContainerClassName={styles['preferences-modal']}
+      modalClassName={styles['all-screen']}
+      isOpen={isOpen}
+      onClose={onClose}
+      isNeedHiddenOverflow={true}
+    >
       <div className={styles['content-container']}>
         <div className={styles['content-heading']}>
           <div className={styles['content-header']}>What type of video do you prefer?</div>

@@ -167,10 +167,28 @@ div .input-error-dark {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+
+  @media screen and (max-width: 770px) {
+    flex-direction: column;
+  }
+}
+
+.profile-text-wrapper {
+  @media screen and (max-width: 770px) {
+    width: 100%;
+  }
 }
 
 .button-change-preferences {
+  height: 40px;
   margin-bottom: 20px;
+  padding: 0 20px;
+  color: var(--always-white-color);
+  font-size: 15px;
+  text-transform: capitalize;
+  background-color: var(--brand-green-color);
+  border: none;
+  border-radius: 3px;
 }
 
 @media #{$tablet-large} {

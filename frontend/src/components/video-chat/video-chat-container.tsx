@@ -28,9 +28,11 @@ type Props = {
   videoId: string;
   chatSettings?: ChatSetting | undefined;
   chatStyle?: ChatStyle;
+  heightVideoBlock?: number;
+  handleHideChat?: (param: boolean) => void;
 };
 
-const VideoChatContainer: FC<Props> = ({ videoId, chatStyle, chatSettings }) => {
+const VideoChatContainer: FC<Props> = ({ videoId, chatStyle, chatSettings, heightVideoBlock, handleHideChat }) => {
   const dispatch = useAppDispatch();
   const {
     chat: {
@@ -85,6 +87,8 @@ const VideoChatContainer: FC<Props> = ({ videoId, chatStyle, chatSettings }) => 
       chatStatus={status ?? isChatEnabled}
       handlerSubmitMessage={handlerSubmitMessage}
       chatStyle={chatStyle}
+      heightVideoBlock={heightVideoBlock}
+      handleHideChat={handleHideChat}
     />
   );
 };
