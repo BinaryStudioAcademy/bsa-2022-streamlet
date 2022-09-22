@@ -11,6 +11,7 @@ type Props = {
   children: ReactNode;
   isOpen: boolean;
   portalClassName?: string;
+  modalClassName?: string;
   contentContainerClassName?: string;
   closeButtonColor?: IconColor;
   onClose: { (): void };
@@ -27,6 +28,7 @@ const Modal: FC<Props> = ({
   isNeedCloseButton = true,
   portalClassName,
   closeButtonColor = IconColor.GREEN,
+  modalClassName,
 }) => {
   const { handleDisableContentContainerClick, handleOutsideClick } = useModal({
     onClose,
@@ -38,7 +40,7 @@ const Modal: FC<Props> = ({
 
   return (
     <Portal className={portalClassName}>
-      <div className={styles['modal-container']} onClick={handleOutsideClick}>
+      <div className={clsx(styles['modal-container'], modalClassName)} onClick={handleOutsideClick}>
         <div
           className={clsx(styles['modal-content-container'], contentContainerClassName)}
           style={{ overflow: isNeedHiddenOverflow ? 'hidden' : 'auto' }}

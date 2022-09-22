@@ -22,6 +22,8 @@ interface VideoChatProps {
   chatStatus: boolean;
   handlerSubmitMessage: SendMessageProps['handlerSubmitMessage'];
   chatStyle?: ChatStyle;
+  heightVideoBlock?: number;
+  handleHideChat?: (param: boolean) => void;
 }
 
 const VideoChat: FC<VideoChatProps> = ({
@@ -35,6 +37,8 @@ const VideoChat: FC<VideoChatProps> = ({
   chatStatus,
   handlerSubmitMessage,
   chatStyle,
+  heightVideoBlock,
+  handleHideChat,
 }) => {
   const chatEndEl = useRef<HTMLDivElement>(null);
   const chatViewEl = useRef<HTMLDivElement>(null);
@@ -119,6 +123,9 @@ const VideoChat: FC<VideoChatProps> = ({
 
   const handleSetHideChat = (): void => {
     setHideChat(!hideChat);
+    if (handleHideChat) {
+      handleHideChat(hideChat);
+    }
     setTimeout(handleClickGoDownBtn, 1000);
   };
 
@@ -140,6 +147,7 @@ const VideoChat: FC<VideoChatProps> = ({
           styles['chat-disabled'],
           hideChat && styles['hide-chat'],
         )}
+        style={heightVideoBlock ? { height: heightVideoBlock } : {}}
       >
         <div className={styles['video-chat-popout']}>
           <span>Chat is disabled for this live stream.</span>

@@ -7,8 +7,7 @@ import {
   UserUploadRequestDto,
 } from 'common/types/types';
 import style from './styles.module.scss';
-import defaultAvatar from '../../assets/img/default/user-avatar-default.jpg';
-import { UploadImage, ImageEditor, Loader, createToastNotification, Button } from '../../components/common/common';
+import { UploadImage, ImageEditor, Loader, createToastNotification } from '../../components/common/common';
 import React, { useCallback, useState } from 'react';
 import { profileActions } from 'store/actions';
 import { ImageListType } from 'react-images-uploading';
@@ -16,7 +15,8 @@ import { useAppDispatch, useAppSelector, useEffect, useNavigate } from 'hooks/ho
 import { AppRoutes, DataStatus, ErrorMessage, IconName } from '../../common/enums/enums';
 import { store } from '../../store/store';
 import { ProfilePreferencesPageForm } from './common/profile-preferences-page-form';
-import { PreferencesModalContainer } from 'components/common/preferences-modal/preferences-modal-container';
+import { UserAvatarOrInitials } from '../../components/common/user-avatar-or-initials/user-avatar-or-initials';
+import { PreferencesModalContainer } from '../../components/common/preferences-modal/preferences-modal-container';
 
 const ProfilePreferencesPage: FC = () => {
   const navigate = useNavigate();
@@ -172,12 +172,14 @@ const ProfilePreferencesPage: FC = () => {
                 {isLoading ? (
                   <Loader spinnerSize={'xs'} className={style['profile-page-loader-container']} />
                 ) : (
-                  <img
+                  <UserAvatarOrInitials
                     className={style['profile-image-preview']}
-                    width={'96'}
-                    height={'96'}
-                    src={profile.avatar === '' ? defaultAvatar : profile.avatar}
-                    alt="profile picture preview"
+                    avatar={profile.avatar}
+                    userNamingInfo={{
+                      firstName: profile.firstName,
+                      lastName: profile.lastName,
+                      userName: profile.username ?? '',
+                    }}
                   />
                 )}
               </div>
@@ -202,15 +204,16 @@ const ProfilePreferencesPage: FC = () => {
             </div>
           </div>
           <div className={style['profile-header-wrapper']}>
-            <div>
+            <div className={style['profile-text-wrapper']}>
               <h2 className={style['profile-settings-header']}>Profile settings</h2>
               <h3 className={style['profile-settings-sub-header']}>Change your personal information</h3>
             </div>
-            <Button
-              content="Change preferences"
+            <button
               className={style['button-change-preferences']}
               onClick={(): void => setIsOpenPreferencesModal(true)}
-            />
+            >
+              Change preferences
+            </button>
           </div>
           <ProfilePreferencesPageForm
             onSubmit={onFormSubmit}
