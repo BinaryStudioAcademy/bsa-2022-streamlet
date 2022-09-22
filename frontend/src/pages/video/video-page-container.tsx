@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import { AppRoutes, DataStatus, SocketEvents, StreamStatus } from 'common/enums/enums';
 import { Loader } from 'components/common/common';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
-import { useAppDispatch, useAppSelector, useNavigate, useParams, useState } from 'hooks/hooks';
-import { FC, useEffect, useCallback } from 'react';
+import { useAppDispatch, useAppSelector, useNavigate, useParams, useState, useWindowDimensions } from 'hooks/hooks';
+import { FC, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 import { videoPageActions } from 'store/actions';
 import styles from './video-page.module.scss';
 import { VideoPlayer } from 'components/common/video-player/video-player';
@@ -21,11 +21,18 @@ socket.on(SocketEvents.video.UPDATE_LIVE_VIEWS_DONE, ({ live }) => {
   store.dispatch(videoPageActions.updateLiveViews(live));
 });
 
+const SIZE_BLOCK_WITH_HIDDEN_CHAT = 41;
+const SCREEN_SIZE_AT_WHICH_CHAT_MOVES = 992;
+
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { width } = useWindowDimensions();
   const { videoId: isVideoIdProvided } = useParams();
   const [isReactChanged, setReactState] = useState<boolean | string>(false);
+  const videoRef = useRef<HTMLDivElement>(null);
+  const [heightVideo, setHeightVideo] = useState(0);
+  const [isHideChat, setIsHideChat] = useState(true);
 
   if (!isVideoIdProvided) {
     navigate(AppRoutes.ANY, { replace: true });
@@ -41,6 +48,10 @@ const VideoPageContainer: FC = () => {
   }));
 
   const videoId = isVideoIdProvided as string;
+
+  const handleHideChat = (param: boolean): void => {
+    setIsHideChat(param);
+  };
 
   useEffect(() => {
     setReactState(false);
@@ -98,6 +109,10 @@ const VideoPageContainer: FC = () => {
     return void 1;
   };
 
+  useLayoutEffect(() => {
+    setHeightVideo(videoRef.current ? videoRef.current.clientHeight : 0);
+  }, [width, videoData]);
+
   if (videoDataStatus === DataStatus.REJECTED) {
     return <NotFound />;
   }
@@ -118,7 +133,7 @@ const VideoPageContainer: FC = () => {
         [styles['finished']]: isVideoFinished,
       })}
     >
-      <div className={styles['video-block']}>
+      <div ref={videoRef} className={styles['video-block']}>
         <VideoPlayer
           sizingProps={{ aspectRatio: '16 / 9' }}
           url={videoData.videoPath}
@@ -139,8 +154,16 @@ const VideoPageContainer: FC = () => {
       </div>
       <div className={styles['side-block']}>
         {!isVideoFinished && (
-          <div className={styles['chat-block']}>
-            <VideoChatContainer videoId={videoId} />
+          <div
+            className={styles['chat-block']}
+            style={
+              heightVideo && isHideChat
+                ? { height: width > SCREEN_SIZE_AT_WHICH_CHAT_MOVES ? heightVideo : 'auto' }
+                : { height: SIZE_BLOCK_WITH_HIDDEN_CHAT }
+            }
+          >
+            <VideoChatContainer heightVideoBlock={heightVideo} videoId={videoId} handleHideChat={handleHideChat} />
+            {/*  */}
           </div>
         )}
         <LinksBlock videoId={videoId} />

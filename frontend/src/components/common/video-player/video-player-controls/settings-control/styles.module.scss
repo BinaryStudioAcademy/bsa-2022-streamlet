@@ -5,7 +5,9 @@
 }
 
 .settings-modal-wrp {
-  position: fixed;
+  position: absolute;
+  right: 0;
+  bottom: 20px;
 }
 
 .settings-modal-portal-wrp {
@@ -14,7 +16,7 @@
 
 .settings-modal {
   position: absolute;
-  bottom: 70px;
+  bottom: 50%;
   left: 50%;
   min-width: 80vw;
   color: var(--always-white-color);
