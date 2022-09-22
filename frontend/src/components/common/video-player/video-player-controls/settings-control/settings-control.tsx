@@ -13,11 +13,13 @@ import Hls from 'hls.js';
 import clsx from 'clsx';
 import { Portal } from 'components/common/portal/portal';
 import { useWindowDimensions } from 'hooks/hooks';
+import { useOutsideClickHandler } from 'hooks/use-outside-click/use-outside-click-handler.hook';
 
 type Props = {
   videoWrapper: HTMLElement;
   videoContainer: HTMLVideoElement;
   className?: string;
+  isFullscreen: boolean;
   hlsClient: Hls | null;
 };
 
@@ -29,7 +31,7 @@ enum Modal {
 
 const SETTINGS_NORMAL_AFTER_PX = 768;
 
-const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, hlsClient }) => {
+const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, hlsClient, isFullscreen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState<Modal>(Modal.MAIN);
   const [speed, setSpeed] = useState(videoContainer.playbackRate);
@@ -42,7 +44,7 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
     switch (currentModal) {
       case Modal.MAIN: {
         return (
-          <GenericSettingsModal className={styles['settings-modal']} innerRef={modalRef}>
+          <GenericSettingsModal className={styles['settings-modal']}>
             <ModalItem isHeader contentContainerClassName={headerStyles['header']} isHoverable={false}>
               <span className={headerStyles['header-text']}>Settings</span>
             </ModalItem>
@@ -92,27 +94,36 @@ const SettingsControl: FC<Props> = ({ className, videoWrapper, videoContainer, h
 
   const settingsButtonRef = useRef<HTMLAnchorElement | null>(null);
 
-  const handleBlur = (e: React.FocusEvent<HTMLDivElement, Element>): void => {
-    const swappedBetweenModalChildren =
-      modalRef.current !== null && (modalRef.current.contains(e.relatedTarget) || modalRef.current === e.relatedTarget);
-    if (
-      !swappedBetweenModalChildren &&
-      !e.currentTarget.contains(e.relatedTarget) &&
-      e.relatedTarget !== settingsButtonRef.current
-    ) {
-      // Not triggered when swapping focus between children
-      // also, not trigerred when clicked the settings icon (it has its own handler)
-      setIsOpen(false);
-    }
+  const handleOutsideClick = (): void => {
+    setIsOpen(false);
   };
 
+  useOutsideClickHandler([modalRef, settingsButtonRef], handleOutsideClick);
+
+  // currently, there are 3 ways to display the modal
+  // 1. just relative to the settings button, desktop version
+  // 2. on narrow screens, the modal has to be positioned absolutely, relative to the screen,
+  // currently somewhere in the middle. Using position: fixed, while leaving the modal component
+  // at the same place in markup  as in 1. won't work, because the settings container creates its own stacking context (read docs)
+  // and even if you set z-index of modal to 9999, it may be below video cards. the only option is to use portal, which
+  // is guaranteed to be above all content
+  // 3. even with these 2 ways, when we make video player fullscreen in narrow screens, the portal is a separate div from
+  // the fullscreen element. so in this case, we may bring it back relative to settings button, like in step 1.
   return (
-    <div className={styles['settings-wrapper']} onBlur={handleBlur}>
+    <div className={styles['settings-wrapper']}>
       {isOpen &&
         (width >= SETTINGS_NORMAL_AFTER_PX ? (
-          <div className={styles['settings-modal-wrp']}>{getModalComponent}</div>
+          <div className={styles['settings-modal-wrp']} ref={modalRef}>
+            {getModalComponent}
+          </div>
+        ) : isFullscreen ? (
+          <div className={styles['settings-modal-fs-wrp']}>
+            <div ref={modalRef}>{getModalComponent}</div>
+          </div>
         ) : (
-          <Portal className={styles['settings-modal-portal-wrp']}>{getModalComponent}</Portal>
+          <Portal className={styles['settings-modal-portal-wrp']}>
+            <div ref={modalRef}>{getModalComponent}</div>
+          </Portal>
         ))}
       <ControlButton
         ref={settingsButtonRef}

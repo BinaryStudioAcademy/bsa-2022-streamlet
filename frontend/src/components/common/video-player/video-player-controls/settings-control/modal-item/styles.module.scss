@@ -11,7 +11,7 @@
 }
 
 .modal-item {
-  height: calc(38px * clamp(1, var(--size-modifier), 1.2));
+  height: calc(38px * clamp(1, var(--size-modifier, 1), 1.2));
   padding: 5px 15px;
   white-space: nowrap;
 

@@ -58,7 +58,12 @@ const VideoPlayerControls: FC<Props> = ({
         ) : (
           <VideoTime videoContainer={videoContainer} className={styles['video-time']} />
         )}
-        <SettingsControl videoWrapper={videoContainerWrapper} videoContainer={videoContainer} hlsClient={hlsClient} />
+        <SettingsControl
+          isFullscreen={isFullscreen}
+          videoWrapper={videoContainerWrapper}
+          videoContainer={videoContainer}
+          hlsClient={hlsClient}
+        />
         <FullScreenButton videoContainer={videoContainer} videoContainerWrapper={videoContainerWrapper} />
       </div>
     </div>

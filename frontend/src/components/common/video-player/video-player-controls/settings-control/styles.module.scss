@@ -1,4 +1,5 @@
 @use 'assets/css/breakpoint';
+@use 'assets/css/config';
 
 .settings-wrapper {
   position: relative;
@@ -7,7 +8,7 @@
 .settings-modal-wrp {
   position: absolute;
   right: 0;
-  bottom: 20px;
+  bottom: calc(20px * clamp(1, var(--size-modifier, 1), 1.5));
 }
 
 .settings-modal-portal-wrp {
@@ -20,16 +21,26 @@
   left: 50%;
   min-width: 80vw;
   color: var(--always-white-color);
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(50%);
 
   @media #{breakpoint.$tablet-middle} {
     right: 0;
     bottom: 100%;
     left: unset;
-    min-width: min(95vw, 200px * clamp(1, var(--size-modifier), 1.5));
+    min-width: min(95vw, 200px * clamp(1, var(--size-modifier, 1), 1.5));
     margin-bottom: 40px;
     transform: unset;
   }
+}
+
+.settings-modal-fs-wrp {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: config.$modal-z-index;
+  background-color: rgba(0 0 0 / 90%);
 }
 
 .modal-option-text-wrapper {

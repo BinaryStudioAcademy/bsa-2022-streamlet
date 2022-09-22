@@ -1,7 +1,7 @@
 .button {
   display: flex;
   align-items: center;
-  height: calc(30px * clamp(1, var(--size-modifier), 1.5));
+  height: calc(30px * clamp(1, var(--size-modifier, 1), 1.5));
   padding: 0;
   color: inherit;
   background: none;
