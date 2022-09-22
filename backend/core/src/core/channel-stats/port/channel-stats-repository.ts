@@ -23,4 +23,6 @@ export interface ChannelStatsRepository {
   getChannelStatsSubs(channelId: string, dateFrom: string, format: DateTruncFormat): Promise<ChannelStatsSubsChartData>;
   getChannelStatsDevice(channelId: string, dateFrom: string): Promise<ChannelStatsDeviceChartData>;
   getChannelStatsLanguage(channelId: string, dateFrom: string): Promise<ChannelStatsLanguageChartData>;
+  getChannelStatWatchTimeAllTime(channelId: string): Promise<{ id: string; watchTime: number }>;
+  getChannelStatViews(channelId: string): Promise<{ id: string; views: number }>;
 }

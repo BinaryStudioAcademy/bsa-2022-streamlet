@@ -1,6 +1,19 @@
 import { inject } from 'inversify';
-import { BaseHttpController, controller, httpPost, requestBody, request, requestParam } from 'inversify-express-utils';
-import { ChannelStatsChartDataResponseDto, CreateChannelStatRequestDto, GetChannelStatsRequestDto } from 'shared/build';
+import {
+  BaseHttpController,
+  controller,
+  httpPost,
+  requestBody,
+  request,
+  requestParam,
+  httpGet,
+} from 'inversify-express-utils';
+import {
+  ChannelStatsChartDataResponseDto,
+  ChannelStatsOverviewResponseDto,
+  CreateChannelStatRequestDto,
+  GetChannelStatsRequestDto,
+} from 'shared/build';
 import { ChannelCrudService } from '~/core/channel-crud/application/channel-crud-service';
 import { ChannelStatsService } from '~/core/channel-stats/application/channel-stats-service';
 import { ApiPath, ChannelStatsApiPath } from '~/shared/enums/api/api';
@@ -17,11 +30,6 @@ export class ChannelStatsController extends BaseHttpController {
     @inject(CONTAINER_TYPES.ChannelCrudService) private channelCrudService: ChannelCrudService,
   ) {
     super();
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (BigInt.prototype as any).toJSON = function (): string {
-      return this.toString();
-    };
   }
 
   @httpPost(ChannelStatsApiPath.$ID, authenticationMiddleware)
@@ -60,5 +68,25 @@ export class ChannelStatsController extends BaseHttpController {
 
     const viewsChartData = await this.channelStatsService.getChannelStats(id, channelStatsReq.dateFrom, format);
     return viewsChartData;
+  }
+
+  @httpGet(ChannelStatsApiPath.$ID)
+  public async getChannelStatsOverview(
+    @requestParam('channelId') id: string,
+  ): Promise<ChannelStatsOverviewResponseDto> {
+    const channel = await this.channelCrudService.getChannelById({ id });
+    if (!channel) {
+      throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
+    }
+
+    const watchTimeStats = await this.channelStatsService.getChannelStatWatchTime(id);
+    const viewsStats = await this.channelStatsService.getChannelStatViews(id);
+
+    return {
+      id,
+      views: viewsStats.views,
+      watchTime: watchTimeStats.watchTime,
+      subscribers: channel._count.subscriptions,
+    };
   }
 }

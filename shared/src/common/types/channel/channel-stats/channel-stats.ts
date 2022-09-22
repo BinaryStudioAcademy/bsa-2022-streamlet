@@ -7,3 +7,4 @@ export { type ChannelStatsViewsChartDataResponse } from './channel-stats-views-c
 export { type ChannelStatsWatchTimeChartDataResponse } from './channel-stats-watch-time-chart-data-response.type';
 export { type ChannelStatsDeviceChartDataResponse } from './channel-stats-device-chart-data-response.type';
 export { type ChannelStatsLanguageChartDataResponse } from './channel-stats-language-chart-data-response.type';
+export { type ChannelStatsOverviewResponseDto } from './channel-stats-overview-response-dto.type';

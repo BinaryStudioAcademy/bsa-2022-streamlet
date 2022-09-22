@@ -34,6 +34,35 @@ export class ChannelStatsRepositoryAdapter implements ChannelStatsRepository {
     return channelStats;
   }
 
+  async getChannelStatWatchTimeAllTime(channelId: string): Promise<{ id: string; watchTime: number }> {
+    const channelStat = await this.prismaClient.videoStats.aggregate({
+      _sum: {
+        watchTime: true,
+      },
+    });
+
+    return {
+      id: channelId,
+      watchTime: Number(channelStat._sum.watchTime),
+    };
+  }
+
+  async getChannelStatViews(channelId: string): Promise<{ id: string; views: number }> {
+    const channelStat = await this.prismaClient.video.aggregate({
+      where: {
+        channelId,
+      },
+      _sum: {
+        videoViews: true,
+      },
+    });
+
+    return {
+      id: channelId,
+      views: Number(channelStat._sum.videoViews),
+    };
+  }
+
   async getChannelStatsWatchTime(
     channelId: string,
     dateFrom: string,

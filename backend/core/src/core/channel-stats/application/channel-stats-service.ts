@@ -80,4 +80,14 @@ export class ChannelStatsService {
       },
     };
   }
+
+  async getChannelStatWatchTime(channelId: string): Promise<{ id: string; watchTime: number }> {
+    const channelWatchTimeStats = await this.channelStatsRepository.getChannelStatWatchTimeAllTime(channelId);
+    return channelWatchTimeStats;
+  }
+
+  async getChannelStatViews(channelId: string): Promise<{ id: string; views: number }> {
+    const channelViewsStats = await this.channelStatsRepository.getChannelStatViews(channelId);
+    return channelViewsStats;
+  }
 }
