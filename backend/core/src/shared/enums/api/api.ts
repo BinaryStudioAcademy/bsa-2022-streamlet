@@ -3,6 +3,8 @@ export {
   AuthApiPath,
   ChannelStreamingApiPath,
   ChannelCrudApiPath,
+  ChannelStatsApiPath,
+  VideoStatsApiPath,
   HistoryApiPath,
   FollowingApiPath,
   ChatApiPath,

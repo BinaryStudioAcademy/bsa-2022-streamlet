@@ -16,6 +16,8 @@ import { CreateVideoHistoryRecordMiddleware } from '~/primary-adapters/rest/midd
 import { HealthcheckController } from '~/primary-adapters/rest/healthcheck/healthcheck-controller';
 import { FollowingController } from './following/following-controller';
 import { CommentController } from './comment/comment-controller';
+import { ChannelStatsController } from './channel-stats/channel-stats-controller';
+import { VideoStatsController } from './video-stats/video-stats-controller';
 
 const restContainerModule = new ContainerModule((bind: interfaces.Bind) => {
   bind<UserController>(CONTAINER_TYPES.UserController).to(UserController);
@@ -25,6 +27,8 @@ const restContainerModule = new ContainerModule((bind: interfaces.Bind) => {
   bind<CategoryController>(CONTAINER_TYPES.CategoryController).to(CategoryController);
   bind<ChannelStreamingController>(CONTAINER_TYPES.ChannelStreamingController).to(ChannelStreamingController);
   bind<ChannelCrudController>(CONTAINER_TYPES.ChannelCrudController).to(ChannelCrudController);
+  bind<ChannelStatsController>(CONTAINER_TYPES.ChannelStatsController).to(ChannelStatsController);
+  bind<VideoStatsController>(CONTAINER_TYPES.VideoStatsController).to(VideoStatsController);
   bind<ChatController>(CONTAINER_TYPES.ChatController).to(ChatController);
   bind<CommentController>(CONTAINER_TYPES.CommentController).to(CommentController);
   bind<ProfileController>(CONTAINER_TYPES.ProfileController).to(ProfileController);

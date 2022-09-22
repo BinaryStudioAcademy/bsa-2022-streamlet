@@ -5,18 +5,54 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  margin-right: 5%;
 }
 
-.block {
+.select-label {
+  position: relative;
+  margin: 0;
+  padding: 0;
+
+  & svg {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 12px;
+    height: auto;
+    cursor: pointer;
+    transform: translateY(-50%);
+    pointer-events: none;
+
+    & path {
+      fill: #c4c4c4;
+    }
+  }
+}
+
+.select {
   width: 150px;
   height: 40px;
-  padding: 7px;
+  padding: 6px 30px 6px 12px;
   color: #c4c4c4;
   font-weight: 400;
   font-size: 16px;
   background: #344f3e;
-  border-radius: 20px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+
+  &:focus {
+    outline: none;
+
+    & + svg path {
+      fill: var(--white-text-color);
+    }
+  }
+
+  &::-ms-expand {
+    display: none;
+  }
 }
 
 .item {

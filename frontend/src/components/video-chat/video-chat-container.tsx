@@ -1,7 +1,7 @@
-import { ChatMessageResponseDto, FC } from 'common/types/types';
+import { ChatMessageResponseDto, FC, StatsData } from 'common/types/types';
 import { socket } from 'common/config/config';
 import { useEffect, useAppDispatch, useAppSelector, useCallback } from 'hooks/hooks';
-import { chatActions } from 'store/actions';
+import { chatActions, statsActions } from 'store/actions';
 import { VideoChat } from './video-chat';
 import { ChatStyle, SocketEvents } from 'common/enums/enums';
 import { store } from 'store/store';
@@ -30,9 +30,17 @@ type Props = {
   chatStyle?: ChatStyle;
   heightVideoBlock?: number;
   handleHideChat?: (param: boolean) => void;
+  statsData?: StatsData;
 };
 
-const VideoChatContainer: FC<Props> = ({ videoId, chatStyle, chatSettings, heightVideoBlock, handleHideChat }) => {
+const VideoChatContainer: FC<Props> = ({
+  videoId,
+  chatStyle,
+  chatSettings,
+  heightVideoBlock,
+  handleHideChat,
+  statsData,
+}) => {
   const dispatch = useAppDispatch();
   const {
     chat: {
@@ -49,13 +57,27 @@ const VideoChatContainer: FC<Props> = ({ videoId, chatStyle, chatSettings, heigh
 
   const hasUser = Boolean(user);
 
-  const handlerSubmitMessage = (messageText: string): Promise<ChatMessageResponseDto> =>
+  const handlerSubmitMessage = (messageText: string): Promise<void> =>
     dispatch(
       chatActions.sendMessage({
         chatId: videoId,
         message: { text: messageText },
       }),
-    ).unwrap();
+    )
+      .unwrap()
+      .then(() => {
+        if (statsData) {
+          dispatch(
+            statsActions.updateVideoStat({
+              statId: statsData.statId,
+              data: {
+                videoId: statsData.videoId,
+                chatsActivity: 1,
+              },
+            }),
+          );
+        }
+      });
 
   const joinChatRoom = useCallback(async () => {
     if (videoId) {
@@ -89,6 +111,7 @@ const VideoChatContainer: FC<Props> = ({ videoId, chatStyle, chatSettings, heigh
       chatStyle={chatStyle}
       heightVideoBlock={heightVideoBlock}
       handleHideChat={handleHideChat}
+      statsData={statsData}
     />
   );
 };

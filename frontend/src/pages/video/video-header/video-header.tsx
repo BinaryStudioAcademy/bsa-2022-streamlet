@@ -1,13 +1,14 @@
-import { useAppDispatch, useAppSelector } from 'hooks/hooks';
-import { FC, useState } from 'react';
-import { StreamStatus, VideoReaction } from 'shared/build';
-import { videoPageActions } from 'store/actions';
+import React from 'react';
+import clsx from 'clsx';
+import { FC, StatsData } from 'common/types/types';
+import { useAppDispatch, useAppSelector, useState } from 'hooks/hooks';
+import { StreamStatus, VideoReaction, VideoReactionStatus } from 'shared/build';
+import { statsActions, videoPageActions } from 'store/actions';
 import styles from './styles.module.scss';
 import { ReactComponent as ThumbUp } from 'assets/img/thumb-up.svg';
 import { ReactComponent as ThumbDown } from 'assets/img/thumb-down.svg';
 import { getReactBtnColor } from 'helpers/helpers';
 import { NeedSignInModal } from 'components/common/sign-in-modal/sign-in-modal';
-import clsx from 'clsx';
 
 type Props = {
   videoInfo: {
@@ -20,9 +21,10 @@ type Props = {
     videoViews: number;
     liveViews: number;
   };
+  statsData?: StatsData;
 };
 
-const VideoHeader: FC<Props> = ({ videoInfo }) => {
+const VideoHeader: FC<Props> = ({ videoInfo, statsData }) => {
   const [isUserNotAuthAndReact, setIsUserNotAuthAndReact] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -34,14 +36,42 @@ const VideoHeader: FC<Props> = ({ videoInfo }) => {
     if (!user) {
       return setIsUserNotAuthAndReact(true);
     }
-    dispatch(videoPageActions.videoReact({ videoId: videoInfo.id, isLike: true }));
+    dispatch(videoPageActions.videoReact({ videoId: videoInfo.id, isLike: true }))
+      .unwrap()
+      .then(() => {
+        if (statsData) {
+          dispatch(
+            statsActions.updateVideoStat({
+              statId: statsData.statId,
+              data: {
+                videoId: statsData.videoId,
+                reaction: VideoReactionStatus.LIKED,
+              },
+            }),
+          );
+        }
+      });
   };
 
   const handleDislikeReact = (): void => {
     if (!user) {
       return setIsUserNotAuthAndReact(true);
     }
-    dispatch(videoPageActions.videoReact({ videoId: videoInfo.id, isLike: false }));
+    dispatch(videoPageActions.videoReact({ videoId: videoInfo.id, isLike: false }))
+      .unwrap()
+      .then(() => {
+        if (statsData) {
+          dispatch(
+            statsActions.updateVideoStat({
+              statId: statsData.statId,
+              data: {
+                videoId: statsData.videoId,
+                reaction: VideoReactionStatus.DISLIKED,
+              },
+            }),
+          );
+        }
+      });
   };
 
   return (

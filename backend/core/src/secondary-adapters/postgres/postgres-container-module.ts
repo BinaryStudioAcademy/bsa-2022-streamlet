@@ -29,6 +29,10 @@ import { ChannelRepository } from '~/core/channel/port/channel-repository';
 import { ChannelRepositoryAdapter } from './channel/channel-repository-adapter';
 import { CommentRepositoryAdapter } from './comment/comment-repository-adapter';
 import { CommentRepository } from '~/core/comment/port/comment-repository';
+import { ChannelStatsRepositoryAdapter } from './channel-stats/channel-stats-repository-adapter';
+import { ChannelStatsRepository } from '~/core/channel-stats/port/channel-stats-repository';
+import { VideoStatsRepositoryAdapter } from './video-stats/video-stats-repository-adapter';
+import { VideoStatsRepository } from '~/core/video-stats/port/video-stats-repository';
 
 const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces.Bind) => {
   const client = new PrismaClient();
@@ -44,6 +48,8 @@ const postgresContainerModule = new AsyncContainerModule(async (bind: interfaces
 
   bind<ChannelStreamingRepository>(CONTAINER_TYPES.ChannelStreamingRepository).to(ChannelStreamingRepositoryAdapter);
   bind<ChannelCrudRepository>(CONTAINER_TYPES.ChannelCrudRepository).to(ChannelCrudRepositoryAdapter);
+  bind<ChannelStatsRepository>(CONTAINER_TYPES.ChannelStatsRepository).to(ChannelStatsRepositoryAdapter);
+  bind<VideoStatsRepository>(CONTAINER_TYPES.VideoStatsRepository).to(VideoStatsRepositoryAdapter);
   bind<ChannelSubscriptionRepository>(CONTAINER_TYPES.ChannelSubscriptionRepository).to(
     ChannelSubscriptionRepositoryAdapter,
   );

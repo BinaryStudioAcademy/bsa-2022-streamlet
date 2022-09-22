@@ -1,5 +1,8 @@
+import { CreateVideoStatDto } from './video';
+
 export type AddVideoViewRequestDto = {
   videoId: string;
+  data: Omit<CreateVideoStatDto, 'videoId' | 'view' | 'userId'>;
 };
 
 export type AddVideoViewResponseDto = {

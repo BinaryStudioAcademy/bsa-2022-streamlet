@@ -23,6 +23,10 @@ export { ErrorMessage } from './message/message';
 
 export * from './search/search';
 
+export * from './video/video';
+
+export * from './stats/stats';
+
 export { StorageKeys } from './storage/storage';
 
 export { NotificationType } from './notification/notification';

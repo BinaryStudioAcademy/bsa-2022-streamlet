@@ -28,6 +28,7 @@ export const exceptionMessages = {
   },
   video: {
     VIDEO_ID_NOT_FOUND: 'Video with such id was not found',
+    VIDEOS_NOT_FOUND: 'Videos with such ids were not found',
   },
   comment: {
     COMMENT_NOT_FOUND: 'Comment with such id wasn`t found',

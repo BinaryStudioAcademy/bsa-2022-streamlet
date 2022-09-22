@@ -24,6 +24,7 @@ import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-befor
 import { POPULAR_VIDEO_CARD_IN_ONE_PAGE } from '~/shared/constants/constants';
 import { usePagination } from '~/shared/helpers';
 import { castToVideoInfoDto } from './dtos/cast-to-video-info';
+import { Video } from '@prisma/client';
 
 @injectable()
 export class VideoService {
@@ -39,6 +40,10 @@ export class VideoService {
 
   getById(id: string): Promise<VideoExpandedInfo | null> {
     return this.videoRepository.getById(id);
+  }
+
+  async getVideosByIds(ids: string[]): Promise<Video[]> {
+    return await this.videoRepository.getVideosByIds(ids);
   }
 
   async getSimilarVideos(id: string, paginationParams: Omit<RecommendedVideosParams, 'userId'>): Promise<DataVideo> {

@@ -2,16 +2,19 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import dayjs from 'dayjs';
 import { AxisDomain } from 'recharts/types/util/types';
 import { CustomTooltip } from './tooltip/custom-tooltip';
-import { FC } from 'common/types/types';
-import { ChartData } from './types/types';
-import { getMonthData } from './mock-helper/mock-helper';
+import { FC, LineChartData, LineChartDataPeriod } from 'common/types/types';
+import { useId } from 'hooks/hooks';
+import { getDefaultPeriod, getEmptyPeriodsForChart, getFormattedDate } from '../chart-helpers';
+import { StatsPeriodValue } from 'common/enums/enums';
 
 const strokeColor = '#C4C4C4';
-const lineColor = '#06C149';
+const lineColor = ['#06c149', '#246966', '#00a8c7'];
 
 export type ChartProps = {
-  data: ChartData;
-  days: number;
+  data: LineChartData;
+  period: StatsPeriodValue;
+  aspect?: number;
+  valueNames?: Partial<Record<keyof Omit<LineChartDataPeriod, 'date'>, string>>;
 };
 
 const getTicks = (startDate: Date, endDate: Date, num: number): number[] => {
@@ -34,27 +37,30 @@ const getTicks = (startDate: Date, endDate: Date, num: number): number[] => {
   return ticks;
 };
 
-export const CustomLineChart: FC<ChartProps> = ({ data, days }) => {
-  const dataLength = data.dataLength;
-  const startDate = data.data[0].date;
-  const endDate = data.data[data.data.length - 1].date;
+export const CustomLineChart: FC<ChartProps> = ({ data, valueNames, period, aspect = 3 }) => {
+  let { data: realData, format, dataLength } = data;
+
+  if (dataLength === 0) {
+    realData = getEmptyPeriodsForChart(period);
+    format = getDefaultPeriod(period);
+    dataLength = realData.length;
+  }
+
+  const startDate = new Date(realData[0].date);
+  const endDate = new Date(realData[dataLength - 1].date);
   const ticks = getTicks(startDate, endDate, dataLength);
-  const domain: AxisDomain = [(dataMin: Date): Date => dataMin, (): number => endDate.getTime()];
-  const realData = days === 365 ? getMonthData(data.data) : data.data;
+  const domain: AxisDomain = [(): number => startDate.getTime(), (): number => endDate.getTime()];
+  const values: string[] = dataLength > 0 ? Object.keys(realData[0]).filter((k) => k !== 'date') : [];
 
-  const dateFormatter = (date: string): string => {
-    switch (data.format) {
-      case 'day':
-        return dayjs(new Date(date)).format('ddd DD');
+  const chartId = useId();
 
-      default:
-        return dayjs(new Date(date)).format('MMM');
-    }
+  const handleDateFormatter = (date: string): string => {
+    return getFormattedDate(date, format, period);
   };
 
   return (
     <>
-      <ResponsiveContainer aspect={3}>
+      <ResponsiveContainer aspect={aspect}>
         <LineChart
           data={realData}
           margin={{
@@ -70,30 +76,37 @@ export const CustomLineChart: FC<ChartProps> = ({ data, days }) => {
             scale="time"
             tick={{ fill: strokeColor }}
             axisLine={false}
-            tickFormatter={dateFormatter}
+            tickFormatter={handleDateFormatter}
             type="number"
             domain={domain}
             ticks={ticks}
             tickLine={false}
-            textAnchor="middle"
           />
           <YAxis
             tick={{ fill: strokeColor }}
+            width={40}
             axisLine={false}
             tickCount={7}
             tickLine={false}
             tickMargin={40}
-            textAnchor="middle"
           />
-          <Tooltip cursor={false} isAnimationActive={false} content={<CustomTooltip active={false} payload={[]} />} />
-          <Line
-            type="linear"
-            dataKey="value"
-            stroke={lineColor}
-            strokeWidth="3"
-            dot={{ fill: lineColor, stroke: lineColor, strokeWidth: 2, r: 5 }}
-            activeDot={{ stroke: lineColor, strokeWidth: 5, r: 10 }}
+          <Tooltip
+            cursor={false}
+            isAnimationActive={false}
+            content={<CustomTooltip active={false} payload={[]} valueNames={valueNames} />}
           />
+          {values.map((v, i) => (
+            <Line
+              key={`${chartId}${v}`}
+              type="monotone"
+              dataKey={v}
+              stroke={lineColor[i]}
+              strokeWidth="3"
+              connectNulls
+              dot={{ fill: lineColor[i], stroke: lineColor[i], strokeWidth: 2, r: 4 }}
+              activeDot={{ stroke: lineColor[i], strokeWidth: 5, r: 8 }}
+            />
+          ))}
         </LineChart>
       </ResponsiveContainer>
     </>

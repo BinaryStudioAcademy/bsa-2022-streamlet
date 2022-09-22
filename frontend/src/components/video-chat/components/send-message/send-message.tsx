@@ -1,7 +1,7 @@
 import { ChangeEvent, FocusEvent, KeyboardEvent } from 'react';
 import clsx from 'clsx';
 import { EmojiClickData } from 'emoji-picker-react';
-import { ChatMessageResponseDto, FC } from 'common/types/types';
+import { FC } from 'common/types/types';
 import { IconName } from 'common/enums/enums';
 import { useState, useEffect, useRef, useCallback } from 'hooks/hooks';
 import { Icon, Emoji } from 'components/common/common';
@@ -11,7 +11,7 @@ import { messageMaxLength } from 'components/video-chat/config';
 import styles from './send-message.module.scss';
 
 export type SendMessageProps = {
-  handlerSubmitMessage: (messageText: string) => Promise<ChatMessageResponseDto>;
+  handlerSubmitMessage: (messageText: string) => Promise<void>;
   sendMessageClassName?: string;
   hasUser: boolean;
   isLightTheme: boolean;

@@ -19,6 +19,7 @@ import { VideoRepositoryFilters } from './video-repository-filters';
 import { VideoSearch, VideoWithReactionsAndComments } from '~/shared/types/types';
 import { VideoExpandedInfo } from '~/shared/types/video/video-expanded-dto-before-trimming';
 import { VideoSearchFilters } from './video-search-filters';
+import { Video } from '@prisma/client';
 
 export type GetPopularInputType = {
   category: string;
@@ -37,6 +38,7 @@ export type GetPopularLiveInputType = {
 
 export interface VideoRepository {
   getById(id: string): Promise<VideoExpandedInfo | null>;
+  getVideosByIds(ids: string[]): Promise<Video[]>;
   addView(id: string): Promise<{ currentViews: number } | null>;
   searchByTags(searchByTagsDto: TagSearchRequestQueryDto): Promise<VideoWithChannel[]>;
   searchByCategories(

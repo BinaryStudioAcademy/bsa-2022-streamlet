@@ -19,3 +19,4 @@ export * from './channel/channel';
 export * from './search/search';
 export * from './video/video';
 export * from './content-page/content-page';
+export * from './stats/stats';
