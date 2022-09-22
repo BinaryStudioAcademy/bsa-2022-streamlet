@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma, Video } from '@prisma/client';
 import {
   CONTAINER_TYPES,
   PopularVideoResponseDto,
@@ -208,6 +208,23 @@ export class VideoRepositoryAdapter implements VideoRepository {
     const videoCommentsReplies = { ...video, comments: commentsWithReplies };
 
     return { ...trimVideoWithComments(videoCommentsReplies), likeNum, dislikeNum };
+  }
+
+  async getVideosByIds(ids: string[]): Promise<Video[]> {
+    const orIds = ids.map(
+      (id) =>
+        ({
+          id,
+        } as Prisma.VideoWhereInput),
+    );
+
+    const videos = await this.prismaClient.video.findMany({
+      where: {
+        OR: orIds,
+      },
+    });
+
+    return videos;
   }
 
   async calculateReaction(videoId: string): Promise<{ likeNum: number; dislikeNum: number }> {

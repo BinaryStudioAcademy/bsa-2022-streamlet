@@ -9,6 +9,10 @@ import { PlayPauseCenterEffect } from './play-pause-center-effect/play-pause-cen
 import fscreen from 'fscreen';
 import { ENV } from 'common/enums/enums';
 import { enterFullScreen, exitFullScreen } from './video-player-controls/fullscreen-button/helpers/fscreen';
+import { statsActions } from 'store/actions';
+import { StatsData } from 'common/types/types';
+import { useAppDispatch } from 'hooks/hooks';
+
 type VideoPlayerProps = {
   sizingProps?: {
     height?: number | string;
@@ -27,6 +31,7 @@ type VideoPlayerProps = {
   // fires when user clicks play (and video was paused),
   // or when autoplay is used
   onStartPlay?: () => void;
+  statsData?: StatsData;
 };
 
 const FULLSCREEN_INACTIVE_TIME_MS = 2000;
@@ -39,9 +44,11 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
   className,
   showControls = true,
   onStartPlay,
+  statsData,
   mute = false,
   maxControlsShadowHeight = '100vh',
 }) => {
+  const dispatch = useAppDispatch();
   const videoContainerRef = useRef<HTMLVideoElement | null>(null);
   const videoContainerWrapperRef = useRef<HTMLElement | null>(null);
   const hlsRef = useRef<Hls | null>(null);
@@ -53,6 +60,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
   const [isFullscreen, setIsFullscreen] = useState(
     fscreen.fullscreenElement !== null && fscreen.fullscreenElement === videoContainerWrapperRef.current,
   );
+  const [stopWatchStatus, setStopWatchStatus] = useState(false);
 
   useEffect(() => {
     if (isFullscreen) {
@@ -165,6 +173,63 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
       videoContainer: element === null,
     }));
   }, []);
+
+  useEffect(() => {
+    const vC = videoContainerRef.current;
+
+    let stopWatch: ReturnType<typeof setInterval>;
+    let timer = 0;
+
+    if (stopWatchStatus && statsData?.statId) {
+      stopWatch = setInterval(() => {
+        dispatch(
+          statsActions.updateVideoStat({
+            statId: statsData.statId,
+            data: {
+              videoId: statsData.videoId,
+              watchTime: 1,
+            },
+          }),
+        );
+        if (vC && timer === statsData.timer) {
+          dispatch(statsActions.updatePlayerTime(Math.floor(vC.currentTime)));
+        }
+        timer++;
+      }, 1000);
+    }
+
+    return () => clearInterval(stopWatch);
+  }, [stopWatchStatus, statsData?.statId, statsData?.videoId, statsData?.timer, dispatch]);
+
+  useEffect(() => {
+    const vC = videoContainerRef.current;
+
+    const statsHandlePlay = (): void => {
+      if (vC) {
+        dispatch(statsActions.updatePlayerTime(Math.floor(vC.currentTime)));
+      }
+      setStopWatchStatus(true);
+    };
+    const statsHandlePause = (): void => {
+      if (vC) {
+        dispatch(statsActions.updatePlayerTime(Math.floor(vC.currentTime) - 1));
+      }
+      setStopWatchStatus(false);
+    };
+
+    if (vC) {
+      vC.addEventListener('pause', statsHandlePause);
+      vC.addEventListener('play', statsHandlePlay);
+    }
+
+    return () => {
+      if (vC) {
+        vC.removeEventListener('pause', statsHandlePause);
+        vC.removeEventListener('play', statsHandlePlay);
+      }
+      dispatch(statsActions.updatePlayerTime(0));
+    };
+  }, [dispatch]);
 
   return (
     <div

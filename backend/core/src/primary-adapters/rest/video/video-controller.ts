@@ -43,6 +43,7 @@ import {
   VideoApiPathParams,
   VideoInfoDto,
   RecommendedVideosParams,
+  AddVideoViewRequestDto,
 } from 'shared/build';
 import { DataVideo } from 'shared/build/common/types/video/base-video-response-dto.type';
 import { NotFound } from '~/shared/exceptions/not-found';
@@ -65,6 +66,7 @@ import { getSearchQuerySplit } from '~/shared/helpers/search/search';
 import { Forbidden } from '~/shared/exceptions/forbidden';
 import { stringToVideoPrivacyHelper } from './helpers/string-to-video-privacy-helper';
 import { BadRequest } from '~/shared/exceptions/bad-request';
+import { VideoStatsService } from '~/core/video-stats/application/video-stats-service';
 
 /**
  * @swagger
@@ -124,6 +126,7 @@ export class VideoController extends BaseHttpController {
   constructor(
     @inject(CONTAINER_TYPES.VideoService) videoService: VideoService,
     @inject(CONTAINER_TYPES.ChannelService) private channelService: ChannelService,
+    @inject(CONTAINER_TYPES.VideoStatsService) private videoStatsService: VideoStatsService,
     @inject(CONTAINER_TYPES.VideoRepository) private videoRepository: VideoRepository,
     @inject(CONTAINER_TYPES.ChannelSubscriptionRepository)
     private channelSubscriptionRepository: ChannelSubscriptionRepository,
@@ -520,12 +523,28 @@ export class VideoController extends BaseHttpController {
    *        '404':
    *          description: video does not exist
    */
-  @httpPost(`${VideoApiPath.$ID}${VideoApiPath.VIEW}`)
-  public async addView(@requestParam('videoId') id: string): Promise<AddVideoViewResponseDto> {
+  @httpPost(`${VideoApiPath.$ID}${VideoApiPath.VIEW}`, optionalAuthenticationMiddleware)
+  public async addView(
+    @requestParam('videoId') id: string,
+    @request() req: ExtendedRequest,
+    @requestBody() statData: AddVideoViewRequestDto['data'],
+  ): Promise<AddVideoViewResponseDto> {
     const newViewsCount = await this.videoService.addVideoView(id);
     if (!newViewsCount) {
       throw new NotFound(exceptionMessages.video.VIDEO_ID_NOT_FOUND);
     }
+
+    const userId = req.user?.id;
+    await this.videoStatsService.createVideoStat({
+      userId,
+      stat: {
+        videoId: id,
+        view: true,
+        ...statData,
+        watchTime: statData.watchTime ?? 0,
+      },
+    });
+
     return {
       currentViews: newViewsCount.currentViews,
       videoId: id,

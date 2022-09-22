@@ -2,7 +2,14 @@ export { AppDispatch, AsyncThunkConfig, RootState } from './app/app';
 
 export { RefreshTokenRequestDto, RefreshTokenResponseDto, TokenPair } from './auth/auth';
 
-export { VideoCard, ChannelCard, SelectOptions } from './component/component';
+export {
+  VideoCard,
+  ChannelCard,
+  SelectOptions,
+  LineChartData,
+  LineChartDataPeriod,
+  PieChartData,
+} from './component/component';
 
 export { FormControl, FormControlErrors, FormControlPath, FormControlValues } from './form/form';
 
@@ -49,6 +56,7 @@ export {
 } from './stream/stream';
 
 export * from './chat/chat';
+export * from './stats/stats';
 export * from './comment/comment';
 export * from './batch-payload/batch-payload';
 

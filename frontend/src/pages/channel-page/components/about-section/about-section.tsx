@@ -20,6 +20,8 @@ const AboutSection: FC = () => {
     return null;
   }
 
+  const overviewData = useAppSelector((state) => state.stats.channelStats.overview.data);
+
   const authorNameDisplay = getUserDisplayName({
     userName: aboutInfo.username,
     firstName: aboutInfo.firstName,
@@ -41,10 +43,26 @@ const AboutSection: FC = () => {
         <ul className={styles['statistics-list']}>
           <li>
             <>
-              <h4 className={styles['heading']}>Created:</h4>
+              <span className={styles['heading']}>{'Joined '}</span>
               {new Date(aboutInfo.createdAt).toDateString()}
             </>
           </li>
+          {overviewData?.videos !== undefined && (
+            <li>
+              <>
+                {overviewData.videos.toLocaleString()}
+                <span className={styles['heading']}>{' videos'}</span>
+              </>
+            </li>
+          )}
+          {overviewData?.views !== undefined && (
+            <li>
+              <>
+                {overviewData.views.toLocaleString()}
+                <span className={styles['heading']}>{' views'}</span>
+              </>
+            </li>
+          )}
         </ul>
       </section>
 

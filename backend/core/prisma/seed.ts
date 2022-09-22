@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, ReactionStatus, SubscriptionStatus, DeviceCategory } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { faker } from '@faker-js/faker';
 import { users, userProfiles, channels, videos } from './seed-data';
@@ -21,6 +21,8 @@ async function seedSampleData(): Promise<void> {
   await seedNotifications();
   await seedHistory();
   await seedReactions();
+  await seedVideoStats();
+  await seedChannelStats();
 }
 
 async function canSeed(): Promise<boolean> {
@@ -288,9 +290,151 @@ async function seedReactions(): Promise<void> {
   }
 }
 
+async function seedVideoStats(): Promise<void> {
+  const users = await prisma.user.findMany({
+    include: {
+      subscriptions: true,
+      reactions: true,
+    },
+  });
+  const videos = await prisma.video.findMany();
+
+  const languages = ['en', 'en', 'uk']; // duplicate 'en' for unequal distribution
+  const devices = Object.values(DeviceCategory).filter((d) => d !== DeviceCategory.UNKNOWN);
+
+  for (const user of users) {
+    const commentGroupBy = await prisma.videoComment.groupBy({
+      where: {
+        authorId: user.id,
+      },
+      by: ['videoId'],
+      _count: {
+        id: true,
+      },
+    });
+
+    const chatMessageGroupBy = await prisma.chatMessage.groupBy({
+      where: {
+        authorId: user.id,
+      },
+      by: ['videoId'],
+      _count: {
+        id: true,
+      },
+    });
+
+    const commentVideoIds = commentGroupBy.map((g) => g.videoId);
+    const chatMessageVideoIds = chatMessageGroupBy.map((g) => g.videoId);
+
+    const videoIdToChannelId = new Map(
+      videos
+        .filter((v) => commentVideoIds.includes(v.id) || chatMessageVideoIds.includes(v.id))
+        .map((v) => [v.id, v.channelId]),
+    );
+
+    const videoIdToVideo = new Map(
+      videos.filter((v) => commentVideoIds.includes(v.id) || chatMessageVideoIds.includes(v.id)).map((v) => [v.id, v]),
+    );
+
+    const reactionToVideos = <string[]>[];
+
+    const language = getRandomSample(languages, 1)[0];
+
+    await prisma.videoStats.createMany({
+      data: [
+        ...chatMessageGroupBy.map((c) => {
+          const device = getRandomSample(devices, 1)[0];
+          const reaction = user.reactions.find((r) => r.videoId === c.videoId);
+          if (reaction) {
+            reactionToVideos.push(reaction.videoId);
+          }
+          const wasSubscribed = Boolean(
+            user.subscriptions.find((s) => s.channelId === videoIdToChannelId.get(c.videoId)),
+          );
+          const durationStamp = getRandomIntFromInterval(1, videoIdToVideo.get(c.videoId)?.duration ?? 1);
+
+          return {
+            videoId: c.videoId,
+            userId: user.id,
+            watchTime: getRandomIntFromInterval(5, 100),
+            device: DeviceCategory[device],
+            language: language,
+            isLive: true,
+            durationStamp,
+            view: true,
+            reaction: reaction
+              ? reaction.isLike
+                ? ReactionStatus.LIKED
+                : ReactionStatus.DISLIKED
+              : ReactionStatus.NONE,
+            wasSubscribed: wasSubscribed,
+            chatsActivity: c._count.id,
+            source: 'video',
+          } as Prisma.VideoStatsCreateManyInput;
+        }),
+        ...commentGroupBy.map((c) => {
+          const device = getRandomSample(devices, 1)[0];
+          let reaction = user.reactions.find((r) => r.videoId === c.videoId);
+          if (reaction && !reactionToVideos.includes(reaction.videoId)) {
+            reactionToVideos.push(reaction.videoId);
+          } else {
+            reaction = undefined;
+          }
+          const wasSubscribed = Boolean(
+            user.subscriptions.find((s) => s.channelId === videoIdToChannelId.get(c.videoId)),
+          );
+          const durationStamp = getRandomIntFromInterval(1, videoIdToVideo.get(c.videoId)?.duration ?? 1);
+
+          return {
+            videoId: c.videoId,
+            userId: user.id,
+            watchTime: getRandomIntFromInterval(5, 100),
+            device: DeviceCategory[device],
+            language: language,
+            isLive: false,
+            durationStamp,
+            view: true,
+            reaction: reaction
+              ? reaction.isLike
+                ? ReactionStatus.LIKED
+                : ReactionStatus.DISLIKED
+              : ReactionStatus.NONE,
+            wasSubscribed: wasSubscribed,
+            commentsActivity: c._count.id,
+            source: 'video',
+          } as Prisma.VideoStatsCreateManyInput;
+        }),
+      ],
+    });
+  }
+}
+
+async function seedChannelStats(): Promise<void> {
+  const users = await prisma.user.findMany({ include: { subscriptions: true } });
+
+  for (const user of users) {
+    await prisma.channelStats.createMany({
+      data: [
+        ...user.subscriptions.map(
+          (s) =>
+            ({
+              channelId: s.channelId,
+              userId: user.id,
+              subscription: SubscriptionStatus.SUBSCRIBED,
+              source: 'channel',
+            } as Prisma.ChannelStatsCreateManyInput),
+        ),
+      ],
+    });
+  }
+}
+
 // not fully random, but ok for seeds
 function getRandomSample<T>(arr: T[], sampleSize: number): T[] {
   return [...arr].sort(() => 0.5 - Math.random()).slice(0, sampleSize);
+}
+function getRandomIntFromInterval(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 seedSampleData().finally(async () => {

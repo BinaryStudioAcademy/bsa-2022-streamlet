@@ -13,4 +13,7 @@ export const errorCodes = {
     NOT_FOUND: 'CHANNEL_NOT_FOUND',
     ACTIVE_STREAM_EXISTS: 'ACTIVE_STREAM_EXISTS',
   },
+  video: {
+    NO_VIDEOS: 'NO_VIDEOS_FOUND',
+  },
 } as const;

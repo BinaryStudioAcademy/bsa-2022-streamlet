@@ -37,14 +37,16 @@ import { socket } from 'common/config/config';
 import { store } from 'store/store';
 import { StudioHomeContainer } from 'pages/studio/home/home-container';
 import { ViewsTab } from 'pages/studio/analytics/tabs/views/views-tab';
+import { OverviewTab as OverviewAnalyticsTab } from 'pages/studio/analytics/tabs/overview/overview-tab';
 import { FollowersTab } from 'pages/studio/analytics/tabs/followers/followers-tab';
 import { Tab as AnalyticsTab } from 'pages/studio/analytics/tabs/tab';
 
 import styles from './app.module.scss';
 import { loadPreferences } from 'store/preferences/actions';
 import { LiveSettings } from 'pages/studio/stream/stream/tabs/live-settings/live-settings';
-import { LiveAnalytics } from 'pages/studio/stream/stream/tabs/live-analytics/live-analytics';
+// import { LiveAnalytics } from 'pages/studio/stream/stream/tabs/live-analytics/live-analytics';
 import { getUserStreamPermission } from 'store/auth/actions';
+import { WatchTimeTab } from 'pages/studio/analytics/tabs/watch-time/watch-time-tab';
 
 socket.on(SocketEvents.socket.HANDSHAKE_DONE, ({ id }: { id: string }) => {
   store.dispatch(socketActions.addSocketId(id));
@@ -120,18 +122,20 @@ const App: FC = () => {
               <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHomeContainer />} />}>
                 <Route index element={<LiveSettings />} />
                 <Route path={StreamTab.SETTINGS} element={<LiveSettings />} />
-                <Route path={StreamTab.ANALYTICS} element={<LiveAnalytics />} />
+                {/* <Route path={StreamTab.ANALYTICS} element={<LiveAnalytics />} /> */}
                 <Route path="*" element={<Navigate to={`${AppRoutes.STUDIO}/${StreamTab.SETTINGS}`} replace />} />
               </Route>
               <Route path={AppRoutes.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />
               <Route path={AppRoutes.STUDIO_CONTENT} element={<ProtectedRoute element={<StudioContent />} />} />
               <Route path={AppRoutes.STUDIO_ANALYTICS} element={<ProtectedRoute element={<StudioAnalytics />} />}>
-                <Route index element={<ViewsTab />} />
+                <Route index element={<OverviewAnalyticsTab />} />
+                <Route path={AnalyticsTab.OVERVIEW} element={<OverviewAnalyticsTab />} />
                 <Route path={AnalyticsTab.VIEWS} element={<ViewsTab />} />
+                <Route path={AnalyticsTab.WATCH_TIME} element={<WatchTimeTab />} />
                 <Route path={AnalyticsTab.FOLLOWERS} element={<FollowersTab />} />
                 <Route
                   path="*"
-                  element={<Navigate to={`${AppRoutes.STUDIO_ANALYTICS}/${AnalyticsTab.VIEWS}`} replace />}
+                  element={<Navigate to={`${AppRoutes.STUDIO_ANALYTICS}/${AnalyticsTab.OVERVIEW}`} replace />}
                 />
               </Route>
               <Route path={AppRoutes.ANY} element={<NotFound />} />

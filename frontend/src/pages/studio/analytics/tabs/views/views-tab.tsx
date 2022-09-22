@@ -1,43 +1,64 @@
-import { FC } from 'react';
 import cn from 'clsx';
-import dayjs from 'dayjs';
-import { useState } from 'hooks/hooks';
-import { CustomLineChart, Periods, StatisticsBlock } from 'pages/studio/analytics';
-import { ChartData } from 'frontend/src/pages/studio/analytics/line-chart/types/types';
-import {
-  getPeriods,
-  getFormat,
-  getLength,
-  getNewPeriods,
-} from 'frontend/src/pages/studio/analytics/line-chart/mock-helper/mock-helper';
+import { FC } from 'common/types/types';
+import { DataStatus, LoaderSize, StatsPeriodValue } from 'common/enums/enums';
+import { useAppDispatch, useAppSelector, useEffect, useCallback } from 'hooks/hooks';
+import { Loader } from 'components/common/common';
+import { CustomAreaChart, Periods, StatisticsBlock } from 'pages/studio/analytics';
+import { statsActions } from 'store/actions';
 
-import styles from './styles.module.scss';
+import styles from '../tab-with-chart-styles.module.scss';
 
 const ViewsTab: FC = () => {
-  const [days, setDays] = useState(0);
-  const [data, setData] = useState<ChartData>({
-    data: getNewPeriods('7', dayjs().month() + 1),
-    format: 'day',
-    dataLength: 7,
-  });
+  const dispatch = useAppDispatch();
+  const { user, period, data, dataStatus, channel } = useAppSelector((state) => ({
+    user: state.auth.user,
+    period: state.stats.statsConfig.period,
+    data: state.stats.channelStats.chart.views,
+    dataStatus: state.stats.channelStats.chart.dataStatus,
+    channel: state.stream.channel,
+  }));
 
-  const handleChange = (value: string): void => {
-    setData({
-      data: getPeriods(value),
-      format: getFormat(Number(value)),
-      dataLength: getLength(Number(value)),
-    });
-    setDays(Number(value));
+  const hasUser = Boolean(user);
+
+  const handleChange = (value: StatsPeriodValue): void => {
+    dispatch(statsActions.setStatsConfigPeriod(value));
   };
+
+  const handleGetChannelStatsViewsChart = useCallback(async () => {
+    if (channel?.id) {
+      await dispatch(
+        statsActions.getChannelStatsChartData({
+          channelId: channel.id,
+          period,
+        }),
+      );
+    }
+  }, [period, channel?.id, dispatch]);
+
+  const valueNames = {
+    value1: 'views',
+  };
+
+  useEffect(() => {
+    if (hasUser) {
+      handleGetChannelStatsViewsChart();
+    }
+  }, [hasUser, handleGetChannelStatsViewsChart]);
+
+  if (dataStatus === DataStatus.PENDING) {
+    return <Loader spinnerSize={LoaderSize.SM} vCentered={true} hCentered={true} />;
+  }
 
   return (
     <div className={styles['blocks']}>
-      <div className={cn(styles['element'], styles['chart'])}>
-        <Periods onChange={handleChange} />
-        <CustomLineChart data={data} days={days} />
-      </div>
-      <div className={cn(styles['element'], styles['statistics'])}>
-        <StatisticsBlock data={data} tab="Views" />
+      <div className={styles['blocks-wrapper']}>
+        <div className={cn(styles['element'], styles['chart'])}>
+          <Periods onChange={handleChange} defaultValue={period} />
+          <CustomAreaChart data={data} valueNames={valueNames} period={period} />
+        </div>
+        <div className={cn(styles['element'], styles['statistics'])}>
+          <StatisticsBlock data={data} tab="Views" />
+        </div>
       </div>
     </div>
   );

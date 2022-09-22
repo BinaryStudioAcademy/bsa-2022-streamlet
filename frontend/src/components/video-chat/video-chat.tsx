@@ -1,6 +1,6 @@
 import { UIEvent } from 'react';
 import clsx from 'clsx';
-import { ChatMessageResponseDto, FC } from 'common/types/types';
+import { ChatMessageResponseDto, FC, StatsData } from 'common/types/types';
 import { AppRoutes, ChatMenuOptions, ChatStyle, IconName } from 'common/enums/enums';
 import { useCallback, useEffect, useRef, useState } from 'hooks/hooks';
 import { Button, Icon } from 'components/common/common';
@@ -24,6 +24,7 @@ interface VideoChatProps {
   chatStyle?: ChatStyle;
   heightVideoBlock?: number;
   handleHideChat?: (param: boolean) => void;
+  statsData?: StatsData;
 }
 
 const VideoChat: FC<VideoChatProps> = ({

@@ -103,6 +103,8 @@ class VideoApi {
       url: `${this.#apiPrefix}${ApiPath.VIDEOS}/${request.videoId}${VideoApiPath.VIEW}`,
       options: {
         method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify(request.data),
       },
     });
   }

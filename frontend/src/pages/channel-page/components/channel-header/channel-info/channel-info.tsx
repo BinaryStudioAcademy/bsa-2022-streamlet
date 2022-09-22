@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { UserAvatarOrInitials } from 'components/common/user-avatar-or-initials/user-avatar-or-initials';
 import React, { FC } from 'react';
 import styles from './styles.module.scss';
 
@@ -13,9 +14,11 @@ const ChannelInfo: FC<Props> = ({ avatarLink, channelName, subscribersCount, cla
   return (
     <section className={clsx(styles['channel-info'], className)}>
       <h3 className={styles['channel-name']}>{channelName}</h3>
-      <div className={styles['channel-avatar-wrapper']}>
-        <img src={avatarLink} alt="channel avatar" className={styles['channel-avatar']} />
-      </div>
+      <UserAvatarOrInitials
+        className={styles['channel-avatar-wrapper']}
+        avatar={avatarLink}
+        userNamingInfo={{ userName: channelName ?? '' }}
+      />
       <p className={styles['subscribers-count']}>{subscribersCount} subscribers</p>
     </section>
   );

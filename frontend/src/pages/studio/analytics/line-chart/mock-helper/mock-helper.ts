@@ -1,32 +1,33 @@
 import dayjs from 'dayjs';
-import { dataPeriods } from '../types/types';
+import { LineChartDataPeriod } from 'common/types/types';
 
-export const getNewPeriods = (days: string, month = 0): dataPeriods[] => {
-  const newPeriods: dataPeriods[] = [];
+export const getNewPeriods = (days: string, month = 0): LineChartDataPeriod[] => {
+  const newPeriods: LineChartDataPeriod[] = [];
   for (let i = 1; i <= Number(days); i++) {
     const randomDays = Number(days) === 7 ? 7 : Number(days);
     const randomMonth = month === 0 ? Math.ceil(Math.random() * 12) : month;
     const day = Math.ceil(Math.random() * randomDays);
     const value = Math.ceil(Math.random() * 9000);
-    const minutes = Math.ceil(Math.random() * 9000);
-    newPeriods.push({ date: new Date(2022, randomMonth, day), value, minutes });
+    // const minutes = Math.ceil(Math.random() * 9000);
+    newPeriods.push({ date: new Date(2022, randomMonth, day).getTime(), value1: value });
   }
   return newPeriods.sort((a, b) => (a.date > b.date ? 1 : -1));
 };
 
-export const getMonthData = (data: dataPeriods[]): dataPeriods[] => {
+export const getMonthData = (data: LineChartDataPeriod[]): LineChartDataPeriod[] => {
   const months = new Set();
-  const newData: dataPeriods[] = [];
+  const newData: LineChartDataPeriod[] = [];
   for (const i of data) {
-    if (!months.has(i.date.getMonth())) {
-      months.add(i.date.getMonth());
+    const date = new Date(i.date);
+    if (!months.has(date.getMonth())) {
+      months.add(date.getMonth());
       newData.push(i);
     }
   }
-  return newData as dataPeriods[];
+  return newData as LineChartDataPeriod[];
 };
 
-export const getPeriods = (days: string): dataPeriods[] => {
+export const getPeriods = (days: string): LineChartDataPeriod[] => {
   switch (Number(days)) {
     case 7:
       return getNewPeriods(days, dayjs().month() + 1);

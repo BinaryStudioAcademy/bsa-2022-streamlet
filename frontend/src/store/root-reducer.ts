@@ -17,6 +17,7 @@ import { reducer as stream } from './stream/reducer';
 import { reducer as socket } from './socket/reducer';
 import { reducer as preference } from './preferences/reducer';
 import { reducer as contentPage } from './content-page/reducer';
+import { reducer as stats } from './stats/reducer';
 
 const rootReducer = combineReducers({
   auth,
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   socket,
   preference,
   contentPage,
+  stats,
 });
 
 export { rootReducer };
