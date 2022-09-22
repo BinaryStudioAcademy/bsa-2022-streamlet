@@ -6,7 +6,7 @@ import { Loader } from 'components/common/common';
 import { CustomSimpleBar, Periods, StatisticsBlock } from 'pages/studio/analytics';
 import { statsActions } from 'store/actions';
 
-import styles from '../tab-with-chat-styles.module.scss';
+import styles from '../tab-with-chart-styles.module.scss';
 
 const FollowersTab: FC = () => {
   const dispatch = useAppDispatch();
@@ -52,12 +52,14 @@ const FollowersTab: FC = () => {
 
   return (
     <div className={styles['blocks']}>
-      <div className={cn(styles['element'], styles['chart'])}>
-        <Periods onChange={handleChange} defaultValue={period} />
-        <CustomSimpleBar data={data} valueNames={valueNames} period={period} />
-      </div>
-      <div className={cn(styles['element'], styles['statistics'])}>
-        <StatisticsBlock data={data} tab="Followers" />
+      <div className={styles['blocks-wrapper']}>
+        <div className={cn(styles['element'], styles['chart'])}>
+          <Periods onChange={handleChange} defaultValue={period} />
+          <CustomSimpleBar data={data} valueNames={valueNames} period={period} />
+        </div>
+        <div className={cn(styles['element'], styles['statistics'])}>
+          <StatisticsBlock data={data} tab="Followers" />
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,58 @@
+.blocks {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+
+  &-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    width: 100%;
+    max-width: 1500px;
+  }
+}
+
+.element {
+  width: 100%;
+}
+
+.chart {
+  width: 75%;
+}
+
+.statistics {
+  width: 25%;
+}
+
+@media screen and (max-width: 1200px) {
+  .blocks {
+    &-wrapper {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+  }
+
+  .chart {
+    width: 100%;
+  }
+
+  .statistics {
+    width: 100%;
+    max-width: 350px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .blocks {
+    &-wrapper {
+      gap: 15px;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .statistics {
+    width: 80%;
+  }
+}

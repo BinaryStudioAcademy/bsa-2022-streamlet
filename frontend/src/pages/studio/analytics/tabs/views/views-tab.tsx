@@ -6,7 +6,7 @@ import { Loader } from 'components/common/common';
 import { CustomAreaChart, Periods, StatisticsBlock } from 'pages/studio/analytics';
 import { statsActions } from 'store/actions';
 
-import styles from '../tab-with-chat-styles.module.scss';
+import styles from '../tab-with-chart-styles.module.scss';
 
 const ViewsTab: FC = () => {
   const dispatch = useAppDispatch();
@@ -51,12 +51,14 @@ const ViewsTab: FC = () => {
 
   return (
     <div className={styles['blocks']}>
-      <div className={cn(styles['element'], styles['chart'])}>
-        <Periods onChange={handleChange} defaultValue={period} />
-        <CustomAreaChart data={data} valueNames={valueNames} period={period} />
-      </div>
-      <div className={cn(styles['element'], styles['statistics'])}>
-        <StatisticsBlock data={data} tab="Views" />
+      <div className={styles['blocks-wrapper']}>
+        <div className={cn(styles['element'], styles['chart'])}>
+          <Periods onChange={handleChange} defaultValue={period} />
+          <CustomAreaChart data={data} valueNames={valueNames} period={period} />
+        </div>
+        <div className={cn(styles['element'], styles['statistics'])}>
+          <StatisticsBlock data={data} tab="Views" />
+        </div>
       </div>
     </div>
   );

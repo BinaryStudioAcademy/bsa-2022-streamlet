@@ -64,19 +64,12 @@ const OverviewTab: FC = () => {
   );
 
   const matchOverviewChartTabWithComponent: Record<OverviewChartTab, JSX.Element> = {
-    [OverviewChartTab.VIEWS]: (
-      <CustomAreaChart data={viewData} valueNames={{ value1: 'views' }} period={period} aspect={2.5} />
-    ),
+    [OverviewChartTab.VIEWS]: <CustomAreaChart data={viewData} valueNames={{ value1: 'views' }} period={period} />,
     [OverviewChartTab.WATCH_TIME]: (
-      <CustomAreaChart data={watchTimeDataInHours} valueNames={{ value1: 'time' }} period={period} aspect={2.5} />
+      <CustomAreaChart data={watchTimeDataInHours} valueNames={{ value1: 'time' }} period={period} />
     ),
     [OverviewChartTab.SUBSCRIBERS]: (
-      <CustomSimpleBar
-        data={subsData}
-        valueNames={{ value1: 'subscribed', value2: 'unsubscribed' }}
-        period={period}
-        aspect={2.5}
-      />
+      <CustomSimpleBar data={subsData} valueNames={{ value1: 'subscribed', value2: 'unsubscribed' }} period={period} />
     ),
   };
 

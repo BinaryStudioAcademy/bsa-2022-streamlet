@@ -4,7 +4,14 @@
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  gap: 15px;
+
+  &-wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: 15px;
+    max-width: 1500px;
+  }
 
   &-header {
     display: flex;
@@ -44,7 +51,6 @@
   grid-column: 1 / span 2;
   flex-flow: column nowrap;
   justify-content: space-between;
-  height: 400px;
 
   &-nav {
     display: flex;
@@ -162,7 +168,19 @@
 @media #{breakpoint.$tablet-large} {
   .blocks {
     &-body {
-      grid-template-columns: repeat(3, minmax(280px, 450px));
+      grid-template-columns: repeat(3, minmax(280px, 500px));
     }
+  }
+}
+
+@media #{breakpoint.$desktop-small} {
+  .blocks {
+    &-body {
+      grid-template-columns: repeat(4, minmax(250px, 400px));
+    }
+  }
+
+  .charts-block {
+    grid-column: 1 / span 3;
   }
 }

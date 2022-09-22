@@ -6,7 +6,7 @@ import { Loader } from 'components/common/common';
 import { CustomAreaChart, Periods, StatisticsBlock } from 'pages/studio/analytics';
 import { statsActions } from 'store/actions';
 
-import styles from '../tab-with-chat-styles.module.scss';
+import styles from '../tab-with-chart-styles.module.scss';
 import { getWatchTimeDataInHours } from './helpers';
 
 const WatchTimeTab: FC = () => {
@@ -53,12 +53,14 @@ const WatchTimeTab: FC = () => {
 
   return (
     <div className={styles['blocks']}>
-      <div className={cn(styles['element'], styles['chart'])}>
-        <Periods onChange={handleChange} defaultValue={period} />
-        <CustomAreaChart data={dataInHours} valueNames={valueNames} period={period} />
-      </div>
-      <div className={cn(styles['element'], styles['statistics'])}>
-        <StatisticsBlock data={dataInHours} tab="Watch time" />
+      <div className={styles['blocks-wrapper']}>
+        <div className={cn(styles['element'], styles['chart'])}>
+          <Periods onChange={handleChange} defaultValue={period} />
+          <CustomAreaChart data={dataInHours} valueNames={valueNames} period={period} />
+        </div>
+        <div className={cn(styles['element'], styles['statistics'])}>
+          <StatisticsBlock data={dataInHours} tab="Watch time" />
+        </div>
       </div>
     </div>
   );
