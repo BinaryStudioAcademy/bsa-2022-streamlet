@@ -8,6 +8,7 @@ enum ActionType {
   GOOGLE_ATHORIZATION = 'auth/google-athorization',
   STREAM_PERMISSION = 'auth/stream-permission',
   STREAM_PERMISSION_UPDATE = 'auth/stream-permission-update',
+  SET_PATH_FOR_BACK_TO_STREAM_VIDEO = 'auth/path_to_back_to_stream_video',
 }
 
 export { ActionType };

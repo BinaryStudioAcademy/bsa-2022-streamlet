@@ -27,6 +27,7 @@ import { VideoHeader } from './video-header/video-header';
 import { LinksBlock } from './links-block/links-block';
 import { NotFound } from 'components/placeholder-page';
 import { resetPaginationMainPage } from 'store/videos/actions';
+import { setPathForBackToStreamVideo } from 'store/auth/actions';
 import { UPDATE_VIDEO_STAT_TIME_DELAY } from './config';
 import { createCounter, getDeviceCategoryByNavigator } from 'helpers/helpers';
 
@@ -54,18 +55,35 @@ const VideoPageContainer: FC = () => {
     navigate(AppRoutes.ANY, { replace: true });
   }
 
-  const { videoData, profile, user, channel, videoDataStatus, isLightTheme, subscriptionsIds, videoStats, playerTime } =
-    useAppSelector((state) => ({
-      videoData: state.videoPage.video,
-      profile: state.profile.profileData,
-      user: state.auth.user,
-      channel: state.videoPage.video?.channel,
-      videoDataStatus: state.videoPage.dataStatus,
-      isLightTheme: state.theme.isLightTheme,
-      subscriptionsIds: state.subscriptions.subscriptionsData.subscriptionsList.ids,
-      videoStats: state.stats.video.data,
-      playerTime: state.stats.video.playerTime,
-    }));
+  const {
+    videoData,
+    profile,
+    user,
+    channel,
+    videoDataStatus,
+    isLightTheme,
+    pathForBackToStreamVideo,
+    subscriptionsIds,
+    videoStats,
+    playerTime,
+  } = useAppSelector((state) => ({
+    videoData: state.videoPage.video,
+    profile: state.profile.profileData,
+    user: state.auth.user,
+    channel: state.videoPage.video?.channel,
+    videoDataStatus: state.videoPage.dataStatus,
+    isLightTheme: state.theme.isLightTheme,
+    pathForBackToStreamVideo: state.auth.pathForBackToStreamVideo,
+    subscriptionsIds: state.subscriptions.subscriptionsData.subscriptionsList.ids,
+    videoStats: state.stats.video.data,
+    playerTime: state.stats.video.playerTime,
+  }));
+
+  useEffect(() => {
+    if (pathForBackToStreamVideo) {
+      dispatch(setPathForBackToStreamVideo(null));
+    }
+  }, [dispatch, pathForBackToStreamVideo]);
 
   const updateVideoStatTimeDelay = UPDATE_VIDEO_STAT_TIME_DELAY * 1000;
   const updateVideoPlayerTimeDelay = UPDATE_VIDEO_STAT_TIME_DELAY - 5;

@@ -202,18 +202,18 @@ async function seedCategories(): Promise<void> {
 }
 
 async function seedVideoComments(): Promise<void> {
-  const users = await prisma.user.findMany();
-  const videos = await prisma.video.findMany();
-  const commentsTotal = 1000;
-  for (let i = 0; i < commentsTotal; i++) {
-    await prisma.videoComment.create({
-      data: {
-        text: faker.lorem.paragraph(),
-        authorId: users[Math.floor(Math.random() * users.length)].id,
-        videoId: videos[Math.floor(Math.random() * videos.length)].id,
-      },
-    });
-  }
+  // const users = await prisma.user.findMany();
+  // const videos = await prisma.video.findMany();
+  // const commentsTotal = 1000;
+  // for (let i = 0; i < commentsTotal; i++) {
+  //   await prisma.videoComment.create({
+  //     data: {
+  //       text: faker.lorem.paragraph(),
+  //       authorId: users[Math.floor(Math.random() * users.length)].id,
+  //       videoId: videos[Math.floor(Math.random() * videos.length)].id,
+  //     },
+  //   });
+  // }
 }
 
 async function seedChatMessages(): Promise<void> {
