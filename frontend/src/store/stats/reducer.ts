@@ -1,8 +1,18 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { DataStatus } from 'common/enums/enums';
+import { DataStatus, StatsPeriodValue } from 'common/enums/enums';
+import { LineChartData } from 'common/types/types';
 import { getRejectedErrorData } from 'helpers/redux/get-rejected-error-data';
-import { CreateVideoStatDto, errorCodes } from 'shared/build';
-import { addVideoStat, updateVideoStat, sendVideoStats } from './actions';
+import { CreateVideoStatDto, DateTruncFormat, errorCodes } from 'shared/build';
+import {
+  addVideoStat,
+  updateVideoStat,
+  sendVideoStats,
+  setStatsConfigPeriod,
+  clearChannelStatsCharts,
+  getChannelStatsChartData,
+  updatePlayerTime,
+} from './actions';
+import { setStateChartData } from './helpers';
 
 type State = {
   video: {
@@ -11,7 +21,29 @@ type State = {
     dataStatus: DataStatus;
     error: string | undefined;
     errorCode: string | undefined;
+    playerTime: number;
   };
+  channelStats: {
+    chart: {
+      views: LineChartData;
+      subs: LineChartData;
+      watchTime: LineChartData;
+      // device: {},
+      // language: {},
+      dataStatus: DataStatus;
+      error: string | undefined;
+    };
+    liveChart: null;
+  };
+  statsConfig: {
+    period: StatsPeriodValue;
+  };
+};
+
+const initialLineChartData = {
+  data: [],
+  format: DateTruncFormat.DAY,
+  dataLength: 0,
 };
 
 const initialState: State = {
@@ -21,10 +53,57 @@ const initialState: State = {
     dataStatus: DataStatus.IDLE,
     error: undefined,
     errorCode: undefined,
+    playerTime: 0,
+  },
+  channelStats: {
+    chart: {
+      views: initialLineChartData,
+      subs: initialLineChartData,
+      watchTime: initialLineChartData,
+      // device: {},
+      // language: {},
+      dataStatus: DataStatus.IDLE,
+      error: undefined,
+    },
+    liveChart: null,
+  },
+  statsConfig: {
+    period: StatsPeriodValue.LAST_7_DAYS,
   },
 };
 
 const reducer = createReducer(initialState, (builder) => {
+  builder.addCase(setStatsConfigPeriod, (state, { payload }) => {
+    state.statsConfig.period = payload;
+  });
+
+  builder.addCase(clearChannelStatsCharts, (state) => {
+    state.channelStats.chart = initialState.channelStats.chart;
+  });
+
+  builder.addCase(getChannelStatsChartData.pending, (state) => {
+    state.channelStats.chart = {
+      ...initialState.channelStats.chart,
+      dataStatus: DataStatus.PENDING,
+    };
+  });
+  builder.addCase(getChannelStatsChartData.rejected, (state, { error }) => {
+    state.channelStats.chart.dataStatus = DataStatus.REJECTED;
+    state.channelStats.chart.error = error.message;
+  });
+  builder.addCase(getChannelStatsChartData.fulfilled, (state, { payload }) => {
+    state.channelStats.chart.dataStatus = DataStatus.FULFILLED;
+
+    const { views, watchTime, subs } = payload;
+    state.channelStats.chart.views = setStateChartData(views);
+    state.channelStats.chart.watchTime = setStateChartData(watchTime);
+    state.channelStats.chart.subs = setStateChartData(subs);
+  });
+
+  builder.addCase(updatePlayerTime, (state, { payload }) => {
+    state.video.playerTime = payload;
+  });
+
   builder.addCase(addVideoStat, (state, { payload }) => {
     let temp = { ...state.video.temp };
     if (Object.keys(temp).length !== 0) {

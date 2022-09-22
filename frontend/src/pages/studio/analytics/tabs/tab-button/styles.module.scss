@@ -1,10 +1,15 @@
 .button {
-  padding: 10px 47px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 130px;
+  padding: 10px 0;
   color: var(--text-gray-color);
   font-size: 16px;
   white-space: nowrap;
   text-transform: capitalize;
   background: none;
+  border-bottom: 3px solid transparent;
 }
 
 .button:hover {
@@ -15,5 +20,5 @@
 
 .active {
   color: var(--white-text-color);
-  border-bottom: 3px var(--brand-green-color) solid;
+  border-bottom: 3px solid var(--brand-green-color);
 }

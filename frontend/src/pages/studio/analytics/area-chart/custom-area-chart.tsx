@@ -1,7 +1,7 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import dayjs from 'dayjs';
 import { AxisDomain } from 'recharts/types/util/types';
-import { CustomTooltip } from './tooltip/custom-tooltip';
+import { CustomTooltip } from '../line-chart/tooltip/custom-tooltip';
 import { FC, LineChartData, LineChartDataPeriod } from 'common/types/types';
 import { useId } from 'hooks/hooks';
 import { getFormattedDate } from '../chart-helpers';
@@ -36,7 +36,7 @@ const getTicks = (startDate: Date, endDate: Date, num: number): number[] => {
   return ticks;
 };
 
-export const CustomLineChart: FC<ChartProps> = ({ data, valueNames, period }) => {
+export const CustomAreaChart: FC<ChartProps> = ({ data, valueNames, period }) => {
   const dataLength = data.dataLength;
 
   if (dataLength === 0) {
@@ -67,7 +67,7 @@ export const CustomLineChart: FC<ChartProps> = ({ data, valueNames, period }) =>
   return (
     <>
       <ResponsiveContainer aspect={3}>
-        <LineChart
+        <AreaChart
           data={realData}
           margin={{
             top: 20,
@@ -95,18 +95,20 @@ export const CustomLineChart: FC<ChartProps> = ({ data, valueNames, period }) =>
             content={<CustomTooltip active={false} payload={[]} valueNames={valueNames} />}
           />
           {values.map((v, i) => (
-            <Line
+            <Area
               key={`${chartId}${v}`}
               type="monotone"
               dataKey={v}
               stroke={lineColor[i]}
+              fill={lineColor[i]}
+              fillOpacity={0.3}
               strokeWidth="3"
               connectNulls
               dot={{ fill: lineColor[i], stroke: lineColor[i], strokeWidth: 2, r: 4 }}
               activeDot={{ stroke: lineColor[i], strokeWidth: 5, r: 8 }}
             />
           ))}
-        </LineChart>
+        </AreaChart>
       </ResponsiveContainer>
     </>
   );

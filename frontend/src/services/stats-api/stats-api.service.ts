@@ -1,6 +1,13 @@
 import { Http } from 'services/http/http.service';
 import { ApiPath } from 'common/enums/enums';
-import { ContentType, CreateChannelStatRequestDto, CreateManyVideoStatsRequestDto, HttpMethod } from 'shared/build';
+import {
+  ContentType,
+  CreateChannelStatRequestDto,
+  CreateManyVideoStatsRequestDto,
+  HttpMethod,
+  ChannelStatsApiPath,
+  ChannelStatsChartDataResponseDto,
+} from 'shared/build';
 
 type Constructor = {
   http: Http;
@@ -34,6 +41,20 @@ class StatsApi {
         method: HttpMethod.POST,
         contentType: ContentType.JSON,
         payload: JSON.stringify(request),
+      },
+    });
+  }
+
+  async getChannelStatsChartData(request: {
+    channelId: string;
+    dateFrom: string;
+  }): Promise<ChannelStatsChartDataResponseDto> {
+    return this.#http.load({
+      url: `${this.#apiPrefix}${ApiPath.CHANNEL_STATS}${ChannelStatsApiPath.GET}/${request.channelId}`,
+      options: {
+        method: HttpMethod.POST,
+        contentType: ContentType.JSON,
+        payload: JSON.stringify({ dateFrom: request.dateFrom }),
       },
     });
   }

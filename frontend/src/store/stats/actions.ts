@@ -1,7 +1,14 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { StatsPeriodValue } from 'common/enums/enums';
 import { AsyncThunkConfigHttpError } from 'common/types/app/app';
 import { AsyncThunkConfig } from 'common/types/types';
-import { CreateChannelStatRequestDto, CreateManyVideoStatsRequestDto, CreateVideoStatDto } from 'shared/build';
+import dayjs from 'dayjs';
+import {
+  CreateChannelStatRequestDto,
+  CreateManyVideoStatsRequestDto,
+  CreateVideoStatDto,
+  ChannelStatsChartDataResponseDto,
+} from 'shared/build';
 
 import { ActionType } from './common';
 
@@ -14,20 +21,25 @@ const sendChannelStat = createAsyncThunk<boolean, { id: string } & CreateChannel
 
 const addVideoStat = createAction<{
   statId: number;
-  data: Omit<CreateVideoStatDto, 'userId' | 'createdAt'>;
+  data: Omit<CreateVideoStatDto, 'userId' | 'createdAt' | 'view'>;
 }>(ActionType.ADD_VIDEO_STAT);
 
 const updateVideoStat = createAction<{
   statId: number;
   data: Pick<CreateVideoStatDto, 'videoId'> &
     Partial<
-      Omit<CreateVideoStatDto, 'userId' | 'videoId' | 'source' | 'wasSubscribed' | 'device' | 'language' | 'createdAt'>
+      Omit<
+        CreateVideoStatDto,
+        'userId' | 'videoId' | 'source' | 'wasSubscribed' | 'device' | 'language' | 'createdAt' | 'view'
+      >
     >;
 }>(ActionType.UPDATE_VIDEO_STAT);
 
+const updatePlayerTime = createAction<number>(ActionType.UPDATE_PLAYER_TIME);
+
 const sendVideoStats = createAsyncThunk<
   Record<string, boolean>,
-  Record<string, { stats: { statId: number; data: Omit<CreateVideoStatDto, 'userId'> }[] }>,
+  Record<string, { stats: { statId: number; data: Omit<CreateVideoStatDto, 'userId' | 'view'> }[] }>,
   AsyncThunkConfigHttpError
 >(ActionType.SEND_VIDEO_STAT, async (videoStats, { extra: { statsApi } }) => {
   const dataKeys = Object.keys(videoStats);
@@ -38,4 +50,32 @@ const sendVideoStats = createAsyncThunk<
   return statsApi.sendManyVideoStatsEvent(videoStatsData);
 });
 
-export { sendChannelStat, addVideoStat, updateVideoStat, sendVideoStats };
+const setStatsConfigPeriod = createAction<StatsPeriodValue>(ActionType.SET_STATS_CONFIG_PERIOD);
+
+const clearChannelStatsCharts = createAction<void>(ActionType.CLEAR_CHANNEL_STATS_CHARTS);
+
+const getChannelStatsChartData = createAsyncThunk<
+  ChannelStatsChartDataResponseDto,
+  { channelId: string; period: StatsPeriodValue },
+  AsyncThunkConfig
+>(ActionType.GET_CHANNEL_STATS_DATA, async (request, { extra: { statsApi } }) => {
+  const dateBeforePeriod = new Date();
+  dateBeforePeriod.setDate(dateBeforePeriod.getDate() - Number(request.period));
+  const dateFrom = dayjs(dateBeforePeriod).format('YYYY-MM-DD');
+
+  return statsApi.getChannelStatsChartData({
+    channelId: request.channelId,
+    dateFrom,
+  });
+});
+
+export {
+  sendChannelStat,
+  addVideoStat,
+  updateVideoStat,
+  sendVideoStats,
+  setStatsConfigPeriod,
+  clearChannelStatsCharts,
+  getChannelStatsChartData,
+  updatePlayerTime,
+};

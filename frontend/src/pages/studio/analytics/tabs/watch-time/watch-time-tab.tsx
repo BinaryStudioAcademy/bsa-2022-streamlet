@@ -3,17 +3,18 @@ import { FC } from 'common/types/types';
 import { DataStatus, LoaderSize, StatsPeriodValue } from 'common/enums/enums';
 import { useAppDispatch, useAppSelector, useEffect, useCallback } from 'hooks/hooks';
 import { Loader } from 'components/common/common';
-import { CustomSimpleBar, Periods, StatisticsBlock } from 'pages/studio/analytics';
+import { CustomAreaChart, Periods, StatisticsBlock } from 'pages/studio/analytics';
 import { statsActions } from 'store/actions';
 
 import styles from '../tab-with-chat-styles.module.scss';
+import { getWatchTimeDataInHours } from './helpers';
 
-const FollowersTab: FC = () => {
+const WatchTimeTab: FC = () => {
   const dispatch = useAppDispatch();
   const { user, period, data, dataStatus, channel } = useAppSelector((state) => ({
     user: state.auth.user,
     period: state.stats.statsConfig.period,
-    data: state.stats.channelStats.chart.subs,
+    data: state.stats.channelStats.chart.watchTime,
     dataStatus: state.stats.channelStats.chart.dataStatus,
     channel: state.stream.channel,
   }));
@@ -24,7 +25,7 @@ const FollowersTab: FC = () => {
     dispatch(statsActions.setStatsConfigPeriod(value));
   };
 
-  const handleGetChannelStatsSubsChart = useCallback(async () => {
+  const handleGetChannelStatsWatchTimeChart = useCallback(async () => {
     if (channel?.id) {
       await dispatch(
         statsActions.getChannelStatsChartData({
@@ -35,16 +36,16 @@ const FollowersTab: FC = () => {
     }
   }, [period, channel?.id, dispatch]);
 
+  const dataInHours = getWatchTimeDataInHours(data);
   const valueNames = {
-    value1: 'subscribed',
-    value2: 'unsubscribed',
+    value1: 'time',
   };
 
   useEffect(() => {
     if (hasUser) {
-      handleGetChannelStatsSubsChart();
+      handleGetChannelStatsWatchTimeChart();
     }
-  }, [hasUser, handleGetChannelStatsSubsChart]);
+  }, [hasUser, handleGetChannelStatsWatchTimeChart]);
 
   if (dataStatus === DataStatus.PENDING) {
     return <Loader spinnerSize={LoaderSize.SM} vCentered={true} hCentered={true} />;
@@ -54,13 +55,13 @@ const FollowersTab: FC = () => {
     <div className={styles['blocks']}>
       <div className={cn(styles['element'], styles['chart'])}>
         <Periods onChange={handleChange} defaultValue={period} />
-        <CustomSimpleBar data={data} valueNames={valueNames} period={period} />
+        <CustomAreaChart data={dataInHours} valueNames={valueNames} period={period} />
       </div>
       <div className={cn(styles['element'], styles['statistics'])}>
-        <StatisticsBlock data={data} tab="Followers" />
+        <StatisticsBlock data={dataInHours} tab="Watch time" />
       </div>
     </div>
   );
 };
 
-export { FollowersTab };
+export { WatchTimeTab };
