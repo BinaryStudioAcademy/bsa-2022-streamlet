@@ -2,7 +2,15 @@ import clsx from 'clsx';
 import { AppRoutes, DataStatus, SocketEvents, StreamStatus } from 'common/enums/enums';
 import { Loader } from 'components/common/common';
 import { VideoChatContainer } from 'components/video-chat/video-chat-container';
-import { useAppDispatch, useAppSelector, useNavigate, useParams, useState, useWindowDimensions } from 'hooks/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useLocation,
+  useNavigate,
+  useParams,
+  useState,
+  useWindowDimensions,
+} from 'hooks/hooks';
 import { FC, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 import { videoPageActions } from 'store/actions';
 import styles from './video-page.module.scss';
@@ -28,6 +36,7 @@ const SCREEN_SIZE_AT_WHICH_CHAT_MOVES = 992;
 const VideoPageContainer: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { width } = useWindowDimensions();
   const { videoId: isVideoIdProvided } = useParams();
   const [isReactChanged, setReactState] = useState<boolean | string>(false);
@@ -105,7 +114,7 @@ const VideoPageContainer: FC = () => {
 
   const handleMessageSubmit = (text: string): void => {
     if (!user) {
-      navigate(AppRoutes.SIGN_IN, { replace: true });
+      navigate({ pathname: AppRoutes.SIGN_IN, hash: pathname });
       return;
     }
 
@@ -173,7 +182,6 @@ const VideoPageContainer: FC = () => {
             }
           >
             <VideoChatContainer heightVideoBlock={heightVideo} videoId={videoId} handleHideChat={handleHideChat} />
-            {/*  */}
           </div>
         )}
         <LinksBlock videoId={videoId} />
