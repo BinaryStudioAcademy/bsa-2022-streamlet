@@ -44,7 +44,7 @@ import { Tab as AnalyticsTab } from 'pages/studio/analytics/tabs/tab';
 import styles from './app.module.scss';
 import { loadPreferences } from 'store/preferences/actions';
 import { LiveSettings } from 'pages/studio/stream/stream/tabs/live-settings/live-settings';
-import { LiveAnalytics } from 'pages/studio/stream/stream/tabs/live-analytics/live-analytics';
+// import { LiveAnalytics } from 'pages/studio/stream/stream/tabs/live-analytics/live-analytics';
 import { getUserStreamPermission } from 'store/auth/actions';
 import { WatchTimeTab } from 'pages/studio/analytics/tabs/watch-time/watch-time-tab';
 
@@ -122,7 +122,7 @@ const App: FC = () => {
               <Route path={AppRoutes.STUDIO} element={<ProtectedRoute element={<StudioHomeContainer />} />}>
                 <Route index element={<LiveSettings />} />
                 <Route path={StreamTab.SETTINGS} element={<LiveSettings />} />
-                <Route path={StreamTab.ANALYTICS} element={<LiveAnalytics />} />
+                {/* <Route path={StreamTab.ANALYTICS} element={<LiveAnalytics />} /> */}
                 <Route path="*" element={<Navigate to={`${AppRoutes.STUDIO}/${StreamTab.SETTINGS}`} replace />} />
               </Route>
               <Route path={AppRoutes.STUDIO_CHANNEL} element={<ProtectedRoute element={<StudioChannel />} />} />

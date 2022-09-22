@@ -1,6 +1,6 @@
 export enum Tab {
   SETTINGS = 'settings',
-  ANALYTICS = 'analytics',
+  // ANALYTICS = 'analytics',
 }
 
 export type TabInfo = {
@@ -13,8 +13,8 @@ export const tabs: Readonly<Record<Tab, TabInfo>> = {
     tab: Tab.SETTINGS,
     title: 'Settings',
   },
-  [Tab.ANALYTICS]: {
-    tab: Tab.ANALYTICS,
-    title: 'Analytics',
-  },
+  // [Tab.ANALYTICS]: {
+  //   tab: Tab.ANALYTICS,
+  //   title: 'Analytics',
+  // },
 } as const;
