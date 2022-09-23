@@ -39,8 +39,8 @@ $timing-function: ease-out;
 }
 
 .volume-wrapper:hover .volume-slider {
-  width: calc(80px * clamp(1, var(--size-modifier), 1.5));
-  max-width: calc(80px * clamp(1, var(--size-modifier), 1.5));
+  width: calc(80px * clamp(1, var(--size-modifier, 1), 1.5));
+  max-width: calc(80px * clamp(1, var(--size-modifier, 1), 1.5));
   transform: scaleX(1);
 
   @mixin visible-thumb {

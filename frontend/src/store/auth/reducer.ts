@@ -3,6 +3,8 @@ import { createReducer, isAnyOf } from '@reduxjs/toolkit';
 import { DataStatus } from 'common/enums/enums';
 import { UserBaseResponseDto } from 'common/types/types';
 import { getRejectedErrorData } from 'helpers/redux/get-rejected-error-data';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { StreamPermission, UserStreamPermissionResponseDto } from 'shared/build';
 import {
   signOut,
@@ -87,4 +89,11 @@ const reducer = createReducer(initialState, (builder) => {
   );
 });
 
-export { reducer };
+const persistConfig = {
+  key: 'auth',
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, reducer);
+
+export { persistedReducer as reducer };
