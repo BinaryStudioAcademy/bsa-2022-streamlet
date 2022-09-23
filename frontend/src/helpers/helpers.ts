@@ -11,7 +11,7 @@ export { replaceItemIfExists } from './array/replace-item-if-exists.helper';
 export { updateItemIfExists } from './array/update-item-if-exists.helper';
 export { pushOrDeleteIfExists } from './array/push-or-delete-if-exists-helper';
 export { generateAbbreviatureNameUser, getUserDisplayName } from './user';
-export { joinExistingValues, getRightUpdateTimeDelay, createCounter } from './common/common';
+export { joinExistingValues, getRightUpdateTimeDelay, createCounter, timeout } from './common/common';
 export { getChannelBannerEditorSize } from './channel-banner-editor-size/get-channel-banner-editor-size';
 export * from './image/image';
 export * from './video/video';
