@@ -4,8 +4,8 @@ import { faker } from '@faker-js/faker';
 import { users, userProfiles, channels, videos } from './seed-data';
 const prisma = new PrismaClient();
 
-const SEED_START_DATE_CHANNEL = new Date(2022, 8, 1);
-const SEED_START_DATE_VIDEO = new Date(2022, 9, 1); // should be later than SEED_START_DATE_CHANNEL
+const SEED_START_DATE_CHANNEL = new Date(2022, 7, 1);
+const SEED_START_DATE_VIDEO = new Date(2022, 8, 1); // should be later than SEED_START_DATE_CHANNEL
 
 async function seedSampleData(): Promise<void> {
   if (!(await canSeed())) {
@@ -74,10 +74,15 @@ async function seedStreamingKeys(): Promise<void> {
 
 async function seedVideos(): Promise<void> {
   await prisma.video.createMany({
-    data: videos.map((v) => ({
-      ...v,
-      createdAt: getRandomDate(SEED_START_DATE_VIDEO, new Date()),
-    })),
+    data: videos.map((v) => {
+      const createdAt = getRandomDate(SEED_START_DATE_VIDEO, new Date());
+      return {
+        ...v,
+        createdAt: createdAt,
+        publishedAt: createdAt,
+        scheduledStreamDate: createdAt,
+      };
+    }),
   });
 }
 

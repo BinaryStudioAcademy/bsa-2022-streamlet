@@ -3,7 +3,7 @@ import { getAllUserHistoryInputType, HistoryRepository } from '~/core/history/po
 import { History, PrismaClient } from '@prisma/client';
 import { BatchPayload, CONTAINER_TYPES, HistoryRequestDto, HistoryResponseDto } from '~/shared/types/types';
 import { trimHistory } from '~/shared/helpers/trim-history';
-import { HistoryListType } from 'shared/build';
+import { HistoryListType, StreamPrivacy } from 'shared/build';
 
 @injectable()
 export class HistoryRepositoryAdapter implements HistoryRepository {
@@ -33,6 +33,9 @@ export class HistoryRepositoryAdapter implements HistoryRepository {
       skip,
       where: {
         userId,
+        video: {
+          privacy: StreamPrivacy.PUBLIC,
+        },
       },
       include: {
         video: {
