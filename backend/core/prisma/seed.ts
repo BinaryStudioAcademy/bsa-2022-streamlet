@@ -4,6 +4,9 @@ import { faker } from '@faker-js/faker';
 import { users, userProfiles, channels, videos } from './seed-data';
 const prisma = new PrismaClient();
 
+const SEED_START_DATE_CHANNEL = new Date(2022, 8, 1);
+const SEED_START_DATE_VIDEO = new Date(2022, 9, 1); // should be later than SEED_START_DATE_CHANNEL
+
 async function seedSampleData(): Promise<void> {
   if (!(await canSeed())) {
     return;
@@ -51,7 +54,10 @@ async function seedUserProfiles(): Promise<void> {
 
 async function seedChannels(): Promise<void> {
   await prisma.channel.createMany({
-    data: channels,
+    data: channels.map((c) => ({
+      ...c,
+      createdAt: getRandomDate(SEED_START_DATE_CHANNEL, SEED_START_DATE_VIDEO),
+    })),
   });
 }
 
@@ -68,7 +74,10 @@ async function seedStreamingKeys(): Promise<void> {
 
 async function seedVideos(): Promise<void> {
   await prisma.video.createMany({
-    data: videos,
+    data: videos.map((v) => ({
+      ...v,
+      createdAt: getRandomDate(SEED_START_DATE_VIDEO, new Date()),
+    })),
   });
 }
 
@@ -85,6 +94,7 @@ async function seedSubscriptions(): Promise<void> {
           userId: user.id,
           channelId: channel.id,
           notify: faker.datatype.boolean(),
+          createdAt: getRandomDate(new Date(channel.createdAt), new Date()),
         },
       });
     }
@@ -342,8 +352,16 @@ async function seedVideoStats(): Promise<void> {
   });
   const videos = await prisma.video.findMany();
 
-  const languages = ['en', 'en', 'uk']; // duplicate 'en' for unequal distribution
+  const languages = ['en', 'en', 'en', 'uk', 'uk', 'de', 'es', 'ja']; // duplicate langs for unequal distribution
   const devices = Object.values(DeviceCategory).filter((d) => d !== DeviceCategory.UNKNOWN);
+
+  const viewCount: Record<string, number> = {};
+  const updateViewCount = (videoId: string): void => {
+    if (viewCount[videoId] === undefined) {
+      viewCount[videoId] = 0;
+    }
+    viewCount[videoId] += 1;
+  };
 
   for (const user of users) {
     const commentGroupBy = await prisma.videoComment.groupBy({
@@ -386,6 +404,7 @@ async function seedVideoStats(): Promise<void> {
     await prisma.videoStats.createMany({
       data: [
         ...chatMessageGroupBy.map((c) => {
+          const video = videoIdToVideo.get(c.videoId);
           const device = getRandomSample(devices, 1)[0];
           const reaction = user.reactions.find((r) => r.videoId === c.videoId);
           if (reaction) {
@@ -394,7 +413,10 @@ async function seedVideoStats(): Promise<void> {
           const wasSubscribed = Boolean(
             user.subscriptions.find((s) => s.channelId === videoIdToChannelId.get(c.videoId)),
           );
-          const durationStamp = getRandomIntFromInterval(1, videoIdToVideo.get(c.videoId)?.duration ?? 1);
+          const durationStamp = getRandomIntFromInterval(1, video?.duration ?? 1);
+          const startDate = video?.publishedAt ? video?.publishedAt : video?.createdAt;
+
+          updateViewCount(c.videoId);
 
           return {
             videoId: c.videoId,
@@ -413,9 +435,13 @@ async function seedVideoStats(): Promise<void> {
             wasSubscribed: wasSubscribed,
             chatsActivity: c._count.id,
             source: 'video',
+            ...(startDate && {
+              createdAt: getRandomDate(new Date(startDate), new Date()),
+            }),
           } as Prisma.VideoStatsCreateManyInput;
         }),
         ...commentGroupBy.map((c) => {
+          const video = videoIdToVideo.get(c.videoId);
           const device = getRandomSample(devices, 1)[0];
           let reaction = user.reactions.find((r) => r.videoId === c.videoId);
           if (reaction && !reactionToVideos.includes(reaction.videoId)) {
@@ -426,7 +452,10 @@ async function seedVideoStats(): Promise<void> {
           const wasSubscribed = Boolean(
             user.subscriptions.find((s) => s.channelId === videoIdToChannelId.get(c.videoId)),
           );
-          const durationStamp = getRandomIntFromInterval(1, videoIdToVideo.get(c.videoId)?.duration ?? 1);
+          const durationStamp = getRandomIntFromInterval(1, video?.duration ?? 1);
+          const startDate = video?.publishedAt ? video?.publishedAt : video?.createdAt;
+
+          updateViewCount(c.videoId);
 
           return {
             videoId: c.videoId,
@@ -445,16 +474,83 @@ async function seedVideoStats(): Promise<void> {
             wasSubscribed: wasSubscribed,
             commentsActivity: c._count.id,
             source: 'video',
+            ...(startDate && {
+              createdAt: getRandomDate(new Date(startDate), new Date()),
+            }),
           } as Prisma.VideoStatsCreateManyInput;
         }),
       ],
     });
   }
+
+  for (const v of videos) {
+    if (v.id in viewCount) {
+      const viewsToStat = v.videoViews - viewCount[v.id];
+      if (viewsToStat === 0) {
+        continue;
+      }
+      if (viewsToStat > 0) {
+        await prisma.videoStats.createMany({
+          data: [
+            ...new Array(viewsToStat).fill(null).map(() => {
+              const language = getRandomSample(languages, 1)[0];
+              const device = getRandomSample(devices, 1)[0];
+              const durationStamp = getRandomIntFromInterval(1, v.duration);
+              const startDate = v.publishedAt ? v.publishedAt : v.createdAt;
+
+              return {
+                videoId: v.id,
+                watchTime: getRandomIntFromInterval(5, 100),
+                device: DeviceCategory[device],
+                language: language,
+                isLive: false,
+                durationStamp,
+                view: true,
+                source: 'video',
+                createdAt: getRandomDate(new Date(startDate), new Date()),
+              } as Prisma.VideoStatsCreateManyInput;
+            }),
+          ],
+        });
+      } else {
+        await prisma.video.update({
+          where: {
+            id: v.id,
+          },
+          data: {
+            videoViews: viewCount[v.id],
+          },
+        });
+      }
+    } else {
+      await prisma.videoStats.createMany({
+        data: [
+          ...new Array(v.videoViews).fill(null).map(() => {
+            const language = getRandomSample(languages, 1)[0];
+            const device = getRandomSample(devices, 1)[0];
+            const durationStamp = getRandomIntFromInterval(1, v.duration);
+            const startDate = v.publishedAt ? v.publishedAt : v.createdAt;
+
+            return {
+              videoId: v.id,
+              watchTime: getRandomIntFromInterval(5, 100),
+              device: DeviceCategory[device],
+              language: language,
+              isLive: false,
+              durationStamp,
+              view: true,
+              source: 'video',
+              createdAt: getRandomDate(new Date(startDate), new Date()),
+            } as Prisma.VideoStatsCreateManyInput;
+          }),
+        ],
+      });
+    }
+  }
 }
 
 async function seedChannelStats(): Promise<void> {
   const users = await prisma.user.findMany({ include: { subscriptions: true } });
-
   for (const user of users) {
     await prisma.channelStats.createMany({
       data: [
@@ -465,6 +561,7 @@ async function seedChannelStats(): Promise<void> {
               userId: user.id,
               subscription: SubscriptionStatus.SUBSCRIBED,
               source: 'channel',
+              createdAt: s.createdAt,
             } as Prisma.ChannelStatsCreateManyInput),
         ),
       ],
@@ -478,6 +575,9 @@ function getRandomSample<T>(arr: T[], sampleSize: number): T[] {
 }
 function getRandomIntFromInterval(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+function getRandomDate(start: Date, end: Date): string {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toISOString();
 }
 
 seedSampleData().finally(async () => {
