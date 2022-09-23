@@ -182,7 +182,6 @@ $hide-transition-duration: 1s;
   padding: 20px 20px 0;
   background-color: var(--chat-pop-bgc);
   border-radius: 3px;
-  transition: min-height 1s;
 }
 
 .video-chat-popout span {
@@ -396,4 +395,8 @@ $hide-transition-duration: 1s;
   margin-bottom: 0;
   padding: 0 20px;
   overflow: hidden;
+}
+
+.hide-chat .video-chat-popout span {
+  visibility: hidden;
 }
