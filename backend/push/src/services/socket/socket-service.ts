@@ -52,8 +52,10 @@ class SocketService {
           if (data && this.io) {
             const { authorId, streamData } = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(streamData)}`);
-            const socketId = getSocketIdByUserId(this.socketClients, authorId);
-            if (socketId) {
+            const socketId = getSocketIdByUserId(this.socketClients, authorId).filter(
+              (s) => this.io?.sockets.sockets.get(s) !== undefined,
+            );
+            if (socketId.length !== 0) {
               this.io.to(socketId).emit(SocketEvents.notify.STREAM_OBS_STATUS, true);
             }
           }
@@ -66,10 +68,23 @@ class SocketService {
           if (data && this.io) {
             const { authorId, streamingKey } = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(streamingKey)}`);
-            const socketId = getSocketIdByUserId(this.socketClients, authorId);
-            if (socketId) {
+            const socketId = getSocketIdByUserId(this.socketClients, authorId).filter(
+              (s) => this.io?.sockets.sockets.get(s) !== undefined,
+            );
+            if (socketId.length !== 0) {
               this.io.to(socketId).emit(SocketEvents.notify.STREAM_OBS_STATUS, false);
             }
+          }
+        },
+      });
+
+      amqpService.consume({
+        queue: AmqpQueue.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED,
+        onMessage: (data) => {
+          if (data && this.io) {
+            const { roomId, isChatEnabled } = JSON.parse(data.toString('utf-8'));
+            logger.info(`Rabbitmq -> chat ${roomId} is enabled - ${isChatEnabled}`);
+            this.io.to(roomId).emit(SocketEvents.chat.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED_DONE, isChatEnabled);
           }
         },
       });
