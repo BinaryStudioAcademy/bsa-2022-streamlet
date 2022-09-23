@@ -16,3 +16,9 @@
   color: var(--white-text-color);
   border-bottom: 3px var(--brand-green-color) solid;
 }
+
+@media screen and (max-width: 560px) {
+  .channel-button {
+    padding: 0 27px 5px;
+  }
+}
