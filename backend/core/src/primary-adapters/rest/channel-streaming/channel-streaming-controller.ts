@@ -304,6 +304,12 @@ export class ChannelStreamingController extends BaseHttpController {
     if (!update) {
       throw new NotFound(exceptionMessages.channelCrud.CHANNEL_NOT_FOUND, errorCodes.stream.NOT_FOUND);
     }
+    if (payload.isChatEnabled !== undefined) {
+      this.channelStreamingService.notifyViewersAboutChatToggleChanged({
+        roomId: update.id,
+        isChatEnabled: update.isChatEnabled,
+      });
+    }
     return update;
   }
 
