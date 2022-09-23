@@ -162,7 +162,7 @@ const getEncryptionConfig = (): EncryptionConfig => {
 };
 
 const encryptionConfigDefault = {
-  ACCESS_TOKEN_LIFETIME: '5m',
+  ACCESS_TOKEN_LIFETIME: '1d',
   REFRESH_LIFETIME: '30d',
   RESET_PASSWORD_TOKEN_LIFETIME: '30m',
   VERIFICATION_TOKEN_LIFETIME: '30m',
