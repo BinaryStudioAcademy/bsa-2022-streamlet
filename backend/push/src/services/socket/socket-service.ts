@@ -79,6 +79,17 @@ class SocketService {
       });
 
       amqpService.consume({
+        queue: AmqpQueue.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED,
+        onMessage: (data) => {
+          if (data && this.io) {
+            const { roomId, isChatEnabled } = JSON.parse(data.toString('utf-8'));
+            logger.info(`Rabbitmq -> chat ${roomId} is enabled - ${isChatEnabled}`);
+            this.io.to(roomId).emit(SocketEvents.chat.NOTIFY_CHAT_ROOM_CHAT_IS_ENABLED_DONE, isChatEnabled);
+          }
+        },
+      });
+
+      amqpService.consume({
         queue: AmqpQueue.NEW_MESSAGE_TO_CHAT_ROOM,
         onMessage: (data) => {
           if (data && this.io) {
