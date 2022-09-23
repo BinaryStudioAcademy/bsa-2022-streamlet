@@ -7,6 +7,7 @@ import { initStore } from '~/core/init-store';
 import { AmqpQueue, ProcessPreset } from '~/shared';
 import { AmqpService } from '~/services/amqp/amqp-service';
 import { CONFIG } from '~/config/config';
+import { addVodToPlaylists } from '~/helpers/add-vod-to-playlists';
 
 type StreamProcesses = {
   streamKey: string;
@@ -114,7 +115,7 @@ export class StreamingService {
   private subscribeToInterruptStreaming(): Promise<void> {
     return this.amqpService.consume({
       queue: AmqpQueue.STREAM_INTERRUPTED,
-      onMessage: (data) => {
+      onMessage: async (data) => {
         if (!data) {
           logger.info('Interrupted event: Message data not found');
           return;
@@ -130,6 +131,9 @@ export class StreamingService {
 
         logger.info(`Stream interrupted. StreamKey: ${streamingKey}`);
         currentStream.processes.map((process) => process.kill(''));
+
+        const { videoId } = currentStream;
+        await addVodToPlaylists(videoId);
 
         logger.info(`Deleting stream processes. StreamKey: ${streamingKey}`);
         this.deleteStreamProcess({ streamKey: streamingKey });

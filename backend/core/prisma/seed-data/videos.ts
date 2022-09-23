@@ -13,8 +13,7 @@ export const videos: Omit<Video, 'updatedAt' | 'createdAt' | 'publishedAt' | 'sc
     'liveViews': 0,
     'videoViews': 180,
     'duration': 173,
-    'poster':
-      'https://scontent.flwo6-1.fna.fbcdn.net/v/t39.30808-6/285270507_1483328318791583_463444811077561983_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=730e14&_nc_ohc=EUXjv97KYh8AX9XNIbB&_nc_ht=scontent.flwo6-1.fna&oh=00_AT_5vuylsFZYcRnSkcgL71DPpQuzjvK0fP8vJltbfNv8yQ&oe=630EA310',
+    'poster': 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663154998/stream-poster/maxresdefault_bl0fhv.webp',
     'isChatEnabled': false,
     'channelId': 'c162816b-d122-4739-a041-a9110b462c40',
   },
@@ -46,8 +45,7 @@ export const videos: Omit<Video, 'updatedAt' | 'createdAt' | 'publishedAt' | 'sc
     'liveViews': 0,
     'videoViews': 201,
     'duration': 161,
-    'poster':
-      'https://scontent.flwo6-1.fna.fbcdn.net/v/t39.30808-6/285270507_1483328318791583_463444811077561983_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=730e14&_nc_ohc=EUXjv97KYh8AX9XNIbB&_nc_ht=scontent.flwo6-1.fna&oh=00_AT_5vuylsFZYcRnSkcgL71DPpQuzjvK0fP8vJltbfNv8yQ&oe=630EA310',
+    'poster': 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663154889/stream-poster/hqdefault_xcwdea.webp',
     'isChatEnabled': false,
     'channelId': 'a312816b-d122-4739-a041-a9110b462c40',
   },
@@ -221,8 +219,7 @@ export const videos: Omit<Video, 'updatedAt' | 'createdAt' | 'publishedAt' | 'sc
     'videoViews': 356,
     'duration': 144,
     'privacy': 'PUBLIC',
-    'poster':
-      'https://scontent.flwo6-1.fna.fbcdn.net/v/t39.30808-6/285270507_1483328318791583_463444811077561983_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=730e14&_nc_ohc=EUXjv97KYh8AX9XNIbB&_nc_ht=scontent.flwo6-1.fna&oh=00_AT_5vuylsFZYcRnSkcgL71DPpQuzjvK0fP8vJltbfNv8yQ&oe=630EA310',
+    'poster': 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663154998/stream-poster/hq720_ymih1c.webp',
     'isChatEnabled': false,
     'channelId': '9c6a0001-d379-43e1-9c07-48ab3a5f35bd',
   },
@@ -269,8 +266,7 @@ export const videos: Omit<Video, 'updatedAt' | 'createdAt' | 'publishedAt' | 'sc
     'liveViews': 0,
     'videoViews': 1000,
     'duration': 142,
-    'poster':
-      'https://scontent.flwo6-1.fna.fbcdn.net/v/t39.30808-6/285270507_1483328318791583_463444811077561983_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=730e14&_nc_ohc=EUXjv97KYh8AX9XNIbB&_nc_ht=scontent.flwo6-1.fna&oh=00_AT_5vuylsFZYcRnSkcgL71DPpQuzjvK0fP8vJltbfNv8yQ&oe=630EA310',
+    'poster': 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663154998/stream-poster/hqdefault_1_xa4x4f.jpg',
     'isChatEnabled': false,
     'channelId': '9c6a0001-d379-43e1-9c07-48ab3a5f35bd',
   },
