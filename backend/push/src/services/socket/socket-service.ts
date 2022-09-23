@@ -52,8 +52,10 @@ class SocketService {
           if (data && this.io) {
             const { authorId, streamData } = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(streamData)}`);
-            const socketId = getSocketIdByUserId(this.socketClients, authorId);
-            if (socketId) {
+            const socketId = getSocketIdByUserId(this.socketClients, authorId).filter(
+              (s) => this.io?.sockets.sockets.get(s) !== undefined,
+            );
+            if (socketId.length !== 0) {
               this.io.to(socketId).emit(SocketEvents.notify.STREAM_OBS_STATUS, true);
             }
           }
@@ -66,8 +68,10 @@ class SocketService {
           if (data && this.io) {
             const { authorId, streamingKey } = JSON.parse(data.toString('utf-8'));
             logger.info(`Rabbitmq -> ${JSON.stringify(streamingKey)}`);
-            const socketId = getSocketIdByUserId(this.socketClients, authorId);
-            if (socketId) {
+            const socketId = getSocketIdByUserId(this.socketClients, authorId).filter(
+              (s) => this.io?.sockets.sockets.get(s) !== undefined,
+            );
+            if (socketId.length !== 0) {
               this.io.to(socketId).emit(SocketEvents.notify.STREAM_OBS_STATUS, false);
             }
           }
