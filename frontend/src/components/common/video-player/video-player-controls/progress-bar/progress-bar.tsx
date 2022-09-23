@@ -12,8 +12,8 @@ type Props = {
   liveSyncLie: boolean;
 };
 
-// if current time is within 4s from live edge, snap the bar to the end
-const LIVE_SYNC_LIE_SPAN_SEC = 4;
+// if current time is within 5s from live edge, snap the bar to the end
+const LIVE_SYNC_LIE_SPAN_SEC = 5;
 
 const ProgressBar: FC<Props> = ({ videoContainer, className, liveSyncLie }) => {
   const dispatch = useAppDispatch();
