@@ -1,10 +1,11 @@
-const getSocketIdByUserId = (clientsMap: Map<string, string>, userId: string): string | undefined => {
+const getSocketIdByUserId = (clientsMap: Map<string, string>, userId: string): string[] => {
+  const res: string[] = [];
   for (const [key, value] of clientsMap.entries()) {
     if (value === userId) {
-      return key;
+      res.push(key);
     }
   }
-  return;
+  return res;
 };
 
 export { getSocketIdByUserId };
