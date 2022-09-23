@@ -78,7 +78,7 @@ export const videos: Omit<Video, 'updatedAt' | 'createdAt' | 'publishedAt' | 'sc
     'videoViews': 1369,
     'duration': 62,
     'poster': 'https://img.youtube.com/vi/teyjpbvxB3I/maxresdefault.jpg',
-    'isChatEnabled': true,
+    'isChatEnabled': false,
     'channelId': '916c02ea-ece7-4704-9b15-1376fb7f55f0',
   },
   {

@@ -153,9 +153,11 @@ const VideoChat: FC<VideoChatProps> = ({
         <div className={styles['video-chat-popout']}>
           <span>Chat is disabled for this live stream.</span>
         </div>
-        <div className={styles['video-chat-footer-bar']} onClick={handleSetHideChat}>
-          <span>{hideChat ? 'show chat' : 'hide chat'}</span>
-        </div>
+        {hideSetting && (
+          <div className={styles['video-chat-footer-bar']} onClick={handleSetHideChat}>
+            <span>{hideChat ? 'show chat' : 'hide chat'}</span>
+          </div>
+        )}
       </div>
     );
   }
