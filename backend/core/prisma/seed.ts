@@ -137,6 +137,49 @@ async function seedCategories(): Promise<void> {
     ]),
   );
 
+  const banners = [
+    {
+      name: 'gaming',
+      url: 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663010377/category-poster/Pakistani-Gamers-Want-a-Seat-at-the-Table-Culture-shutterstock_1949862841_qvzoxt.jpg',
+    },
+    {
+      name: 'education',
+      url: 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663010376/category-poster/54ek6O_3C8L0EJYI-oWFFUJpUmzPbhlmnUIQ72NgaHU_ltigdj.jpg',
+    },
+    {
+      name: 'film&animation',
+      url: 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663010376/category-poster/H7fa46ecdeb6547bd86b00c26b341401aW_dizuqw.jpg',
+    },
+    {
+      name: 'music',
+      url: 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663010377/category-poster/music-maker-edm-edition-musicians-about-music-maker-background-mobile-int_ruhzrm.jpg',
+    },
+    {
+      name: 'pets&animal',
+      url: 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663010376/category-poster/black-cats-animals-silhouette-black-background-1920x1080-animals-cats-hd-art-wallpaper-thumb_smeo8i.jpg',
+    },
+    {
+      name: 'sports',
+      url: 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663010376/category-poster/american-football-ball-wallpaper-preview_nm6isj.jpg',
+    },
+    {
+      name: 'travel&events',
+      url: 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663010377/category-poster/photo-1500835556837-99ac94a94552_jrxjxf.jpg',
+    },
+    {
+      name: 'comedy',
+      url: 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663010376/category-poster/istockphoto-1205240999-170667a_eregt7.jpg',
+    },
+    {
+      name: 'people&blogs',
+      url: 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663010377/category-poster/woman-enjoying-a-hot-tub-1296x728-header_hjdl1z.jpg',
+    },
+    {
+      name: 'programming',
+      url: 'https://res.cloudinary.com/ds5b5u8go/image/upload/v1663010377/category-poster/Thoughtful_young_programmer_coding_on_computer_in_the_evening_at_home_cdw6jr.jpg',
+    },
+  ];
+
   const preferencesPerUser = 4;
 
   const videosByCategory = new Map<string, string[]>();
@@ -173,7 +216,7 @@ async function seedCategories(): Promise<void> {
     await prisma.category.create({
       data: {
         name: categories[i],
-        posterPath: 'https://static-cdn.jtvnw.net/ttv-boxart/509658-285x380.jpg',
+        posterPath: banners.find((banner) => banner.name === categories[i])?.url || '',
       },
     });
   }
