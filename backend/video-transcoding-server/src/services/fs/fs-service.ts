@@ -1,4 +1,4 @@
-import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, rm, writeFile, readFile } from 'node:fs/promises';
 import { logger } from '~/config/logger';
 
 export class FsService {
@@ -32,5 +32,20 @@ export class FsService {
     } catch (err) {
       logger.error(err);
     }
+  }
+
+  public static async replaceInFile({
+    path,
+    replace,
+    text,
+  }: {
+    path: string;
+    replace: string;
+    text: string;
+  }): Promise<void> {
+    const content = await readFile(path);
+    const replaced = content.toString('utf-8').replace(replace, text);
+
+    await writeFile(path, replaced);
   }
 }
