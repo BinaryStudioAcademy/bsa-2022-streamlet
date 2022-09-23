@@ -158,23 +158,6 @@ const VideoPlayer: FC<VideoPlayerProps> = ({
     }
   }, [areRefsNull.videoContainer, isLive, url]);
 
-  useEffect(() => {
-    if (!videoContainerRef.current) {
-      return;
-    }
-
-    if (hlsRef.current) {
-      hlsRef.current.currentLevel = -1;
-    } else {
-      const currentVideoTime = videoContainerRef.current.currentTime;
-      videoContainerRef.current.src = `${videoContainerRef.current.src.substring(
-        0,
-        videoContainerRef.current.src.lastIndexOf('/'),
-      )}/master.m3u8`;
-      videoContainerRef.current.currentTime = currentVideoTime;
-    }
-  }, [url]);
-
   const videoContainerWrapperCallbackRef = useCallback((element: HTMLDivElement | null): void => {
     videoContainerWrapperRef.current = element;
     setAreRefsNull((prev) => ({
