@@ -7,12 +7,13 @@ import { ChatStyle } from 'common/enums/enums';
 
 import styles from './styles.module.scss';
 import { VideoPlayer } from 'components/common/video-player/video-player';
-import { useAppSelector, useLocation, useNavigate, useState } from 'hooks/hooks';
+import { useAppSelector, useLocation, useNavigate, useState, useEffect } from 'hooks/hooks';
 import { CategoriesDisplay } from './categories-display';
 import { TabHeader } from 'components/common/tabs/tab-header/tab-header';
 import { Tab, tabs } from './tabs/tabs';
 import { Outlet } from 'react-router-dom';
 import { useLayoutEffect } from 'react';
+import { checkIsPlaylistFull } from 'helpers/helpers';
 
 type Props = {
   handleSettingsModalOpen(): void;
@@ -30,6 +31,8 @@ const StudioStream: FC<Props> = ({ handleSettingsModalOpen }) => {
   const streamId = useAppSelector((state) => state.stream.stream?.id);
   const streamName = useAppSelector((state) => state.stream.stream?.name);
 
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const activeSegment = pathname.slice(1).split('/').at(-1);
@@ -44,6 +47,14 @@ const StudioStream: FC<Props> = ({ handleSettingsModalOpen }) => {
 
   const [placeForAnalyticsSelect, setPlaceForAnalyticsSelect] = useState<HTMLElement | null>(null);
 
+  useEffect(() => {
+    if (streamVideoPath) {
+      checkIsPlaylistFull(streamVideoPath).then((res) => {
+        setIsPlayerReady(res);
+      });
+    }
+  }, [streamVideoPath]);
+
   return (
     <div className={styles['settings-container']}>
       <div className={styles['settings-block-container']}>
@@ -51,7 +62,7 @@ const StudioStream: FC<Props> = ({ handleSettingsModalOpen }) => {
           <div className={styles['settings-block-common']}>
             <div className={styles['col-1']}>
               <div className={styles['preview-container']}>
-                {streamReadiness ? (
+                {isPlayerReady ? (
                   <VideoPlayer
                     url={streamVideoPath ?? ''}
                     sizingProps={{ height: '100%', width: '100%' }}
