@@ -13,7 +13,7 @@ import { TabHeader } from 'components/common/tabs/tab-header/tab-header';
 import { Tab, tabs } from './tabs/tabs';
 import { Outlet } from 'react-router-dom';
 import { useLayoutEffect } from 'react';
-import { checkIsPlaylistFull } from 'helpers/helpers';
+import { checkIsPlaylistFull, timeout } from 'helpers/helpers';
 
 type Props = {
   handleSettingsModalOpen(): void;
@@ -48,11 +48,30 @@ const StudioStream: FC<Props> = ({ handleSettingsModalOpen }) => {
   const [placeForAnalyticsSelect, setPlaceForAnalyticsSelect] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (streamVideoPath) {
-      checkIsPlaylistFull(streamVideoPath).then((res) => {
-        setIsPlayerReady(res);
-      });
-    }
+    let attempt = 1;
+    const MAX_ATTEMPTS = 30;
+    const TIMEOUT_BASIC_MS = 1000;
+    const MAX_TIMEOUT_MS = 5000;
+    let cancelled = false;
+    const loop = async (): Promise<void> => {
+      if (streamVideoPath) {
+        while (!cancelled && attempt <= MAX_ATTEMPTS) {
+          const res = await checkIsPlaylistFull(streamVideoPath);
+          if (res) {
+            setIsPlayerReady(res);
+            break;
+          } else {
+            await timeout(Math.min(attempt++ * TIMEOUT_BASIC_MS, MAX_TIMEOUT_MS));
+          }
+        }
+      }
+    };
+
+    loop();
+
+    return (): void => {
+      cancelled = true;
+    };
   }, [streamVideoPath]);
 
   return (
@@ -75,8 +94,8 @@ const StudioStream: FC<Props> = ({ handleSettingsModalOpen }) => {
                   <div className={styles['not-loaded-container']}>
                     <Loader color="white" spinnerSize="40px" hCentered={false} vCentered={false} />
                     <p>
-                      Connect your streaming software, like OBS by using the key and url below. You should see the
-                      stream preview, once the connection is established
+                      Connect your streaming software using the data below. You'll see the "LIVE" as the connection is
+                      established and preview after we start processing your stream.
                     </p>
                   </div>
                 )}
